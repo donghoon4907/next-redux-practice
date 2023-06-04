@@ -4,9 +4,6 @@ const Dotenv = require('dotenv-webpack');
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
-    compiler: {
-        styledComponents: true,
-    },
 };
 
 module.exports = {
