@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useState } from 'react';
-import { Header } from '@components/header/Header';
+import { Header } from '@layouts/header/Header';
 
 import styles from './Page.module.css';
 

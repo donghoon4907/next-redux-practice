@@ -1,0 +1,39 @@
+.border-primary {
+    border-color: #545cd8;
+}
+
+.border-secondary {
+    border-color: #6c757d;
+}
+
+.border-success {
+    border-color: #3ac47d;
+}
+
+.border-info {
+    border-color: #30b1ff;
+}
+
+.border-warning {
+    border-color: #f7b924;
+}
+
+.border-danger {
+    border-color: #d92550;
+}
+
+.border-light {
+    border-color: #eeeeee;
+}
+
+.border-dark {
+    border-color: #343a40;
+}
+
+.border-focus {
+    border-color: #444054;
+}
+
+.border-alternate {
+    border-color: #83588a;
+}

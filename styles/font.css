@@ -1,0 +1,94 @@
+/*  추가된 폰트 목록
+    1. Noto Sans KR (korean) 
+        - 설치 파일 및 가이드: https://moo-you.tistory.com/13
+    2. Linearicons-Free
+        - 참조: https://github.com/DashboardPack/architectui-react-theme-free
+    3. Pe-icon-7-stroke
+        - Licensing: http://www.pixeden.com/icon-fonts/stroke-7-icon-font-set
+*/
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 100;
+    src: url(./assets/fonts/NotoSansKr/NotoSansKR-Thin.woff2) format('woff2'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Thin.woff) format('woff'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Thin.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 300;
+    src: url(./assets/fonts/NotoSansKr/NotoSansKR-Light.woff2) format('woff2'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Light.woff) format('woff'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Light.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 400;
+    src: url(./assets/fonts/NotoSansKr/NotoSansKR-Regular.woff2) format('woff2'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Regular.woff) format('woff'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Regular.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 500;
+    src: url(./assets/fonts/NotoSansKr/NotoSansKR-Medium.woff2) format('woff2'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Medium.woff) format('woff'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Medium.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 700;
+    src: url(./assets/fonts/NotoSansKr/NotoSansKR-Bold.woff2) format('woff2'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Bold.woff) format('woff'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Bold.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Noto Sans KR';
+    font-style: normal;
+    font-weight: 900;
+    src: url(./assets/fonts/NotoSansKr/NotoSansKR-Black.woff2) format('woff2'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Black.woff) format('woff'),
+        url(./assets/fonts/NotoSansKr/NotoSansKR-Black.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'Linearicons-Free';
+    src: url(./assets/icons/linearicons/Linearicons-Free.eot?w118d);
+    src: url(./assets/icons/linearicons/Linearicons-Free.eot?#iefixw118d)
+            format('embedded-opentype'),
+        url(./assets/icons/linearicons/Linearicons-Free.woff2?w118d)
+            format('woff2'),
+        url(./assets/icons/linearicons/Linearicons-Free.woff?w118d)
+            format('woff'),
+        url(./assets/icons/linearicons/Linearicons-Free.ttf?w118d)
+            format('truetype'),
+        url(./assets/icons/linearicons/Linearicons-Free.svg?w118d#Linearicons-Free)
+            format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Pe-icon-7-stroke';
+    src: url(./assets/icons/pe7-icon/fonts/Pe-icon-7-stroke.eot?d7yf1v);
+    src: url(./assets/icons/pe7-icon/fonts/Pe-icon-7-stroke.eot?#iefixd7yf1v)
+            format('embedded-opentype'),
+        url(./assets/icons/pe7-icon/fonts/Pe-icon-7-stroke.woff?d7yf1v)
+            format('woff'),
+        url(./assets/icons/pe7-icon/fonts/Pe-icon-7-stroke.ttf?d7yf1v)
+            format('truetype'),
+        url(./assets/icons/pe7-icon/fonts/Pe-icon-7-stroke.svg?d7yf1v#Pe-icon-7-stroke)
+            format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

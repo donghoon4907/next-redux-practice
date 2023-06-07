@@ -18,6 +18,8 @@
         "baseUrl": "./",
         "paths": {
             "@components/*": ["./components/*"],
+            "@layouts/*": ["./layouts/*"],
+            "@interfaces/*": ["./interfaces/*"],
             "@styles/*": ["./styles/*"],
             "@assets/*": ["./public/assets/*"]
         }
