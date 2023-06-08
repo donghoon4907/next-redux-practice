@@ -21,7 +21,11 @@
             "@layouts/*": ["./layouts/*"],
             "@interfaces/*": ["./interfaces/*"],
             "@styles/*": ["./styles/*"],
-            "@assets/*": ["./public/assets/*"]
+            "@assets/*": ["./public/assets/*"],
+            "@actions/*": ["./actions/*"],
+            "@reducers/*": ["./reducers/*"],
+            "@sagas/*": ["./sagas/*"],
+            "@services/*": ["./services/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
