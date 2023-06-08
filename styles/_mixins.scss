@@ -1,0 +1,14 @@
+/* media query */
+@mixin mq($breakpoint) {
+    /* breakpoints에 정의된 키인지 검증  */
+    @if map-has-key($breakpoints, $breakpoint) {
+        /* 너비 구하기 */
+        $breakpoint-value: map-get($breakpoints, $breakpoint);
+        /* 미디어 쿼리 */
+        @media (max-width: ($breakpoint-value - 1)) {
+            @content;
+        }
+    } @else {
+        @warn 'Invalid breakpoint: #{$breakpoint}.';
+    }
+}

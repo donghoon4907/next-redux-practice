@@ -5,9 +5,9 @@ const Dotenv = require('dotenv-webpack');
 const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
-    // sassOptions: {
-    //     includePaths: [path.join(__dirname, "styles")]
-    // }
+    sassOptions: {
+        includePaths: [path.join(__dirname, 'styles')],
+    },
 };
 
 module.exports = {
