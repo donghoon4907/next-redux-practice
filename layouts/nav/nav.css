@@ -1,0 +1,83 @@
+.w-nav-menu-wrap {
+    position: relative;
+}
+
+.w-nav-menu {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.w-nav-menu.lnb {
+    padding: 0.5em 0 0 2rem;
+    height: 0;
+    visibility: hidden;
+}
+
+.w-nav-menu.lnb.active {
+    visibility: visible;
+    height: 100%;
+}
+
+.lnb::before {
+    content: '';
+    height: 100%;
+    opacity: 1;
+    width: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    left: 20px;
+    top: 0;
+    border-radius: 15px;
+}
+
+.lnb .w-nav-link {
+    padding-left: 1rem;
+}
+
+.w-nav-item {
+    position: relative;
+    margin: 0;
+    padding: 0;
+}
+
+.w-nav-link {
+    position: relative;
+    display: block;
+    line-height: 2.5rem;
+    height: 2.5rem;
+    padding: 0 1.5rem 0 45px;
+    border-radius: 0.25rem;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, 0.7);
+    transition: transform 0.2s, height 300ms, color 300ms,
+        background-color 300ms, -webkit-transform 0.2s;
+}
+
+.w-nav-link:hover {
+    color: rgba(255, 255, 255, 1) !important;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.w-nav-icon {
+    text-align: center;
+    width: 34px;
+    height: 34px;
+    line-height: 34px;
+    position: absolute;
+
+    top: 50%;
+    margin-top: -17px;
+    font-size: 1.5rem;
+    opacity: 0.3;
+    transition: color 300ms;
+}
+
+.w-nav-icon.left {
+    left: 5px;
+}
+
+.w-nav-icon.right {
+    right: 5px;
+}
