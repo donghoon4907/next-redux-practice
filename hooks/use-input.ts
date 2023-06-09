@@ -1,11 +1,21 @@
 import type { ChangeEvent } from 'react';
+import type { CoreSetState } from '@interfaces/core';
 import { useState, useRef } from 'react';
 
-export enum UseInputWhere {
-    NO_SPACE = 'NO_SPACE',
+export interface UseInputOption {
+    noSpace?: boolean;
+    includeSetState?: boolean;
 }
 
-export const useInput = (defaultValue: string, where?: UseInputWhere) => {
+export type UseInputOutput = {
+    value: string;
+    onChange: (
+        evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => void;
+    setValue?: CoreSetState<string>;
+};
+
+export const useInput = (defaultValue: string, where: UseInputOption = {}) => {
     const [value, setValue] = useState(defaultValue);
 
     const onChange = (
@@ -13,14 +23,20 @@ export const useInput = (defaultValue: string, where?: UseInputWhere) => {
     ) => {
         let nextVal = evt.target.value;
 
-        if (where === UseInputWhere.NO_SPACE) {
+        if (where.noSpace) {
             nextVal = nextVal.replace(/(^\s*)|(\s*$)/g, '');
         }
 
         setValue(nextVal);
     };
 
-    return { value, onChange, setValue };
+    let output: UseInputOutput = { value, onChange };
+
+    if (where.includeSetState) {
+        output.setValue = setValue;
+    }
+
+    return output;
 };
 
 export const useFeedbackInput = (
@@ -92,5 +108,3 @@ export const useFeedbackInput = (
         validator,
     };
 };
-
-export type UseInputType = ReturnType<typeof useInput>;

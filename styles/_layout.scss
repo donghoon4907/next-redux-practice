@@ -1,0 +1,17 @@
+.wr-main {
+    padding: 10px;
+
+    &__wrap {
+        position: relative;
+        margin: 0 auto;
+        width: 100%;
+
+        & .breadcrumb-wrap {
+            border-bottom: 1px solid $wr-divider-color;
+        }
+
+        & .breadcrumb {
+            margin-bottom: 5px !important;
+        }
+    }
+}

@@ -1,0 +1,211 @@
+.wr-gnb {
+    background-color: #3f63bf;
+    color: $white;
+    position: relative;
+    z-index: 2100;
+    font-size: 14px;
+    line-height: 14px;
+    transform: translateZ(0);
+    will-change: contents;
+
+    &__inner {
+        position: relative;
+        margin: 0 10px;
+        // max-width: 1110px;
+        // margin: 0 auto;
+    }
+
+    &__both {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__left {
+        position: relative;
+        flex-grow: 1;
+        flex-shrink: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    &__right {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 1;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+    }
+
+    &__logo {
+        float: left;
+    }
+
+    &__menu {
+        height: 75px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+
+        &-item {
+            float: left;
+            color: #fff;
+            font-size: 18px;
+            line-height: inherit;
+
+            & > a {
+                display: inline-block;
+                vertical-align: top;
+                overflow: hidden;
+            }
+        }
+    }
+
+    &__submenu {
+        width: 100%;
+        height: 40px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    &__metadata {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        font-size: 12px;
+        color: $gray-300;
+    }
+
+    &__title {
+        font-size: 24px;
+        line-height: 24px;
+        height: 24px;
+        position: relative;
+        display: inline-block;
+        color: $white;
+        vertical-align: top;
+        margin-left: 10px;
+        margin-right: 7px;
+
+        &::before {
+            position: absolute;
+            top: 2px;
+            left: -8px;
+            display: inline-block;
+            width: 1px;
+            height: 24px;
+            background-color: rgba(255, 255, 255, 0.3);
+            content: '';
+        }
+    }
+
+    &__subtitle {
+        font-size: 14px;
+        line-height: 14px;
+        height: 14px;
+        position: relative;
+        display: inline-block;
+        color: $white;
+        vertical-align: top;
+        margin-left: 10px;
+    }
+
+    &__group {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.wr-lnb {
+    background: #fff;
+    height: 46px;
+    line-height: 42px;
+    position: relative;
+    z-index: 1900;
+    border-bottom: 1px solid $wr-divider-color;
+    overflow: hidden;
+
+    &__inner {
+        position: relative;
+        margin: 0 10px;
+        // max-width: 1110px;
+        // margin: 0 auto;
+    }
+
+    &__both {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__left {
+        position: relative;
+        flex-grow: 1;
+        flex-shrink: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+
+        & .nav-link {
+            width: 100px;
+            height: 45px;
+            text-align: center;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        & .nav-link.active {
+            border-bottom: 3px solid #3f63bf;
+            color: #3f63bf;
+            // background: rgba(0, 0, 0, 0.15);
+        }
+    }
+
+    &__right {
+        position: relative;
+        flex-grow: 0;
+        flex-shrink: 1;
+        text-align: right;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+    }
+
+    &__metadata {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        font-size: 12px;
+        color: $gray-600;
+        font-weight: bold;
+    }
+}
+
+.wr-logo {
+    &__link {
+        display: block;
+        overflow: hidden;
+        padding: 0 10 0 15px;
+        height: 52px;
+        line-height: 52px;
+        text-align: center;
+
+        &:visited {
+        }
+    }
+
+    &__icon {
+        width: 180px;
+        height: 50px;
+        display: inline-block;
+        // margin: 17px auto 0;
+        vertical-align: top;
+        color: transparent;
+    }
+}

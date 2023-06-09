@@ -1,13 +1,47 @@
-#root,
-body,
-html {
+html,
+body {
+    width: 100%;
+}
+
+body {
+    position: relative;
+    background-color: $gray-100;
+    color: $black;
+    font-size: 14px;
+    line-height: 1.25em;
     padding: 0;
     margin: 0;
     font-family: $wr-base-font;
-    font-size: 14px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    -webkit-text-size-adjust: 100%;
-    tab-size: 4;
-    -o-tab-size: 4;
+    -webkit-text-size-adjust: none;
+}
+
+a,
+a:hover,
+a:focus,
+a:active,
+a:visited {
+    text-decoration: none;
+    color: inherit;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.a11y-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: polygon(0 0, 0 0, 0 0);
+}
+
+// Bootstrap custom
+.input-group > div {
+    width: 100%;
 }
