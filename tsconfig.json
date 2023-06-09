@@ -25,7 +25,9 @@
             "@actions/*": ["./actions/*"],
             "@reducers/*": ["./reducers/*"],
             "@sagas/*": ["./sagas/*"],
-            "@services/*": ["./services/*"]
+            "@services/*": ["./services/*"],
+            "@datas/*": ["./datas/*"],
+            "@hooks/*": ["./hooks/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
