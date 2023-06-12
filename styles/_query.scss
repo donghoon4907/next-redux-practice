@@ -1,14 +1,14 @@
-@include mq(wd) {
+@include m-query-max(wd) {
 }
 
-@include mq(lg) {
+@include m-query-max(lg) {
 }
 
-@include mq(md) {
+@include m-query-max(md) {
 }
 
-@include mq(sm) {
+@include m-query-max(sm) {
 }
 
-@include mq(xs) {
+@include m-query-max(xs) {
 }

@@ -1,9 +1,9 @@
 /* media query */
-@mixin mq($breakpoint) {
+@mixin m-query-max($breakpoint) {
     /* breakpoints에 정의된 키인지 검증  */
-    @if map-has-key($breakpoints, $breakpoint) {
+    @if map-has-key($grid-breakpoints, $breakpoint) {
         /* 너비 구하기 */
-        $breakpoint-value: map-get($breakpoints, $breakpoint);
+        $breakpoint-value: map-get($grid-breakpoints, $breakpoint);
         /* 미디어 쿼리 */
         @media (max-width: ($breakpoint-value - 1)) {
             @content;

@@ -8,6 +8,31 @@ import { Input } from '@components/input';
 import { Label } from '@components/label';
 import { useInput } from '@hooks/use-input';
 import { Header } from '@components/header';
+import { Table } from '@components/table';
+// import { GridExample } from '@components/ag-grid';
+
+const DUMMY = Array.from({ length: 30 }).fill({
+    id: 'dummy',
+    division: {
+        id: 'example_division1',
+        name: '계약',
+    },
+    contract: {
+        id: 'example_contract1',
+        num: 'M2023589',
+        title: '자동차',
+    },
+    occurrenceAt: '2022-10-12',
+    createdAt: '2022-09-12 14:00',
+    responseAt: '2022-09-12 14:00',
+    content: '고객의 요구사항에 따라...',
+    writer: {
+        id: 'example_writer1',
+        login_id: 'W2323',
+        name: '김서윤',
+    },
+    state: '종결',
+});
 
 const Home: NextPage = () => {
     const customerName = useInput('');
@@ -86,7 +111,13 @@ const Home: NextPage = () => {
                                 </div>
                             </div>
                             <div className="col-6">
-                                <div className="row">데이터 테이블 자리</div>
+                                <div className="row">
+                                    <div className="col">
+                                        <div className="wr-table__wrap">
+                                            <Table />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </main>
