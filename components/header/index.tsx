@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { GNBS, SUBMENUS } from '@datas/select-options/gnb';
+import { GNBS, SUBMENUS } from '@constants/gnb';
 
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';

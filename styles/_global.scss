@@ -27,6 +27,25 @@ a:visited {
     color: inherit;
 }
 
+table {
+    // table-layout: fixed;
+    width: 100%;
+}
+
+thead {
+    margin: 0;
+    position: sticky;
+    top: 0;
+}
+
+th,
+td {
+    min-width: 50px;
+    max-width: 500px;
+    white-space: nowrap;
+    text-align: center;
+}
+
 .a11y-hidden {
     position: absolute;
     width: 1px;
@@ -41,19 +60,10 @@ a:visited {
     width: 100%;
 }
 
-table {
-    table-layout: fixed;
-    width: 100%;
+.table {
+    margin-bottom: 0 !important;
 }
 
-thead {
-    margin: 0;
-    position: sticky;
-    top: 0;
-}
-
-th,
-td {
-    padding: 2px 4px;
-    text-align: center;
+.table > :not(caption) > * > * {
+    padding: 11.5px 10px !important;
 }

@@ -1,7 +1,7 @@
 import type { Dispatch, FC, SetStateAction } from 'react';
 import type { ActionMeta, OnChangeValue, StylesConfig } from 'react-select';
-import type { CoreSelectOption } from '@interfaces/core';
 import ExternalSelect from 'react-select';
+import type { CoreSelectOption } from '@interfaces/core';
 
 const styles: StylesConfig<CoreSelectOption, true> = {
     multiValue: (base, state) => {
@@ -18,6 +18,7 @@ const styles: StylesConfig<CoreSelectOption, true> = {
 };
 
 const orderOptions = (values: readonly CoreSelectOption[]) => {
+    console.log(values);
     return values
         .filter((v) => v.isFixed)
         .concat(values.filter((v) => !v.isFixed));
@@ -28,12 +29,19 @@ interface Props {
     setValue: Dispatch<SetStateAction<readonly CoreSelectOption[]>>;
     options: readonly CoreSelectOption[];
     placeholder: string;
+    isMulti?: boolean;
 }
 /**
  * 기본 셀렉트 컴포넌트
  *
  */
-export const Select: FC<Props> = ({ value, setValue, options, ...other }) => {
+export const Select: FC<Props> = ({
+    value,
+    setValue,
+    options,
+    isMulti = false,
+    ...other
+}) => {
     const handleChange = (
         newValue: OnChangeValue<CoreSelectOption, true>,
         actionMeta: ActionMeta<CoreSelectOption>,
@@ -58,11 +66,10 @@ export const Select: FC<Props> = ({ value, setValue, options, ...other }) => {
             value={value}
             styles={styles}
             isClearable={value.some((v) => !v.isFixed)}
-            isMulti
             name="colors"
             options={options}
             onChange={handleChange}
-            className="basic-multi-select"
+            className="basic-select"
             classNamePrefix="select"
             {...other}
         />

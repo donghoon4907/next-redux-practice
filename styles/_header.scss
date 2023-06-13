@@ -153,8 +153,10 @@
 
         // Custom Bootstrap
         & .nav-link {
-            width: 100px;
             height: 45px;
+            min-width: 50px;
+            max-width: 300px;
+            white-space: nowrap;
             text-align: center;
             padding-top: 0 !important;
             padding-bottom: 0 !important;

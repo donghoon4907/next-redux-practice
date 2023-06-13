@@ -26,9 +26,11 @@
             "@reducers/*": ["./reducers/*"],
             "@sagas/*": ["./sagas/*"],
             "@services/*": ["./services/*"],
-            "@datas/*": ["./datas/*"],
             "@hooks/*": ["./hooks/*"],
-            "@utils/*": ["./utils/*"]
+            "@utils/*": ["./utils/*"],
+            "@models/*": ["./models/*"],
+            "@store/*": ["./store/*"],
+            "@constants/*": ["./constants/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
