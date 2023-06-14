@@ -1,85 +1,78 @@
 import type { FC } from 'react';
-import { useState, useReducer } from 'react';
+import { useRef, useEffect } from 'react';
 import {
-    createColumnHelper,
-    flexRender,
-    getCoreRowModel,
+    Column,
+    Table as ReactTable,
+    PaginationState,
     useReactTable,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    ColumnDef,
+    OnChangeFn,
+    flexRender,
 } from '@tanstack/react-table';
 
-type Person = {
-    firstName: string;
-    lastName: string;
-    age: number;
-    visits: number;
-    status: string;
-    progress: number;
-};
+interface Props {
+    columns: ColumnDef<any, any>[];
+    data: any[];
+}
 
-const defaultData: Person[] = Array.from({ length: 100 }).map((v, i) => ({
-    firstName: 'tanner',
-    lastName: 'linsley',
-    age: 24,
-    visits: 100,
-    status: 'In Relationship',
-    progress: 50,
-}));
-
-const columnHelper = createColumnHelper<Person>();
-
-const columns = [
-    columnHelper.accessor('firstName', {
-        cell: (info) => info.getValue(),
-        footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor((row) => row.lastName, {
-        id: 'lastName',
-        // td 내 커스텀 마크업 설정
-        cell: (info) => <i>{info.getValue()}</i>,
-        // th 내 커스텀 마크업 설정
-        header: () => <span>Last Name</span>,
-        footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('age', {
-        header: () => 'Age',
-        cell: (info) => info.renderValue(),
-        footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('visits', {
-        header: () => <span>Visits</span>,
-        footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('status', {
-        header: 'Status',
-        footer: (info) => info.column.id,
-    }),
-    columnHelper.accessor('progress', {
-        header: 'Profile Progress',
-        footer: (info) => info.column.id,
-    }),
-];
-
-export const Table: FC = () => {
-    const [data, setData] = useState(() => [...defaultData]);
-    const rerender = useReducer(() => ({}), {})[1];
+export const Table: FC<Props> = ({ columns, data }) => {
+    const tableRef = useRef<HTMLTableElement>(null);
 
     const table = useReactTable({
-        data,
+        data: data,
         columns,
+        // Pipeline
         getCoreRowModel: getCoreRowModel(),
+        getFilteredRowModel: getFilteredRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        debugTable: false,
+        state: {
+            pagination: {
+                pageIndex: 1,
+                pageSize: 25,
+            },
+        },
     });
 
+    useEffect(() => {
+        const table = tableRef.current;
+
+        if (table) {
+            const columns =
+                table.querySelectorAll<HTMLSpanElement>('thead th span');
+            const fields =
+                table.querySelectorAll<HTMLSpanElement>('tbody td span');
+
+            let columnSpanWidth = -1;
+            Array.from(columns).some((span) => {
+                let output = false;
+                if (span.classList.contains('ellipsisTarget')) {
+                    columnSpanWidth = span.offsetWidth;
+
+                    output = true;
+                }
+
+                return output;
+            });
+
+            Array.from(fields).forEach((v) => {
+                if (v.classList.contains('text-truncate')) {
+                    v.style.width = `${columnSpanWidth + 20}px`;
+                }
+            });
+        }
+    }, []);
+
     return (
-        <table className="wr-scroll-table table">
+        <table className="wr-scroll-table table" ref={tableRef}>
             <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
                         {headerGroup.headers.map((header) => (
-                            <th
-                                key={header.id}
-                                colSpan={1}
-                                style={{ width: 150 }}
-                            >
+                            <th key={header.id} colSpan={header.colSpan}>
                                 {header.isPlaceholder
                                     ? null
                                     : flexRender(
@@ -105,7 +98,7 @@ export const Table: FC = () => {
                     </tr>
                 ))}
             </tbody>
-            <tfoot>
+            {/* <tfoot>
                 {table.getFooterGroups().map((footerGroup) => (
                     <tr key={footerGroup.id}>
                         {footerGroup.headers.map((header) => (
@@ -120,11 +113,7 @@ export const Table: FC = () => {
                         ))}
                     </tr>
                 ))}
-            </tfoot>
+            </tfoot> */}
         </table>
-        // <div className="h-4" />
-        // <button onClick={() => rerender()} className="border p-2">
-        //     Rerender
-        // </button>
     );
 };

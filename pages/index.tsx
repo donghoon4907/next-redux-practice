@@ -1,45 +1,25 @@
 import type { NextPage } from 'next';
+import type { CoreSelectOption } from '@interfaces/core';
+import type { AppState } from '@reducers/index';
+import type { DemoState } from '@reducers/demo';
 import Head from 'next/head';
-import { useState } from 'react';
-import { CoreSelectOption } from '@interfaces/core';
-import { Select } from '@components/select';
-import { COLORS } from '@datas/select-options/colors';
+import { useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { END } from 'redux-saga';
+// import { Select } from '@components/select';
+// import { COLORS } from '@datas/select-options/colors';
 import { Input } from '@components/input';
 import { Label } from '@components/label';
 import { useInput } from '@hooks/use-input';
 import { Header } from '@components/header';
-import { Table } from '@components/table';
-// import { GridExample } from '@components/ag-grid';
-
-const DUMMY = Array.from({ length: 30 }).fill({
-    id: 'dummy',
-    division: {
-        id: 'example_division1',
-        name: '계약',
-    },
-    contract: {
-        id: 'example_contract1',
-        num: 'M2023589',
-        title: '자동차',
-    },
-    occurrenceAt: '2022-10-12',
-    createdAt: '2022-09-12 14:00',
-    responseAt: '2022-09-12 14:00',
-    content: '고객의 요구사항에 따라...',
-    writer: {
-        id: 'example_writer1',
-        login_id: 'W2323',
-        name: '김서윤',
-    },
-    state: '종결',
-});
+import { wrapper } from '@store/redux';
 
 const Home: NextPage = () => {
     const customerName = useInput('');
 
-    const [selectedColors, setSelectedColors] = useState<
-        readonly CoreSelectOption[]
-    >([]);
+    // const [selectedColors, setSelectedColors] = useState<
+    //     readonly CoreSelectOption[]
+    // >([]);
 
     return (
         <div className="app-container app-theme-white fixed-header fixed-sidebar fixed-footer">
@@ -82,12 +62,12 @@ const Home: NextPage = () => {
                                             <Label htmlFor="customerName">
                                                 고객명
                                             </Label>
-                                            <Input
+                                            {/* <Input
                                                 type="text"
                                                 id="customerName"
                                                 placeholder="입력하세요"
                                                 {...customerName}
-                                            />
+                                            /> */}
                                         </form>
                                     </div>
                                     <div className="col">
@@ -99,12 +79,12 @@ const Home: NextPage = () => {
                                                 고객구분
                                             </label>
                                             <div className="input-group">
-                                                <Select
+                                                {/* <Select
                                                     value={selectedColors}
                                                     options={COLORS}
                                                     setValue={setSelectedColors}
                                                     placeholder="선택하세요"
-                                                />
+                                                /> */}
                                             </div>
                                         </div>
                                     </div>
@@ -114,7 +94,10 @@ const Home: NextPage = () => {
                                 <div className="row">
                                     <div className="col">
                                         <div className="wr-table__wrap">
-                                            <Table />
+                                            {/* <Table
+                                                columns={columns}
+                                                data={data}
+                                            /> */}
                                         </div>
                                     </div>
                                 </div>
@@ -126,5 +109,20 @@ const Home: NextPage = () => {
         </div>
     );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+    ({ dispatch, sagaTask }) =>
+        async (_) => {
+            // dispatch(demoRequest({}));
+
+            dispatch(END);
+
+            await sagaTask?.toPromise();
+
+            return {
+                props: {},
+            };
+        },
+);
 
 export default Home;

@@ -25,6 +25,26 @@ a:active,
 a:visited {
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
+}
+
+table {
+    // table-layout: fixed;
+    width: 100%;
+}
+
+thead {
+    margin: 0;
+    position: sticky;
+    top: 0;
+}
+
+th,
+td {
+    min-width: 50px;
+    max-width: 500px;
+    white-space: nowrap;
+    text-align: center;
 }
 
 .a11y-hidden {
@@ -41,19 +61,14 @@ a:visited {
     width: 100%;
 }
 
-table {
-    table-layout: fixed;
-    width: 100%;
+.table {
+    margin-bottom: 0 !important;
 }
 
-thead {
-    margin: 0;
-    position: sticky;
-    top: 0;
+.table > :not(caption) > * > * {
+    padding: 11.5px 10px !important;
 }
 
-th,
-td {
-    padding: 2px 4px;
-    text-align: center;
+.form-label {
+    margin-top: 0.5rem;
 }

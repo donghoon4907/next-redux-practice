@@ -14,7 +14,10 @@ export interface DemoRequestPayload extends CorePayload {
     order?: string;
 }
 
-export interface DemoSuccessPayload {}
+export interface DemoSuccessPayload {
+    fields: any;
+    data: any;
+}
 
 export interface DemoRequestAction extends Action<DemoActionTypes.REQUEST> {
     payload: DemoRequestPayload;

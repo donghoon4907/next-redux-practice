@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { watchDemo } from './demo';
 
-axios.defaults.baseURL = process.env.BACKEND_HOST + '/v1';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 if (typeof window !== 'undefined') {
     // const token = getCookie(COOKIE_TOKEN_KEY);

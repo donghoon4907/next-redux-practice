@@ -4,11 +4,15 @@ import produce from 'immer';
 import { DemoActionTypes } from '@actions/demo/demo.action';
 
 export interface DemoState {
-    demos: Demo[];
+    fields: any[];
+    data: any[];
+    total: any;
 }
 
 const initialState: DemoState = {
-    demos: [],
+    fields: [],
+    data: [],
+    total: 0,
 };
 
 export const demoReducer: Reducer<DemoState, any> = (
@@ -18,7 +22,11 @@ export const demoReducer: Reducer<DemoState, any> = (
     produce(state, (draft) => {
         switch (action.type) {
             case DemoActionTypes.SUCCESS: {
-                draft.demos = action.payload;
+                draft.fields = action.payload.fields;
+
+                draft.data = action.payload.data;
+
+                draft.total = action.payload.total;
                 break;
             }
             default:

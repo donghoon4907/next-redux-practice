@@ -4,23 +4,14 @@ import { DemoActionTypes } from '@actions/demo/demo.action';
 import { requestDemo } from '@services/demosService';
 import { demoSuccess } from '@actions/demo/demo.action';
 import { sagaError } from '@actions/error/error.action';
+import { convertDateMiddleware } from '@utils/generators/convert-date';
 
 function* demoSaga({ payload }: DemoRequestAction) {
-    try {
-        const { data } = yield call(requestDemo, payload);
+    const { data } = yield call(requestDemo, payload);
 
-        yield put(demoSuccess(data));
-
-        payload.callback?.(data);
-    } catch (err: any) {
-        const { data, status } = err?.response;
-
-        if (status === 403) {
-            yield put(sagaError({ message: data, statusCode: status }));
-        }
-    }
+    return data;
 }
 
 export function* watchDemo() {
-    yield takeEvery(DemoActionTypes.REQUEST, demoSaga);
+    yield takeEvery(DemoActionTypes.REQUEST, convertDateMiddleware(demoSaga));
 }
