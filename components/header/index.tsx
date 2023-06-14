@@ -3,6 +3,7 @@ import { GNBS, SUBMENUS } from '@constants/gnb';
 
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
+import { Nav } from './Nav';
 
 interface Props {}
 
@@ -44,31 +45,7 @@ export const Header: FC<Props> = () => {
                 <div className="wr-lnb__inner">
                     <div className="wr-lnb__both">
                         <div className="wr-lnb__left">
-                            <nav className="nav">
-                                <a
-                                    className="nav-link active"
-                                    aria-current="page"
-                                    href="#"
-                                >
-                                    고객상세
-                                </a>
-                                <span className="wr-header__divider"></span>
-                                <a className="nav-link" href="#">
-                                    고객명세
-                                </a>
-                                <span className="wr-header__divider"></span>
-                                <a className="nav-link" href="#">
-                                    고객접촉이력
-                                </a>
-                                <span className="wr-header__divider"></span>
-                                <a className="nav-link" href="#">
-                                    DB명세
-                                </a>
-                                <span className="wr-header__divider"></span>
-                                <a className="nav-link" href="#">
-                                    DB관리
-                                </a>
-                            </nav>
+                            <Nav />
                         </div>
                         <div className="wr-lnb__right">
                             <div className="wr-lnb__metadata">

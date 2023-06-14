@@ -25,6 +25,7 @@ a:active,
 a:visited {
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
 }
 
 table {
@@ -66,4 +67,8 @@ td {
 
 .table > :not(caption) > * > * {
     padding: 11.5px 10px !important;
+}
+
+.form-label {
+    margin-top: 0.5rem;
 }

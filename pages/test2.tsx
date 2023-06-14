@@ -14,7 +14,8 @@ import { demoRequest, demoSuccess } from '@actions/demo/demo.action';
 import { SHOW_COUNTS } from '@constants/selectOption';
 import { MySelect } from '@components/select';
 import { Label } from '@components/label';
-import { X_SEARCH_WHERES } from '@constants/filter';
+import { X_SEARCH_FILTERS, X_SEARCH_WHERES } from '@constants/filter';
+import { MyCheckbox } from '@components/checkbox';
 
 const isEllipsis = (t: string) => {
     let output = false;
@@ -153,7 +154,18 @@ const Demo: NextPage = () => {
                                     ))}
                                 </div>
                                 <div className="row">
-                                    {X_SEARCH_WHERES[3].map((v) => (
+                                    <div className="col">
+                                        <div className="d-flex justify-content-start align-items-center mt-2">
+                                            {X_SEARCH_FILTERS.map((filter) => (
+                                                <MyCheckbox
+                                                    key={filter.id}
+                                                    id={filter.id}
+                                                    label={filter.label}
+                                                />
+                                            ))}
+                                        </div>
+                                    </div>
+                                    {/* {X_SEARCH_WHERES[3].map((v) => (
                                         <div className="col" key={v.id}>
                                             <Label>{v.label}</Label>
                                             <MySelect
@@ -163,7 +175,7 @@ const Demo: NextPage = () => {
                                                 placeholder="선택하세요"
                                             />
                                         </div>
-                                    ))}
+                                    ))} */}
                                 </div>
                             </div>
                         </div>

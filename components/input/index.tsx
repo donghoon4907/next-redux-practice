@@ -1,24 +1,26 @@
-import type { FC, InputHTMLAttributes } from 'react';
-import { forwardRef } from 'react';
+import type { FC } from 'react';
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {}
+interface Props {
+    value: string;
+    onChange: (value: string) => void;
+}
 /**
  * 기본 입력창 컴포넌트
  *
  */
-export const Input: FC<Props> = forwardRef<HTMLInputElement, Props>(
-    (props, ref) => {
-        // const describedbyId = `${id}-addon`;
+export const Input: FC<Props> = ({ value, onChange }) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        onChange(event.target.value);
+    };
 
-        return (
-            <div className="input-group">
-                <input
-                    ref={ref}
-                    className="form-control"
-                    // aria-describedby={feedback ? describedbyId : ''}
-                    {...props}
-                />
-            </div>
-        );
-    },
-);
+    return (
+        <div className="input-group">
+            <input
+                type="text"
+                className="form-control"
+                value={value}
+                onChange={handleChange}
+            />
+        </div>
+    );
+};

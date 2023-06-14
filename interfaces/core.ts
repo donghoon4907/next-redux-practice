@@ -21,4 +21,11 @@ export interface CoreMenuOption {
     label: string;
 }
 
+export interface CoreFilterOption {
+    id: string;
+    type: 'checkbox' | 'radio';
+    label: string;
+    value: string;
+}
+
 export type CoreSetState<T> = Dispatch<SetStateAction<T>>;

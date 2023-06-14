@@ -6,7 +6,7 @@ import Head from 'next/head';
 import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
-import { Select } from '@components/select';
+// import { Select } from '@components/select';
 // import { COLORS } from '@datas/select-options/colors';
 import { Input } from '@components/input';
 import { Label } from '@components/label';
@@ -62,12 +62,12 @@ const Home: NextPage = () => {
                                             <Label htmlFor="customerName">
                                                 고객명
                                             </Label>
-                                            <Input
+                                            {/* <Input
                                                 type="text"
                                                 id="customerName"
                                                 placeholder="입력하세요"
                                                 {...customerName}
-                                            />
+                                            /> */}
                                         </form>
                                     </div>
                                     <div className="col">
