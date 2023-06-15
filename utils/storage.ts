@@ -14,8 +14,11 @@ export class TabModule {
     }
 
     create(item: CoreMenuOption): void {
-        this.tabs.push(item);
-        this.save();
+        const index = this.tabs.findIndex((tab) => tab.id === item.id);
+        if (index === -1) {
+            this.tabs.push(item);
+            this.save();
+        }
     }
 
     read(id: string): CoreMenuOption | undefined {

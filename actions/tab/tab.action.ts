@@ -1,23 +1,23 @@
 import { type CoreMenuOption } from '@interfaces/core';
 import { Action } from 'redux';
 
-export const TAB_KEY = 'TAB';
+export const TAB_KEY = 'WR_TAB';
 
-export enum TabActionTypes {
-    INIT = `INIT_${TAB_KEY}`,
-    ADD = `ADD_${TAB_KEY}`,
-    REMOVE = `REMOVE_${TAB_KEY}`,
-}
+export const TabActionTypes = {
+    INIT: `INIT_${TAB_KEY}`,
+    ADD: `ADD_${TAB_KEY}`,
+    REMOVE: `REMOVE_${TAB_KEY}`,
+};
 
-export interface TabInitAction extends Action<TabActionTypes.INIT> {
+export interface TabInitAction extends Action<string> {
     payload: CoreMenuOption[];
 }
 
-export interface TabAddAction extends Action<TabActionTypes.ADD> {
+export interface TabAddAction extends Action<string> {
     payload: CoreMenuOption;
 }
 
-export interface TabRemoveAction extends Action<TabActionTypes.REMOVE> {
+export interface TabRemoveAction extends Action<string> {
     payload: string;
 }
 

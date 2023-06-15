@@ -56,6 +56,11 @@ td {
     clip-path: polygon(0 0, 0 0, 0 0);
 }
 
+// Custom Drawer
+.EZDrawer__overlay {
+    z-index: $wr-overlay-index !important;
+}
+
 // Custom Bootstrap
 .input-group > div {
     width: 100%;
@@ -66,7 +71,7 @@ td {
 }
 
 .table > :not(caption) > * > * {
-    padding: 11.5px 10px !important;
+    padding: 12.8px 10px !important;
 }
 
 .form-label {

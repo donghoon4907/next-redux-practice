@@ -4,17 +4,22 @@ import type { DemoState } from '@reducers/demo';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { ColumnDef } from '@tanstack/react-table';
 import Head from 'next/head';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { Header } from '@components/header';
 import { Table } from '@components/table';
 import { wrapper } from '@store/redux';
 import { demoRequest, demoSuccess } from '@actions/demo/demo.action';
-import { SHOW_COUNTS } from '@constants/selectOption';
+// import { SHOW_COUNTS } from '@constants/selectOption';
 import { MySelect } from '@components/select';
 import { Label } from '@components/label';
-import { X_SEARCH_FILTERS, X_SEARCH_WHERES } from '@constants/filter';
+import { X_SEARCH_FILTERS, X_SEARCH_SELECTS } from '@constants/filter';
+
+// 임시
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
+import { useDispatch } from 'react-redux';
 import { MyCheckbox } from '@components/checkbox';
 
 const isEllipsis = (t: string) => {
@@ -27,6 +32,8 @@ const isEllipsis = (t: string) => {
 };
 
 const Demo: NextPage = () => {
+    const dispatch = useDispatch();
+
     const { fields, data, total } = useSelector<AppState, DemoState>(
         (props) => props.demo,
     );
@@ -78,7 +85,7 @@ const Demo: NextPage = () => {
     );
 
     return (
-        <div className="app-container app-theme-white fixed-header fixed-sidebar fixed-footer">
+        <>
             <Head>
                 <title>Create Next App</title>
                 <meta
@@ -110,76 +117,80 @@ const Demo: NextPage = () => {
                                 </ol>
                             </nav>
                         </div>
-                        <div className="row mt-2">
+                        <div className="row">
                             <div className="col-6">
                                 <div className="row">
-                                    {X_SEARCH_WHERES[0].map((v) => (
-                                        <div className="col" key={v.id}>
+                                    {X_SEARCH_SELECTS[0].map((v) => (
+                                        <div className="col-4" key={v.id}>
                                             <Label>{v.label}</Label>
                                             <MySelect
                                                 width={v.width}
-                                                options={SHOW_COUNTS}
+                                                options={v.items}
+                                                value={org}
                                                 onChange={handleChange}
-                                                placeholder="선택하세요"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className="row">
-                                    {X_SEARCH_WHERES[2].map((v) => (
-                                        <div className="col" key={v.id}>
-                                            <Label>{v.label}</Label>
-                                            <MySelect
-                                                width={v.width}
-                                                options={SHOW_COUNTS}
-                                                onChange={handleChange}
-                                                placeholder="선택하세요"
+                                                placeholder={v.placeholder}
                                             />
                                         </div>
                                     ))}
                                 </div>
                             </div>
                             <div className="col-6">
-                                <div className="row">
-                                    {X_SEARCH_WHERES[1].map((v) => (
+                                <div className="row row-cols-6">
+                                    {X_SEARCH_SELECTS[1].map((v) => (
                                         <div className="col" key={v.id}>
                                             <Label>{v.label}</Label>
                                             <MySelect
                                                 width={v.width}
-                                                options={SHOW_COUNTS}
+                                                options={v.items}
+                                                value={org}
                                                 onChange={handleChange}
-                                                placeholder="선택하세요"
+                                                placeholder={v.placeholder}
                                             />
                                         </div>
                                     ))}
-                                </div>
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="d-flex justify-content-start align-items-center mt-2">
-                                            {X_SEARCH_FILTERS.map((filter) => (
-                                                <MyCheckbox
-                                                    key={filter.id}
-                                                    id={filter.id}
-                                                    label={filter.label}
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                    {/* {X_SEARCH_WHERES[3].map((v) => (
-                                        <div className="col" key={v.id}>
-                                            <Label>{v.label}</Label>
-                                            <MySelect
-                                                width={v.width}
-                                                options={SHOW_COUNTS}
-                                                onChange={handleChange}
-                                                placeholder="선택하세요"
+                                    <div className="col-6">
+                                        <Label>검색</Label>
+                                        <form className="d-flex" role="search">
+                                            <input
+                                                className="form-control me-2"
+                                                type="search"
+                                                placeholder="검색어를 입력하세요"
+                                                aria-label="Search"
                                             />
-                                        </div>
-                                    ))} */}
+                                            <button
+                                                className="btn btn-outline-primary"
+                                                type="submit"
+                                            >
+                                                Search
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div className="row mt-3">
+                                    <div className="col wr-filter">
+                                        {X_SEARCH_FILTERS.map(
+                                            (filter, index) => {
+                                                return (
+                                                    <div
+                                                        className="wr-filter__block"
+                                                        key={`check${index}`}
+                                                    >
+                                                        {filter.map((v) => (
+                                                            <MyCheckbox
+                                                                key={v.id}
+                                                                id={v.id}
+                                                                label={v.label}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                );
+                                            },
+                                        )}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="row mt-2">
+                        <div className="row">
                             <div className="col"></div>
                             <div className="col"></div>
                         </div>
@@ -270,7 +281,7 @@ const Demo: NextPage = () => {
                                         <div></div>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                {/* <div className="flex items-center gap-2">
                                     <button
                                         className="border rounded p-1"
                                         // onClick={() => table.setPageIndex(0)}
@@ -303,60 +314,13 @@ const Demo: NextPage = () => {
                                     >
                                         {'>>'}
                                     </button>
-                                    <span className="flex items-center gap-1">
-                                        <div>Page</div>
-                                        <div>
-                                            {total.cntrow.toLocaleString()}
-                                        </div>
-                                        {/* <strong>
-                                            {table.getState().pagination
-                                                .pageIndex + 1}{' '}
-                                            of {table.getPageCount()}
-                                        </strong> */}
-                                    </span>
-                                    <span className="flex items-center gap-1">
-                                        | 페이지 바로가기:
-                                        <input
-                                            type="number"
-                                            // defaultValue={
-                                            //     table.getState().pagination
-                                            //         .pageIndex + 1
-                                            // }
-                                            // onChange={(e) => {
-                                            //     const page = e.target.value
-                                            //         ? Number(e.target.value) - 1
-                                            //         : 0;
-                                            //     table.setPageIndex(page);
-                                            // }}
-                                            className="border p-1 rounded w-16"
-                                        />
-                                    </span>
-                                    <select
-                                    // value={
-                                    //     table.getState().pagination.pageSize
-                                    // }
-                                    // onChange={(e) => {
-                                    //     table.setPageSize(
-                                    //         Number(e.target.value),
-                                    //     );
-                                    // }}
-                                    >
-                                        {[25, 50, 100, 500].map((pageSize) => (
-                                            <option
-                                                key={pageSize}
-                                                value={pageSize}
-                                            >
-                                                {pageSize}줄보기
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </main>
                 </div>
             </section>
-        </div>
+        </>
     );
 };
 

@@ -1,28 +1,89 @@
 import type { NextPage } from 'next';
-import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { DemoState } from '@reducers/demo';
+import type { CoreSelectOption } from '@interfaces/core';
+import type { ColumnDef } from '@tanstack/react-table';
 import Head from 'next/head';
 import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
-// import { Select } from '@components/select';
-// import { COLORS } from '@datas/select-options/colors';
-import { Input } from '@components/input';
-import { Label } from '@components/label';
-import { useInput } from '@hooks/use-input';
 import { Header } from '@components/header';
+import { Table } from '@components/table';
 import { wrapper } from '@store/redux';
+import { demoRequest, demoSuccess } from '@actions/demo/demo.action';
+// import { SHOW_COUNTS } from '@constants/selectOption';
+import { MySelect } from '@components/select';
+import { Label } from '@components/label';
+import { X_SEARCH_FILTERS, X_SEARCH_SELECTS } from '@constants/filter';
 
-const Home: NextPage = () => {
-    const customerName = useInput('');
+// 임시
+import { useDispatch } from 'react-redux';
+import { MyCheckbox } from '@components/checkbox';
 
-    // const [selectedColors, setSelectedColors] = useState<
-    //     readonly CoreSelectOption[]
-    // >([]);
+const isEllipsis = (t: string) => {
+    let output = false;
+    if (t === 'ptitle') {
+        output = true;
+    }
+
+    return output;
+};
+
+const Demo: NextPage = () => {
+    const dispatch = useDispatch();
+
+    const { fields, data, total } = useSelector<AppState, DemoState>(
+        (props) => props.demo,
+    );
+
+    const [showCounts, setShowCounts] = useState<readonly CoreSelectOption[]>(
+        [],
+    );
+
+    const [org, setOrg] = useState<CoreSelectOption | null>(null);
+
+    const handleChange = (org: CoreSelectOption | null) => {
+        setOrg(org);
+    };
+
+    const columns = useMemo<ColumnDef<any>[]>(
+        () =>
+            Object.entries(fields).map(([key, value]) => {
+                return {
+                    header: (info: any) => {
+                        return (
+                            <span
+                                className={
+                                    isEllipsis(info.column.id)
+                                        ? 'ellipsisTarget'
+                                        : ''
+                                }
+                            >
+                                {key}
+                            </span>
+                        );
+                    },
+                    accessorKey: value,
+                    cell: (info: any) => {
+                        return (
+                            <span
+                                className={
+                                    isEllipsis(info.column.id)
+                                        ? 'text-truncate d-block'
+                                        : ''
+                                }
+                            >
+                                {info.getValue()}
+                            </span>
+                        );
+                    },
+                };
+            }),
+        [fields],
+    );
 
     return (
-        <div className="app-container app-theme-white fixed-header fixed-sidebar fixed-footer">
+        <>
             <Head>
                 <title>Create Next App</title>
                 <meta
@@ -54,66 +115,222 @@ const Home: NextPage = () => {
                                 </ol>
                             </nav>
                         </div>
-                        <div className="row mt-3">
+                        <div className="row">
                             <div className="col-6">
                                 <div className="row">
-                                    <div className="col">
-                                        <form>
-                                            <Label htmlFor="customerName">
-                                                고객명
-                                            </Label>
-                                            {/* <Input
-                                                type="text"
-                                                id="customerName"
-                                                placeholder="입력하세요"
-                                                {...customerName}
-                                            /> */}
-                                        </form>
-                                    </div>
-                                    <div className="col">
-                                        <div>
-                                            <label
-                                                htmlFor="basic-url"
-                                                className="form-label"
-                                            >
-                                                고객구분
-                                            </label>
-                                            <div className="input-group">
-                                                {/* <Select
-                                                    value={selectedColors}
-                                                    options={COLORS}
-                                                    setValue={setSelectedColors}
-                                                    placeholder="선택하세요"
-                                                /> */}
-                                            </div>
+                                    {X_SEARCH_SELECTS[0].map((v) => (
+                                        <div className="col-4" key={v.id}>
+                                            <Label>{v.label}</Label>
+                                            <MySelect
+                                                width={v.width}
+                                                options={v.items}
+                                                value={org}
+                                                onChange={handleChange}
+                                                placeholder={v.placeholder}
+                                            />
                                         </div>
-                                    </div>
+                                    ))}
                                 </div>
                             </div>
                             <div className="col-6">
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="wr-table__wrap">
-                                            {/* <Table
-                                                columns={columns}
-                                                data={data}
-                                            /> */}
+                                <div className="row row-cols-6">
+                                    {X_SEARCH_SELECTS[1].map((v) => (
+                                        <div className="col" key={v.id}>
+                                            <Label>{v.label}</Label>
+                                            <MySelect
+                                                width={v.width}
+                                                options={v.items}
+                                                value={org}
+                                                onChange={handleChange}
+                                                placeholder={v.placeholder}
+                                            />
                                         </div>
+                                    ))}
+                                    <div className="col-6">
+                                        <Label>검색</Label>
+                                        <form className="d-flex" role="search">
+                                            <input
+                                                className="form-control me-2"
+                                                type="search"
+                                                placeholder="검색어를 입력하세요"
+                                                aria-label="Search"
+                                            />
+                                            <button
+                                                className="btn btn-outline-primary"
+                                                type="submit"
+                                            >
+                                                Search
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
+                                <div className="row mt-3">
+                                    <div className="col wr-filter">
+                                        {X_SEARCH_FILTERS.map(
+                                            (filter, index) => {
+                                                return (
+                                                    <div
+                                                        className="wr-filter__block"
+                                                        key={`check${index}`}
+                                                    >
+                                                        {filter.map((v) => (
+                                                            <MyCheckbox
+                                                                key={v.id}
+                                                                id={v.id}
+                                                                label={v.label}
+                                                            />
+                                                        ))}
+                                                    </div>
+                                                );
+                                            },
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row">
+                            <div className="col"></div>
+                            <div className="col"></div>
+                        </div>
+                        <div className="row mt-2">
+                            <div className="col">
+                                <div className="wr-table__wrap">
+                                    <Table columns={columns} data={data} />
+                                </div>
+                                <div className="row mt-2">
+                                    <div className="col wr-pagination">
+                                        <div></div>
+                                        <nav aria-label="Page navigation example">
+                                            <ul className="pagination">
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        {'<<'}
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        {'<'}
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        1
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        2
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        3
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        4
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        5
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        {'>'}
+                                                    </a>
+                                                </li>
+                                                <li className="page-item">
+                                                    <a
+                                                        className="page-link"
+                                                        href="#"
+                                                    >
+                                                        {'>>'}
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                        <div></div>
+                                    </div>
+                                </div>
+                                {/* <div className="flex items-center gap-2">
+                                    <button
+                                        className="border rounded p-1"
+                                        // onClick={() => table.setPageIndex(0)}
+                                        // disabled={!table.getCanPreviousPage()}
+                                    >
+                                        {'<<'}
+                                    </button>
+                                    <button
+                                        className="border rounded p-1"
+                                        // onClick={() => table.previousPage()}
+                                        // disabled={!table.getCanPreviousPage()}
+                                    >
+                                        {'<'}
+                                    </button>
+                                    <button
+                                        className="border rounded p-1"
+                                        // onClick={() => table.nextPage()}
+                                        // disabled={!table.getCanNextPage()}
+                                    >
+                                        {'>'}
+                                    </button>
+                                    <button
+                                        className="border rounded p-1"
+                                        // onClick={() =>
+                                        //     table.setPageIndex(
+                                        //         table.getPageCount() - 1,
+                                        //     )
+                                        // }
+                                        // disabled={!table.getCanNextPage()}
+                                    >
+                                        {'>>'}
+                                    </button>
+                                </div> */}
                             </div>
                         </div>
                     </main>
                 </div>
             </section>
-        </div>
+        </>
     );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
     ({ dispatch, sagaTask }) =>
         async (_) => {
-            // dispatch(demoRequest({}));
+            dispatch(
+                demoRequest({
+                    successAction: demoSuccess,
+                    callback: () => {},
+                }),
+            );
 
             dispatch(END);
 
@@ -125,4 +342,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
         },
 );
 
-export default Home;
+export default Demo;

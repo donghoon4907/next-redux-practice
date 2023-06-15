@@ -12,13 +12,15 @@ export interface CorePayload {
 export interface CoreSelectOption {
     label: string;
     value: string;
-    isFixed: boolean;
+    isFixed?: boolean;
 }
 
 export interface CoreMenuOption {
     id: string;
     to: string;
     label: string;
+    level: number;
+    items?: CoreMenuOption[];
 }
 
 export interface CoreFilterOption {

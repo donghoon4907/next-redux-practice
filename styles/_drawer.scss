@@ -1,0 +1,74 @@
+.wr-drawer {
+    padding: 5px;
+    z-index: $wr-drawer-index !important;
+    background-color: $wr-header-color !important;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 43px;
+    }
+
+    &__title {
+        padding: 10px;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 20px;
+        line-height: 20px;
+        display: block;
+    }
+
+    &__subtitle {
+        padding: 10px 40px;
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 16px;
+        line-height: 16px;
+        display: block;
+
+        &:hover {
+            background-color: $wr-divider-color;
+            color: $wr-header-color;
+        }
+    }
+
+    & ul {
+        margin-bottom: 0 !important;
+        padding-left: 0 !important;
+    }
+    // Custom Bootstrap
+    & .accordion-item,
+    .accordion-button {
+        background-color: inherit !important;
+        border: none !important;
+        color: $white !important;
+        border-radius: 0 !important;
+    }
+
+    & .accordion-button {
+        box-shadow: none !important;
+    }
+
+    & .accordion-body {
+        padding: 0 !important;
+    }
+
+    & .accordion-header:hover {
+        background-color: $wr-divider-color;
+
+        & > button {
+            color: $wr-header-color !important;
+        }
+
+        .accordion-button::after {
+            background-image: escape-svg(
+                url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$wr-header-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>")
+            );
+        }
+
+        .accordion-button.collapsed::after {
+            background-image: escape-svg(
+                url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$wr-header-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>")
+            );
+        }
+    }
+}
