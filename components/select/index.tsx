@@ -1,39 +1,50 @@
 import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
-import { useState, useEffect } from 'react';
 import Select from 'react-select';
 
 interface Props {
+    /**
+     * 옵션 목록
+     *
+     */
     options: readonly CoreSelectOption[];
+    /**
+     * 외부 상태값
+     *
+     */
+    value: CoreSelectOption | null;
+    /**
+     * 외부 상태를 변경하는 핸들러
+     *
+     */
     onChange: (selectedOption: CoreSelectOption | null) => void;
+    /**
+     * 가이드 코멘트
+     *
+     */
     placeholder: string;
+    /**
+     * 셀렉트 너비
+     *
+     */
     width: number;
 }
-/**
- * 기본 셀렉트 컴포넌트
- *
- */
+
 export const MySelect: FC<Props> = ({
     options,
+    value,
     onChange,
     placeholder,
     width,
 }) => {
-    const [selectedOption, setSelectedOption] =
-        useState<CoreSelectOption | null>(null);
-
     const handleChange = (option: CoreSelectOption | null) => {
-        setSelectedOption(option);
+        onChange(option);
     };
-
-    useEffect(() => {
-        onChange(selectedOption);
-    }, [selectedOption, onChange]);
 
     return (
         <Select
             options={options}
-            value={selectedOption}
+            value={value}
             onChange={handleChange}
             placeholder={placeholder}
             styles={{

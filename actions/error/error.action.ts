@@ -2,16 +2,16 @@ import { Action } from 'redux';
 
 export const ERROR_KEY = 'COMMON_ERROR';
 
-export enum ErrorActionTypes {
-    ERROR = ERROR_KEY,
-}
+export const ErrorActionTypes = {
+    ERROR: ERROR_KEY,
+} as const;
 
 export interface ErrorPayload {
     message: string;
     statusCode: number;
 }
 
-export interface SagaErrorAction extends Action<ErrorActionTypes.ERROR> {
+export interface SagaErrorAction extends Action<string> {
     payload: ErrorPayload;
 }
 

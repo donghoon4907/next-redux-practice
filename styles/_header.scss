@@ -1,8 +1,8 @@
 .wr-gnb {
-    background-color: #3f63bf;
+    background-color: $wr-header-color;
     color: $white;
     position: relative;
-    z-index: 2100;
+    z-index: $wr-gnb-index;
     font-size: 14px;
     line-height: 14px;
     transform: translateZ(0);
@@ -126,7 +126,7 @@
     // height: 47px;
     line-height: 43px;
     position: relative;
-    z-index: 1900;
+    z-index: $wr-lnb-index;
     border-bottom: 1px solid $wr-divider-color;
     overflow: hidden;
 

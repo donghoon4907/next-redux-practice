@@ -1,13 +1,18 @@
 import type { FC } from 'react';
 
 interface Props {
+    /**
+     * 외부 상태값
+     *
+     */
     value: string;
+    /**
+     * 외부 상태를 변경하는 핸들러
+     *
+     */
     onChange: (value: string) => void;
 }
-/**
- * 기본 입력창 컴포넌트
- *
- */
+
 export const Input: FC<Props> = ({ value, onChange }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);

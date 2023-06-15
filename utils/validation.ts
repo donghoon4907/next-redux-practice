@@ -6,3 +6,15 @@
 export function isNumeric(value: any): boolean {
     return !isNaN(parseFloat(value)) && isFinite(Number(value));
 }
+/**
+ * 말줄임표 적용 여부
+ *
+ */
+export function isEllipsis(t: string) {
+    let output = false;
+    if (t === 'ptitle') {
+        output = true;
+    }
+
+    return output;
+}

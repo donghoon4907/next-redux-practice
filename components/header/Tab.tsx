@@ -47,7 +47,7 @@ export const Tab: FC<Props> = ({ id, label, to, isSingle }) => {
     return (
         <div className={`wr-tab ${router.pathname === to ? 'active' : ''}`}>
             <a
-                className="nav-link"
+                className={`nav-link ${isSingle ? 'single' : ''}`}
                 aria-current="page"
                 href={to}
                 onClick={handleTab}
@@ -57,7 +57,7 @@ export const Tab: FC<Props> = ({ id, label, to, isSingle }) => {
             {!isSingle && (
                 <div className="wr-tab__icon">
                     <IconWrapper onClick={(evt) => handleClose(id)}>
-                        <MdClose size={15} color="black" />
+                        <MdClose size={20} color="black" />
                     </IconWrapper>
                 </div>
             )}

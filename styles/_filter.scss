@@ -1,0 +1,13 @@
+.wr-filter {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 50px;
+
+    &__block {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+    }
+}

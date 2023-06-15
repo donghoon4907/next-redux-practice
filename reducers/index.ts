@@ -1,14 +1,15 @@
 import { AnyAction, combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
-
 import error from '@reducers/common/error';
 import loading from '@reducers/common/loading';
 import { demoReducer } from '@reducers/demo';
 import { tabReducer } from '@reducers/tab';
+import { drawerReducer } from '@reducers/drawer';
 
 const combinedReducer = combineReducers({
     demo: demoReducer,
     tab: tabReducer,
+    drawer: drawerReducer,
     error,
     loading,
 });

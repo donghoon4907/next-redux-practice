@@ -3,11 +3,11 @@ import { Action } from 'redux';
 
 export const CREATE_DEMO_KEY = 'CREATE_DEMO';
 
-export enum DemoActionTypes {
-    REQUEST = `${CREATE_DEMO_KEY}_REQUEST`,
-    SUCCESS = `${CREATE_DEMO_KEY}_SUCCESS`,
-    FAILURE = `${CREATE_DEMO_KEY}_FAILURE`,
-}
+export const DemoActionTypes = {
+    REQUEST: `${CREATE_DEMO_KEY}_REQUEST`,
+    SUCCESS: `${CREATE_DEMO_KEY}_SUCCESS`,
+    FAILURE: `${CREATE_DEMO_KEY}_FAILURE`,
+} as const;
 
 export interface DemoRequestPayload extends CorePayload {
     searchKeyword?: string;
@@ -19,11 +19,11 @@ export interface DemoSuccessPayload {
     data: any;
 }
 
-export interface DemoRequestAction extends Action<DemoActionTypes.REQUEST> {
+export interface DemoRequestAction extends Action<string> {
     payload: DemoRequestPayload;
 }
 
-export interface DemoSuccessAction extends Action<DemoActionTypes.SUCCESS> {
+export interface DemoSuccessAction extends Action<string> {
     payload: DemoSuccessPayload;
 }
 
