@@ -25,10 +25,10 @@ export const Nav: FC<Props> = () => {
     }, [dispatch]);
 
     return (
-        <nav className="nav">
+        <ul className="nav nav-tabs">
             {tabs.map((tab) => (
                 <Tab key={tab.id} {...tab} isSingle={tabs.length === 1} />
             ))}
-        </nav>
+        </ul>
     );
 };

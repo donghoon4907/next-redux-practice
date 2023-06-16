@@ -7,7 +7,7 @@ export const TabActionTypes = {
     INIT: `INIT_${TAB_KEY}`,
     ADD: `ADD_${TAB_KEY}`,
     REMOVE: `REMOVE_${TAB_KEY}`,
-};
+} as const;
 
 export interface TabInitAction extends Action<string> {
     payload: CoreMenuOption[];

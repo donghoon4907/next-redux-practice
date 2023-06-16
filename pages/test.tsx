@@ -4,9 +4,10 @@ import type { DemoState } from '@reducers/demo';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { ColumnDef } from '@tanstack/react-table';
 import Head from 'next/head';
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
+import { LuSearch } from 'react-icons/lu';
 import { Header } from '@components/header';
 import { Table } from '@components/table';
 import { wrapper } from '@store/redux';
@@ -15,21 +16,21 @@ import { demoRequest, demoSuccess } from '@actions/demo/demo.action';
 import { MySelect } from '@components/select';
 import { Label } from '@components/label';
 import { X_SEARCH_FILTERS, X_SEARCH_SELECTS } from '@constants/filter';
+import { DateRangePicker } from 'rsuite';
 
 // 임시
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
 import { useDispatch } from 'react-redux';
 import { MyCheckbox } from '@components/checkbox';
-
-const isEllipsis = (t: string) => {
-    let output = false;
-    if (t === 'ptitle') {
-        output = true;
-    }
-
-    return output;
-};
+import { Breadcrumb } from '@components/breadcrumb';
+import { IconWrapper } from '@components/IconWrapper';
+import { MyRadio } from '@components/radio';
+import {
+    isNumeric,
+    checkEllipsisNeeded,
+    checkSeparatorNeeded,
+} from '@utils/validation';
+import { Pagination } from '@components/pagination';
+// import { ValueType } from 'rsuite/esm/DateRangePicker';
 
 const Demo: NextPage = () => {
     const dispatch = useDispatch();
@@ -41,6 +42,11 @@ const Demo: NextPage = () => {
     const [showCounts, setShowCounts] = useState<readonly CoreSelectOption[]>(
         [],
     );
+
+    const [d, setD] = useState<[Date, Date] | null>([
+        new Date('2022-02-01'),
+        new Date('2022-03-01'),
+    ]);
 
     const [org, setOrg] = useState<CoreSelectOption | null>(null);
 
@@ -54,35 +60,44 @@ const Demo: NextPage = () => {
                 return {
                     header: (info: any) => {
                         return (
-                            <span
+                            <strong
                                 className={
-                                    isEllipsis(info.column.id)
+                                    checkEllipsisNeeded(info.column.id)
                                         ? 'ellipsisTarget'
                                         : ''
                                 }
                             >
                                 {key}
-                            </span>
+                            </strong>
                         );
                     },
                     accessorKey: value,
                     cell: (info: any) => {
-                        return (
-                            <span
-                                className={
-                                    isEllipsis(info.column.id)
-                                        ? 'text-truncate d-block'
-                                        : ''
-                                }
-                            >
-                                {info.getValue()}
-                            </span>
-                        );
+                        let className = '';
+                        let cellValue = info.getValue();
+
+                        if (
+                            isNumeric(cellValue) &&
+                            checkSeparatorNeeded(info.column.id)
+                        ) {
+                            cellValue = Number(cellValue).toLocaleString();
+                        }
+
+                        // 말줄임표가 필요한 경우
+                        if (checkEllipsisNeeded(info.column.id)) {
+                            className += 'text-truncate d-block';
+                        }
+
+                        return <span className={className}>{cellValue}</span>;
                     },
                 };
             }),
         [fields],
     );
+
+    const handleChangeDate = (value: [Date, Date] | null) => {
+        setD(value);
+    };
 
     return (
         <>
@@ -99,189 +114,158 @@ const Demo: NextPage = () => {
                 <Header />
                 <div className="wr-main__wrap">
                     <main className="wr-main">
-                        <div className="breadcrumb-wrap">
-                            <nav aria-label="breadcrumb">
-                                <ol className="breadcrumb">
-                                    <li className="breadcrumb-item">
-                                        <a href="#">개인영업 1</a>
-                                    </li>
-                                    <li className="breadcrumb-item">
-                                        <a href="#">신노원사업단</a>
-                                    </li>
-                                    <li
-                                        className="breadcrumb-item active"
-                                        aria-current="page"
-                                    >
-                                        업무보전
-                                    </li>
-                                </ol>
-                            </nav>
-                        </div>
-                        <div className="row">
-                            <div className="col-6">
+                        <div className="wr-main__inner">
+                            {/* <Breadcrumb /> */}
+                            <div className="wr-search">
                                 <div className="row">
-                                    {X_SEARCH_SELECTS[0].map((v) => (
-                                        <div className="col-4" key={v.id}>
-                                            <Label>{v.label}</Label>
-                                            <MySelect
-                                                width={v.width}
-                                                options={v.items}
-                                                value={org}
-                                                onChange={handleChange}
-                                                placeholder={v.placeholder}
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="col-6">
-                                <div className="row row-cols-6">
-                                    {X_SEARCH_SELECTS[1].map((v) => (
-                                        <div className="col" key={v.id}>
-                                            <Label>{v.label}</Label>
-                                            <MySelect
-                                                width={v.width}
-                                                options={v.items}
-                                                value={org}
-                                                onChange={handleChange}
-                                                placeholder={v.placeholder}
-                                            />
-                                        </div>
-                                    ))}
                                     <div className="col-6">
-                                        <Label>검색</Label>
-                                        <form className="d-flex" role="search">
-                                            <input
-                                                className="form-control me-2"
-                                                type="search"
-                                                placeholder="검색어를 입력하세요"
-                                                aria-label="Search"
-                                            />
-                                            <button
-                                                className="btn btn-outline-primary"
-                                                type="submit"
-                                            >
-                                                Search
-                                            </button>
-                                        </form>
+                                        <div className="row">
+                                            {X_SEARCH_SELECTS[0].map((v) => (
+                                                <div
+                                                    className="col-4"
+                                                    key={v.id}
+                                                >
+                                                    <Label>{v.label}</Label>
+                                                    <MySelect
+                                                        width={v.width}
+                                                        options={v.items}
+                                                        value={org}
+                                                        onChange={handleChange}
+                                                        placeholder={
+                                                            v.placeholder
+                                                        }
+                                                    />
+                                                </div>
+                                            ))}
+                                            <div className="col-4"></div>
+                                        </div>
+
+                                        <div className="row">
+                                            <div className="col-4 d-flex flex-column">
+                                                <Label>기간</Label>
+                                                <DateRangePicker
+                                                    format="yyyy-MM-dd"
+                                                    placeholder="기간을 입력하세요"
+                                                    size="sm"
+                                                    // defaultCalendarValue={[
+                                                    //     new Date('2022-02-01'),
+                                                    //     new Date('2022-03-01'),
+                                                    // ]}
+                                                    value={d}
+                                                    onChange={handleChangeDate}
+                                                    // showMeridian
+                                                    style={{
+                                                        width: 285,
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="row mt-3">
-                                    <div className="col wr-filter">
-                                        {X_SEARCH_FILTERS.map(
-                                            (filter, index) => {
-                                                return (
-                                                    <div
-                                                        className="wr-filter__block"
-                                                        key={`check${index}`}
-                                                    >
-                                                        {filter.map((v) => (
-                                                            <MyCheckbox
-                                                                key={v.id}
-                                                                id={v.id}
-                                                                label={v.label}
+                                    <div className="col-6">
+                                        <div className="row row-cols-6">
+                                            {X_SEARCH_SELECTS[1].map((v) => (
+                                                <div className="col" key={v.id}>
+                                                    <Label>{v.label}</Label>
+                                                    <MySelect
+                                                        width={v.width}
+                                                        options={v.items}
+                                                        value={org}
+                                                        onChange={handleChange}
+                                                        placeholder={
+                                                            v.placeholder
+                                                        }
+                                                    />
+                                                </div>
+                                            ))}
+                                            <div className="col-6">
+                                                <Label>검색</Label>
+                                                <form
+                                                    className="wr-search__bar"
+                                                    role="search"
+                                                >
+                                                    <div className="input-group">
+                                                        <input
+                                                            type="text"
+                                                            className="form-control"
+                                                            placeholder="검색어를 입력하세요"
+                                                            aria-label="검색어를 입력하세요"
+                                                        />
+                                                        <button
+                                                            className="btn btn-primary"
+                                                            type="button"
+                                                        >
+                                                            <LuSearch
+                                                                size={15}
                                                             />
-                                                        ))}
+                                                        </button>
                                                     </div>
-                                                );
-                                            },
-                                        )}
+                                                </form>
+                                            </div>
+                                        </div>
+                                        <div className="row mt-3">
+                                            <div className="col mt-2 wr-filter">
+                                                {X_SEARCH_FILTERS.map(
+                                                    (filter, index) => {
+                                                        return (
+                                                            <div
+                                                                className="wr-filter__block"
+                                                                key={`check${index}`}
+                                                            >
+                                                                {filter.map(
+                                                                    (v) => {
+                                                                        if (
+                                                                            v.type ===
+                                                                            'checkbox'
+                                                                        ) {
+                                                                            return (
+                                                                                <MyCheckbox
+                                                                                    key={
+                                                                                        v.id
+                                                                                    }
+                                                                                    id={
+                                                                                        v.id
+                                                                                    }
+                                                                                    label={
+                                                                                        v.label
+                                                                                    }
+                                                                                />
+                                                                            );
+                                                                        } else if (
+                                                                            v.type ===
+                                                                            'radio'
+                                                                        ) {
+                                                                            return (
+                                                                                <MyRadio
+                                                                                    key={
+                                                                                        v.id
+                                                                                    }
+                                                                                    id={
+                                                                                        v.id
+                                                                                    }
+                                                                                    label={
+                                                                                        v.label
+                                                                                    }
+                                                                                />
+                                                                            );
+                                                                        } else {
+                                                                            return null;
+                                                                        }
+                                                                    },
+                                                                )}
+                                                            </div>
+                                                        );
+                                                    },
+                                                )}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="row">
-                            <div className="col"></div>
-                            <div className="col"></div>
-                        </div>
-                        <div className="row mt-2">
-                            <div className="col">
-                                <div className="wr-table__wrap">
-                                    <Table columns={columns} data={data} />
-                                </div>
-                                <div className="row mt-2">
-                                    <div className="col wr-pagination">
-                                        <div></div>
-                                        <nav aria-label="Page navigation example">
-                                            <ul className="pagination">
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        {'<<'}
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        {'<'}
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        1
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        2
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        3
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        4
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        5
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        {'>'}
-                                                    </a>
-                                                </li>
-                                                <li className="page-item">
-                                                    <a
-                                                        className="page-link"
-                                                        href="#"
-                                                    >
-                                                        {'>>'}
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                        <div></div>
-                                    </div>
-                                </div>
-                                {/* <div className="flex items-center gap-2">
+                            <div className="wr-table__wrap mt-3">
+                                <Table columns={columns} data={data} />
+                            </div>
+                            <Pagination />
+                            {/* <div className="flex items-center gap-2">
                                     <button
                                         className="border rounded p-1"
                                         // onClick={() => table.setPageIndex(0)}
@@ -315,7 +299,6 @@ const Demo: NextPage = () => {
                                         {'>>'}
                                     </button>
                                 </div> */}
-                            </div>
                         </div>
                     </main>
                 </div>

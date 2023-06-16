@@ -12,6 +12,7 @@ import {
     OnChangeFn,
     flexRender,
 } from '@tanstack/react-table';
+import { checkSeparatorNeeded, isNumeric } from '@utils/validation';
 
 interface Props {
     columns: ColumnDef<any, any>[];
@@ -60,14 +61,14 @@ export const Table: FC<Props> = ({ columns, data }) => {
 
             Array.from(fields).forEach((v) => {
                 if (v.classList.contains('text-truncate')) {
-                    v.style.width = `${columnSpanWidth + 20}px`;
+                    v.style.width = `${columnSpanWidth + 100}px`;
                 }
             });
         }
     }, []);
 
     return (
-        <table className="wr-scroll-table table" ref={tableRef}>
+        <table className="wr-table table" ref={tableRef}>
             <thead>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <tr key={headerGroup.id}>
@@ -87,14 +88,26 @@ export const Table: FC<Props> = ({ columns, data }) => {
             <tbody style={{ width: 1200 }}>
                 {table.getRowModel().rows.map((row) => (
                     <tr key={row.id}>
-                        {row.getVisibleCells().map((cell) => (
-                            <td key={cell.id}>
-                                {flexRender(
-                                    cell.column.columnDef.cell,
-                                    cell.getContext(),
-                                )}
-                            </td>
-                        ))}
+                        {row.getVisibleCells().map((cell) => {
+                            let className = '';
+
+                            // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
+                            if (
+                                isNumeric(cell.getValue()) &&
+                                checkSeparatorNeeded(cell.column.id)
+                            ) {
+                                className += 'text-end';
+                            }
+
+                            return (
+                                <td key={cell.id} className={className}>
+                                    {flexRender(
+                                        cell.column.columnDef.cell,
+                                        cell.getContext(),
+                                    )}
+                                </td>
+                            );
+                        })}
                     </tr>
                 ))}
             </tbody>

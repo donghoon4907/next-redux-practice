@@ -5,7 +5,7 @@ interface Props extends CoreProps, LabelHTMLAttributes<HTMLLabelElement> {}
 
 export const Label: FC<Props> = ({ children, ...props }) => {
     return (
-        <label className="form-label" {...props}>
+        <label className="form-label wr-label" {...props}>
             {children}
         </label>
     );

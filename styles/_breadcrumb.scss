@@ -1,0 +1,10 @@
+.wr-breadcrumb {
+    position: relative;
+    padding: 5px;
+    font-size: 12px;
+
+    // Custom Bootstrap
+    & .breadcrumb-item + .breadcrumb-item::before {
+        content: '>';
+    }
+}

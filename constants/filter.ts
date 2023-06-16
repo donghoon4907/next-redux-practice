@@ -22,13 +22,13 @@ export const X_SEARCH_FILTERS: CoreFilterOption[][] = [
     [
         {
             id: 'filter5',
-            type: 'checkbox',
+            type: 'radio',
             label: '개인정보활용 동의',
             value: 'consent',
         },
         {
             id: 'filter6',
-            type: 'checkbox',
+            type: 'radio',
             label: '미동의',
             value: 'non-consent',
         },
@@ -68,7 +68,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
         {
             id: 'demo-search-filter-select1-1',
             label: '조직',
-            width: 265,
+            width: 285,
             placeholder: '조직',
             items: [
                 {
@@ -92,7 +92,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
         {
             id: 'demo-search-filter-select1-2',
             label: '영업가족',
-            width: 265,
+            width: 285,
             placeholder: '영업가족',
             items: [
                 {

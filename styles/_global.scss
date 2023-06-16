@@ -7,12 +7,12 @@ body {
     position: relative;
     background-color: $gray-100;
     color: $black;
-    font-size: 14px;
-    line-height: 1.25em;
+    font-size: 14px !important;
+    line-height: 1.25em !important;
     padding: 0;
     margin: 0;
     overflow: hidden;
-    font-family: $wr-base-font;
+    font-family: $wr-base-font !important;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: none;
@@ -23,8 +23,8 @@ a:hover,
 a:focus,
 a:active,
 a:visited {
-    text-decoration: none;
-    color: inherit;
+    text-decoration: none !important;
+    color: $black !important;
     cursor: pointer;
 }
 
@@ -61,17 +61,51 @@ td {
     z-index: $wr-overlay-index !important;
 }
 
+// Custom Rsuite Datepicker
+.rs-btn {
+    border-radius: 0 !important;
+}
+
+.rs-btn-default {
+    border: 1px solid $wr-divider-color;
+}
+
+.rs-btn-default:hover {
+    border: 1px solid #575757 !important;
+}
+
+.rs-picker-toggle-value {
+    color: $wr-label-color !important;
+}
+
+.rs-picker-toggle-placeholder {
+    font-size: 12px;
+}
+
+.rs-picker-default .rs-picker-toggle.rs-btn {
+    // padding-top: 5px !important;
+    // padding-bottom: 5px !important;
+    padding-left: 6px !important;
+}
+.rs-picker-default .rs-picker-toggle {
+    z-index: 0 !important;
+}
+.rs-picker-toggle-active {
+    box-shadow: none !important;
+    border: 1px solid #2684ff !important;
+}
+
+.rs-picker-toggle-active:hover {
+    border: 1px solid #2684ff !important;
+}
+
+// .rs-picker-daterange-header {
+//     display: none;
+// }
+
 // Custom Bootstrap
 .input-group > div {
     width: 100%;
-}
-
-.table {
-    margin-bottom: 0 !important;
-}
-
-.table > :not(caption) > * > * {
-    padding: 12.8px 10px !important;
 }
 
 .form-label {
