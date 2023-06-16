@@ -23,18 +23,18 @@ export function convertDateMiddleware(saga: any): Saga {
                     if (dayJS.isDate()) {
                         let date;
                         switch (key) {
-                            case 'bdatefrom': {
-                                date = dayJS.getDateFormat(
-                                    'YYYY MM-DD HH:mm:ss',
-                                );
-                                break;
-                            }
-                            case 'bdateto': {
-                                date = dayJS.getDateFormat(
-                                    'YYYY MM-DD HH:mm:ss',
-                                );
-                                break;
-                            }
+                            // case 'bdatefrom': {
+                            //     date = dayJS.getDateFormat(
+                            //         'YYYY MM-DD HH:mm:ss',
+                            //     );
+                            //     break;
+                            // }
+                            // case 'bdateto': {
+                            //     date = dayJS.getDateFormat(
+                            //         'YYYY MM-DD HH:mm:ss',
+                            //     );
+                            //     break;
+                            // }
                             default: {
                                 date = dayJS.getDefaultDateFormat();
                                 break;

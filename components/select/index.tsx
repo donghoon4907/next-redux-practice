@@ -27,7 +27,12 @@ interface Props {
      * 셀렉트 너비
      *
      */
-    width: number;
+    width?: number;
+    /**
+     * 셀렉트 높이
+     *
+     */
+    height?: number;
 }
 
 export const MySelect: FC<Props> = ({
@@ -35,7 +40,8 @@ export const MySelect: FC<Props> = ({
     value,
     onChange,
     placeholder,
-    width,
+    width = 150,
+    height = 30,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange(option);
@@ -50,7 +56,29 @@ export const MySelect: FC<Props> = ({
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,
-                    width,
+                    width: `${width}px`,
+                    minHeight: `${height}px`,
+                    height: `${height}px`,
+                    fontSize: '12px',
+                    borderColor: '#dee2e6',
+                    borderRadius: 0,
+                }),
+                valueContainer: (provided, state) => ({
+                    ...provided,
+                    height: `${height}px`,
+                    padding: '0 6px',
+                }),
+
+                input: (provided, state) => ({
+                    ...provided,
+                    margin: '0px',
+                }),
+                indicatorSeparator: (state) => ({
+                    display: 'none',
+                }),
+                indicatorsContainer: (provided, state) => ({
+                    ...provided,
+                    height: `${height}px`,
                 }),
             }}
         />

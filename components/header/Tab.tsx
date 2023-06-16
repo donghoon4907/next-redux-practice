@@ -45,9 +45,11 @@ export const Tab: FC<Props> = ({ id, label, to, isSingle }) => {
     };
 
     return (
-        <div className={`wr-tab ${router.pathname === to ? 'active' : ''}`}>
+        <li className="nav-item wr-tab">
             <a
-                className={`nav-link ${isSingle ? 'single' : ''}`}
+                className={`nav-link ${
+                    router.pathname === to ? 'active' : ''
+                } ${isSingle ? 'single' : ''}`}
                 aria-current="page"
                 href={to}
                 onClick={handleTab}
@@ -57,16 +59,10 @@ export const Tab: FC<Props> = ({ id, label, to, isSingle }) => {
             {!isSingle && (
                 <div className="wr-tab__icon">
                     <IconWrapper onClick={(evt) => handleClose(id)}>
-                        <MdClose size={20} color="black" />
+                        <MdClose size={15} color="black" />
                     </IconWrapper>
                 </div>
             )}
-
-            {/* <div
-                className={`wr-tab__border ${
-                    router.pathname === to ? 'active' : ''
-                }`}
-            ></div> */}
-        </div>
+        </li>
     );
 };

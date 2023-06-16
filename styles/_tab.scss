@@ -1,40 +1,23 @@
 .wr-tab {
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 1px solid $wr-divider-color;
-    border-bottom: 0;
-    background-color: #eaebed;
-    // 활성 탭 스타일 설정
-    &.active {
-        background-color: $white;
-    }
-    // 탭 사이 스타일 설정
-    & + & {
-        margin-left: 5px;
-    }
-    // 탭 내 링크 스타일 설정
-    & > a {
-        color: $black;
+    font-size: 14px;
+
+    // Custom Bootstrap
+    & .nav-link {
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        padding-left: 15px !important;
+        padding-right: 3px !important;
     }
 
     & .nav-link:not(.single) {
-        padding-left: 10px;
-        padding-right: 40px;
+        padding-right: 40px !important;
     }
-    // 탭 내 아이콘 wrapper 스타일 설정
+    // 아이콘 영역
     &__icon {
         position: absolute;
-        right: 5px;
+        top: calc(50% + 1px);
+        right: 10px;
+        transform: translateY(-50%);
     }
-
-    // &__border {
-    //     position: absolute;
-    //     bottom: 0;
-    //     left: 0;
-    //     width: 100%;
-    //     background: #3f63bf;
-    //     height: 0px;
-    // }
 }

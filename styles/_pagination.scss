@@ -2,4 +2,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 5px;
+
+    // Custom Bootstrap
+    & .page-link {
+        font-size: 12px;
+        border-top-left-radius: none !important;
+        border-bottom-left-radius: none !important;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px 20px !important;
+    }
+
+    & .page-link:hover {
+        color: $black;
+    }
 }

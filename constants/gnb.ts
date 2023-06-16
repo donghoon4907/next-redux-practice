@@ -31,7 +31,7 @@ export const ASIDE_MENUS: CoreMenuOption[] = [
                         id: 'aside_menu1-1-1',
                         level: 3,
                         label: '종합 실적',
-                        to: '/test',
+                        to: '/demo',
                     },
                     {
                         id: 'aside_menu1-1-2',

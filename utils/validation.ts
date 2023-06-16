@@ -10,10 +10,23 @@ export function isNumeric(value: any): boolean {
  * 말줄임표 적용 여부
  *
  */
-export function isEllipsis(t: string) {
+export function checkEllipsisNeeded(columnName: string) {
     let output = false;
-    if (t === 'ptitle') {
+    if (columnName === 'ptitle') {
         output = true;
+    }
+
+    return output;
+}
+
+/**
+ * 천 단위 적용 여부
+ *
+ */
+export function checkSeparatorNeeded(columnName: string) {
+    let output = true;
+    if (columnName === 'cnum') {
+        output = false;
     }
 
     return output;

@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { BsList } from 'react-icons/bs';
+import { LuMenu } from 'react-icons/lu';
 import { GNBS, SUBMENUS } from '@constants/gnb';
 import { IconWrapper } from '@components/IconWrapper';
 import { useDrawer } from '@hooks/use-drawer';
@@ -22,7 +22,7 @@ export const Header: FC<Props> = () => {
                             <div className="wr-gnb__left">
                                 <span onClick={onToggle}>
                                     <IconWrapper>
-                                        <BsList size={40} color="white" />
+                                        <LuMenu size={30} color="white" />
                                     </IconWrapper>
                                 </span>
                                 {/* <span className="wr-gnb__logo">
@@ -54,16 +54,10 @@ export const Header: FC<Props> = () => {
                 </div>
                 <div className="wr-lnb">
                     <div className="wr-lnb__inner">
-                        <div className="wr-lnb__both">
-                            <div className="wr-lnb__left">
-                                <Nav />
-                            </div>
-                            <div className="wr-lnb__right">
-                                <div className="wr-lnb__metadata">
-                                    <span>
-                                        1경기광주사업단 &#62; 1팀 김서윤
-                                    </span>
-                                </div>
+                        <Nav />
+                        <div className="wr-lnb__right">
+                            <div className="wr-lnb__metadata">
+                                <span>1경기광주사업단 &#62; 1팀 김서윤</span>
                             </div>
                         </div>
                     </div>

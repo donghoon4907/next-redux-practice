@@ -1,20 +1,15 @@
 .wr-main {
-    padding: 10px;
-
     &__wrap {
         position: relative;
         margin: 0 auto;
         width: 100%;
         height: 810px;
         overflow: hidden;
+    }
 
-        // Custom Bootstrap
-        & .breadcrumb-wrap {
-            border-bottom: 1px solid $wr-divider-color;
-        }
-
-        & .breadcrumb {
-            margin-bottom: 5px !important;
-        }
+    &__inner {
+        margin: 0 20px;
+        border: 1px solid $wr-divider-color;
+        border-top: 0;
     }
 }
