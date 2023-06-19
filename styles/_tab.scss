@@ -8,16 +8,24 @@
         border-top-right-radius: 0 !important;
         padding-left: 15px !important;
         padding-right: 15px !important;
+        background-color: $gray-200 !important;
         color: $black;
-    }
 
-    & .nav-link:not(.single) {
-        padding-right: 40px !important;
-    }
+        // 단독인 경우
+        &:not(.single) {
+            padding-right: 40px !important;
+        }
+        // 활성화 되지 않은 경우
+        &:not(.active) {
+            background-color: inherit !important;
+            color: $white;
+        }
 
-    & .nav-link:hover {
-        border-bottom: 1px solid white;
-        // border-color: $white;
+        &:hover {
+            border-bottom: 1px solid $white;
+            background-color: $gray-200 !important;
+            color: $black;
+        }
     }
 
     // 아이콘 영역

@@ -1,7 +1,7 @@
 .wr-drawer {
     padding: 5px;
     z-index: $wr-drawer-index !important;
-    background-color: $wr-header-color !important;
+    // background-color: $wr-header-color !important;
 
     &__header {
         display: flex;
@@ -26,7 +26,7 @@
         display: block;
 
         &:hover {
-            background-color: $wr-divider-color;
+            background-color: $wr-divider-color-100;
             color: $wr-header-color;
         }
     }
@@ -36,12 +36,13 @@
         padding-left: 0 !important;
     }
     // Custom Bootstrap
-    & .accordion-item,
-    .accordion-button {
-        background-color: inherit !important;
-        border: none !important;
-        color: $white !important;
+    & .accordion-button {
+        background-color: $white !important;
+        // border: none !important;
+        // color: $black !important;
+        font-size: 14px;
         border-radius: 0 !important;
+        padding: 0 5px !important;
     }
 
     & .accordion-button {
@@ -53,7 +54,7 @@
     }
 
     & .accordion-header:hover {
-        background-color: $wr-divider-color;
+        background-color: $black;
 
         & > button {
             color: $wr-header-color !important;

@@ -30,6 +30,8 @@ import {
     checkSeparatorNeeded,
 } from '@utils/validation';
 import { Pagination } from '@components/pagination';
+import { DrawerMenu } from '@components/drawer/DrawerMenu';
+import { ASIDE_MENUS } from '@constants/gnb';
 // import { ValueType } from 'rsuite/esm/DateRangePicker';
 
 const Demo: NextPage = () => {
@@ -109,163 +111,203 @@ const Demo: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
-            <section>
-                <Header />
-                <div className="wr-main__wrap">
-                    <main className="wr-main">
-                        <div className="wr-main__inner">
-                            {/* <Breadcrumb /> */}
-                            <div className="wr-search">
-                                <div className="row">
-                                    <div className="col-6">
-                                        <div className="row">
-                                            {X_SEARCH_SELECTS[0].map((v) => (
-                                                <div
-                                                    className="col-4"
-                                                    key={v.id}
-                                                >
-                                                    <Label>{v.label}</Label>
-                                                    <MySelect
-                                                        width={v.width}
-                                                        options={v.items}
-                                                        value={org}
-                                                        onChange={handleChange}
-                                                        placeholder={
-                                                            v.placeholder
-                                                        }
-                                                    />
-                                                </div>
-                                            ))}
-                                            <div className="col-4"></div>
-                                        </div>
-
-                                        <div className="row">
-                                            <div className="col-4 d-flex flex-column">
-                                                <Label>기간</Label>
-                                                <DateRangePicker
-                                                    format="yyyy-MM-dd"
-                                                    placeholder="기간을 입력하세요"
-                                                    size="sm"
-                                                    // defaultCalendarValue={[
-                                                    //     new Date('2022-02-01'),
-                                                    //     new Date('2022-03-01'),
-                                                    // ]}
-                                                    value={d}
-                                                    onChange={handleChangeDate}
-                                                    // showMeridian
-                                                    style={{
-                                                        width: 285,
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="row row-cols-6">
-                                            {X_SEARCH_SELECTS[1].map((v) => (
-                                                <div className="col" key={v.id}>
-                                                    <Label>{v.label}</Label>
-                                                    <MySelect
-                                                        width={v.width}
-                                                        options={v.items}
-                                                        value={org}
-                                                        onChange={handleChange}
-                                                        placeholder={
-                                                            v.placeholder
-                                                        }
-                                                    />
-                                                </div>
-                                            ))}
-                                            <div className="col-6">
-                                                <Label>검색</Label>
-                                                <form
-                                                    className="wr-search__bar"
-                                                    role="search"
-                                                >
-                                                    <div className="input-group">
-                                                        <input
-                                                            type="text"
-                                                            className="form-control"
-                                                            placeholder="검색어를 입력하세요"
-                                                            aria-label="검색어를 입력하세요"
-                                                        />
-                                                        <button
-                                                            className="btn btn-primary"
-                                                            type="button"
-                                                        >
-                                                            <LuSearch
-                                                                size={15}
-                                                            />
-                                                        </button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                        <div className="row mt-3">
-                                            <div className="col mt-2 wr-filter">
-                                                {X_SEARCH_FILTERS.map(
-                                                    (filter, index) => {
-                                                        return (
+            <div className="row">
+                <div className="col-1 gutter--disable">
+                    <div className="wr-nav">
+                        <div className="wr-nav__logo">
+                            <img src="http://via.placeholder.com/150x50" />
+                        </div>
+                        <div className="wr-drawer">
+                            <DrawerMenu data={ASIDE_MENUS} />
+                        </div>
+                    </div>
+                </div>
+                <div className="col-11 gutter--disable">
+                    <Header />
+                    <section>
+                        <div className="wr-main__wrap">
+                            <main className="wr-main">
+                                <div className="wr-main__inner">
+                                    {/* <Breadcrumb /> */}
+                                    <div className="wr-search">
+                                        <div className="row wr-search__inner">
+                                            <div className="col-6 gutter--disable">
+                                                <div className="row">
+                                                    {X_SEARCH_SELECTS[0].map(
+                                                        (v) => (
                                                             <div
-                                                                className="wr-filter__block"
-                                                                key={`check${index}`}
+                                                                className="col-4 gutter--disable"
+                                                                key={v.id}
                                                             >
-                                                                {filter.map(
-                                                                    (v) => {
-                                                                        if (
-                                                                            v.type ===
-                                                                            'checkbox'
-                                                                        ) {
-                                                                            return (
-                                                                                <MyCheckbox
-                                                                                    key={
-                                                                                        v.id
-                                                                                    }
-                                                                                    id={
-                                                                                        v.id
-                                                                                    }
-                                                                                    label={
-                                                                                        v.label
-                                                                                    }
-                                                                                />
-                                                                            );
-                                                                        } else if (
-                                                                            v.type ===
-                                                                            'radio'
-                                                                        ) {
-                                                                            return (
-                                                                                <MyRadio
-                                                                                    key={
-                                                                                        v.id
-                                                                                    }
-                                                                                    id={
-                                                                                        v.id
-                                                                                    }
-                                                                                    label={
-                                                                                        v.label
-                                                                                    }
-                                                                                />
-                                                                            );
-                                                                        } else {
-                                                                            return null;
-                                                                        }
-                                                                    },
-                                                                )}
+                                                                <Label>
+                                                                    {v.label}
+                                                                </Label>
+                                                                <MySelect
+                                                                    width={
+                                                                        v.width
+                                                                    }
+                                                                    options={
+                                                                        v.items
+                                                                    }
+                                                                    value={org}
+                                                                    onChange={
+                                                                        handleChange
+                                                                    }
+                                                                    placeholder={
+                                                                        v.placeholder
+                                                                    }
+                                                                />
                                                             </div>
-                                                        );
-                                                    },
-                                                )}
+                                                        ),
+                                                    )}
+                                                    {/* <div className="col-4"></div> */}
+                                                </div>
+
+                                                <div className="row">
+                                                    <div className="col-4 d-flex flex-column gutter--disable">
+                                                        <Label>기간</Label>
+                                                        <DateRangePicker
+                                                            format="yyyy-MM-dd"
+                                                            placeholder="기간을 입력하세요"
+                                                            size="sm"
+                                                            // defaultCalendarValue={[
+                                                            //     new Date('2022-02-01'),
+                                                            //     new Date('2022-03-01'),
+                                                            // ]}
+                                                            value={d}
+                                                            onChange={
+                                                                handleChangeDate
+                                                            }
+                                                            // showMeridian
+                                                            style={{
+                                                                width: 255,
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-6 gutter--disable">
+                                                <div className="row row-cols-6">
+                                                    {X_SEARCH_SELECTS[1].map(
+                                                        (v) => (
+                                                            <div
+                                                                className="col gutter--disable"
+                                                                key={v.id}
+                                                            >
+                                                                <Label>
+                                                                    {v.label}
+                                                                </Label>
+                                                                <MySelect
+                                                                    width={
+                                                                        v.width
+                                                                    }
+                                                                    options={
+                                                                        v.items
+                                                                    }
+                                                                    value={org}
+                                                                    onChange={
+                                                                        handleChange
+                                                                    }
+                                                                    placeholder={
+                                                                        v.placeholder
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        ),
+                                                    )}
+                                                    <div className="col-6 gutter--disable">
+                                                        <Label>검색</Label>
+                                                        <form
+                                                            className="wr-search__bar"
+                                                            role="search"
+                                                        >
+                                                            <div className="input-group">
+                                                                <input
+                                                                    type="text"
+                                                                    className="form-control"
+                                                                    placeholder="검색어를 입력하세요"
+                                                                    aria-label="검색어를 입력하세요"
+                                                                />
+                                                                <button
+                                                                    className="btn btn-primary"
+                                                                    type="button"
+                                                                >
+                                                                    <LuSearch
+                                                                        size={
+                                                                            15
+                                                                        }
+                                                                    />
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div className="row mt-3">
+                                                    <div className="col mt-2 wr-filter gutter--disable">
+                                                        {X_SEARCH_FILTERS.map(
+                                                            (filter, index) => {
+                                                                return (
+                                                                    <div
+                                                                        className="wr-filter__block"
+                                                                        key={`check${index}`}
+                                                                    >
+                                                                        {filter.map(
+                                                                            (
+                                                                                v,
+                                                                            ) => {
+                                                                                if (
+                                                                                    v.type ===
+                                                                                    'checkbox'
+                                                                                ) {
+                                                                                    return (
+                                                                                        <MyCheckbox
+                                                                                            key={
+                                                                                                v.id
+                                                                                            }
+                                                                                            id={
+                                                                                                v.id
+                                                                                            }
+                                                                                            label={
+                                                                                                v.label
+                                                                                            }
+                                                                                        />
+                                                                                    );
+                                                                                } else if (
+                                                                                    v.type ===
+                                                                                    'radio'
+                                                                                ) {
+                                                                                    return (
+                                                                                        <MyRadio
+                                                                                            key={
+                                                                                                v.id
+                                                                                            }
+                                                                                            id={
+                                                                                                v.id
+                                                                                            }
+                                                                                            label={
+                                                                                                v.label
+                                                                                            }
+                                                                                        />
+                                                                                    );
+                                                                                } else {
+                                                                                    return null;
+                                                                                }
+                                                                            },
+                                                                        )}
+                                                                    </div>
+                                                                );
+                                                            },
+                                                        )}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div className="wr-table__wrap mt-3">
-                                <Table columns={columns} data={data} />
-                            </div>
-                            <Pagination />
-                            {/* <div className="flex items-center gap-2">
+                                    <div className="wr-table__wrap mt-3">
+                                        <Table columns={columns} data={data} />
+                                    </div>
+                                    <Pagination />
+                                    {/* <div className="flex items-center gap-2">
                                     <button
                                         className="border rounded p-1"
                                         // onClick={() => table.setPageIndex(0)}
@@ -299,10 +341,12 @@ const Demo: NextPage = () => {
                                         {'>>'}
                                     </button>
                                 </div> */}
+                                </div>
+                            </main>
                         </div>
-                    </main>
+                    </section>
                 </div>
-            </section>
+            </div>
         </>
     );
 };

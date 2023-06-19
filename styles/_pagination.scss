@@ -2,7 +2,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 5px;
+    margin-top: $wr-gutter-size;
+
+    @include wr-card;
 
     // Custom Bootstrap
     & .page-link {

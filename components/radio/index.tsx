@@ -37,7 +37,7 @@ export const MyRadio: FC<Props> = ({
                 id={id}
                 defaultChecked={defaultChecked}
             />
-            <label className="form-check-label wr-label" htmlFor={id}>
+            <label className="form-check-label" htmlFor={id}>
                 {label}
             </label>
         </div>

@@ -65,7 +65,6 @@ export const MySelect: FC<Props> = ({
                     width: `${width}px`,
                     minHeight: `${height}px`,
                     height: `${height}px`,
-                    fontSize: `${placeHolderFontSize}px`,
                     borderColor: '#dee2e6',
                     borderRadius: 0,
                 }),
@@ -74,7 +73,13 @@ export const MySelect: FC<Props> = ({
                     height: `${height}px`,
                     padding: '0 6px',
                 }),
-
+                placeholder: (defaultStyles) => {
+                    return {
+                        ...defaultStyles,
+                        fontSize: `${placeHolderFontSize}px`,
+                        color: 'black',
+                    };
+                },
                 input: (provided, state) => ({
                     ...provided,
                     margin: '0px',

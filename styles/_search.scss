@@ -1,4 +1,10 @@
 .wr-search {
+    &__inner {
+        --bs-gutter-x: 30px;
+
+        @include wr-card;
+    }
+
     &__icon {
         width: 30px;
         height: 30px;

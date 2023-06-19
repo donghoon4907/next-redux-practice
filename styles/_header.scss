@@ -1,12 +1,18 @@
-.wr-gnb {
+.wr-header {
+    width: 100%;
     background-color: $wr-header-color;
+    overflow: hidden;
+}
+
+.wr-gnb {
+    // background-color: $wr-header-color;
     color: $white;
     position: relative;
     z-index: $wr-gnb-index;
     font-size: 14px;
     line-height: 14px;
-    transform: translateZ(0);
-    will-change: contents;
+    // transform: translateZ(0);
+    // will-change: contents;
 
     &__inner {
         position: relative;
@@ -123,14 +129,13 @@
 }
 
 .wr-lnb {
-    background: #fff;
+    // background: #fff;
     position: relative;
     z-index: $wr-lnb-index;
+    overflow: hidden;
 
     &__inner {
         position: relative;
-        padding-top: 20px;
-        margin: 0 20px;
 
         & .nav {
             height: 35px;
@@ -150,8 +155,9 @@
         justify-content: flex-end;
         align-items: center;
         font-size: 12px;
-        color: $gray-600;
+        color: $gray-100;
         font-weight: bold;
+        margin-right: 10px;
     }
 }
 
