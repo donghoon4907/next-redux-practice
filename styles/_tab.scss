@@ -7,12 +7,19 @@
         border-top-left-radius: 0 !important;
         border-top-right-radius: 0 !important;
         padding-left: 15px !important;
-        padding-right: 3px !important;
+        padding-right: 15px !important;
+        color: $black;
     }
 
     & .nav-link:not(.single) {
         padding-right: 40px !important;
     }
+
+    & .nav-link:hover {
+        border-bottom: 1px solid white;
+        // border-color: $white;
+    }
+
     // 아이콘 영역
     &__icon {
         position: absolute;

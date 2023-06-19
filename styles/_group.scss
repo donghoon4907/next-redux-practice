@@ -1,0 +1,13 @@
+.wr-group {
+    flex: 1;
+    border-bottom: 1px solid $gray-500;
+    padding: 5px;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    &__display {
+        font-size: 12px;
+    }
+}

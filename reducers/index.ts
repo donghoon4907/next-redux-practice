@@ -5,11 +5,13 @@ import loading from '@reducers/common/loading';
 import { demoReducer } from '@reducers/demo';
 import { tabReducer } from '@reducers/tab';
 import { drawerReducer } from '@reducers/drawer';
+import { longReducer } from '@reducers/long';
 
 const combinedReducer = combineReducers({
     demo: demoReducer,
     tab: tabReducer,
     drawer: drawerReducer,
+    long: longReducer,
     error,
     loading,
 });

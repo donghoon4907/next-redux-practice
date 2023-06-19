@@ -1,0 +1,39 @@
+.wr-pages-detail {
+    overflow: hidden;
+    margin: 0 auto;
+    // background-color: $gray-200;
+
+    &__left {
+        --bs-gutter-x: 0;
+        overflow-y: auto;
+        height: 780px;
+        padding: 1.5rem 0;
+    }
+
+    &__right {
+        padding: 15px 0;
+    }
+
+    &__department {
+        font-size: 16px;
+    }
+
+    &__with {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__body {
+        border: 1px solid $wr-divider-color;
+        border-top: 0;
+        height: 715px;
+        overflow-y: auto;
+    }
+
+    // Custom Bootstrap
+    & .form-control {
+        font-size: 16px !important;
+    }
+}

@@ -33,6 +33,11 @@ interface Props {
      *
      */
     height?: number;
+    /**
+     * Placeholder 폰트 크기
+     *
+     */
+    placeHolderFontSize?: number;
 }
 
 export const MySelect: FC<Props> = ({
@@ -42,6 +47,7 @@ export const MySelect: FC<Props> = ({
     placeholder,
     width = 150,
     height = 30,
+    placeHolderFontSize = 12,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange(option);
@@ -59,7 +65,7 @@ export const MySelect: FC<Props> = ({
                     width: `${width}px`,
                     minHeight: `${height}px`,
                     height: `${height}px`,
-                    fontSize: '12px',
+                    fontSize: `${placeHolderFontSize}px`,
                     borderColor: '#dee2e6',
                     borderRadius: 0,
                 }),

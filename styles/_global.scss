@@ -24,7 +24,7 @@ a:focus,
 a:active,
 a:visited {
     text-decoration: none !important;
-    color: $black !important;
+    // color: $black !important;
     cursor: pointer;
 }
 
@@ -77,7 +77,7 @@ td {
 .rs-picker-toggle-value {
     color: $wr-label-color !important;
 }
-
+// Placeholder 폰트크기
 .rs-picker-toggle-placeholder {
     font-size: 12px;
 }
@@ -110,4 +110,21 @@ td {
 
 .form-label {
     margin-top: 0.5rem;
+}
+// 상위 컨테이너 이상의 너비를 갖지 않도록 조정
+.row {
+    margin: 0 auto;
+}
+// input 설정
+.form-control {
+    border-radius: 0 !important;
+    font-size: 12px;
+    height: 30px;
+}
+// 버튼 설정
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0 !important;
 }
