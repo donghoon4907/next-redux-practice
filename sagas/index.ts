@@ -1,8 +1,9 @@
 import { all, call } from 'redux-saga/effects';
 import axios from 'axios';
 import { demoSaga } from '@sagas/demo';
+import { longSaga } from '@sagas/long';
 
-// axios.defaults.baseURL = process.env.BACKEND_DOMAIN + '/v1';
+axios.defaults.baseURL = 'http://localhost:3000';
 // 클라이언트 환경인 경우
 if (typeof window !== 'undefined') {
     // const token = getCookie(COOKIE_TOKEN_KEY);
@@ -14,5 +15,5 @@ if (typeof window !== 'undefined') {
 }
 
 export function* rootSaga() {
-    yield all([call(demoSaga)]);
+    yield all([call(demoSaga), call(longSaga)]);
 }

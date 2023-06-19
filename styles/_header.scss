@@ -124,36 +124,18 @@
 
 .wr-lnb {
     background: #fff;
-    // height: 47px;
-    // line-height: 43px;
     position: relative;
     z-index: $wr-lnb-index;
-    // border-bottom: 1px solid $wr-divider-color;
-    // overflow: hidden;
 
     &__inner {
         position: relative;
-        // margin: 0 10px;
         padding-top: 20px;
         margin: 0 20px;
-        // max-width: 1110px;
-        // margin: 0 auto;
+
+        & .nav {
+            height: 35px;
+        }
     }
-
-    // &__both {
-    //     display: flex;
-    //     justify-content: center;
-    //     align-items: center;
-    // }
-
-    // &__left {
-    //     position: relative;
-    //     flex-grow: 1;
-    //     flex-shrink: 1;
-    //     display: flex;
-    //     justify-content: flex-start;
-    //     align-items: center;
-    // }
 
     &__right {
         position: absolute;

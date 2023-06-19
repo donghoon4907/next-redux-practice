@@ -1,23 +1,7 @@
 .wr-search {
-    padding: 0 20px;
-
-    // Custom Bootstrap
-    & .form-control,
-    .btn {
-        height: 30px;
-    }
-
-    & .btn {
-        padding: 0 !important;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    &__icon {
         width: 30px;
-        border-radius: 0 !important;
-    }
-
-    & .form-control {
-        border-radius: 0 !important;
-        font-size: 12px;
+        height: 30px;
+        padding: 0 !important;
     }
 }

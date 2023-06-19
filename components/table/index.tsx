@@ -23,13 +23,13 @@ export const Table: FC<Props> = ({ columns, data }) => {
     const tableRef = useRef<HTMLTableElement>(null);
 
     const table = useReactTable({
-        data: data,
+        data,
         columns,
         // Pipeline
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        debugTable: false,
+        debugTable: true,
         state: {
             pagination: {
                 pageIndex: 1,
@@ -66,6 +66,8 @@ export const Table: FC<Props> = ({ columns, data }) => {
             });
         }
     }, []);
+
+    // console.log(table.getRowModel());
 
     return (
         <table className="wr-table table" ref={tableRef}>
