@@ -3,7 +3,7 @@ import type { CoreProps } from '@interfaces/core';
 
 interface Props extends CoreProps, LabelHTMLAttributes<HTMLLabelElement> {}
 
-export const Label: FC<Props> = ({ children, ...props }) => {
+export const MyLabel: FC<Props> = ({ children, ...props }) => {
     return (
         <label className="form-label wr-label" {...props}>
             {children}

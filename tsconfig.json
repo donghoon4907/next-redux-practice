@@ -30,7 +30,8 @@
             "@utils/*": ["./utils/*"],
             "@models/*": ["./models/*"],
             "@store/*": ["./store/*"],
-            "@constants/*": ["./constants/*"]
+            "@constants/*": ["./constants/*"],
+            "@partials/*": ["./partials/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

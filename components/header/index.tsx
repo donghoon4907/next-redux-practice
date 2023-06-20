@@ -1,12 +1,11 @@
 import type { FC } from 'react';
-import { LuMenu } from 'react-icons/lu';
+// import { LuMenu } from 'react-icons/lu';
 import { GNBS, SUBMENUS } from '@constants/gnb';
-import { IconWrapper } from '@components/IconWrapper';
-import { useDrawer } from '@hooks/use-drawer';
+// import { useDrawer } from '@hooks/use-drawer';
 
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
-import { Nav } from './Nav';
+import { HeaderNav } from './Nav';
 
 interface Props {}
 
@@ -53,7 +52,7 @@ export const MyHeader: FC<Props> = () => {
             </div>
             <div className="wr-lnb">
                 <div className="wr-lnb__inner">
-                    <Nav />
+                    <HeaderNav />
                     <div className="wr-lnb__right">
                         {/* <div className="wr-lnb__metadata">
                             <span>1경기광주사업단 &#62; 1팀 김서윤</span>

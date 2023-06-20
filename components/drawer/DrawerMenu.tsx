@@ -37,10 +37,10 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
         const tab = new TabModule();
 
         tab.create({
-            id: `tab--${item.id}`,
+            id: `tab${item.id}`,
             label: item.label,
             to: item.to,
-            level: 1,
+            panelId: `tabpanel${item.id}`,
         });
 
         router.push(item.to);

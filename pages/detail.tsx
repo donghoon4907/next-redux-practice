@@ -1,37 +1,14 @@
 import type { NextPage } from 'next';
-import type { AppState } from '@reducers/index';
-import type { DemoState } from '@reducers/demo';
-import type { CoreSelectOption } from '@interfaces/core';
-import type { ColumnDef } from '@tanstack/react-table';
+import type { CoreSelectOption, CoreTabOption } from '@interfaces/core';
 import Head from 'next/head';
-import { useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import { END } from 'redux-saga';
-import { LuSearch } from 'react-icons/lu';
-import { MyHeader } from '@components/header';
-import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
-import { demoRequest, demoSuccess } from '@actions/demo/demo.action';
-// import { SHOW_COUNTS } from '@constants/selectOption';
 import { MySelect } from '@components/select';
-import { Label } from '@components/label';
-import { X_SEARCH_FILTERS, X_SEARCH_SELECTS } from '@constants/filter';
-import { DateRangePicker } from 'rsuite';
+import { MyLabel } from '@components/label';
 
 // 임시
 import { useDispatch } from 'react-redux';
-import { MyCheckbox } from '@components/checkbox';
-import { Breadcrumb } from '@components/breadcrumb';
-import { IconWrapper } from '@components/IconWrapper';
-import { MyRadio } from '@components/radio';
-import {
-    isNumeric,
-    checkEllipsisNeeded,
-    checkSeparatorNeeded,
-} from '@utils/validation';
-import { MyPagination } from '@components/pagination';
-import Image from 'next/image';
-import { MyInput } from '@components/input';
 import {
     getBasicPaymentsRequest,
     getBasicPaymentsSuccess,
@@ -40,9 +17,9 @@ import {
     getOverridesRequest,
     getOverridesSuccess,
 } from '@actions/long/get-overrides.action';
-import { LongState } from '@reducers/long';
-import { MyNav } from '@components/nav';
-// import { ValueType } from 'rsuite/esm/DateRangePicker';
+import { DETAIL_PAGE_TABS } from '@constants/tab';
+import { MyTab } from '@components/tab';
+import { IncomeSettings } from '@partials/detail/IncomeSettings';
 
 const FULL_SELECT_SIZE = 337;
 
@@ -51,9 +28,7 @@ const WITH_SELECT_SIZE = 100;
 const Detail: NextPage = () => {
     const dispatch = useDispatch();
 
-    const { basicPayments, overrides } = useSelector<AppState, LongState>(
-        (props) => props.long,
-    );
+    const [tab, setTab] = useState<CoreTabOption>(DETAIL_PAGE_TABS[0]);
 
     const [d, setD] = useState<[Date, Date] | null>([
         new Date('2022-02-01'),
@@ -62,41 +37,13 @@ const Detail: NextPage = () => {
 
     const [org, setOrg] = useState<CoreSelectOption | null>(null);
 
+    const handleClickTab = (tab: CoreTabOption) => {
+        setTab(tab);
+    };
+
     const handleChange = (org: CoreSelectOption | null) => {
         setOrg(org);
     };
-
-    const basicPaymentscolumns = useMemo<ColumnDef<any>[]>(
-        () =>
-            Object.entries(basicPayments.fields).map(([key, value]) => {
-                return {
-                    header: (info: any) => {
-                        return <strong>{key}</strong>;
-                    },
-                    accessorKey: value,
-                    cell: (info: any) => {
-                        return <span>{info.getValue()}</span>;
-                    },
-                };
-            }),
-        [basicPayments.fields],
-    );
-
-    const overridescolumns = useMemo<ColumnDef<any>[]>(
-        () =>
-            Object.entries(overrides.fields).map(([key, value]) => {
-                return {
-                    header: (info: any) => {
-                        return <strong>{key}</strong>;
-                    },
-                    accessorKey: value,
-                    cell: (info: any) => {
-                        return <span>{info.getValue()}</span>;
-                    },
-                };
-            }),
-        [overrides.fields],
-    );
 
     const handleChangeDate = (value: [Date, Date] | null) => {
         setD(value);
@@ -112,595 +59,342 @@ const Detail: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="row">
-                <div className="col-1">
-                    <MyNav />
-                </div>
-                <div className="col-11">
-                    <MyHeader />
-                    <section>
-                        <div className="wr-main__wrap">
-                            <main className="wr-main">
-                                <div className="wr-pages-detail row">
-                                    <div className="col-4">
-                                        <div className="row wr-pages-detail__left">
-                                            <div className="col-8">
-                                                <div className="wr-pages-detail__block">
-                                                    <div className="mt-2">
-                                                        <div className="wr-group">
-                                                            <span className="wr-pages-detail__department">
-                                                                직할 영업 &#62;
-                                                                5회사임직원
-                                                                &#62; 전산개발실
-                                                            </span>
-                                                            <button
-                                                                className="btn btn-primary btn-sm"
-                                                                type="button"
-                                                            >
-                                                                부서변경
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="wr-pages-detail__block">
-                                                    <div className="row mt-2">
-                                                        <div className="col">
-                                                            <Label>
-                                                                고객명
-                                                            </Label>
-                                                            <div className="input-group">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="홍길동"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>
-                                                                사원번호
-                                                            </Label>
-                                                            <div className="input-group">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="W1057"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <div>
-                                                                <Label>
-                                                                    주민등록번호
-                                                                </Label>
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="121212-2*******"
-                                                                        aria-label="Recipient's username"
-                                                                        aria-describedby="button-addon2"
-                                                                    />
-                                                                    <button
-                                                                        className="btn btn-primary btn-sm"
-                                                                        type="button"
-                                                                        id="button-addon2"
-                                                                    >
-                                                                        보기
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>직함</Label>
-                                                            <div className="input-group">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="실장"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>
-                                                                생년월일
-                                                            </Label>
-                                                            <div className="wr-pages-detail__with">
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="1912-12-12"
-                                                                    />
-                                                                </div>
-                                                                <MySelect
-                                                                    width={
-                                                                        WITH_SELECT_SIZE
-                                                                    }
-                                                                    options={[]}
-                                                                    value={org}
-                                                                    onChange={() => {}}
-                                                                    placeholder={
-                                                                        '양력'
-                                                                    }
-                                                                    placeHolderFontSize={
-                                                                        16
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>
-                                                                영업가족
-                                                            </Label>
-                                                            <MySelect
-                                                                width={
-                                                                    FULL_SELECT_SIZE
-                                                                }
-                                                                options={[]}
-                                                                value={org}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    'FRC'
-                                                                }
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="wr-pages-detail__block">
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>
-                                                                핸드폰
-                                                            </Label>
-                                                            <div className="wr-pages-detail__with">
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="010-1234-5678"
-                                                                    />
-                                                                </div>
-                                                                <MySelect
-                                                                    width={
-                                                                        WITH_SELECT_SIZE
-                                                                    }
-                                                                    options={[]}
-                                                                    value={org}
-                                                                    onChange={() => {}}
-                                                                    placeholder={
-                                                                        'KT'
-                                                                    }
-                                                                    placeHolderFontSize={
-                                                                        16
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>
-                                                                전화번호 / 내선
-                                                            </Label>
-                                                            <div className="wr-pages-detail__with">
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="070-4881-6052"
-                                                                    />
-                                                                </div>
-                                                                <div
-                                                                    style={{
-                                                                        width: 140,
-                                                                    }}
-                                                                >
-                                                                    <div className="input-group">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="form-control"
-                                                                            placeholder="6052"
-                                                                        />
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>
-                                                                이메일
-                                                            </Label>
-                                                            <div className="wr-pages-detail__with">
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="yoongiekim@naver.com"
-                                                                    />
-                                                                </div>
-                                                                <MySelect
-                                                                    width={
-                                                                        WITH_SELECT_SIZE
-                                                                    }
-                                                                    options={[]}
-                                                                    value={org}
-                                                                    onChange={() => {}}
-                                                                    placeholder={
-                                                                        'naver'
-                                                                    }
-                                                                    placeHolderFontSize={
-                                                                        16
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <Label>
-                                                                기본주소
-                                                            </Label>
-                                                            <div className="input-group">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="08195"
-                                                                    aria-label="Recipient's username"
-                                                                    aria-describedby="button-addon2"
-                                                                />
-                                                                <button
-                                                                    className="btn btn-primary btn-sm"
-                                                                    type="button"
-                                                                    id="button-addon2"
-                                                                >
-                                                                    찾기
-                                                                </button>
-                                                            </div>
-                                                            <div className="input-group">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="경기도 안양시 동안구 시민대로 383"
-                                                                    aria-label="Recipient's username"
-                                                                    aria-describedby="button-addon2"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <div>
-                                                                <Label>
-                                                                    상세주소
-                                                                </Label>
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="B동 1102호"
-                                                                        aria-label="Recipient's username"
-                                                                        aria-describedby="button-addon2"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <div>
-                                                                <Label>
-                                                                    입사일자
-                                                                </Label>
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="2023-02-11"
-                                                                        aria-label="Recipient's username"
-                                                                        aria-describedby="button-addon2"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <div>
-                                                                <Label>
-                                                                    유치자
-                                                                </Label>
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="홍길순 (W0010)"
-                                                                        aria-label="Recipient's username"
-                                                                        aria-describedby="button-addon2"
-                                                                    />
-                                                                    <button
-                                                                        className="btn btn-primary btn-sm"
-                                                                        type="button"
-                                                                        id="button-addon2"
-                                                                    >
-                                                                        찾기
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <div>
-                                                                <Label>
-                                                                    재직현황
-                                                                </Label>
-                                                                <MySelect
-                                                                    width={
-                                                                        FULL_SELECT_SIZE
-                                                                    }
-                                                                    options={[]}
-                                                                    value={org}
-                                                                    onChange={() => {}}
-                                                                    placeholder={
-                                                                        '상근'
-                                                                    }
-                                                                    placeHolderFontSize={
-                                                                        16
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col">
-                                                            <div>
-                                                                <Label>
-                                                                    퇴사일자
-                                                                </Label>
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="2023-02-11"
-                                                                        aria-label="Recipient's username"
-                                                                        aria-describedby="button-addon2"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+            <div className="wr-pages-detail row">
+                <div className="col-4">
+                    <div className="row wr-pages-detail__left">
+                        <div className="col-8">
+                            <div className="wr-pages-detail__block">
+                                <div className="mt-2">
+                                    <div className="wr-group">
+                                        <span className="wr-pages-detail__department">
+                                            직할 영업 &#62; 5회사임직원 &#62;
+                                            전산개발실
+                                        </span>
+                                        <button
+                                            className="btn btn-primary btn-sm"
+                                            type="button"
+                                        >
+                                            부서변경
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="wr-pages-detail__block">
+                                <div className="row mt-2">
+                                    <div className="col">
+                                        <MyLabel>고객명</MyLabel>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="홍길동"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <MyLabel>사원번호</MyLabel>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="W1057"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <div>
+                                            <MyLabel>주민등록번호</MyLabel>
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="121212-2*******"
+                                                    aria-label="Recipient's username"
+                                                    aria-describedby="button-addon2"
+                                                />
+                                                <button
+                                                    className="btn btn-primary btn-sm"
+                                                    type="button"
+                                                    id="button-addon2"
+                                                >
+                                                    보기
+                                                </button>
                                             </div>
-                                            <div className="col-4">
-                                                <div className="wr-pages-detail__avatar">
-                                                    <img
-                                                        src="http://via.placeholder.com/200x250"
-                                                        className="img-thumbnail"
-                                                        alt="..."
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <MyLabel>직함</MyLabel>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="실장"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <MyLabel>생년월일</MyLabel>
+                                        <div className="wr-pages-detail__with">
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="1912-12-12"
+                                                />
+                                            </div>
+                                            <MySelect
+                                                width={WITH_SELECT_SIZE}
+                                                options={[]}
+                                                value={org}
+                                                onChange={() => {}}
+                                                placeholder={'양력'}
+                                                placeHolderFontSize={16}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <MyLabel>영업가족</MyLabel>
+                                        <MySelect
+                                            width={FULL_SELECT_SIZE}
+                                            options={[]}
+                                            value={org}
+                                            onChange={() => {}}
+                                            placeholder={'FRC'}
+                                            placeHolderFontSize={16}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="wr-pages-detail__block">
+                                <div className="row">
+                                    <div className="col">
+                                        <MyLabel>핸드폰</MyLabel>
+                                        <div className="wr-pages-detail__with">
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="010-1234-5678"
+                                                />
+                                            </div>
+                                            <MySelect
+                                                width={WITH_SELECT_SIZE}
+                                                options={[]}
+                                                value={org}
+                                                onChange={() => {}}
+                                                placeholder={'KT'}
+                                                placeHolderFontSize={16}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <MyLabel>전화번호 / 내선</MyLabel>
+                                        <div className="wr-pages-detail__with">
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="070-4881-6052"
+                                                />
+                                            </div>
+                                            <div
+                                                style={{
+                                                    width: 140,
+                                                }}
+                                            >
+                                                <div className="input-group">
+                                                    <input
+                                                        type="text"
+                                                        className="form-control"
+                                                        placeholder="6052"
                                                     />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div className="row">
                                     <div className="col">
-                                        <div className="wr-pages-detail__right">
-                                            <ul className="nav nav-tabs">
-                                                <li className="nav-item wr-tab">
-                                                    <a
-                                                        className="nav-link single active"
-                                                        aria-current="page"
-                                                        href="#"
-                                                    >
-                                                        소득설정
-                                                    </a>
-                                                </li>
-                                                <li className="nav-item wr-tab">
-                                                    <a
-                                                        className="nav-link single"
-                                                        href="#"
-                                                    >
-                                                        보증설정
-                                                    </a>
-                                                </li>
-                                                <li className="nav-item wr-tab">
-                                                    <a
-                                                        className="nav-link single"
-                                                        href="#"
-                                                    >
-                                                        시스템권한
-                                                    </a>
-                                                </li>
-                                                <li className="nav-item wr-tab">
-                                                    <a className="nav-link single">
-                                                        자격관리
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                            <div className="wr-pages-detail__body">
-                                                <div className="wr-pages-detail__filter">
-                                                    <div className="row">
-                                                        <div className="col-4">
-                                                            <Label>
-                                                                은행명
-                                                            </Label>
-                                                            <MySelect
-                                                                width={
-                                                                    FULL_SELECT_SIZE
-                                                                }
-                                                                options={[]}
-                                                                value={org}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    '국민은행'
-                                                                }
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
-                                                            />
-                                                        </div>
-                                                        <div className="col-4">
-                                                            <Label>
-                                                                계좌번호
-                                                            </Label>
-                                                            <div className="input-group">
-                                                                <input
-                                                                    type="text"
-                                                                    className="form-control"
-                                                                    placeholder="123456-01-32423934"
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-4">
-                                                            <Label>
-                                                                예금주
-                                                            </Label>
-                                                            <div className="wr-pages-detail__with">
-                                                                <div className="input-group">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="홍길동"
-                                                                    />
-                                                                </div>
-                                                                <MySelect
-                                                                    width={
-                                                                        WITH_SELECT_SIZE
-                                                                    }
-                                                                    options={[]}
-                                                                    value={org}
-                                                                    onChange={() => {}}
-                                                                    placeholder={
-                                                                        '과세'
-                                                                    }
-                                                                    placeHolderFontSize={
-                                                                        16
-                                                                    }
-                                                                />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="row">
-                                                        <div className="col-4">
-                                                            <Label>
-                                                                소득구분
-                                                            </Label>
-                                                            <MySelect
-                                                                width={
-                                                                    FULL_SELECT_SIZE
-                                                                }
-                                                                options={[]}
-                                                                value={org}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    '근로 + 사업'
-                                                                }
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
-                                                            />
-                                                        </div>
-                                                        <div className="col-4">
-                                                            <Label>
-                                                                자동차 지급제도
-                                                            </Label>
-                                                            <MySelect
-                                                                width={
-                                                                    FULL_SELECT_SIZE
-                                                                }
-                                                                options={[]}
-                                                                value={org}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    'S3-2'
-                                                                }
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
-                                                            />
-                                                        </div>
-                                                        <div className="col-4">
-                                                            <Label>
-                                                                일반 지급율
-                                                            </Label>
-                                                            <div className="wr-pages-detail__with">
-                                                                <MySelect
-                                                                    width={260}
-                                                                    options={[]}
-                                                                    value={org}
-                                                                    onChange={() => {}}
-                                                                    placeholder={
-                                                                        '기본 + 성과'
-                                                                    }
-                                                                    placeHolderFontSize={
-                                                                        16
-                                                                    }
-                                                                />
-
-                                                                <div className="input-group align-items-center">
-                                                                    <input
-                                                                        type="text"
-                                                                        className="form-control"
-                                                                        placeholder="85"
-                                                                    />
-                                                                    <span className="ms-2">
-                                                                        %
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div className="row mt-3">
-                                                    <div className="col">
-                                                        <div className="wr-table__wrap">
-                                                            <MyTable
-                                                                columns={
-                                                                    basicPaymentscolumns
-                                                                }
-                                                                data={
-                                                                    basicPayments.data
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="row mt-3">
-                                                    <div className="col">
-                                                        <div className="wr-table__wrap">
-                                                            <MyTable
-                                                                columns={
-                                                                    overridescolumns
-                                                                }
-                                                                data={
-                                                                    overrides.data
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                        <MyLabel>이메일</MyLabel>
+                                        <div className="wr-pages-detail__with">
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="yoongiekim@naver.com"
+                                                />
+                                            </div>
+                                            <MySelect
+                                                width={WITH_SELECT_SIZE}
+                                                options={[]}
+                                                value={org}
+                                                onChange={() => {}}
+                                                placeholder={'naver'}
+                                                placeHolderFontSize={16}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <MyLabel>기본주소</MyLabel>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="08195"
+                                                aria-label="Recipient's username"
+                                                aria-describedby="button-addon2"
+                                            />
+                                            <button
+                                                className="btn btn-primary btn-sm"
+                                                type="button"
+                                                id="button-addon2"
+                                            >
+                                                찾기
+                                            </button>
+                                        </div>
+                                        <div className="input-group">
+                                            <input
+                                                type="text"
+                                                className="form-control"
+                                                placeholder="경기도 안양시 동안구 시민대로 383"
+                                                aria-label="Recipient's username"
+                                                aria-describedby="button-addon2"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <div>
+                                            <MyLabel>상세주소</MyLabel>
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="B동 1102호"
+                                                    aria-label="Recipient's username"
+                                                    aria-describedby="button-addon2"
+                                                />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </main>
+                                <div className="row">
+                                    <div className="col">
+                                        <div>
+                                            <MyLabel>입사일자</MyLabel>
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="2023-02-11"
+                                                    aria-label="Recipient's username"
+                                                    aria-describedby="button-addon2"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <div>
+                                            <MyLabel>유치자</MyLabel>
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="홍길순 (W0010)"
+                                                    aria-label="Recipient's username"
+                                                    aria-describedby="button-addon2"
+                                                />
+                                                <button
+                                                    className="btn btn-primary btn-sm"
+                                                    type="button"
+                                                    id="button-addon2"
+                                                >
+                                                    찾기
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <div>
+                                            <MyLabel>재직현황</MyLabel>
+                                            <MySelect
+                                                width={FULL_SELECT_SIZE}
+                                                options={[]}
+                                                value={org}
+                                                onChange={() => {}}
+                                                placeholder={'상근'}
+                                                placeHolderFontSize={16}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="row">
+                                    <div className="col">
+                                        <div>
+                                            <MyLabel>퇴사일자</MyLabel>
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    placeholder="2023-02-11"
+                                                    aria-label="Recipient's username"
+                                                    aria-describedby="button-addon2"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </section>
+                        <div className="col-4">
+                            <div className="wr-pages-detail__avatar">
+                                <img
+                                    src="http://via.placeholder.com/200x250"
+                                    className="img-thumbnail"
+                                    alt="..."
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="col">
+                    <div className="wr-pages-detail__right">
+                        <ul className="nav nav-tabs" role="tablist">
+                            {DETAIL_PAGE_TABS.map((v) => (
+                                <MyTab
+                                    key={v.id}
+                                    onClick={handleClickTab}
+                                    isActive={v.id === tab.id}
+                                    {...v}
+                                />
+                            ))}
+                        </ul>
+                        <div className="wr-pages-detail__body">
+                            <IncomeSettings
+                                hidden={tab.id !== 'tabIncome'}
+                                {...tab}
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </>

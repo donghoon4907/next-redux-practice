@@ -23,6 +23,16 @@ export interface CoreMenuOption {
     items?: CoreMenuOption[];
 }
 
+export interface CoreTabOption {
+    id: string;
+    panelId: string;
+    label: string;
+}
+
+export interface CoreLinkTabOption extends CoreTabOption {
+    to: string;
+}
+
 export interface CoreFilterOption {
     id: string;
     type: 'checkbox' | 'radio';
