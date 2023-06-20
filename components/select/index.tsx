@@ -47,7 +47,7 @@ export const MySelect: FC<Props> = ({
     placeholder,
     width = 150,
     height = 30,
-    placeHolderFontSize = 12,
+    placeHolderFontSize = 14,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange(option);
@@ -59,6 +59,7 @@ export const MySelect: FC<Props> = ({
             value={value}
             onChange={handleChange}
             placeholder={placeholder}
+            menuPlacement="auto"
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,

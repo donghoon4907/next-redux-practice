@@ -1,21 +1,51 @@
 .wr-pages-detail {
     overflow: hidden;
-    margin: 0 auto;
     // background-color: $gray-200;
 
     &__left {
         --bs-gutter-x: 0;
         overflow-y: auto;
-        height: 780px;
-        padding: 1.5rem 0;
+        height: calc(100vh - 110px);
+        padding: $wr-gutter-size;
     }
 
     &__right {
-        padding: 15px 0;
+        padding: $wr-gutter-size;
+
+        // Custom Bootstrap
+        & .nav-link {
+            background-color: white !important;
+
+            &:not(.active) {
+                background-color: inherit !important;
+                color: $black;
+            }
+
+            &:hover {
+                border-top: 1px solid $wr-divider-color-100;
+                border-right: 1px solid $wr-divider-color-100;
+                background-color: $white !important;
+                color: $black;
+            }
+        }
+    }
+
+    &__block {
+        // padding: 0 !important;
+
+        @include wr-card;
+
+        & + & {
+            margin-top: $wr-gutter-size;
+        }
     }
 
     &__department {
-        font-size: 16px;
+        font-size: 15px;
+    }
+
+    &__avatar {
+        margin-left: 5px;
     }
 
     &__with {
@@ -30,6 +60,15 @@
         border-top: 0;
         height: 715px;
         overflow-y: auto;
+        background-color: $white;
+    }
+
+    &__filter {
+        padding: $wr-gutter-size;
+
+        & .form-control {
+            max-width: 337px;
+        }
     }
 
     // Custom Bootstrap

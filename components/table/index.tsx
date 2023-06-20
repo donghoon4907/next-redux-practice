@@ -19,7 +19,7 @@ interface Props {
     data: any[];
 }
 
-export const Table: FC<Props> = ({ columns, data }) => {
+export const MyTable: FC<Props> = ({ columns, data }) => {
     const tableRef = useRef<HTMLTableElement>(null);
 
     const table = useReactTable({
@@ -32,7 +32,7 @@ export const Table: FC<Props> = ({ columns, data }) => {
         debugTable: true,
         state: {
             pagination: {
-                pageIndex: 1,
+                pageIndex: 0,
                 pageSize: 25,
             },
         },
@@ -66,8 +66,6 @@ export const Table: FC<Props> = ({ columns, data }) => {
             });
         }
     }, []);
-
-    // console.log(table.getRowModel());
 
     return (
         <table className="wr-table table" ref={tableRef}>

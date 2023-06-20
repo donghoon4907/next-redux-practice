@@ -10,8 +10,8 @@ import { Nav } from './Nav';
 
 interface Props {}
 
-export const Header: FC<Props> = () => {
-    const { onToggle } = useDrawer();
+export const MyHeader: FC<Props> = () => {
+    // const { onToggle } = useDrawer();
 
     return (
         <header className="wr-header">
@@ -43,10 +43,10 @@ export const Header: FC<Props> = () => {
                                     <GnbSubMenuItem key={id} {...gnb} />
                                 ))}
                             </div>
-                            <div className="wr-gnb__metadata">
+                            {/* <div className="wr-gnb__metadata">
                                 <span>접속시간 2023-12-23 14:23</span>
                                 <span>접속IP: 202.68.223.123</span>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
@@ -55,9 +55,9 @@ export const Header: FC<Props> = () => {
                 <div className="wr-lnb__inner">
                     <Nav />
                     <div className="wr-lnb__right">
-                        <div className="wr-lnb__metadata">
+                        {/* <div className="wr-lnb__metadata">
                             <span>1경기광주사업단 &#62; 1팀 김서윤</span>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ export const GnbSubMenuItem: FC<Props> = ({ to, label }) => {
     return (
         <span className="wr-gnb__submenu-item">
             <Link href={to}>
-                <span className="wr-gnb__subtitle">{label}</span>
+                <a className="wr-gnb__subtitle">{label}</a>
             </Link>
         </span>
     );

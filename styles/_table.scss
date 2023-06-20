@@ -1,28 +1,13 @@
 .wr-table {
     &__wrap {
-        height: 540px;
+        max-height: 540px;
         overflow: auto;
         background-color: $white;
-        border: 1px solid $wr-divider-color-200;
+        // border: 1px solid $wr-divider-color-200;
+    }
 
-        &::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        &::-webkit-scrollbar-track {
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.1);
-        }
-        &::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            background: rgba(0, 0, 0, 0.2);
-        }
-        &::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 0, 0, 0.4);
-        }
-        &::-webkit-scrollbar-thumb:active {
-            background: rgba(0, 0, 0, 0.9);
-        }
+    &--border {
+        border: 1px solid $wr-divider-color-200;
     }
 
     & .paginaton {
@@ -39,7 +24,7 @@
 
     & thead {
         font-size: 14px;
-        background-color: blue;
+        background-color: $gray-300 !important;
     }
 
     & tbody {

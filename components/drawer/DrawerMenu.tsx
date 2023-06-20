@@ -20,7 +20,7 @@ interface Props {
 export const DrawerMenu: FC<Props> = ({ data }) => {
     const router = useRouter();
 
-    const { onToggle } = useDrawer();
+    // const { onToggle } = useDrawer();
 
     const handleClick = (
         evt: MouseEvent<HTMLAnchorElement>,
@@ -28,7 +28,7 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
     ) => {
         evt.preventDefault();
         // Drawer를 닫습니다.
-        onToggle();
+        // onToggle();
 
         if (router.pathname === item.to) {
             return;

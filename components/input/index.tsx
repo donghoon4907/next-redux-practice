@@ -13,7 +13,7 @@ interface Props {
     onChange: (value: string) => void;
 }
 
-export const Input: FC<Props> = ({ value, onChange }) => {
+export const MyInput: FC<Props> = ({ value, onChange }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     };
