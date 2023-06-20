@@ -20,7 +20,7 @@ interface Props {
 export const DrawerMenu: FC<Props> = ({ data }) => {
     const router = useRouter();
 
-    const { onToggle } = useDrawer();
+    // const { onToggle } = useDrawer();
 
     const handleClick = (
         evt: MouseEvent<HTMLAnchorElement>,
@@ -28,7 +28,7 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
     ) => {
         evt.preventDefault();
         // Drawer를 닫습니다.
-        onToggle();
+        // onToggle();
 
         if (router.pathname === item.to) {
             return;
@@ -37,10 +37,10 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
         const tab = new TabModule();
 
         tab.create({
-            id: `tab--${item.id}`,
+            id: `tab${item.id}`,
             label: item.label,
             to: item.to,
-            level: 1,
+            panelId: `tabpanel${item.id}`,
         });
 
         router.push(item.to);
@@ -53,7 +53,7 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
                     <UncontrolledAccordion
                         stayOpen
                         key={v.id}
-                        style={{ paddingLeft: (v.level - 1) * 30 }}
+                        // style={{ paddingLeft: (v.level - 1) * 30 }}
                     >
                         <AccordionItem>
                             <AccordionHeader targetId={v.id}>

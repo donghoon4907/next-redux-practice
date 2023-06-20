@@ -1,19 +1,23 @@
-import type { CoreMenuOption } from '@interfaces/core';
+import type { CoreLinkTabOption } from '@interfaces/core';
 
 export class TabModule {
-    private tabs: CoreMenuOption[];
+    private tabs: CoreLinkTabOption[] = [];
 
     constructor() {
-        const storedItems = sessionStorage.getItem('tabs');
-
-        this.tabs = storedItems ? JSON.parse(storedItems) : [];
+        this.initialize();
     }
 
     private save() {
         sessionStorage.setItem('tabs', JSON.stringify(this.tabs));
     }
 
-    create(item: CoreMenuOption): void {
+    initialize() {
+        const storedItems = sessionStorage.getItem('tabs');
+
+        this.tabs = storedItems ? JSON.parse(storedItems) : [];
+    }
+
+    create(item: CoreLinkTabOption): void {
         const index = this.tabs.findIndex((tab) => tab.id === item.id);
         if (index === -1) {
             this.tabs.push(item);
@@ -21,11 +25,11 @@ export class TabModule {
         }
     }
 
-    read(id: string): CoreMenuOption | undefined {
+    read(id: string): CoreLinkTabOption | undefined {
         return this.tabs.find((item) => item.id === id);
     }
 
-    update(id: string, updatedItem: CoreMenuOption): void {
+    update(id: string, updatedItem: CoreLinkTabOption): void {
         const index = this.tabs.findIndex((item) => item.id === id);
         if (index !== -1) {
             this.tabs[index] = { ...updatedItem, id };
@@ -43,7 +47,7 @@ export class TabModule {
         return;
     }
 
-    getAll(): CoreMenuOption[] {
+    getAll(): CoreLinkTabOption[] {
         return this.tabs;
     }
 }

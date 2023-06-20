@@ -5,8 +5,8 @@ body {
 
 body {
     position: relative;
-    background-color: $gray-100;
-    color: $black;
+    background-color: $gray-200 !important;
+    color: $black !important;
     font-size: 14px !important;
     line-height: 1.25em !important;
     padding: 0;
@@ -18,6 +18,11 @@ body {
     -webkit-text-size-adjust: none;
 }
 
+ul,
+ol {
+    margin: 0 !important;
+}
+
 a,
 a:hover,
 a:focus,
@@ -25,7 +30,7 @@ a:active,
 a:visited {
     text-decoration: none !important;
     // color: $black !important;
-    cursor: pointer;
+    cursor: pointer !important;
 }
 
 table {
@@ -46,7 +51,28 @@ td {
     white-space: nowrap;
     text-align: center;
 }
+/* 스크롤 설정 */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.1);
+}
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.4);
+}
+::-webkit-scrollbar-thumb:active {
+    background: rgba(0, 0, 0, 0.9);
+}
 
+/* Common Class */
+// 접근성을 위한 텍스트 가리기
 .a11y-hidden {
     position: absolute;
     width: 1px;
@@ -56,35 +82,30 @@ td {
     clip-path: polygon(0 0, 0 0, 0 0);
 }
 
-// Custom Drawer
+/* Custom Drawer */
 .EZDrawer__overlay {
     z-index: $wr-overlay-index !important;
 }
 
-// Custom Rsuite Datepicker
+/* Custom Rsuite Datepicker */
+// Datepicker - 컨테이너 설정
+.rs-picker-menu {
+    border-radius: $wr-border-radius !important;
+    border: 1px solid $wr-divider-color-100 !important;
+}
+// .rs-picker-daterange-header {
+//     display: none;
+// }
+// Datepicker - 입력창 설정
 .rs-btn {
     border-radius: 0 !important;
-}
+    border: 1px solid $wr-divider-color-100 !important;
 
-.rs-btn-default {
-    border: 1px solid $wr-divider-color;
+    &:hover {
+        border: 1px solid $wr-hover-color !important;
+    }
 }
-
-.rs-btn-default:hover {
-    border: 1px solid #575757 !important;
-}
-
-.rs-picker-toggle-value {
-    color: $wr-label-color !important;
-}
-// Placeholder 폰트크기
-.rs-picker-toggle-placeholder {
-    font-size: 12px;
-}
-
 .rs-picker-default .rs-picker-toggle.rs-btn {
-    // padding-top: 5px !important;
-    // padding-bottom: 5px !important;
     padding-left: 6px !important;
 }
 .rs-picker-default .rs-picker-toggle {
@@ -94,16 +115,26 @@ td {
     box-shadow: none !important;
     border: 1px solid #2684ff !important;
 }
-
 .rs-picker-toggle-active:hover {
     border: 1px solid #2684ff !important;
 }
+// Datepicker - Placeholder 설정
+.rs-picker-toggle-value {
+    color: $black !important;
+}
+.rs-stack-item {
+    font-size: $wr-input-size;
+}
+.rs-picker-toggle-placeholder {
+    font-size: $wr-input-size;
+}
 
-// .rs-picker-daterange-header {
-//     display: none;
-// }
+/* Custom Bootstrap */
+// grid gutter 제거
+[class^='col'] {
+    padding: 0 !important;
+}
 
-// Custom Bootstrap
 .input-group > div {
     width: 100%;
 }
@@ -115,16 +146,24 @@ td {
 .row {
     margin: 0 auto;
 }
-// input 설정
+// input 스타일 재정의
 .form-control {
     border-radius: 0 !important;
     font-size: 12px;
     height: 30px;
+
+    &:hover {
+        border: 1px solid $wr-hover-color;
+    }
 }
-// 버튼 설정
+// 버튼 스타일 재정의
 .btn {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 0 !important;
+}
+// 테이블 스타일 재정의
+.table > :not(caption) > * > * {
+    background-color: inherit !important;
 }

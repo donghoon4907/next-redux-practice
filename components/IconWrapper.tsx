@@ -5,7 +5,11 @@ interface Props extends CoreProps, ButtonHTMLAttributes<HTMLButtonElement> {
     className?: string;
 }
 
-export const IconWrapper: FC<Props> = ({ children, className, ...another }) => {
+export const IconWrapper: FC<Props> = ({
+    children,
+    className = '',
+    ...another
+}) => {
     return (
         <button type="button" className={`wr-btn ${className}`} {...another}>
             {children}

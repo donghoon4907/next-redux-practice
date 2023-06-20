@@ -3,6 +3,7 @@ import type { CoreMenuOption } from '@interfaces/core';
 export const GNBS: CoreMenuOption[] = [
     { id: 'gnb1', level: 1, label: '고객', to: '#' },
     { id: 'gnb2', level: 1, label: '영업', to: '#' },
+    { id: 'gnb6', level: 1, label: '계약', to: '#' },
     { id: 'gnb3', level: 1, label: '소득', to: '#' },
     { id: 'gnb4', level: 1, label: '인사', to: '#' },
     { id: 'gnb5', level: 1, label: 'Admin', to: '#' },

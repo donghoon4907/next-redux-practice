@@ -33,7 +33,7 @@ export const MyCheckbox: FC<Props> = ({
                 // onChange={handleChange}
                 id={id}
             />
-            <label className="form-check-label wr-label" htmlFor={id}>
+            <label className="form-check-label" htmlFor={id}>
                 {label}
             </label>
         </div>

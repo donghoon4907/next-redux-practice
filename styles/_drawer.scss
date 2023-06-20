@@ -1,7 +1,7 @@
 .wr-drawer {
     padding: 5px;
     z-index: $wr-drawer-index !important;
-    background-color: $wr-header-color !important;
+    // background-color: $wr-header-color !important;
 
     &__header {
         display: flex;
@@ -19,16 +19,31 @@
     }
 
     &__subtitle {
-        padding: 10px 40px;
-        color: rgba(255, 255, 255, 0.85);
-        font-size: 16px;
+        padding: 5px;
+        color: $black;
+        font-size: 12px;
         line-height: 16px;
         display: block;
+        background-color: inherit;
+        font-weight: bold;
 
         &:hover {
-            background-color: $wr-divider-color;
-            color: $wr-header-color;
+            background-color: $wr-hover-color;
+            color: $white;
         }
+
+        & + & {
+            margin-top: 5px;
+        }
+
+        &::before {
+            content: '-';
+            margin-right: 5px;
+        }
+    }
+
+    & > div {
+        margin-bottom: 5px;
     }
 
     & ul {
@@ -36,12 +51,19 @@
         padding-left: 0 !important;
     }
     // Custom Bootstrap
-    & .accordion-item,
-    .accordion-button {
+    & .accordion-button {
+        background-color: inherit !important;
+        // border: none !important;
+        // color: $black !important;
+        font-size: 14px;
+        border-radius: 0 !important;
+        padding: 0 5px !important;
+        line-height: 30px;
+    }
+
+    & .accordion-item {
         background-color: inherit !important;
         border: none !important;
-        color: $white !important;
-        border-radius: 0 !important;
     }
 
     & .accordion-button {
@@ -49,30 +71,26 @@
     }
 
     & .accordion-body {
-        padding: 0 !important;
+        padding: 5px 0 0 0 !important;
     }
 
     & .accordion-header:hover {
-        background-color: $wr-divider-color;
+        background-color: $wr-hover-color;
 
         & > button {
-            color: $wr-header-color !important;
+            color: $white !important;
         }
 
         .accordion-button::after {
             background-image: escape-svg(
-                url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$wr-header-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>")
+                url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$white}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>")
             );
         }
 
         .accordion-button.collapsed::after {
             background-image: escape-svg(
-                url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$wr-header-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>")
+                url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$white}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>")
             );
         }
-    }
-
-    & .accordion-button {
-        height: 50px;
     }
 }

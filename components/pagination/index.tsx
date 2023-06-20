@@ -1,19 +1,57 @@
 import type { FC } from 'react';
-import type { CoreProps } from '@interfaces/core';
+import type { CoreProps, CoreSelectOption } from '@interfaces/core';
+import { useState } from 'react';
 import {
     LuChevronFirst,
     LuChevronLeft,
     LuChevronRight,
     LuChevronLast,
 } from 'react-icons/lu';
+import { MySelect } from '@components/select';
 
 interface Props extends CoreProps {}
 
-export const Pagination: FC<Props> = () => {
+const LIST_COUNTS: CoreSelectOption[] = [
+    {
+        label: '25개 보기',
+        value: '25',
+    },
+    {
+        label: '50개 보기',
+        value: '50',
+    },
+    {
+        label: '100개 보기',
+        value: '100',
+    },
+    {
+        label: '500개 보기',
+        value: '500',
+    },
+];
+
+export const MyPagination: FC<Props> = () => {
+    const [showCounts, setShowCounts] = useState<CoreSelectOption | null>(
+        LIST_COUNTS[0],
+    );
+
+    const handleChangeCount = (value: CoreSelectOption | null) => {
+        setShowCounts(value);
+    };
+
     return (
         <div className="wr-pagination">
             <div>Total: 4,300</div>
-            <nav aria-label="Page navigation">
+            <nav className="wr-pagination__body" aria-label="Page navigation">
+                <div>
+                    <MySelect
+                        width={150}
+                        options={LIST_COUNTS}
+                        value={showCounts}
+                        onChange={handleChangeCount}
+                        placeholder={'25개 보기'}
+                    />
+                </div>
                 <ul className="pagination">
                     <li className="page-item">
                         <a className="page-link" href="#">

@@ -1,15 +1,19 @@
 .wr-main {
+    width: 100%;
+    height: 100%;
+
     &__wrap {
         position: relative;
         margin: 0 auto;
         width: 100%;
-        height: 810px;
+        height: calc(100vh - 110px);
         overflow: hidden;
     }
 
     &__inner {
-        margin: 0 20px;
-        border: 1px solid $wr-divider-color;
+        // margin: 0 20px;
+        padding: $wr-gutter-size;
+        border-left: 1px solid $wr-divider-color-100;
         border-top: 0;
     }
 }

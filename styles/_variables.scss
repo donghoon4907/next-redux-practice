@@ -1,17 +1,25 @@
 // 기본 폰트
 $wr-base-font: Noto Sans KR;
 // 구분선 색
-$wr-divider-color: #e5e5e5;
+$wr-divider-color-100: #e5e5e5;
+$wr-divider-color-200: rgba(0, 0, 0, 0.175);
+// size
+$wr-gutter-size: 15px;
+$wr-label-size: 12px;
+$wr-input-size: 14px;
+$wr-border-radius: 0;
 // z-index
 $wr-gnb-index: 2100;
 $wr-lnb-index: 1900;
 $wr-drawer-index: 3100;
 $wr-overlay-index: 3000;
+$wr-nav-index: 1000;
 // colors
-$wr-bg-color: #1466a4;
-$wr-header-color: $wr-bg-color;
+$wr-bg-color: $gray-200;
+$wr-header-color: #1466a4;
 $wr-label-color: #aaa;
+$wr-hover-color: $gray-500;
 
 // custom bootstrap variables
-$accordion-icon-active-color: white;
-$accordion-icon-color: white;
+// $accordion-icon-active-color: white;
+// $accordion-icon-color: white;

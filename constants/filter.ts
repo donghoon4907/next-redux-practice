@@ -68,7 +68,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
         {
             id: 'demo-search-filter-select1-1',
             label: '조직',
-            width: 285,
+            width: 255,
             placeholder: '조직',
             items: [
                 {
@@ -92,7 +92,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
         {
             id: 'demo-search-filter-select1-2',
             label: '영업가족',
-            width: 285,
+            width: 255,
             placeholder: '영업가족',
             items: [
                 {

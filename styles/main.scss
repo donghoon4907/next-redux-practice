@@ -2,12 +2,13 @@
 
 @import './font';
 @import './reset';
-@import './variables';
 @import '~bootstrap/scss/bootstrap';
+@import './variables';
 @import './mixins';
 @import './global';
 @import './query';
 @import './header';
+@import './nav';
 @import './layout';
 @import './table';
 @import './pagination';
@@ -19,4 +20,5 @@
 @import './search';
 @import './label';
 @import './group';
+@import './avatar';
 @import './pages/detail';
