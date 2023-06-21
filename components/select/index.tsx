@@ -2,7 +2,8 @@ import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
 import Select from 'react-select';
 
-interface Props {
+export interface MySelectProps {
+    id?: string;
     /**
      * 옵션 목록
      *
@@ -40,7 +41,8 @@ interface Props {
     placeHolderFontSize?: number;
 }
 
-export const MySelect: FC<Props> = ({
+export const MySelect: FC<MySelectProps> = ({
+    id,
     options,
     value,
     onChange,
@@ -55,6 +57,7 @@ export const MySelect: FC<Props> = ({
 
     return (
         <Select
+            id={id}
             options={options}
             value={value}
             onChange={handleChange}

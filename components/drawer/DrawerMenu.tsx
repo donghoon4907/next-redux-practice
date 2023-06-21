@@ -53,7 +53,7 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
                     <UncontrolledAccordion
                         stayOpen
                         key={v.id}
-                        // style={{ paddingLeft: (v.level - 1) * 30 }}
+                        style={{ paddingLeft: (v.level - 1) * 15 }}
                     >
                         <AccordionItem>
                             <AccordionHeader targetId={v.id}>

@@ -53,8 +53,8 @@ td {
 }
 /* 스크롤 설정 */
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 0px;
+    height: 0px;
 }
 ::-webkit-scrollbar-track {
     border-radius: 10px;
@@ -149,8 +149,9 @@ td {
 // input 스타일 재정의
 .form-control {
     border-radius: 0 !important;
-    font-size: 12px;
-    height: 30px;
+    font-size: 16px;
+    padding: 0 6px !important;
+    // height: 30px;
 
     &:hover {
         border: 1px solid $wr-hover-color;

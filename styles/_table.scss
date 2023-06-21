@@ -1,13 +1,13 @@
 .wr-table {
     &__wrap {
-        max-height: 540px;
+        max-height: 610px;
         overflow: auto;
         background-color: $white;
         // border: 1px solid $wr-divider-color-200;
     }
 
     &--border {
-        border: 1px solid $wr-divider-color-200;
+        border: 1px solid $wr-divider-color-300;
     }
 
     & .paginaton {
@@ -25,6 +25,7 @@
     & thead {
         font-size: 14px;
         background-color: $gray-300 !important;
+        border-bottom: 1px solid $wr-divider-color-300;
     }
 
     & tbody {

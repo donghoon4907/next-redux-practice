@@ -1,6 +1,7 @@
 .wr-main {
     width: 100%;
     height: 100%;
+    border-left: 1px solid $wr-divider-color-300;
 
     &__wrap {
         position: relative;
@@ -13,7 +14,6 @@
     &__inner {
         // margin: 0 20px;
         padding: $wr-gutter-size;
-        border-left: 1px solid $wr-divider-color-100;
         border-top: 0;
     }
 }

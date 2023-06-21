@@ -3,10 +3,12 @@ $wr-base-font: Noto Sans KR;
 // 구분선 색
 $wr-divider-color-100: #e5e5e5;
 $wr-divider-color-200: rgba(0, 0, 0, 0.175);
+$wr-divider-color-300: #aaa;
 // size
-$wr-gutter-size: 15px;
+$wr-gutter-size: 10px;
 $wr-label-size: 12px;
 $wr-input-size: 14px;
+$wr-filter-height: 30px;
 $wr-border-radius: 0;
 // z-index
 $wr-gnb-index: 2100;
@@ -15,9 +17,14 @@ $wr-drawer-index: 3100;
 $wr-overlay-index: 3000;
 $wr-nav-index: 1000;
 // colors
+$wr-primary-color: #003cdc;
+$wr-secondary-color: #5bc2e7;
 $wr-bg-color: $gray-200;
-$wr-header-color: #1466a4;
+// $wr-header-color: #1466a4;
+$wr-header-color: $wr-primary-color;
 $wr-label-color: #aaa;
+$wr-select-label-active-color: #e7edcb;
+$wr-select-label-disable-color: #e2eaf2;
 $wr-hover-color: $gray-500;
 
 // custom bootstrap variables

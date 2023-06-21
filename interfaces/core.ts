@@ -29,7 +29,13 @@ export interface CoreTabOption {
     label: string;
 }
 
-export interface CoreLinkTabOption extends CoreTabOption {
+export interface CoreTabpanelOption extends CoreTabOption {
+    hidden: boolean;
+}
+
+export interface CoreLinkTabOption {
+    id: string;
+    label: string;
     to: string;
 }
 
@@ -38,6 +44,15 @@ export interface CoreFilterOption {
     type: 'checkbox' | 'radio';
     label: string;
     value: string;
+}
+
+export interface CoreSelectFilterOption {
+    id: string;
+    label: string;
+    width: number;
+    items: CoreSelectOption[];
+    colspan: number;
+    placeholder: string;
 }
 
 export type CoreSetState<T> = Dispatch<SetStateAction<T>>;

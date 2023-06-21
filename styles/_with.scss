@@ -1,0 +1,28 @@
+.wr-with {
+    &__wrap {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        // border: 1px solid $wr-divider-color-100;
+    }
+
+    &__label {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid $wr-divider-color-100;
+        border-right-width: 0;
+        height: $wr-filter-height;
+        min-width: 75px;
+        max-width: 75px;
+        font-size: 13px;
+
+        &--active {
+            background-color: $wr-select-label-active-color;
+        }
+
+        &--disable {
+            background-color: $wr-select-label-disable-color;
+        }
+    }
+}

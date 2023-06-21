@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import Image from 'next/image';
 import { DrawerMenu } from '@components/drawer/DrawerMenu';
 import { ASIDE_MENUS } from '@constants/gnb';
 
@@ -8,13 +9,19 @@ export const MyNav: FC<Props> = () => {
     return (
         <div className="wr-nav">
             <div className="wr-nav__logo">
-                <img src="http://via.placeholder.com/140x50" />
+                <Image
+                    src="/images/logo2.png"
+                    alt="Logo"
+                    width={130}
+                    height={80}
+                />
             </div>
             <div className="wr-nav__header">
-                <span>김서윤 님</span>
+                <span className="wr-nav__name">김서윤&nbsp;</span>
+                <span className="wr-nav__title">님</span>
             </div>
             <div className="wr-nav__body wr-drawer">
-                {Array.from({ length: 30 }).map((_, i) => (
+                {Array.from({ length: 0 }).map((_, i) => (
                     <DrawerMenu key={`DummyNav${i}`} data={ASIDE_MENUS} />
                 ))}
                 <DrawerMenu data={ASIDE_MENUS} />

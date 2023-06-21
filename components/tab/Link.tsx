@@ -50,23 +50,22 @@ export const LinkTab: FC<Props> = ({
     };
 
     return (
-        <li className="nav-item wr-tab">
+        <li className={`wr-tab ${
+            router.pathname === to ? 'active' : ''
+        }`} tabIndex={isActive ? 0 : -1}>
             <a
-                className={`nav-link onlyLink ${
-                    router.pathname === to ? 'active' : ''
-                } ${isExpand ? '' : 'single'}`}
+                className={`wr-tab__link ${isExpand ? '' : 'single'}`}
                 aria-current="page"
                 href={to}
                 onClick={handleClick}
                 // aria-controls={panelId}
-                tabIndex={isActive ? 0 : -1}
             >
                 {label}
             </a>
             {isExpand && (
                 <div className="wr-tab__icon">
                     <IconWrapper onClick={handleClose}>
-                        <MdClose size={15} color="black" />
+                        <MdClose size={13} color={router.pathname === to ? 'black' : '#efefef'} />
                     </IconWrapper>
                 </div>
             )}

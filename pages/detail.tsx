@@ -2,13 +2,19 @@ import type { NextPage } from 'next';
 import type { CoreSelectOption, CoreTabOption } from '@interfaces/core';
 import Head from 'next/head';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { MySelect } from '@components/select';
 import { MyLabel } from '@components/label';
+import { DETAIL_PAGE_TABS } from '@constants/tab';
+import { MyTab } from '@components/tab';
+import { IncomeSettings } from '@partials/detail/tabpanels/IncomeSettings';
+import { GuaranteeSettings } from '@partials/detail/tabpanels/GuaranteeSettings';
+import { AuthoritySettings } from '@partials/detail/tabpanels/AuthoritySettings';
+import { QualSettings } from '@partials/detail/tabpanels/QualSettings';
 
 // 임시
-import { useDispatch } from 'react-redux';
 import {
     getBasicPaymentsRequest,
     getBasicPaymentsSuccess,
@@ -17,9 +23,6 @@ import {
     getOverridesRequest,
     getOverridesSuccess,
 } from '@actions/long/get-overrides.action';
-import { DETAIL_PAGE_TABS } from '@constants/tab';
-import { MyTab } from '@components/tab';
-import { IncomeSettings } from '@partials/detail/IncomeSettings';
 
 const FULL_SELECT_SIZE = 337;
 
@@ -391,6 +394,18 @@ const Detail: NextPage = () => {
                         <div className="wr-pages-detail__body">
                             <IncomeSettings
                                 hidden={tab.id !== 'tabIncome'}
+                                {...tab}
+                            />
+                            <GuaranteeSettings
+                                hidden={tab.id !== 'tabGuarantee'}
+                                {...tab}
+                            />
+                            <AuthoritySettings
+                                hidden={tab.id !== 'tabAuthority'}
+                                {...tab}
+                            />
+                            <QualSettings
+                                hidden={tab.id !== 'tabQual'}
                                 {...tab}
                             />
                         </div>

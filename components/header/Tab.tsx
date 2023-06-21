@@ -1,12 +1,12 @@
 import type { FC } from 'react';
-import type { CoreMenuOption } from '@interfaces/core';
+import type { CoreLinkTabOption } from '@interfaces/core';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { TabModule } from '@utils/storage';
 import { removeTab } from '@actions/tab/tab.action';
 import { LinkTab } from '@components/tab/Link';
 
-interface Props extends CoreMenuOption {
+interface Props extends CoreLinkTabOption {
     /**
      * 단독 여부
      */
