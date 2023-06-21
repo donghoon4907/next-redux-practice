@@ -132,14 +132,15 @@ const Demo: NextPage = () => {
                                 {/* <div className="col-4"></div> */}
                             </div>
 
-                            <div className="row mt-3">
-                                <div className="col-4 d-flex flex-column">
+                            <div className="row mt-2">
+                                <div className="col-6">
                                     <WithLabel
-                                        id="ㅇㅁㅅㄷ"
+                                        id="datepicker"
                                         label="기간"
                                         type="active"
                                     >
                                         <DateRangePicker
+                                            id="datepicker"
                                             format="yyyy-MM-dd"
                                             placeholder="기간을 입력하세요"
                                             size="sm"
@@ -151,7 +152,7 @@ const Demo: NextPage = () => {
                                             onChange={handleChangeDate}
                                             // showMeridian
                                             style={{
-                                                width: 255,
+                                                width: 345,
                                             }}
                                         />
                                     </WithLabel>
@@ -195,7 +196,7 @@ const Demo: NextPage = () => {
                                     </WithLabel>
                                 </div>
                             </div>
-                            <div className="row mt-3">
+                            <div className="row mt-2">
                                 <div className="col mt-2 wr-filter">
                                     {X_SEARCH_FILTERS.map((filter, index) => {
                                         return (
@@ -234,10 +235,8 @@ const Demo: NextPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-3">
-                    <div className="wr-table__wrap wr-table--border">
-                        <MyTable columns={columns} data={data} />
-                    </div>
+                <div className="wr-table__wrap wr-table--border mt-2">
+                    <MyTable columns={columns} data={data} />
                 </div>
 
                 <MyPagination />

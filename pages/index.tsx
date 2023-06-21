@@ -132,24 +132,30 @@ const Demo: NextPage = () => {
                                 {/* <div className="col-4"></div> */}
                             </div>
 
-                            <div className="row">
-                                <div className="col-4 d-flex flex-column">
-                                    <MyLabel>기간</MyLabel>
-                                    <DateRangePicker
-                                        format="yyyy-MM-dd"
-                                        placeholder="기간을 입력하세요"
-                                        size="sm"
-                                        // defaultCalendarValue={[
-                                        //     new Date('2022-02-01'),
-                                        //     new Date('2022-03-01'),
-                                        // ]}
-                                        value={d}
-                                        onChange={handleChangeDate}
-                                        // showMeridian
-                                        style={{
-                                            width: 255,
-                                        }}
-                                    />
+                            <div className="row mt-2">
+                                <div className="col-6">
+                                    <WithLabel
+                                        id="datepicker"
+                                        label="기간"
+                                        type="active"
+                                    >
+                                        <DateRangePicker
+                                            id="datepicker"
+                                            format="yyyy-MM-dd"
+                                            placeholder="기간을 입력하세요"
+                                            size="sm"
+                                            // defaultCalendarValue={[
+                                            //     new Date('2022-02-01'),
+                                            //     new Date('2022-03-01'),
+                                            // ]}
+                                            value={d}
+                                            onChange={handleChangeDate}
+                                            // showMeridian
+                                            style={{
+                                                width: 345,
+                                            }}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +196,7 @@ const Demo: NextPage = () => {
                                     </WithLabel>
                                 </div>
                             </div>
-                            <div className="row mt-3">
+                            <div className="row mt-2">
                                 <div className="col mt-2 wr-filter">
                                     {X_SEARCH_FILTERS.map((filter, index) => {
                                         return (
@@ -229,10 +235,8 @@ const Demo: NextPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-3">
-                    <div className="wr-table__wrap wr-table--border">
-                        <MyTable columns={columns} data={data} />
-                    </div>
+                <div className="wr-table__wrap wr-table--border mt-2">
+                    <MyTable columns={columns} data={data} />
                 </div>
 
                 <MyPagination />

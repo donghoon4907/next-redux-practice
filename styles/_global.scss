@@ -29,7 +29,6 @@ a:focus,
 a:active,
 a:visited {
     text-decoration: none !important;
-    // color: $black !important;
     cursor: pointer !important;
 }
 
@@ -138,15 +137,16 @@ td {
 .input-group > div {
     width: 100%;
 }
-
+// label 공통 스타일 재정의
 .form-label {
     margin-top: 0.5rem;
 }
-// 상위 컨테이너 이상의 너비를 갖지 않도록 조정
+// grid row 공통 스타일 재정의
 .row {
+    // 상위 컨테이너 이상의 너비를 갖지 않도록 조정
     margin: 0 auto;
 }
-// input 스타일 재정의
+// input 공통 스타일 재정의
 .form-control {
     border-radius: 0 !important;
     font-size: 16px;
@@ -157,14 +157,14 @@ td {
         border: 1px solid $wr-hover-color;
     }
 }
-// 버튼 스타일 재정의
+// 버튼 공통 스타일 재정의
 .btn {
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 0 !important;
 }
-// 테이블 스타일 재정의
+// 테이블 관련 공통 스타일 재정의
 .table > :not(caption) > * > * {
     background-color: inherit !important;
 }
