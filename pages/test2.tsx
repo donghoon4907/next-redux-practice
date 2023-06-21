@@ -26,6 +26,8 @@ import {
 
 // 임시
 import { useDispatch } from 'react-redux';
+import { WithLabel } from '@components/WithLabel';
+import { SearchInput } from '@components/input/Search';
 
 const Demo: NextPage = () => {
     const dispatch = useDispatch();
@@ -107,15 +109,24 @@ const Demo: NextPage = () => {
                         <div className="col-6">
                             <div className="row">
                                 {X_SEARCH_SELECTS[0].map((v) => (
-                                    <div className="col-4" key={v.id}>
-                                        <MyLabel>{v.label}</MyLabel>
-                                        <MySelect
-                                            width={v.width}
-                                            options={v.items}
-                                            value={org}
-                                            onChange={handleChange}
-                                            placeholder={v.placeholder}
-                                        />
+                                    <div
+                                        className={`col-${v.colspan}`}
+                                        key={v.id}
+                                    >
+                                        <WithLabel
+                                            id={v.id}
+                                            label={v.label}
+                                            type="active"
+                                        >
+                                            <MySelect
+                                                id={v.id}
+                                                width={v.width}
+                                                options={v.items}
+                                                value={org}
+                                                onChange={handleChange}
+                                                placeholder={v.placeholder}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 ))}
                                 {/* <div className="col-4"></div> */}
@@ -143,40 +154,40 @@ const Demo: NextPage = () => {
                             </div>
                         </div>
                         <div className="col-6">
-                            <div className="row row-cols-6">
+                            <div className="row">
                                 {X_SEARCH_SELECTS[1].map((v) => (
-                                    <div className="col" key={v.id}>
-                                        <MyLabel>{v.label}</MyLabel>
-                                        <MySelect
-                                            width={v.width}
-                                            options={v.items}
-                                            value={org}
-                                            onChange={handleChange}
-                                            placeholder={v.placeholder}
-                                        />
+                                    <div
+                                        className={`col-${v.colspan}`}
+                                        key={v.id}
+                                    >
+                                        <WithLabel
+                                            id={v.id}
+                                            label={v.label}
+                                            type="active"
+                                        >
+                                            <MySelect
+                                                id={v.id}
+                                                width={v.width}
+                                                options={v.items}
+                                                value={org}
+                                                onChange={handleChange}
+                                                placeholder={v.placeholder}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 ))}
                                 <div className="col-6">
-                                    <MyLabel>검색</MyLabel>
-                                    <form
-                                        className="wr-search__bar"
-                                        role="search"
+                                    <WithLabel
+                                        id="search"
+                                        label={'검색'}
+                                        type="disable"
                                     >
-                                        <div className="input-group">
-                                            <input
-                                                type="text"
-                                                className="form-control"
-                                                placeholder="검색어를 입력하세요"
-                                                aria-label="검색어를 입력하세요"
-                                            />
-                                            <button
-                                                className="btn btn-primary"
-                                                type="button"
-                                            >
-                                                <LuSearch size={15} />
-                                            </button>
-                                        </div>
-                                    </form>
+                                        <SearchInput
+                                            id="search"
+                                            value={''}
+                                            onChange={() => {}}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                             <div className="row mt-3">

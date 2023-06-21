@@ -29,7 +29,7 @@ export const MyTable: FC<Props> = ({ columns, data }) => {
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        debugTable: true,
+        debugTable: false,
         state: {
             pagination: {
                 pageIndex: 0,

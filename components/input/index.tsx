@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 
-interface Props {
+export interface MyInputProps {
+    id?: string;
     /**
      * 외부 상태값
      *
@@ -13,7 +14,7 @@ interface Props {
     onChange: (value: string) => void;
 }
 
-export const MyInput: FC<Props> = ({ value, onChange }) => {
+export const MyInput: FC<MyInputProps> = ({ id, value, onChange }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event.target.value);
     };
@@ -21,6 +22,7 @@ export const MyInput: FC<Props> = ({ value, onChange }) => {
     return (
         <div className="input-group">
             <input
+                id={id}
                 type="text"
                 className="form-control"
                 value={value}

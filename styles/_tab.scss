@@ -1,37 +1,74 @@
 .wr-tab {
     position: relative;
-    font-size: 14px;
+    font-size: 16px;
+    font-weight: 500;
+    border: 1px solid $wr-divider-color-300;
+    color: $white;
 
-    // Custom Bootstrap
-    & .nav-link {
-        border-top-left-radius: 0 !important;
-        border-top-right-radius: 0 !important;
-        padding-left: 15px !important;
-        padding-right: 15px !important;
-        background-color: $wr-bg-color !important;
-        color: $black;
+    &__wrap {
+        height: 35px;
+        padding-left: 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
 
-        // 링크형 탭인 경우
-        &.onlyLink {
-            border-width: 0 !important;
-            border-bottom: 1px solid $wr-bg-color !important;
-        }
+    &__link {
+        padding: 0 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        color: inherit;
+
         // 단독인 경우
         &:not(.single) {
-            padding-right: 40px !important;
+            padding-right: 40px;
         }
-        // 활성화 되지 않은 경우
-        &:not(.active) {
-            background-color: inherit !important;
-            color: $white;
-        }
-
-        &:hover {
-            // border-bottom: 1px solid $white;
-            background-color: $wr-bg-color !important;
-            color: $black;
-        }
+        
     }
+
+    & + & {
+        border-left: 0;
+    }
+
+    // 활성화된 경우
+    &.active {
+        background-color: $wr-bg-color;
+        color: $wr-primary-color;
+        border-bottom: 0;
+    }
+
+    &:hover {
+        background-color: $wr-bg-color;
+        color: $wr-primary-color;
+
+        & svg {
+            fill: $black;
+        }
+        
+    }
+    // Custom Bootstrap
+    // & .nav-link {
+    //     border-top-left-radius: 0 !important;
+    //     border-top-right-radius: 0 !important;
+    //     padding-left: 15px !important;
+    //     padding-right: 15px !important;
+    //     background-color: inherit !important;
+    //     color: inherit !important;
+    //     font-size: inherit !important;
+    //     border: 0 !important;
+    //     height: 100%;
+
+    //     // 단독인 경우
+    //     &:not(.single) {
+    //         padding-right: 40px !important;
+    //     }
+    //     // 활성화 되지 않은 경우
+    //     &.active {
+    //         background-color: $wr-bg-color !important;
+    //         color: $wr-primary-color !important;
+    //     }
+    // }
 
     // 아이콘 영역
     &__icon {

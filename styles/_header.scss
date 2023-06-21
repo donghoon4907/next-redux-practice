@@ -137,13 +137,14 @@
 }
 
 .wr-lnb {
-    // background: #fff;
+    background: $wr-secondary-color;
     position: relative;
     z-index: $wr-lnb-index;
     overflow: hidden;
 
     &__inner {
         position: relative;
+        display: flex;
 
         & .nav {
             height: 35px;
@@ -151,11 +152,13 @@
     }
 
     &__right {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        text-align: right;
+        flex: 1;
+        border-bottom: 1px solid $wr-divider-color-300;
+        // position: absolute;
+        // top: 50%;
+        // right: 0;
+        // transform: translateY(-50%);
+        // text-align: right;
     }
 
     &__metadata {

@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
-import type { CoreSelectOption, CoreTabOption } from '@interfaces/core';
+import type { CoreSelectOption, CoreTabpanelOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { LongState } from '@reducers/long';
 import { useState, useMemo } from 'react';
@@ -8,20 +8,15 @@ import { MyLabel } from '@components/label';
 import { MySelect } from '@components/select';
 import { MyTable } from '@components/table';
 import { useSelector } from 'react-redux';
+import { DisconnectedLabel } from '@components/label/DisconnectedLabel';
 
 const FULL_SELECT_SIZE = 337;
 
 const WITH_SELECT_SIZE = 100;
 
-interface Props extends CoreTabOption {
-    /**
-     * 숨김 여부
-     *
-     */
-    hidden: boolean;
-}
+interface Props extends CoreTabpanelOption {}
 
-export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
+export const AuthoritySettings: FC<Props> = ({ id, panelId, hidden }) => {
     const { basicPayments, overrides } = useSelector<AppState, LongState>(
         (props) => props.long,
     );
@@ -66,7 +61,7 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
 
     return (
         <div
-            className="wr-pages-detail__filter"
+            className="wr-pages-detail__income"
             role="tabpanel"
             id={panelId}
             aria-labelledby={id}
@@ -163,7 +158,7 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
             </div>
             <div className="row mt-3">
                 <div className="col">
-                    <MyLabel>장기 기본 지급</MyLabel>
+                    <DisconnectedLabel>장기 기본 지급</DisconnectedLabel>
                     <div className="wr-table__wrap">
                         <MyTable
                             columns={basicPaymentscolumns}
@@ -174,7 +169,7 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
             </div>
             <div className="row mt-3">
                 <div className="col">
-                    <MyLabel>장기 오버라이드</MyLabel>
+                    <DisconnectedLabel>장기 오버라이드</DisconnectedLabel>
                     <div className="wr-table__wrap">
                         <MyTable
                             columns={overridesColumns}

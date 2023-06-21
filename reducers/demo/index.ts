@@ -1,4 +1,3 @@
-import type { Demo } from '@interfaces/demo';
 import type { Reducer } from 'redux';
 import produce from 'immer';
 import { DemoActionTypes } from '@actions/demo/demo.action';

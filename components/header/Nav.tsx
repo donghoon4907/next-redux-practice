@@ -10,7 +10,7 @@ export const HeaderNav: FC<Props> = () => {
     const { tabs } = useSelector<AppState, TabState>((props) => props.tab);
 
     return (
-        <ul className="nav nav-tabs">
+        <ul className="wr-tab__wrap">
             {tabs.map((tab) => (
                 <HeaderTab key={tab.id} isSingle={tabs.length === 1} {...tab} />
             ))}

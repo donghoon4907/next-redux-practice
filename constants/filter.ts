@@ -1,4 +1,7 @@
-import type { CoreFilterOption, CoreSelectOption } from '@interfaces/core';
+import type {
+    CoreFilterOption,
+    CoreSelectFilterOption,
+} from '@interfaces/core';
 
 export const X_SEARCH_FILTERS: CoreFilterOption[][] = [
     [
@@ -55,21 +58,14 @@ export const X_SEARCH_FILTERS: CoreFilterOption[][] = [
     ],
 ];
 
-interface CoreSelectFilterOption {
-    id: string;
-    label: string;
-    width: number;
-    items: CoreSelectOption[];
-    placeholder: string;
-}
-
 export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
     [
         {
             id: 'demo-search-filter-select1-1',
             label: '조직',
-            width: 255,
-            placeholder: '조직',
+            width: 345,
+            colspan: 6,
+            placeholder: '전체',
             items: [
                 {
                     label: '회사전체',
@@ -92,8 +88,9 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
         {
             id: 'demo-search-filter-select1-2',
             label: '영업가족',
-            width: 255,
-            placeholder: '영업가족',
+            width: 130,
+            colspan: 3,
+            placeholder: '전체',
             items: [
                 {
                     label: '김동득 (W0412)',
@@ -101,13 +98,12 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
                 },
             ],
         },
-    ],
-    [
         {
-            id: 'demo-search-filter-select2-1',
+            id: 'demo-search-filter-select1-3',
             label: '지역',
-            width: 120,
-            placeholder: '지역',
+            width: 130,
+            colspan: 3,
+            placeholder: '전체',
             items: [
                 {
                     label: '서울',
@@ -115,11 +111,14 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
                 },
             ],
         },
+    ],
+    [
         {
             id: 'demo-search-filter-select2-2',
             label: '유입경로',
-            width: 120,
-            placeholder: '유입경로',
+            width: 130,
+            colspan: 3,
+            placeholder: '전체',
             items: [
                 {
                     label: '모집',
@@ -130,8 +129,9 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
         {
             id: 'demo-search-filter-select2-3',
             label: '고객등급',
-            width: 120,
-            placeholder: '고객등급',
+            width: 130,
+            colspan: 3,
+            placeholder: '전체',
             items: [
                 {
                     label: 'A',
@@ -144,8 +144,9 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
         {
             id: 'demo-search-filter-select3-1',
             label: '보험사',
-            width: 200,
-            placeholder: '보험사',
+            width: 120,
+            colspan: 2,
+            placeholder: '전체',
             items: [
                 {
                     label: 'AM영업',
@@ -157,7 +158,8 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
             id: 'demo-search-filter-select3-2',
             label: '상품종목',
             width: 200,
-            placeholder: '상품종목',
+            colspan: 2,
+            placeholder: '전체',
             items: [
                 {
                     label: 'AM영업',
@@ -169,6 +171,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
             id: 'demo-search-filter-select3-3',
             label: '등급',
             width: 200,
+            colspan: 2,
             placeholder: '등급',
             items: [
                 {
@@ -181,6 +184,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
             id: 'demo-search-filter-select3-4',
             label: '인수구분',
             width: 200,
+            colspan: 2,
             placeholder: '인수구분',
             items: [
                 {

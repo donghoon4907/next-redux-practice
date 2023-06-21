@@ -10,4 +10,13 @@
         height: 30px;
         padding: 0 !important;
     }
+
+    &__form {
+        width: 100%;
+        height: $wr-filter-height;
+
+        & .input-group {
+            height: 100%;
+        }
+    }
 }
