@@ -188,11 +188,7 @@ const Demo: NextPage = () => {
                                         label={'검색'}
                                         type="disable"
                                     >
-                                        <SearchInput
-                                            id="search"
-                                            value={''}
-                                            onChange={() => {}}
-                                        />
+                                        <SearchInput id="search" />
                                     </WithLabel>
                                 </div>
                             </div>
