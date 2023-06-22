@@ -6,7 +6,7 @@ import {
     AccordionHeader,
     AccordionItem,
 } from 'reactstrap';
-import { useDrawer } from '@hooks/use-drawer';
+// import { useDrawer } from '@hooks/use-drawer';
 import { CoreMenuOption } from '@interfaces/core';
 import { TabModule } from '@utils/storage';
 

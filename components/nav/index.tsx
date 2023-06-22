@@ -12,9 +12,10 @@ export const MyNav: FC<Props> = () => {
             <div className="wr-nav__logo">
                 <Link href="/">
                     <a>
+                        <h1 className="a11y-hidden">Wooriinsumanlife</h1>
                         <Image
                             src="/images/logo2.png"
-                            alt="회사 로고"
+                            alt="Wooriinsumanlife"
                             width={130}
                             height={80}
                         />

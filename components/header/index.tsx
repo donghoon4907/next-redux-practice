@@ -23,13 +23,7 @@ export const MyHeader: FC<Props> = () => {
                                     <LuMenu size={30} color="white" />
                                 </IconWrapper>
                             </span> */}
-                            {/* <span className="wr-gnb__logo">
-                                    <a className="wr-logo__link">
-                                        <span className="wr-logo__icon">
-                                            Wooriinsuman
-                                        </span>
-                                    </a>
-                                </span> */}
+                            <h2 className="a11y-hidden">서비스메뉴</h2>
                             <ul className="wr-gnb__menu" role="menubar">
                                 {GNBS.map(({ id, ...gnb }) => (
                                     <GnbMenuItem key={id} {...gnb} />
@@ -37,7 +31,7 @@ export const MyHeader: FC<Props> = () => {
                             </ul>
                         </nav>
                         <div className="wr-gnb__right">
-                            <h2 className="a11y-hidden">서비스링크</h2>
+                            <h2 className="a11y-hidden">사용자서비스</h2>
                             <ul className="wr-gnb__services">
                                 {SUBMENUS.map(({ id, ...gnb }) => (
                                     <GnbSubMenuItem key={id} {...gnb} />
