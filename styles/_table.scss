@@ -1,6 +1,6 @@
 .wr-table {
     &__wrap {
-        max-height: 610px;
+        max-height: 630px;
         overflow: auto;
         background-color: $white;
         // border: 1px solid $wr-divider-color-200;
@@ -10,18 +10,17 @@
         border: 1px solid $wr-divider-color-300;
     }
 
-    & .paginaton {
-        margin: 0 !important;
-    }
-
     &.table {
         margin-bottom: 0 !important;
+    }
+
+    & .paginaton {
+        margin: 0 !important;
     }
 
     & .table > :not(caption) > * > * {
         padding: 6px 5px !important;
     }
-
     & thead {
         font-size: 14px;
         background-color: $gray-300 !important;

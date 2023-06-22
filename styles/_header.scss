@@ -56,22 +56,22 @@
         overflow: hidden;
         display: flex;
         align-items: center;
+    }
 
-        &-item {
-            float: left;
-            color: #fff;
-            font-size: 18px;
-            line-height: inherit;
+    &__menuitem {
+        float: left;
+        color: #fff;
+        font-size: 18px;
+        line-height: inherit;
 
-            & > a {
-                display: inline-block;
-                vertical-align: top;
-                overflow: hidden;
-            }
+        & > a {
+            display: inline-block;
+            vertical-align: top;
+            overflow: hidden;
         }
     }
 
-    &__submenu {
+    &__services {
         width: 100%;
         height: 40px;
         display: flex;
@@ -90,6 +90,7 @@
     &__title {
         font-size: 18px;
         line-height: 24px;
+        font-weight: bold;
         height: 24px;
         position: relative;
         display: inline-block;

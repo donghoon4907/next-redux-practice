@@ -85,7 +85,7 @@ export const MyTable: FC<Props> = ({ columns, data }) => {
                     </tr>
                 ))}
             </thead>
-            <tbody style={{ width: 1200 }}>
+            <tbody>
                 {table.getRowModel().rows.map((row) => (
                     <tr key={row.id}>
                         {row.getVisibleCells().map((cell) => {

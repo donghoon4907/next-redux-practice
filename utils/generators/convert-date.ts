@@ -59,6 +59,7 @@ export function convertDateMiddleware(saga: any): Saga {
 
             payload.callback?.(data);
         } catch (err) {
+            // 에러 데이터 구조 확인 후 error action creator 추가
             console.log(err);
         }
     };

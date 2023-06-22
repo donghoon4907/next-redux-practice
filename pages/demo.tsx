@@ -7,12 +7,10 @@ import Head from 'next/head';
 import { useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
-import { LuSearch } from 'react-icons/lu';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { demoRequest, demoSuccess } from '@actions/demo/demo.action';
 import { MySelect } from '@components/select';
-import { MyLabel } from '@components/label';
 import { X_SEARCH_FILTERS, X_SEARCH_SELECTS } from '@constants/filter';
 import { DateRangePicker } from 'rsuite';
 import { MyCheckbox } from '@components/checkbox';
@@ -132,14 +130,15 @@ const Demo: NextPage = () => {
                                 {/* <div className="col-4"></div> */}
                             </div>
 
-                            <div className="row mt-3">
-                                <div className="col-4 d-flex flex-column">
+                            <div className="row mt-2">
+                                <div className="col-6">
                                     <WithLabel
-                                        id="ㅇㅁㅅㄷ"
+                                        id="datepicker"
                                         label="기간"
                                         type="active"
                                     >
                                         <DateRangePicker
+                                            id="datepicker"
                                             format="yyyy-MM-dd"
                                             placeholder="기간을 입력하세요"
                                             size="sm"
@@ -151,7 +150,7 @@ const Demo: NextPage = () => {
                                             onChange={handleChangeDate}
                                             // showMeridian
                                             style={{
-                                                width: 255,
+                                                width: 345,
                                             }}
                                         />
                                     </WithLabel>
@@ -187,15 +186,11 @@ const Demo: NextPage = () => {
                                         label={'검색'}
                                         type="disable"
                                     >
-                                        <SearchInput
-                                            id="search"
-                                            value={''}
-                                            onChange={() => {}}
-                                        />
+                                        <SearchInput id="search" />
                                     </WithLabel>
                                 </div>
                             </div>
-                            <div className="row mt-3">
+                            <div className="row mt-2">
                                 <div className="col mt-2 wr-filter">
                                     {X_SEARCH_FILTERS.map((filter, index) => {
                                         return (
@@ -234,10 +229,8 @@ const Demo: NextPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="mt-3">
-                    <div className="wr-table__wrap wr-table--border">
-                        <MyTable columns={columns} data={data} />
-                    </div>
+                <div className="wr-table__wrap wr-table--border mt-2">
+                    <MyTable columns={columns} data={data} />
                 </div>
 
                 <MyPagination />

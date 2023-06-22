@@ -381,7 +381,7 @@ const Detail: NextPage = () => {
                 </div>
                 <div className="col">
                     <div className="wr-pages-detail__right">
-                        <ul className="nav nav-tabs" role="tablist">
+                        <ul className="wr-tab__wrap" role="tablist">
                             {DETAIL_PAGE_TABS.map((v) => (
                                 <MyTab
                                     key={v.id}
@@ -390,6 +390,7 @@ const Detail: NextPage = () => {
                                     {...v}
                                 />
                             ))}
+                            <li className="wr-tab__line"></li>
                         </ul>
                         <div className="wr-pages-detail__body">
                             <IncomeSettings

@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
 import Select from 'react-select';
+import variables from '@styles/_variables.module.scss';
 
 export interface MySelectProps {
     id?: string;
@@ -30,11 +31,6 @@ export interface MySelectProps {
      */
     width?: number;
     /**
-     * 셀렉트 높이
-     *
-     */
-    height?: number;
-    /**
      * Placeholder 폰트 크기
      *
      */
@@ -48,8 +44,7 @@ export const MySelect: FC<MySelectProps> = ({
     onChange,
     placeholder,
     width = 150,
-    height = 30,
-    placeHolderFontSize = 14,
+    placeHolderFontSize = variables.filterFontSize,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange(option);
@@ -67,14 +62,18 @@ export const MySelect: FC<MySelectProps> = ({
                 control: (baseStyles, state) => ({
                     ...baseStyles,
                     width: `${width}px`,
-                    minHeight: `${height}px`,
-                    height: `${height}px`,
-                    borderColor: '#dee2e6',
-                    borderRadius: 0,
+                    minHeight: variables.filterHeight,
+                    height: variables.filterHeight,
+                    borderColor: variables.dividerColor,
+                    borderRadius: variables.filterBorderRadius,
+                    boxShadow: 'none',
+                    '&:hover': {
+                        borderColor: variables.dividerColor,
+                    },
                 }),
                 valueContainer: (provided, state) => ({
                     ...provided,
-                    height: `${height}px`,
+                    height: variables.filterHeight,
                     padding: '0 6px',
                 }),
                 placeholder: (defaultStyles) => {
@@ -93,7 +92,31 @@ export const MySelect: FC<MySelectProps> = ({
                 }),
                 indicatorsContainer: (provided, state) => ({
                     ...provided,
-                    height: `${height}px`,
+                    height: variables.filterHeight,
+                }),
+                dropdownIndicator: (provided) => ({
+                    ...provided,
+                    color: variables.dividerColor,
+                }),
+                menu: (provided, state) => ({
+                    ...provided,
+                    borderRadius: variables.filterBorderRadius,
+                    margin: 0,
+                    border: `1px solid ${variables.dividerColor}`,
+                    borderTop: 'none',
+                    boxShadow: 'none',
+                }),
+                menuList: (provided, state) => ({
+                    ...provided,
+                    padding: 0,
+                }),
+                option: (provided, state) => ({
+                    ...provided,
+                    // backgroundColor: state.isFocused ? 'blue' : 'white', // 포커스 상태에 따른 배경색 변경
+                    // color: state.isFocused ? 'white' : 'black', // 포커스 상태에 따른 글자색 변경
+                    // '&:hover': {
+                    //   backgroundColor: 'lightblue', // 마우스 오버 시 배경색 변경
+                    // },
                 }),
             }}
         />

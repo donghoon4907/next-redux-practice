@@ -60,8 +60,9 @@ export const X_SEARCH_FILTERS: CoreFilterOption[][] = [
 
 export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
     [
+        // 1 row, 1part
         {
-            id: 'demo-search-filter-select1-1',
+            id: 'sf-og',
             label: '조직',
             width: 345,
             colspan: 6,
@@ -86,7 +87,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
             ],
         },
         {
-            id: 'demo-search-filter-select1-2',
+            id: 'sf-f',
             label: '영업가족',
             width: 130,
             colspan: 3,
@@ -99,7 +100,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
             ],
         },
         {
-            id: 'demo-search-filter-select1-3',
+            id: 'sf-lo',
             label: '지역',
             width: 130,
             colspan: 3,
@@ -112,9 +113,10 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
             ],
         },
     ],
+    // 1 row, 2 part
     [
         {
-            id: 'demo-search-filter-select2-2',
+            id: 'sf-pa',
             label: '유입경로',
             width: 130,
             colspan: 3,
@@ -127,7 +129,7 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
             ],
         },
         {
-            id: 'demo-search-filter-select2-3',
+            id: 'sf-g',
             label: '고객등급',
             width: 130,
             colspan: 3,
@@ -136,60 +138,6 @@ export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
                 {
                     label: 'A',
                     value: 'grade_a',
-                },
-            ],
-        },
-    ],
-    [
-        {
-            id: 'demo-search-filter-select3-1',
-            label: '보험사',
-            width: 120,
-            colspan: 2,
-            placeholder: '전체',
-            items: [
-                {
-                    label: 'AM영업',
-                    value: 'am',
-                },
-            ],
-        },
-        {
-            id: 'demo-search-filter-select3-2',
-            label: '상품종목',
-            width: 200,
-            colspan: 2,
-            placeholder: '전체',
-            items: [
-                {
-                    label: 'AM영업',
-                    value: 'am',
-                },
-            ],
-        },
-        {
-            id: 'demo-search-filter-select3-3',
-            label: '등급',
-            width: 200,
-            colspan: 2,
-            placeholder: '등급',
-            items: [
-                {
-                    label: 'AM영업',
-                    value: 'am',
-                },
-            ],
-        },
-        {
-            id: 'demo-search-filter-select3-4',
-            label: '인수구분',
-            width: 200,
-            colspan: 2,
-            placeholder: '인수구분',
-            items: [
-                {
-                    label: 'AM영업',
-                    value: 'am',
                 },
             ],
         },

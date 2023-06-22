@@ -3,6 +3,7 @@ import type { CoreLinkTabOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { MdClose } from 'react-icons/md';
 import { IconWrapper } from '@components/IconWrapper';
+import variables from '@styles/_variables.module.scss';
 
 interface Props extends CoreLinkTabOption {
     /**
@@ -50,22 +51,36 @@ export const LinkTab: FC<Props> = ({
     };
 
     return (
-        <li className={`wr-tab ${
-            router.pathname === to ? 'active' : ''
-        }`} tabIndex={isActive ? 0 : -1}>
+        <li
+            className={`wr-tab ${router.pathname === to ? 'active' : ''}`}
+            role="tab"
+        >
             <a
                 className={`wr-tab__link ${isExpand ? '' : 'single'}`}
                 aria-current="page"
                 href={to}
                 onClick={handleClick}
+                tabIndex={isActive ? 0 : -1}
+
                 // aria-controls={panelId}
             >
                 {label}
             </a>
             {isExpand && (
                 <div className="wr-tab__icon">
-                    <IconWrapper onClick={handleClose}>
-                        <MdClose size={13} color={router.pathname === to ? 'black' : '#efefef'} />
+                    <IconWrapper
+                        onClick={handleClose}
+                        tabIndex={isActive ? 0 : -1}
+                    >
+                        <span className="a11y-hidden">탭 닫기</span>
+                        <MdClose
+                            size={13}
+                            color={
+                                router.pathname === to
+                                    ? 'black'
+                                    : variables.disableFontColor
+                            }
+                        />
                     </IconWrapper>
                 </div>
             )}

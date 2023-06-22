@@ -1,5 +1,5 @@
 import '@styles/main.scss';
-import 'react-modern-drawer/dist/index.css';
+// import 'react-modern-drawer/dist/index.css';
 import 'rsuite/dist/rsuite.css';
 
 import type { AppProps } from 'next/app';

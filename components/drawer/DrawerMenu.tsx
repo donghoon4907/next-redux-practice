@@ -6,7 +6,7 @@ import {
     AccordionHeader,
     AccordionItem,
 } from 'reactstrap';
-import { useDrawer } from '@hooks/use-drawer';
+// import { useDrawer } from '@hooks/use-drawer';
 import { CoreMenuOption } from '@interfaces/core';
 import { TabModule } from '@utils/storage';
 
@@ -40,14 +40,14 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
             id: `tab${item.id}`,
             label: item.label,
             to: item.to,
-            panelId: `tabpanel${item.id}`,
+            // panelId: `tabpanel${item.id}`,
         });
 
         router.push(item.to);
     };
 
     return (
-        <div>
+        <>
             {data.map((v) =>
                 v.items && v.items.length > 0 ? (
                     <UncontrolledAccordion
@@ -56,10 +56,18 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
                         style={{ paddingLeft: (v.level - 1) * 15 }}
                     >
                         <AccordionItem>
-                            <AccordionHeader targetId={v.id}>
+                            <AccordionHeader
+                                targetId={v.id}
+                                role="tab"
+                                id={v.id}
+                            >
                                 {v.label}
                             </AccordionHeader>
-                            <AccordionBody accordionId={v.id}>
+                            <AccordionBody
+                                accordionId={v.id}
+                                role="tabpanel"
+                                aria-labelledby={v.id}
+                            >
                                 <DrawerMenu data={v.items} />
                             </AccordionBody>
                         </AccordionItem>
@@ -75,6 +83,6 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
                     </a>
                 ),
             )}
-        </div>
+        </>
     );
 };
