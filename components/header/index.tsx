@@ -17,7 +17,7 @@ export const MyHeader: FC<Props> = () => {
             <div className="wr-gnb">
                 <div className="wr-gnb__inner">
                     <div className="wr-gnb__both">
-                        <div className="wr-gnb__left">
+                        <nav className="wr-gnb__left">
                             {/* <span onClick={onToggle}>
                                 <IconWrapper>
                                     <LuMenu size={30} color="white" />
@@ -30,18 +30,19 @@ export const MyHeader: FC<Props> = () => {
                                         </span>
                                     </a>
                                 </span> */}
-                            <div className="wr-gnb__menu">
+                            <ul className="wr-gnb__menu" role="menubar">
                                 {GNBS.map(({ id, ...gnb }) => (
                                     <GnbMenuItem key={id} {...gnb} />
                                 ))}
-                            </div>
-                        </div>
+                            </ul>
+                        </nav>
                         <div className="wr-gnb__right">
-                            <div className="wr-gnb__submenu">
+                            <h2 className="a11y-hidden">서비스링크</h2>
+                            <ul className="wr-gnb__services">
                                 {SUBMENUS.map(({ id, ...gnb }) => (
                                     <GnbSubMenuItem key={id} {...gnb} />
                                 ))}
-                            </div>
+                            </ul>
                             {/* <div className="wr-gnb__metadata">
                                 <span>접속시간 2023-12-23 14:23</span>
                                 <span>접속IP: 202.68.223.123</span>
@@ -52,12 +53,9 @@ export const MyHeader: FC<Props> = () => {
             </div>
             <div className="wr-lnb">
                 <div className="wr-lnb__inner">
+                    <strong className="a11y-hidden">탭 목록</strong>
                     <HeaderNav />
-                    <div className="wr-lnb__right">
-                        {/* <div className="wr-lnb__metadata">
-                            <span>1경기광주사업단 &#62; 1팀 김서윤</span>
-                        </div> */}
-                    </div>
+                    <div className="wr-tab__line"></div>
                 </div>
             </div>
         </header>

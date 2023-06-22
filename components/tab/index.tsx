@@ -7,10 +7,6 @@ interface Props extends CoreTabOption {
      */
     isActive?: boolean;
     /**
-     * 확장 여부
-     */
-    isExpand?: boolean;
-    /**
      * 클릭 이벤트
      */
     onClick: (tab: CoreTabOption) => void;
@@ -21,16 +17,13 @@ export const MyTab: FC<Props> = ({
     panelId,
     label = 'label props were not passed',
     isActive = true,
-    isExpand = false,
     onClick,
 }) => {
     return (
-        <li className="nav-item wr-tab">
+        <li className={`wr-tab ${isActive ? 'active' : ''}`}>
             <button
                 type="button"
-                className={`nav-link ${isExpand ? '' : 'single'} ${
-                    isActive ? 'active' : ''
-                }`}
+                className="wr-tab__link single"
                 onClick={() => onClick({ id, panelId, label })}
                 id={id}
                 role="tab"

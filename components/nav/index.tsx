@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import Image from 'next/image';
 import { DrawerMenu } from '@components/drawer/DrawerMenu';
 import { ASIDE_MENUS } from '@constants/gnb';
+import Link from 'next/link';
 
 interface Props {}
 
@@ -9,21 +10,26 @@ export const MyNav: FC<Props> = () => {
     return (
         <div className="wr-nav">
             <div className="wr-nav__logo">
-                <Image
-                    src="/images/logo2.png"
-                    alt="Logo"
-                    width={130}
-                    height={80}
-                />
+                <Link href="/">
+                    <a>
+                        <Image
+                            src="/images/logo2.png"
+                            alt="회사 로고"
+                            width={130}
+                            height={80}
+                        />
+                    </a>
+                </Link>
             </div>
             <div className="wr-nav__header">
                 <span className="wr-nav__name">김서윤&nbsp;</span>
                 <span className="wr-nav__title">님</span>
             </div>
-            <div className="wr-nav__body wr-drawer">
-                {Array.from({ length: 0 }).map((_, i) => (
-                    <DrawerMenu key={`DummyNav${i}`} data={ASIDE_MENUS} />
-                ))}
+            <div
+                className="wr-nav__body wr-drawer"
+                role="tablist"
+                aria-multiselectable="true"
+            >
                 <DrawerMenu data={ASIDE_MENUS} />
             </div>
             <div className="wr-nav__footer">

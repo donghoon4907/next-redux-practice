@@ -6,10 +6,12 @@ interface Props extends Pick<CoreMenuOption, 'to' | 'label'> {}
 
 export const GnbSubMenuItem: FC<Props> = ({ to, label }) => {
     return (
-        <span className="wr-gnb__submenu-item">
+        <li>
             <Link href={to}>
-                <a className="wr-gnb__subtitle">{label}</a>
+                <a className="wr-gnb__subtitle" title={label}>
+                    {label}
+                </a>
             </Link>
-        </span>
+        </li>
     );
 };

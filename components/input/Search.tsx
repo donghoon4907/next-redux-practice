@@ -1,7 +1,9 @@
 import type { FC, FormEvent } from 'react';
 import { LuSearch } from 'react-icons/lu';
-import { MyInput } from '.';
 import { useInput } from '@hooks/use-input';
+import { AccessibleText } from '@components/AccessibleText';
+
+import { MyInput } from '.';
 
 interface Props {
     id: string;
@@ -32,7 +34,12 @@ export const SearchInput: FC<Props> = ({ id }) => {
                 {...search}
                 button={{
                     type: 'submit',
-                    children: <LuSearch size={15} />,
+                    children: (
+                        <>
+                            <AccessibleText>검색</AccessibleText>
+                            <LuSearch size={15} />
+                        </>
+                    ),
                 }}
             />
         </form>

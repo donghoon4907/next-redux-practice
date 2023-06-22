@@ -8,6 +8,7 @@ import {
     LuChevronLast,
 } from 'react-icons/lu';
 import { MySelect } from '@components/select';
+import { AccessibleText } from '@components/AccessibleText';
 
 interface Props extends CoreProps {}
 
@@ -55,11 +56,13 @@ export const MyPagination: FC<Props> = () => {
                 <ul className="pagination">
                     <li className="page-item">
                         <a className="page-link" href="#">
+                            <AccessibleText>처음</AccessibleText>
                             <LuChevronFirst size={17} />
                         </a>
                     </li>
                     <li className="page-item">
                         <a className="page-link" href="#">
+                            <AccessibleText>이전</AccessibleText>
                             <LuChevronLeft size={17} />
                         </a>
                     </li>
@@ -90,11 +93,13 @@ export const MyPagination: FC<Props> = () => {
                     </li>
                     <li className="page-item">
                         <a className="page-link" href="#">
+                            <AccessibleText>다음</AccessibleText>
                             <LuChevronRight size={17} />
                         </a>
                     </li>
                     <li className="page-item">
                         <a className="page-link" href="#">
+                            <AccessibleText>마지막</AccessibleText>
                             <LuChevronLast size={17} />
                         </a>
                     </li>

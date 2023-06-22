@@ -10,6 +10,7 @@ $wr-label-size: 12px;
 $wr-filter-font-size: 14px;
 $wr-filter-height: 30px;
 $wr-border-radius: 0;
+$wr-header-size: 110px;
 // z-index
 $wr-gnb-index: 2100;
 $wr-lnb-index: 1900;
@@ -23,9 +24,11 @@ $wr-bg-color: #e9ecef;
 // $wr-header-color: #1466a4;
 $wr-header-color: $wr-primary-color;
 $wr-label-color: #aaa;
-$wr-select-label-active-color: #e7edcb;
-$wr-select-label-disable-color: #e2eaf2;
+$wr-with-label-active: #e7edcb;
+$wr-with-label-disable: #e2eaf2;
 $wr-hover-color: #adb5bd;
+$wr-disable-bg-color: #c1c7cc;
+$wr-disable-font-color: #6c757d;
 
 // custom bootstrap variables
 // $accordion-icon-active-color: white;
@@ -36,4 +39,6 @@ $wr-hover-color: #adb5bd;
     filterHeight: $wr-filter-height;
     filterFontSize: $wr-filter-font-size;
     filterBorderRadius: $wr-border-radius;
+    disableBgColor: $wr-disable-bg-color;
+    disableFontColor: $wr-disable-font-color;
 }

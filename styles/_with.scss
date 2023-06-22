@@ -18,11 +18,11 @@
         font-size: 13px;
 
         &--active {
-            background-color: $wr-select-label-active-color;
+            background-color: $wr-with-label-active;
         }
 
         &--disable {
-            background-color: $wr-select-label-disable-color;
+            background-color: $wr-with-label-disable;
         }
     }
 }

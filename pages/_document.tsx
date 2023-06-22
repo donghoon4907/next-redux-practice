@@ -7,7 +7,7 @@ export default class MyDocument extends Document {
             <Html>
                 <Head>
                     <meta name="theme-color" content="#ffffff" />
-                    <meta charSet="utf-8" />
+                    {/* <meta charSet="utf-8" /> */}
                     <meta httpEquiv="cache-control" content="no-store" />
                     {/* <meta name="description" content="" />
                     <meta name="keywords" content="" />

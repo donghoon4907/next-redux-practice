@@ -12,6 +12,11 @@
         flex-wrap: wrap;
     }
 
+    &__line {
+        flex: 1;
+        border-bottom: 1px solid $wr-divider-color-300;
+    }
+
     &__link {
         padding: 0 15px;
         display: flex;
@@ -24,7 +29,10 @@
         &:not(.single) {
             padding-right: 40px;
         }
-        
+    }
+
+    & button {
+        background-color: inherit;
     }
 
     & + & {
@@ -38,6 +46,11 @@
         border-bottom: 0;
     }
 
+    &:not(.active) {
+        background-color: $wr-disable-bg-color;
+        color: $wr-disable-font-color;
+    }
+
     &:hover {
         background-color: $wr-bg-color;
         color: $wr-primary-color;
@@ -45,7 +58,6 @@
         & svg {
             fill: $black;
         }
-        
     }
     // Custom Bootstrap
     // & .nav-link {
