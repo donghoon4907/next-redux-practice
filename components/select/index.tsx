@@ -1,7 +1,9 @@
 import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
 import Select from 'react-select';
+import variables from '@styles/_variables.module.scss';
 
+const styles = {};
 export interface MySelectProps {
     id?: string;
     /**
@@ -69,8 +71,12 @@ export const MySelect: FC<MySelectProps> = ({
                     width: `${width}px`,
                     minHeight: `${height}px`,
                     height: `${height}px`,
-                    borderColor: '#dee2e6',
+                    borderColor: variables.dividerColor,
                     borderRadius: 0,
+                    boxShadow: 'none',
+                    '&:hover': {
+                        borderColor: variables.dividerColor,
+                    },
                 }),
                 valueContainer: (provided, state) => ({
                     ...provided,
@@ -94,6 +100,30 @@ export const MySelect: FC<MySelectProps> = ({
                 indicatorsContainer: (provided, state) => ({
                     ...provided,
                     height: `${height}px`,
+                }),
+                dropdownIndicator: (provided) => ({
+                    ...provided,
+                    color: variables.dividerColor,
+                }),
+                menu: (provided, state) => ({
+                    ...provided,
+                    borderRadius: '0',
+                    margin: 0,
+                    border: `1px solid ${variables.dividerColor}`,
+                    borderTop: 'none',
+                    boxShadow: 'none',
+                }),
+                menuList: (provided, state) => ({
+                    ...provided,
+                    padding: 0,
+                }),
+                option: (provided, state) => ({
+                    ...provided,
+                    // backgroundColor: state.isFocused ? 'blue' : 'white', // 포커스 상태에 따른 배경색 변경
+                    // color: state.isFocused ? 'white' : 'black', // 포커스 상태에 따른 글자색 변경
+                    // '&:hover': {
+                    //   backgroundColor: 'lightblue', // 마우스 오버 시 배경색 변경
+                    // },
                 }),
             }}
         />

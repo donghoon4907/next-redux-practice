@@ -90,7 +90,8 @@ td {
 // Datepicker - 컨테이너 설정
 .rs-picker-menu {
     border-radius: $wr-border-radius !important;
-    border: 1px solid $wr-divider-color-100 !important;
+    border: 1px solid $wr-divider-color-300 !important;
+    margin-top: 2px;
 }
 // .rs-picker-daterange-header {
 //     display: none;
@@ -98,11 +99,11 @@ td {
 // Datepicker - 입력창 설정
 .rs-btn {
     border-radius: 0 !important;
-    border: 1px solid $wr-divider-color-100 !important;
+    border: 1px solid $wr-divider-color-300 !important;
 
-    &:hover {
-        border: 1px solid $wr-hover-color !important;
-    }
+    // &:hover {
+    //     border: 1px solid $wr-hover-color !important;
+    // }
 }
 .rs-picker-default .rs-picker-toggle.rs-btn {
     padding-left: 6px !important;
@@ -112,11 +113,11 @@ td {
 }
 .rs-picker-toggle-active {
     box-shadow: none !important;
-    border: 1px solid #2684ff !important;
+    // border: 1px solid #2684ff !important;
 }
-.rs-picker-toggle-active:hover {
-    border: 1px solid #2684ff !important;
-}
+// .rs-picker-toggle-active:hover {
+//     border: none;
+// }
 // Datepicker - Placeholder 설정
 .rs-picker-toggle-value {
     color: $black !important;
@@ -151,11 +152,13 @@ td {
     border-radius: 0 !important;
     font-size: 16px;
     padding: 0 6px !important;
+    box-shadow: none !important;
+    border-color: $wr-divider-color-300 !important;
     // height: 30px;
 
-    &:hover {
-        border: 1px solid $wr-hover-color;
-    }
+    // &:hover {
+    //     border: 1px solid $wr-hover-color;
+    // }
 }
 // 버튼 공통 스타일 재정의
 .btn {

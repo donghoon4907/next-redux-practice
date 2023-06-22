@@ -19,14 +19,18 @@ $wr-nav-index: 1000;
 // colors
 $wr-primary-color: #003cdc;
 $wr-secondary-color: #5bc2e7;
-$wr-bg-color: $gray-200;
+$wr-bg-color: #e9ecef;
 // $wr-header-color: #1466a4;
 $wr-header-color: $wr-primary-color;
 $wr-label-color: #aaa;
 $wr-select-label-active-color: #e7edcb;
 $wr-select-label-disable-color: #e2eaf2;
-$wr-hover-color: $gray-500;
+$wr-hover-color: #adb5bd;
 
 // custom bootstrap variables
 // $accordion-icon-active-color: white;
 // $accordion-icon-color: white;
+
+:export {
+    dividerColor: $wr-divider-color-300;
+}
