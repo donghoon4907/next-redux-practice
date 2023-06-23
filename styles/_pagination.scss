@@ -10,7 +10,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        gap: $wr-gutter-size;
     }
 
     // Custom Bootstrap
@@ -21,7 +21,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 10px 20px !important;
+        padding: $wr-gutter-size 20px !important;
         color: $black;
         border: none !important;
         padding: 8px !important;

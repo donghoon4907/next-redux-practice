@@ -1,8 +1,9 @@
 .wr-table {
     &__wrap {
-        max-height: 630px;
+        // max-height: 630px;
         overflow: auto;
         background-color: $white;
+        margin-top: $wr-gutter-size;
         // border: 1px solid $wr-divider-color-200;
     }
 
