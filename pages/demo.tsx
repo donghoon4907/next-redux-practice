@@ -4,7 +4,7 @@ import type { DemoState } from '@reducers/demo';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { ColumnDef } from '@tanstack/react-table';
 import Head from 'next/head';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { MyTable } from '@components/table';
@@ -21,6 +21,7 @@ import {
     checkEllipsisNeeded,
     checkSeparatorNeeded,
 } from '@utils/validation';
+import variables from '@styles/_variables.module.scss';
 
 // 임시
 import { useDispatch } from 'react-redux';
@@ -29,6 +30,8 @@ import { SearchInput } from '@components/input/Search';
 
 const Demo: NextPage = () => {
     const dispatch = useDispatch();
+
+    const tableWrapRef = useRef<HTMLDivElement>(null);
 
     const { fields, data, total } = useSelector<AppState, DemoState>(
         (props) => props.demo,
@@ -89,6 +92,28 @@ const Demo: NextPage = () => {
     const handleChangeDate = (value: [Date, Date] | null) => {
         setD(value);
     };
+
+    // 테이블 높이 계산
+    useEffect(() => {
+        const headerHeight = +variables.headerHeight.split('px')[0];
+
+        const filterHeight = 90;
+
+        const padding = +variables.gutterSize.split('px')[0] * 4;
+
+        const pagingHeight = 55;
+
+        if (tableWrapRef.current) {
+            const tableHeight =
+                window.innerHeight -
+                headerHeight -
+                filterHeight -
+                padding -
+                pagingHeight;
+
+            tableWrapRef.current.style.maxHeight = `${tableHeight}px`;
+        }
+    }, []);
 
     return (
         <>
@@ -191,7 +216,7 @@ const Demo: NextPage = () => {
                                 </div>
                             </div>
                             <div className="row mt-2">
-                                <div className="col mt-2 wr-filter">
+                                <div className="col wr-filter">
                                     {X_SEARCH_FILTERS.map((filter, index) => {
                                         return (
                                             <div
@@ -229,7 +254,10 @@ const Demo: NextPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="wr-table__wrap wr-table--border mt-2">
+                <div
+                    className="wr-table__wrap wr-table--border"
+                    ref={tableWrapRef}
+                >
                     <MyTable columns={columns} data={data} />
                 </div>
 

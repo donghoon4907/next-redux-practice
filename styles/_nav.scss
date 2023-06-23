@@ -28,7 +28,7 @@
         height: 34px;
         background-color: $white;
         color: $black;
-        padding: 5px 10px;
+        padding: 5px $wr-gutter-size;
         font-size: 1rem;
         border-bottom: 1px solid $wr-divider-color-300;
         text-align: center;
@@ -47,7 +47,7 @@
         left: 0;
         width: 100%;
         height: 40px;
-        padding-left: 10px;
+        padding-left: $wr-gutter-size;
         font-size: 10px;
         color: $wr-label-color;
     }

@@ -18,7 +18,7 @@
     }
 
     &__link {
-        padding: 0 15px;
+        padding: 0 $wr-gutter-size;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -27,7 +27,7 @@
 
         // 단독인 경우
         &:not(.single) {
-            padding-right: 40px;
+            padding-right: 35px;
         }
     }
 
@@ -86,7 +86,7 @@
     &__icon {
         position: absolute;
         top: calc(50% + 1px);
-        right: 10px;
+        right: $wr-gutter-size;
         transform: translateY(-50%);
     }
 }

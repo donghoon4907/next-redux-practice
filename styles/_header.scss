@@ -124,7 +124,7 @@
         display: inline-block;
         color: $white;
         vertical-align: top;
-        margin-left: 10px;
+        margin-left: $wr-gutter-size;
 
         &:hover {
             color: white;
