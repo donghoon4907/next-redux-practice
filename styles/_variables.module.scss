@@ -9,6 +9,7 @@ $wr-gutter-size: 10px;
 $wr-label-size: 12px;
 $wr-filter-font-size: 14px;
 $wr-filter-height: 30px;
+$wr-detail-filter-height: 36px;
 $wr-border-radius: 0;
 $wr-header-size: 110px;
 // z-index
@@ -37,6 +38,7 @@ $wr-disable-font-color: #6c757d;
 :export {
     dividerColor: $wr-divider-color-300;
     filterHeight: $wr-filter-height;
+    detailFilterHeight: $wr-detail-filter-height;
     filterFontSize: $wr-filter-font-size;
     filterBorderRadius: $wr-border-radius;
     disableBgColor: $wr-disable-bg-color;

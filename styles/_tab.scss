@@ -41,7 +41,7 @@
 
     // 활성화된 경우
     &.active {
-        background-color: $wr-bg-color;
+        background-color: var(--wr-tab-active-color);
         color: $wr-primary-color;
         border-bottom: 0;
     }
@@ -52,7 +52,7 @@
     }
 
     &:hover {
-        background-color: $wr-bg-color;
+        background-color: var(--wr-tab-active-color);
         color: $wr-primary-color;
 
         & svg {

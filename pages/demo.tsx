@@ -125,7 +125,7 @@ const Demo: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="wr-main__inner">
+            <div className="wr-pages-demo">
                 {/* <Breadcrumb /> */}
                 <div className="wr-search">
                     <div className="row wr-search__inner">
@@ -142,7 +142,7 @@ const Demo: NextPage = () => {
                                             type="active"
                                         >
                                             <MySelect
-                                                id={v.id}
+                                                inputId={v.id}
                                                 width={v.width}
                                                 options={v.items}
                                                 value={org}
@@ -155,7 +155,7 @@ const Demo: NextPage = () => {
                                 {/* <div className="col-4"></div> */}
                             </div>
 
-                            <div className="row mt-2">
+                            <div className="row wr-mt">
                                 <div className="col-6">
                                     <WithLabel
                                         id="datepicker"
@@ -195,7 +195,7 @@ const Demo: NextPage = () => {
                                             type="active"
                                         >
                                             <MySelect
-                                                id={v.id}
+                                                inputId={v.id}
                                                 width={v.width}
                                                 options={v.items}
                                                 value={org}
@@ -215,7 +215,7 @@ const Demo: NextPage = () => {
                                     </WithLabel>
                                 </div>
                             </div>
-                            <div className="row mt-2">
+                            <div className="row wr-mt">
                                 <div className="col wr-filter">
                                     {X_SEARCH_FILTERS.map((filter, index) => {
                                         return (

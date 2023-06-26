@@ -4,13 +4,13 @@ import type { CoreSelectOption, CoreTabpanelOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { LongState } from '@reducers/long';
 import { useState, useMemo } from 'react';
-import { MyLabel } from '@components/label';
 import { MySelect } from '@components/select';
 import { MyTable } from '@components/table';
 import { useSelector } from 'react-redux';
 import { DisconnectedLabel } from '@components/label/DisconnectedLabel';
-
-const FULL_SELECT_SIZE = 337;
+import { WithLabel } from '@components/WithLabel';
+import { MyInput } from '@components/input';
+import variables from '@styles/_variables.module.scss';
 
 const WITH_SELECT_SIZE = 100;
 
@@ -69,97 +69,105 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
         >
             <div className="row">
                 <div className="col-4">
-                    <MyLabel>은행명</MyLabel>
-                    <MySelect
-                        width={FULL_SELECT_SIZE}
-                        options={[]}
-                        value={org}
-                        onChange={() => {}}
-                        placeholder={'국민은행'}
-                        placeHolderFontSize={16}
-                    />
-                </div>
-                <div className="col-4">
-                    <MyLabel>계좌번호</MyLabel>
-                    <div className="input-group">
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="123456-01-32423934"
-                        />
-                    </div>
-                </div>
-                <div className="col-4">
-                    <MyLabel>예금주</MyLabel>
-                    <div className="wr-pages-detail__with">
-                        <div className="input-group">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="홍길동"
-                            />
-                        </div>
+                    <WithLabel id="bName" label="은행명" type="active">
                         <MySelect
-                            width={WITH_SELECT_SIZE}
+                            width={290}
                             options={[]}
                             value={org}
                             onChange={() => {}}
-                            placeholder={'과세'}
+                            placeholder={'국민은행'}
                             placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
                         />
+                    </WithLabel>
+                </div>
+                <div className="col-4">
+                    <div className="wr-mr">
+                        <WithLabel id="account" label="직함" type="disable">
+                            <MyInput
+                                type="text"
+                                id="account"
+                                placeholder="123456-01-32423934"
+                                readOnly
+                            />
+                        </WithLabel>
                     </div>
+                </div>
+                <div className="col-4">
+                    <WithLabel id="accHolder" label="예금주" type="active">
+                        <div className="wr-pages-detail__with">
+                            <MyInput
+                                type="text"
+                                id="accHolder"
+                                placeholder="홍길동"
+                                readOnly
+                            />
+                            <MySelect
+                                width={WITH_SELECT_SIZE}
+                                options={[]}
+                                value={org}
+                                onChange={() => {}}
+                                placeholder={'과세'}
+                                placeHolderFontSize={16}
+                                height={variables.detailFilterHeight}
+                            />
+                        </div>
+                    </WithLabel>
                 </div>
             </div>
-            <div className="row">
+            <div className="row wr-mt">
                 <div className="col-4">
-                    <MyLabel>소득구분</MyLabel>
-                    <MySelect
-                        width={FULL_SELECT_SIZE}
-                        options={[]}
-                        value={org}
-                        onChange={() => {}}
-                        placeholder={'근로 + 사업'}
-                        placeHolderFontSize={16}
-                    />
-                </div>
-                <div className="col-4">
-                    <MyLabel>자동차 지급제도</MyLabel>
-                    <MySelect
-                        width={FULL_SELECT_SIZE}
-                        options={[]}
-                        value={org}
-                        onChange={() => {}}
-                        placeholder={'S3-2'}
-                        placeHolderFontSize={16}
-                    />
-                </div>
-                <div className="col-4">
-                    <MyLabel>일반 지급율</MyLabel>
-                    <div className="wr-pages-detail__with">
+                    <WithLabel id="accHolder" label="소득구분" type="active">
                         <MySelect
-                            width={260}
+                            width={290}
                             options={[]}
                             value={org}
                             onChange={() => {}}
-                            placeholder={'기본 + 성과'}
+                            placeholder={'근로 + 사업'}
                             placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
                         />
-
-                        <div className="input-group align-items-center">
-                            <input
-                                type="text"
-                                className="form-control"
-                                placeholder="85"
+                    </WithLabel>
+                </div>
+                <div className="col-4">
+                    <WithLabel id="accHolder" label="지급제도" type="active">
+                        <MySelect
+                            width={290}
+                            options={[]}
+                            value={org}
+                            onChange={() => {}}
+                            placeholder={'S3-2'}
+                            placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
+                        />
+                    </WithLabel>
+                </div>
+                <div className="col-4">
+                    <WithLabel id="accHolder" label="지급율" type="active">
+                        <div className="wr-pages-detail__with">
+                            <MySelect
+                                width={190}
+                                options={[]}
+                                value={org}
+                                onChange={() => {}}
+                                placeholder={'기본 + 성과'}
+                                placeHolderFontSize={16}
+                                height={variables.detailFilterHeight}
                             />
-                            <span className="ms-2">%</span>
+                            <MyInput
+                                type="number"
+                                id="accHolder"
+                                placeholder="85"
+                                unit="%"
+                            />
                         </div>
-                    </div>
+                    </WithLabel>
                 </div>
             </div>
             <div className="row mt-3">
                 <div className="col">
                     <DisconnectedLabel>장기 기본 지급</DisconnectedLabel>
-                    <div className="wr-table__wrap">
+                    <div className="wr-table__wrap wr-table--border">
                         <MyTable
                             columns={basicPaymentscolumns}
                             data={basicPayments.data}
@@ -170,7 +178,7 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
             <div className="row mt-3">
                 <div className="col">
                     <DisconnectedLabel>장기 오버라이드</DisconnectedLabel>
-                    <div className="wr-table__wrap">
+                    <div className="wr-table__wrap wr-table--border">
                         <MyTable
                             columns={overridesColumns}
                             data={overrides.data}

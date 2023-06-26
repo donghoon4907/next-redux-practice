@@ -1,0 +1,35 @@
+.wr-p {
+    &l {
+        padding-left: $wr-gutter-size;
+    }
+
+    &r {
+        padding-right: $wr-gutter-size;
+    }
+
+    &t {
+        padding-top: $wr-gutter-size;
+    }
+
+    &b {
+        padding-bottom: $wr-gutter-size;
+    }
+}
+
+.wr-m {
+    &l {
+        margin-left: $wr-gutter-size;
+    }
+
+    &r {
+        margin-right: $wr-gutter-size;
+    }
+
+    &t {
+        margin-top: $wr-gutter-size;
+    }
+
+    &b {
+        margin-bottom: $wr-gutter-size;
+    }
+}

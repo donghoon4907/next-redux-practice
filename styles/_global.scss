@@ -16,6 +16,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: none;
+    --wr-tab-active-color: #e9ecef;
 }
 
 ul,
@@ -136,9 +137,15 @@ td {
     padding: 0 !important;
 }
 
+input[type='number'] {
+    text-align: right;
+    padding-right: 0 !important;
+}
+
 .input-group > div {
     width: 100%;
 }
+
 // label 공통 스타일 재정의
 .form-label {
     margin-top: 0.5rem;
@@ -167,6 +174,7 @@ td {
     justify-content: center;
     align-items: center;
     border-radius: 0 !important;
+    padding: 3px 7px !important;
 }
 // 테이블 관련 공통 스타일 재정의
 .table > :not(caption) > * > * {
