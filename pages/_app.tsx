@@ -48,7 +48,9 @@ function MyApp({ Component, pageProps }: AppProps) {
                     <section>
                         <div className="wr-main__wrap">
                             <main className="wr-main">
-                                <Component {...pageProps} />
+                                <div className="wr-main__inner">
+                                    <Component {...pageProps} />
+                                </div>
                             </main>
                         </div>
                     </section>

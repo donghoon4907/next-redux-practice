@@ -28,7 +28,7 @@ import { useDispatch } from 'react-redux';
 import { WithLabel } from '@components/WithLabel';
 import { SearchInput } from '@components/input/Search';
 
-const Demo: NextPage = () => {
+const T4: NextPage = () => {
     const dispatch = useDispatch();
 
     const tableWrapRef = useRef<HTMLDivElement>(null);
@@ -125,7 +125,7 @@ const Demo: NextPage = () => {
                 />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <div className="wr-main__inner">
+            <div className="wr-pages-demo">
                 {/* <Breadcrumb /> */}
                 <div className="wr-search">
                     <div className="row wr-search__inner">
@@ -321,4 +321,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
         },
 );
 
-export default Demo;
+export default T4;

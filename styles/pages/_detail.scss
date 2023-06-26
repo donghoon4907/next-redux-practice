@@ -1,16 +1,26 @@
 .wr-pages-detail {
     overflow: hidden;
+    --wr-tab-active-color: white;
     // background-color: $gray-200;
 
+    // & .input-group {
+    //     height: 100%;
+    // }
+
+    .wr-with__label {
+        height: $wr-detail-filter-height;
+    }
+
     &__left {
-        --bs-gutter-x: 0;
+        // --bs-gutter-x: 0;
         overflow-y: auto;
-        height: calc(100vh - 110px);
-        padding: $wr-gutter-size;
+        height: calc(100vh - $wr-header-size - 20px);
+        // padding: $wr-gutter-size;
     }
 
     &__right {
-        padding: $wr-gutter-size;
+        margin-left: $wr-gutter-size;
+        // padding: $wr-gutter-size;
 
         // Custom Bootstrap
         & .nav-link {
@@ -45,20 +55,23 @@
     }
 
     &__avatar {
-        margin-left: 5px;
+        margin-bottom: $wr-gutter-size;
+        --bs-border-radius: 0;
+        --bs-border-color: #aaa;
     }
 
     &__with {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 10px;
+        flex: 1;
+        gap: $wr-gutter-size;
     }
 
     &__body {
-        border: 1px solid $wr-divider-color-100;
+        border: 1px solid $wr-divider-color-300;
         border-top: 0;
-        height: 715px;
+        height: calc(100vh - $wr-header-size - 20px - 35px);
         overflow-y: auto;
         background-color: $white;
     }
@@ -66,13 +79,14 @@
     &__income {
         padding: $wr-gutter-size;
 
-        & .form-control {
-            max-width: 337px;
-        }
+        // & .form-control {
+        //     max-width: 337px;
+        // }
     }
 
     // Custom Bootstrap
     & .form-control {
         font-size: 16px !important;
+        padding: 5px 6px !important;
     }
 }

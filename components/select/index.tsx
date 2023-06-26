@@ -4,7 +4,7 @@ import Select from 'react-select';
 import variables from '@styles/_variables.module.scss';
 
 export interface MySelectProps {
-    id?: string;
+    inputId?: string;
     /**
      * 옵션 목록
      *
@@ -35,15 +35,21 @@ export interface MySelectProps {
      *
      */
     placeHolderFontSize?: number;
+    /**
+     * select height
+     *
+     */
+    height?: string;
 }
 
 export const MySelect: FC<MySelectProps> = ({
-    id,
+    inputId,
     options,
     value,
     onChange,
     placeholder,
     width = 150,
+    height = variables.filterHeight,
     placeHolderFontSize = variables.filterFontSize,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
@@ -52,7 +58,7 @@ export const MySelect: FC<MySelectProps> = ({
 
     return (
         <Select
-            id={id}
+            inputId={inputId}
             options={options}
             value={value}
             onChange={handleChange}
@@ -62,8 +68,8 @@ export const MySelect: FC<MySelectProps> = ({
                 control: (baseStyles, state) => ({
                     ...baseStyles,
                     width: `${width}px`,
-                    minHeight: variables.filterHeight,
-                    height: variables.filterHeight,
+                    minHeight: height,
+                    height,
                     borderColor: variables.dividerColor,
                     borderRadius: variables.filterBorderRadius,
                     boxShadow: 'none',
@@ -73,7 +79,7 @@ export const MySelect: FC<MySelectProps> = ({
                 }),
                 valueContainer: (provided, state) => ({
                     ...provided,
-                    height: variables.filterHeight,
+                    height,
                     padding: '0 6px',
                 }),
                 placeholder: (defaultStyles) => {
@@ -92,7 +98,7 @@ export const MySelect: FC<MySelectProps> = ({
                 }),
                 indicatorsContainer: (provided, state) => ({
                     ...provided,
-                    height: variables.filterHeight,
+                    height,
                 }),
                 dropdownIndicator: (provided) => ({
                     ...provided,
@@ -103,7 +109,6 @@ export const MySelect: FC<MySelectProps> = ({
                     borderRadius: variables.filterBorderRadius,
                     margin: 0,
                     border: `1px solid ${variables.dividerColor}`,
-                    borderTop: 'none',
                     boxShadow: 'none',
                 }),
                 menuList: (provided, state) => ({
@@ -117,6 +122,10 @@ export const MySelect: FC<MySelectProps> = ({
                     // '&:hover': {
                     //   backgroundColor: 'lightblue', // 마우스 오버 시 배경색 변경
                     // },
+                }),
+                noOptionsMessage: (provided, state) => ({
+                    ...provided,
+                    zIndex: 100000,
                 }),
             }}
         />
