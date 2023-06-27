@@ -48,7 +48,7 @@ export const MySelect: FC<MySelectProps> = ({
     value,
     onChange,
     placeholder,
-    width = 150,
+    width,
     height = variables.filterHeight,
     placeHolderFontSize = variables.filterFontSize,
 }) => {
@@ -58,6 +58,7 @@ export const MySelect: FC<MySelectProps> = ({
 
     return (
         <Select
+            className="select"
             inputId={inputId}
             options={options}
             value={value}
@@ -67,7 +68,7 @@ export const MySelect: FC<MySelectProps> = ({
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,
-                    width: `${width}px`,
+                    // width: `${width}px`,
                     minHeight: height,
                     height,
                     borderColor: variables.dividerColor,

@@ -28,7 +28,7 @@ import { useDispatch } from 'react-redux';
 import { WithLabel } from '@components/WithLabel';
 import { SearchInput } from '@components/input/Search';
 
-const T3: NextPage = () => {
+const Demo: NextPage = () => {
     const dispatch = useDispatch();
 
     const tableWrapRef = useRef<HTMLDivElement>(null);
@@ -130,32 +130,34 @@ const T3: NextPage = () => {
                 <div className="wr-search">
                     <div className="row wr-search__inner">
                         <div className="col-6">
-                            <div className="row">
-                                {X_SEARCH_SELECTS[0].map((v) => (
+                            <div className="row wr-search__filter">
+                                {X_SEARCH_SELECTS[0].map((v, i) => (
                                     <div
                                         className={`col-${v.colspan}`}
                                         key={v.id}
                                     >
-                                        <WithLabel
-                                            id={v.id}
-                                            label={v.label}
-                                            type="active"
-                                        >
-                                            <MySelect
+                                        <div className={i > 0 ? 'wr-ml' : ''}>
+                                            <WithLabel
                                                 id={v.id}
-                                                width={v.width}
-                                                options={v.items}
-                                                value={org}
-                                                onChange={handleChange}
-                                                placeholder={v.placeholder}
-                                            />
-                                        </WithLabel>
+                                                label={v.label}
+                                                type="active"
+                                            >
+                                                <MySelect
+                                                    inputId={v.id}
+                                                    // width={v.width}
+                                                    options={v.items}
+                                                    value={org}
+                                                    onChange={handleChange}
+                                                    placeholder={v.placeholder}
+                                                />
+                                            </WithLabel>
+                                        </div>
                                     </div>
                                 ))}
                                 {/* <div className="col-4"></div> */}
                             </div>
 
-                            <div className="row mt-2">
+                            <div className="row wr-mt">
                                 <div className="col-6">
                                     <WithLabel
                                         id="datepicker"
@@ -175,7 +177,7 @@ const T3: NextPage = () => {
                                             onChange={handleChangeDate}
                                             // showMeridian
                                             style={{
-                                                width: 345,
+                                                width: 355,
                                             }}
                                         />
                                     </WithLabel>
@@ -184,38 +186,42 @@ const T3: NextPage = () => {
                         </div>
                         <div className="col-6">
                             <div className="row">
-                                {X_SEARCH_SELECTS[1].map((v) => (
+                                {X_SEARCH_SELECTS[1].map((v, i) => (
                                     <div
                                         className={`col-${v.colspan}`}
                                         key={v.id}
                                     >
-                                        <WithLabel
-                                            id={v.id}
-                                            label={v.label}
-                                            type="active"
-                                        >
-                                            <MySelect
+                                        <div className="wr-ml">
+                                            <WithLabel
                                                 id={v.id}
-                                                width={v.width}
-                                                options={v.items}
-                                                value={org}
-                                                onChange={handleChange}
-                                                placeholder={v.placeholder}
-                                            />
-                                        </WithLabel>
+                                                label={v.label}
+                                                type="active"
+                                            >
+                                                <MySelect
+                                                    inputId={v.id}
+                                                    // width={v.width}
+                                                    options={v.items}
+                                                    value={org}
+                                                    onChange={handleChange}
+                                                    placeholder={v.placeholder}
+                                                />
+                                            </WithLabel>
+                                        </div>
                                     </div>
                                 ))}
                                 <div className="col-6">
-                                    <WithLabel
-                                        id="search"
-                                        label={'검색'}
-                                        type="disable"
-                                    >
-                                        <SearchInput id="search" />
-                                    </WithLabel>
+                                    <div className="wr-ml">
+                                        <WithLabel
+                                            id="search"
+                                            label={'검색'}
+                                            type="disable"
+                                        >
+                                            <SearchInput id="search" />
+                                        </WithLabel>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="row mt-2">
+                            <div className="row wr-mt">
                                 <div className="col wr-filter">
                                     {X_SEARCH_FILTERS.map((filter, index) => {
                                         return (
@@ -321,4 +327,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
         },
 );
 
-export default T3;
+export default Demo;

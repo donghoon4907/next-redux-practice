@@ -4,6 +4,7 @@ import type { CoreProps } from '@interfaces/core';
 export interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
     button?: CoreProps & ButtonHTMLAttributes<HTMLButtonElement>;
     unit?: string;
+    wrapClassName?: string;
 }
 
 export const MyInput: FC<MyInputProps> = ({

@@ -156,7 +156,6 @@ const Detail: NextPage = () => {
                                             />
                                             <MySelect
                                                 inputId="cBirth"
-                                                width={WITH_SELECT_SIZE}
                                                 options={[]}
                                                 value={org}
                                                 onChange={() => {}}
@@ -180,7 +179,6 @@ const Detail: NextPage = () => {
                                                 placeholder="010-1234-5678"
                                             />
                                             <MySelect
-                                                width={WITH_SELECT_SIZE}
                                                 options={[]}
                                                 value={org}
                                                 onChange={() => {}}
@@ -206,7 +204,6 @@ const Detail: NextPage = () => {
                                             <MyInput
                                                 type="text"
                                                 placeholder="6052"
-                                                style={{ width: 50 }}
                                             />
                                         </div>
                                     </WithLabel>
@@ -227,7 +224,6 @@ const Detail: NextPage = () => {
                                         >
                                             <MySelect
                                                 inputId="sFamily"
-                                                width={100}
                                                 options={[]}
                                                 value={org}
                                                 onChange={() => {}}
@@ -245,7 +241,6 @@ const Detail: NextPage = () => {
                                         >
                                             <MySelect
                                                 inputId="eStatus"
-                                                width={100}
                                                 options={[]}
                                                 value={org}
                                                 onChange={() => {}}
@@ -275,7 +270,6 @@ const Detail: NextPage = () => {
                                                 placeholder="yoongiekim@naver.com"
                                             />
                                             <MySelect
-                                                width={WITH_SELECT_SIZE}
                                                 options={[]}
                                                 value={org}
                                                 onChange={() => {}}
@@ -390,7 +384,7 @@ const Detail: NextPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="col">
+                <div className="col-8">
                     <div className="wr-pages-detail__right">
                         <ul className="wr-tab__wrap" role="tablist">
                             {DETAIL_PAGE_TABS.map((v) => (
