@@ -69,21 +69,22 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
         >
             <div className="row">
                 <div className="col-4">
-                    <WithLabel id="bName" label="은행명" type="active">
-                        <MySelect
-                            width={290}
-                            options={[]}
-                            value={org}
-                            onChange={() => {}}
-                            placeholder={'국민은행'}
-                            placeHolderFontSize={16}
-                            height={variables.detailFilterHeight}
-                        />
-                    </WithLabel>
+                    <div className="wr-mr">
+                        <WithLabel id="bName" label="은행명" type="active">
+                            <MySelect
+                                options={[]}
+                                value={org}
+                                onChange={() => {}}
+                                placeholder={'국민은행'}
+                                placeHolderFontSize={16}
+                                height={variables.detailFilterHeight}
+                            />
+                        </WithLabel>
+                    </div>
                 </div>
                 <div className="col-4">
                     <div className="wr-mr">
-                        <WithLabel id="account" label="직함" type="disable">
+                        <WithLabel id="account" label="직함" type="active">
                             <MyInput
                                 type="text"
                                 id="account"
@@ -103,7 +104,6 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
                                 readOnly
                             />
                             <MySelect
-                                width={WITH_SELECT_SIZE}
                                 options={[]}
                                 value={org}
                                 onChange={() => {}}
@@ -117,36 +117,45 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
             </div>
             <div className="row wr-mt">
                 <div className="col-4">
-                    <WithLabel id="accHolder" label="소득구분" type="active">
-                        <MySelect
-                            width={290}
-                            options={[]}
-                            value={org}
-                            onChange={() => {}}
-                            placeholder={'근로 + 사업'}
-                            placeHolderFontSize={16}
-                            height={variables.detailFilterHeight}
-                        />
-                    </WithLabel>
+                    <div className="wr-mr">
+                        <WithLabel
+                            id="accHolder"
+                            label="소득구분"
+                            type="active"
+                        >
+                            <MySelect
+                                options={[]}
+                                value={org}
+                                onChange={() => {}}
+                                placeholder={'근로 + 사업'}
+                                placeHolderFontSize={16}
+                                height={variables.detailFilterHeight}
+                            />
+                        </WithLabel>
+                    </div>
                 </div>
                 <div className="col-4">
-                    <WithLabel id="accHolder" label="지급제도" type="active">
-                        <MySelect
-                            width={290}
-                            options={[]}
-                            value={org}
-                            onChange={() => {}}
-                            placeholder={'S3-2'}
-                            placeHolderFontSize={16}
-                            height={variables.detailFilterHeight}
-                        />
-                    </WithLabel>
+                    <div className="wr-mr">
+                        <WithLabel
+                            id="accHolder"
+                            label="지급제도"
+                            type="active"
+                        >
+                            <MySelect
+                                options={[]}
+                                value={org}
+                                onChange={() => {}}
+                                placeholder={'S3-2'}
+                                placeHolderFontSize={16}
+                                height={variables.detailFilterHeight}
+                            />
+                        </WithLabel>
+                    </div>
                 </div>
                 <div className="col-4">
                     <WithLabel id="accHolder" label="지급율" type="active">
                         <div className="wr-pages-detail__with">
                             <MySelect
-                                width={190}
                                 options={[]}
                                 value={org}
                                 onChange={() => {}}

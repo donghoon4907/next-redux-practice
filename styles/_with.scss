@@ -8,6 +8,10 @@
         & + & {
             margin-top: $wr-gutter-size;
         }
+
+        & .select {
+            width: 100%;
+        }
     }
 
     &__label {
