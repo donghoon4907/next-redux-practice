@@ -4,7 +4,10 @@ export interface ErrorState {
     [key: string]: null | Error | string;
 }
 
-const errorReducer = (state: ErrorState = {}, action: SagaErrorAction) => {
+export const errorReducer = (
+    state: ErrorState = {},
+    action: SagaErrorAction,
+) => {
     const { type, payload } = action;
 
     const matches = /(.*)_(REQUEST|ERROR)/.exec(type);
@@ -21,5 +24,3 @@ const errorReducer = (state: ErrorState = {}, action: SagaErrorAction) => {
         statusCode: requestStatus === 'ERROR' ? payload.statusCode : null,
     };
 };
-
-export default errorReducer;

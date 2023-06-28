@@ -4,7 +4,7 @@ export interface LoadingState {
     [key: string]: boolean;
 }
 
-const loadingReducer = (state: LoadingState = {}, action: Action) => {
+export const loadingReducer = (state: LoadingState = {}, action: Action) => {
     const matches = /(.*)_(REQUEST|SUCCESS|ERROR|)/.exec(action.type);
 
     if (!matches) {
@@ -23,5 +23,3 @@ const loadingReducer = (state: LoadingState = {}, action: Action) => {
         lastRequestName: requestName,
     };
 };
-
-export default loadingReducer;

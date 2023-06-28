@@ -25,7 +25,20 @@ export function checkEllipsisNeeded(columnName: string) {
  */
 export function checkSeparatorNeeded(columnName: string) {
     let output = true;
-    if (columnName === 'cnum') {
+    if (columnName === 'cnum' || columnName === 'bno') {
+        output = false;
+    }
+
+    return output;
+}
+
+/**
+ * 가운데 적용 여부
+ *
+ */
+export function checkTextAlignRightNeeded(columnName: string) {
+    let output = true;
+    if (columnName === 'bviews') {
         output = false;
     }
 
