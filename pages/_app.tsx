@@ -1,5 +1,6 @@
 import '@styles/main.scss';
 // import 'react-modern-drawer/dist/index.css';
+import '@toast-ui/editor/dist/toastui-editor.css';
 import 'rsuite/dist/rsuite.css';
 
 import type { AppProps } from 'next/app';

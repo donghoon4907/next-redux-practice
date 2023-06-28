@@ -1,25 +1,44 @@
 import type { FC } from 'react';
+import type {
+    Column,
+    PaginationState,
+    ColumnDef,
+    OnChangeFn,
+    TableState,
+    RowSelectionState,
+    TableOptions,
+} from '@tanstack/react-table';
+import type { CoreSetState } from '@interfaces/core';
 import { useRef, useEffect } from 'react';
 import {
-    Column,
     Table as ReactTable,
-    PaginationState,
     useReactTable,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
-    ColumnDef,
-    OnChangeFn,
     flexRender,
 } from '@tanstack/react-table';
-import { checkSeparatorNeeded, isNumeric } from '@utils/validation';
+import {
+    checkSeparatorNeeded,
+    checkTextAlignRightNeeded,
+    isNumeric,
+} from '@utils/validation';
 
 interface Props {
     columns: ColumnDef<any, any>[];
     data: any[];
+    rowSelection?: RowSelectionState;
+    setRowSelection?: CoreSetState<RowSelectionState>;
+    pageSize?: number;
 }
 
-export const MyTable: FC<Props> = ({ columns, data }) => {
+export const MyTable: FC<Props> = ({
+    columns,
+    data,
+    rowSelection,
+    setRowSelection,
+    pageSize = 10,
+}) => {
     const tableRef = useRef<HTMLTableElement>(null);
 
     const table = useReactTable({
@@ -29,13 +48,17 @@ export const MyTable: FC<Props> = ({ columns, data }) => {
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
-        debugTable: false,
         state: {
+            rowSelection,
             pagination: {
                 pageIndex: 0,
-                pageSize: 25,
+                pageSize,
             },
         },
+        onRowSelectionChange: setRowSelection,
+        // enable row selection for all rows
+        enableRowSelection: true,
+        debugTable: false,
     });
 
     useEffect(() => {
@@ -94,7 +117,8 @@ export const MyTable: FC<Props> = ({ columns, data }) => {
                             // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
                             if (
                                 isNumeric(cell.getValue()) &&
-                                checkSeparatorNeeded(cell.column.id)
+                                checkSeparatorNeeded(cell.column.id) &&
+                                checkTextAlignRightNeeded(cell.column.id)
                             ) {
                                 className += 'text-end';
                             }
