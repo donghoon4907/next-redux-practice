@@ -3,12 +3,13 @@ import type { ChangeEvent } from 'react';
 import type { ColumnDef } from '@tanstack/react-table';
 import Head from 'next/head';
 import { useMemo, useState } from 'react';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { UploadSelect } from '@components/select/Upload';
 import { MyTable } from '@components/table';
 import { readAndConvert } from '@utils/xlsx';
 import { convertForSelectUpload } from '@utils/converter';
 import { MyPagination } from '@components/pagination';
+import { useLoading } from '@hooks/use-loading';
 
 // const selectOptions = {
 //     long: [
@@ -35,6 +36,8 @@ import { MyPagination } from '@components/pagination';
 const SelectUpload: NextPage = () => {
     // const dispatch = useDispatch();
 
+    const loading = useLoading();
+
     // const [file, setFile] = useState<string>('');
 
     const [excelFields, setExcelFields] = useState<any[]>([]);
@@ -43,6 +46,8 @@ const SelectUpload: NextPage = () => {
 
     const handleChangeFile = async (evt: ChangeEvent<any>) => {
         const file = evt.target.files[0];
+
+        loading.on();
 
         try {
             const { fields, data } = await readAndConvert(
@@ -55,7 +60,13 @@ const SelectUpload: NextPage = () => {
             setExcelData(data);
         } catch (error) {
             console.error(error);
+        } finally {
+            loading.off();
         }
+    };
+
+    const handleVerification = () => {
+        // dispatch(loadingOn());
     };
 
     const columns = useMemo<ColumnDef<any>[]>(
@@ -122,6 +133,20 @@ const SelectUpload: NextPage = () => {
                 </div>
                 <div>
                     <input type="file" onChange={handleChangeFile} />
+                </div>
+                <div className="mt-2">
+                    <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleVerification}
+                    >
+                        검증
+                    </button>
+                </div>
+                <div className="mt-2">
+                    <button type="button" className="btn btn-warning">
+                        업로드
+                    </button>
                 </div>
                 {excelData.length > 0 && (
                     <>

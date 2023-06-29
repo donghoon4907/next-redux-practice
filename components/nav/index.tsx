@@ -22,10 +22,10 @@ export const MyNav: FC<Props> = () => {
                     </a>
                 </Link>
             </div>
-            <div className="wr-nav__header">
+            {/* <div className="wr-nav__header">
                 <span className="wr-nav__name">김서윤&nbsp;</span>
                 <span className="wr-nav__title">님</span>
-            </div>
+            </div> */}
             <div
                 className="wr-nav__body wr-drawer"
                 role="tablist"

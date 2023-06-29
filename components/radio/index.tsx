@@ -14,6 +14,10 @@ interface Props extends CoreProps {
      * 기본 체크 여부
      */
     defaultChecked?: boolean;
+    /**
+     * 기본 체크 여부
+     */
+    name?: string;
     // checked: boolean;
     // onChange: (checked: boolean) => void;
 }
@@ -22,6 +26,7 @@ export const MyRadio: FC<Props> = ({
     id,
     label,
     defaultChecked,
+    name,
     // checked,
     // onChange
 }) => {
@@ -30,14 +35,15 @@ export const MyRadio: FC<Props> = ({
     };
 
     return (
-        <div className="form-check">
+        <div className="form-check d-flex justify-content-center align-items-center">
             <input
                 className="form-check-input"
                 type="radio"
                 id={id}
                 defaultChecked={defaultChecked}
+                name={name}
             />
-            <label className="form-check-label" htmlFor={id}>
+            <label className="form-check-label ms-1" htmlFor={id}>
                 {label}
             </label>
         </div>

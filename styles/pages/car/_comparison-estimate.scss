@@ -1,0 +1,90 @@
+.wr-pages-comparison-estimate {
+    &__block {
+        // padding: 0 !important;
+
+        @include wr-card;
+
+        & + & {
+            margin-top: $wr-gutter-size;
+        }
+    }
+}
+
+.wr-pages-comparison-estimate-header {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @include wr-card;
+
+    &__left {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+        margin-left: 20px;
+    }
+
+    &__right {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 20px;
+    }
+}
+
+.wr-pages-comparison-estimate-body {
+    background-color: $white;
+}
+
+.wr-pages-comparison-estimate-customer {
+    border: 1px solid #afd4e2;
+    border-bottom: 0;
+
+    &__header {
+        background-color: #e9f2f6;
+        text-align: center;
+        border-bottom: 1px solid #afd4e2;
+
+        & > h3 {
+            font-size: 16px;
+            line-height: 32px;
+        }
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__record {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 32px;
+        border-bottom: 1px solid #afd4e2;
+    }
+    &__label {
+        flex-basis: 112px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        border-right: 1px solid #afd4e2;
+    }
+
+    &__description {
+        flex: 1;
+        padding-left: 10px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+
+        & .form-control {
+            height: 22px;
+        }
+    }
+}

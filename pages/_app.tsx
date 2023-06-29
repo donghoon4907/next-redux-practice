@@ -14,6 +14,7 @@ import { MyNav } from '@components/nav';
 import { MyHeader } from '@components/header';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
+import { MyLoading } from '@components/loading';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -59,6 +60,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             </div>
 
             {/* <MyDrawer /> */}
+            <MyLoading />
         </MyProvider>
     );
 }

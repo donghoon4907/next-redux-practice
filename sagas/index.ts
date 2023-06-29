@@ -5,7 +5,7 @@ import { longSaga } from '@sagas/long';
 import { boardSaga } from '@sagas/board';
 import { uploadSaga } from '@sagas/upload';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+axios.defaults.baseURL = 'http://127.0.0.1:3000';
 // 클라이언트 환경인 경우
 if (typeof window !== 'undefined') {
     // const token = getCookie(COOKIE_TOKEN_KEY);
