@@ -13,8 +13,8 @@ export const MyInput: FC<MyInputProps> = ({
     unit,
     ...another
 }) => {
-    let btn = <></>;
-    let unitTxt = <></>;
+    let btn = null;
+    let unitTxt = null;
 
     if (button) {
         const { children, ...ano } = button;

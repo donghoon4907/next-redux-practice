@@ -1,15 +1,17 @@
-import type { FC, FormEvent } from 'react';
+import type { FC, FormEvent, InputHTMLAttributes } from 'react';
 import { LuSearch } from 'react-icons/lu';
 import { useInput } from '@hooks/use-input';
 import { AccessibleText } from '@components/AccessibleText';
 
 import { MyInput } from '.';
 
-interface Props {
-    id: string;
-}
+interface Props
+    extends Omit<
+        InputHTMLAttributes<HTMLInputElement>,
+        'type' | 'value' | 'onChange'
+    > {}
 
-export const SearchInput: FC<Props> = ({ id }) => {
+export const SearchInput: FC<Props> = (inputProps) => {
     const search = useInput('', { includeSetState: false });
 
     const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -28,9 +30,7 @@ export const SearchInput: FC<Props> = ({ id }) => {
         <form role="search" className="wr-search__form" onSubmit={handleSubmit}>
             <MyInput
                 type="search"
-                id={id}
-                placeholder="검색어를 입력하세요"
-                aria-label="검색어를 입력하세요"
+                {...inputProps}
                 {...search}
                 button={{
                     type: 'submit',

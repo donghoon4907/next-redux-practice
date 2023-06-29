@@ -37,7 +37,7 @@ export const MyTable: FC<Props> = ({
     data,
     rowSelection,
     setRowSelection,
-    pageSize = 10,
+    pageSize = 20,
 }) => {
     const tableRef = useRef<HTMLTableElement>(null);
 

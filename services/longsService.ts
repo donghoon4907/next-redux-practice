@@ -3,11 +3,11 @@ import type { GetOverridesRequestPayload } from '@actions/long/get-overrides.act
 import axios from 'axios';
 
 export function getBasicPayments(payload: GetBasicPaymentsRequestPayload) {
-    return axios.get('/long_basic_payment.json');
+    return axios.get('/api/payments');
 }
 
 export function getOverrides(payload: GetOverridesRequestPayload) {
-    return axios.get('/long_override.json');
+    return axios.get('/api/overrides');
 }
 
 const rootServices = {
