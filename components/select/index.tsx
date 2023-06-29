@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
-import Select from 'react-select';
+import Select, { GroupBase, StylesConfig } from 'react-select';
 import variables from '@styles/_variables.module.scss';
 
 export interface MySelectProps {
@@ -40,6 +40,11 @@ export interface MySelectProps {
      *
      */
     height?: string;
+    /**
+     * select styles
+     *
+     */
+    styles?: StylesConfig<CoreSelectOption, false, GroupBase<CoreSelectOption>>;
 }
 
 export const MySelect: FC<MySelectProps> = ({
@@ -51,6 +56,7 @@ export const MySelect: FC<MySelectProps> = ({
     width,
     height = variables.filterHeight,
     placeHolderFontSize = variables.filterFontSize,
+    styles,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange(option);
@@ -128,6 +134,7 @@ export const MySelect: FC<MySelectProps> = ({
                     ...provided,
                     zIndex: 100000,
                 }),
+                ...styles,
             }}
         />
     );

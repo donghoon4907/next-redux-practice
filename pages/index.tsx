@@ -28,7 +28,7 @@ import { useDispatch } from 'react-redux';
 import { WithLabel } from '@components/WithLabel';
 import { SearchInput } from '@components/input/Search';
 
-const Demo: NextPage = () => {
+const Main: NextPage = () => {
     const dispatch = useDispatch();
 
     const tableWrapRef = useRef<HTMLDivElement>(null);
@@ -327,4 +327,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
         },
 );
 
-export default Demo;
+export default Main;
