@@ -1,18 +1,14 @@
-import type { GetBasicPaymentsRequestPayload } from '@actions/long/get-basic-payments.action';
-import type { GetOverridesRequestPayload } from '@actions/long/get-overrides.action';
+import type { GetLongRequestPayload } from '@actions/long/get-long.action';
 import axios from 'axios';
 
-export function getBasicPayments(payload: GetBasicPaymentsRequestPayload) {
-    return axios.get('/api/payments');
-}
-
-export function getOverrides(payload: GetOverridesRequestPayload) {
-    return axios.get('/api/overrides');
+export function getLong(payload: GetLongRequestPayload) {
+    return axios.get(`${process.env.BACKEND_DOMAIN}/long/sil`, {
+        params: payload,
+    });
 }
 
 const rootServices = {
-    getBasicPayments,
-    getOverrides,
+    getLong,
 };
 
 export default rootServices;

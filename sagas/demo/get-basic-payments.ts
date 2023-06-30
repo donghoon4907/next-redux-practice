@@ -4,10 +4,10 @@ import {
 } from '@actions/long/get-basic-payments.action';
 import { call, takeEvery } from 'redux-saga/effects';
 import { convertDateMiddleware } from '@utils/generators/convert-date';
-import longsService from '@services/longsService';
+import demosService from '@services/demosService';
 
 function* getBasicPaymentsSaga({ payload }: GetBasicPaymentsRequestAction) {
-    const { data } = yield call(longsService.getBasicPayments, payload);
+    const { data } = yield call(demosService.getBasicPayments, payload);
 
     return data;
 }

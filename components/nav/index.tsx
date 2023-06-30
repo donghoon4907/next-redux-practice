@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import Image from 'next/image';
 import { DrawerMenu } from '@components/drawer/DrawerMenu';
 import { ASIDE_MENUS } from '@constants/gnb';
 import Link from 'next/link';
@@ -13,8 +12,8 @@ export const MyNav: FC<Props> = () => {
                 <Link href="/">
                     <a>
                         <h1 className="a11y-hidden">Wooriinsumanlife</h1>
-                        <Image
-                            src="/images/logo2.png"
+                        <img
+                            src="/static/images/logo.png"
                             alt="Wooriinsumanlife"
                             width={130}
                             height={80}
@@ -33,11 +32,11 @@ export const MyNav: FC<Props> = () => {
             >
                 <DrawerMenu data={ASIDE_MENUS} />
             </div>
-            <div className="wr-nav__footer">
+            {/* <div className="wr-nav__footer">
                 <span>접속시간: 2023-12-23 14:23</span>
                 <br />
                 <span>접속IP: 202.68.223.123</span>
-            </div>
+            </div> */}
         </div>
     );
 };

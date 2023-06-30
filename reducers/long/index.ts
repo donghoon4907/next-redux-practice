@@ -2,6 +2,7 @@ import type { Reducer } from 'redux';
 import produce from 'immer';
 import { GetBasicPaymentsActionTypes } from '@actions/long/get-basic-payments.action';
 import { GetOverridesActionTypes } from '@actions/long/get-overrides.action';
+import { GetLongActionTypes } from '@actions/long/get-long.action';
 
 export interface LongState {
     basicPayments: {
@@ -10,6 +11,11 @@ export interface LongState {
         total: any;
     };
     overrides: {
+        fields: any[];
+        data: any[];
+        total: any;
+    };
+    long: {
         fields: any[];
         data: any[];
         total: any;
@@ -23,6 +29,11 @@ const initialState: LongState = {
         total: 0,
     },
     overrides: {
+        fields: [],
+        data: [],
+        total: 0,
+    },
+    long: {
         fields: [],
         data: [],
         total: 0,
@@ -42,6 +53,11 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetOverridesActionTypes.SUCCESS: {
                 draft.overrides = action.payload;
+
+                break;
+            }
+            case GetLongActionTypes.SUCCESS: {
+                draft.long = action.payload;
 
                 break;
             }

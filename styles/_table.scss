@@ -5,6 +5,7 @@
         background-color: $white;
         margin-top: $wr-gutter-size;
         // border: 1px solid $wr-divider-color-200;
+        flex: 1;
     }
 
     &--border {
@@ -30,5 +31,13 @@
 
     & tbody {
         font-size: 12px;
+
+        & tr {
+            cursor: pointer;
+        }
+
+        & tr:hover {
+            background-color: $wr-table-hover-color;
+        }
     }
 }

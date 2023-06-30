@@ -6,6 +6,13 @@
 
     @include wr-card;
 
+    &__summary {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+    }
+
     &__body {
         display: flex;
         justify-content: space-between;

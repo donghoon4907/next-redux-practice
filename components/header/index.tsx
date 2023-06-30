@@ -17,38 +17,23 @@ export const MyHeader: FC<Props> = () => {
         <header className="wr-header">
             <div className="wr-meta">
                 <div className="wr-meta__inner">
-                    <div className="d-flex justify-content-start align-items-center">
-                        <span style={{ marginRight: 10 }}>
+                    <div className="wr-meta__right">
+                        <span className="wr-meta__department">
                             직할 영업 / 5회사임직원 / 전산개발실
                         </span>
-                        <div
-                            className="text-end"
-                            style={{
-                                marginRight: 50,
-                                fontWeight: 'bold',
-                                // fontSize: 14,
-                            }}
-                        >
-                            {' '}
-                            김서윤
-                            {/* &nbsp;님 */}
-                        </div>
-                        <div
-                            style={{
-                                marginRight: 20,
-                                fontSize: 12,
-                                color: 'gray',
-                            }}
-                        >
+                        <div className="wr-meta__username">김서윤</div>
+                        <div className="wr-meta__log">
                             <span>접속시간: 2023-12-23 14:23 &nbsp;</span>
                             <span>접속IP: 202.68.223.123</span>
                         </div>
-                        <div style={{ width: 200 }}>
-                            <SearchInput id="search" placeholder="메뉴 검색" />
+                        <div className="wr-meta__search">
+                            <SearchInput
+                                id="search"
+                                placeholder="메뉴 검색"
+                                style={{ fontSize: 14 }}
+                            />
                         </div>
                     </div>
-
-                    {/* <span className="wr-nav__title">님</span> */}
                 </div>
             </div>
             <div className="wr-gnb">
@@ -74,10 +59,6 @@ export const MyHeader: FC<Props> = () => {
                                     <GnbSubMenuItem key={id} {...gnb} />
                                 ))}
                             </ul>
-                            {/* <div className="wr-gnb__metadata">
-                                <span>접속시간 2023-12-23 14:23</span>
-                                <span>접속IP: 202.68.223.123</span>
-                            </div> */}
                         </div>
                     </div>
                 </div>

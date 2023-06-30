@@ -5,7 +5,7 @@
 }
 
 .wr-meta {
-    height: 40px;
+    height: 35px;
     background-color: $white;
     border-left: 1px solid $wr-divider-color-300;
 
@@ -17,6 +17,34 @@
         align-items: center;
         gap: 10px;
         color: $black;
+    }
+
+    &__right {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    &__department {
+        // margin-right: 10px;
+    }
+
+    &__username {
+        text-align: right;
+        margin-right: 50px;
+        font-weight: bold;
+        font-size: 12px;
+    }
+
+    &__log {
+        // margin-right: 20px;
+        font-size: 10px;
+        color: $wr-label-color;
+    }
+
+    &__search {
+        width: 150px;
     }
 }
 
@@ -68,7 +96,7 @@
     }
 
     &__menu {
-        height: 35px;
+        height: 40px;
         overflow: hidden;
         display: flex;
         align-items: center;

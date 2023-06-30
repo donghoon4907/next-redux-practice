@@ -1,3 +1,7 @@
 .wr-pages-demo {
     --wr-tab-active-color: #e9ecef;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }

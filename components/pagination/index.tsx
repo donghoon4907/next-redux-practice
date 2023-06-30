@@ -31,7 +31,7 @@ const LIST_COUNTS: CoreSelectOption[] = [
     },
 ];
 
-export const MyPagination: FC<Props> = () => {
+export const MyPagination: FC<Props> = ({ children }) => {
     const [showCounts, setShowCounts] = useState<CoreSelectOption | null>(
         LIST_COUNTS[0],
     );
@@ -42,7 +42,7 @@ export const MyPagination: FC<Props> = () => {
 
     return (
         <div className="wr-pagination">
-            <div>Total: 4,300</div>
+            <div className="wr-pagination__summary">{children}</div>
             <nav className="wr-pagination__body" aria-label="Page navigation">
                 <div>
                     <MySelect

@@ -9,6 +9,7 @@ export default class MyDocument extends Document {
                     <meta name="theme-color" content="#ffffff" />
                     {/* <meta charSet="utf-8" /> */}
                     <meta httpEquiv="cache-control" content="no-store" />
+                    <link rel="icon" href="/static/favicon.ico" />
                     {/* <meta name="description" content="" />
                     <meta name="keywords" content="" />
                     <meta property="og:title" content="" />

@@ -25,7 +25,17 @@ export function checkEllipsisNeeded(columnName: string) {
  */
 export function checkSeparatorNeeded(columnName: string) {
     let output = true;
-    if (columnName === 'cnum' || columnName === 'bno') {
+    /**
+     * cnum: 계약번호
+     * bno
+     * orga
+     * cycle
+     * bo_du
+     * whoi
+     * pay_du: 납입기간
+     */
+    const omits = ['cnum', 'bno', 'orga', 'cycle', 'bo_du', 'whoi', 'pay_du'];
+    if (omits.some((v) => columnName === v)) {
         output = false;
     }
 

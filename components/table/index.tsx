@@ -9,9 +9,10 @@ import type {
     TableOptions,
 } from '@tanstack/react-table';
 import type { CoreSetState } from '@interfaces/core';
+import { useRouter } from 'next/router';
 import { useRef, useEffect } from 'react';
 import {
-    Table as ReactTable,
+    // Table as ReactTable,
     useReactTable,
     getCoreRowModel,
     getFilteredRowModel,
@@ -39,6 +40,8 @@ export const MyTable: FC<Props> = ({
     setRowSelection,
     pageSize = 20,
 }) => {
+    const router = useRouter();
+
     const tableRef = useRef<HTMLTableElement>(null);
 
     const table = useReactTable({
@@ -60,6 +63,10 @@ export const MyTable: FC<Props> = ({
         enableRowSelection: true,
         debugTable: false,
     });
+
+    const handleClickRow = (cidx: number) => {
+        router.push(`/detail/${cidx}`);
+    };
 
     useEffect(() => {
         const table = tableRef.current;
@@ -109,31 +116,36 @@ export const MyTable: FC<Props> = ({
                 ))}
             </thead>
             <tbody>
-                {table.getRowModel().rows.map((row) => (
-                    <tr key={row.id}>
-                        {row.getVisibleCells().map((cell) => {
-                            let className = '';
+                {table.getRowModel().rows.map((row) => {
+                    return (
+                        <tr
+                            key={row.id}
+                            onClick={() => handleClickRow(row.original.cidx)}
+                        >
+                            {row.getVisibleCells().map((cell) => {
+                                let className = '';
 
-                            // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
-                            if (
-                                isNumeric(cell.getValue()) &&
-                                checkSeparatorNeeded(cell.column.id) &&
-                                checkTextAlignRightNeeded(cell.column.id)
-                            ) {
-                                className += 'text-end';
-                            }
+                                // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
+                                if (
+                                    isNumeric(cell.getValue()) &&
+                                    checkSeparatorNeeded(cell.column.id) &&
+                                    checkTextAlignRightNeeded(cell.column.id)
+                                ) {
+                                    className += 'text-end';
+                                }
 
-                            return (
-                                <td key={cell.id} className={className}>
-                                    {flexRender(
-                                        cell.column.columnDef.cell,
-                                        cell.getContext(),
-                                    )}
-                                </td>
-                            );
-                        })}
-                    </tr>
-                ))}
+                                return (
+                                    <td key={cell.id} className={className}>
+                                        {flexRender(
+                                            cell.column.columnDef.cell,
+                                            cell.getContext(),
+                                        )}
+                                    </td>
+                                );
+                            })}
+                        </tr>
+                    );
+                })}
             </tbody>
             {/* <tfoot>
                 {table.getFooterGroups().map((footerGroup) => (

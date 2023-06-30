@@ -1,11 +1,11 @@
 import { all, call } from 'redux-saga/effects';
-import axios from 'axios';
+// import axios from 'axios';
 import { demoSaga } from '@sagas/demo';
 import { longSaga } from '@sagas/long';
 import { boardSaga } from '@sagas/board';
 import { uploadSaga } from '@sagas/upload';
 
-axios.defaults.baseURL = 'http://127.0.0.1:3000';
+// axios.defaults.baseURL = process.env.BACKEND_DOMAIN;
 // 클라이언트 환경인 경우
 if (typeof window !== 'undefined') {
     // const token = getCookie(COOKIE_TOKEN_KEY);
