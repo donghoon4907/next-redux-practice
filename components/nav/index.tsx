@@ -1,20 +1,21 @@
 import type { FC } from 'react';
-import Image from 'next/image';
+import type { CoreMenuOption } from '@interfaces/core';
 import { DrawerMenu } from '@components/drawer/DrawerMenu';
-import { ASIDE_MENUS } from '@constants/gnb';
 import Link from 'next/link';
 
-interface Props {}
+interface Props {
+    menu: CoreMenuOption[];
+}
 
-export const MyNav: FC<Props> = () => {
+export const MyNav: FC<Props> = ({ menu }) => {
     return (
         <div className="wr-nav">
             <div className="wr-nav__logo">
                 <Link href="/">
                     <a>
                         <h1 className="a11y-hidden">Wooriinsumanlife</h1>
-                        <Image
-                            src="/images/logo2.png"
+                        <img
+                            src="/static/images/logo.png"
                             alt="Wooriinsumanlife"
                             width={130}
                             height={80}
@@ -31,13 +32,13 @@ export const MyNav: FC<Props> = () => {
                 role="tablist"
                 aria-multiselectable="true"
             >
-                <DrawerMenu data={ASIDE_MENUS} />
+                <DrawerMenu menu={menu} />
             </div>
-            <div className="wr-nav__footer">
+            {/* <div className="wr-nav__footer">
                 <span>접속시간: 2023-12-23 14:23</span>
                 <br />
                 <span>접속IP: 202.68.223.123</span>
-            </div>
+            </div> */}
         </div>
     );
 };

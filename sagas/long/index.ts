@@ -1,8 +1,7 @@
 import { all, fork } from 'redux-saga/effects';
 
-import { watchGetBasicPayments } from './get-basic-payments';
-import { watchGetOverrides } from './get-overrides';
+import { watchGetLong } from './get-long';
 
 export function* longSaga() {
-    yield all([fork(watchGetBasicPayments), fork(watchGetOverrides)]);
+    yield all([fork(watchGetLong)]);
 }

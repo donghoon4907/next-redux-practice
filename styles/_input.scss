@@ -1,0 +1,29 @@
+.wr-login-input {
+    border-left: none;
+    font-size: 16px;
+    width: 320px;
+    border: none;
+    height: 50px;
+    background-repeat: no-repeat;
+    padding-left: 60px;
+    outline: none;
+
+    &__wrap {
+        position: relative;
+
+        & + & {
+            margin-top: 20px;
+        }
+    }
+
+    &__icon {
+        position: absolute;
+        top: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        left: 20px;
+
+        & > svg {
+            fill: $gray-700;
+        }
+    }
+}

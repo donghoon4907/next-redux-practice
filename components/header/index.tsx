@@ -1,12 +1,14 @@
 import type { FC } from 'react';
+import { AiOutlineFolder } from 'react-icons/ai';
 // import { LuMenu } from 'react-icons/lu';
-import { GNBS, SUBMENUS } from '@constants/gnb';
+import { GNBS } from '@constants/gnb';
 // import { useDrawer } from '@hooks/use-drawer';
 
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
 import { SearchInput } from '@components/input/Search';
+import { MdLogout } from 'react-icons/md';
 
 interface Props {}
 
@@ -17,38 +19,23 @@ export const MyHeader: FC<Props> = () => {
         <header className="wr-header">
             <div className="wr-meta">
                 <div className="wr-meta__inner">
-                    <div className="d-flex justify-content-start align-items-center">
-                        <span style={{ marginRight: 10 }}>
+                    <div className="wr-meta__right">
+                        <span className="wr-meta__department">
                             직할 영업 / 5회사임직원 / 전산개발실
                         </span>
-                        <div
-                            className="text-end"
-                            style={{
-                                marginRight: 50,
-                                fontWeight: 'bold',
-                                // fontSize: 14,
-                            }}
-                        >
-                            {' '}
-                            김서윤
-                            {/* &nbsp;님 */}
-                        </div>
-                        <div
-                            style={{
-                                marginRight: 20,
-                                fontSize: 12,
-                                color: 'gray',
-                            }}
-                        >
+                        <div className="wr-meta__username">김서윤</div>
+                        <div className="wr-meta__log">
                             <span>접속시간: 2023-12-23 14:23 &nbsp;</span>
                             <span>접속IP: 202.68.223.123</span>
                         </div>
-                        <div style={{ width: 200 }}>
-                            <SearchInput id="search" placeholder="메뉴 검색" />
+                        <div className="wr-meta__search">
+                            <SearchInput
+                                id="search"
+                                placeholder="메뉴 검색"
+                                style={{ fontSize: 14 }}
+                            />
                         </div>
                     </div>
-
-                    {/* <span className="wr-nav__title">님</span> */}
                 </div>
             </div>
             <div className="wr-gnb">
@@ -70,14 +57,28 @@ export const MyHeader: FC<Props> = () => {
                         <div className="wr-gnb__right">
                             <h2 className="a11y-hidden">사용자서비스</h2>
                             <ul className="wr-gnb__services">
-                                {SUBMENUS.map(({ id, ...gnb }) => (
-                                    <GnbSubMenuItem key={id} {...gnb} />
-                                ))}
+                                <GnbSubMenuItem to="#">통합검색</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    주요연락처
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    <div className="wr-badge__wrap">
+                                        <span>게시판</span>
+                                        <span className="wr-badge badge bg-danger">
+                                            23
+                                        </span>
+                                    </div>
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">일정관리</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">SMS/Fax</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">Mypage</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    <AiOutlineFolder size={20} />
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    <MdLogout size={20} />
+                                </GnbSubMenuItem>
                             </ul>
-                            {/* <div className="wr-gnb__metadata">
-                                <span>접속시간 2023-12-23 14:23</span>
-                                <span>접속IP: 202.68.223.123</span>
-                            </div> */}
                         </div>
                     </div>
                 </div>

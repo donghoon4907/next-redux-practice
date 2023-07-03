@@ -1,5 +1,4 @@
 import type { FC, MouseEvent } from 'react';
-import { useRouter } from 'next/router';
 import {
     UncontrolledAccordion,
     AccordionBody,
@@ -8,17 +7,17 @@ import {
 } from 'reactstrap';
 // import { useDrawer } from '@hooks/use-drawer';
 import { CoreMenuOption } from '@interfaces/core';
-import { TabModule } from '@utils/storage';
+import { useTab } from '@hooks/use-tab';
 
 interface Props {
     /**
      * 메뉴 생성에 필요한 데이터, 특정 형식을 따릅니다.
      */
-    data: CoreMenuOption[];
+    menu: CoreMenuOption[];
 }
 
-export const DrawerMenu: FC<Props> = ({ data }) => {
-    const router = useRouter();
+export const DrawerMenu: FC<Props> = ({ menu }) => {
+    const tab = useTab();
 
     // const { onToggle } = useDrawer();
 
@@ -27,28 +26,13 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
         item: CoreMenuOption,
     ) => {
         evt.preventDefault();
-        // Drawer를 닫습니다.
-        // onToggle();
 
-        if (router.pathname === item.to) {
-            return;
-        }
-        // 현재 페이지가 아닐 때 탭을 생성하고 페이지를 이동
-        const tab = new TabModule();
-
-        tab.create({
-            id: `tab${item.id}`,
-            label: item.label,
-            to: item.to,
-            // panelId: `tabpanel${item.id}`,
-        });
-
-        router.push(item.to);
+        tab.fire(`tab${item.id}`, item.label, item.to);
     };
 
     return (
         <>
-            {data.map((v) =>
+            {menu.map((v) =>
                 v.items && v.items.length > 0 ? (
                     <UncontrolledAccordion
                         stayOpen
@@ -68,7 +52,7 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
                                 role="tabpanel"
                                 aria-labelledby={v.id}
                             >
-                                <DrawerMenu data={v.items} />
+                                <DrawerMenu menu={v.items} />
                             </AccordionBody>
                         </AccordionItem>
                     </UncontrolledAccordion>

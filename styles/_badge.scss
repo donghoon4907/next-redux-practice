@@ -1,0 +1,11 @@
+.wr-badge {
+    --bs-badge-padding-x: 5px;
+    --bs-badge-padding-y: 3px;
+
+    &__wrap {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 3px;
+    }
+}

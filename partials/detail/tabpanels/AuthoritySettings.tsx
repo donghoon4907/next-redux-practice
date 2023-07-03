@@ -159,23 +159,16 @@ export const AuthoritySettings: FC<Props> = ({ id, panelId, hidden }) => {
             <div className="row mt-3">
                 <div className="col">
                     <DisconnectedLabel>장기 기본 지급</DisconnectedLabel>
-                    <div className="wr-table__wrap">
-                        <MyTable
-                            columns={basicPaymentscolumns}
-                            data={basicPayments.data}
-                        />
-                    </div>
+                    <MyTable
+                        columns={basicPaymentscolumns}
+                        data={basicPayments.data}
+                    />
                 </div>
             </div>
             <div className="row mt-3">
                 <div className="col">
                     <DisconnectedLabel>장기 오버라이드</DisconnectedLabel>
-                    <div className="wr-table__wrap">
-                        <MyTable
-                            columns={overridesColumns}
-                            data={overrides.data}
-                        />
-                    </div>
+                    <MyTable columns={overridesColumns} data={overrides.data} />
                 </div>
             </div>
         </div>

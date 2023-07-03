@@ -35,7 +35,7 @@ export const MyRadio: FC<Props> = ({
     };
 
     return (
-        <div className="form-check d-flex justify-content-center align-items-center">
+        <div className="wr-radio form-check">
             <input
                 className="form-check-input"
                 type="radio"
