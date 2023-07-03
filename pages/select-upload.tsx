@@ -149,13 +149,11 @@ const SelectUpload: NextPage = () => {
                 </div>
                 {excelData.length > 0 && (
                     <>
-                        <div className="wr-table__wrap wr-table--border">
-                            <MyTable
-                                columns={columns}
-                                data={excelData}
-                                pageSize={10}
-                            />
-                        </div>
+                        <MyTable
+                            columns={columns}
+                            data={excelData}
+                            pageSize={10}
+                        />
                         <MyPagination />
                     </>
                 )}

@@ -6,11 +6,12 @@
         margin-top: $wr-gutter-size;
         // border: 1px solid $wr-divider-color-200;
         flex: 1;
-    }
-
-    &--border {
         border: 1px solid $wr-divider-color-300;
     }
+
+    // &--border {
+    //     border: 1px solid $wr-divider-color-300;
+    // }
 
     &.table {
         margin-bottom: 0 !important;
@@ -20,9 +21,6 @@
         margin: 0 !important;
     }
 
-    & .table > :not(caption) > * > * {
-        padding: 6px 5px !important;
-    }
     & thead {
         font-size: 14px;
         background-color: $gray-300 !important;
@@ -38,6 +36,33 @@
 
         & tr:hover {
             background-color: $wr-table-hover-color;
+        }
+    }
+
+    & .resizer {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 100%;
+        width: 5px;
+        background: rgba(0, 0, 0, 0.5);
+        cursor: col-resize;
+        user-select: none;
+        touch-action: none;
+    }
+
+    & .resizer.isResizing {
+        background: blue;
+        opacity: 1;
+    }
+
+    @media (hover: hover) {
+        .resizer {
+            opacity: 0;
+        }
+
+        *:hover > .resizer {
+            opacity: 1;
         }
     }
 }

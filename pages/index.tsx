@@ -235,9 +235,7 @@ const Main: NextPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="wr-table__wrap wr-table--border">
-                    <MyTable columns={columns} data={long.data} />
-                </div>
+                <MyTable columns={columns} data={long.data} />
 
                 <MyPagination>
                     <span>건수: {long.total.count.toLocaleString()}</span>

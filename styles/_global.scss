@@ -35,8 +35,15 @@ a:visited {
 }
 
 table {
-    width: 100%;
     border-collapse: separate !important;
+    width: fit-content;
+}
+
+table,
+th,
+td {
+    // border-right: 1px solid $wr-divider-color-300;
+    // border-bottom: 1px solid $wr-divider-color-300;
 }
 
 thead {
@@ -45,13 +52,30 @@ thead {
     top: 0;
 }
 
+th {
+    padding: 2px 4px;
+    position: relative;
+    font-weight: bold;
+    text-align: center;
+    height: 30px;
+}
+
 th,
 td {
-    min-width: 50px;
-    max-width: 500px;
+    // min-width: 50px;
+    // max-width: 500px;
     white-space: nowrap;
     text-align: center;
 }
+
+tr {
+    width: fit-content;
+}
+
+td {
+    height: 30px;
+}
+
 /* 스크롤 설정 */
 ::-webkit-scrollbar {
     width: 0px;
@@ -179,4 +203,5 @@ input[type='number'] {
 // 테이블 관련 공통 스타일 재정의
 .table > :not(caption) > * > * {
     background-color: inherit !important;
+    padding: 6px 5px !important;
 }

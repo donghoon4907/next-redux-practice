@@ -179,18 +179,13 @@ const Board: NextPage = () => {
                 <div>
                     <h2>제목</h2>
                 </div>
-                <div
-                    className="wr-table__wrap wr-table--border"
-                    ref={tableWrapRef}
-                >
-                    <MyTable
-                        columns={columns}
-                        data={boards.data}
-                        rowSelection={rowSelection}
-                        setRowSelection={setRowSelection}
-                        pageSize={10}
-                    />
-                </div>
+                <MyTable
+                    columns={columns}
+                    data={boards.data}
+                    rowSelection={rowSelection}
+                    setRowSelection={setRowSelection}
+                    pageSize={10}
+                />
 
                 <MyPagination />
                 {/* <div className="flex items-center gap-2">

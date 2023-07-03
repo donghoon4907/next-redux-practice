@@ -30,7 +30,7 @@ export const LinkTab: FC<Props> = ({
 }) => {
     const router = useRouter();
 
-    const isActive = router.pathname === to;
+    const isActive = router.asPath === to;
 
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();
@@ -51,10 +51,7 @@ export const LinkTab: FC<Props> = ({
     };
 
     return (
-        <li
-            className={`wr-tab ${router.pathname === to ? 'active' : ''}`}
-            role="tab"
-        >
+        <li className={`wr-tab ${isActive ? 'active' : ''}`} role="tab">
             <a
                 className={`wr-tab__link ${isExpand ? '' : 'single'}`}
                 aria-current="page"
@@ -76,9 +73,7 @@ export const LinkTab: FC<Props> = ({
                         <MdClose
                             size={13}
                             color={
-                                router.pathname === to
-                                    ? 'black'
-                                    : variables.disableFontColor
+                                isActive ? 'black' : variables.disableFontColor
                             }
                         />
                     </IconWrapper>

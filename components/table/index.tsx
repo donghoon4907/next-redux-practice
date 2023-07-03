@@ -9,8 +9,7 @@ import type {
     TableOptions,
 } from '@tanstack/react-table';
 import type { CoreSetState } from '@interfaces/core';
-import { useRouter } from 'next/router';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 import {
     // Table as ReactTable,
     useReactTable,
@@ -24,6 +23,7 @@ import {
     checkTextAlignRightNeeded,
     isNumeric,
 } from '@utils/validation';
+import { useTab } from '@hooks/use-tab';
 
 interface Props {
     columns: ColumnDef<any, any>[];
@@ -40,13 +40,19 @@ export const MyTable: FC<Props> = ({
     setRowSelection,
     pageSize = 20,
 }) => {
-    const router = useRouter();
+    // const router = useRouter();
+    const tab = useTab();
 
     const tableRef = useRef<HTMLTableElement>(null);
+
+    const tableWrapRef = useRef<HTMLDivElement>(null);
+    // 키보드 이벤트 활성화 여부
+    const [keyEnabled, setKeyEnabled] = useState<boolean>(false);
 
     const table = useReactTable({
         data,
         columns,
+        // defaultColumn,
         // Pipeline
         getCoreRowModel: getCoreRowModel(),
         getFilteredRowModel: getFilteredRowModel(),
@@ -58,96 +64,173 @@ export const MyTable: FC<Props> = ({
                 pageSize,
             },
         },
-        onRowSelectionChange: setRowSelection,
-        // enable row selection for all rows
         enableRowSelection: true,
+        onRowSelectionChange: setRowSelection,
+        columnResizeMode: 'onChange',
         debugTable: false,
     });
 
-    const handleClickRow = (cidx: number) => {
-        router.push(`/detail/${cidx}`);
+    const handleClickRow = (cidx: number, cname: string) => {
+        tab.fire(`-detail-${cidx}`, `계약상세 - ${cname}`, `/detail/${cidx}`);
+    };
+
+    const handleTableScroll = useCallback(
+        (evt: KeyboardEvent) => {
+            if (keyEnabled) {
+                const scrollAmount = 50;
+                if (tableWrapRef.current) {
+                    switch (evt.key) {
+                        case 'ArrowUp':
+                            tableWrapRef.current.scrollTop -= scrollAmount;
+                            break;
+                        case 'ArrowDown':
+                            tableWrapRef.current.scrollTop += scrollAmount;
+                            break;
+                        case 'ArrowLeft':
+                            tableWrapRef.current.scrollLeft -= scrollAmount;
+                            break;
+                        case 'ArrowRight':
+                            tableWrapRef.current.scrollLeft += scrollAmount;
+                            break;
+                    }
+
+                    evt.preventDefault();
+                }
+            }
+        },
+        [keyEnabled],
+    );
+
+    const handleMouseEnter = () => {
+        setKeyEnabled(true);
+    };
+
+    const handleMouseLeave = () => {
+        setKeyEnabled(false);
     };
 
     useEffect(() => {
-        const table = tableRef.current;
+        if (tableRef.current) {
+            // 말 줄임표 처리 관련
+            // const columns =
+            //     tableRef.current.querySelectorAll<HTMLSpanElement>(
+            //         'thead th span',
+            //     );
+            // const fields =
+            //     tableRef.current.querySelectorAll<HTMLSpanElement>(
+            //         'tbody td span',
+            //     );
 
-        if (table) {
-            const columns =
-                table.querySelectorAll<HTMLSpanElement>('thead th span');
-            const fields =
-                table.querySelectorAll<HTMLSpanElement>('tbody td span');
+            // let colSpanWidth = -1;
+            // Array.from(columns).some((span) => {
+            //     let output = false;
+            //     if (span.classList.contains('ellipsisTarget')) {
+            //         colSpanWidth = span.offsetWidth;
 
-            let columnSpanWidth = -1;
-            Array.from(columns).some((span) => {
-                let output = false;
-                if (span.classList.contains('ellipsisTarget')) {
-                    columnSpanWidth = span.offsetWidth;
+            //         output = true;
+            //     }
 
-                    output = true;
-                }
+            //     return output;
+            // });
 
-                return output;
-            });
+            // const d = document.querySelectorAll(".text-truncate")
 
-            Array.from(fields).forEach((v) => {
-                if (v.classList.contains('text-truncate')) {
-                    v.style.width = `${columnSpanWidth + 100}px`;
-                }
-            });
+            // Array.from(fields).forEach((v) => {
+            //     if (v.classList.contains('text-truncate')) {
+            //         v.style.width = `${colSpanWidth + 150}px`;
+            //     }
+            // });
+            // 테이블 내 마우스 오버 감지 관련 이벤트 추가
+            document.addEventListener('keydown', handleTableScroll);
         }
-    }, []);
+
+        return () => {
+            document.removeEventListener('keydown', handleTableScroll);
+        };
+    }, [handleTableScroll]);
 
     return (
-        <table className="wr-table table" ref={tableRef}>
-            <thead>
-                {table.getHeaderGroups().map((headerGroup) => (
-                    <tr key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                            <th key={header.id} colSpan={header.colSpan}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                          header.column.columnDef.header,
-                                          header.getContext(),
-                                      )}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-            </thead>
-            <tbody>
-                {table.getRowModel().rows.map((row) => {
-                    return (
-                        <tr
-                            key={row.id}
-                            onClick={() => handleClickRow(row.original.cidx)}
-                        >
-                            {row.getVisibleCells().map((cell) => {
-                                let className = '';
-
-                                // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
-                                if (
-                                    isNumeric(cell.getValue()) &&
-                                    checkSeparatorNeeded(cell.column.id) &&
-                                    checkTextAlignRightNeeded(cell.column.id)
-                                ) {
-                                    className += 'text-end';
-                                }
-
-                                return (
-                                    <td key={cell.id} className={className}>
-                                        {flexRender(
-                                            cell.column.columnDef.cell,
-                                            cell.getContext(),
-                                        )}
-                                    </td>
-                                );
-                            })}
+        <div className="wr-table__wrap" ref={tableWrapRef}>
+            <table
+                className="wr-table table"
+                ref={tableRef}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                // style={{ width: table.getCenterTotalSize() }}
+            >
+                <thead>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                        <tr key={headerGroup.id}>
+                            {headerGroup.headers.map((header) => (
+                                <th
+                                    key={header.id}
+                                    colSpan={header.colSpan}
+                                    // style={{
+                                    //     width: header.getSize(),
+                                    // }}
+                                >
+                                    {header.isPlaceholder
+                                        ? null
+                                        : flexRender(
+                                              header.column.columnDef.header,
+                                              header.getContext(),
+                                          )}
+                                    {/* <div
+                                    {...{
+                                        onMouseDown: header.getResizeHandler(),
+                                        onTouchStart: header.getResizeHandler(),
+                                        className: `resizer ${
+                                            header.column.getIsResizing()
+                                                ? 'isResizing'
+                                                : ''
+                                        }`,
+                                    }}
+                                /> */}
+                                </th>
+                            ))}
                         </tr>
-                    );
-                })}
-            </tbody>
-            {/* <tfoot>
+                    ))}
+                </thead>
+                <tbody>
+                    {table.getRowModel().rows.map((row) => {
+                        return (
+                            <tr
+                                key={row.id}
+                                onClick={() =>
+                                    handleClickRow(
+                                        row.original.cidx,
+                                        row.original.cname,
+                                    )
+                                }
+                            >
+                                {row.getVisibleCells().map((cell) => {
+                                    let className = '';
+
+                                    // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
+                                    if (
+                                        isNumeric(cell.getValue()) &&
+                                        checkSeparatorNeeded(cell.column.id) &&
+                                        checkTextAlignRightNeeded(
+                                            cell.column.id,
+                                        )
+                                    ) {
+                                        className += 'text-end';
+                                    }
+
+                                    return (
+                                        <td key={cell.id} className={className}>
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext(),
+                                            )}
+                                        </td>
+                                    );
+                                })}
+                            </tr>
+                        );
+                    })}
+                </tbody>
+                {/* <tfoot>
                 {table.getFooterGroups().map((footerGroup) => (
                     <tr key={footerGroup.id}>
                         {footerGroup.headers.map((header) => (
@@ -163,6 +246,7 @@ export const MyTable: FC<Props> = ({
                     </tr>
                 ))}
             </tfoot> */}
-        </table>
+            </table>
+        </div>
     );
 };

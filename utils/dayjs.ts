@@ -12,15 +12,10 @@ export class DayJSModule {
     private _instance: dayjs.Dayjs | null = null;
     private _date: string | null = null;
 
-    public static isDate(date: string) {
-        let output = false;
-        if (!isNumeric(date)) {
-            if (dayjs(date).isValid()) {
-                output = true;
-            }
-        }
-
-        return output;
+    public static isDate(date: string | number) {
+        return isNumeric(date)
+            ? false
+            : /^\d{4}-\d{2}-\d{2}$/.test(date as string);
     }
 
     constructor(date?: string) {
@@ -44,12 +39,8 @@ export class DayJSModule {
     // Only checks if the value could be parsed to a Date time.
     isDate = () => {
         let output = false;
-        // 숫자형 데이터 제외
-        if (!isNumeric(this._date)) {
-            // 날짜 형식 검증
-            if (this._instance?.isValid()) {
-                output = true;
-            }
+        if (this._date) {
+            output = DayJSModule.isDate(this._date);
         }
 
         return output;
