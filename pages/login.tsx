@@ -1,10 +1,31 @@
-import { MyCheckbox } from '@components/checkbox';
 import type { NextPage } from 'next';
+import type { FormEvent } from 'react';
 import Head from 'next/head';
 import { FaUser, FaKey, FaPowerOff, FaHeadset } from 'react-icons/fa';
+import { MyCheckbox } from '@components/checkbox';
+import { useApi } from '@hooks/use-api';
+import { loginRequest } from '@actions/user/login.action';
+import { useRouter } from 'next/router';
+import { useInput } from '@hooks/use-input';
 
 const Login: NextPage = () => {
     const displayName = 'wr-pages-login';
+
+    const router = useRouter();
+
+    const login = useApi(loginRequest);
+
+    const userid = useInput('');
+
+    const password = useInput('');
+
+    const handleSubmit = (evt: FormEvent) => {
+        evt.preventDefault();
+
+        login({ userid: userid.value, password: password.value }, () => {
+            router.push('/long/list');
+        });
+    };
 
     return (
         <>
@@ -29,7 +50,10 @@ const Login: NextPage = () => {
                                 대외비
                             </div>
                         </div>
-                        <form className={`${displayName}__body`}>
+                        <form
+                            className={`${displayName}__body`}
+                            onSubmit={handleSubmit}
+                        >
                             <div className="wr-login-input__wrap">
                                 <div className="wr-login-input__icon">
                                     <FaUser size={30} />
@@ -38,6 +62,7 @@ const Login: NextPage = () => {
                                     type="text"
                                     className="wr-login-input"
                                     placeholder="사원번호"
+                                    {...userid}
                                     required
                                 />
                             </div>
@@ -49,6 +74,7 @@ const Login: NextPage = () => {
                                     type="password"
                                     className="wr-login-input"
                                     placeholder="Password"
+                                    {...password}
                                     required
                                 />
                             </div>
