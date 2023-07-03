@@ -25,7 +25,7 @@ export const MyCheckbox: FC<Props> = ({
     };
 
     return (
-        <div className="form-check d-flex justify-content-center align-items-center">
+        <div className="wr-checkbox form-check">
             <input
                 type="checkbox"
                 className="form-check-input"

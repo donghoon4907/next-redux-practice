@@ -1,16 +1,14 @@
 import type { FC } from 'react';
-import type { CoreMenuOption } from '@interfaces/core';
+import type { CoreMenuOption, CoreProps } from '@interfaces/core';
 import Link from 'next/link';
 
-interface Props extends Pick<CoreMenuOption, 'to' | 'label'> {}
+interface Props extends CoreProps, Pick<CoreMenuOption, 'to'> {}
 
-export const GnbSubMenuItem: FC<Props> = ({ to, label }) => {
+export const GnbSubMenuItem: FC<Props> = ({ to, children }) => {
     return (
         <li>
             <Link href={to}>
-                <a className="wr-gnb__subtitle" title={label}>
-                    {label}
-                </a>
+                <a className="wr-gnb__subtitle">{children}</a>
             </Link>
         </li>
     );

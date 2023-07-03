@@ -10,8 +10,6 @@ import { useDispatch } from 'react-redux';
 import { wrapper } from '@store/redux';
 // import { MyDrawer } from '@components/drawer';
 import { MyProvider } from '@components/Provider';
-import { MyNav } from '@components/nav';
-import { MyHeader } from '@components/header';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
 import { MyLoading } from '@components/loading';
@@ -41,23 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     return (
         <MyProvider>
-            <div className="row">
-                <div className="col-1">
-                    <MyNav />
-                </div>
-                <div className="col-11">
-                    <MyHeader />
-                    <section>
-                        <div className="wr-main__wrap">
-                            <main className="wr-main">
-                                <div className="wr-main__inner">
-                                    <Component {...pageProps} />
-                                </div>
-                            </main>
-                        </div>
-                    </section>
-                </div>
-            </div>
+            <Component {...pageProps} />
 
             {/* <MyDrawer /> */}
             <MyLoading />

@@ -1,0 +1,10 @@
+.wr-checkbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+
+    & .form-check-label {
+        line-height: 15px;
+    }
+}

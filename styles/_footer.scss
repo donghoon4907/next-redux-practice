@@ -1,0 +1,10 @@
+.wr-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: $wr-footer-size;
+    padding: $wr-gutter-size;
+
+    // @include wr-card;
+}

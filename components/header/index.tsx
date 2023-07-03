@@ -1,12 +1,14 @@
 import type { FC } from 'react';
+import { AiOutlineFolder } from 'react-icons/ai';
 // import { LuMenu } from 'react-icons/lu';
-import { GNBS, SUBMENUS } from '@constants/gnb';
+import { GNBS } from '@constants/gnb';
 // import { useDrawer } from '@hooks/use-drawer';
 
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
 import { SearchInput } from '@components/input/Search';
+import { MdLogout } from 'react-icons/md';
 
 interface Props {}
 
@@ -55,9 +57,27 @@ export const MyHeader: FC<Props> = () => {
                         <div className="wr-gnb__right">
                             <h2 className="a11y-hidden">사용자서비스</h2>
                             <ul className="wr-gnb__services">
-                                {SUBMENUS.map(({ id, ...gnb }) => (
-                                    <GnbSubMenuItem key={id} {...gnb} />
-                                ))}
+                                <GnbSubMenuItem to="#">통합검색</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    주요연락처
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    <div className="wr-badge__wrap">
+                                        <span>게시판</span>
+                                        <span className="wr-badge badge bg-danger">
+                                            23
+                                        </span>
+                                    </div>
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">일정관리</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">SMS/Fax</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">Mypage</GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    <AiOutlineFolder size={20} />
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="#">
+                                    <MdLogout size={20} />
+                                </GnbSubMenuItem>
                             </ul>
                         </div>
                     </div>

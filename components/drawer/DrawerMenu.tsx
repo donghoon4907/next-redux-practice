@@ -13,10 +13,10 @@ interface Props {
     /**
      * 메뉴 생성에 필요한 데이터, 특정 형식을 따릅니다.
      */
-    data: CoreMenuOption[];
+    menu: CoreMenuOption[];
 }
 
-export const DrawerMenu: FC<Props> = ({ data }) => {
+export const DrawerMenu: FC<Props> = ({ menu }) => {
     const tab = useTab();
 
     // const { onToggle } = useDrawer();
@@ -32,7 +32,7 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
 
     return (
         <>
-            {data.map((v) =>
+            {menu.map((v) =>
                 v.items && v.items.length > 0 ? (
                     <UncontrolledAccordion
                         stayOpen
@@ -52,7 +52,7 @@ export const DrawerMenu: FC<Props> = ({ data }) => {
                                 role="tabpanel"
                                 aria-labelledby={v.id}
                             >
-                                <DrawerMenu data={v.items} />
+                                <DrawerMenu menu={v.items} />
                             </AccordionBody>
                         </AccordionItem>
                     </UncontrolledAccordion>
