@@ -1,4 +1,5 @@
 import type { FC } from 'react';
+import type { AnyAction } from 'redux';
 import type { CoreProps, CoreSelectOption } from '@interfaces/core';
 import { useState } from 'react';
 import {
@@ -9,8 +10,13 @@ import {
 } from 'react-icons/lu';
 import { MySelect } from '@components/select';
 import { AccessibleText } from '@components/AccessibleText';
+import { useApi } from '@hooks/use-api';
 
-interface Props extends CoreProps {}
+interface Props extends CoreProps {
+    requestAction: (payload: any) => AnyAction;
+    successAction: (payload: any) => AnyAction;
+    payload: any;
+}
 
 const LIST_COUNTS: CoreSelectOption[] = [
     {
@@ -31,13 +37,34 @@ const LIST_COUNTS: CoreSelectOption[] = [
     },
 ];
 
-export const MyPagination: FC<Props> = ({ children }) => {
+export const MyPagination: FC<Props> = ({
+    children,
+    requestAction,
+    successAction,
+    payload,
+}) => {
+    const fireApi = useApi(requestAction);
+
     const [showCounts, setShowCounts] = useState<CoreSelectOption | null>(
         LIST_COUNTS[0],
     );
 
-    const handleChangeCount = (value: CoreSelectOption | null) => {
-        setShowCounts(value);
+    const handleChangeCount = (count: CoreSelectOption | null) => {
+        setShowCounts(count);
+
+        if (count) {
+            callApi(+count.value, 1);
+        }
+    };
+
+    const handlePaging = (pageNo: number) => {
+        if (showCounts) {
+            callApi(+showCounts.value, pageNo);
+        }
+    };
+
+    const callApi = (pageSize: number, pageNo: number) => {
+        fireApi({ ...payload, nums: pageSize, page: pageNo, successAction });
     };
 
     return (
@@ -55,53 +82,57 @@ export const MyPagination: FC<Props> = ({ children }) => {
                 </div>
                 <ul className="pagination">
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button
+                            type="button"
+                            className="page-link"
+                            onClick={() => handlePaging(1)}
+                        >
                             <AccessibleText>처음</AccessibleText>
                             <LuChevronFirst size={17} />
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button className="page-link">
                             <AccessibleText>이전</AccessibleText>
                             <LuChevronLeft size={17} />
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button type="button" className="page-link">
                             1
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button type="button" className="page-link">
                             2
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button type="button" className="page-link">
                             3
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button type="button" className="page-link">
                             4
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button type="button" className="page-link">
                             5
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button type="button" className="page-link">
                             <AccessibleText>다음</AccessibleText>
                             <LuChevronRight size={17} />
-                        </a>
+                        </button>
                     </li>
                     <li className="page-item">
-                        <a className="page-link" href="#">
+                        <button type="button" className="page-link">
                             <AccessibleText>마지막</AccessibleText>
                             <LuChevronLast size={17} />
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </nav>

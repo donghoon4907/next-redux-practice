@@ -2,7 +2,11 @@ import type { Reducer } from 'redux';
 import produce from 'immer';
 import { GetBasicPaymentsActionTypes } from '@actions/long/get-basic-payments.action';
 import { GetOverridesActionTypes } from '@actions/long/get-overrides.action';
-import { GetLongActionTypes } from '@actions/long/get-long.action';
+import {
+    GetLongActionTypes,
+    GetLongRequestPayload,
+} from '@actions/long/get-long.action';
+import { Response } from '@models/response';
 
 export interface LongState {
     basicPayments: {
@@ -15,10 +19,8 @@ export interface LongState {
         data: any[];
         total: any;
     };
-    long: {
-        fields: any[];
-        data: any[];
-        total: any;
+    long: Response & {
+        lastPayload: GetLongRequestPayload | null;
     };
 }
 
@@ -35,8 +37,9 @@ const initialState: LongState = {
     },
     long: {
         fields: [],
-        data: [],
+        rows: [],
         total: 0,
+        lastPayload: null,
     },
 };
 

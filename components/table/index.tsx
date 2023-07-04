@@ -31,6 +31,7 @@ interface Props {
     rowSelection?: RowSelectionState;
     setRowSelection?: CoreSetState<RowSelectionState>;
     pageSize?: number;
+    onClickRow?: (cidx: number, cname: string) => void;
 }
 
 export const MyTable: FC<Props> = ({
@@ -39,10 +40,8 @@ export const MyTable: FC<Props> = ({
     rowSelection,
     setRowSelection,
     pageSize = 20,
+    onClickRow,
 }) => {
-    // const router = useRouter();
-    const tab = useTab();
-
     const tableRef = useRef<HTMLTableElement>(null);
 
     const tableWrapRef = useRef<HTMLDivElement>(null);
@@ -71,7 +70,7 @@ export const MyTable: FC<Props> = ({
     });
 
     const handleClickRow = (cidx: number, cname: string) => {
-        tab.fire(`-detail-${cidx}`, `계약상세 - ${cname}`, `/detail/${cidx}`);
+        onClickRow?.(cidx, cname);
     };
 
     const handleTableScroll = useCallback(

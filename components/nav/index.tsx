@@ -1,13 +1,15 @@
 import type { FC } from 'react';
-import type { CoreMenuOption } from '@interfaces/core';
-import { DrawerMenu } from '@components/drawer/DrawerMenu';
+import type { AppState } from '@reducers/index';
+import type { GnbState } from '@reducers/gnb';
 import Link from 'next/link';
+import { DrawerMenu } from '@components/drawer/DrawerMenu';
+import { useSelector } from 'react-redux';
 
-interface Props {
-    menu: CoreMenuOption[];
-}
+interface Props {}
 
-export const MyNav: FC<Props> = ({ menu }) => {
+export const MyNav: FC<Props> = () => {
+    const { activeGnb } = useSelector<AppState, GnbState>((state) => state.gnb);
+
     return (
         <div className="wr-nav">
             <div className="wr-nav__logo">
@@ -32,7 +34,7 @@ export const MyNav: FC<Props> = ({ menu }) => {
                 role="tablist"
                 aria-multiselectable="true"
             >
-                <DrawerMenu menu={menu} />
+                <DrawerMenu menu={activeGnb} />
             </div>
             {/* <div className="wr-nav__footer">
                 <span>접속시간: 2023-12-23 14:23</span>

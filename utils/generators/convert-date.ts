@@ -8,11 +8,15 @@ export function convertDateMiddleware(saga: any): Saga {
         try {
             const { payload } = action;
 
-            const { data, fields, total }: any = yield call(saga, action);
+            const { successAction, ...rest } = payload;
+
+            const { data }: any = yield call(saga, action);
+
+            const { rows, fields, total } = data;
 
             const dayJS = new DayJSModule();
 
-            const convertedData = data.map((v: any) => {
+            const convertedData = rows.map((v: any) => {
                 const output = { ...v };
 
                 for (const key of Object.keys(output)) {
@@ -47,17 +51,18 @@ export function convertDateMiddleware(saga: any): Saga {
                 return output;
             });
 
-            if (payload.successAction) {
+            if (successAction) {
                 yield put(
                     payload.successAction({
-                        data: convertedData,
+                        rows: convertedData,
                         fields,
                         total,
+                        lastPayload: rest,
                     }),
                 );
             }
 
-            payload.callback?.(data);
+            payload.callback?.(rows);
         } catch (err) {
             // 에러 데이터 구조 확인 후 error action creator 추가
             console.log(err);

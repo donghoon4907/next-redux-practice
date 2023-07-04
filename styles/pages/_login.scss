@@ -82,10 +82,9 @@
     // }
 
     &__reset {
-        color: $black;
+        color: $black !important;
 
         &:hover {
-            color: $black;
             text-decoration: underline !important;
         }
     }

@@ -4,7 +4,6 @@
     align-items: center;
     width: 100%;
     height: $wr-footer-size;
+    flex-shrink: 0;
     padding: $wr-gutter-size;
-
-    // @include wr-card;
 }

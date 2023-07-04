@@ -173,21 +173,29 @@ export const IncomeSettings: FC<Props> = ({ id, panelId, hidden }) => {
                     </WithLabel>
                 </div>
             </div>
-            <div className="row mt-3">
-                <div className="col">
-                    <DisconnectedLabel>장기 기본 지급</DisconnectedLabel>
-                    <MyTable
-                        columns={basicPaymentscolumns}
-                        data={basicPayments.data}
-                    />
+            {basicPayments.data.length > 0 && (
+                <div className="row mt-3">
+                    <div className="col">
+                        <DisconnectedLabel>장기 기본 지급</DisconnectedLabel>
+                        <MyTable
+                            columns={basicPaymentscolumns}
+                            data={basicPayments.data}
+                        />
+                    </div>
                 </div>
-            </div>
-            <div className="row mt-3">
-                <div className="col">
-                    <DisconnectedLabel>장기 오버라이드</DisconnectedLabel>
-                    <MyTable columns={overridesColumns} data={overrides.data} />
+            )}
+
+            {overrides.data.length > 0 && (
+                <div className="row mt-3">
+                    <div className="col">
+                        <DisconnectedLabel>장기 오버라이드</DisconnectedLabel>
+                        <MyTable
+                            columns={overridesColumns}
+                            data={overrides.data}
+                        />
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };

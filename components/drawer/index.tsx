@@ -3,7 +3,7 @@ import Drawer from 'react-modern-drawer';
 import { BsArrowLeft } from 'react-icons/bs';
 import { IconWrapper } from '@components/IconWrapper';
 import { useDrawer } from '@hooks/use-drawer';
-import { ASIDE_MENUS } from '@constants/gnb';
+// import { ASIDE_MENUS } from '@constants/gnb';
 
 import { DrawerMenu } from './DrawerMenu';
 
@@ -27,7 +27,7 @@ export const MyDrawer: FC<Props> = () => {
                     </IconWrapper>
                 </div>
             </div>
-            <DrawerMenu data={ASIDE_MENUS} />
+            {/* <DrawerMenu data={ASIDE_MENUS} /> */}
         </Drawer>
     );
 };

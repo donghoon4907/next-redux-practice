@@ -23,7 +23,7 @@ const Login: NextPage = () => {
         evt.preventDefault();
 
         login({ userid: userid.value, password: password.value }, () => {
-            router.push('/long/list');
+            router.push('/hr/list');
         });
     };
 

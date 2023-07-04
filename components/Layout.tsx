@@ -5,15 +5,14 @@ import { MyNav } from './nav';
 import { MyHeader } from './header';
 
 interface Props extends CoreProps {
-    menu: CoreMenuOption[];
     footer: ReactNode;
 }
 
-export const MyLayout: FC<Props> = ({ children, menu, footer }) => {
+export const MyLayout: FC<Props> = ({ children, footer }) => {
     return (
         <div className="row">
             <div className="col-1">
-                <MyNav menu={menu} />
+                <MyNav />
             </div>
             <div className="col-11">
                 <MyHeader />

@@ -6,7 +6,7 @@ import usersService from '@services/usersService';
 import { LoginActionTypes, loginSuccess } from '@actions/user/login.action';
 import { sagaError } from '@actions/error/error.action';
 
-function* login({ payload }: LoginRequestAction) {
+function* loginSaga({ payload }: LoginRequestAction) {
     try {
         const { data } = yield call(usersService.login, payload);
 
@@ -46,5 +46,5 @@ function* login({ payload }: LoginRequestAction) {
 }
 
 export function* watchLogin() {
-    yield takeEvery(LoginActionTypes.REQUEST, login);
+    yield takeEvery(LoginActionTypes.REQUEST, loginSaga);
 }
