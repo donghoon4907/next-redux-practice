@@ -6,7 +6,7 @@
     color: $white;
 
     &__wrap {
-        height: 35px;
+        height: $wr-tab-size;
         padding-left: 0;
         display: flex;
         flex-wrap: wrap;

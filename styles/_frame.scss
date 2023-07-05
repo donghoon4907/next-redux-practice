@@ -10,4 +10,14 @@
     &__footer {
         height: $wr-footer-size;
     }
+
+    &__section {
+        height: calc(100vh - $wr-header-size - $wr-footer-size - 30px);
+    }
+
+    &__tabbody {
+        height: calc(
+            100vh - $wr-header-size - $wr-footer-size - $wr-tab-size - 30px
+        );
+    }
 }

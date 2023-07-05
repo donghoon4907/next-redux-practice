@@ -1,9 +1,9 @@
 import { all, fork } from 'redux-saga/effects';
 
 import { watchLogin } from './login';
-import { watchCreateUser } from './create';
-import { watchGetOrgas } from './get-orga';
+import { watchCreateUser } from './create-user';
+import { watchGetOrgas } from './get-orgas';
 
-export function* userSaga() {
+export function* hrSaga() {
     yield all([fork(watchLogin), fork(watchCreateUser), fork(watchGetOrgas)]);
 }

@@ -18,6 +18,7 @@ import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
 import { SelectDepartModal } from '@components/modal/SelectDepart';
+import { updateAuthorization } from '@utils/axios';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { events, asPath } = useRouter();
@@ -60,18 +61,29 @@ function MyApp({ Component, pageProps }: AppProps) {
     );
 }
 
-// MyApp.getInitialProps = wrapper.getInitialAppProps(
-//     ({ dispatch, getState, sagaTask }) =>
-//         async ({ Component, ctx, router }) => {
-//             const { req, res } = ctx;
+MyApp.getInitialProps = wrapper.getInitialAppProps(
+    () =>
+        async ({ Component, ctx }) => {
+            const { req, res } = ctx;
 
-//             let pageProps = {};
-//             if (Component.getInitialProps) {
-//                 pageProps = await Component.getInitialProps(ctx);
-//             }
+            const isServerSide = !!req && !!res;
 
-//             return { pageProps };
-//         },
-// );
+            if (isServerSide) {
+                const token = getCookie(process.env.COOKIE_TOKEN_KEY || '', {
+                    req,
+                    res,
+                });
+
+                updateAuthorization(token);
+            }
+
+            let pageProps = {};
+            if (Component.getInitialProps) {
+                pageProps = await Component.getInitialProps(ctx);
+            }
+
+            return { pageProps };
+        },
+);
 
 export default wrapper.withRedux(MyApp);

@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { CoreSelectOption, CoreTabOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
-import type { UserState } from '@reducers/user';
+import type { UserState } from '@reducers/hr';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MySelect } from '@components/select';

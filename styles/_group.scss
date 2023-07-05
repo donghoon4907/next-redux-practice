@@ -10,4 +10,9 @@
     &__display {
         font-size: 12px;
     }
+
+    &__name {
+        display: 'flex';
+        justify-content: space;
+    }
 }

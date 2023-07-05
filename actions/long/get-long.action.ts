@@ -1,6 +1,5 @@
 import type { Action } from 'redux';
 import type { CorePayload } from '@interfaces/core';
-import type { Response } from '@models/response';
 
 export const GET_LONG_KEY = 'GET_LONG';
 
@@ -11,16 +10,10 @@ export const GetLongActionTypes = {
 } as const;
 
 export interface GetLongRequestPayload extends CorePayload {
-    condition?: {
-        paydate?: Array<string>;
-    };
-    page: number;
-    nums: number;
+    cidx: string;
 }
 
-export interface GetLongSuccessPayload extends Response {
-    lastPayload: GetLongRequestPayload;
-}
+export type GetLongSuccessPayload = Record<string, any>;
 
 export interface GetLongRequestAction extends Action<string> {
     payload: GetLongRequestPayload;

@@ -11,7 +11,7 @@ import { boardReducer } from './board';
 import { uploadReducer } from './upload';
 import { gnbReducer } from './gnb';
 import { modalReducer } from './modal';
-import { userReducer } from './user';
+import { userReducer } from './hr';
 
 const combinedReducer = combineReducers({
     demo: demoReducer,

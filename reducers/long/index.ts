@@ -3,10 +3,11 @@ import produce from 'immer';
 import { GetBasicPaymentsActionTypes } from '@actions/long/get-basic-payments.action';
 import { GetOverridesActionTypes } from '@actions/long/get-overrides.action';
 import {
-    GetLongActionTypes,
-    GetLongRequestPayload,
-} from '@actions/long/get-long.action';
+    GetLongsActionTypes,
+    GetLongsRequestPayload,
+} from '@actions/long/get-longs.action';
 import { Response } from '@models/response';
+import { GetLongActionTypes } from '@actions/long/get-long.action';
 
 export interface LongState {
     basicPayments: {
@@ -19,9 +20,10 @@ export interface LongState {
         data: any[];
         total: any;
     };
-    long: Response & {
-        lastPayload: GetLongRequestPayload | null;
+    longs: Response & {
+        lastPayload: GetLongsRequestPayload | null;
     };
+    long: any;
 }
 
 const initialState: LongState = {
@@ -35,12 +37,13 @@ const initialState: LongState = {
         data: [],
         total: 0,
     },
-    long: {
+    longs: {
         fields: [],
         rows: [],
         total: 0,
         lastPayload: null,
     },
+    long: null,
 };
 
 export const longReducer: Reducer<LongState, any> = (
@@ -56,6 +59,11 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetOverridesActionTypes.SUCCESS: {
                 draft.overrides = action.payload;
+
+                break;
+            }
+            case GetLongsActionTypes.SUCCESS: {
+                draft.longs = action.payload;
 
                 break;
             }

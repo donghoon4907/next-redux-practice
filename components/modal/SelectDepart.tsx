@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { UserState } from '@reducers/user';
+import type { UserState } from '@reducers/hr';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';

@@ -1,4 +1,4 @@
-import { getLongRequest, getLongSuccess } from '@actions/long/get-long.action';
+import { getLongRequest, getLongSuccess } from '@actions/long/get-longs.action';
 import { wrapper } from '@store/redux';
 import Main from 'pages';
 import { END } from 'redux-saga';

@@ -1,31 +1,12 @@
-import type { FC } from 'react';
+import type { ButtonHTMLAttributes, FC } from 'react';
+import type { CoreProps } from '@interfaces/core';
 
-interface Props {
-    /**
-     * 외부 상태값
-     *
-     */
-    value: string;
-    /**
-     * 외부 상태를 변경하는 핸들러
-     *
-     */
-    onChange: (value: string) => void;
-}
+interface Props extends CoreProps, ButtonHTMLAttributes<HTMLButtonElement> {}
 
-export const MyButton: FC<Props> = ({ value, onChange }) => {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        onChange(event.target.value);
-    };
-
+export const MyButton: FC<Props> = ({ children, className, ...rest }) => {
     return (
-        <div className="input-group">
-            <input
-                type="text"
-                className="form-control"
-                value={value}
-                onChange={handleChange}
-            />
-        </div>
+        <button className={`btn btn-sm ${className}`} {...rest}>
+            {children}
+        </button>
     );
 };

@@ -16,7 +16,10 @@ import { MyRadio } from '@components/radio';
 import { MyPagination } from '@components/pagination';
 import { WithLabel } from '@components/WithLabel';
 import { SearchInput } from '@components/input/Search';
-import { getLongRequest, getLongSuccess } from '@actions/long/get-long.action';
+import {
+    getLongsRequest,
+    getLongsSuccess,
+} from '@actions/long/get-longs.action';
 import { MyLayout } from '@components/Layout';
 import { MyFooter } from '@components/footer';
 import { useEllipsisColumn } from '@hooks/use-column';
@@ -24,9 +27,9 @@ import { useEllipsisColumn } from '@hooks/use-column';
 const LongList: NextPage = () => {
     // const dispatch = useDispatch();
 
-    const { long } = useSelector<AppState, LongState>((props) => props.long);
+    const { longs } = useSelector<AppState, LongState>((props) => props.long);
 
-    const columns = useEllipsisColumn(long.fields);
+    const columns = useEllipsisColumn(longs.fields);
 
     const [d, setD] = useState<[Date, Date] | null>([
         new Date('2022-02-01'),
@@ -217,25 +220,25 @@ const LongList: NextPage = () => {
                     </div>
                     <MyTable
                         columns={columns}
-                        data={long.rows}
-                        pageSize={long.lastPayload?.nums}
+                        data={longs.rows}
+                        pageSize={longs.lastPayload?.nums}
                     />
 
                     <MyFooter>
                         <MyPagination
-                            requestAction={getLongRequest}
-                            successAction={getLongSuccess}
-                            payload={long.lastPayload}
-                            total={long.total.count}
+                            requestAction={getLongsRequest}
+                            successAction={getLongsSuccess}
+                            payload={longs.lastPayload}
+                            total={longs.total.count}
                         >
                             <span>
-                                건수: {long.total.count.toLocaleString()}
+                                건수: {longs.total.count.toLocaleString()}
                             </span>
                             <span>
-                                실적보험료계: {long.total.pay.toLocaleString()}
+                                실적보험료계: {longs.total.pay.toLocaleString()}
                             </span>
                             <span>
-                                수정보험료계: {long.total.tp.toLocaleString()}
+                                수정보험료계: {longs.total.tp.toLocaleString()}
                             </span>
                         </MyPagination>
                     </MyFooter>
@@ -249,13 +252,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
     ({ dispatch, sagaTask }) =>
         async (_) => {
             dispatch(
-                getLongRequest({
+                getLongsRequest({
                     condition: {
                         paydate: ['2023-06-01', '2023-06-30'],
                     },
                     page: 1,
                     nums: 25,
-                    successAction: getLongSuccess,
+                    successAction: getLongsSuccess,
                 }),
             );
 

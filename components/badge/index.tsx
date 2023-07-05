@@ -31,10 +31,9 @@ export const MyInput: FC<MyInputProps> = ({
     }
 
     return (
-        <div className="input-group">
-            <input className={`form-control ${className}`} {...another} />
-            {btn}
-            {unitTxt}
-        </div>
+        <span className="badge rounded-pill bg-danger">
+            99+
+            <span className="visually-hidden">unread messages</span>
+        </span>
     );
 };

@@ -25,7 +25,7 @@ import {
 // import { useDispatch } from 'react-redux';
 import { WithLabel } from '@components/WithLabel';
 import { SearchInput } from '@components/input/Search';
-import { getLongRequest, getLongSuccess } from '@actions/long/get-long.action';
+import { getLongRequest, getLongSuccess } from '@actions/long/get-longs.action';
 import { MyLayout } from '@components/Layout';
 import { useTab } from '@hooks/use-tab';
 
