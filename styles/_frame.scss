@@ -1,0 +1,13 @@
+.wr-frame {
+    &__header {
+        height: $wr-header-size;
+    }
+
+    &__body {
+        height: calc(100vh - $wr-header-size);
+    }
+
+    &__footer {
+        height: $wr-footer-size;
+    }
+}

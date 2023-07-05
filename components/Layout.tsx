@@ -1,14 +1,12 @@
-import type { CoreMenuOption, CoreProps } from '@interfaces/core';
-import type { FC, ReactNode } from 'react';
+import type { CoreProps } from '@interfaces/core';
+import type { FC } from 'react';
 
 import { MyNav } from './nav';
 import { MyHeader } from './header';
 
-interface Props extends CoreProps {
-    footer: ReactNode;
-}
+interface Props extends CoreProps {}
 
-export const MyLayout: FC<Props> = ({ children, footer }) => {
+export const MyLayout: FC<Props> = ({ children }) => {
     return (
         <div className="row">
             <div className="col-1">
@@ -17,12 +15,10 @@ export const MyLayout: FC<Props> = ({ children, footer }) => {
             <div className="col-11">
                 <MyHeader />
                 <section>
-                    <div className="wr-main__wrap">
-                        <main className="wr-main">
-                            <div className="wr-main__inner">{children}</div>
-                        </main>
-                        <footer className="wr-footer">{footer}</footer>
-                    </div>
+                    <main className="wr-main wr-frame__body">
+                        <div className="wr-main__inner">{children}</div>
+                        {/* <footer className="wr-footer">{footer}</footer> */}
+                    </main>
                 </section>
             </div>
         </div>

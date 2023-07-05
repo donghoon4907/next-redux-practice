@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { AnyAction } from 'redux';
 import type { CoreProps, CoreSelectOption } from '@interfaces/core';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
     LuChevronFirst,
     LuChevronLeft,
@@ -13,9 +13,22 @@ import { AccessibleText } from '@components/AccessibleText';
 import { useApi } from '@hooks/use-api';
 
 interface Props extends CoreProps {
+    /**
+     * 요청 action
+     */
     requestAction: (payload: any) => AnyAction;
+    /**
+     * 성공 action
+     */
     successAction: (payload: any) => AnyAction;
+    /**
+     * 마지막으로 요청한 payload 정보
+     */
     payload: any;
+    /**
+     * 전체 레코드의 수
+     */
+    total: number;
 }
 
 const LIST_COUNTS: CoreSelectOption[] = [
@@ -37,16 +50,49 @@ const LIST_COUNTS: CoreSelectOption[] = [
     },
 ];
 
+function calculatePageButtons(
+    totalCount: number,
+    pageSize: number,
+    currentPage: number,
+    blockSize: number = 5,
+) {
+    let totalPages = Math.ceil(totalCount / pageSize);
+    let currentBlock = Math.ceil(currentPage / blockSize);
+    let startPage = (currentBlock - 1) * blockSize + 1;
+    let endPage = Math.min(startPage + blockSize - 1, totalPages);
+
+    let pageButtons = [];
+    for (let i = startPage; i <= endPage; i++) {
+        pageButtons.push(i);
+    }
+
+    return pageButtons;
+}
+
 export const MyPagination: FC<Props> = ({
     children,
     requestAction,
     successAction,
     payload,
+    total,
 }) => {
     const fireApi = useApi(requestAction);
 
     const [showCounts, setShowCounts] = useState<CoreSelectOption | null>(
         LIST_COUNTS[0],
+    );
+
+    const pageSize = +showCounts!.value;
+
+    const lastPage = Math.ceil(total / pageSize);
+
+    const prevPage = payload.page === 1 ? 1 : payload.page - 1;
+
+    const nextPage = payload.page === lastPage ? lastPage : payload.page + 1;
+
+    const pageButtons = useMemo(
+        () => calculatePageButtons(total, pageSize, payload.page),
+        [total, pageSize, payload],
     );
 
     const handleChangeCount = (count: CoreSelectOption | null) => {
@@ -64,7 +110,12 @@ export const MyPagination: FC<Props> = ({
     };
 
     const callApi = (pageSize: number, pageNo: number) => {
-        fireApi({ ...payload, nums: pageSize, page: pageNo, successAction });
+        fireApi({
+            ...payload,
+            nums: pageSize,
+            page: pageNo,
+            successAction,
+        });
     };
 
     return (
@@ -77,7 +128,7 @@ export const MyPagination: FC<Props> = ({
                         options={LIST_COUNTS}
                         value={showCounts}
                         onChange={handleChangeCount}
-                        placeholder={'25개 보기'}
+                        placeholder={'선택'}
                     />
                 </div>
                 <ul className="pagination">
@@ -92,44 +143,44 @@ export const MyPagination: FC<Props> = ({
                         </button>
                     </li>
                     <li className="page-item">
-                        <button className="page-link">
+                        <button
+                            type="button"
+                            className="page-link"
+                            onClick={() => handlePaging(prevPage)}
+                        >
                             <AccessibleText>이전</AccessibleText>
                             <LuChevronLeft size={17} />
                         </button>
                     </li>
+                    {pageButtons.map((p) => (
+                        <li className="page-item" key={`page${p}`}>
+                            <button
+                                type="button"
+                                className={`page-link ${
+                                    p === payload.page ? 'active' : ''
+                                }`}
+                                onClick={() => handlePaging(p)}
+                            >
+                                {p}
+                            </button>
+                        </li>
+                    ))}
                     <li className="page-item">
-                        <button type="button" className="page-link">
-                            1
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button type="button" className="page-link">
-                            2
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button type="button" className="page-link">
-                            3
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button type="button" className="page-link">
-                            4
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button type="button" className="page-link">
-                            5
-                        </button>
-                    </li>
-                    <li className="page-item">
-                        <button type="button" className="page-link">
+                        <button
+                            type="button"
+                            className="page-link"
+                            onClick={() => handlePaging(nextPage)}
+                        >
                             <AccessibleText>다음</AccessibleText>
                             <LuChevronRight size={17} />
                         </button>
                     </li>
                     <li className="page-item">
-                        <button type="button" className="page-link">
+                        <button
+                            type="button"
+                            className="page-link"
+                            onClick={() => handlePaging(lastPage)}
+                        >
                             <AccessibleText>마지막</AccessibleText>
                             <LuChevronLast size={17} />
                         </button>

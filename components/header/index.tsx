@@ -16,7 +16,7 @@ export const MyHeader: FC<Props> = () => {
     // const { onToggle } = useDrawer();
 
     return (
-        <header className="wr-header">
+        <header className="wr-header wr-frame__header">
             <div className="wr-meta">
                 <div className="wr-meta__inner">
                     <div className="wr-meta__right">

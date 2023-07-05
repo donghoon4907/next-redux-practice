@@ -1,22 +1,14 @@
 .wr-main {
+    position: relative;
     width: 100%;
     height: calc(100vh - 110px - $wr-footer-size);
-
-    &__wrap {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        margin: 0 auto;
-        width: 100%;
-        height: calc(100vh - $wr-header-size);
-        border-left: 1px solid $wr-divider-color-300;
-        overflow: hidden;
-    }
+    margin: 0 auto;
+    border-left: 1px solid $wr-divider-color-300;
+    overflow: hidden;
 
     &__inner {
         // margin: 0 20px;
         padding: $wr-gutter-size;
-        padding-bottom: 0;
         border-top: 0;
         height: 100%;
     }

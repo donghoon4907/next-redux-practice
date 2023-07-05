@@ -12,7 +12,7 @@ export const MyNav: FC<Props> = () => {
 
     return (
         <div className="wr-nav">
-            <div className="wr-nav__logo">
+            <div className="wr-nav__logo wr-frame__header">
                 <Link href="/">
                     <a>
                         <h1 className="a11y-hidden">Wooriinsumanlife</h1>
@@ -30,7 +30,7 @@ export const MyNav: FC<Props> = () => {
                 <span className="wr-nav__title">님</span>
             </div> */}
             <div
-                className="wr-nav__body wr-drawer"
+                className="wr-nav__body wr-drawer wr-frame__body"
                 role="tablist"
                 aria-multiselectable="true"
             >

@@ -15,7 +15,7 @@ if (typeof window !== 'undefined') {
     if (token) {
         axios.defaults.headers.common['authorization'] = `Bearer ${token}`;
     } else {
-        axios.defaults.headers.common['authorization'] = 'Non-login';
+        axios.defaults.headers.common['authorization'] = 'Bearer Non-members';
     }
 }
 
