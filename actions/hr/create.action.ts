@@ -1,5 +1,5 @@
-import { CorePayload } from '@interfaces/core';
-import { Action } from 'redux';
+import type { CorePayload } from '@interfaces/core';
+import type { Action } from 'redux';
 
 export const CREATE_USER_KEY = 'CREATE_USER';
 

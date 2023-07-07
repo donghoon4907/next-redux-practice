@@ -1,11 +1,11 @@
 import type { FC } from 'react';
 import type { CoreSelectOption, CoreTabOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
-import type { UserState } from '@reducers/hr';
+import type { HrState } from '@reducers/hr';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MySelect } from '@components/select';
-import { DETAIL_PAGE_TABS } from '@constants/tab';
+import { HR_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
@@ -13,7 +13,7 @@ import variables from '@styles/_variables.module.scss';
 import { useInput } from '@hooks/use-input';
 import { useApi } from '@hooks/use-api';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
-import { getOrgasRequest } from '@actions/user/get-orgas';
+import { getOrgasRequest } from '@actions/hr/get-orgas';
 import {
     BIRTH_TYPE,
     EMAIL_COM,
@@ -24,7 +24,7 @@ import {
 import {
     CreateUserRequestPayload,
     createUserRequest,
-} from '@actions/user/create.action';
+} from '@actions/hr/create.action';
 import { useSelect } from '@hooks/use-select';
 import { MyLayout } from '@components/Layout';
 
@@ -52,7 +52,7 @@ interface Props {
     defaultOutdate?: string;
 }
 
-export const PartialUserMeta: FC<Props> = ({
+export const PartialUserForm: FC<Props> = ({
     type,
     submitBtnText,
     defaultName = '홍길동',
@@ -77,15 +77,15 @@ export const PartialUserMeta: FC<Props> = ({
 }) => {
     const dispatch = useDispatch();
 
-    const { selectedDepart } = useSelector<AppState, UserState>(
-        (state) => state.user,
+    const { selectedOrga } = useSelector<AppState, HrState>(
+        (state) => state.hr,
     );
 
     const callApi = useApi(
         type === 'create' ? createUserRequest : createUserRequest,
     );
     // 탭 관리
-    const [tab, setTab] = useState<CoreTabOption>(DETAIL_PAGE_TABS[0]);
+    const [tab, setTab] = useState<CoreTabOption>(HR_DETAIL_TABS[0]);
     // 고객명
     const name = useInput(defaultName);
     // 직함
@@ -138,14 +138,14 @@ export const PartialUserMeta: FC<Props> = ({
             return alert('핸드폰을 입력하세요.');
         }
 
-        if (selectedDepart.label === '') {
+        if (selectedOrga.label === '') {
             return alert('부서를 선택하세요.');
         }
 
         const payload: CreateUserRequestPayload = {
             name: name.value,
             mobile: mobile.value,
-            orga_idx: +selectedDepart.value,
+            orga_idx: +selectedOrga.value,
         };
 
         if (title.value !== '') {
@@ -228,30 +228,15 @@ export const PartialUserMeta: FC<Props> = ({
     }, [dispatch]);
 
     return (
-        <MyLayout
-            footer={
-                <div className="wr-pages-detail__footer">
-                    <div></div>
-                    <div>
-                        <button
-                            className="btn btn-primary btn-sm"
-                            type="button"
-                            onClick={handleSubmit}
-                        >
-                            {submitBtnText}
-                        </button>
-                    </div>
-                </div>
-            }
-        >
+        <MyLayout>
             <div className="wr-pages-detail wr-form row">
                 <div className="col-4">
                     <div className="wr-pages-detail__left">
                         <div className="wr-pages-detail__block">
                             <div className="wr-group">
                                 <span className="wr-pages-detail__department">
-                                    {selectedDepart.label
-                                        ? selectedDepart.label
+                                    {selectedOrga.label
+                                        ? selectedOrga.label
                                         : '부서를 선택하세요'}
                                 </span>
                                 <button
@@ -733,7 +718,7 @@ export const PartialUserMeta: FC<Props> = ({
                         )}
 
                         <ul className="wr-tab__wrap" role="tablist">
-                            {DETAIL_PAGE_TABS.map((v) => (
+                            {HR_DETAIL_TABS.map((v) => (
                                 <MyTab
                                     key={v.id}
                                     onClick={handleClickTab}

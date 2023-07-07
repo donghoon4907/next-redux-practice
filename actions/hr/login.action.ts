@@ -1,5 +1,5 @@
-import { CorePayload } from '@interfaces/core';
-import { Action } from 'redux';
+import type { CorePayload } from '@interfaces/core';
+import type { Action } from 'redux';
 
 export const LOGIN_KEY = 'LOGIN';
 
@@ -34,7 +34,7 @@ export function loginRequest(payload: LoginRequestPayload): LoginRequestAction {
 }
 
 export function loginSuccess(): LoginSuccessAction {
-// payload: LoginSuccessPayload
+    // payload: LoginSuccessPayload
     return {
         type: LoginActionTypes.SUCCESS,
         // payload,

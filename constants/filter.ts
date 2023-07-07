@@ -58,6 +58,25 @@ export const X_SEARCH_FILTERS: CoreFilterOption[][] = [
     ],
 ];
 
+export const LONG_SEARCH_FILTERS: CoreSelectFilterOption[][] = [
+    [
+        {
+            id: 'orga',
+            label: '조직',
+            colspan: 6,
+            placeholder: '전체',
+            items: [],
+        },
+        {
+            id: 'fc',
+            label: '영업가족',
+            colspan: 3,
+            placeholder: '전체',
+            items: [],
+        },
+    ],
+];
+
 export const X_SEARCH_SELECTS: CoreSelectFilterOption[][] = [
     [
         // 1 row, 1part

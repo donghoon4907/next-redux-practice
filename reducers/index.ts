@@ -11,7 +11,7 @@ import { boardReducer } from './board';
 import { uploadReducer } from './upload';
 import { gnbReducer } from './gnb';
 import { modalReducer } from './modal';
-import { userReducer } from './hr';
+import { hrReducer } from './hr';
 
 const combinedReducer = combineReducers({
     demo: demoReducer,
@@ -24,7 +24,7 @@ const combinedReducer = combineReducers({
     upload: uploadReducer,
     gnb: gnbReducer,
     modal: modalReducer,
-    user: userReducer,
+    hr: hrReducer,
 });
 
 export const rootReducer = (state: any, action: AnyAction) => {

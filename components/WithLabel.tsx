@@ -36,12 +36,16 @@ export const WithLabel: FC<Props> = ({
     return (
         <div className={`${displayName}__wrap`}>
             <label
-                className={`${displayName}__label ${displayName}__label--${type} ${
-                    isRequired ? `${displayName}__label--required` : ''
-                }`}
+                className={`${displayName}__label ${displayName}__label--${type}`}
                 htmlFor={id}
             >
-                {label}
+                <span
+                    className={
+                        isRequired ? `${displayName}__label--required` : ''
+                    }
+                >
+                    {label}
+                </span>
             </label>
 
             {children}

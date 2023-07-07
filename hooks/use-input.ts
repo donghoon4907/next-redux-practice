@@ -1,10 +1,12 @@
 import type { ChangeEvent } from 'react';
 import type { CoreSetState } from '@interfaces/core';
 import { useState, useRef } from 'react';
+import { isNumberic } from '@utils/validation';
 
 export interface UseInputOption {
     noSpace?: boolean;
     includeSetState?: boolean;
+    addComma?: boolean;
 }
 
 export type UseInputOutput = {
@@ -27,6 +29,13 @@ export const useInput = (defaultValue: string, where: UseInputOption = {}) => {
             nextVal = nextVal.replace(/(^\s*)|(\s*$)/g, '');
         }
 
+        if (where.addComma) {
+            nextVal = nextVal.replace(/,/g, '');
+            if (!isNumberic(nextVal)) {
+                return;
+            }
+        }
+
         setValue(nextVal);
     };
 
@@ -34,6 +43,10 @@ export const useInput = (defaultValue: string, where: UseInputOption = {}) => {
 
     if (where.includeSetState) {
         output.setValue = setValue;
+    }
+
+    if (where.addComma) {
+        output.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
     return output;

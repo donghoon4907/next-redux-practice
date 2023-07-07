@@ -1,13 +1,11 @@
 import type { Reducer } from 'redux';
+import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
 import produce from 'immer';
 import { GetBasicPaymentsActionTypes } from '@actions/long/get-basic-payments.action';
 import { GetOverridesActionTypes } from '@actions/long/get-overrides.action';
-import {
-    GetLongsActionTypes,
-    GetLongsRequestPayload,
-} from '@actions/long/get-longs.action';
-import { Response } from '@models/response';
+import { GetLongsActionTypes } from '@actions/long/get-longs.action';
 import { GetLongActionTypes } from '@actions/long/get-long.action';
+import { UpdateEtcActionTypes } from '@actions/long/update-etc.action';
 
 export interface LongState {
     basicPayments: {
@@ -20,9 +18,7 @@ export interface LongState {
         data: any[];
         total: any;
     };
-    longs: Response & {
-        lastPayload: GetLongsRequestPayload | null;
-    };
+    longs: GetLongsSuccessPayload;
     long: any;
 }
 
@@ -41,6 +37,7 @@ const initialState: LongState = {
         fields: [],
         rows: [],
         total: 0,
+        ptitles: [],
         lastPayload: null,
     },
     long: null,
@@ -69,6 +66,11 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetLongActionTypes.SUCCESS: {
                 draft.long = action.payload;
+
+                break;
+            }
+            case UpdateEtcActionTypes.UPDATE: {
+                draft.long.etcs[action.payload.field] = action.payload.content;
 
                 break;
             }

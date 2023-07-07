@@ -8,7 +8,8 @@ export const HR_DETAIL_TABS: CoreTabOption[] = [
 ];
 
 export const LONG_DETAIL_TABS: CoreTabOption[] = [
-    { id: 'tabIncome', label: '수금실적', panelId: 'tabpanelIncome' },
-    { id: 'tabGuarantee', label: '상태이력', panelId: 'tabpanelGuarantee' },
-    { id: 'tabFamiliy', label: '변경내역', panelId: 'tabpanelFamily' },
+    { id: 'tabPays', label: '수금실적', panelId: 'tabpanelPays' },
+    { id: 'tabStatusHis', label: '상태이력', panelId: 'tabpanelStatusHis' },
+    { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
+    { id: 'tabEtcs', label: '기타항목', panelId: 'tabpanelEtcs' },
 ];

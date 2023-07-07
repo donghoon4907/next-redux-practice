@@ -1,13 +1,6 @@
 import type { FC } from 'react';
-import type {
-    Column,
-    PaginationState,
-    ColumnDef,
-    OnChangeFn,
-    TableState,
-    RowSelectionState,
-    TableOptions,
-} from '@tanstack/react-table';
+import type { RowSelectionState } from '@tanstack/react-table';
+import type { MyColumnDef } from '@hooks/use-column';
 import type { CoreSetState } from '@interfaces/core';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import {
@@ -21,17 +14,22 @@ import {
 import {
     checkSeparatorNeeded,
     checkTextAlignRightNeeded,
-    isNumeric,
+    isNumberic,
 } from '@utils/validation';
-import { useTab } from '@hooks/use-tab';
+import { IconWrapper } from '@components/IconWrapper';
+import { BsPlusSquare } from 'react-icons/bs';
+import { InternalInput } from '@components/input/Internal';
 
 interface Props {
-    columns: ColumnDef<any, any>[];
+    columns: MyColumnDef[];
     data: any[];
     rowSelection?: RowSelectionState;
     setRowSelection?: CoreSetState<RowSelectionState>;
     pageSize?: number;
     onClickRow?: (cidx: number, cname: string) => void;
+    showExtension?: boolean;
+    addCount?: number;
+    onAddCount?: () => void;
 }
 
 export const MyTable: FC<Props> = ({
@@ -41,6 +39,9 @@ export const MyTable: FC<Props> = ({
     setRowSelection,
     pageSize = 20,
     onClickRow,
+    showExtension,
+    addCount = 0,
+    onAddCount,
 }) => {
     const tableRef = useRef<HTMLTableElement>(null);
 
@@ -73,7 +74,7 @@ export const MyTable: FC<Props> = ({
         onClickRow?.(cidx, cname);
     };
 
-    const handleTableScroll = useCallback(
+    const handleKeyDown = useCallback(
         (evt: KeyboardEvent) => {
             if (keyEnabled) {
                 const scrollAmount = 50;
@@ -109,44 +110,41 @@ export const MyTable: FC<Props> = ({
     };
 
     useEffect(() => {
-        if (tableRef.current) {
-            // 말 줄임표 처리 관련
-            // const columns =
-            //     tableRef.current.querySelectorAll<HTMLSpanElement>(
-            //         'thead th span',
-            //     );
-            // const fields =
-            //     tableRef.current.querySelectorAll<HTMLSpanElement>(
-            //         'tbody td span',
-            //     );
-
-            // let colSpanWidth = -1;
-            // Array.from(columns).some((span) => {
-            //     let output = false;
-            //     if (span.classList.contains('ellipsisTarget')) {
-            //         colSpanWidth = span.offsetWidth;
-
-            //         output = true;
-            //     }
-
-            //     return output;
-            // });
-
-            // const d = document.querySelectorAll(".text-truncate")
-
-            // Array.from(fields).forEach((v) => {
-            //     if (v.classList.contains('text-truncate')) {
-            //         v.style.width = `${colSpanWidth + 150}px`;
-            //     }
-            // });
-            // 테이블 내 마우스 오버 감지 관련 이벤트 추가
-            document.addEventListener('keydown', handleTableScroll);
-        }
+        document.addEventListener('keydown', handleKeyDown);
 
         return () => {
-            document.removeEventListener('keydown', handleTableScroll);
+            document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [handleTableScroll]);
+    }, [handleKeyDown]);
+
+    // useEffect(() => {
+    //     if (tableRef.current) {
+    //         // 말 줄임표 처리 관련
+    //         const columns =
+    //             tableRef.current.querySelectorAll<HTMLSpanElement>(
+    //                 'thead th span',
+    //             );
+    //         const fields =
+    //             tableRef.current.querySelectorAll<HTMLSpanElement>(
+    //                 'tbody td span',
+    //             );
+    //         let colSpanWidth = -1;
+    //         Array.from(columns).some((span) => {
+    //             let output = false;
+    //             if (span.classList.contains('ellipsisTarget')) {
+    //                 colSpanWidth = span.offsetWidth;
+    //                 output = true;
+    //             }
+    //             return output;
+    //         });
+    //         const d = document.querySelectorAll(".text-truncate")
+    //         Array.from(fields).forEach((v) => {
+    //             if (v.classList.contains('text-truncate')) {
+    //                 v.style.width = `${colSpanWidth + 150}px`;
+    //             }
+    //         });
+    //     }
+    // }, []);
 
     return (
         <div className="wr-table__wrap" ref={tableWrapRef}>
@@ -207,7 +205,7 @@ export const MyTable: FC<Props> = ({
 
                                     // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
                                     if (
-                                        isNumeric(cell.getValue()) &&
+                                        isNumberic(cell.getValue()) &&
                                         checkSeparatorNeeded(cell.column.id) &&
                                         checkTextAlignRightNeeded(
                                             cell.column.id,
@@ -229,23 +227,33 @@ export const MyTable: FC<Props> = ({
                         );
                     })}
                 </tbody>
-                {/* <tfoot>
-                {table.getFooterGroups().map((footerGroup) => (
-                    <tr key={footerGroup.id}>
-                        {footerGroup.headers.map((header) => (
-                            <th key={header.id}>
-                                {header.isPlaceholder
-                                    ? null
-                                    : flexRender(
-                                          header.column.columnDef.footer,
-                                          header.getContext(),
-                                      )}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-            </tfoot> */}
+                <tfoot id="newDataArea">
+                    {Array.from({ length: addCount }).map((_, index) => (
+                        <tr key={`additionalRow${index}`}>
+                            {columns.map((c, i) => {
+                                return (
+                                    <td
+                                        key={`additionalCell${i}`}
+                                        // data-field={}
+                                        data-field={c.headerKey}
+                                    >
+                                        <InternalInput
+                                            placeholder={c.headerText}
+                                        />
+                                    </td>
+                                );
+                            })}
+                        </tr>
+                    ))}
+                </tfoot>
             </table>
+            {showExtension && (
+                <div className="wr-table__extension">
+                    <IconWrapper onClick={onAddCount}>
+                        <BsPlusSquare size={20} />
+                    </IconWrapper>
+                </div>
+            )}
         </div>
     );
 };

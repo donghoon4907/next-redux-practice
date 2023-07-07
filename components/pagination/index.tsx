@@ -135,7 +135,7 @@ export const MyPagination: FC<Props> = ({
                     <li className="page-item">
                         <button
                             type="button"
-                            className="page-link"
+                            className="page-link "
                             onClick={() => handlePaging(1)}
                         >
                             <AccessibleText>처음</AccessibleText>

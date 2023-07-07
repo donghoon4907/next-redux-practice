@@ -1,11 +1,6 @@
 .wr-pages-detail {
     overflow: hidden;
     --wr-tab-active-color: white;
-    // background-color: $gray-200;
-
-    // & .input-group {
-    //     height: 100%;
-    // }
 
     & .wr-with__label,
     .btn {
@@ -13,16 +8,12 @@
     }
 
     &__left {
-        // --bs-gutter-x: 0;
         overflow-y: auto;
-        // height: calc(100vh - $wr-header-size - 10px - $wr-footer-size);
-        // padding: $wr-gutter-size;
     }
 
     &__right {
         position: relative;
         margin-left: $wr-gutter-size;
-        // padding: $wr-gutter-size;
 
         // Custom Bootstrap
         & .nav-link {
@@ -43,8 +34,6 @@
     }
 
     &__block {
-        // padding: 0 !important;
-
         @include wr-card;
 
         & + & {
@@ -76,14 +65,6 @@
         // height: calc(100vh - $wr-header-size - 10px - 35px - $wr-footer-size);
         overflow-y: auto;
         background-color: $white;
-    }
-
-    &__income {
-        padding: $wr-gutter-size;
-
-        // & .form-control {
-        //     max-width: 337px;
-        // }
     }
 
     &__footer {
@@ -121,6 +102,13 @@
     // Custom Bootstrap
     & .form-control {
         font-size: 16px !important;
-        padding: 5px 6px !important;
+        padding: 5px 6px;
+    }
+
+    &__extension {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
     }
 }

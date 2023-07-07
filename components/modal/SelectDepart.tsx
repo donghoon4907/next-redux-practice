@@ -2,12 +2,12 @@ import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { UserState } from '@reducers/hr';
+import type { HrState } from '@reducers/hr';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideDepartSearchModal } from '@actions/modal/depart-search.action';
-import { updateDepart } from '@actions/user/depart.action';
+import { updateDepart } from '@actions/hr/depart.action';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 
@@ -20,7 +20,7 @@ export const SelectDepartModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const { orgas } = useSelector<AppState, UserState>((state) => state.user);
+    const { orgas } = useSelector<AppState, HrState>((state) => state.hr);
 
     const [depart, setDepart] = useState<CoreSelectOption | null>(null);
 

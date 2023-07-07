@@ -1,23 +1,35 @@
 import type { Reducer } from 'redux';
 import type { CoreSelectOption } from '@interfaces/core';
 import produce from 'immer';
-import { GetOrgasActionTypes } from '@actions/user/get-orgas';
-import { DepartActionTypes } from '@actions/user/depart.action';
+import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
+import { DepartActionTypes } from '@actions/hr/depart.action';
+import { GetFcsActionTypes } from '@actions/hr/get-fcs';
 
-export interface UserState {
+export interface HrState {
+    /**
+     * 부서(조직) 조회 결과
+     */
     orgas: CoreSelectOption[];
-    selectedDepart: CoreSelectOption;
+    /**
+     * 영업가족 조회 결과
+     */
+    fcs: CoreSelectOption[];
+    /**
+     * 선택한 부서(조직)
+     */
+    selectedOrga: CoreSelectOption;
 }
 
-const initialState: UserState = {
+const initialState: HrState = {
     orgas: [],
-    selectedDepart: {
+    fcs: [],
+    selectedOrga: {
         value: '',
         label: '',
     },
 };
 
-export const userReducer: Reducer<UserState, any> = (
+export const hrReducer: Reducer<HrState, any> = (
     state = initialState,
     action,
 ) =>
@@ -27,8 +39,12 @@ export const userReducer: Reducer<UserState, any> = (
                 draft.orgas = action.payload;
                 break;
             }
+            case GetFcsActionTypes.SUCCESS: {
+                draft.fcs = action.payload;
+                break;
+            }
             case DepartActionTypes.UPDATE: {
-                draft.selectedDepart = action.payload;
+                draft.selectedOrga = action.payload;
                 break;
             }
             default:

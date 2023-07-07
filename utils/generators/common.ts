@@ -1,5 +1,5 @@
-import { AnyAction } from 'redux';
-import { Saga } from 'redux-saga';
+import type { AnyAction } from 'redux';
+import type { Saga } from 'redux-saga';
 import { call, put } from 'redux-saga/effects';
 import axios, { AxiosError } from 'axios';
 import { sagaError } from '@actions/error/error.action';

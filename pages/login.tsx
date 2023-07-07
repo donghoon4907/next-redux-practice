@@ -4,9 +4,10 @@ import Head from 'next/head';
 import { FaUser, FaKey, FaPowerOff, FaHeadset } from 'react-icons/fa';
 import { MyCheckbox } from '@components/checkbox';
 import { useApi } from '@hooks/use-api';
-import { loginRequest } from '@actions/user/login.action';
+import { loginRequest } from '@actions/hr/login.action';
 import { useRouter } from 'next/router';
 import { useInput } from '@hooks/use-input';
+import { useTab } from '@hooks/use-tab';
 
 const Login: NextPage = () => {
     const displayName = 'wr-pages-login';
@@ -14,6 +15,8 @@ const Login: NextPage = () => {
     const router = useRouter();
 
     const login = useApi(loginRequest);
+
+    const tab = useTab();
 
     const userid = useInput('');
 
@@ -23,7 +26,11 @@ const Login: NextPage = () => {
         evt.preventDefault();
 
         login({ userid: userid.value, password: password.value }, () => {
-            router.push('/contract/long-list');
+            tab.fire(
+                `aside_menu_contract1-1`,
+                '장기계약목록',
+                '/contract/long/list',
+            );
         });
     };
 

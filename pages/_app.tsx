@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { getCookie } from 'cookies-next';
-import axios from 'axios';
 import { wrapper } from '@store/redux';
 // import { MyDrawer } from '@components/drawer';
 import { MyProvider } from '@components/Provider';
@@ -17,8 +16,7 @@ import { initTab } from '@actions/tab/tab.action';
 import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
-import { SelectDepartModal } from '@components/modal/SelectDepart';
-import { updateAuthorization } from '@utils/axios';
+import { initialzeAxios } from '@utils/axios';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { events, asPath } = useRouter();
@@ -37,16 +35,16 @@ function MyApp({ Component, pageProps }: AppProps) {
             dispatch(updateGnb(ASIDE_MENU[gnb]));
         }
 
-        const handleRouteChange = (url: string) => {
+        function onRouteChange(url: string) {
             tab.initialize();
-            // Update tab state
-            dispatch(initTab(tab.getAll()));
-        };
 
-        events.on('routeChangeComplete', handleRouteChange);
+            dispatch(initTab(tab.getAll()));
+        }
+
+        events.on('routeChangeComplete', onRouteChange);
 
         return () => {
-            events.off('routeChangeComplete', handleRouteChange);
+            events.off('routeChangeComplete', onRouteChange);
         };
     }, [events, asPath, dispatch]);
 
@@ -56,7 +54,6 @@ function MyApp({ Component, pageProps }: AppProps) {
 
             {/* <MyDrawer /> */}
             <MyLoading />
-            <SelectDepartModal />
         </MyProvider>
     );
 }
@@ -66,15 +63,15 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
         async ({ Component, ctx }) => {
             const { req, res } = ctx;
 
-            const isServerSide = !!req && !!res;
+            const isServer = !!req && !!res;
 
-            if (isServerSide) {
+            if (isServer) {
                 const token = getCookie(process.env.COOKIE_TOKEN_KEY || '', {
                     req,
                     res,
                 });
 
-                updateAuthorization(token);
+                initialzeAxios(token);
             }
 
             let pageProps = {};

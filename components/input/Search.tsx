@@ -1,37 +1,25 @@
 import type { FC, FormEvent, InputHTMLAttributes } from 'react';
 import { LuSearch } from 'react-icons/lu';
-import { useInput } from '@hooks/use-input';
 import { AccessibleText } from '@components/AccessibleText';
 
 import { MyInput } from '.';
 
-interface Props
-    extends Omit<
-        InputHTMLAttributes<HTMLInputElement>,
-        'type' | 'value' | 'onChange'
-    > {}
+interface Props extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+    onSearch?: () => void;
+}
 
-export const SearchInput: FC<Props> = (inputProps) => {
-    const search = useInput('', { includeSetState: false });
-
+export const SearchInput: FC<Props> = ({ onSearch, ...rest }) => {
     const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
 
-        if (search.value === '') {
-            alert('검색어를 입력하세요');
-
-            return;
-        }
-
-        alert('검색 액션 발생');
+        onSearch?.();
     };
 
     return (
         <form role="search" className="wr-search__form" onSubmit={handleSubmit}>
             <MyInput
                 type="search"
-                {...inputProps}
-                {...search}
+                {...rest}
                 button={{
                     type: 'submit',
                     children: (

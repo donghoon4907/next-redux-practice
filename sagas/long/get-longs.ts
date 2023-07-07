@@ -1,6 +1,6 @@
 import type { GetLongsRequestAction } from '@actions/long/get-longs.action';
 import { call, takeEvery } from 'redux-saga/effects';
-import { convertDateMiddleware } from '@utils/generators/convert-date';
+import { searchMiddleware } from '@utils/generators/search';
 import longsService from '@services/longsService';
 import { GetLongsActionTypes } from '@actions/long/get-longs.action';
 
@@ -13,6 +13,6 @@ function* getLongsSaga({ payload }: GetLongsRequestAction) {
 export function* watchGetLongs() {
     yield takeEvery(
         GetLongsActionTypes.REQUEST,
-        convertDateMiddleware(getLongsSaga),
+        searchMiddleware(getLongsSaga),
     );
 }

@@ -1,5 +1,5 @@
 import type { CoreSelectOption } from '@interfaces/core';
-
+// 리스트 보기 수
 export const SHOW_COUNTS: CoreSelectOption[] = [
     {
         label: '25줄보기',
@@ -22,7 +22,68 @@ export const SHOW_COUNTS: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
-
+// 회차
+export const ROUNDS: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '1,999',
+        isFixed: false,
+    },
+    {
+        label: '초회',
+        value: '1,1',
+        isFixed: false,
+    },
+    {
+        label: '초년도',
+        value: '1,12',
+        isFixed: false,
+    },
+    {
+        label: '2차년도이상',
+        value: '13,999',
+        isFixed: false,
+    },
+];
+// 입금구분
+export const DISTS: CoreSelectOption[] = [
+    {
+        label: '신규',
+        value: '신규',
+        isFixed: false,
+    },
+    {
+        label: '계속',
+        value: '계속',
+        isFixed: false,
+    },
+    {
+        label: '계속취소',
+        value: '계속취소',
+        isFixed: false,
+    },
+    {
+        label: '철회',
+        value: '철회',
+        isFixed: false,
+    },
+    {
+        label: '취소',
+        value: '취소',
+        isFixed: false,
+    },
+    {
+        label: '실효',
+        value: '실효',
+        isFixed: false,
+    },
+    {
+        label: '해지',
+        value: '해지',
+        isFixed: false,
+    },
+];
+// 생일 타입
 export const BIRTH_TYPE: CoreSelectOption[] = [
     {
         label: '양력',
@@ -35,7 +96,7 @@ export const BIRTH_TYPE: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
-
+// 통신사
 export const MOBILE_COM: CoreSelectOption[] = [
     {
         label: 'SKT',
@@ -63,7 +124,7 @@ export const MOBILE_COM: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
-
+// 이메일사
 export const EMAIL_COM: CoreSelectOption[] = [
     {
         label: 'naver.com',
@@ -129,7 +190,7 @@ export const EMP_STATUS: CoreSelectOption[] = [
     },
 ];
 
-// 보험 회사 목록
+// 보험사 목록1
 export const INSU_COMP: CoreSelectOption[] = [
     {
         label: '삼성화재',
@@ -147,6 +208,29 @@ export const INSU_COMP: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 보험사 목록2
+export const COMPANY: CoreSelectOption[] = [
+    {
+        label: 'DB손해',
+        value: '110',
+        isFixed: false,
+    },
+];
+
+// 보종 목록
+export const PRODUCT_TYPE: CoreSelectOption[] = [
+    {
+        label: '인보장',
+        value: '인보장',
+        isFixed: false,
+    },
+    {
+        label: '재물',
+        value: '재물',
+        isFixed: false,
+    },
+];
+
 // 보험 기간
 export const INSU_DURATION: CoreSelectOption[] = [
     {
@@ -184,28 +268,28 @@ export const INSU_DURATION: CoreSelectOption[] = [
 // 납입 주기
 export const PAY_CYCLE: CoreSelectOption[] = [
     {
-        label: '월납',
-        value: '월납',
-        isFixed: false,
-    },
-    {
         label: '일시납',
-        value: '일시납',
+        value: '0',
         isFixed: false,
     },
     {
-        label: '연납',
-        value: '연납',
-        isFixed: false,
-    },
-    {
-        label: '6월납',
-        value: '6월납',
+        label: '월납',
+        value: '1',
         isFixed: false,
     },
     {
         label: '3월납',
-        value: '3월납',
+        value: '3',
+        isFixed: false,
+    },
+    {
+        label: '6월납',
+        value: '6',
+        isFixed: false,
+    },
+    {
+        label: '연납',
+        value: '12',
         isFixed: false,
     },
 ];

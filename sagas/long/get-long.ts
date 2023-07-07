@@ -10,7 +10,6 @@ import { commonMiddleware } from '@utils/generators/common';
 function* getLongSaga({ payload }: GetLongRequestAction) {
     const { data } = yield call(longsService.getLong, payload);
 
-    console.log(data);
     yield put(getLongSuccess(data));
 
     return data;

@@ -19,6 +19,12 @@ body {
     --wr-tab-active-color: #e9ecef;
 }
 
+hr {
+    --rs-border-primary: black;
+    margin-top: $wr-gutter-size !important;
+    margin-bottom: $wr-gutter-size !important;
+}
+
 ul,
 ol {
     margin: 0 !important;
@@ -34,16 +40,15 @@ a:visited {
     cursor: pointer !important;
 }
 
+textarea {
+    border: 1px solid $wr-divider-color-300;
+    outline: none;
+}
+
 table {
     border-collapse: separate !important;
     width: fit-content;
-}
-
-table,
-th,
-td {
-    // border-right: 1px solid $wr-divider-color-300;
-    // border-bottom: 1px solid $wr-divider-color-300;
+    // table-layout: fixed;
 }
 
 thead {
@@ -62,18 +67,18 @@ th {
 
 th,
 td {
-    // min-width: 50px;
-    // max-width: 500px;
     white-space: nowrap;
     text-align: center;
 }
 
 tr {
     width: fit-content;
+    // table-layout: fixed;
 }
 
 td {
     height: 30px;
+    table-layout: fixed;
 }
 
 /* 스크롤 설정 */
@@ -123,7 +128,7 @@ td {
 //     display: none;
 // }
 // Datepicker - 입력창 설정
-.rs-btn {
+.rs-picker-toggle {
     border-radius: 0 !important;
     border: 1px solid $wr-divider-color-300 !important;
 
@@ -170,10 +175,6 @@ input[type='number'] {
     width: 100%;
 }
 
-// label 공통 스타일 재정의
-.form-label {
-    // margin-top: 0.5rem;
-}
 // grid row 공통 스타일 재정의
 .row {
     // 상위 컨테이너 이상의 너비를 갖지 않도록 조정
@@ -183,14 +184,10 @@ input[type='number'] {
 .form-control {
     border-radius: 0 !important;
     font-size: 16px;
-    padding: 0 6px !important;
     box-shadow: none !important;
     border-color: $wr-divider-color-300 !important;
     // height: 30px;
-
-    // &:hover {
-    //     border: 1px solid $wr-hover-color;
-    // }
+    height: 100%;
 }
 // 버튼 공통 스타일 재정의
 .btn {
@@ -205,3 +202,17 @@ input[type='number'] {
     background-color: inherit !important;
     padding: 6px 5px !important;
 }
+// popover
+// .popover {
+//     border-radius: 0 !important;
+// }
+// .popover-arrow {
+//     opacity: 0;
+// }
+
+// .popover-header {
+//     line-height: 1.5 !important;
+//     padding: 6px 12px !important;
+//     background-color: $white !important;
+//     font-size: 14px !important;
+// }

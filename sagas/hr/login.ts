@@ -1,8 +1,8 @@
-import type { LoginRequestAction } from '@actions/user/login.action';
+import type { LoginRequestAction } from '@actions/hr/login.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { setCookie } from 'cookies-next';
-import usersService from '@services/usersService';
-import { LoginActionTypes, loginSuccess } from '@actions/user/login.action';
+import usersService from '@services/hrsService';
+import { LoginActionTypes, loginSuccess } from '@actions/hr/login.action';
 import { sagaError } from '@actions/error/error.action';
 import { commonMiddleware } from '@utils/generators/common';
 
@@ -12,8 +12,6 @@ function* loginSaga({ payload }: LoginRequestAction) {
     const { access_token, Message: message } = data;
 
     if (access_token) {
-        alert('로그인 성공');
-
         const cookieKey = process.env.COOKIE_TOKEN_KEY || '';
 
         setCookie(cookieKey, access_token);

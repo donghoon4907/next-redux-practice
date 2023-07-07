@@ -1,10 +1,10 @@
-import { Action } from 'redux';
+import type { Action } from 'redux';
 
 export const DEPART_SEARCH_MODAL_KEY = 'DEPART_SEARCH_MODAL_KEY';
 
 export const DepartSearchModalActionTypes = {
-    SHOW: `INIT_${DEPART_SEARCH_MODAL_KEY}`,
-    HIDE: `ADD_${DEPART_SEARCH_MODAL_KEY}`,
+    SHOW: `SHOW_${DEPART_SEARCH_MODAL_KEY}`,
+    HIDE: `HIDE_${DEPART_SEARCH_MODAL_KEY}`,
 } as const;
 
 export interface DepartSearchModalShowAction extends Action<string> {}

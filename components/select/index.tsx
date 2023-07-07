@@ -79,6 +79,7 @@ export const MySelect: FC<MySelectProps> = ({
             placeholder={placeholder}
             menuPlacement="auto"
             isDisabled={isDisabled}
+            noOptionsMessage={() => '데이터가 없습니다.'}
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,
@@ -124,7 +125,9 @@ export const MySelect: FC<MySelectProps> = ({
                     borderRadius: variables.filterBorderRadius,
                     margin: 0,
                     border: `1px solid ${variables.dividerColor}`,
+                    borderTopWidth: 0,
                     boxShadow: 'none',
+                    zIndex: variables.selectZindex,
                 }),
                 menuList: (provided, state) => ({
                     ...provided,

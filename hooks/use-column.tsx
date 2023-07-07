@@ -1,13 +1,20 @@
 import type { ColumnDef } from '@tanstack/react-table';
+import type { CoreColumnOption } from '@interfaces/core';
 import { useMemo } from 'react';
 import {
     checkEllipsisNeeded,
     checkSeparatorNeeded,
-    isNumeric,
+    isNumberic,
 } from '@utils/validation';
+import { MyButton } from '@components/button';
 
-export const useEllipsisColumn = (fields: Array<any>) => {
-    const columns = useMemo<ColumnDef<any>[]>(
+export type MyColumnDef = ColumnDef<any> & {
+    headerText: string;
+    headerKey: string;
+};
+
+export const useColumn = (fields: CoreColumnOption) => {
+    const columns = useMemo<MyColumnDef[]>(
         () =>
             Object.entries(fields).map(([key, value]) => {
                 return {
@@ -25,12 +32,15 @@ export const useEllipsisColumn = (fields: Array<any>) => {
                         );
                     },
                     accessorKey: key,
+                    headerText: value,
+                    headerKey: key,
                     cell: (info: any) => {
                         let className = '';
                         let cellValue = info.getValue();
+                        let output = null;
 
                         if (
-                            isNumeric(cellValue) &&
+                            isNumberic(cellValue) &&
                             checkSeparatorNeeded(info.column.id)
                         ) {
                             cellValue = Number(cellValue).toLocaleString();
@@ -41,7 +51,29 @@ export const useEllipsisColumn = (fields: Array<any>) => {
                             className += 'text-truncate d-block';
                         }
 
-                        return <span className={className}>{cellValue}</span>;
+                        if (Array.isArray(cellValue)) {
+                            const [element, text, handler] = cellValue;
+
+                            if (element === 'button') {
+                                output = (
+                                    <div className="d-flex justify-content-center align-items-center">
+                                        <MyButton
+                                            type="button"
+                                            className={`btn-primary ${className}`}
+                                            onClick={handler}
+                                        >
+                                            {text}
+                                        </MyButton>
+                                    </div>
+                                );
+                            }
+                        } else {
+                            output = (
+                                <span className={className}>{cellValue}</span>
+                            );
+                        }
+
+                        return output;
                     },
                 };
             }),

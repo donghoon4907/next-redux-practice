@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 // import utc from 'dayjs/plugin/utc';
 // import timezone from 'dayjs/plugin/timezone';
 import coreConstants from '@constants/core';
-import { isNumeric } from './validation';
+import { isNumberic } from './validation';
 
 // dayjs.extend(utc);
 // dayjs.extend(timezone);
@@ -13,7 +13,7 @@ export class DayJSModule {
     private _date: string | null = null;
 
     public static isDate(date: string | number) {
-        return isNumeric(date)
+        return isNumberic(date)
             ? false
             : /^\d{4}-\d{2}-\d{2}$/.test(date as string);
     }

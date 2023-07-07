@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import type { CoreSelectOption, CoreTabOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
-import type { UserState } from '@reducers/hr';
+import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,7 +15,7 @@ import { MyLayout } from '@components/Layout';
 import { useInput } from '@hooks/use-input';
 import { useApi } from '@hooks/use-api';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
-import { getOrgasRequest } from '@actions/user/get-orgas';
+import { getOrgasRequest } from '@actions/hr/get-orgas';
 import {
     BIRTH_TYPE,
     EMAIL_COM,
@@ -26,14 +26,16 @@ import {
 import {
     CreateUserRequestPayload,
     createUserRequest,
-} from '@actions/user/create.action';
+} from '@actions/hr/create.action';
 import { MyFooter } from '@components/footer';
+import { MyButton } from '@components/button';
+import { SelectDepartModal } from '@components/modal/SelectDepart';
 
 const CreateUser: NextPage = () => {
     const dispatch = useDispatch();
 
-    const { selectedDepart } = useSelector<AppState, UserState>(
-        (state) => state.user,
+    const { selectedOrga } = useSelector<AppState, HrState>(
+        (state) => state.hr,
     );
 
     const createUser = useApi(createUserRequest);
@@ -121,14 +123,14 @@ const CreateUser: NextPage = () => {
             return alert('핸드폰을 입력하세요.');
         }
 
-        if (selectedDepart.label === '') {
+        if (selectedOrga.label === '') {
             return alert('부서를 선택하세요.');
         }
 
         const payload: CreateUserRequestPayload = {
             name: name.value,
             mobile: mobile.value,
-            orga_idx: +selectedDepart.value,
+            orga_idx: +selectedOrga.value,
         };
 
         if (title.value !== '') {
@@ -205,7 +207,7 @@ const CreateUser: NextPage = () => {
     useEffect(() => {
         dispatch(
             getOrgasRequest({
-                idx: 1,
+                idx: '1',
             }),
         );
     }, [dispatch]);
@@ -226,8 +228,8 @@ const CreateUser: NextPage = () => {
                             <div className="wr-pages-detail__block">
                                 <div className="wr-group">
                                     <span className="wr-pages-detail__department">
-                                        {selectedDepart.label
-                                            ? selectedDepart.label
+                                        {selectedOrga.label
+                                            ? selectedOrga.label
                                             : '부서를 선택하세요'}
                                     </span>
                                     <button
@@ -438,107 +440,105 @@ const CreateUser: NextPage = () => {
                                 </div>
                             </div>
                             <div className="wr-pages-detail__block">
-                                <div className="row">
-                                    <div className="col">
-                                        <div className="row wr-mb">
-                                            <div className="col-6">
-                                                <WithLabel
+                                <div className="row wr-mb">
+                                    <div className="col-6">
+                                        <WithLabel
+                                            id="postcode"
+                                            label="주소"
+                                            type="active"
+                                        >
+                                            <div className="wr-pages-detail__with">
+                                                <MyInput
+                                                    type="text"
                                                     id="postcode"
-                                                    label="주소"
-                                                    type="active"
-                                                >
-                                                    <div className="wr-pages-detail__with">
-                                                        <MyInput
-                                                            type="text"
-                                                            id="postcode"
-                                                            placeholder="우편번호"
-                                                            readOnly
-                                                            {...postcode}
-                                                            // button={{
-                                                            //     type: 'button',
-                                                            //     children: (
-                                                            //         <>
-                                                            //             <span>
-                                                            //                 찾기
-                                                            //             </span>
-                                                            //         </>
-                                                            //     ),
-                                                            // }}
-                                                        />
-                                                    </div>
-                                                </WithLabel>
+                                                    placeholder="우편번호"
+                                                    readOnly
+                                                    {...postcode}
+                                                    // button={{
+                                                    //     type: 'button',
+                                                    //     children: (
+                                                    //         <>
+                                                    //             <span>
+                                                    //                 찾기
+                                                    //             </span>
+                                                    //         </>
+                                                    //     ),
+                                                    // }}
+                                                />
                                             </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <MyInput
-                                                        type="email"
-                                                        placeholder=""
-                                                        readOnly
-                                                        {...address1}
-                                                    />
-                                                </div>
-                                            </div>
+                                        </WithLabel>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <MyInput
+                                                type="email"
+                                                placeholder=""
+                                                readOnly
+                                                {...address1}
+                                            />
                                         </div>
-                                        <div className="row wr-mt">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="addr2"
-                                                    label="상세주소"
-                                                    type="active"
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="addr2"
-                                                        placeholder="상세주소"
-                                                        readOnly
-                                                        {...address3}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder=""
-                                                        readOnly
-                                                        {...address2}
-                                                    />
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="col-6">
+                                        <WithLabel
+                                            id="addr2"
+                                            label="상세주소"
+                                            type="active"
+                                        >
+                                            <MyInput
+                                                type="text"
+                                                id="addr2"
+                                                placeholder="상세주소"
+                                                readOnly
+                                                {...address3}
+                                            />
+                                        </WithLabel>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <MyInput
+                                                type="text"
+                                                placeholder=""
+                                                readOnly
+                                                {...address2}
+                                            />
                                         </div>
-                                        <div className="row wr-mt">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="indate"
-                                                    label="입사일"
-                                                    type="active"
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="indate"
-                                                        placeholder="입사일"
-                                                        {...indate}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <WithLabel
-                                                        id="outdate"
-                                                        label="퇴사일"
-                                                        type="active"
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            id="outdate"
-                                                            placeholder="퇴사일"
-                                                            {...outdate}
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="col-6">
+                                        <WithLabel
+                                            id="indate"
+                                            label="입사일"
+                                            type="active"
+                                        >
+                                            <MyInput
+                                                type="text"
+                                                id="indate"
+                                                placeholder="입사일"
+                                                {...indate}
+                                            />
+                                        </WithLabel>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <WithLabel
+                                                id="outdate"
+                                                label="퇴사일"
+                                                type="active"
+                                            >
+                                                <MyInput
+                                                    type="text"
+                                                    id="outdate"
+                                                    placeholder="퇴사일"
+                                                    {...outdate}
+                                                />
+                                            </WithLabel>
                                         </div>
-                                        {/* <WithLabel
+                                    </div>
+                                </div>
+                                {/* <WithLabel
                                             id="attractor"
                                             label="유치자"
                                             type="active"
@@ -558,165 +558,153 @@ const CreateUser: NextPage = () => {
                                                 }}
                                             />
                                         </WithLabel> */}
-                                    </div>
-                                </div>
                             </div>
                             <div className="wr-pages-detail__block">
                                 <div className="row">
-                                    <div className="col">
-                                        <div className="row">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="bank"
-                                                    label="은행명"
-                                                    type="disable"
-                                                >
-                                                    <MySelect
-                                                        inputId="bank"
-                                                        options={[]}
-                                                        value={null}
-                                                        onChange={() => {}}
-                                                        placeholder={'국민은행'}
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={true}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <WithLabel
-                                                        id="account"
-                                                        label="계좌번호"
-                                                        type="disable"
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            id="account"
-                                                            placeholder="계좌번호"
-                                                            value="123456-01-32423934"
-                                                            readOnly
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                            </div>
+                                    <div className="col-6">
+                                        <WithLabel
+                                            id="bank"
+                                            label="은행명"
+                                            type="disable"
+                                        >
+                                            <MySelect
+                                                inputId="bank"
+                                                options={[]}
+                                                value={null}
+                                                onChange={() => {}}
+                                                placeholder={'국민은행'}
+                                                placeHolderFontSize={16}
+                                                height={
+                                                    variables.detailFilterHeight
+                                                }
+                                                isDisabled={true}
+                                            />
+                                        </WithLabel>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <WithLabel
+                                                id="account"
+                                                label="계좌번호"
+                                                type="disable"
+                                            >
+                                                <MyInput
+                                                    type="text"
+                                                    id="account"
+                                                    placeholder="계좌번호"
+                                                    value="123456-01-32423934"
+                                                    readOnly
+                                                />
+                                            </WithLabel>
                                         </div>
-                                        <div className="row wr-mt">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="holder"
-                                                    label="예금주"
-                                                    type="disable"
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="holder"
-                                                        placeholder="예금주"
-                                                        value="홍길동"
-                                                        readOnly
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <MySelect
-                                                        options={[]}
-                                                        value={null}
-                                                        onChange={() => {}}
-                                                        placeholder={'과세'}
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={true}
-                                                    />
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="col-6">
+                                        <WithLabel
+                                            id="holder"
+                                            label="예금주"
+                                            type="disable"
+                                        >
+                                            <MyInput
+                                                type="text"
+                                                id="holder"
+                                                placeholder="예금주"
+                                                value="홍길동"
+                                                readOnly
+                                            />
+                                        </WithLabel>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <MySelect
+                                                options={[]}
+                                                value={null}
+                                                onChange={() => {}}
+                                                placeholder={'과세'}
+                                                placeHolderFontSize={16}
+                                                height={
+                                                    variables.detailFilterHeight
+                                                }
+                                                isDisabled={true}
+                                            />
                                         </div>
-                                        <div className="row wr-mt">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="incomeCategory"
-                                                    label="소득구분"
-                                                    type="disable"
-                                                >
-                                                    <MySelect
-                                                        inputId="incomeCategory"
-                                                        options={[]}
-                                                        value={null}
-                                                        onChange={() => {}}
-                                                        placeholder={
-                                                            '근로 + 사업'
-                                                        }
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={true}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <WithLabel
-                                                        id="paymentSystem"
-                                                        label="지급제도"
-                                                        type="disable"
-                                                    >
-                                                        <MySelect
-                                                            inputId="paymentSystem"
-                                                            options={[]}
-                                                            value={null}
-                                                            onChange={() => {}}
-                                                            placeholder={'S3-2'}
-                                                            placeHolderFontSize={
-                                                                16
-                                                            }
-                                                            height={
-                                                                variables.detailFilterHeight
-                                                            }
-                                                            isDisabled={true}
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="col-6">
+                                        <WithLabel
+                                            id="incomeCategory"
+                                            label="소득구분"
+                                            type="disable"
+                                        >
+                                            <MySelect
+                                                inputId="incomeCategory"
+                                                options={[]}
+                                                value={null}
+                                                onChange={() => {}}
+                                                placeholder={'근로 + 사업'}
+                                                placeHolderFontSize={16}
+                                                height={
+                                                    variables.detailFilterHeight
+                                                }
+                                                isDisabled={true}
+                                            />
+                                        </WithLabel>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <WithLabel
+                                                id="paymentSystem"
+                                                label="지급제도"
+                                                type="disable"
+                                            >
+                                                <MySelect
+                                                    inputId="paymentSystem"
+                                                    options={[]}
+                                                    value={null}
+                                                    onChange={() => {}}
+                                                    placeholder={'S3-2'}
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={true}
+                                                />
+                                            </WithLabel>
                                         </div>
-                                        <div className="row wr-mt">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="payoutRate"
-                                                    label="지급율"
-                                                    type="disable"
-                                                >
-                                                    <MySelect
-                                                        inputId="payoutRate"
-                                                        options={[]}
-                                                        value={null}
-                                                        onChange={() => {}}
-                                                        placeholder={
-                                                            '기본 + 성과'
-                                                        }
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={true}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <MyInput
-                                                        type="number"
-                                                        placeholder="지급율 수치"
-                                                        value="85"
-                                                        unit="%"
-                                                        readOnly
-                                                    />
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="col-6">
+                                        <WithLabel
+                                            id="payoutRate"
+                                            label="지급율"
+                                            type="disable"
+                                        >
+                                            <MySelect
+                                                inputId="payoutRate"
+                                                options={[]}
+                                                value={null}
+                                                onChange={() => {}}
+                                                placeholder={'기본 + 성과'}
+                                                placeHolderFontSize={16}
+                                                height={
+                                                    variables.detailFilterHeight
+                                                }
+                                                isDisabled={true}
+                                            />
+                                        </WithLabel>
+                                    </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <MyInput
+                                                type="number"
+                                                placeholder="지급율 수치"
+                                                value="85"
+                                                unit="%"
+                                                readOnly
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -747,17 +735,18 @@ const CreateUser: NextPage = () => {
                     <div className="wr-pages-detail__footer">
                         <div></div>
                         <div>
-                            <button
-                                className="btn btn-primary btn-sm"
+                            <MyButton
                                 type="button"
+                                className="btn-primary"
                                 onClick={handleSubmit}
                             >
                                 등록
-                            </button>
+                            </MyButton>
                         </div>
                     </div>
                 </MyFooter>
             </MyLayout>
+            <SelectDepartModal />
         </>
     );
 };

@@ -1,14 +1,14 @@
-import type { CreateUserRequestAction } from '@actions/user/create.action';
+import type { CreateUserRequestAction } from '@actions/hr/create.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import usersService from '@services/usersService';
+import hrsService from '@services/hrsService';
 import {
     CreateUserActionTypes,
     createUserSuccess,
-} from '@actions/user/create.action';
+} from '@actions/hr/create.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* createUserSaga({ payload }: CreateUserRequestAction) {
-    const { data } = yield call(usersService.createUser, payload);
+    const { data } = yield call(hrsService.createUser, payload);
 
     const { userid } = data;
 

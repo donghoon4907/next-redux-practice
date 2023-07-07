@@ -3,7 +3,7 @@ import {
     GetOverridesActionTypes,
 } from '@actions/long/get-overrides.action';
 import { call, takeEvery } from 'redux-saga/effects';
-import { convertDateMiddleware } from '@utils/generators/convert-date';
+import { searchMiddleware } from '@utils/generators/search';
 import demosService from '@services/demosService';
 
 function* getOverridesSaga({ payload }: GetOverridesRequestAction) {
@@ -15,6 +15,6 @@ function* getOverridesSaga({ payload }: GetOverridesRequestAction) {
 export function* watchGetOverrides() {
     yield takeEvery(
         GetOverridesActionTypes.REQUEST,
-        convertDateMiddleware(getOverridesSaga),
+        searchMiddleware(getOverridesSaga),
     );
 }

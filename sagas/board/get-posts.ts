@@ -3,7 +3,7 @@ import {
     GetPostsActionTypes,
 } from '@actions/board/get-posts.action';
 import { call, takeEvery } from 'redux-saga/effects';
-import { convertDateMiddleware } from '@utils/generators/convert-date';
+import { searchMiddleware } from '@utils/generators/search';
 import boardsService from '@services/boardsService';
 
 function* getPostsSaga({ payload }: GetPostsRequestAction) {
@@ -15,6 +15,6 @@ function* getPostsSaga({ payload }: GetPostsRequestAction) {
 export function* watchGetPosts() {
     yield takeEvery(
         GetPostsActionTypes.REQUEST,
-        convertDateMiddleware(getPostsSaga),
+        searchMiddleware(getPostsSaga),
     );
 }

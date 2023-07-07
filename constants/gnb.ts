@@ -3,7 +3,7 @@ import type { CoreMenuOption } from '@interfaces/core';
 export const GNBS: CoreMenuOption[] = [
     { id: 'gnb1', level: 1, label: '고객', to: '/customer' },
     { id: 'gnb2', level: 1, label: '영업', to: '/sales' },
-    { id: 'gnb3', level: 1, label: '계약', to: '/contract' },
+    { id: 'gnb3', level: 1, label: '계약', to: '/contract/long/list' },
     { id: 'gnb4', level: 1, label: '소득', to: '/income' },
     { id: 'gnb5', level: 1, label: '인사', to: '/hr' },
     // { id: 'gnb5', level: 1, label: 'Admin', to: '#' },
@@ -362,8 +362,8 @@ export const ASIDE_MENU: any = {
                 {
                     id: 'aside_menu_contract1-1',
                     level: 2,
-                    label: '보유계약',
-                    to: '/contract/long-list',
+                    label: '장기계약목록',
+                    to: '/contract/long/list',
                     items: [],
                 },
                 {
@@ -742,7 +742,7 @@ export const ASIDE_MENU: any = {
                     id: 'aside_menu_hr2-1',
                     level: 2,
                     label: '영업가족',
-                    to: '',
+                    to: '/hr/user/create',
                     items: [],
                 },
             ],

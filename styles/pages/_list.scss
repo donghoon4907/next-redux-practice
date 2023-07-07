@@ -1,0 +1,9 @@
+.wr-pages-list {
+    & .form-control {
+        height: $wr-list-filter-height;
+    }
+
+    .popover-arrow {
+        display: none !important;
+    }
+}

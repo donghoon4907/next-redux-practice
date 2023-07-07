@@ -6,7 +6,7 @@ export type UseSelectOutput = {
     onChange: (value: CoreSelectOption | null) => void;
 };
 
-export const useSelect = (defaultValue: CoreSelectOption) => {
+export const useSelect = (defaultValue: CoreSelectOption | null) => {
     const [value, setValue] = useState<CoreSelectOption | null>(defaultValue);
 
     const onChange = (v: CoreSelectOption | null) => {

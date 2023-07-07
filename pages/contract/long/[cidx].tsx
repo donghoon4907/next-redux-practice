@@ -1,8 +1,10 @@
 import type { NextPage } from 'next';
 import type { CoreTabOption } from '@interfaces/core';
+import type { LongState } from '@reducers/long';
 import Head from 'next/head';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { END } from 'redux-saga';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -11,8 +13,18 @@ import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
 import { MyLayout } from '@components/Layout';
 import { useInput } from '@hooks/use-input';
-import { useApi } from '@hooks/use-api';
-import { showDepartSearchModal } from '@actions/modal/depart-search.action';
+import { MyFooter } from '@components/footer';
+import { useSelect } from '@hooks/use-select';
+import { wrapper } from '@store/redux';
+import { getLongRequest } from '@actions/long/get-long.action';
+import { PaysTabpanel } from '@partials/long/tabpanels/Pays';
+import { StateHistoryTabpanel } from '@partials/long/tabpanels/StateHistory';
+import { ChangeHistoryTabpanel } from '@partials/long/tabpanels/ChangeHistory';
+import { MyButton } from '@components/button';
+import { showUserHistoryModal } from '@actions/modal/user-history.action';
+import { EtcsTabpanel } from '@partials/long/tabpanels/Etcs';
+import { CreateEtcModal } from '@components/modal/CreateEtc';
+import { UserHistoryModal } from '@components/modal/UserHistory';
 import {
     BIRTH_TYPE,
     CON_STATUS,
@@ -21,13 +33,6 @@ import {
     PAY_CYCLE,
     PAY_STATUS,
 } from '@constants/selectOption';
-import { MyFooter } from '@components/footer';
-import { useSelect } from '@hooks/use-select';
-import { MyButton } from '@components/button';
-import { wrapper } from '@store/redux';
-import { getLongRequest } from '@actions/long/get-long.action';
-import { END } from 'redux-saga';
-import { LongState } from '@reducers/long';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const dispatch = useDispatch();
@@ -76,15 +81,39 @@ const Long: NextPage<LongState> = ({ long }) => {
     // 종납회차
     const lastWhoi = useInput(long.last_whoi);
     // 월납환산보험료
-    const payM = useInput(long.pay_m);
+    const payM = useInput(long.pay_m.toString(), { addComma: true });
     // 보험료
-    const payment = useInput(long.payment);
+    const payment = useInput(long.payment.toString(), { addComma: true });
     // 월납환산수정P
-    const tp = useInput(long.tp);
+    const tp = useInput(long.tp.toString(), { addComma: true });
     const tpRate = useInput(long.tp_rate);
+    // 선택한 변경사항
+    const [selectedChangeHis, setSelectedChangeHis] = useState('');
+    // 수금 실적 추가 요청한 레코드 수
+    const [paysAddCount, setPaysAddCount] = useState(0);
+    // 상태 이력 추가 요청한 레코드 수
+    const [statusHisAddCount, setStatusHisAddCount] = useState(0);
+    // 변경 내역 추가 요청한 레코드 수
+    const [changeHisAddCount, setChangeHisAddCount] = useState(0);
 
     const handleClickTab = (tab: CoreTabOption) => {
         setTab(tab);
+    };
+
+    const handleIncrementPaysAddCount = () => {
+        setPaysAddCount((prev) => prev + 1);
+    };
+
+    const handleIncrementStatusHisAddCount = () => {
+        setStatusHisAddCount((prev) => prev + 1);
+    };
+
+    const handleIncrementChangeHisAddCount = () => {
+        setChangeHisAddCount((prev) => prev + 1);
+    };
+
+    const handleClickChangeHistory = () => {
+        dispatch(showUserHistoryModal());
     };
 
     const handleCancelModify = () => {
@@ -92,6 +121,9 @@ const Long: NextPage<LongState> = ({ long }) => {
 
         if (tf) {
             setEditable(false);
+            setPaysAddCount(0);
+            setStatusHisAddCount(0);
+            setChangeHisAddCount(0);
         }
     };
 
@@ -100,6 +132,16 @@ const Long: NextPage<LongState> = ({ long }) => {
     };
 
     const labelType = editable ? 'active' : 'disable';
+
+    const handleShowHistory = (body: any) => {
+        setSelectedChangeHis(JSON.stringify(body, undefined, 2));
+    };
+
+    const log = long.log.map((v: any) => ({
+        ...v,
+        remark: v.content.remark,
+        body: ['button', '보기', () => handleShowHistory(v.content.body)],
+    }));
 
     return (
         <>
@@ -119,12 +161,13 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     <span className="wr-pages-detail__department">
                                         {`${long.orga} ${long.fc}`}
                                     </span>
-                                    <button
-                                        className="btn btn-primary btn-sm"
+                                    <MyButton
                                         type="button"
+                                        className="btn-primary"
+                                        onClick={handleClickChangeHistory}
                                     >
                                         담당변경이력
-                                    </button>
+                                    </MyButton>
                                 </div>
                             </div>
                             <div className="wr-pages-detail__block">
@@ -161,11 +204,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                         id="cnum"
                                                         placeholder="계약번호"
                                                         readOnly={!editable}
-                                                        className="text-end"
-                                                        style={{
-                                                            paddingRight:
-                                                                '60px !important',
-                                                        }}
+                                                        className="wr-with__badge--inside-right-1"
                                                         {...cnum}
                                                     />
                                                     {long.confirm === 'Y' && (
@@ -192,11 +231,12 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                 <MyInput
                                                     type="text"
                                                     id="ptitle"
+                                                    className="wr-with__badge--inside-left-2"
                                                     placeholder="상품명"
                                                     readOnly={!editable}
                                                     {...ptitle}
                                                 />
-                                                <div className="wr-with__badge--right wr-badge__wrap">
+                                                <div className="wr-with__badge--left wr-badge__wrap">
                                                     <span className="badge rounded-pill bg-primary wr-badge">
                                                         {long.product_type}
                                                         <span className="visually-hidden">
@@ -425,7 +465,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="number"
+                                                type="text"
                                                 id="pay_m"
                                                 className="text-end"
                                                 placeholder="월납환산보험료"
@@ -442,7 +482,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                 type={labelType}
                                             >
                                                 <MyInput
-                                                    type="number"
+                                                    type="text"
                                                     className="text-end"
                                                     placeholder="보험료"
                                                     readOnly={!editable}
@@ -461,10 +501,10 @@ const Long: NextPage<LongState> = ({ long }) => {
                                         >
                                             <div className="wr-pages-detail__with">
                                                 <MyInput
-                                                    type="number"
+                                                    type="text"
                                                     className="text-end"
                                                     placeholder="월납환산수정P"
-                                                    readOnly={!editable}
+                                                    // readOnly={!editable}
                                                     {...tp}
                                                 />
                                                 <MyInput
@@ -495,7 +535,46 @@ const Long: NextPage<LongState> = ({ long }) => {
                                 ))}
                                 <li className="wr-tab__line"></li>
                             </ul>
-                            <div className="wr-pages-detail__body wr-frame__tabbody"></div>
+                            <div className="wr-pages-detail__body wr-frame__tabbody">
+                                <PaysTabpanel
+                                    id="tabpanelPays"
+                                    tabId="tabPays"
+                                    hidden={tab.id !== 'tabPays'}
+                                    data={long.pays}
+                                    editable={editable}
+                                    addCount={paysAddCount}
+                                    onAddCount={handleIncrementPaysAddCount}
+                                />
+                                <StateHistoryTabpanel
+                                    id="tabpanelStatusHis"
+                                    tabId="tabStatusHis"
+                                    hidden={tab.id !== 'tabStatusHis'}
+                                    data={long.status_his}
+                                    editable={editable}
+                                    addCount={statusHisAddCount}
+                                    onAddCount={
+                                        handleIncrementStatusHisAddCount
+                                    }
+                                />
+                                <ChangeHistoryTabpanel
+                                    id="tabpanelChangeHis"
+                                    tabId="tabChangeHis"
+                                    hidden={tab.id !== 'tabChangeHis'}
+                                    data={log}
+                                    editable={editable}
+                                    selectedData={selectedChangeHis}
+                                    addCount={changeHisAddCount}
+                                    onAddCount={
+                                        handleIncrementChangeHisAddCount
+                                    }
+                                />
+                                <EtcsTabpanel
+                                    id="tabpanelEtcs"
+                                    tabId="tabEtcs"
+                                    hidden={tab.id !== 'tabEtcs'}
+                                    editable={editable}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -523,6 +602,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                     </div>
                 </MyFooter>
             </MyLayout>
+
+            <UserHistoryModal />
+            <CreateEtcModal />
         </>
     );
 };
