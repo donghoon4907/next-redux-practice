@@ -3,7 +3,7 @@
  * 0도 숫자로 취급됩니다.
  *
  */
-export function isNumeric(value: any): boolean {
+export function isNumberic(value: any): boolean {
     return !isNaN(parseFloat(value)) && isFinite(Number(value));
 }
 /**
@@ -42,6 +42,7 @@ export function checkSeparatorNeeded(columnName: string) {
         'whoi',
         'pay_du',
         'fccode',
+        '사용인코드',
     ];
     if (omits.some((v) => columnName === v)) {
         output = false;

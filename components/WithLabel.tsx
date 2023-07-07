@@ -17,6 +17,11 @@ interface Props extends CoreProps {
      *
      */
     type?: 'active' | 'disable';
+    /**
+     * 필수 여부
+     *
+     */
+    isRequired?: boolean;
 }
 
 export const WithLabel: FC<Props> = ({
@@ -24,6 +29,7 @@ export const WithLabel: FC<Props> = ({
     id,
     label,
     type = 'active',
+    isRequired = false,
 }) => {
     const displayName = 'wr-with';
 
@@ -33,7 +39,13 @@ export const WithLabel: FC<Props> = ({
                 className={`${displayName}__label ${displayName}__label--${type}`}
                 htmlFor={id}
             >
-                {label}
+                <span
+                    className={
+                        isRequired ? `${displayName}__label--required` : ''
+                    }
+                >
+                    {label}
+                </span>
             </label>
 
             {children}

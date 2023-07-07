@@ -16,7 +16,7 @@ export const MyHeader: FC<Props> = () => {
     // const { onToggle } = useDrawer();
 
     return (
-        <header className="wr-header">
+        <header className="wr-header wr-frame__header">
             <div className="wr-meta">
                 <div className="wr-meta__inner">
                     <div className="wr-meta__right">
@@ -64,7 +64,7 @@ export const MyHeader: FC<Props> = () => {
                                 <GnbSubMenuItem to="#">
                                     <div className="wr-badge__wrap">
                                         <span>게시판</span>
-                                        <span className="wr-badge badge bg-danger">
+                                        <span className="badge bg-danger">
                                             23
                                         </span>
                                     </div>

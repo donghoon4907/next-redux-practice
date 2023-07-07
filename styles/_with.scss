@@ -3,6 +3,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
+        position: relative;
         // border: 1px solid $wr-divider-color-100;
 
         & + & {
@@ -21,16 +22,58 @@
         border: 1px solid $wr-divider-color-300;
         border-right-width: 0;
         height: $wr-filter-height;
-        min-width: 75px;
-        max-width: 75px;
+        min-width: 90px;
+        max-width: 90px;
         font-size: 13px;
+        text-align: center;
 
         &--active {
-            background-color: $wr-with-label-active;
+            background-color: $wr-with-label-active !important;
         }
 
         &--disable {
-            background-color: $wr-with-label-disable;
+            background-color: $wr-with-label-disable !important;
+        }
+
+        &--required {
+            position: relative;
+
+            &::after {
+                content: '*';
+                color: red;
+                position: absolute;
+                top: -5px;
+                right: -7px;
+            }
+        }
+    }
+
+    &__badge {
+        position: relative;
+        width: 100%;
+
+        &--right {
+            position: absolute;
+            top: 50%;
+            transform: translate3d(0, -50%, 0);
+            right: $wr-gutter-size;
+            z-index: $wr-oninput-index;
+        }
+
+        &--left {
+            position: absolute;
+            top: 50%;
+            transform: translate3d(0, -50%, 0);
+            left: $wr-gutter-size;
+            z-index: $wr-oninput-index;
+        }
+
+        &--inside-right-1 {
+            padding-right: 45px !important;
+        }
+
+        &--inside-left-2 {
+            padding-left: 110px !important;
         }
     }
 }

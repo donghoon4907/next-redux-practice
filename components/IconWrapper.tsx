@@ -11,7 +11,11 @@ export const IconWrapper: FC<Props> = ({
     ...another
 }) => {
     return (
-        <button type="button" className={`wr-btn ${className}`} {...another}>
+        <button
+            type="button"
+            className={`wr-icon wr-btn ${className}`}
+            {...another}
+        >
             {children}
         </button>
     );

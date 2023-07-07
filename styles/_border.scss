@@ -1,0 +1,27 @@
+.wr-border {
+    border: 1px solid $wr-divider-color-300;
+
+    &-l {
+        &--hide {
+            border-left-width: 0;
+        }
+    }
+
+    &-r {
+        &--hide {
+            border-right-width: 0;
+        }
+    }
+
+    &-t {
+        &--hide {
+            border-top-width: 0;
+        }
+    }
+
+    &-b {
+        &--hide {
+            border-bottom-width: 0;
+        }
+    }
+}

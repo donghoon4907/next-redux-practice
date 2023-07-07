@@ -1,7 +1,7 @@
 import type { FC, ChangeEvent } from 'react';
 import type { CoreProps } from '@interfaces/core';
 
-interface Props extends CoreProps {
+export interface MyRadioProps extends CoreProps {
     /**
      * 라디오 버튼 id, label과 연결하기 위한 고유값
      */
@@ -22,7 +22,7 @@ interface Props extends CoreProps {
     // onChange: (checked: boolean) => void;
 }
 
-export const MyRadio: FC<Props> = ({
+export const MyRadio: FC<MyRadioProps> = ({
     id,
     label,
     defaultChecked,

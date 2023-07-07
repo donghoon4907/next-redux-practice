@@ -3,7 +3,7 @@ import {
     GetBasicPaymentsActionTypes,
 } from '@actions/long/get-basic-payments.action';
 import { call, takeEvery } from 'redux-saga/effects';
-import { convertDateMiddleware } from '@utils/generators/convert-date';
+import { searchMiddleware } from '@utils/generators/search';
 import demosService from '@services/demosService';
 
 function* getBasicPaymentsSaga({ payload }: GetBasicPaymentsRequestAction) {
@@ -15,6 +15,6 @@ function* getBasicPaymentsSaga({ payload }: GetBasicPaymentsRequestAction) {
 export function* watchGetBasicPayments() {
     yield takeEvery(
         GetBasicPaymentsActionTypes.REQUEST,
-        convertDateMiddleware(getBasicPaymentsSaga),
+        searchMiddleware(getBasicPaymentsSaga),
     );
 }

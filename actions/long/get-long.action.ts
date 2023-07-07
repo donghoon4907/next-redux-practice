@@ -1,5 +1,5 @@
-import { CorePayload } from '@interfaces/core';
-import { Action } from 'redux';
+import type { Action } from 'redux';
+import type { CorePayload } from '@interfaces/core';
 
 export const GET_LONG_KEY = 'GET_LONG';
 
@@ -10,15 +10,10 @@ export const GetLongActionTypes = {
 } as const;
 
 export interface GetLongRequestPayload extends CorePayload {
-    searchKeyword?: string;
-    order?: string;
+    cidx: string;
 }
 
-export interface GetLongSuccessPayload {
-    fields: any;
-    data: any;
-    total: any;
-}
+export type GetLongSuccessPayload = Record<string, any>;
 
 export interface GetLongRequestAction extends Action<string> {
     payload: GetLongRequestPayload;

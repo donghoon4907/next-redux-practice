@@ -27,7 +27,7 @@ export const DrawerMenu: FC<Props> = ({ menu }) => {
     ) => {
         evt.preventDefault();
 
-        tab.fire(`tab${item.id}`, item.label, item.to);
+        tab.fire(item.id, item.label, item.to);
     };
 
     return (

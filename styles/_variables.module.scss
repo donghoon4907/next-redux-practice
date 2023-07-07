@@ -10,15 +10,19 @@ $wr-label-size: 12px;
 $wr-filter-font-size: 14px;
 $wr-filter-height: 30px;
 $wr-detail-filter-height: 36px;
+$wr-list-filter-height: 30px;
 $wr-border-radius: 0;
 $wr-header-size: 110px;
-$wr-footer-size: 60px;
+$wr-footer-size: 50px;
+$wr-tab-size: 35px;
 // z-index
-$wr-gnb-index: 2100;
-$wr-lnb-index: 1900;
+$wr-gnb-index: 1049;
+$wr-lnb-index: 1048;
 $wr-drawer-index: 3100;
-$wr-overlay-index: 3000;
+$wr-overlay-index: 1047;
 $wr-nav-index: 1000;
+$wr-oninput-index: 500;
+$wr-select-index: 1046;
 // colors
 $wr-primary-color: #003cdc;
 $wr-secondary-color: #5bc2e7;
@@ -47,4 +51,5 @@ $wr-disable-font-color: #6c757d;
     disableFontColor: $wr-disable-font-color;
     headerHeight: $wr-header-size;
     gutterSize: $wr-gutter-size;
+    selectZindex: $wr-select-index;
 }

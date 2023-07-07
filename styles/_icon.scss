@@ -1,0 +1,20 @@
+.wr-icon {
+    position: relative;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0);
+        width: 150%;
+        height: 150%;
+        border-radius: 50%;
+        background-color: transparent;
+        transition: background-color 0.3s ease;
+    }
+
+    &:hover::before {
+        background-color: rgba(0, 0, 0, 0.15); /* 호버 시 배경 색상 */
+    }
+}

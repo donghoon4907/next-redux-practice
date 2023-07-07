@@ -17,10 +17,10 @@ export const MyInput: FC<MyInputProps> = ({
     let unitTxt = null;
 
     if (button) {
-        const { children, ...ano } = button;
+        const { children, className = 'btn-primary', ...ano } = button;
 
         btn = (
-            <button className="btn btn-primary btn-sm" {...ano}>
+            <button className={`btn btn-sm ${className}`} {...ano}>
                 {children}
             </button>
         );

@@ -29,7 +29,11 @@ export interface CoreTabOption {
     label: string;
 }
 
-export interface CoreTabpanelOption extends CoreTabOption {
+export type CoreColumnOption = Record<string, string>;
+
+export interface CoreTabpanelOption {
+    id: string;
+    tabId: string;
     hidden: boolean;
 }
 
@@ -49,7 +53,7 @@ export interface CoreFilterOption {
 export interface CoreSelectFilterOption {
     id: string;
     label: string;
-    width: number;
+    // width: number;
     items: CoreSelectOption[];
     colspan: number;
     placeholder: string;

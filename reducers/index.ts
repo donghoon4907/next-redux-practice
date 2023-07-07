@@ -1,13 +1,17 @@
 import { AnyAction, combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
-import { errorReducer } from '@reducers/common/error';
-import { loadingReducer } from '@reducers/common/loading';
-import { demoReducer } from '@reducers/demo';
-import { tabReducer } from '@reducers/tab';
-import { drawerReducer } from '@reducers/drawer';
-import { longReducer } from '@reducers/long';
-import { boardReducer } from '@reducers/board';
-import { uploadReducer } from '@reducers/upload';
+
+import { errorReducer } from './common/error';
+import { loadingReducer } from './common/loading';
+import { demoReducer } from './demo';
+import { tabReducer } from './tab';
+import { drawerReducer } from './drawer';
+import { longReducer } from './long';
+import { boardReducer } from './board';
+import { uploadReducer } from './upload';
+import { gnbReducer } from './gnb';
+import { modalReducer } from './modal';
+import { hrReducer } from './hr';
 
 const combinedReducer = combineReducers({
     demo: demoReducer,
@@ -18,6 +22,9 @@ const combinedReducer = combineReducers({
     error: errorReducer,
     loading: loadingReducer,
     upload: uploadReducer,
+    gnb: gnbReducer,
+    modal: modalReducer,
+    hr: hrReducer,
 });
 
 export const rootReducer = (state: any, action: AnyAction) => {
