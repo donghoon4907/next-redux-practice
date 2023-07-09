@@ -53,9 +53,10 @@ const Long: NextPage<LongState> = ({ long }) => {
     // 계약일자
     const contdate = useInput(long.contdate);
     // 보험기간
-    const boDu = useSelect(
-        INSU_DURATION.filter(({ value }) => value === long.bo_du)[0],
-    );
+    // const boDu = useSelect(
+    //     INSU_DURATION.filter(({ value }) => value === long.bo_du)[0],
+    // );
+    const boDu = useInput(long.bo_du);
     const boDateto = useInput(long.bo_dateto);
     // 납입주기
     const payCycle = useSelect(
@@ -280,7 +281,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                 type={labelType}
                                             >
                                                 <div className="wr-pages-detail__with">
-                                                    <MySelect
+                                                    {/* <MySelect
                                                         inputId="bo_du"
                                                         options={INSU_DURATION}
                                                         placeholder={'선택'}
@@ -289,6 +290,13 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...boDu}
+                                                    /> */}
+                                                    <MyInput
+                                                        type="text"
+                                                        id="bo_du"
+                                                        placeholder="보험기간"
+                                                        readOnly={!editable}
                                                         {...boDu}
                                                     />
                                                     <MyInput

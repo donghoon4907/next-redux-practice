@@ -222,7 +222,7 @@ export const PartialUserForm: FC<Props> = ({
     useEffect(() => {
         dispatch(
             getOrgasRequest({
-                idx: 1,
+                idx: '1',
             }),
         );
     }, [dispatch]);

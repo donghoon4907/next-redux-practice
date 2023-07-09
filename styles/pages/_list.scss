@@ -1,4 +1,10 @@
 .wr-pages-list {
+    --wr-tab-active-color: #e9ecef;
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
     & .form-control {
         height: $wr-list-filter-height;
     }
