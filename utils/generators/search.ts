@@ -14,54 +14,65 @@ export function searchMiddleware(saga: any): Saga {
 
             const { data }: any = yield call(saga, action);
 
-            const { rows, fields, total, search } = data;
+            const successPayload: any = {
+                rows: [],
+                fields: [],
+                total: {
+                    pay: 0,
+                    count: 0,
+                    tp: 0,
+                },
+                lastPayload: rest,
+            };
 
-            if (rows) {
-                // 날짜 변환
-                const dayJS = new DayJSModule();
+            if (data) {
+                const { rows, fields, total, search } = data;
 
-                const convertedDate = rows.map((v: any) => {
-                    const output = { ...v };
+                successPayload.fields = fields;
 
-                    for (const key of Object.keys(output)) {
-                        const value = output[key] as any;
+                successPayload.total = total;
 
-                        dayJS.initialize(value);
+                if (rows) {
+                    // 날짜 변환
+                    const dayJS = new DayJSModule();
 
-                        if (dayJS.isDate()) {
-                            let date;
-                            switch (key) {
-                                // case 'bdatefrom': {
-                                //     date = dayJS.getDateFormat(
-                                //         'YYYY MM-DD HH:mm:ss',
-                                //     );
-                                //     break;
-                                // }
-                                // case 'bdateto': {
-                                //     date = dayJS.getDateFormat(
-                                //         'YYYY MM-DD HH:mm:ss',
-                                //     );
-                                //     break;
-                                // }
-                                default: {
-                                    date = dayJS.getDefaultDateFormat();
-                                    break;
+                    successPayload.rows = rows.map((v: any) => {
+                        const output = { ...v };
+
+                        for (const key of Object.keys(output)) {
+                            const value = output[key] as any;
+
+                            dayJS.initialize(value);
+
+                            if (dayJS.isDate()) {
+                                let date;
+                                switch (key) {
+                                    // case 'bdatefrom': {
+                                    //     date = dayJS.getDateFormat(
+                                    //         'YYYY MM-DD HH:mm:ss',
+                                    //     );
+                                    //     break;
+                                    // }
+                                    // case 'bdateto': {
+                                    //     date = dayJS.getDateFormat(
+                                    //         'YYYY MM-DD HH:mm:ss',
+                                    //     );
+                                    //     break;
+                                    // }
+                                    default: {
+                                        date = dayJS.getDefaultDateFormat();
+                                        break;
+                                    }
                                 }
+                                output[key] = date;
                             }
-                            output[key] = date;
                         }
-                    }
 
-                    return output;
-                });
+                        return output;
+                    });
+                }
 
-                if (successAction) {
-                    const successPayload: any = {
-                        rows: convertedDate,
-                        fields,
-                        total,
-                        lastPayload: rest,
-                    };
+                if (search) {
                     // 상품명 변환
                     const pTitleIndex = search.findIndex(
                         (v: any) => v.title === '상품명',
@@ -71,12 +82,14 @@ export function searchMiddleware(saga: any): Saga {
                             (v: any) => ({ label: v.ptitle, value: v.pcode }),
                         );
                     }
-
-                    yield put(payload.successAction(successPayload));
                 }
-
-                payload.callback?.(rows);
             }
+
+            if (successAction) {
+                yield put(payload.successAction(successPayload));
+            }
+
+            payload.callback?.(data);
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 const axiosError = err as AxiosError;

@@ -269,27 +269,27 @@ export const INSU_DURATION: CoreSelectOption[] = [
 export const PAY_CYCLE: CoreSelectOption[] = [
     {
         label: '일시납',
-        value: '0',
+        value: '일시납',
         isFixed: false,
     },
     {
         label: '월납',
-        value: '1',
+        value: '월납',
         isFixed: false,
     },
     {
         label: '3월납',
-        value: '3',
+        value: '3월납',
         isFixed: false,
     },
     {
         label: '6월납',
-        value: '6',
+        value: '6월납',
         isFixed: false,
     },
     {
         label: '연납',
-        value: '12',
+        value: '연납',
         isFixed: false,
     },
 ];
