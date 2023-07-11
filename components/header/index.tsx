@@ -61,7 +61,7 @@ export const MyHeader: FC<Props> = () => {
                                 <GnbSubMenuItem to="#">
                                     주요연락처
                                 </GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">
+                                <GnbSubMenuItem to="/board/list">
                                     <div className="wr-badge__wrap">
                                         <span>게시판</span>
                                         <span className="badge bg-danger">

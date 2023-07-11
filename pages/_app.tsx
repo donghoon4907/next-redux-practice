@@ -16,7 +16,7 @@ import { initTab } from '@actions/tab/tab.action';
 import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
-import { initialzeAxios } from '@utils/axios';
+import { initialzeBackendAxios } from '@utils/axios/backend';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { events, asPath } = useRouter();
@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         // GNB 처리
         const [_, gnb] = asPath.split('/');
 
-        if (gnb !== 'login') {
+        if (!['login', 'board'].some((d) => d === gnb)) {
             dispatch(updateGnb(ASIDE_MENU[gnb]));
         }
 
@@ -71,7 +71,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                     res,
                 });
 
-                initialzeAxios(token);
+                initialzeBackendAxios(token);
             }
 
             let pageProps = {};

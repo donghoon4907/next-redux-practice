@@ -1,7 +1,7 @@
 import { all, fork } from 'redux-saga/effects';
 
-import { watchUploadImage } from './image';
+import { watchUpload } from './upload';
 
 export function* uploadSaga() {
-    yield all([fork(watchUploadImage)]);
+    yield all([fork(watchUpload)]);
 }

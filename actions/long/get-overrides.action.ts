@@ -1,5 +1,5 @@
-import { CorePayload } from '@interfaces/core';
-import { Action } from 'redux';
+import type { Action } from 'redux';
+import type { CorePaginateSuccessPayload, CorePayload } from '@interfaces/core';
 
 export const GET_OVERRIDES_KEY = 'GET_OVERRIDES';
 
@@ -14,10 +14,8 @@ export interface GetOverridesRequestPayload extends CorePayload {
     order?: string;
 }
 
-export interface GetOverridesSuccessPayload {
-    fields: any;
-    data: any;
-}
+export interface GetOverridesSuccessPayload
+    extends CorePaginateSuccessPayload<GetOverridesRequestPayload> {}
 
 export interface GetOverridesRequestAction extends Action<string> {
     payload: GetOverridesRequestPayload;

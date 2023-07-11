@@ -1,11 +1,10 @@
 import type { Reducer } from 'redux';
-import type { Response } from '@models/response';
-import type { Board } from '@models/board';
+import type { GetPostsSuccessPayload } from '@actions/board/get-posts.action';
 import produce from 'immer';
 import { GetPostsActionTypes } from '@actions/board/get-posts.action';
 
 export interface BoardState {
-    boards: Response;
+    boards: GetPostsSuccessPayload;
 }
 
 const initialState: BoardState = {
@@ -13,6 +12,7 @@ const initialState: BoardState = {
         fields: [],
         rows: [],
         total: null,
+        lastPayload: null,
     },
 };
 
@@ -23,11 +23,8 @@ export const boardReducer: Reducer<BoardState, any> = (
     produce(state, (draft) => {
         switch (action.type) {
             case GetPostsActionTypes.SUCCESS: {
-                draft.boards.fields = action.payload.fields;
+                draft.boards = action.payload;
 
-                draft.boards.rows = action.payload.data;
-
-                draft.boards.total = action.payload.total;
                 break;
             }
             default:

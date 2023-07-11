@@ -1,16 +1,20 @@
-import type { UploadImageRequestPayload } from '@actions/upload/image.action';
-import axios from 'axios';
+import type { UploadRequestPayload } from '@actions/upload/upload.action';
+import { getUploadAxios } from '@utils/axios/upload';
 
-export function uploadImage(payload: UploadImageRequestPayload) {
-    return axios.post('/upload', payload.formData, {
-        headers: {
-            'content-type': 'multipart/form-data',
+export function upload(payload: UploadRequestPayload) {
+    return getUploadAxios().post(
+        `/upload/${payload.category}`,
+        payload.formData,
+        {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
         },
-    });
+    );
 }
 
 const rootServices = {
-    uploadImage,
+    upload,
 };
 
 export default rootServices;

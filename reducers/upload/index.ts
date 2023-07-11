@@ -1,13 +1,13 @@
 import type { Reducer } from 'redux';
 import produce from 'immer';
-import { UploadImageActionTypes } from '@actions/upload/image.action';
+import { UploadActionTypes } from '@actions/upload/upload.action';
 
 export interface UploadState {
-    recentUploadedImage: string | null;
+    // recentUploadedImage: string | null;
 }
 
 const initialState: UploadState = {
-    recentUploadedImage: null,
+    // recentUploadedImage: null,
 };
 
 export const uploadReducer: Reducer<UploadState, any> = (
@@ -16,10 +16,10 @@ export const uploadReducer: Reducer<UploadState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
-            case UploadImageActionTypes.SUCCESS: {
-                draft.recentUploadedImage = action.payload.fileName;
-                break;
-            }
+            // case UploadActionTypes.SUCCESS: {
+            //     draft.recentUploadedImage = action.payload.fileName;
+            //     break;
+            // }
             default:
                 return state;
         }

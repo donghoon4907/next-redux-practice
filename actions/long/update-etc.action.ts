@@ -1,6 +1,5 @@
 import type { Action } from 'redux';
 import type { CorePayload } from '@interfaces/core';
-import type { Response } from '@models/response';
 
 export const UPDATE_ETC_KEY = 'UPDATE_ETC';
 

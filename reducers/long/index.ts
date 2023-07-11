@@ -1,42 +1,42 @@
 import type { Reducer } from 'redux';
 import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
 import produce from 'immer';
-import { GetBasicPaymentsActionTypes } from '@actions/long/get-basic-payments.action';
-import { GetOverridesActionTypes } from '@actions/long/get-overrides.action';
+// import { GetBasicPaymentsActionTypes } from '@actions/long/get-basic-payments.action';
+// import { GetOverridesActionTypes } from '@actions/long/get-overrides.action';
 import { GetLongsActionTypes } from '@actions/long/get-longs.action';
 import { GetLongActionTypes } from '@actions/long/get-long.action';
 import { UpdateEtcActionTypes } from '@actions/long/update-etc.action';
 
 export interface LongState {
-    basicPayments: {
-        fields: any[];
-        data: any[];
-        total: any;
-    };
-    overrides: {
-        fields: any[];
-        data: any[];
-        total: any;
-    };
+    // basicPayments: {
+    //     fields: any[];
+    //     data: any[];
+    //     total: any;
+    // };
+    // overrides: {
+    //     fields: any[];
+    //     data: any[];
+    //     total: any;
+    // };
     longs: GetLongsSuccessPayload;
     long: any;
 }
 
 const initialState: LongState = {
-    basicPayments: {
-        fields: [],
-        data: [],
-        total: 0,
-    },
-    overrides: {
-        fields: [],
-        data: [],
-        total: 0,
-    },
+    // basicPayments: {
+    //     fields: [],
+    //     data: [],
+    //     total: 0,
+    // },
+    // overrides: {
+    //     fields: [],
+    //     data: [],
+    //     total: 0,
+    // },
     longs: {
         fields: [],
         rows: [],
-        total: 0,
+        total: null,
         ptitles: [],
         lastPayload: null,
     },
@@ -49,16 +49,16 @@ export const longReducer: Reducer<LongState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
-            case GetBasicPaymentsActionTypes.SUCCESS: {
-                draft.basicPayments = action.payload;
+            // case GetBasicPaymentsActionTypes.SUCCESS: {
+            //     draft.basicPayments = action.payload;
 
-                break;
-            }
-            case GetOverridesActionTypes.SUCCESS: {
-                draft.overrides = action.payload;
+            //     break;
+            // }
+            // case GetOverridesActionTypes.SUCCESS: {
+            //     draft.overrides = action.payload;
 
-                break;
-            }
+            //     break;
+            // }
             case GetLongsActionTypes.SUCCESS: {
                 draft.longs = action.payload;
 

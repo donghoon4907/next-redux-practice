@@ -1,6 +1,9 @@
 import type { Action } from 'redux';
-import type { CorePayload, CoreSelectOption } from '@interfaces/core';
-import type { Response } from '@models/response';
+import type {
+    CorePaginateSuccessPayload,
+    CorePayload,
+    CoreSelectOption,
+} from '@interfaces/core';
 
 export const GET_LONGS_KEY = 'GET_LONGS';
 
@@ -18,9 +21,9 @@ export interface GetLongsRequestPayload extends CorePayload {
     nums: number;
 }
 
-export interface GetLongsSuccessPayload extends Response {
+export interface GetLongsSuccessPayload
+    extends CorePaginateSuccessPayload<GetLongsRequestPayload> {
     ptitles: CoreSelectOption[];
-    lastPayload: GetLongsRequestPayload | null;
 }
 
 export interface GetLongsRequestAction extends Action<string> {

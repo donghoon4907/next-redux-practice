@@ -3,11 +3,18 @@ import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 
-let instance: AxiosInstance | null = null;
+interface CreateInstanceOption {
+    token?: CookieValueTypes;
+    baseURL: string;
+}
 
-function createInstance(token?: CookieValueTypes): AxiosInstance {
+export function createAxiosInstance(
+    option: CreateInstanceOption,
+): AxiosInstance {
+    const { token, baseURL } = option;
+
     const newInstance = axios.create({
-        baseURL: process.env.BACKEND_DOMAIN,
+        baseURL,
         // timeout: 5000,
         headers: {},
     });
@@ -37,22 +44,3 @@ function createInstance(token?: CookieValueTypes): AxiosInstance {
 
     return newInstance;
 }
-
-// 싱글톤 객체를 가져오는 함수
-export const getAxios = () => {
-    // 인스턴스가 이미 존재하는 경우, 기존 인스턴스 반환
-    if (instance) {
-        return instance;
-    }
-
-    // 인스턴스가 없는 경우, 새로운 인스턴스 생성
-    instance = createInstance();
-
-    return instance;
-};
-
-export const initialzeAxios = (token: CookieValueTypes) => {
-    instance = createInstance(token);
-
-    return instance;
-};

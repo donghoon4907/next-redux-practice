@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { useRef, forwardRef } from 'react';
 import { Editor as EditorType } from '@toast-ui/react-editor';
 import { useApi } from '@hooks/use-api';
-import { uploadImageRequest } from '@actions/upload/image.action';
+import { uploadImageRequest } from '@actions/upload/upload.action';
 
 import type { TuiEditorWithForwardedProps } from './TuiEditorWrapper';
 
