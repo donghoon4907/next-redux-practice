@@ -1,5 +1,5 @@
-import { CorePayload } from '@interfaces/core';
-import { Action } from 'redux';
+import type { Action } from 'redux';
+import type { CorePaginateSuccessPayload, CorePayload } from '@interfaces/core';
 
 export const GET_POSTS_KEY = 'GET_POSTS';
 
@@ -10,14 +10,12 @@ export const GetPostsActionTypes = {
 } as const;
 
 export interface GetPostsRequestPayload extends CorePayload {
-    searchKeyword?: string;
-    order?: string;
+    page: number;
+    nums: number;
 }
 
-export interface GetPostsSuccessPayload {
-    fields: any;
-    data: any;
-}
+export interface GetPostsSuccessPayload
+    extends CorePaginateSuccessPayload<GetPostsRequestPayload> {}
 
 export interface GetPostsRequestAction extends Action<string> {
     payload: GetPostsRequestPayload;

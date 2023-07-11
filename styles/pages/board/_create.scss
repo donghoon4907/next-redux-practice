@@ -1,0 +1,25 @@
+.wr-pages-create-board {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &__header {
+        @include wr-card;
+    }
+
+    &__body {
+        flex: 1;
+        overflow: auto;
+        border: 1px solid $wr-divider-color-300;
+        padding: $wr-gutter-size;
+
+        @include wr-card;
+    }
+
+    &__attachment {
+        // display: flex;
+        // justify-content: flex-start;
+        // align-items: center;
+        @include wr-card;
+    }
+}

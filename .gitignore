@@ -38,3 +38,9 @@ next-env.d.ts
 # env
 .env
 .env.*
+
+# config
+front
+
+# upload
+data

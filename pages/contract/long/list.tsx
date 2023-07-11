@@ -97,7 +97,7 @@ const Longs: NextPage = () => {
         setContdate(null);
     };
 
-    const handleClickRow = (cidx: number, cname: string) => {
+    const handleClickRow = ({ cidx, cname }: any) => {
         tab.fire(
             `long${cidx}`,
             `장기계약상세(${cname})`,
@@ -134,10 +134,10 @@ const Longs: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-list">
+                <div className="wr-pages-long-list">
                     {/* <Breadcrumb /> */}
-                    <div className="wr-search">
-                        <div className="row wr-search__inner">
+                    <div className="wr-pages-long-list__header">
+                        <div className="row">
                             <div className="col-6">
                                 <div className="row wr-search__filter">
                                     <div className="col-6">

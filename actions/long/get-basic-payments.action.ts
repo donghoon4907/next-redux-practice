@@ -1,5 +1,5 @@
-import { CorePayload } from '@interfaces/core';
-import { Action } from 'redux';
+import type { Action } from 'redux';
+import type { CorePayload, CorePaginateSuccessPayload } from '@interfaces/core';
 
 export const GET_BASIC_PAYMENTS_KEY = 'GET_BASIC_PAYMENTS';
 
@@ -14,10 +14,8 @@ export interface GetBasicPaymentsRequestPayload extends CorePayload {
     order?: string;
 }
 
-export interface GetBasicPaymentsSuccessPayload {
-    fields: any;
-    data: any;
-}
+export interface GetBasicPaymentsSuccessPayload
+    extends CorePaginateSuccessPayload<GetBasicPaymentsRequestPayload> {}
 
 export interface GetBasicPaymentsRequestAction extends Action<string> {
     payload: GetBasicPaymentsRequestPayload;

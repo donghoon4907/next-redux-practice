@@ -59,4 +59,11 @@ export interface CoreSelectFilterOption {
     placeholder: string;
 }
 
+export interface CorePaginateSuccessPayload<T extends CorePayload> {
+    lastPayload: T | null;
+    fields: any;
+    rows: any;
+    total: any;
+}
+
 export type CoreSetState<T> = Dispatch<SetStateAction<T>>;

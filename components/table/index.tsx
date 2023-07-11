@@ -26,7 +26,7 @@ interface Props {
     rowSelection?: RowSelectionState;
     setRowSelection?: CoreSetState<RowSelectionState>;
     pageSize?: number;
-    onClickRow?: (cidx: number, cname: string) => void;
+    onClickRow?: (row: any) => void;
     showExtension?: boolean;
     addCount?: number;
     onAddCount?: () => void;
@@ -70,8 +70,8 @@ export const MyTable: FC<Props> = ({
         debugTable: false,
     });
 
-    const handleClickRow = (cidx: number, cname: string) => {
-        onClickRow?.(cidx, cname);
+    const handleClickRow = (row: any) => {
+        onClickRow?.(row);
     };
 
     const handleKeyDown = useCallback(
@@ -193,12 +193,7 @@ export const MyTable: FC<Props> = ({
                         return (
                             <tr
                                 key={row.id}
-                                onClick={() =>
-                                    handleClickRow(
-                                        row.original.cidx,
-                                        row.original.cname,
-                                    )
-                                }
+                                onClick={() => handleClickRow(row.original)}
                             >
                                 {row.getVisibleCells().map((cell) => {
                                     let className = '';

@@ -12,4 +12,10 @@
     .popover-arrow {
         display: none !important;
     }
+
+    &__body {
+        flex: 1;
+        overflow: auto;
+        border: 1px solid $wr-divider-color-300;
+    }
 }

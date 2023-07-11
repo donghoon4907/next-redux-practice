@@ -9,6 +9,7 @@ import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
 import { SearchInput } from '@components/input/Search';
 import { MdLogout } from 'react-icons/md';
+import { AccessibleText } from '@components/AccessibleText';
 
 interface Props {}
 
@@ -57,11 +58,19 @@ export const MyHeader: FC<Props> = () => {
                         <div className="wr-gnb__right">
                             <h2 className="a11y-hidden">사용자서비스</h2>
                             <ul className="wr-gnb__services">
-                                <GnbSubMenuItem to="#">통합검색</GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">
+                                <GnbSubMenuItem to="/404">
+                                    통합검색
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="/404">
                                     주요연락처
                                 </GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">
+                                <GnbSubMenuItem
+                                    tabOption={{
+                                        id: 'board-list',
+                                        label: '게시판 목록',
+                                    }}
+                                    to="/board/list"
+                                >
                                     <div className="wr-badge__wrap">
                                         <span>게시판</span>
                                         <span className="badge bg-danger">
@@ -69,13 +78,21 @@ export const MyHeader: FC<Props> = () => {
                                         </span>
                                     </div>
                                 </GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">일정관리</GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">SMS/Fax</GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">Mypage</GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">
+                                <GnbSubMenuItem to="/404">
+                                    일정관리
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="/404">
+                                    SMS/Fax
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="/404">
+                                    Mypage
+                                </GnbSubMenuItem>
+                                <GnbSubMenuItem to="/404">
+                                    <AccessibleText>폴더</AccessibleText>
                                     <AiOutlineFolder size={20} />
                                 </GnbSubMenuItem>
-                                <GnbSubMenuItem to="#">
+                                <GnbSubMenuItem to="/404">
+                                    <AccessibleText>로그아웃</AccessibleText>
                                     <MdLogout size={20} />
                                 </GnbSubMenuItem>
                             </ul>
