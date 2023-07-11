@@ -2,8 +2,9 @@ import type { EditorProps } from '@toast-ui/react-editor';
 import dynamic from 'next/dynamic';
 import { useRef, forwardRef } from 'react';
 import { Editor as EditorType } from '@toast-ui/react-editor';
+// import ToastUIEditor from '@toast-ui/editor';
 import { useApi } from '@hooks/use-api';
-import { uploadImageRequest } from '@actions/upload/upload.action';
+import { uploadRequest } from '@actions/upload/upload.action';
 
 import type { TuiEditorWithForwardedProps } from './TuiEditorWrapper';
 
@@ -42,7 +43,7 @@ export const MyEditor: React.FC<Props> = ({
     useCommandShortcut,
     ...rest
 }) => {
-    const upload = useApi(uploadImageRequest);
+    const upload = useApi(uploadRequest);
 
     const editorRef = useRef<EditorType>();
 
@@ -66,12 +67,13 @@ export const MyEditor: React.FC<Props> = ({
                 {...rest}
                 initialValue={initialValue || ''}
                 previewStyle={previewStyle || 'vertical'}
-                height={height || '600px'}
+                height={height || '100%'}
                 initialEditType={initialEditType || 'wysiwyg'}
                 useCommandShortcut={useCommandShortcut || true}
                 ref={editorRef}
                 onChange={handleChange}
                 hideModeSwitch
+                language="ko-KR"
                 toolbarItems={[
                     // ['undo', 'redo'],
                     ['heading', 'bold', 'italic', 'strike'],
@@ -88,20 +90,24 @@ export const MyEditor: React.FC<Props> = ({
                 ]}
                 hooks={{
                     addImageBlobHook: async (blob: any, callback: any) => {
-                        // const formData = new FormData();
+                        const formData = new FormData();
 
-                        // formData.append('file', blob);
+                        formData.append('file', blob);
 
-                        // upload(
-                        //     {
-                        //         formData,
-                        //     },
-                        //     (fileName: string) => {
-                        //         callback(fileName, '');
-                        //     },
-                        // );
+                        upload(
+                            {
+                                category: 'board',
+                                formData,
+                            },
+                            ({ filename }: any) => {
+                                callback(
+                                    `${process.env.STORAGE_PATH}/${filename}`,
+                                    '',
+                                );
+                            },
+                        );
 
-                        callback(blob, '');
+                        // callback(blob, '');
 
                         return false;
                     },

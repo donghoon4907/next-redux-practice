@@ -11,9 +11,14 @@ interface Props extends CoreLinkTabOption {
      * 단독 여부
      */
     isSingle: boolean;
+    /**
+     *  첫 번째 탭 여부
+     *
+     */
+    isFirst: boolean;
 }
 
-export const HeaderTab: FC<Props> = ({ to, isSingle, ...props }) => {
+export const HeaderTab: FC<Props> = ({ to, isSingle, isFirst, ...props }) => {
     const router = useRouter();
 
     const dispatch = useDispatch();
@@ -39,6 +44,7 @@ export const HeaderTab: FC<Props> = ({ to, isSingle, ...props }) => {
             to={to}
             isExpand={!isSingle}
             onClose={handleClose}
+            isFirst={isFirst}
             {...props}
         />
     );

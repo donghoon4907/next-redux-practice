@@ -10,8 +10,8 @@ export const GetPostsActionTypes = {
 } as const;
 
 export interface GetPostsRequestPayload extends CorePayload {
-    searchKeyword?: string;
-    order?: string;
+    page: number;
+    nums: number;
 }
 
 export interface GetPostsSuccessPayload

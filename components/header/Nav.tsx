@@ -11,8 +11,13 @@ export const HeaderNav: FC<Props> = () => {
 
     return (
         <ul className="wr-tab__wrap" role="tablist">
-            {tabs.map((tab) => (
-                <HeaderTab key={tab.id} isSingle={tabs.length === 1} {...tab} />
+            {tabs.map((tab, index) => (
+                <HeaderTab
+                    key={tab.id}
+                    isSingle={tabs.length === 1}
+                    isFirst={index === 0}
+                    {...tab}
+                />
             ))}
         </ul>
     );

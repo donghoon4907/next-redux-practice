@@ -18,6 +18,10 @@ interface Props extends CoreLinkTabOption {
      * 클릭 이벤트
      */
     onClose?: (tabId: string) => void;
+    /**
+     * 첫 번째 탭 여부
+     */
+    isFirst?: boolean;
 }
 
 export const LinkTab: FC<Props> = ({
@@ -27,6 +31,7 @@ export const LinkTab: FC<Props> = ({
     isExpand,
     onClick,
     onClose,
+    isFirst,
 }) => {
     const router = useRouter();
 
@@ -51,7 +56,12 @@ export const LinkTab: FC<Props> = ({
     };
 
     return (
-        <li className={`wr-tab ${isActive ? 'active' : ''}`} role="tab">
+        <li
+            className={`wr-tab ${isActive ? 'active' : ''}  ${
+                isFirst ? 'wr-border-l--hide' : ''
+            }`}
+            role="tab"
+        >
             <a
                 className={`wr-tab__link ${isExpand ? '' : 'single'}`}
                 aria-current="page"
