@@ -160,6 +160,25 @@ td {
     font-size: $wr-filter-font-size;
 }
 
+/* Custom Toast Editor */
+.toastui-editor-defaultUI {
+    border-radius: 0 !important;
+    border-color: $wr-divider-color-300 !important;
+}
+
+.toastui-editor-defaultUI-toolbar {
+    border-color: $wr-divider-color-300 !important;
+}
+
+.toastui-editor-toolbar-divider {
+    background-color: $wr-divider-color-300 !important;
+}
+
+.toastui-editor-defaultUI .placeholder {
+    background-color: $white;
+    color: $black !important;
+}
+
 /* Custom Bootstrap */
 // grid gutter 제거
 [class^='col'] {
