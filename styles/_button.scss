@@ -6,6 +6,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &--with {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 5px;
+    }
 }
 
 .wr-login-btn {

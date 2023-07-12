@@ -4,7 +4,7 @@ import { useRef, forwardRef } from 'react';
 import { Editor as EditorType } from '@toast-ui/react-editor';
 // import ToastUIEditor from '@toast-ui/editor';
 import { useApi } from '@hooks/use-api';
-import { uploadRequest } from '@actions/upload/upload.action';
+import { uploadImageRequest } from '@actions/upload/image.action';
 
 import type { TuiEditorWithForwardedProps } from './TuiEditorWrapper';
 
@@ -43,7 +43,7 @@ export const MyEditor: React.FC<Props> = ({
     useCommandShortcut,
     ...rest
 }) => {
-    const upload = useApi(uploadRequest);
+    const upload = useApi(uploadImageRequest);
 
     const editorRef = useRef<EditorType>();
 

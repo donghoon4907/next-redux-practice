@@ -5,7 +5,9 @@ export interface LoadingState {
 }
 
 export const loadingReducer = (state: LoadingState = {}, action: Action) => {
-    const matches = /(.*)_(REQUEST|SUCCESS|ERROR)/.exec(action.type);
+    const matches = /(.*)_(REQUEST|SUCCESS|PROGRESS|PREPARE|ERROR)/.exec(
+        action.type,
+    );
 
     if (!matches) {
         return state;
