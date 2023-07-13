@@ -6,3 +6,9 @@ export type UploadedFile = {
     file: any;
     // size: number;
 };
+
+export type Attach = {
+    original: string;
+    savefile: string;
+    inbody: boolean;
+};

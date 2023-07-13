@@ -1,29 +1,14 @@
-import type { FC, ChangeEvent } from 'react';
+import type { FC, ChangeEvent, InputHTMLAttributes } from 'react';
 import type { CoreProps } from '@interfaces/core';
 
-interface Props extends CoreProps {
-    /**
-     * 체크박스 id, label과 연결하기 위한 고유값
-     */
-    id: string;
+interface Props extends CoreProps, InputHTMLAttributes<HTMLInputElement> {
     /**
      * 체크박스 설명, 체크박스 기준 오른쪽에 위치
      */
     label: string;
-    // checked: boolean;
-    // onChange: (checked: boolean) => void;
 }
 
-export const MyCheckbox: FC<Props> = ({
-    id,
-    label,
-    // checked,
-    // onChange
-}) => {
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        // onChange(event.target.checked);
-    };
-
+export const MyCheckbox: FC<Props> = ({ label, id, ...rest }) => {
     return (
         <div className="wr-checkbox form-check">
             <input
@@ -32,6 +17,7 @@ export const MyCheckbox: FC<Props> = ({
                 // checked={checked}
                 // onChange={handleChange}
                 id={id}
+                {...rest}
             />
             <label className="form-check-label" htmlFor={id}>
                 {label}

@@ -1,4 +1,5 @@
 import { CorePayload } from '@interfaces/core';
+import { Attach } from '@models/upload';
 import { Action } from 'redux';
 
 export const CREATE_POST_KEY = 'CREATE_POST';
@@ -10,19 +11,20 @@ export const CreatePostActionTypes = {
 } as const;
 
 export interface CreatePostRequestPayload extends CorePayload {
+    wcode: string;
     type: string;
-    company: string;
+    orga_rank?: number;
     title: string;
-    author: any;
-    body: string;
-    in_attach: Array<any>;
-    out_attach: Array<any>;
+    body?: string;
+    attach?: Attach[];
+    viewonly?: string[];
+    commentable?: boolean;
+    pushable?: boolean;
+    tags?: string;
+    topfix?: boolean;
 }
 
-export interface CreatePostSuccessPayload {
-    fields: any;
-    data: any;
-}
+export interface CreatePostSuccessPayload {}
 
 export interface CreatePostRequestAction extends Action<string> {
     payload: CreatePostRequestPayload;

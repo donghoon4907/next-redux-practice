@@ -1,7 +1,7 @@
 import { all, fork } from 'redux-saga/effects';
 
-import { watchGetPosts } from './get-posts';
+import { watchCreatePost } from './create-post';
 
 export function* boardSaga() {
-    yield all([fork(watchGetPosts)]);
+    yield all([fork(watchCreatePost)]);
 }

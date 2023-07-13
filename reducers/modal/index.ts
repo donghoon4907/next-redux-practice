@@ -3,17 +3,20 @@ import produce from 'immer';
 import { DepartSearchModalActionTypes } from '@actions/modal/depart-search.action';
 import { UserHistoryModalActionTypes } from '@actions/modal/user-history.action';
 import { CreateEtcModalActionTypes } from '@actions/modal/create-etc.action';
+import { SetViewerModalActionTypes } from '@actions/modal/set-viewer.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
     isShowUserHistoryModal: boolean;
     isShowCreateEtcModal: boolean;
+    isShowSetViewerModal: boolean;
 }
 
 const initialState: ModalState = {
     isShowdepartSearchModal: false,
     isShowUserHistoryModal: false,
     isShowCreateEtcModal: false,
+    isShowSetViewerModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -44,6 +47,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case CreateEtcModalActionTypes.HIDE: {
                 draft.isShowCreateEtcModal = false;
+                break;
+            }
+            case SetViewerModalActionTypes.SHOW: {
+                draft.isShowSetViewerModal = true;
+                break;
+            }
+            case SetViewerModalActionTypes.HIDE: {
+                draft.isShowSetViewerModal = false;
                 break;
             }
             default:

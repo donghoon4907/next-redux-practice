@@ -391,3 +391,27 @@ export const PAY_STATUS: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+
+// 부서 목록(임시)
+export const ORGA_RANK: CoreSelectOption[] = [
+    {
+        label: '회사',
+        value: '1',
+        isFixed: false,
+    },
+    {
+        label: '본부',
+        value: '2',
+        isFixed: false,
+    },
+    {
+        label: '지점',
+        value: '3',
+        isFixed: false,
+    },
+    {
+        label: '팀',
+        value: '4',
+        isFixed: false,
+    },
+];

@@ -1,10 +1,24 @@
 import type { Reducer } from 'redux';
 import type { GetPostsSuccessPayload } from '@actions/board/get-posts.action';
+import type { Fc } from '@models/fc';
 import produce from 'immer';
 import { GetPostsActionTypes } from '@actions/board/get-posts.action';
+import { GetPostActionTypes } from '@actions/board/get-post.action';
+import { ViewerActionTypes } from '@actions/board/set-viewer.action';
 
 export interface BoardState {
+    /**
+     * 게시물 목록
+     */
     boards: GetPostsSuccessPayload;
+    /**
+     * 게시물 상세 페이지 정보
+     */
+    board: any;
+    /**
+     * 조회 대상 목록
+     */
+    viewer: Fc[];
 }
 
 const initialState: BoardState = {
@@ -32,6 +46,8 @@ const initialState: BoardState = {
             page: 1,
         },
     },
+    board: {},
+    viewer: [],
 };
 
 export const boardReducer: Reducer<BoardState, any> = (
@@ -42,6 +58,16 @@ export const boardReducer: Reducer<BoardState, any> = (
         switch (action.type) {
             case GetPostsActionTypes.SUCCESS: {
                 draft.boards = action.payload;
+
+                break;
+            }
+            case GetPostActionTypes.SUCCESS: {
+                draft.board = action.payload;
+
+                break;
+            }
+            case ViewerActionTypes.UPDATE: {
+                draft.viewer = action.payload;
 
                 break;
             }

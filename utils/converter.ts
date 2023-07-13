@@ -24,3 +24,24 @@ export function convertForSelectUpload(
 
     return { fields, data };
 }
+/**
+ * html 코드 escape 처리
+ */
+export function convertEscapeHtml(htmlString: string) {
+    return htmlString.replace(/[&<>"']/g, function (match) {
+        switch (match) {
+            case '&':
+                return '&amp;';
+            case '<':
+                return '&lt;';
+            case '>':
+                return '&gt;';
+            case '"':
+                return '&quot;';
+            case "'":
+                return '&#39;';
+            default:
+                return match;
+        }
+    });
+}
