@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideDepartSearchModal } from '@actions/modal/depart-search.action';
-import { updateDepart } from '@actions/hr/depart.action';
+import { updateDepart } from '@actions/hr/set-depart.action';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 

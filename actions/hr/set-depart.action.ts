@@ -1,5 +1,5 @@
-import type { CorePayload, CoreSelectOption } from '@interfaces/core';
 import type { Action } from 'redux';
+import type { CorePayload, CoreSelectOption } from '@interfaces/core';
 
 export const DEPART_KEY = 'WR-DEPART';
 

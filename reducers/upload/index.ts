@@ -10,35 +10,7 @@ export interface UploadState {
 }
 
 const initialState: UploadState = {
-    uploadedFiles: [
-        {
-            index: 1,
-            filename: '/teerserwer.png',
-            progress: 100,
-            file: {
-                name: 'Tiger.PNG',
-                size: 54030,
-            },
-        },
-        {
-            index: 2,
-            filename: '/teerserwer.png',
-            progress: 80,
-            file: {
-                name: 'Tiger.PNG',
-                size: 54030,
-            },
-        },
-        {
-            index: 3,
-            filename: '/teerserwer.png',
-            progress: 0,
-            file: {
-                name: 'Tiger.PNG',
-                size: 54030,
-            },
-        },
-    ],
+    uploadedFiles: [],
     // progress: 0,
     // recentUploadedImage: null,
 };

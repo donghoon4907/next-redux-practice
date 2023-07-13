@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import type { ChangeEvent } from 'react';
 import Head from 'next/head';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import {
     getPostsRequest,
     getPostsSuccess,
@@ -27,63 +27,111 @@ import { MyInput } from '@components/input';
 import { uploadRequest } from '@actions/upload/upload.action';
 import { UploadState } from '@reducers/upload';
 import { MyCheckbox } from '@components/checkbox';
+import { BOARD_SETTING_TABS } from '@constants/tab';
+import { MyTab } from '@components/tab';
+import { SetBodysTabpanel } from '@partials/board/tabpanels/SetBody';
+import { CoreSelectOption, CoreTabOption } from '@interfaces/core';
+import { SetFileTabpanel } from '@partials/board/tabpanels/SetFile';
+import variables from '@styles/_variables.module.scss';
+import { SetViewTabpanel } from '@partials/board/tabpanels/SetView';
+import { SetViewerModal } from '@components/modal/SetViewer';
+import { wrapper } from '@store/redux';
+import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { END } from 'redux-saga';
+import { getFcsRequest } from '@actions/hr/get-fcs';
+import { ORGA_RANK } from '@constants/selectOption';
+import { useApi } from '@hooks/use-api';
+import {
+    CreatePostRequestPayload,
+    createPostRequest,
+} from '@actions/board/create-post.action';
+import { useInput } from '@hooks/use-input';
+import { convertEscapeHtml } from '@utils/converter';
 
 const CreateBoard: NextPage = () => {
-    const dispatch = useDispatch();
-
-    const { boards } = useSelector<AppState, BoardState>(
-        (props) => props.board,
-    );
+    const create = useApi(createPostRequest);
 
     const { uploadedFiles } = useSelector<AppState, UploadState>(
         (props) => props.upload,
     );
 
-    const columns = useColumn(boards.fields);
+    const { viewer } = useSelector<AppState, BoardState>(
+        (props) => props.board,
+    );
 
-    const tab = useTab();
-
-    const fileRef = useRef<HTMLInputElement>(null);
-
+    const tabBodyRef = useRef<HTMLDivElement>(null);
+    // 선택된 탭
+    const [tab, setTab] = useState<CoreTabOption>(BOARD_SETTING_TABS[0]);
+    // 에디터 내용
     const [content, setContent] = useState<string>('');
+    // 업로드 파일 목록
+    const [files, setFiles] = useState<File[]>([]);
+    // 에디터 높이
+    const [editorHeight, setEditorHeight] = useState(-1);
+    // 제목
+    const title = useInput('');
+    // 부서
+    const [orga, setOrga] = useState<CoreSelectOption | null>(ORGA_RANK[0]);
+    // 태그
+    const tag = useInput('');
 
-    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
-
-    const handleFileChange = (evt: ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(evt.target.files || []);
-
-        setSelectedFiles(files);
-
-        const formData = new FormData();
-
-        files.forEach((file) => {
-            formData.append('file', file);
-        });
-
-        dispatch(
-            uploadRequest({
-                category: 'board',
-                formData,
-                lastIndex: uploadedFiles.length,
-            }),
-        );
+    const handleClickTab = (tab: CoreTabOption) => {
+        setTab(tab);
     };
 
-    const handleClickFile = () => {
-        if (fileRef.current) {
-            fileRef.current.click();
+    const handleChangeOrga = (org: CoreSelectOption | null) => {
+        setOrga(org);
+    };
+
+    const handleSubmit = () => {
+        if (title.value === '') {
+            return alert('제목을 입력하세요.');
+        }
+
+        const tf = confirm('입력하신 정보로 게시물을 등록하시겠습니까?');
+
+        if (tf) {
+            const payload: CreatePostRequestPayload = {
+                wcode: '0',
+                type: '공지',
+                orga_rank: 1,
+                title: title.value,
+                body: convertEscapeHtml(content),
+                commentable: false,
+                pushable: false,
+                topfix: false,
+            };
+
+            if (uploadedFiles.length > 0) {
+                payload['attach'] = uploadedFiles.map((v) => ({
+                    original: v.file.name as string,
+                    savefile: v.filename as string,
+                    inbody: false,
+                }));
+            }
+
+            if (viewer.length > 0) {
+                payload['viewonly'] = viewer.map((v) => v.userid);
+            }
+
+            if (tag.value !== '') {
+                payload['tags'] = tag.value;
+            }
+
+            create(payload);
         }
     };
 
-    const handleClickRow = (row: any) => {
-        tab.fire(
-            `board${row.idx}`,
-            `게시글(${row.title})`,
-            `/board/${row.idx}`,
-        );
-    };
+    useEffect(() => {
+        // 에디터의 크기 설정
+        if (tabBodyRef.current) {
+            const tabBodyeight = tabBodyRef.current.offsetHeight;
 
-    const handleSubmit = () => {};
+            const gutterSize = +variables.gutterSize.split('px')[0] * 2;
+
+            setEditorHeight(tabBodyeight - gutterSize);
+        }
+    }, []);
 
     return (
         <>
@@ -98,7 +146,7 @@ const CreateBoard: NextPage = () => {
                 <div className="wr-pages-create-board">
                     <div className="wr-pages-create-board__header">
                         <div className="row">
-                            <div className="col-9">
+                            <div className="col-6">
                                 <WithLabel
                                     id="title"
                                     label="제목"
@@ -108,8 +156,26 @@ const CreateBoard: NextPage = () => {
                                         type="text"
                                         id="rtitle"
                                         placeholder="입력"
+                                        {...title}
                                     />
                                 </WithLabel>
+                            </div>
+                            <div className="col-3">
+                                <div className="wr-ml">
+                                    <WithLabel
+                                        id="orga"
+                                        label="부서"
+                                        type="active"
+                                    >
+                                        <MySelect
+                                            inputId="orga"
+                                            options={ORGA_RANK}
+                                            value={orga}
+                                            onChange={handleChangeOrga}
+                                            placeholder="선택"
+                                        />
+                                    </WithLabel>
+                                </div>
                             </div>
                             <div className="col-3">
                                 <div className="wr-ml">
@@ -122,6 +188,7 @@ const CreateBoard: NextPage = () => {
                                             type="text"
                                             id="tag"
                                             placeholder="쉼표(,)를 이용하여 복수 입력"
+                                            {...tag}
                                         />
                                     </WithLabel>
                                 </div>
@@ -129,105 +196,50 @@ const CreateBoard: NextPage = () => {
                         </div>
                     </div>
                     <div className="wr-pages-create-board__body wr-mt">
-                        <MyEditor
-                            height="415px"
-                            previewStyle="tab"
-                            initialEditType="wysiwyg"
-                            initialValue={content}
-                            onChange={(content) => setContent(content)}
-                        />
-                        <div className="wr-pages-create-board__attachment wr-mt">
-                            <div className="wr-pages-create-board__toolbar">
-                                <div className="wr-btn--with">
-                                    <MyButton
-                                        className="btn-primary"
-                                        onClick={handleClickFile}
-                                    >
-                                        <AiOutlineFileAdd size={20} />
-                                        <span>파일 첨부</span>
-                                        <input
-                                            type="file"
-                                            ref={fileRef}
-                                            onChange={handleFileChange}
-                                            multiple
-                                            hidden
-                                        />
-                                    </MyButton>
-                                    <div>
-                                        최대 30MB 크기의 파일을 업로드할 수
-                                        있습니다.
-                                    </div>
-                                </div>
-                                <div>
-                                    <MyButton
-                                        className="btn-danger"
-                                        onClick={handleClickFile}
-                                    >
-                                        <span>선택 삭제</span>
-                                    </MyButton>
-                                </div>
-                            </div>
-                            <ul className="wr-pages-create-board__uploaded wr-mt">
-                                {uploadedFiles.map((v, i) => (
-                                    <li
-                                        key={`uploadedList${i}`}
-                                        className="wr-pages-create-board__uploaditem"
-                                    >
-                                        <div className="wr-pages-create-board__file">
-                                            <div>
-                                                <MyCheckbox
-                                                    id={`uploadedList${i}`}
-                                                    label=""
-                                                />
-                                            </div>
-
-                                            <span>첨부 파일 {i + 1} -</span>
-                                            <span>{`${v.file.name}(${(
-                                                v.file.size / 1024
-                                            ).toFixed(1)}
-                                                KB)`}</span>
-                                        </div>
-                                        <div className="wr-pages-create-board__progress">
-                                            <div
-                                                className="progress"
-                                                role="progressbar"
-                                                aria-label="Basic example"
-                                                aria-valuenow={v.progress}
-                                                aria-valuemin={0}
-                                                aria-valuemax={100}
-                                            >
-                                                <div
-                                                    className="progress-bar"
-                                                    style={{
-                                                        width: `${v.progress}%`,
-                                                    }}
-                                                />
-                                            </div>
-                                            <span>
-                                                {v.progress === 100
-                                                    ? '완료'
-                                                    : `${v.progress}%`}
-                                            </span>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                        <div className="wr-pages-create-board__option wr-mt">
-                            <div>
-                                <MyCheckbox id="test1" label="댓글 허용" />
-                            </div>
-                            <div>
-                                <MyCheckbox id="test2" label="알림 여부" />
-                            </div>
-                            <div>
-                                <MyCheckbox id="test3" label="공개 여부" />
-                            </div>
+                        <ul className="wr-tab__wrap" role="tablist">
+                            {BOARD_SETTING_TABS.map((v) => (
+                                <MyTab
+                                    key={v.id}
+                                    onClick={handleClickTab}
+                                    isActive={v.id === tab.id}
+                                    {...v}
+                                />
+                            ))}
+                            <li className="wr-tab__line"></li>
+                        </ul>
+                        <div
+                            className="wr-pages-create-board__tabbody"
+                            ref={tabBodyRef}
+                        >
+                            <SetBodysTabpanel
+                                hidden={tab.id !== 'tabSetBody'}
+                                content={content}
+                                setContent={setContent}
+                                editorHeight={editorHeight}
+                            />
+                            <SetFileTabpanel
+                                hidden={tab.id !== 'tabSetFile'}
+                                setFiles={setFiles}
+                            />
+                            <SetViewTabpanel hidden={tab.id !== 'tabSetView'} />
                         </div>
                     </div>
                     <MyFooter>
                         <div className="wr-pages-detail__footer">
-                            <div></div>
+                            <div className="wr-pages-create-board__optionitem">
+                                <span>
+                                    <MyCheckbox
+                                        id="commentable"
+                                        label="댓글 허용"
+                                    />
+                                </span>
+                                <span>
+                                    <MyCheckbox
+                                        id="pubshable"
+                                        label="알림 여부"
+                                    />
+                                </span>
+                            </div>
                             <div>
                                 <MyButton
                                     type="button"
@@ -241,14 +253,34 @@ const CreateBoard: NextPage = () => {
                     </MyFooter>
                 </div>
             </MyLayout>
+            <SetViewerModal />
         </>
     );
 };
 
-export async function getServerSideProps() {
-    return {
-        props: {},
-    };
-}
+export const getServerSideProps = wrapper.getServerSideProps(
+    ({ dispatch, sagaTask }) =>
+        async (_) => {
+            dispatch(
+                getOrgasRequest({
+                    idx: '1',
+                }),
+            );
+
+            dispatch(
+                getFcsRequest({
+                    idx: '1',
+                }),
+            );
+
+            dispatch(END);
+
+            await sagaTask?.toPromise();
+
+            return {
+                props: {},
+            };
+        },
+);
 
 export default CreateBoard;

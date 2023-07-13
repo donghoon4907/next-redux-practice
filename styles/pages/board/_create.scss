@@ -9,9 +9,11 @@
 
     &__body {
         flex: 1;
-        overflow: auto;
+        overflow: hidden;
         border: 1px solid $wr-divider-color-300;
         padding: $wr-gutter-size;
+        display: flex;
+        flex-direction: column;
 
         @include wr-card;
     }
@@ -62,12 +64,21 @@
     }
 
     &__option {
+        @include wr-card;
+    }
+
+    &__optionitem {
         display: flex;
         justify-content: flex-start;
         align-items: center;
         gap: $wr-gutter-size;
+    }
 
-        @include wr-card;
+    &__tabbody {
+        flex: 1;
+        background-color: $wr-bg-color;
+        border: 1px solid $wr-divider-color-300;
+        border-top-width: 0;
     }
 
     // 페이지 내 입력창의 높이 조절

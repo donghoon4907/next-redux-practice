@@ -13,3 +13,9 @@ export const LONG_DETAIL_TABS: CoreTabOption[] = [
     { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
     { id: 'tabEtcs', label: '기타항목', panelId: 'tabpanelEtcs' },
 ];
+
+export const BOARD_SETTING_TABS: CoreTabOption[] = [
+    { id: 'tabSetBody', label: '본문설정', panelId: 'tabpanelSetBody' },
+    { id: 'tabSetFile', label: '파일첨부', panelId: 'tabpanelSetFile' },
+    { id: 'tabSetView', label: '보기설정', panelId: 'tabpanelSetView' },
+];
