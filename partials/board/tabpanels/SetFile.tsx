@@ -1,13 +1,13 @@
 import type { FC, ChangeEvent } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { CoreSetState } from '@interfaces/core';
+import type { AppState } from '@reducers/index';
+import type { UploadState } from '@reducers/upload';
 import { useRef } from 'react';
+import { useSelector } from 'react-redux';
+import { AiOutlineFileAdd } from 'react-icons/ai';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyButton } from '@components/button';
-import { AiOutlineFileAdd } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
-import { AppState } from '@reducers/index';
-import { UploadState } from '@reducers/upload';
 import { useApi } from '@hooks/use-api';
 import { uploadRequest } from '@actions/upload/upload.action';
 import { MyCheckbox } from '@components/checkbox';
