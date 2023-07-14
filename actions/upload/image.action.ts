@@ -1,6 +1,5 @@
 import type { Action } from 'redux';
 import type { CorePayload } from '@interfaces/core';
-import type { File } from '@models/upload';
 
 export const UPLOAD_IMAGE_KEY = 'UPLOAD-IMAGE';
 
@@ -15,7 +14,9 @@ export interface UploadImageRequestPayload extends CorePayload {
     formData: FormData;
 }
 
-export interface UploadImageSuccessPayload extends Pick<File, 'filename'> {}
+export interface UploadImageSuccessPayload {
+    filename: string;
+}
 
 export interface UploadImageRequestAction extends Action<string> {
     payload: UploadImageRequestPayload;

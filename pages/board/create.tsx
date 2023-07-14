@@ -1,30 +1,16 @@
 import type { NextPage } from 'next';
-import type { ChangeEvent } from 'react';
+import type { CreatePostRequestPayload } from '@actions/board/create-post.action';
 import Head from 'next/head';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useState, useRef, useEffect } from 'react';
-import {
-    getPostsRequest,
-    getPostsSuccess,
-} from '@actions/board/get-posts.action';
 import { MyLayout } from '@components/Layout';
 import { WithLabel } from '@components/WithLabel';
 import { MyButton } from '@components/button';
-import { MyEditor } from '@components/editor';
 import { MyFooter } from '@components/footer';
-import { SearchInput } from '@components/input/Search';
-import { MyPagination } from '@components/pagination';
 import { MySelect } from '@components/select';
-import { MyTable } from '@components/table';
-import { useColumn } from '@hooks/use-column';
-import { useTab } from '@hooks/use-tab';
 import { BoardState } from '@reducers/board';
 import { AppState } from '@reducers/index';
-import { IconWrapper } from '@components/IconWrapper';
-import { AiOutlineFileAdd } from 'react-icons/ai';
-import { AccessibleText } from '@components/AccessibleText';
 import { MyInput } from '@components/input';
-import { uploadRequest } from '@actions/upload/upload.action';
 import { UploadState } from '@reducers/upload';
 import { MyCheckbox } from '@components/checkbox';
 import { BOARD_SETTING_TABS } from '@constants/tab';
@@ -41,10 +27,7 @@ import { END } from 'redux-saga';
 import { getFcsRequest } from '@actions/hr/get-fcs';
 import { ORGA_RANK } from '@constants/selectOption';
 import { useApi } from '@hooks/use-api';
-import {
-    CreatePostRequestPayload,
-    createPostRequest,
-} from '@actions/board/create-post.action';
+import { createPostRequest } from '@actions/board/create-post.action';
 import { useInput } from '@hooks/use-input';
 import { convertEscapeHtml } from '@utils/converter';
 

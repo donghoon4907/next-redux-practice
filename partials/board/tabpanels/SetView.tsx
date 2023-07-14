@@ -1,15 +1,14 @@
 import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import { MyTabpanel } from '@components/tab/Tabpanel';
+import type { AppState } from '@reducers/index';
+import type { BoardState } from '@reducers/board';
 import { useDispatch, useSelector } from 'react-redux';
-import { MyCheckbox } from '@components/checkbox';
+import { LuSearch } from 'react-icons/lu';
+import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import { AccessibleText } from '@components/AccessibleText';
-import { LuSearch } from 'react-icons/lu';
 import { showSetViewerModal } from '@actions/modal/set-viewer.action';
-import { AppState } from '@reducers/index';
-import { BoardState } from '@reducers/board';
 
 interface Props extends Pick<MyTabpanelProps, 'hidden'> {}
 

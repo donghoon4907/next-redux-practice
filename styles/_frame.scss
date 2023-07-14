@@ -20,4 +20,8 @@
             100vh - $wr-header-size - $wr-footer-size - $wr-tab-size - 30px
         );
     }
+
+    &__nofooter {
+        height: calc(100vh - $wr-header-size - 20px);
+    }
 }
