@@ -25,7 +25,7 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { HrState } from '@reducers/hr';
 import { useSelect } from '@hooks/use-select';
 import { getFcsRequest } from '@actions/hr/get-fcs';
-import { useInput } from '@hooks/use-input';
+import { useInput, useNumbericInput } from '@hooks/use-input';
 import coreConstants from '@constants/core';
 import {
     getLongsRequest,
@@ -38,6 +38,7 @@ import {
     PRODUCT_TYPE,
 } from '@constants/selectOption';
 import { MyInput } from '@components/input';
+import { useDateRangepicker } from '@hooks/use-datepicker';
 // import {
 //     PopoverBody,
 //     PopoverHeader,
@@ -59,27 +60,27 @@ const Longs: NextPage = () => {
     // 검색필터 - 조직
     const [orga, setOrga] = useState<CoreSelectOption | null>(null);
     // 검색필터 - 영업가족
-    const fc = useSelect(null);
+    const [fc] = useSelect(null);
     // 검색필터 - 회차
-    const beforeRound = useInput('1', { addComma: true });
-    const afterRound = useInput('1', { addComma: true });
+    const [beforeRound] = useNumbericInput('1', { addComma: true });
+    const [afterRound] = useNumbericInput('1', { addComma: true });
     // 검색필터 - 계약일자
-    const [contdate, setContdate] = useState<[Date, Date] | null>([
+    const contdate = useDateRangepicker([
         new Date('2023-06-01'),
         new Date('2023-06-30'),
     ]);
     // 검색필터 - 보험사
-    const company = useSelect(null);
+    const [company] = useSelect(null);
     // 검색필터 - 보종
-    const productType = useSelect(null);
+    const [productType] = useSelect(null);
     // 검색필터 - 상품명
-    const ptitle = useSelect(null);
+    const [ptitle] = useSelect(null);
     // 검색필터 - 납입주기
-    const cycle = useSelect(null);
+    const [cycle] = useSelect(null);
     // 검색필터 - 입금구분
-    const dist = useSelect(null);
+    const [dist] = useSelect(null);
     // 검색필터 - 검색어
-    const search = useInput('');
+    const [search] = useInput('');
 
     const handleChangeOrga = (org: CoreSelectOption | null) => {
         setOrga(org);
@@ -87,14 +88,6 @@ const Longs: NextPage = () => {
         if (org !== null) {
             dispatch(getFcsRequest({ idx: org.value }));
         }
-    };
-
-    const handleChangeContdate = (value: [Date, Date] | null) => {
-        setContdate(value);
-    };
-
-    const handleCleanContdate = () => {
-        setContdate(null);
     };
 
     const handleClickRow = ({ cidx, cname }: any) => {
@@ -108,8 +101,8 @@ const Longs: NextPage = () => {
     const handleSearch = () => {
         const condition: any = {};
 
-        if (contdate) {
-            condition['paydate'] = contdate.map((d) =>
+        if (contdate.value) {
+            condition['paydate'] = contdate.value.map((d) =>
                 dayjs(d).format(coreConstants.CORE_DATE_FORMAT),
             );
         }
@@ -294,14 +287,8 @@ const Longs: NextPage = () => {
                                                     format="yyyy-MM-dd"
                                                     placeholder="기간을 입력 혹은 선택하세요"
                                                     size="sm"
-                                                    onClean={
-                                                        handleCleanContdate
-                                                    }
                                                     placement="autoVerticalEnd"
-                                                    value={contdate}
-                                                    onChange={
-                                                        handleChangeContdate
-                                                    }
+                                                    {...contdate}
                                                     style={{
                                                         width: '100%',
                                                     }}

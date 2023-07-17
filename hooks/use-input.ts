@@ -3,22 +3,31 @@ import type { CoreSetState } from '@interfaces/core';
 import { useState, useRef } from 'react';
 import { isNumberic } from '@utils/validation';
 
-export interface UseInputOption {
+interface UseInputOption {
     noSpace?: boolean;
-    includeSetState?: boolean;
     addComma?: boolean;
+    limit?: number;
 }
 
-export type UseInputOutput = {
+interface UseInputOutput {
     value: string;
     onChange: (
         evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => void;
-    setValue?: CoreSetState<string>;
-};
+}
 
-export const useInput = (defaultValue: string, where: UseInputOption = {}) => {
-    const [value, setValue] = useState(defaultValue);
+interface UseInputFunction {
+    (defaultValue: string, where?: UseInputOption): [
+        UseInputOutput,
+        CoreSetState<string>,
+    ];
+}
+
+export const useInput: UseInputFunction = (
+    defaultValue: string,
+    where: UseInputOption = {},
+) => {
+    const [value, setValue] = useState(defaultValue || '');
 
     const onChange = (
         evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -29,27 +38,49 @@ export const useInput = (defaultValue: string, where: UseInputOption = {}) => {
             nextVal = nextVal.replace(/(^\s*)|(\s*$)/g, '');
         }
 
-        if (where.addComma) {
-            nextVal = nextVal.replace(/,/g, '');
-            if (!isNumberic(nextVal)) {
-                return;
-            }
-        }
-
         setValue(nextVal);
     };
 
-    let output: UseInputOutput = { value, onChange };
+    return [{ value, onChange }, setValue];
+};
 
-    if (where.includeSetState) {
-        output.setValue = setValue;
-    }
+export const useNumbericInput: UseInputFunction = (
+    defaultValue: string,
+    where: UseInputOption = {},
+) => {
+    const [value, setValue] = useState(defaultValue || '');
+
+    const onChange = (
+        evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        const { value } = evt.target;
+        // 공백 제거
+        const noSpaceVal = value.replace(/(^\s*)|(\s*$)/g, '');
+        // 콤마 제거
+        const nextVal = noSpaceVal.replace(/,/g, '');
+        // 빈 값 업데이트 허용
+        if (value === '') {
+            setValue('');
+            return;
+        }
+
+        if (isNumberic(nextVal)) {
+            // 글자 수 제한이 있는 경우
+            if (where.limit && nextVal.length > where.limit) {
+                return;
+            }
+
+            setValue(nextVal);
+        }
+    };
+
+    let output = { value, onChange };
 
     if (where.addComma) {
-        output.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        output.value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
-    return output;
+    return [output, setValue];
 };
 
 export const useFeedbackInput = (

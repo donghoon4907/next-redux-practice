@@ -1,25 +1,180 @@
 import type { NextPage } from 'next';
+import type { ChangeEvent, FocusEvent } from 'react';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { MyEditor } from '@components/editor';
+import { DatePicker } from 'rsuite';
+import addMonths from 'date-fns/addMonths';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
-import { MyLabel } from '@components/label';
-import { DatePicker } from 'rsuite';
 import { MyRadio } from '@components/radio';
 import { MyLayout } from '@components/Layout';
 import { MyButton } from '@components/button';
 import { MyCheckbox } from '@components/checkbox';
+import { CAR_LOCALE, CAR_USAGE } from '@constants/options/car';
+import { useSelect } from '@hooks/use-select';
+import { useInput, useNumbericInput } from '@hooks/use-input';
+import { useDatepicker } from '@hooks/use-datepicker';
+import { isNumberic } from '@utils/validation';
+
+function getGender(residentNumber: string) {
+    var genderNumber = parseInt(residentNumber);
+
+    if (genderNumber % 2 === 0) {
+        return '여성';
+    } else {
+        return '남성';
+    }
+}
+
+function getAge(residentNumber: string, genderNumber: string): number {
+    // 주민번호 앞 7자리를 추출합니다.
+    const birthDate = residentNumber.substring(0, 6);
+    // 2000년대생 여부
+    const isMbaby = Number(genderNumber) >= 3;
+
+    // 현재 날짜를 가져옵니다.
+    const currentDate = new Date();
+
+    // 생년월일을 추출합니다.
+    const birthYear = Number(birthDate.substring(0, 2));
+    const birthMonth = Number(birthDate.substring(2, 4));
+    const birthDay = Number(birthDate.substring(4, 6));
+
+    // 현재 날짜를 이용하여 만 나이를 계산합니다.
+    let age = currentDate.getFullYear() - ((isMbaby ? 2000 : 1900) + birthYear);
+
+    // 생일이 지났는지 체크합니다.
+    if (
+        birthMonth < currentDate.getMonth() + 1 ||
+        (birthMonth === currentDate.getMonth() + 1 &&
+            birthDay <= currentDate.getDate())
+    ) {
+        // 생일이 지났으면 나이를 1 증가시킵니다.
+        age++;
+    }
+
+    return age - 1;
+}
 
 const ComparisonEstimate: NextPage = () => {
     const dispatch = useDispatch();
+    // 주민번호 앞자리
+    const [startResidentNum, setStartResidentNum] = useState('');
+    // 주민번호 뒷자리
+    const [endResidentNum, setEndResidentNum] = useState('');
+    const endResidentNumRef = useRef<HTMLInputElement>(null);
+    // 주민번호 피드백
+    const [residentNumFeedback, setResidentNumFeedback] = useState('');
+    // 차량 번호 - 지역
+    const [carLocale] = useSelect(CAR_LOCALE[0]);
+    // 차량 번호 - 차종
+    const [carType, setCarType] = useNumbericInput('', { limit: 2 });
+    // 차량 번호 - 용도
+    const [carUsage, setCarUsage] = useSelect(CAR_USAGE[0]);
+    // 차량 번호 - 등록 번호
+    const [carRegiNum, setCarRegiNum] = useNumbericInput('', { limit: 4 });
+    // 차량 번호 - 직접입력
+    const [directCarNum] = useInput('');
+    // const directCarNumRef = useRef<HTMLInputElement>(null);
+    // 가입예정일 - start
+    const startJoinDate = useDatepicker(new Date());
+    // 가입예정일 - end
+    const endJoinDate = useDatepicker(addMonths(new Date(), 12));
 
-    const [content, setContent] = useState<string>('');
+    const handleChangeStartResidentNum = (
+        evt: ChangeEvent<HTMLInputElement>,
+    ) => {
+        const { value } = evt.target;
 
-    const handleChangeContent = (content: string) => {
-        setContent(content);
+        // 공백인 경우 상태만 변화
+        if (value === '') {
+            setStartResidentNum(value);
+            return;
+        }
+
+        // 최대 6자리 숫자가 입력되어야함
+        if (isNumberic(value) && value.length < 7) {
+            setStartResidentNum(value);
+        }
+
+        // 6자리 입력 시 주민번호 뒷자리 입력창으로 포커싱
+        if (value.length === 6) {
+            endResidentNumRef.current?.focus();
+        }
+    };
+
+    const handleChangeEndResidentNum = (evt: ChangeEvent<HTMLInputElement>) => {
+        const { value } = evt.target;
+        // 공백인 경우 상태만 변화
+        if (value === '') {
+            setEndResidentNum(value);
+            return;
+        }
+
+        // 숫자만 입력 허용
+        if (!isNumberic(value)) {
+            return;
+        }
+
+        // 1자리 이상 입력되지 않게 수정
+        if (value.length < 2) {
+            setEndResidentNum(value);
+        }
+    };
+
+    const handleBlurEndResidentNum = () => {
+        let message;
+        let age;
+        let gender;
+        // 주민번호 앞자리가 6자리의 숫자인지 검증
+        if (startResidentNum.length === 6 && isNumberic(startResidentNum)) {
+            // 주민번호 뒷자리가 1자리의 숫자인지 검증
+            if (endResidentNum.length === 1 && isNumberic(endResidentNum)) {
+                age = getAge(startResidentNum, endResidentNum);
+
+                gender = getGender(endResidentNum);
+
+                message = `(만 ${age}세 ${gender})`;
+            } else {
+                message = '주민번호 뒷자리를 확인하세요';
+            }
+        } else {
+            message = '주민번호 앞자리를 확인하세요';
+        }
+
+        setResidentNumFeedback(message);
+    };
+
+    const handleBlurDirectCarNum = () => {
+        const typeVal = directCarNum.value.substring(0, 2);
+        const usageVal = directCarNum.value.substring(2, 3);
+        const regiNumVal = directCarNum.value.substring(3, 7);
+        // 숫자 검증
+        if (!isNumberic(typeVal) || !isNumberic(regiNumVal)) {
+            alert('차량번호를 확인하세요.');
+
+            return;
+        }
+
+        const findUsageIndex = CAR_USAGE.findIndex((v) => v.label === usageVal);
+        // 용도 검증
+        if (findUsageIndex === -1) {
+            alert('차량번호를 확인하세요.');
+
+            return;
+        }
+        // 자리수 검증
+        if (typeVal.length !== 2 || regiNumVal.length !== 4) {
+            alert('차량번호를 확인하세요.');
+
+            return;
+        }
+
+        setCarType(typeVal);
+        setCarUsage(CAR_USAGE[findUsageIndex]);
+        setCarRegiNum(regiNumVal);
     };
 
     return (
@@ -129,7 +284,7 @@ const ComparisonEstimate: NextPage = () => {
                         </div>
                     </div>
                     <div className="row wr-pages-comparison-estimate__body wr-mt">
-                        <div className="col-6">
+                        <div className="col-5">
                             <div className="wr-pages-comparison-estimate__block customer">
                                 <div className="wr-pages-comparison-estimate__title customer">
                                     <h3>고객기본정보</h3>
@@ -141,45 +296,80 @@ const ComparisonEstimate: NextPage = () => {
                                         </div>
                                         <div className="wr-pages-comparison-estimate__description customer">
                                             <div style={{ width: 150 }}>
-                                                <MyInput placeholder="500202" />
+                                                <MyInput
+                                                    type="text"
+                                                    pattern="[0-9]{6}"
+                                                    onChange={
+                                                        handleChangeStartResidentNum
+                                                    }
+                                                    value={startResidentNum}
+                                                />
                                             </div>
                                             <div>-</div>
                                             <div style={{ width: 35 }}>
-                                                <MyInput placeholder="1" />
+                                                <MyInput
+                                                    type="text"
+                                                    pattern="[0-9]{1}"
+                                                    ref={endResidentNumRef}
+                                                    onChange={
+                                                        handleChangeEndResidentNum
+                                                    }
+                                                    onBlur={
+                                                        handleBlurEndResidentNum
+                                                    }
+                                                    value={endResidentNum}
+                                                />
                                             </div>
                                             <div>******</div>
-                                            <div>&#40; 만 66세 &#41;</div>
+                                            <div>{residentNumFeedback}</div>
                                         </div>
                                     </div>
                                     <div className="wr-pages-comparison-estimate__item customer">
                                         <div className="wr-pages-comparison-estimate__label">
-                                            <label>차량번호</label>
+                                            <label htmlFor="carnum">
+                                                차량번호
+                                            </label>
                                         </div>
                                         <div className="wr-pages-comparison-estimate__description customer">
+                                            <div style={{ width: 110 }}>
+                                                <MySelect
+                                                    inputId="carnum"
+                                                    options={CAR_LOCALE}
+                                                    placeholder="선택"
+                                                    {...carLocale}
+                                                />
+                                            </div>
+                                            <div style={{ width: 45 }}>
+                                                <MyInput
+                                                    type="text"
+                                                    placeholder="00"
+                                                    {...carType}
+                                                />
+                                            </div>
+                                            <div style={{ width: 70 }}>
+                                                <MySelect
+                                                    options={CAR_USAGE}
+                                                    placeholder="선택"
+                                                    {...carUsage}
+                                                />
+                                            </div>
                                             <div style={{ width: 80 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'전체'}
+                                                <MyInput
+                                                    type="text"
+                                                    placeholder="0000"
+                                                    {...carRegiNum}
                                                 />
-                                            </div>
-                                            <div style={{ width: 35 }}>
-                                                <MyInput placeholder="66" />
-                                            </div>
-                                            <div style={{ width: 60 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'가'}
-                                                />
-                                            </div>
-                                            <div style={{ width: 60 }}>
-                                                <MyInput placeholder="8337" />
                                             </div>
                                             <div style={{ width: 100 }}>
-                                                <MyInput placeholder="66가8337" />
+                                                <MyInput
+                                                    type="text"
+                                                    placeholder="직접입력"
+                                                    // ref={directCarNumRef}
+                                                    onBlur={
+                                                        handleBlurDirectCarNum
+                                                    }
+                                                    {...directCarNum}
+                                                />
                                             </div>
                                         </div>
                                     </div>
@@ -193,7 +383,8 @@ const ComparisonEstimate: NextPage = () => {
                                                 format="yyyy-MM-dd"
                                                 style={{ width: 150 }}
                                                 size="sm"
-                                                placeholder="2023-06-29"
+                                                placeholder="시작일 선택"
+                                                {...startJoinDate}
                                             />
                                             <div style={{ width: 40 }}>
                                                 <MyButton className="btn-warning wr-pages-comparison-estimate__button">
@@ -206,7 +397,8 @@ const ComparisonEstimate: NextPage = () => {
                                                 format="yyyy-MM-dd"
                                                 style={{ width: 150 }}
                                                 size="sm"
-                                                placeholder="2023-06-29"
+                                                placeholder="마감일 선택"
+                                                {...endJoinDate}
                                             />
                                         </div>
                                     </div>
@@ -428,7 +620,7 @@ const ComparisonEstimate: NextPage = () => {
                                                 format="yyyy-MM-dd"
                                                 style={{ width: 150 }}
                                                 size="sm"
-                                                placeholder="2023-06-29"
+                                                placeholder="2022-01-01"
                                             />
                                         </div>
                                     </div>

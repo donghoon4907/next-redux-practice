@@ -12,7 +12,7 @@ import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
 import { MyLayout } from '@components/Layout';
-import { useInput } from '@hooks/use-input';
+import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { wrapper } from '@store/redux';
@@ -43,51 +43,53 @@ const Long: NextPage<LongState> = ({ long }) => {
     // 수정 모드 여부
     const [editable, setEditable] = useState(false);
     // 보험사
-    const comp = useSelect(
+    const [comp] = useSelect(
         INSU_COMP.filter(({ value }) => value === long.company)[0],
     );
     // 계약번호
-    const cnum = useInput(long.cnum);
+    const [cnum] = useInput(long.cnum);
     // 상품명
-    const ptitle = useInput(long.ptitle);
+    const [ptitle] = useInput(long.ptitle);
     // 계약일자
-    const contdate = useInput(long.contdate);
+    const [contdate] = useInput(long.contdate);
     // 보험기간
     // const boDu = useSelect(
     //     INSU_DURATION.filter(({ value }) => value === long.bo_du)[0],
     // );
-    const boDu = useInput(long.bo_du);
-    const boDateto = useInput(long.bo_dateto);
+    const [boDu] = useInput(long.bo_du);
+    const [boDateto] = useInput(long.bo_dateto);
     // 납입주기
-    const payCycle = useSelect(
+    const [payCycle] = useSelect(
         PAY_CYCLE.filter(({ value }) => value === long.pay_cycle)[0],
     );
     // 납입기간
-    const payDu = useSelect(
+    const [payDu] = useSelect(
         INSU_DURATION.filter(({ value }) => value === long.pay_du)[0],
     );
-    const payDateto = useInput(long.pay_dateto);
+    const [payDateto] = useInput(long.pay_dateto);
     // 계약상태
-    const statusDate = useInput(long.status_date);
-    const status = useSelect(
+    const [statusDate] = useInput(long.status_date);
+    const [status] = useSelect(
         CON_STATUS.filter(({ value }) => value === long.status)[0],
     );
     // 수금상태
-    const psDate = useInput(long.ps_date);
-    const payStatus = useSelect(
+    const [psDate] = useInput(long.ps_date);
+    const [payStatus] = useSelect(
         PAY_STATUS.filter(({ value }) => value === long.pay_status)[0],
     );
     // 최종납입월
-    const lastMonth = useInput(long.last_month);
+    const [lastMonth] = useInput(long.last_month);
     // 종납회차
-    const lastWhoi = useInput(long.last_whoi);
+    const [lastWhoi] = useInput(long.last_whoi);
     // 월납환산보험료
-    const payM = useInput(long.pay_m.toString(), { addComma: true });
+    const [payM] = useNumbericInput(long.pay_m.toString(), { addComma: true });
     // 보험료
-    const payment = useInput(long.payment.toString(), { addComma: true });
+    const [payment] = useNumbericInput(long.payment.toString(), {
+        addComma: true,
+    });
     // 월납환산수정P
-    const tp = useInput(long.tp.toString(), { addComma: true });
-    const tpRate = useInput(long.tp_rate);
+    const [tp] = useNumbericInput(long.tp.toString(), { addComma: true });
+    const [tpRate] = useInput(long.tp_rate);
     // 선택한 변경사항
     const [selectedChangeHis, setSelectedChangeHis] = useState('');
     // 수금 실적 추가 요청한 레코드 수
