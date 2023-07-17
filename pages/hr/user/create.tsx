@@ -42,41 +42,41 @@ const CreateUser: NextPage = () => {
 
     const [tab, setTab] = useState<CoreTabOption>(HR_DETAIL_TABS[0]);
     // 고객명
-    const name = useInput('홍길동');
+    const [name] = useInput('홍길동');
     // 직함
-    const title = useInput('실장');
+    const [title] = useInput('실장');
     // 주민번호
-    const idnum1 = useInput('900512-2183512');
+    const [idnum1] = useInput('900512-2183512');
     // 생년월일
-    const birthday = useInput('1990-05-12');
+    const [birthday] = useInput('1990-05-12');
     // 양력 or 음력
     const [birthType, setBirthType] = useState<CoreSelectOption | null>(
         BIRTH_TYPE[0],
     );
     // 핸드폰
-    const mobile = useInput('010-1234-5678');
+    const [mobile] = useInput('010-1234-5678');
     // 통신사
     const [mobileCom, setMobileCom] = useState<CoreSelectOption | null>(
         MOBILE_COM[0],
     );
     // 내선번호
-    const telephone = useInput('070-4881-6052');
+    const [telephone] = useInput('070-4881-6052');
     // 직통번호
-    const telDirect = useInput('6052');
+    const [telDirect] = useInput('6052');
     // 이메일
-    const email = useInput('tester');
+    const [email] = useInput('tester');
     // 이메일2
     const [emailCom, setEmailCom] = useState<CoreSelectOption | null>(
         EMAIL_COM[0],
     );
     // 우편번호
-    const postcode = useInput('08195');
+    const [postcode] = useInput('08195');
     // 주소 검색 1
-    const address1 = useInput('경기도 안양시 동안구 시민대로 383');
+    const [address1] = useInput('경기도 안양시 동안구 시민대로 383');
     // 주소 검색 상세
-    const address2 = useInput('(관양동, 디지털엠파이어빌딩)');
+    const [address2] = useInput('(관양동, 디지털엠파이어빌딩)');
     // 상세 주소
-    const address3 = useInput('B동 1102호');
+    const [address3] = useInput('B동 1102호');
     // 영업가족
     const [userType, setUserType] = useState<CoreSelectOption | null>(
         USER_TYPE[0],
@@ -86,9 +86,9 @@ const CreateUser: NextPage = () => {
         EMP_STATUS[0],
     );
     // 입사일
-    const indate = useInput('2023-01-01');
+    const [indate] = useInput('2023-01-01');
     // 퇴사일
-    const outdate = useInput('2023-12-31');
+    const [outdate] = useInput('2023-12-31');
 
     const handleClickTab = (tab: CoreTabOption) => {
         setTab(tab);

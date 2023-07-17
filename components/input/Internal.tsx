@@ -5,7 +5,7 @@ interface Props
     extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {}
 
 export const InternalInput: FC<Props> = ({ className = '', ...another }) => {
-    const value = useInput('');
+    const [value] = useInput('');
 
     return (
         <input

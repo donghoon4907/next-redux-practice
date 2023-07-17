@@ -87,43 +87,43 @@ export const PartialUserForm: FC<Props> = ({
     // 탭 관리
     const [tab, setTab] = useState<CoreTabOption>(HR_DETAIL_TABS[0]);
     // 고객명
-    const name = useInput(defaultName);
+    const [name] = useInput(defaultName);
     // 직함
-    const title = useInput(defaultTitle);
+    const [title] = useInput(defaultTitle);
     // 주민번호
-    const idnum1 = useInput(defaultIdnum1);
+    const [idnum1] = useInput(defaultIdnum1);
     // 생년월일
-    const birthday = useInput(defaultBirthDay);
+    const [birthday] = useInput(defaultBirthDay);
     // 양력 or 음력
-    const birthType = useSelect(defaultBirthType);
+    const [birthType] = useSelect(defaultBirthType);
     // 핸드폰
-    const mobile = useInput(defaultMobile);
+    const [mobile] = useInput(defaultMobile);
     // 통신사
-    const mobileCom = useSelect(defaultMobileCom);
+    const [mobileCom] = useSelect(defaultMobileCom);
     // 내선번호
-    const telephone = useInput(defaultTelephone);
+    const [telephone] = useInput(defaultTelephone);
     // 직통번호
-    const telDirect = useInput(defaultTelDirect);
+    const [telDirect] = useInput(defaultTelDirect);
     // 이메일
-    const email = useInput(defaultEmail);
+    const [email] = useInput(defaultEmail);
     // 이메일2
-    const emailCom = useSelect(defaultEmailCom);
+    const [emailCom] = useSelect(defaultEmailCom);
     // 우편번호
-    const postcode = useInput(defaultPostcode);
+    const [postcode] = useInput(defaultPostcode);
     // 주소 검색 1
-    const address1 = useInput(defaultAdress1);
+    const [address1] = useInput(defaultAdress1);
     // 주소 검색 상세
-    const address2 = useInput(defaultAdress2);
+    const [address2] = useInput(defaultAdress2);
     // 상세 주소
-    const address3 = useInput(defaultAdress3);
+    const [address3] = useInput(defaultAdress3);
     // 영업가족
-    const userType = useSelect(defaultUserType);
+    const [userType] = useSelect(defaultUserType);
     // 재직현황
-    const status = useSelect(defaultStatus);
+    const [status] = useSelect(defaultStatus);
     // 입사일
-    const indate = useInput(defaultIndate);
+    const [indate] = useInput(defaultIndate);
     // 퇴사일
-    const outdate = useInput(defaultOutdate);
+    const [outdate] = useInput(defaultOutdate);
 
     const handleClickTab = (tab: CoreTabOption) => {
         setTab(tab);

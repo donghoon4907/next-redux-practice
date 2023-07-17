@@ -18,9 +18,9 @@ const Login: NextPage = () => {
 
     const tab = useTab();
 
-    const userid = useInput('');
+    const [userid] = useInput('');
 
-    const password = useInput('');
+    const [password] = useInput('');
 
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault();

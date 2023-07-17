@@ -4,8 +4,10 @@
  *
  */
 export function isNumberic(value: any): boolean {
-    return !isNaN(parseFloat(value)) && isFinite(Number(value));
+    // return !isNaN(parseFloat(value)) && isFinite(Number(value));
+    return /^\d+$/.test(value);
 }
+
 /**
  * 말줄임표 적용 여부
  *

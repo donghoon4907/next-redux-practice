@@ -43,41 +43,41 @@ const CreateUser: NextPage = () => {
 
     const [editable, setEditable] = useState(false);
 
-    const name = useInput('홍길동');
+    const [name] = useInput('홍길동');
 
-    const title = useInput('실장');
+    const [title] = useInput('실장');
     // 주민번호
-    const idnum1 = useInput('900512-2183512');
+    const [idnum1] = useInput('900512-2183512');
 
-    const birthday = useInput('1990-05-12');
+    const [birthday] = useInput('1990-05-12');
     // 양력 or 음력
     const [birthType, setBirthType] = useState<CoreSelectOption | null>(
         BIRTH_TYPE[0],
     );
 
-    const mobile = useInput('010-1234-5678');
+    const [mobile] = useInput('010-1234-5678');
 
     const [mobileCom, setMobileCom] = useState<CoreSelectOption | null>(
         MOBILE_COM[0],
     );
 
-    const telphone = useInput('070-4881-6052');
+    const [telphone] = useInput('070-4881-6052');
 
-    const telDirect = useInput('6052');
+    const [telDirect] = useInput('6052');
 
-    const email = useInput('tester');
+    const [email] = useInput('tester');
 
     const [emailCom, setEmailCom] = useState<CoreSelectOption | null>(
         EMAIL_COM[0],
     );
 
-    const postcode = useInput('08195');
+    const [postcode] = useInput('08195');
 
-    const address1 = useInput('경기도 안양시 동안구 시민대로 383');
+    const [address1] = useInput('경기도 안양시 동안구 시민대로 383');
 
-    const address2 = useInput('(관양동, 디지털엠파이어빌딩)');
+    const [address2] = useInput('(관양동, 디지털엠파이어빌딩)');
 
-    const address3 = useInput('B동 1102호');
+    const [address3] = useInput('B동 1102호');
 
     const [userType, setUserType] = useState<CoreSelectOption | null>(
         USER_TYPE[0],

@@ -18,9 +18,9 @@ export const CreateEtcModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const field = useInput('');
+    const [field] = useInput('');
 
-    const content = useInput('');
+    const [content] = useInput('');
 
     const handleClose = () => {
         dispatch(hideCreateEtcModal());

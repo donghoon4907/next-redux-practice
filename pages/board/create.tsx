@@ -52,11 +52,11 @@ const CreateBoard: NextPage = () => {
     // 에디터 높이
     const [editorHeight, setEditorHeight] = useState(-1);
     // 제목
-    const title = useInput('');
+    const [title] = useInput('');
     // 부서
     const [orga, setOrga] = useState<CoreSelectOption | null>(ORGA_RANK[0]);
     // 태그
-    const tag = useInput('');
+    const [tag] = useInput('');
 
     const handleClickTab = (tab: CoreTabOption) => {
         setTab(tab);
