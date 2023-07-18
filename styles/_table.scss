@@ -3,10 +3,10 @@
         // max-height: 630px;
         overflow: auto;
         background-color: $white;
-        margin-top: $wr-gutter-size;
+        // margin-top: $wr-gutter-size;
         // border: 1px solid $wr-divider-color-200;
         flex: 1;
-        border: 1px solid $wr-divider-color-300;
+        // border: 1px solid $wr-divider-color-300;
     }
 
     // &--border {
@@ -71,5 +71,17 @@
         justify-content: center;
         align-items: center;
         padding: 5px;
+    }
+
+    &__title {
+        background-color: #bfe4f2 !important;
+    }
+
+    &__subtitle {
+        background-color: #e3edec !important;
+    }
+
+    &__etc {
+        background-color: #ece1c3 !important;
     }
 }

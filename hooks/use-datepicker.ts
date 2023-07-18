@@ -1,12 +1,18 @@
-import type { CoreSelectOption } from '@interfaces/core';
+import type { CoreSetState } from '@interfaces/core';
 import { useState } from 'react';
 
-export type UseSelectOutput = {
-    value: string;
-    onChange: (value: CoreSelectOption | null) => void;
-};
+interface UseDatepickerOutput {
+    value: Date | null;
+    onChange: (value: Date | null) => void;
+}
+interface UseDatepickerFunction {
+    (defaultValue: Date | null): [
+        UseDatepickerOutput,
+        CoreSetState<Date | null>,
+    ];
+}
 
-export const useDatepicker = (defaultValue: Date | null) => {
+export const useDatepicker: UseDatepickerFunction = (defaultValue) => {
     const [value, setValue] = useState<Date | null>(defaultValue);
 
     const onChange = (value: Date | null) => {
@@ -17,7 +23,7 @@ export const useDatepicker = (defaultValue: Date | null) => {
         setValue(null);
     };
 
-    return { value, onChange, onClean };
+    return [{ value, onChange, onClean }, setValue];
 };
 
 export const useDateRangepicker = (defaultValue: [Date, Date] | null) => {
