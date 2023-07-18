@@ -147,7 +147,7 @@ export const MyTable: FC<Props> = ({
     // }, []);
 
     return (
-        <div className="wr-table__wrap" ref={tableWrapRef}>
+        <div className="wr-table__wrap wr-mt" ref={tableWrapRef}>
             <table
                 className="wr-table table"
                 ref={tableRef}

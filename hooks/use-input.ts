@@ -23,10 +23,7 @@ interface UseInputFunction {
     ];
 }
 
-export const useInput: UseInputFunction = (
-    defaultValue: string,
-    where: UseInputOption = {},
-) => {
+export const useInput: UseInputFunction = (defaultValue, where = {}) => {
     const [value, setValue] = useState(defaultValue || '');
 
     const onChange = (
@@ -45,8 +42,8 @@ export const useInput: UseInputFunction = (
 };
 
 export const useNumbericInput: UseInputFunction = (
-    defaultValue: string,
-    where: UseInputOption = {},
+    defaultValue,
+    where = {},
 ) => {
     const [value, setValue] = useState(defaultValue || '');
 

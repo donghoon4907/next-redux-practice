@@ -13,9 +13,7 @@ interface UseSelectFunction {
     ];
 }
 
-export const useSelect: UseSelectFunction = (
-    defaultValue: CoreSelectOption | null,
-) => {
+export const useSelect: UseSelectFunction = (defaultValue) => {
     const [value, setValue] = useState<CoreSelectOption | null>(defaultValue);
 
     const onChange = (v: CoreSelectOption | null) => {

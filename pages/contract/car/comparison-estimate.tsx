@@ -1,11 +1,10 @@
 import type { NextPage } from 'next';
-import type { ChangeEvent, FocusEvent } from 'react';
+import type { ChangeEvent } from 'react';
 import Head from 'next/head';
 import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { DatePicker } from 'rsuite';
 import addMonths from 'date-fns/addMonths';
-import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
 import { MyRadio } from '@components/radio';
@@ -17,6 +16,9 @@ import { useSelect } from '@hooks/use-select';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { isNumberic } from '@utils/validation';
+import { CoreSelectOption } from '@interfaces/core';
+import { MyFooter } from '@components/footer';
+import { MyLabel } from '@components/label';
 
 function getGender(residentNumber: string) {
     var genderNumber = parseInt(residentNumber);
@@ -68,9 +70,9 @@ const ComparisonEstimate: NextPage = () => {
     // 주민번호 피드백
     const [residentNumFeedback, setResidentNumFeedback] = useState('');
     // 차량 번호 - 지역
-    const [carLocale] = useSelect(CAR_LOCALE[0]);
+    const [carLocale, setCarLocale] = useSelect(CAR_LOCALE[0]);
     // 차량 번호 - 차종
-    const [carType, setCarType] = useNumbericInput('', { limit: 2 });
+    const [carType, setCarType] = useNumbericInput('', { limit: 3 });
     // 차량 번호 - 용도
     const [carUsage, setCarUsage] = useSelect(CAR_USAGE[0]);
     // 차량 번호 - 등록 번호
@@ -79,9 +81,11 @@ const ComparisonEstimate: NextPage = () => {
     const [directCarNum] = useInput('');
     // const directCarNumRef = useRef<HTMLInputElement>(null);
     // 가입예정일 - start
-    const startJoinDate = useDatepicker(new Date());
+    const [startJoinDate, setStartJoinDate] = useState<Date | null>(new Date());
     // 가입예정일 - end
-    const endJoinDate = useDatepicker(addMonths(new Date(), 12));
+    const [endJoinDate, setEndJoinDate] = useDatepicker(
+        addMonths(new Date(), 12),
+    );
 
     const handleChangeStartResidentNum = (
         evt: ChangeEvent<HTMLInputElement>,
@@ -148,33 +152,117 @@ const ComparisonEstimate: NextPage = () => {
     };
 
     const handleBlurDirectCarNum = () => {
-        const typeVal = directCarNum.value.substring(0, 2);
-        const usageVal = directCarNum.value.substring(2, 3);
-        const regiNumVal = directCarNum.value.substring(3, 7);
-        // 숫자 검증
-        if (!isNumberic(typeVal) || !isNumberic(regiNumVal)) {
-            alert('차량번호를 확인하세요.');
-
+        // 입력을 하지 않은 경우
+        if (directCarNum.value === '') {
             return;
         }
+        // 차량번호 정규식(지역 포함, 미포함)
+        const regex = [
+            /^([가-힣]{2})([0-9]{2,3})([가-힣]{1})([0-9]{4})$/,
+            /^([0-9]{2,3})([가-힣]{1})([0-9]{4})$/,
+        ];
 
-        const findUsageIndex = CAR_USAGE.findIndex((v) => v.label === usageVal);
-        // 용도 검증
-        if (findUsageIndex === -1) {
-            alert('차량번호를 확인하세요.');
+        let feedback = null;
+        let nextLocale: CoreSelectOption | null = null;
+        let nextType: string | null = null;
+        let nextUsage: CoreSelectOption | null = null;
+        let nextRegiNum: string | null = null;
+        // 정규식 매칭 여부
+        let isMatch = false;
+        for (let i = 0; i < regex.length; i++) {
+            const matches = regex[i].exec(directCarNum.value);
 
-            return;
+            if (matches) {
+                isMatch = true;
+
+                let inputLocale = '';
+                let inputType = '';
+                let inputUsage = '';
+                let inputRegiNum = '';
+                if (i === 0) {
+                    [, inputLocale, inputType, inputUsage, inputRegiNum] =
+                        matches;
+
+                    const findIndex = CAR_LOCALE.findIndex(
+                        (v) => v.label === inputLocale,
+                    );
+
+                    if (findIndex === -1) {
+                        feedback = '허용되지 않은 지역을 입력하였습니다.';
+
+                        break;
+                    } else {
+                        nextLocale = CAR_LOCALE[findIndex];
+                    }
+                } else if (i === 1) {
+                    [, inputType, inputUsage, inputRegiNum] = matches;
+                }
+
+                if (isNumberic(inputType)) {
+                    nextType = inputType;
+                } else {
+                    feedback = '차종을 확인하세요';
+
+                    break;
+                }
+
+                const findIndex = CAR_USAGE.findIndex(
+                    (v) => v.label === inputUsage,
+                );
+                if (findIndex === -1) {
+                    feedback = '허용되지 않은 용도를 입력하였습니다.';
+
+                    break;
+                } else {
+                    nextUsage = CAR_USAGE[findIndex];
+                }
+
+                if (isNumberic(inputRegiNum)) {
+                    nextRegiNum = inputRegiNum;
+                } else {
+                    feedback = '등록번호를 확인하세요';
+
+                    break;
+                }
+
+                break;
+            }
         }
-        // 자리수 검증
-        if (typeVal.length !== 2 || regiNumVal.length !== 4) {
-            alert('차량번호를 확인하세요.');
 
-            return;
+        if (!isMatch || feedback !== null) {
+            alert('차량번호를 확인하세요.');
+            console.log(feedback);
+        } else {
+            if (nextLocale) {
+                setCarLocale(nextLocale);
+            }
+
+            if (nextType) {
+                setCarType(nextType);
+            }
+
+            if (nextUsage) {
+                setCarUsage(nextUsage);
+            }
+
+            if (nextRegiNum) {
+                setCarRegiNum(nextRegiNum);
+            }
+        }
+    };
+
+    const handleChangeStartJoinDate = (value: Date | null) => {
+        if (value) {
+            setEndJoinDate(addMonths(value, 12));
         }
 
-        setCarType(typeVal);
-        setCarUsage(CAR_USAGE[findUsageIndex]);
-        setCarRegiNum(regiNumVal);
+        setStartJoinDate(value);
+    };
+
+    const handleClickToday = () => {
+        setStartJoinDate(new Date());
+
+        setEndJoinDate(addMonths(new Date(), 12));
     };
 
     return (
@@ -187,7 +275,7 @@ const ComparisonEstimate: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-comparison-estimate wr-frame__nofooter">
+                <div className="wr-pages-comparison-estimate wr-frame__section">
                     <div>
                         <h2>자동차 비교견적 산출</h2>
                     </div>
@@ -195,11 +283,18 @@ const ComparisonEstimate: NextPage = () => {
                         <div className="col-6">
                             <div className="row">
                                 <div className="col-3">
-                                    <WithLabel
-                                        id="point"
-                                        label="지점"
-                                        type="active"
-                                    >
+                                    <MyLabel>지점</MyLabel>
+                                    <MySelect
+                                        inputId="point"
+                                        options={[]}
+                                        value={null}
+                                        onChange={() => {}}
+                                        placeholder="선택"
+                                    />
+                                </div>
+                                <div className="col-3">
+                                    <div className="wr-ml">
+                                        <MyLabel>팀</MyLabel>
                                         <MySelect
                                             inputId="point"
                                             options={[]}
@@ -207,40 +302,18 @@ const ComparisonEstimate: NextPage = () => {
                                             onChange={() => {}}
                                             placeholder="선택"
                                         />
-                                    </WithLabel>
-                                </div>
-                                <div className="col-3">
-                                    <div className="wr-ml">
-                                        <WithLabel
-                                            id="team"
-                                            label="팀"
-                                            type="active"
-                                        >
-                                            <MySelect
-                                                inputId="team"
-                                                options={[]}
-                                                value={null}
-                                                onChange={() => {}}
-                                                placeholder="선택"
-                                            />
-                                        </WithLabel>
                                     </div>
                                 </div>
                                 <div className="col-3">
                                     <div className="wr-ml">
-                                        <WithLabel
-                                            id="member"
-                                            label="구성원"
-                                            type="active"
-                                        >
-                                            <MySelect
-                                                inputId="member"
-                                                options={[]}
-                                                value={null}
-                                                onChange={() => {}}
-                                                placeholder="선택"
-                                            />
-                                        </WithLabel>
+                                        <MyLabel>구성원</MyLabel>
+                                        <MySelect
+                                            inputId="point"
+                                            options={[]}
+                                            value={null}
+                                            onChange={() => {}}
+                                            placeholder="선택"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -249,42 +322,32 @@ const ComparisonEstimate: NextPage = () => {
                             <div className="row">
                                 <div className="col-6"></div>
                                 <div className="col-3">
-                                    <WithLabel
-                                        id="manager"
-                                        label="담당"
-                                        type="active"
-                                    >
+                                    <MyLabel>담당</MyLabel>
+                                    <MySelect
+                                        inputId="point"
+                                        options={[]}
+                                        value={null}
+                                        onChange={() => {}}
+                                        placeholder="선택"
+                                    />
+                                </div>
+                                <div className="col-3">
+                                    <div className="wr-ml">
+                                        <MyLabel>처리상태</MyLabel>
                                         <MySelect
-                                            inputId="manager"
+                                            inputId="point"
                                             options={[]}
                                             value={null}
                                             onChange={() => {}}
                                             placeholder="선택"
                                         />
-                                    </WithLabel>
-                                </div>
-                                <div className="col-3">
-                                    <div className="wr-ml">
-                                        <WithLabel
-                                            id="status"
-                                            label="처리상태"
-                                            type="active"
-                                        >
-                                            <MySelect
-                                                inputId="status"
-                                                options={[]}
-                                                value={null}
-                                                onChange={() => {}}
-                                                placeholder="선택"
-                                            />
-                                        </WithLabel>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="row wr-pages-comparison-estimate__body wr-mt">
-                        <div className="col-5">
+                        <div className="col wr-pages-comparison-estimate__left">
                             <div className="wr-pages-comparison-estimate__block customer">
                                 <div className="wr-pages-comparison-estimate__title customer">
                                     <h3>고객기본정보</h3>
@@ -339,10 +402,11 @@ const ComparisonEstimate: NextPage = () => {
                                                     {...carLocale}
                                                 />
                                             </div>
-                                            <div style={{ width: 45 }}>
+                                            <div style={{ width: 60 }}>
                                                 <MyInput
                                                     type="text"
-                                                    placeholder="00"
+                                                    placeholder="999"
+                                                    pattern="[0-9]{2,3}"
                                                     {...carType}
                                                 />
                                             </div>
@@ -353,14 +417,15 @@ const ComparisonEstimate: NextPage = () => {
                                                     {...carUsage}
                                                 />
                                             </div>
-                                            <div style={{ width: 80 }}>
+                                            <div style={{ width: 70 }}>
                                                 <MyInput
                                                     type="text"
-                                                    placeholder="0000"
+                                                    placeholder="9999"
+                                                    pattern="[0-9]{4}"
                                                     {...carRegiNum}
                                                 />
                                             </div>
-                                            <div style={{ width: 100 }}>
+                                            <div style={{ width: 150 }}>
                                                 <MyInput
                                                     type="text"
                                                     placeholder="직접입력"
@@ -384,10 +449,16 @@ const ComparisonEstimate: NextPage = () => {
                                                 style={{ width: 150 }}
                                                 size="sm"
                                                 placeholder="시작일 선택"
-                                                {...startJoinDate}
+                                                value={startJoinDate}
+                                                onChange={
+                                                    handleChangeStartJoinDate
+                                                }
                                             />
                                             <div style={{ width: 40 }}>
-                                                <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                                                <MyButton
+                                                    className="btn-warning wr-pages-comparison-estimate__button"
+                                                    onClick={handleClickToday}
+                                                >
                                                     오늘
                                                 </MyButton>
                                             </div>
@@ -755,7 +826,9 @@ const ComparisonEstimate: NextPage = () => {
                                                 <div className="row">
                                                     <div className="wr-pages-comparison-estimate__with col-6">
                                                         <div
-                                                            style={{ flex: 1 }}
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
                                                         >
                                                             <MyInput />
                                                         </div>
@@ -772,7 +845,9 @@ const ComparisonEstimate: NextPage = () => {
                                                     </div>
                                                     <div className="wr-pages-comparison-estimate__with col-6">
                                                         <div
-                                                            style={{ flex: 1 }}
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
                                                         >
                                                             <MyInput />
                                                         </div>
@@ -791,7 +866,9 @@ const ComparisonEstimate: NextPage = () => {
                                                 <div className="row wr-mt">
                                                     <div className="wr-pages-comparison-estimate__with col-6">
                                                         <div
-                                                            style={{ flex: 1 }}
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
                                                         >
                                                             <MyInput />
                                                         </div>
@@ -808,7 +885,9 @@ const ComparisonEstimate: NextPage = () => {
                                                     </div>
                                                     <div className="wr-pages-comparison-estimate__with col-6">
                                                         <div
-                                                            style={{ flex: 1 }}
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
                                                         >
                                                             <MyInput />
                                                         </div>
@@ -827,7 +906,9 @@ const ComparisonEstimate: NextPage = () => {
                                                 <div className="row wr-mt">
                                                     <div className="wr-pages-comparison-estimate__with col">
                                                         <div
-                                                            style={{ flex: 1 }}
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
                                                         >
                                                             <MyInput />
                                                         </div>
@@ -1204,7 +1285,9 @@ const ComparisonEstimate: NextPage = () => {
                                                         </div>
                                                         <div
                                                             className="wr-mr"
-                                                            style={{ flex: 1 }}
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
                                                         >
                                                             <MySelect
                                                                 options={[]}
@@ -1225,7 +1308,9 @@ const ComparisonEstimate: NextPage = () => {
                                                             전계약요율
                                                         </div>
                                                         <div
-                                                            style={{ flex: 1 }}
+                                                            style={{
+                                                                flex: 1,
+                                                            }}
                                                         >
                                                             <MySelect
                                                                 options={[]}
@@ -1386,8 +1471,553 @@ const ComparisonEstimate: NextPage = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="col wr-pages-comparison-estimate__right">
+                            <div className="wr-table__wrap wr-table--border wr-ml">
+                                <table className="wr-table table">
+                                    <thead>
+                                        <tr className="wr-table__title">
+                                            <th colSpan={2}>
+                                                <span>보험사</span>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>메리츠</strong>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>KB</strong>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>흥국</strong>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>현대</strong>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>DB</strong>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>롯데</strong>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>삼성</strong>
+                                            </th>
+                                            <th style={{ width: '100px' }}>
+                                                <strong>한화</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="wr-table__subtitle">
+                                            <td colSpan={2}>
+                                                <span>총 보험료</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr className="wr-table__subtitle">
+                                            <td colSpan={2}>
+                                                <span>(차액)</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>대인 I</span>
+                                            </td>
+                                            <td>
+                                                <span>의무가입</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>대인 II</span>
+                                            </td>
+                                            <td>
+                                                <span>무한</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>대물</span>
+                                            </td>
+                                            <td>
+                                                <span>5억</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>자상</span>
+                                            </td>
+                                            <td>
+                                                <span>2억/5천</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>무보험</span>
+                                            </td>
+                                            <td>
+                                                <span>2억</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>자차</span>
+                                            </td>
+                                            <td>
+                                                <span>20%/20/50</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>긴급출동</span>
+                                            </td>
+                                            <td>
+                                                <span>가입</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td className="wr-table__subtitle">
+                                                <span>긴급출동</span>
+                                            </td>
+                                            <td>
+                                                <span>가입</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>485,410원</span>
+                                            </td>
+                                            <td>
+                                                <span>485,410원</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                colSpan={2}
+                                                className="wr-table__etc"
+                                            >
+                                                <span>운전범위</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>1인(기명)</span>
+                                            </td>
+                                            <td>
+                                                <span>1인(기명)</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>1인(기명)</span>
+                                            </td>
+                                            <td>
+                                                <span>1인(기명)</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>1인(기명)</span>
+                                            </td>
+                                            <td>
+                                                <span>1인(기명)</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>1인(기명)</span>
+                                            </td>
+                                            <td>
+                                                <span>1인(기명)</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                colSpan={2}
+                                                className="wr-table__etc"
+                                            >
+                                                <span>연령특약</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>48세이상</span>
+                                            </td>
+                                            <td>
+                                                <span>48세이상</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>48세이상</span>
+                                            </td>
+                                            <td>
+                                                <span>48세이상</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>48세이상</span>
+                                            </td>
+                                            <td>
+                                                <span>48세이상</span>
+                                            </td>
+                                            <td className="wr-table__title">
+                                                <span>48세이상</span>
+                                            </td>
+                                            <td>
+                                                <span>48세이상</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                colSpan={2}
+                                                className="wr-table__etc"
+                                            >
+                                                <span>연령변경</span>
+                                            </td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td
+                                                colSpan={2}
+                                                className="wr-table__etc"
+                                            >
+                                                <span>비고</span>
+                                            </td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                            <td className="wr-table__title"></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot id="newDataArea" />
+                                </table>
+                            </div>
+                            <div className="wr-table__wrap wr-table--border wr-ml wr-mt">
+                                <table className="wr-table table">
+                                    <thead>
+                                        <tr className="wr-table__title">
+                                            <th colSpan={5}>
+                                                <span>기타특약 적용시</span>
+                                            </th>
+                                        </tr>
+                                        <tr className="wr-table__title">
+                                            <th style={{ width: '100px' }}>
+                                                <span>보험사</span>
+                                            </th>
+                                            <th style={{ width: '200px' }}>
+                                                <strong>특약명</strong>
+                                            </th>
+                                            <th style={{ width: '200px' }}>
+                                                <strong>조건</strong>
+                                            </th>
+                                            <th style={{ width: '200px' }}>
+                                                <strong>할인율</strong>
+                                            </th>
+                                            <th style={{ width: '200px' }}>
+                                                <strong>보험료</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr className="wr-table__subtitle">
+                                            <td rowSpan={2}>
+                                                <span>KB</span>
+                                            </td>
+                                            <td rowSpan={2}>
+                                                <span>
+                                                    대중교통이용할인특약
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>1000km이상/65~69점</span>
+                                            </td>
+                                            <td>
+                                                <span>3%</span>
+                                            </td>
+                                            <td>
+                                                <span className="text-danger">
+                                                    520,490원
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr className="wr-table__subtitle">
+                                            <td>
+                                                <span>1000km이상/65~69점</span>
+                                            </td>
+                                            <td>
+                                                <span>3%</span>
+                                            </td>
+                                            <td>
+                                                <span className="text-danger text-end">
+                                                    520,490원
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <MyFooter>
+                    <div className="wr-footer__start">
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            안내서1
+                        </MyButton>
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            안내서2
+                        </MyButton>
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            안내서3
+                        </MyButton>
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            안내서4
+                        </MyButton>
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            메일발송
+                        </MyButton>
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            팩스전송
+                        </MyButton>
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            장문전송1
+                        </MyButton>
+                        <MyButton className="btn-warning wr-pages-comparison-estimate__button">
+                            장문(FC)
+                        </MyButton>
+                        <MyButton className="btn-info wr-pages-comparison-estimate__button">
+                            계약정보저장
+                        </MyButton>
+                    </div>
+                </MyFooter>
             </MyLayout>
         </>
     );
