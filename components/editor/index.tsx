@@ -103,7 +103,7 @@ export const MyEditor: React.FC<Props> = ({
                                 category: 'board',
                                 formData,
                             },
-                            ({ filename }: any) => {
+                            (filename) => {
                                 callback(
                                     `${process.env.STORAGE_PATH}/${filename}`,
                                     '',

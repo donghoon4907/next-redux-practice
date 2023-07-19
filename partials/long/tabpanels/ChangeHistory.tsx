@@ -29,13 +29,15 @@ export const ChangeHistoryTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
                 <div className="col">
-                    <MyTable
-                        columns={columns}
-                        data={data}
-                        showExtension={editable}
-                        addCount={addCount}
-                        onAddCount={onAddCount}
-                    />
+                    <div className="wr-pages-long-detail__tablewrap">
+                        <MyTable
+                            columns={columns}
+                            data={data}
+                            showExtension={editable}
+                            addCount={addCount}
+                            onAddCount={onAddCount}
+                        />
+                    </div>
                 </div>
             </div>
             {selectedData && (

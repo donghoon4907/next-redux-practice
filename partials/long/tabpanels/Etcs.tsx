@@ -65,7 +65,7 @@ export const EtcsTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             </div>
             <hr />
             {editable && (
-                <div className="wr-pages-detail__extension">
+                <div className="wr-pages-long-detail__extension">
                     <IconWrapper onClick={handleAddEtc}>
                         <BsPlusSquare size={20} />
                     </IconWrapper>

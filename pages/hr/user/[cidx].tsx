@@ -134,12 +134,12 @@ const CreateUser: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-detail wr-form row">
+                <div className="wr-pages-hr-detail wr-form row">
                     <div className="col-4">
-                        <div className="wr-pages-detail__left wr-frame__section">
-                            <div className="wr-pages-detail__block">
+                        <div className="wr-pages-hr-detail__left wr-frame__section">
+                            <div className="wr-pages-hr-detail__block">
                                 <div className="wr-group">
-                                    <span className="wr-pages-detail__department">
+                                    <span className="wr-pages-hr-detail__department">
                                         직할 영업 &#62; 5회사임직원 &#62;
                                         전산개발실
                                     </span>
@@ -151,7 +151,7 @@ const CreateUser: NextPage = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="wr-pages-detail__block">
+                            <div className="wr-pages-hr-detail__block">
                                 <div className="row">
                                     <div className="col-8">
                                         <WithLabel
@@ -219,7 +219,7 @@ const CreateUser: NextPage = () => {
                                             label="생년월일"
                                             type={commonLabelType}
                                         >
-                                            <div className="wr-pages-detail__with">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
                                                     id="birthday"
@@ -247,7 +247,7 @@ const CreateUser: NextPage = () => {
                                             label="핸드폰"
                                             type={commonLabelType}
                                         >
-                                            <div className="wr-pages-detail__with">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
                                                     id="mobile"
@@ -275,7 +275,7 @@ const CreateUser: NextPage = () => {
                                             label="내선번호"
                                             type={commonLabelType}
                                         >
-                                            <div className="wr-pages-detail__with">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
                                                     id="telephone"
@@ -294,7 +294,7 @@ const CreateUser: NextPage = () => {
                                     </div>
                                     <div className="col-4">
                                         <div className="wr-ml">
-                                            <div className="wr-pages-detail__avatar">
+                                            <div className="wr-pages-hr-detail__avatar">
                                                 <img
                                                     src="http://via.placeholder.com/200x255"
                                                     className="img-thumbnail"
@@ -345,7 +345,7 @@ const CreateUser: NextPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-detail__block">
+                            <div className="wr-pages-hr-detail__block">
                                 <div className="row">
                                     <div className="col">
                                         <div className="row">
@@ -388,7 +388,7 @@ const CreateUser: NextPage = () => {
                                                     label="주소"
                                                     type={commonLabelType}
                                                 >
-                                                    <div className="wr-pages-detail__with">
+                                                    <div className="wr-pages-hr-detail__with">
                                                         <MyInput
                                                             type="text"
                                                             id="postcode"
@@ -503,8 +503,8 @@ const CreateUser: NextPage = () => {
                         </div>
                     </div>
                     <div className="col-8">
-                        <div className="wr-pages-detail__right">
-                            <div className="wr-pages-detail__lock"></div>
+                        <div className="wr-pages-hr-detail__right">
+                            <div className="wr-pages-hr-detail__lock"></div>
                             <ul className="wr-tab__wrap" role="tablist">
                                 {HR_DETAIL_TABS.map((v) => (
                                     <MyTab
@@ -516,7 +516,7 @@ const CreateUser: NextPage = () => {
                                 ))}
                                 <li className="wr-tab__line"></li>
                             </ul>
-                            <div className="wr-pages-detail__body wr-frame__tabbody">
+                            <div className="wr-pages-hr-detail__body wr-frame__tabbody">
                                 {/* <IncomeSettings
                                     hidden={tab.id !== 'tabIncome'}
                                     {...tab}
@@ -538,7 +538,7 @@ const CreateUser: NextPage = () => {
                     </div>
                 </div>
                 <MyFooter>
-                    <div className="wr-pages-detail__footer">
+                    <div className="wr-footer__between">
                         <div></div>
                         <div>
                             <button

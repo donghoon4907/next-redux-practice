@@ -31,14 +31,19 @@ export function createAxiosInstance(
 
     // 클라이언트에서 요청을 보내기 전에 실행되는 인터셉터 설정
     newInstance.interceptors.request.use((config: AxiosRequestConfig) => {
-        const token = getCookie(process.env.COOKIE_TOKEN_KEY || '');
+        if (typeof window !== 'undefined') {
+            const token = getCookie(process.env.COOKIE_TOKEN_KEY || '');
 
-        let authorization = 'Bearer ';
-        if (token) {
-            authorization += token;
-        } else {
-            authorization += 'Non-members';
+            let authorization = 'Bearer ';
+            if (token) {
+                authorization += token;
+            } else {
+                authorization += 'Non-members';
+            }
+
+            config.headers!['authorization'] = authorization;
         }
+
         return config;
     });
 

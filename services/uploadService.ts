@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios';
 import type { UploadRequestPayload } from '@actions/upload/upload.action';
+import type { UploadPortraitRequestPayload } from '@actions/upload/portrait.action';
 import { getUploadAxios } from '@utils/axios/upload';
 
 export function upload(
@@ -18,8 +19,25 @@ export function upload(
     );
 }
 
+export function portraitUpload(
+    payload: UploadPortraitRequestPayload,
+    config: AxiosRequestConfig,
+) {
+    return getUploadAxios().post(
+        `/portraitupload/${payload.userid}`,
+        payload.formData,
+        {
+            headers: {
+                'content-type': 'multipart/form-data',
+            },
+            ...config,
+        },
+    );
+}
+
 const rootServices = {
     upload,
+    portraitUpload,
 };
 
 export default rootServices;

@@ -2,6 +2,9 @@ import '@styles/main.scss';
 // import 'react-modern-drawer/dist/index.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import 'rsuite/dist/rsuite.css';
+import 'cropperjs/dist/cropper.css';
+// import '@uppy/core/dist/style.min.css';
+// import '@uppy/dashboard/dist/style.min.css';
 
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
@@ -17,6 +20,7 @@ import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
 import { initialzeBackendAxios } from '@utils/axios/backend';
+import { getPermissionRequest } from '@actions/hr/get-permission.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { events, asPath } = useRouter();
@@ -59,8 +63,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 }
 
 MyApp.getInitialProps = wrapper.getInitialAppProps(
-    () =>
-        async ({ Component, ctx }) => {
+    ({ dispatch }) =>
+        async ({ Component, ctx, router }) => {
             const { req, res } = ctx;
 
             const isServer = !!req && !!res;
@@ -70,8 +74,16 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                     req,
                     res,
                 });
-
+                // axios 초기화
                 initialzeBackendAxios(token);
+                // permission
+                if (router.route !== '/login') {
+                    dispatch(
+                        getPermissionRequest({
+                            division: 'system',
+                        }),
+                    );
+                }
             }
 
             let pageProps = {};

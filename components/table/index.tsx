@@ -145,9 +145,8 @@ export const MyTable: FC<Props> = ({
     //         });
     //     }
     // }, []);
-
     return (
-        <div className="wr-table__wrap wr-mt" ref={tableWrapRef}>
+        <div className="wr-table__wrap" ref={tableWrapRef}>
             <table
                 className="wr-table table"
                 ref={tableRef}
@@ -189,7 +188,16 @@ export const MyTable: FC<Props> = ({
                     ))}
                 </thead>
                 <tbody>
+                    {table.getRowModel().rows.length === 0 &&
+                        addCount === 0 && (
+                            <tr>
+                                <td colSpan={columns.length}>
+                                    데이터가 없습니다.
+                                </td>
+                            </tr>
+                        )}
                     {table.getRowModel().rows.map((row) => {
+                        // console.log(row.getRowModel().rows.length);
                         return (
                             <tr
                                 key={row.id}
@@ -222,7 +230,7 @@ export const MyTable: FC<Props> = ({
                         );
                     })}
                 </tbody>
-                <tfoot id="newDataArea">
+                <tfoot>
                     {Array.from({ length: addCount }).map((_, index) => (
                         <tr key={`additionalRow${index}`}>
                             {columns.map((c, i) => {
