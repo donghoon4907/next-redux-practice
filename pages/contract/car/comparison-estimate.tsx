@@ -1917,7 +1917,6 @@ const ComparisonEstimate: NextPage = () => {
                                             <td></td>
                                         </tr>
                                     </tbody>
-                                    <tfoot id="newDataArea" />
                                 </table>
                             </div>
                             <div className="wr-table__wrap wr-table--border wr-ml wr-mt">

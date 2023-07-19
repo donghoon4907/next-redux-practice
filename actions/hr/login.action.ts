@@ -12,6 +12,7 @@ export const LoginActionTypes = {
 export interface LoginRequestPayload extends CorePayload {
     userid: string;
     password: string;
+    ip: string;
 }
 
 export interface LoginSuccessPayload {

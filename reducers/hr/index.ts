@@ -5,6 +5,8 @@ import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
 import { GetFcsActionTypes } from '@actions/hr/get-fcs';
 import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
+import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
+import { GetIpActionTypes } from '@actions/hr/get-ip.action';
 
 export interface HrState {
     /**
@@ -23,6 +25,14 @@ export interface HrState {
      * 선택한 부서(조직)
      */
     selectedOrga: CoreSelectOption;
+    /**
+     * 로그인한 사용자 정보
+     */
+    loggedInUser: any;
+    /**
+     * 사용자 환경의 IP
+     */
+    ip: string;
 }
 
 const initialState: HrState = {
@@ -33,6 +43,8 @@ const initialState: HrState = {
         value: '',
         label: '',
     },
+    loggedInUser: null,
+    ip: '',
 };
 
 export const hrReducer: Reducer<HrState, any> = (
@@ -53,9 +65,16 @@ export const hrReducer: Reducer<HrState, any> = (
                 draft.fcs = action.payload;
                 break;
             }
-
             case DepartActionTypes.UPDATE: {
                 draft.selectedOrga = action.payload;
+                break;
+            }
+            case GetPermissionActionTypes.SUCCESS: {
+                draft.loggedInUser = action.payload;
+                break;
+            }
+            case GetIpActionTypes.SUCCESS: {
+                draft.ip = action.payload.ip;
                 break;
             }
             default:

@@ -378,12 +378,14 @@ const Longs: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <MyTable
-                        columns={columns}
-                        data={longs.rows}
-                        pageSize={longs.lastPayload?.nums}
-                        onClickRow={handleClickRow}
-                    />
+                    <div className="wr-pages-long-list__body wr-mt">
+                        <MyTable
+                            columns={columns}
+                            data={longs.rows}
+                            pageSize={longs.lastPayload?.nums}
+                            onClickRow={handleClickRow}
+                        />
+                    </div>
 
                     <MyFooter>
                         <MyPagination

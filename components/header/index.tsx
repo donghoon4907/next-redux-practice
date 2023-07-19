@@ -10,10 +10,17 @@ import { HeaderNav } from './Nav';
 import { SearchInput } from '@components/input/Search';
 import { MdLogout } from 'react-icons/md';
 import { AccessibleText } from '@components/AccessibleText';
+import { useSelector } from 'react-redux';
+import { AppState } from '@reducers/index';
+import { HrState } from '@reducers/hr';
 
 interface Props {}
 
 export const MyHeader: FC<Props> = () => {
+    const { loggedInUser } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
+
     // const { onToggle } = useDrawer();
 
     return (
@@ -22,12 +29,20 @@ export const MyHeader: FC<Props> = () => {
                 <div className="wr-meta__inner">
                     <div className="wr-meta__right">
                         <span className="wr-meta__department">
-                            직할 영업 / 5회사임직원 / 전산개발실
+                            {loggedInUser.user_info.fulls}
                         </span>
-                        <div className="wr-meta__username">김서윤</div>
+                        <div className="wr-meta__username">
+                            {loggedInUser.user_info.name}&nbsp;
+                            {loggedInUser.user_info.title}
+                        </div>
                         <div className="wr-meta__log">
-                            <span>접속시간: 2023-12-23 14:23 &nbsp;</span>
-                            <span>접속IP: 202.68.223.123</span>
+                            <span>
+                                접속시간:&nbsp;
+                                {loggedInUser.connection_info.datetime} &nbsp;
+                            </span>
+                            <span>
+                                접속IP:&nbsp;{loggedInUser.connection_info.ip}
+                            </span>
                         </div>
                         <div className="wr-meta__search">
                             <SearchInput

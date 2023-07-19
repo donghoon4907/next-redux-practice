@@ -5,14 +5,19 @@ import { FaUser, FaKey, FaPowerOff, FaHeadset } from 'react-icons/fa';
 import { MyCheckbox } from '@components/checkbox';
 import { useApi } from '@hooks/use-api';
 import { loginRequest } from '@actions/hr/login.action';
-import { useRouter } from 'next/router';
 import { useInput } from '@hooks/use-input';
 import { useTab } from '@hooks/use-tab';
+import { getIpRequest } from '@actions/hr/get-ip.action';
+import { wrapper } from '@store/redux';
+import { END } from 'redux-saga';
+import { useSelector } from 'react-redux';
+import { AppState } from '@reducers/index';
+import { HrState } from '@reducers/hr';
 
 const Login: NextPage = () => {
     const displayName = 'wr-pages-login';
 
-    const router = useRouter();
+    const { ip } = useSelector<AppState, HrState>((state) => state.hr);
 
     const login = useApi(loginRequest);
 
@@ -25,7 +30,7 @@ const Login: NextPage = () => {
     const handleSubmit = (evt: FormEvent) => {
         evt.preventDefault();
 
-        login({ userid: userid.value, password: password.value }, () => {
+        login({ userid: userid.value, password: password.value, ip }, () => {
             tab.fire(
                 `aside_menu_contract1-1`,
                 '장기계약목록',
@@ -130,5 +135,30 @@ const Login: NextPage = () => {
         </>
     );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+    ({ dispatch, sagaTask }) =>
+        async ({ req, res }) => {
+            const isServer = !!req && !!res;
+
+            if (isServer) {
+                const ipAddress =
+                    req.headers['x-forwarded-for'] ||
+                    req.connection.remoteAddress;
+
+                const isIPv6 = ipAddress?.includes(':') || false;
+
+                dispatch(getIpRequest({ isIPv6 }));
+
+                dispatch(END);
+
+                await sagaTask?.toPromise();
+            }
+
+            return {
+                props: {},
+            };
+        },
+);
 
 export default Login;

@@ -14,7 +14,10 @@ export interface GetPermissionRequestPayload extends CorePayload {
 }
 
 export interface GetPermissionSuccessPayload {
-    access_token: string;
+    user_info: any;
+    connection_info: any;
+    permission: any;
+    userid: string;
 }
 
 export interface GetPermissionRequestAction extends Action<string> {

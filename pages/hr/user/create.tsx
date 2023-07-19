@@ -2,9 +2,11 @@ import type { NextPage } from 'next';
 import type { CoreSelectOption, CoreTabOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { UploadState } from '@reducers/upload';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { END } from 'redux-saga';
 import { MySelect } from '@components/select';
 import { HR_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -16,6 +18,10 @@ import { useInput } from '@hooks/use-input';
 import { useApi } from '@hooks/use-api';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { MyFooter } from '@components/footer';
+import { MyButton } from '@components/button';
+import { SelectDepartModal } from '@components/modal/SelectDepart';
+import { ImageUploadModal } from '@components/modal/ImageUpload';
 import {
     BIRTH_TYPE,
     EMAIL_COM,
@@ -27,9 +33,8 @@ import {
     CreateUserRequestPayload,
     createUserRequest,
 } from '@actions/hr/create.action';
-import { MyFooter } from '@components/footer';
-import { MyButton } from '@components/button';
-import { SelectDepartModal } from '@components/modal/SelectDepart';
+import { showImageUploadModal } from '@actions/modal/image-upload.action';
+import { wrapper } from '@store/redux';
 
 const CreateUser: NextPage = () => {
     const dispatch = useDispatch();
@@ -38,57 +43,57 @@ const CreateUser: NextPage = () => {
         (state) => state.hr,
     );
 
+    const { lastUploadedPortraitImage } = useSelector<AppState, UploadState>(
+        (state) => state.upload,
+    );
+
     const createUser = useApi(createUserRequest);
 
     const [tab, setTab] = useState<CoreTabOption>(HR_DETAIL_TABS[0]);
     // 고객명
-    const [name] = useInput('홍길동');
+    const [name] = useInput('');
     // 직함
-    const [title] = useInput('실장');
+    const [title] = useInput('');
     // 주민번호
-    const [idnum1] = useInput('900512-2183512');
+    const [idnum1] = useInput('');
     // 생년월일
-    const [birthday] = useInput('1990-05-12');
+    const [birthday] = useInput('');
     // 양력 or 음력
     const [birthType, setBirthType] = useState<CoreSelectOption | null>(
         BIRTH_TYPE[0],
     );
     // 핸드폰
-    const [mobile] = useInput('010-1234-5678');
+    const [mobile] = useInput('');
     // 통신사
     const [mobileCom, setMobileCom] = useState<CoreSelectOption | null>(
         MOBILE_COM[0],
     );
     // 내선번호
-    const [telephone] = useInput('070-4881-6052');
+    const [telephone] = useInput('');
     // 직통번호
-    const [telDirect] = useInput('6052');
+    const [telDirect] = useInput('');
     // 이메일
-    const [email] = useInput('tester');
+    const [email] = useInput('');
     // 이메일2
     const [emailCom, setEmailCom] = useState<CoreSelectOption | null>(
         EMAIL_COM[0],
     );
     // 우편번호
-    const [postcode] = useInput('08195');
+    const [postcode] = useInput('');
     // 주소 검색 1
-    const [address1] = useInput('경기도 안양시 동안구 시민대로 383');
+    const [address1] = useInput('');
     // 주소 검색 상세
-    const [address2] = useInput('(관양동, 디지털엠파이어빌딩)');
+    const [address2] = useInput('');
     // 상세 주소
-    const [address3] = useInput('B동 1102호');
+    const [address3] = useInput('');
     // 영업가족
-    const [userType, setUserType] = useState<CoreSelectOption | null>(
-        USER_TYPE[0],
-    );
+    const [userType, setUserType] = useState<CoreSelectOption | null>(null);
     // 재직현황
-    const [status, setStatus] = useState<CoreSelectOption | null>(
-        EMP_STATUS[0],
-    );
+    const [status, setStatus] = useState<CoreSelectOption | null>(null);
     // 입사일
-    const [indate] = useInput('2023-01-01');
+    const [indate] = useInput('');
     // 퇴사일
-    const [outdate] = useInput('2023-12-31');
+    const [outdate] = useInput('');
 
     const handleClickTab = (tab: CoreTabOption) => {
         setTab(tab);
@@ -204,6 +209,10 @@ const CreateUser: NextPage = () => {
         dispatch(showDepartSearchModal());
     };
 
+    const handleClickImage = () => {
+        dispatch(showImageUploadModal());
+    };
+
     useEffect(() => {
         dispatch(
             getOrgasRequest({
@@ -222,12 +231,12 @@ const CreateUser: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-detail wr-form row">
+                <div className="wr-pages-hr-detail wr-form row">
                     <div className="col-4">
-                        <div className="wr-pages-detail__left wr-frame__section">
-                            <div className="wr-pages-detail__block">
+                        <div className="wr-pages-hr-detail__left wr-frame__section">
+                            <div className="wr-pages-hr-detail__block">
                                 <div className="wr-group">
-                                    <span className="wr-pages-detail__department">
+                                    <span className="wr-pages-hr-detail__department">
                                         {selectedOrga.label
                                             ? selectedOrga.label
                                             : '부서를 선택하세요'}
@@ -241,7 +250,7 @@ const CreateUser: NextPage = () => {
                                     </button>
                                 </div>
                             </div>
-                            <div className="wr-pages-detail__block">
+                            <div className="wr-pages-hr-detail__block">
                                 <div className="row">
                                     <div className="col-8">
                                         <WithLabel
@@ -277,7 +286,7 @@ const CreateUser: NextPage = () => {
                                             <MyInput
                                                 type="text"
                                                 id="sNum"
-                                                placeholder="주민번호"
+                                                placeholder="000000-0000000"
                                                 {...idnum1}
                                                 // button={{
                                                 //     type: 'button',
@@ -294,11 +303,11 @@ const CreateUser: NextPage = () => {
                                             label="생년월일"
                                             type="active"
                                         >
-                                            <div className="wr-pages-detail__with">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
                                                     id="birthday"
-                                                    placeholder="생년월일"
+                                                    placeholder="YYYY-MM-DD"
                                                     {...birthday}
                                                 />
                                                 <MySelect
@@ -321,11 +330,11 @@ const CreateUser: NextPage = () => {
                                             type="active"
                                             isRequired
                                         >
-                                            <div className="wr-pages-detail__with">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
                                                     id="mobile"
-                                                    placeholder="핸드폰"
+                                                    placeholder="000-0000-0000"
                                                     {...mobile}
                                                 />
                                                 <MySelect
@@ -347,11 +356,11 @@ const CreateUser: NextPage = () => {
                                             label="내선번호"
                                             type="active"
                                         >
-                                            <div className="wr-pages-detail__with">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
                                                     id="telephone"
-                                                    placeholder="내선번호"
+                                                    placeholder="000-0000-0000"
                                                     {...telephone}
                                                 />
                                                 <MyInput
@@ -366,7 +375,7 @@ const CreateUser: NextPage = () => {
                                             label="이메일"
                                             type="active"
                                         >
-                                            <div className="wr-pages-detail__with">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
                                                     id="email"
@@ -390,11 +399,16 @@ const CreateUser: NextPage = () => {
                                     </div>
                                     <div className="col-4">
                                         <div className="wr-ml">
-                                            <div className="wr-pages-detail__avatar">
+                                            <div className="wr-pages-hr-detail__avatar">
                                                 <img
-                                                    src="http://via.placeholder.com/200x255"
+                                                    src={
+                                                        lastUploadedPortraitImage
+                                                            ? `${process.env.STORAGE_PATH}/${lastUploadedPortraitImage}`
+                                                            : 'http://via.placeholder.com/200x255'
+                                                    }
                                                     className="img-thumbnail"
-                                                    alt="..."
+                                                    alt="Avatar"
+                                                    onClick={handleClickImage}
                                                 />
                                             </div>
                                             <WithLabel
@@ -439,18 +453,13 @@ const CreateUser: NextPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-detail__block">
+                            <div className="wr-pages-hr-detail__block">
                                 <div className="row wr-mb">
                                     <div className="col-6">
-                                        <WithLabel
-                                            id="postcode"
-                                            label="주소"
-                                            type="active"
-                                        >
-                                            <div className="wr-pages-detail__with">
+                                        <WithLabel label="주소" type="active">
+                                            <div className="wr-pages-hr-detail__with">
                                                 <MyInput
                                                     type="text"
-                                                    id="postcode"
                                                     placeholder="우편번호"
                                                     readOnly
                                                     {...postcode}
@@ -471,7 +480,7 @@ const CreateUser: NextPage = () => {
                                     <div className="col-6">
                                         <div className="wr-ml">
                                             <MyInput
-                                                type="email"
+                                                type="text"
                                                 placeholder=""
                                                 readOnly
                                                 {...address1}
@@ -490,7 +499,6 @@ const CreateUser: NextPage = () => {
                                                 type="text"
                                                 id="addr2"
                                                 placeholder="상세주소"
-                                                readOnly
                                                 {...address3}
                                             />
                                         </WithLabel>
@@ -516,7 +524,7 @@ const CreateUser: NextPage = () => {
                                             <MyInput
                                                 type="text"
                                                 id="indate"
-                                                placeholder="입사일"
+                                                placeholder="YYYY-MM-DD"
                                                 {...indate}
                                             />
                                         </WithLabel>
@@ -531,7 +539,7 @@ const CreateUser: NextPage = () => {
                                                 <MyInput
                                                     type="text"
                                                     id="outdate"
-                                                    placeholder="퇴사일"
+                                                    placeholder="YYYY-MM-DD"
                                                     {...outdate}
                                                 />
                                             </WithLabel>
@@ -559,7 +567,7 @@ const CreateUser: NextPage = () => {
                                             />
                                         </WithLabel> */}
                             </div>
-                            <div className="wr-pages-detail__block">
+                            <div className="wr-pages-hr-detail__block">
                                 <div className="row">
                                     <div className="col-6">
                                         <WithLabel
@@ -572,7 +580,7 @@ const CreateUser: NextPage = () => {
                                                 options={[]}
                                                 value={null}
                                                 onChange={() => {}}
-                                                placeholder={'국민은행'}
+                                                placeholder={'선택'}
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -592,7 +600,6 @@ const CreateUser: NextPage = () => {
                                                     type="text"
                                                     id="account"
                                                     placeholder="계좌번호"
-                                                    value="123456-01-32423934"
                                                     readOnly
                                                 />
                                             </WithLabel>
@@ -610,7 +617,6 @@ const CreateUser: NextPage = () => {
                                                 type="text"
                                                 id="holder"
                                                 placeholder="예금주"
-                                                value="홍길동"
                                                 readOnly
                                             />
                                         </WithLabel>
@@ -621,7 +627,7 @@ const CreateUser: NextPage = () => {
                                                 options={[]}
                                                 value={null}
                                                 onChange={() => {}}
-                                                placeholder={'과세'}
+                                                placeholder={'선택'}
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -643,7 +649,7 @@ const CreateUser: NextPage = () => {
                                                 options={[]}
                                                 value={null}
                                                 onChange={() => {}}
-                                                placeholder={'근로 + 사업'}
+                                                placeholder={'선택'}
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -664,7 +670,7 @@ const CreateUser: NextPage = () => {
                                                     options={[]}
                                                     value={null}
                                                     onChange={() => {}}
-                                                    placeholder={'S3-2'}
+                                                    placeholder={'선택'}
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
@@ -687,7 +693,7 @@ const CreateUser: NextPage = () => {
                                                 options={[]}
                                                 value={null}
                                                 onChange={() => {}}
-                                                placeholder={'기본 + 성과'}
+                                                placeholder={'선택'}
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -701,7 +707,6 @@ const CreateUser: NextPage = () => {
                                             <MyInput
                                                 type="number"
                                                 placeholder="지급율 수치"
-                                                value="85"
                                                 unit="%"
                                                 readOnly
                                             />
@@ -712,8 +717,8 @@ const CreateUser: NextPage = () => {
                         </div>
                     </div>
                     <div className="col-8">
-                        <div className="wr-pages-detail__right">
-                            <div className="wr-pages-detail__lock">
+                        <div className="wr-pages-hr-detail__right">
+                            <div className="wr-pages-hr-detail__lock">
                                 <p>사용자 등록 후 이용할 수 있습니다.</p>
                             </div>
                             <ul className="wr-tab__wrap" role="tablist">
@@ -727,12 +732,12 @@ const CreateUser: NextPage = () => {
                                 ))}
                                 <li className="wr-tab__line"></li>
                             </ul>
-                            <div className="wr-pages-detail__body wr-frame__tabbody"></div>
+                            <div className="wr-pages-hr-detail__body wr-frame__tabbody"></div>
                         </div>
                     </div>
                 </div>
                 <MyFooter>
-                    <div className="wr-pages-detail__footer">
+                    <div className="wr-footer__between">
                         <div></div>
                         <div>
                             <MyButton
@@ -747,8 +752,22 @@ const CreateUser: NextPage = () => {
                 </MyFooter>
             </MyLayout>
             <SelectDepartModal />
+            <ImageUploadModal />
         </>
     );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(
+    ({ dispatch, sagaTask }) =>
+        async (_) => {
+            dispatch(END);
+
+            await sagaTask?.toPromise();
+
+            return {
+                props: {},
+            };
+        },
+);
 
 export default CreateUser;

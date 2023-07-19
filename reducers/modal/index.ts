@@ -4,12 +4,14 @@ import { DepartSearchModalActionTypes } from '@actions/modal/depart-search.actio
 import { UserHistoryModalActionTypes } from '@actions/modal/user-history.action';
 import { CreateEtcModalActionTypes } from '@actions/modal/create-etc.action';
 import { SetViewerModalActionTypes } from '@actions/modal/set-viewer.action';
+import { ImageUploadModalActionTypes } from '@actions/modal/image-upload.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
     isShowUserHistoryModal: boolean;
     isShowCreateEtcModal: boolean;
     isShowSetViewerModal: boolean;
+    isShowImageUploadModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -17,6 +19,7 @@ const initialState: ModalState = {
     isShowUserHistoryModal: false,
     isShowCreateEtcModal: false,
     isShowSetViewerModal: false,
+    isShowImageUploadModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -55,6 +58,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case SetViewerModalActionTypes.HIDE: {
                 draft.isShowSetViewerModal = false;
+                break;
+            }
+            case ImageUploadModalActionTypes.SHOW: {
+                draft.isShowImageUploadModal = true;
+                break;
+            }
+            case ImageUploadModalActionTypes.HIDE: {
+                draft.isShowImageUploadModal = false;
                 break;
             }
             default:

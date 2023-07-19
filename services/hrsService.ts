@@ -2,15 +2,22 @@ import type { CreateUserRequestPayload } from '@actions/hr/create.action';
 import type { LoginRequestPayload } from '@actions/hr/login.action';
 import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas';
 import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
+import type { GetFcsRequestPayload } from '@actions/hr/get-fcs';
+import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
+import type { GetIpRequestPayload } from '@actions/hr/get-ip.action';
+import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
-import { GetFcsRequestPayload } from '@actions/hr/get-fcs';
 
 export function login(payload: LoginRequestPayload) {
     return getBackendAxios().post('/orga/login', payload);
 }
 
-export function getPermission(payload: LoginRequestPayload) {
-    return getBackendAxios().post('/orga/login', payload);
+export function getPermission(payload: GetPermissionRequestPayload) {
+    return getBackendAxios().get(
+        `/orga/permission${
+            payload.division ? `?division${payload.division}` : ''
+        }`,
+    );
 }
 
 export function createUser(payload: CreateUserRequestPayload) {
@@ -29,12 +36,22 @@ export function getFcs(payload: GetFcsRequestPayload) {
     return getBackendAxios().get(`/orga/simpleUsers/${payload.idx}`);
 }
 
+export function getIp({ isIPv6 }: GetIpRequestPayload) {
+    if (isIPv6) {
+        return axios.get('https://api64.ipify.org?format=json');
+    } else {
+        return axios.get('https://api.ipify.org?format=json');
+    }
+}
+
 const rootServices = {
     login,
+    getPermission,
     createUser,
     getCompanies,
     getOrgas,
     getFcs,
+    getIp,
 };
 
 export default rootServices;

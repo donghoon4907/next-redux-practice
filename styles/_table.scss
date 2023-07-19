@@ -2,10 +2,11 @@
     &__wrap {
         // max-height: 630px;
         overflow: auto;
+        height: 100%;
         background-color: $white;
         // margin-top: $wr-gutter-size;
         // border: 1px solid $wr-divider-color-200;
-        flex: 1;
+
         // border: 1px solid $wr-divider-color-300;
     }
 
@@ -71,6 +72,7 @@
         justify-content: center;
         align-items: center;
         padding: 5px;
+        border-top: 1px solid $wr-divider-color-300;
     }
 
     &__title {

@@ -53,7 +53,7 @@ export const CreateEtcModal: FC<Props> = () => {
         <Modal isOpen={isShowCreateEtcModal} toggle={handleClose}>
             <ModalHeader toggle={handleClose}>기타항목추가</ModalHeader>
             <ModalBody>
-                <div className="row wr-pages-detail">
+                <div className="row wr-pages-long-detail">
                     <div className="col">
                         <WithInput
                             type="active"

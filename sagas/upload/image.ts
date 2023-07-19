@@ -11,7 +11,7 @@ function* uploadImageSaga({ payload }: UploadRequestAction) {
     const { data } = yield call(uploadService.upload, payload, {});
 
     if (data.filename) {
-        yield put(uploadImageSuccess(data));
+        yield put(uploadImageSuccess(data.filename));
     }
 
     return data;
