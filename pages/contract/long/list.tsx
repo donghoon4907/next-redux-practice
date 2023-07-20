@@ -60,7 +60,7 @@ const Longs: NextPage = () => {
     // 검색필터 - 조직
     const [orga, setOrga] = useState<CoreSelectOption | null>(null);
     // 검색필터 - 영업가족
-    const [fc] = useSelect(null);
+    const [fc] = useSelect(fcs, null);
     // 검색필터 - 회차
     const [beforeRound] = useNumbericInput('1', { addComma: true });
     const [afterRound] = useNumbericInput('1', { addComma: true });
@@ -70,15 +70,15 @@ const Longs: NextPage = () => {
         new Date('2023-06-30'),
     ]);
     // 검색필터 - 보험사
-    const [company] = useSelect(null);
+    const [company] = useSelect(COMPANY, null);
     // 검색필터 - 보종
-    const [productType] = useSelect(null);
+    const [productType] = useSelect(PRODUCT_TYPE, null);
     // 검색필터 - 상품명
-    const [ptitle] = useSelect(null);
+    const [ptitle] = useSelect(longs.ptitles, null);
     // 검색필터 - 납입주기
-    const [cycle] = useSelect(null);
+    const [cycle] = useSelect(PAY_CYCLE, null);
     // 검색필터 - 입금구분
-    const [dist] = useSelect(null);
+    const [dist] = useSelect(DISTS, null);
     // 검색필터 - 검색어
     const [search] = useInput('');
 
@@ -157,7 +157,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="fc"
-                                                    options={fcs}
                                                     placeholder="선택"
                                                     {...fc}
                                                 />
@@ -175,7 +174,6 @@ const Longs: NextPage = () => {
                                         >
                                             <MySelect
                                                 inputId="company"
-                                                options={COMPANY}
                                                 placeholder="선택"
                                                 {...company}
                                             />
@@ -190,7 +188,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="product_type"
-                                                    options={PRODUCT_TYPE}
                                                     placeholder="선택"
                                                     {...productType}
                                                 />
@@ -206,7 +203,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="ptitle"
-                                                    options={longs.ptitles}
                                                     placeholder="선택"
                                                     {...ptitle}
                                                 />
@@ -335,7 +331,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="cycle"
-                                                    options={PAY_CYCLE}
                                                     placeholder="선택"
                                                     {...cycle}
                                                 />
@@ -351,7 +346,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="dist"
-                                                    options={DISTS}
                                                     placeholder="선택"
                                                     {...dist}
                                                 />
@@ -378,7 +372,7 @@ const Longs: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="wr-pages-long-list__body wr-mt">
+                    <div className="wr-pages-long-list__body wr-table--scrollable wr-mt">
                         <MyTable
                             columns={columns}
                             data={longs.rows}

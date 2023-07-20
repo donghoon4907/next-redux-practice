@@ -7,13 +7,12 @@
         height: $wr-detail-filter-height;
     }
 
-    &__left {
-        overflow-y: auto;
-    }
+    // &__left {
+    //     overflow-y: auto;
+    // }
 
     &__right {
         position: relative;
-        margin-left: $wr-gutter-size;
 
         // Custom Bootstrap
         & .nav-link {
@@ -34,6 +33,7 @@
     }
 
     &__block {
+        padding: 0 !important;
         @include wr-card;
 
         & + & {
@@ -46,10 +46,16 @@
     }
 
     &__avatar {
-        margin-bottom: $wr-gutter-size;
-        --bs-border-radius: 0;
-        --bs-border-color: #aaa;
+        width: 200px;
+        height: 220px;
         cursor: pointer;
+        padding: 0.25rem;
+        border: 1px solid $wr-divider-color-300;
+
+        & > img {
+            width: 100%;
+            height: 100%;
+        }
     }
 
     &__with {
@@ -91,6 +97,47 @@
         justify-content: center;
         align-items: center;
         font-weight: 500;
+    }
+
+    &__title {
+        height: 36px;
+        border-bottom: 1px solid $wr-divider-color-300;
+        padding: $wr-gutter-size;
+        font-size: 16px;
+    }
+
+    &__content {
+        padding: $wr-gutter-size;
+    }
+
+    &__left {
+        overflow: auto;
+        height: 100%;
+        min-width: 651px;
+        flex-basis: 651px;
+        flex-shrink: 0;
+        flex-grow: 0;
+    }
+
+    &__right {
+        position: relative;
+
+        // Custom Bootstrap
+        & .nav-link {
+            background-color: white !important;
+
+            &:not(.active) {
+                background-color: inherit !important;
+                color: $black;
+            }
+
+            &:hover {
+                border-top: 1px solid $wr-divider-color-100;
+                border-right: 1px solid $wr-divider-color-100;
+                background-color: $white !important;
+                color: $black;
+            }
+        }
     }
 
     // Custom Bootstrap
