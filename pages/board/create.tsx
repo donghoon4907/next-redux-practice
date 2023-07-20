@@ -30,6 +30,7 @@ import { useApi } from '@hooks/use-api';
 import { createPostRequest } from '@actions/board/create-post.action';
 import { useInput } from '@hooks/use-input';
 import { convertEscapeHtml } from '@utils/converter';
+import { useSelect } from '@hooks/use-select';
 
 const CreateBoard: NextPage = () => {
     const create = useApi(createPostRequest);
@@ -54,16 +55,12 @@ const CreateBoard: NextPage = () => {
     // 제목
     const [title] = useInput('');
     // 부서
-    const [orga, setOrga] = useState<CoreSelectOption | null>(ORGA_RANK[0]);
+    const [orga] = useSelect(ORGA_RANK);
     // 태그
     const [tag] = useInput('');
 
     const handleClickTab = (tab: CoreTabOption) => {
         setTab(tab);
-    };
-
-    const handleChangeOrga = (org: CoreSelectOption | null) => {
-        setOrga(org);
     };
 
     const handleSubmit = () => {
@@ -152,10 +149,8 @@ const CreateBoard: NextPage = () => {
                                     >
                                         <MySelect
                                             inputId="orga"
-                                            options={ORGA_RANK}
-                                            value={orga}
-                                            onChange={handleChangeOrga}
                                             placeholder="선택"
+                                            {...orga}
                                         />
                                     </WithLabel>
                                 </div>
@@ -208,7 +203,7 @@ const CreateBoard: NextPage = () => {
                         </div>
                     </div>
                     <MyFooter>
-                        <div className="wr-pages-detail__footer">
+                        <div className="wr-footer__between">
                             <div className="wr-pages-create-board__optionitem">
                                 <span>
                                     <MyCheckbox

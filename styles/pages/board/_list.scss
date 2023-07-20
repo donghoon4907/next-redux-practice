@@ -8,6 +8,12 @@
         @include wr-card;
     }
 
+    &__body {
+        border: 1px solid $wr-divider-color-300;
+        flex: 1;
+        overflow: hidden;
+    }
+
     // 페이지 내 입력창의 높이 조절
     & .form-control {
         height: $wr-list-filter-height;

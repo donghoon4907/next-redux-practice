@@ -44,6 +44,7 @@ const Long: NextPage<LongState> = ({ long }) => {
     const [editable, setEditable] = useState(false);
     // 보험사
     const [comp] = useSelect(
+        INSU_COMP,
         INSU_COMP.filter(({ value }) => value === long.company)[0],
     );
     // 계약번호
@@ -60,21 +61,25 @@ const Long: NextPage<LongState> = ({ long }) => {
     const [boDateto] = useInput(long.bo_dateto);
     // 납입주기
     const [payCycle] = useSelect(
+        PAY_CYCLE,
         PAY_CYCLE.filter(({ value }) => value === long.pay_cycle)[0],
     );
     // 납입기간
     const [payDu] = useSelect(
+        INSU_DURATION,
         INSU_DURATION.filter(({ value }) => value === long.pay_du)[0],
     );
     const [payDateto] = useInput(long.pay_dateto);
     // 계약상태
     const [statusDate] = useInput(long.status_date);
     const [status] = useSelect(
+        CON_STATUS,
         CON_STATUS.filter(({ value }) => value === long.status)[0],
     );
     // 수금상태
     const [psDate] = useInput(long.ps_date);
     const [payStatus] = useSelect(
+        PAY_STATUS,
         PAY_STATUS.filter(({ value }) => value === long.pay_status)[0],
     );
     // 최종납입월
@@ -156,7 +161,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-long-detail wr-form row">
+                <div className="wr-pages-long-detail row">
                     <div className="col-5">
                         <div className="wr-pages-long-detail__left wr-frame__section">
                             <div className="wr-pages-long-detail__block">
@@ -183,7 +188,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                                         >
                                             <MySelect
                                                 inputId="company"
-                                                options={INSU_COMP}
                                                 placeholder={'선택'}
                                                 placeHolderFontSize={16}
                                                 height={
@@ -322,7 +326,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                                         >
                                             <MySelect
                                                 inputId="contdate"
-                                                options={PAY_CYCLE}
                                                 placeholder={'선택'}
                                                 placeHolderFontSize={16}
                                                 height={
@@ -343,7 +346,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                 <div className="wr-pages-long-detail__with">
                                                     <MySelect
                                                         inputId="pay_du"
-                                                        options={BIRTH_TYPE}
                                                         placeholder={'선택'}
                                                         placeHolderFontSize={16}
                                                         height={
@@ -380,7 +382,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                     {...statusDate}
                                                 />
                                                 <MySelect
-                                                    options={CON_STATUS}
                                                     placeholder={'선택'}
                                                     placeHolderFontSize={16}
                                                     height={
@@ -418,7 +419,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                     {...psDate}
                                                 />
                                                 <MySelect
-                                                    options={PAY_STATUS}
                                                     placeholder={'선택'}
                                                     placeHolderFontSize={16}
                                                     height={

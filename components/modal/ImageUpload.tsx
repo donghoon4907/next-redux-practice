@@ -111,7 +111,7 @@ export const ImageUploadModal: FC<Props> = () => {
                             ref={cropperRef}
                             style={{ height: 400, width: '100%' }}
                             zoomTo={0.5}
-                            aspectRatio={200 / 250}
+                            aspectRatio={200 / 220}
                             preview=".img-preview"
                             src={image}
                             viewMode={1}

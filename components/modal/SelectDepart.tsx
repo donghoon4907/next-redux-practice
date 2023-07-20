@@ -10,6 +10,7 @@ import { hideDepartSearchModal } from '@actions/modal/depart-search.action';
 import { updateDepart } from '@actions/hr/set-depart.action';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
+import { useSelect } from '@hooks/use-select';
 
 interface Props {}
 
@@ -22,25 +23,21 @@ export const SelectDepartModal: FC<Props> = () => {
 
     const { orgas } = useSelector<AppState, HrState>((state) => state.hr);
 
-    const [depart, setDepart] = useState<CoreSelectOption | null>(null);
+    const [depart, setDepart] = useSelect(orgas, null);
 
     const handleClose = () => {
         dispatch(hideDepartSearchModal());
     };
 
-    const handleChangeDepart = (depart: CoreSelectOption | null) => {
-        setDepart(depart);
-    };
-
     const handleSubmit = () => {
-        if (depart === null) {
+        if (depart.value === null) {
             return alert('부서를 선택하세요.');
         }
 
         const tf = confirm('선택한 부서를 적용하시겠습니까?');
 
         if (tf) {
-            dispatch(updateDepart(depart));
+            dispatch(updateDepart(depart.value));
 
             handleClose();
         }
@@ -48,7 +45,7 @@ export const SelectDepartModal: FC<Props> = () => {
 
     useEffect(() => {
         setDepart(orgas[0]);
-    }, [orgas]);
+    }, [orgas, setDepart]);
 
     return (
         <Modal isOpen={isShowdepartSearchModal} toggle={handleClose}>
@@ -59,11 +56,9 @@ export const SelectDepartModal: FC<Props> = () => {
                         <WithLabel id="depart" label="부서" type="active">
                             <MySelect
                                 inputId="depart"
-                                options={orgas}
-                                value={depart}
-                                onChange={handleChangeDepart}
                                 placeholder={'선택'}
                                 placeHolderFontSize={16}
+                                {...depart}
                             />
                         </WithLabel>
                     </div>

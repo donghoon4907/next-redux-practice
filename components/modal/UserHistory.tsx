@@ -32,7 +32,7 @@ export const UserHistoryModal: FC<Props> = () => {
             <ModalBody>
                 <div className="row">
                     <div className="col">
-                        <div className="wr-pages-long-detail__tablewrap">
+                        <div className="wr-table--normal">
                             <MyTable columns={columns} data={long.user_his} />
                         </div>
                     </div>

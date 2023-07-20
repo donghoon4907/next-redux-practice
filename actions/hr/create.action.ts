@@ -13,6 +13,7 @@ export interface CreateUserRequestPayload extends CorePayload {
     name: string;
     mobile: string;
     orga_idx: number;
+    nick?: string;
     idnum1?: string;
     title?: string;
     birthday?: string;
@@ -29,6 +30,14 @@ export interface CreateUserRequestPayload extends CorePayload {
     outdate?: string;
     status?: string;
     user_type?: string;
+    est_val: {
+        comNm: string;
+        salesNm: string;
+        phone: string;
+        fax: string;
+        direct: string;
+        address: string;
+    };
 }
 
 export interface CreateUserSuccessPayload {}

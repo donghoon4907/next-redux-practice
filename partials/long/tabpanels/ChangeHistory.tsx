@@ -29,7 +29,7 @@ export const ChangeHistoryTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
                 <div className="col">
-                    <div className="wr-pages-long-detail__tablewrap">
+                    <div className="wr-table--normal">
                         <MyTable
                             columns={columns}
                             data={data}

@@ -103,6 +103,9 @@ export const MySelect: FC<MySelectProps> = ({
                         ...defaultStyles,
                         fontSize: `${placeHolderFontSize}px`,
                         color: 'black',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
                     };
                 },
                 input: (provided, state) => ({

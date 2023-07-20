@@ -1,18 +1,49 @@
 .wr-table {
     &__wrap {
-        // max-height: 630px;
         overflow: auto;
         height: 100%;
         background-color: $white;
-        // margin-top: $wr-gutter-size;
-        // border: 1px solid $wr-divider-color-200;
-
-        // border: 1px solid $wr-divider-color-300;
     }
 
-    // &--border {
-    //     border: 1px solid $wr-divider-color-300;
-    // }
+    &--normal {
+        & table td,
+        & table th {
+            border: 1px solid $wr-divider-color-300;
+            border: 1px solid $wr-divider-color-300;
+        }
+    }
+
+    &--scrollable {
+        & table {
+            border-collapse: separate !important;
+        }
+
+        & table td,
+        & table th {
+            border-right: 1px solid $wr-divider-color-300;
+            border-bottom: 1px solid $wr-divider-color-300;
+        }
+
+        & table th:last-child,
+        & table td:last-child {
+            border-right: none;
+        }
+
+        & table tbody tr:last-child td,
+        & table tfoot tr:last-child td {
+            border-bottom: none;
+        }
+
+        & table tfoot tr:first-child td {
+            border-top: 1px solid $wr-divider-color-300;
+        }
+
+        & thead {
+            margin: 0;
+            position: sticky;
+            top: 0;
+        }
+    }
 
     &.table {
         margin-bottom: 0 !important;
