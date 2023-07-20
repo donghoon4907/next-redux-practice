@@ -1,9 +1,7 @@
 import type { CoreProps } from '@interfaces/core';
 import type { ButtonHTMLAttributes, FC } from 'react';
 
-interface Props extends CoreProps, ButtonHTMLAttributes<HTMLButtonElement> {
-    className?: string;
-}
+interface Props extends CoreProps, ButtonHTMLAttributes<HTMLButtonElement> {}
 
 export const IconWrapper: FC<Props> = ({
     children,

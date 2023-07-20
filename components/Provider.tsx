@@ -1,5 +1,5 @@
-import type { CoreProps } from '@interfaces/core';
 import type { FC } from 'react';
+import type { CoreProps } from '@interfaces/core';
 import { CustomProvider } from 'rsuite';
 import koKR from 'rsuite/locales/ko_KR';
 

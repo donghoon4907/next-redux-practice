@@ -161,7 +161,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-long-detail wr-form row">
+                <div className="wr-pages-long-detail row">
                     <div className="col-5">
                         <div className="wr-pages-long-detail__left wr-frame__section">
                             <div className="wr-pages-long-detail__block">

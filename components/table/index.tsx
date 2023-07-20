@@ -4,31 +4,50 @@ import type { MyColumnDef } from '@hooks/use-column';
 import type { CoreSetState } from '@interfaces/core';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import {
-    // Table as ReactTable,
     useReactTable,
     getCoreRowModel,
     getFilteredRowModel,
     getPaginationRowModel,
-    flexRender,
 } from '@tanstack/react-table';
-import {
-    checkSeparatorNeeded,
-    checkTextAlignRightNeeded,
-    isNumberic,
-} from '@utils/validation';
 import { IconWrapper } from '@components/IconWrapper';
 import { BsPlusSquare } from 'react-icons/bs';
-import { InternalInput } from '@components/input/Internal';
+
+import { AdditionalTd, EmptyTd, MyTd } from './Td';
+import { MyTh } from './Th';
 
 interface Props {
+    /**
+     * 테이블 컬럼 목록
+     */
     columns: MyColumnDef[];
+    /**
+     * 테이블 데이터 목록
+     */
     data: any[];
+    /**
+     * 레코드 내 체크박스 관련
+     */
     rowSelection?: RowSelectionState;
     setRowSelection?: CoreSetState<RowSelectionState>;
+    /**
+     * 페이지네이션 - 레코드 수
+     */
     pageSize?: number;
+    /**
+     * 레코드 클릭 이벤트
+     */
     onClickRow?: (row: any) => void;
+    /**
+     * 익스텐션 보이기 여부
+     */
     showExtension?: boolean;
+    /**
+     * 새롭게 추가된 레코드의 수
+     */
     addCount?: number;
+    /**
+     * 새로운 레코드 추가 외부 이벤트
+     */
     onAddCount?: () => void;
 }
 
@@ -37,7 +56,7 @@ export const MyTable: FC<Props> = ({
     data,
     rowSelection,
     setRowSelection,
-    pageSize = 20,
+    pageSize = 25,
     onClickRow,
     showExtension,
     addCount = 0,
@@ -158,31 +177,7 @@ export const MyTable: FC<Props> = ({
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (
-                                <th
-                                    key={header.id}
-                                    colSpan={header.colSpan}
-                                    // style={{
-                                    //     width: header.getSize(),
-                                    // }}
-                                >
-                                    {header.isPlaceholder
-                                        ? null
-                                        : flexRender(
-                                              header.column.columnDef.header,
-                                              header.getContext(),
-                                          )}
-                                    {/* <div
-                                    {...{
-                                        onMouseDown: header.getResizeHandler(),
-                                        onTouchStart: header.getResizeHandler(),
-                                        className: `resizer ${
-                                            header.column.getIsResizing()
-                                                ? 'isResizing'
-                                                : ''
-                                        }`,
-                                    }}
-                                /> */}
-                                </th>
+                                <MyTh key={header.id} {...header} />
                             ))}
                         </tr>
                     ))}
@@ -191,64 +186,38 @@ export const MyTable: FC<Props> = ({
                     {table.getRowModel().rows.length === 0 &&
                         addCount === 0 && (
                             <tr>
-                                <td colSpan={columns.length}>
-                                    데이터가 없습니다.
-                                </td>
+                                <EmptyTd colSpan={columns.length} />
                             </tr>
                         )}
                     {table.getRowModel().rows.map((row) => {
-                        // console.log(row.getRowModel().rows.length);
                         return (
                             <tr
                                 key={row.id}
                                 onClick={() => handleClickRow(row.original)}
                             >
-                                {row.getVisibleCells().map((cell) => {
-                                    let className = '';
-
-                                    // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
-                                    if (
-                                        isNumberic(cell.getValue()) &&
-                                        checkSeparatorNeeded(cell.column.id) &&
-                                        checkTextAlignRightNeeded(
-                                            cell.column.id,
-                                        )
-                                    ) {
-                                        className += 'text-end';
-                                    }
-
-                                    return (
-                                        <td key={cell.id} className={className}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext(),
-                                            )}
-                                        </td>
-                                    );
-                                })}
+                                {row.getVisibleCells().map((cell) => (
+                                    <MyTd key={cell.id} {...cell} />
+                                ))}
                             </tr>
                         );
                     })}
                 </tbody>
-                <tfoot>
-                    {Array.from({ length: addCount }).map((_, index) => (
-                        <tr key={`additionalRow${index}`}>
-                            {columns.map((c, i) => {
-                                return (
-                                    <td
-                                        key={`additionalCell${i}`}
-                                        // data-field={}
-                                        data-field={c.headerKey}
-                                    >
-                                        <InternalInput
-                                            placeholder={c.headerText}
+                {addCount > 0 && (
+                    <tfoot>
+                        {Array.from({ length: addCount }).map((_, index) => (
+                            <tr key={`additionalRow${index}`}>
+                                {columns.map((col, i) => {
+                                    return (
+                                        <AdditionalTd
+                                            key={`additionalCell${i}`}
+                                            {...col}
                                         />
-                                    </td>
-                                );
-                            })}
-                        </tr>
-                    ))}
-                </tfoot>
+                                    );
+                                })}
+                            </tr>
+                        ))}
+                    </tfoot>
+                )}
             </table>
             {showExtension && (
                 <div className="wr-table__extension">

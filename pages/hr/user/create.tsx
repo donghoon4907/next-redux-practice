@@ -93,7 +93,7 @@ const CreateUser: NextPage = () => {
     const [address2, setAddress2] = useInput('');
     // 상세 주소
     const [address3] = useInput('');
-    // 영업가족
+    // 영업구분
     const [userType] = useSelect(USER_TYPE);
     // 재직현황
     const [status] = useSelect(EMP_STATUS);
@@ -219,7 +219,7 @@ const CreateUser: NextPage = () => {
         if (email.value === '') {
             return;
         } else {
-            payload['email'] = `${email.value}@${emailCom?.value}`;
+            payload['email'] = `${email.value}@${emailCom.value?.value}`;
         }
 
         if (userType.value) {
@@ -254,7 +254,9 @@ const CreateUser: NextPage = () => {
             payload['outdate'] = outdate.value;
         }
 
-        createUser(payload);
+        console.log(payload);
+
+        // createUser(payload);
     };
 
     const handleClickDepart = () => {
@@ -283,7 +285,7 @@ const CreateUser: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-hr-detail wr-form row">
+                <div className="wr-pages-hr-detail row">
                     <div className="col wr-pages-hr-detail__left">
                         <div className="wr-frame__section">
                             <div className="wr-pages-hr-detail__block">
@@ -479,7 +481,7 @@ const CreateUser: NextPage = () => {
                                                 </WithLabel>
                                                 <WithLabel
                                                     id="user_type"
-                                                    label="영업가족"
+                                                    label="영업구분"
                                                     type="active"
                                                 >
                                                     <MySelect
@@ -863,22 +865,24 @@ const CreateUser: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col wr-pages-hr-detail__right wr-ml">
-                        <div className="wr-pages-hr-detail__lock">
-                            <p>사용자 등록 후 이용할 수 있습니다.</p>
+                    <div className="col wr-pages-hr-detail__right">
+                        <div className="wr-ml position-relative">
+                            <div className="wr-pages-hr-detail__lock">
+                                <p>사용자 등록 후 이용할 수 있습니다.</p>
+                            </div>
+                            <ul className="wr-tab__wrap" role="tablist">
+                                {HR_DETAIL_TABS.map((v) => (
+                                    <MyTab
+                                        key={v.id}
+                                        onClick={handleClickTab}
+                                        isActive={v.id === tab.id}
+                                        {...v}
+                                    />
+                                ))}
+                                <li className="wr-tab__line"></li>
+                            </ul>
+                            <div className="wr-pages-hr-detail__body wr-frame__tabbody"></div>
                         </div>
-                        <ul className="wr-tab__wrap" role="tablist">
-                            {HR_DETAIL_TABS.map((v) => (
-                                <MyTab
-                                    key={v.id}
-                                    onClick={handleClickTab}
-                                    isActive={v.id === tab.id}
-                                    {...v}
-                                />
-                            ))}
-                            <li className="wr-tab__line"></li>
-                        </ul>
-                        <div className="wr-pages-hr-detail__body wr-frame__tabbody"></div>
                     </div>
                 </div>
                 <MyFooter>

@@ -5,8 +5,8 @@ import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
 import type { GetFcsRequestPayload } from '@actions/hr/get-fcs';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
 import type { GetIpRequestPayload } from '@actions/hr/get-ip.action';
-import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
+import { getExternalAxios } from '@utils/axios/external';
 
 export function login(payload: LoginRequestPayload) {
     return getBackendAxios().post('/orga/login', payload);
@@ -38,9 +38,9 @@ export function getFcs(payload: GetFcsRequestPayload) {
 
 export function getIp({ isIPv6 }: GetIpRequestPayload) {
     if (isIPv6) {
-        return axios.get('https://api64.ipify.org?format=json');
+        return getExternalAxios().get('https://api64.ipify.org?format=json');
     } else {
-        return axios.get('https://api.ipify.org?format=json');
+        return getExternalAxios().get('https://api.ipify.org?format=json');
     }
 }
 

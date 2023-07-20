@@ -23,10 +23,6 @@ export default class MyDocument extends Document {
                     <meta name="twitter:title" content="" />
                     <meta name="twitter:description" content="" />
                     <meta name="twitter:image" content="/thumbnail.png" /> */}
-                    {/* <script
-                        src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
-                        defer
-                    /> */}
                 </Head>
                 <body>
                     <Main />

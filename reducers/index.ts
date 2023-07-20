@@ -3,7 +3,6 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 import { errorReducer } from './common/error';
 import { loadingReducer } from './common/loading';
-import { demoReducer } from './demo';
 import { tabReducer } from './tab';
 import { drawerReducer } from './drawer';
 import { longReducer } from './long';
@@ -14,7 +13,6 @@ import { modalReducer } from './modal';
 import { hrReducer } from './hr';
 
 const combinedReducer = combineReducers({
-    demo: demoReducer,
     tab: tabReducer,
     drawer: drawerReducer,
     long: longReducer,

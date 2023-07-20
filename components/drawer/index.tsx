@@ -5,7 +5,7 @@ import { IconWrapper } from '@components/IconWrapper';
 import { useDrawer } from '@hooks/use-drawer';
 // import { ASIDE_MENUS } from '@constants/gnb';
 
-import { DrawerMenu } from './DrawerMenu';
+// import { DrawerMenu } from './DrawerMenu';
 
 interface Props {}
 

@@ -25,10 +25,6 @@ export const MyNav: FC<Props> = () => {
                     </a>
                 </Link>
             </div>
-            {/* <div className="wr-nav__header">
-                <span className="wr-nav__name">김서윤&nbsp;</span>
-                <span className="wr-nav__title">님</span>
-            </div> */}
             <div
                 className="wr-nav__body wr-drawer wr-frame__body"
                 role="tablist"
@@ -36,11 +32,6 @@ export const MyNav: FC<Props> = () => {
             >
                 <DrawerMenu menu={activeGnb} />
             </div>
-            {/* <div className="wr-nav__footer">
-                <span>접속시간: 2023-12-23 14:23</span>
-                <br />
-                <span>접속IP: 202.68.223.123</span>
-            </div> */}
         </div>
     );
 };

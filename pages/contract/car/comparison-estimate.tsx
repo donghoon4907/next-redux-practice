@@ -357,11 +357,14 @@ const ComparisonEstimate: NextPage = () => {
                                 <div className="wr-pages-comparison-estimate__list">
                                     <div className="wr-pages-comparison-estimate__item customer">
                                         <div className="wr-pages-comparison-estimate__label">
-                                            <label>주민번호</label>
+                                            <label htmlFor="residentNum">
+                                                주민번호
+                                            </label>
                                         </div>
                                         <div className="wr-pages-comparison-estimate__description customer">
                                             <div style={{ width: 150 }}>
                                                 <MyInput
+                                                    id="residentNum"
                                                     type="text"
                                                     pattern="[0-9]{6}"
                                                     onChange={

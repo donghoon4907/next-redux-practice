@@ -14,9 +14,11 @@ import { useColumn } from '@hooks/use-column';
 import { useTab } from '@hooks/use-tab';
 import { BoardState } from '@reducers/board';
 import { AppState } from '@reducers/index';
+import { wrapper } from '@store/redux';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
+import { END } from 'redux-saga';
 
 const Boards: NextPage = () => {
     const { boards } = useSelector<AppState, BoardState>(
@@ -90,12 +92,15 @@ const Boards: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <MyTable
-                        columns={columns}
-                        data={boards.rows}
-                        pageSize={boards.lastPayload?.nums}
-                        onClickRow={handleClickRow}
-                    />
+                    <div className="wr-pages-board-list__body wr-table--scrollable wr-mt">
+                        <MyTable
+                            columns={columns}
+                            data={boards.rows}
+                            pageSize={boards.lastPayload?.nums}
+                            onClickRow={handleClickRow}
+                        />
+                    </div>
+
                     <MyFooter>
                         <MyPagination
                             requestAction={getPostsRequest}
@@ -114,10 +119,17 @@ const Boards: NextPage = () => {
     );
 };
 
-export async function getServerSideProps() {
-    return {
-        props: {},
-    };
-}
+export const getServerSideProps = wrapper.getServerSideProps(
+    ({ dispatch, sagaTask }) =>
+        async (_) => {
+            dispatch(END);
+
+            await sagaTask?.toPromise();
+
+            return {
+                props: {},
+            };
+        },
+);
 
 export default Boards;
