@@ -9,7 +9,7 @@ interface Props extends CoreProps {}
 export const MyLayout: FC<Props> = ({ children }) => {
     return (
         <div className="row">
-            <div className="col-1">
+            <div className="col-1 wr-border-r">
                 <MyNav />
             </div>
             <div className="col-11">

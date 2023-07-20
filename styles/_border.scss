@@ -2,24 +2,32 @@
     border: 1px solid $wr-divider-color-300;
 
     &-l {
+        border-left: 1px solid $wr-divider-color-300;
+
         &--hide {
             border-left-width: 0;
         }
     }
 
     &-r {
+        border-right: 1px solid $wr-divider-color-300;
+
         &--hide {
             border-right-width: 0;
         }
     }
 
     &-t {
+        border-top: 1px solid $wr-divider-color-300;
+
         &--hide {
             border-top-width: 0;
         }
     }
 
     &-b {
+        border-bottom: 1px solid $wr-divider-color-300;
+
         &--hide {
             border-bottom-width: 0;
         }

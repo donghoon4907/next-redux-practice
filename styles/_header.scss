@@ -7,7 +7,6 @@
 .wr-meta {
     height: 35px;
     background-color: $white;
-    border-left: 1px solid $wr-divider-color-300;
 
     &__inner {
         height: 100%;
@@ -187,7 +186,6 @@
     position: relative;
     z-index: $wr-lnb-index;
     overflow: hidden;
-    border-left: 1px solid $wr-divider-color-300;
 
     &__inner {
         position: relative;
