@@ -20,7 +20,8 @@ import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
 import { initialzeBackendAxios } from '@utils/axios/backend';
-import { getPermissionRequest } from '@actions/hr/get-permission.action';
+import hrsService from '@services/hrsService';
+import { updatePermission } from '@actions/hr/set-permission.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { events, asPath } = useRouter();
@@ -67,22 +68,35 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
         async ({ Component, ctx, router }) => {
             const { req, res } = ctx;
 
-            const isServer = !!req && !!res;
-
-            if (isServer) {
+            if (req && res) {
                 const token = getCookie(process.env.COOKIE_TOKEN_KEY || '', {
                     req,
                     res,
                 });
                 // axios 초기화
                 initialzeBackendAxios(token);
+                // permission 제외 페이지
+                const excludePermissionPages = ['/login', '/404'];
                 // permission
-                if (router.route !== '/login') {
-                    dispatch(
-                        getPermissionRequest({
+                if (excludePermissionPages.every((v) => v !== router.route)) {
+                    try {
+                        const { data } = await hrsService.getPermission({
                             division: 'system',
-                        }),
-                    );
+                        });
+
+                        const { user_info } = data;
+                        // 특정 권한 정보가 있는 경우
+                        if (user_info) {
+                            dispatch(updatePermission(data));
+                        } else {
+                            throw new Error();
+                        }
+                    } catch {
+                        // 로그인 페이지로 리다이렉션
+                        res.writeHead(302, { Location: '/login' });
+
+                        res.end();
+                    }
                 }
             }
 

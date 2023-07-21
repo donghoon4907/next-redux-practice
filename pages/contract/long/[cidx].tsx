@@ -25,6 +25,8 @@ import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { EtcsTabpanel } from '@partials/long/tabpanels/Etcs';
 import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { UserHistoryModal } from '@components/modal/UserHistory';
+import hrsService from '@services/hrsService';
+import longsService from '@services/longsService';
 import {
     BIRTH_TYPE,
     CON_STATUS,
@@ -33,6 +35,7 @@ import {
     PAY_CYCLE,
     PAY_STATUS,
 } from '@constants/selectOption';
+import { commonAxiosErrorHandler } from '@utils/error';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const dispatch = useDispatch();
@@ -583,6 +586,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     tabId="tabEtcs"
                                     hidden={tab.id !== 'tabEtcs'}
                                     editable={editable}
+                                    etcs={long.etcs}
                                 />
                             </div>
                         </div>
@@ -613,36 +617,34 @@ const Long: NextPage<LongState> = ({ long }) => {
                 </MyFooter>
             </MyLayout>
 
-            <UserHistoryModal />
+            <UserHistoryModal user_his={long.user_his} />
             <CreateEtcModal />
         </>
     );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    ({ dispatch, sagaTask, getState }) =>
-        async ({ req, res, query, ...etc }) => {
-            const cidx = query.cidx as string;
+    () => async (ctx) => {
+        const { query } = ctx;
 
-            dispatch(getLongRequest({ cidx }));
+        const cidx = query.cidx as string;
 
-            dispatch(END);
+        const output: any = {
+            props: {},
+        };
+        try {
+            const { data } = await longsService.getLong({ cidx });
 
-            let props = {};
-            try {
-                await sagaTask?.toPromise();
-
-                props = getState().long;
-            } catch (e) {
-                res.statusCode = 302;
-
-                res.setHeader('Location', '/404');
-            }
-
-            return {
-                props,
+            output.props.long = data;
+        } catch {
+            output.redirect = {
+                destination: '/404',
+                permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
             };
-        },
+        }
+
+        return output;
+    },
 );
 
 export default Long;

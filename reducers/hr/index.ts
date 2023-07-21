@@ -7,6 +7,7 @@ import { GetFcsActionTypes } from '@actions/hr/get-fcs';
 import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
 import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
 import { GetIpActionTypes } from '@actions/hr/get-ip.action';
+import { PermissionActionTypes } from '@actions/hr/set-permission.action';
 
 export interface HrState {
     /**
@@ -69,12 +70,16 @@ export const hrReducer: Reducer<HrState, any> = (
                 draft.selectedOrga = action.payload;
                 break;
             }
-            case GetPermissionActionTypes.SUCCESS: {
-                draft.loggedInUser = action.payload;
-                break;
-            }
+            // case GetPermissionActionTypes.SUCCESS: {
+            //     draft.loggedInUser = action.payload;
+            //     break;
+            // }
             case GetIpActionTypes.SUCCESS: {
                 draft.ip = action.payload.ip;
+                break;
+            }
+            case PermissionActionTypes.UPDATE: {
+                draft.loggedInUser = action.payload;
                 break;
             }
             default:

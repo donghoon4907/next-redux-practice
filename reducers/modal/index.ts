@@ -5,6 +5,7 @@ import { UserHistoryModalActionTypes } from '@actions/modal/user-history.action'
 import { CreateEtcModalActionTypes } from '@actions/modal/create-etc.action';
 import { SetViewerModalActionTypes } from '@actions/modal/set-viewer.action';
 import { ImageUploadModalActionTypes } from '@actions/modal/image-upload.action';
+import { GuaranteeSettingModalActionTypes } from '@actions/modal/guarantee-setting.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -12,6 +13,7 @@ export interface ModalState {
     isShowCreateEtcModal: boolean;
     isShowSetViewerModal: boolean;
     isShowImageUploadModal: boolean;
+    isShowGuaranteeSettingModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -20,6 +22,7 @@ const initialState: ModalState = {
     isShowCreateEtcModal: false,
     isShowSetViewerModal: false,
     isShowImageUploadModal: false,
+    isShowGuaranteeSettingModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -66,6 +69,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case ImageUploadModalActionTypes.HIDE: {
                 draft.isShowImageUploadModal = false;
+                break;
+            }
+            case GuaranteeSettingModalActionTypes.SHOW: {
+                draft.isShowGuaranteeSettingModal = true;
+                break;
+            }
+            case GuaranteeSettingModalActionTypes.HIDE: {
+                draft.isShowGuaranteeSettingModal = false;
                 break;
             }
             default:
