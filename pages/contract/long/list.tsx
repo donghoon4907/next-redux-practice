@@ -372,7 +372,7 @@ const Longs: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="wr-pages-long-list__body wr-table--scrollable wr-mt">
+                    <div className="wr-pages-long-list__body wr-table--scrollable wr-table--hover wr-mt">
                         <MyTable
                             columns={columns}
                             data={longs.rows}

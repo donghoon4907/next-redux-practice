@@ -7,17 +7,15 @@ import { useApi } from '@hooks/use-api';
 import { loginRequest } from '@actions/hr/login.action';
 import { useInput } from '@hooks/use-input';
 import { useTab } from '@hooks/use-tab';
-import { getIpRequest } from '@actions/hr/get-ip.action';
 import { wrapper } from '@store/redux';
-import { END } from 'redux-saga';
-import { useSelector } from 'react-redux';
-import { AppState } from '@reducers/index';
-import { HrState } from '@reducers/hr';
+import hrsService from '@services/hrsService';
 
-const Login: NextPage = () => {
+interface LoginPageProps {
+    ip: string;
+}
+
+const Login: NextPage<LoginPageProps> = ({ ip }) => {
     const displayName = 'wr-pages-login';
-
-    const { ip } = useSelector<AppState, HrState>((state) => state.hr);
 
     const login = useApi(loginRequest);
 
@@ -137,27 +135,44 @@ const Login: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    ({ dispatch, sagaTask }) =>
-        async ({ req, res }) => {
-            const isServer = !!req && !!res;
+    ({ getState }) =>
+        async ({ req }) => {
+            const { hr } = getState();
 
-            if (isServer) {
-                const ipAddress =
-                    req.headers['x-forwarded-for'] ||
-                    req.connection.remoteAddress;
-
-                const isIPv6 = ipAddress?.includes(':') || false;
-
-                dispatch(getIpRequest({ isIPv6 }));
-
-                dispatch(END);
-
-                await sagaTask?.toPromise();
-            }
-
-            return {
+            const output: any = {
                 props: {},
             };
+            // 로그인한 상태인 경우
+            if (hr.loggedInUser) {
+                output.redirect = {
+                    destination: '/contract/long/list',
+                    permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
+                };
+            } else {
+                if (req) {
+                    const ipAddress =
+                        req.headers['x-forwarded-for'] ||
+                        req.connection.remoteAddress;
+
+                    const isIPv6 = ipAddress?.includes(':') || false;
+
+                    try {
+                        const { data } = await hrsService.getIp({ isIPv6 });
+
+                        const { ip } = data;
+
+                        output.props.ip = ip;
+                    } catch {
+                        // ip 조회 실패시 로그인 페이지 리다이렉션
+                        output.redirect = {
+                            destination: '/login',
+                            permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
+                        };
+                    }
+                }
+            }
+
+            return output;
         },
 );
 

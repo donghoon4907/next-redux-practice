@@ -6,19 +6,22 @@ import { MyInput } from '@components/input';
 import { WithInput } from '@components/WithInput';
 import { IconWrapper } from '@components/IconWrapper';
 import { BsPlusSquare } from 'react-icons/bs';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { showCreateEtcModal } from '@actions/modal/create-etc.action';
-import { AppState } from '@reducers/index';
-import { LongState } from '@reducers/long';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
+    etcs: Array<any>;
 }
 
-export const EtcsTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
+export const EtcsTabpanel: FC<Props> = ({
+    id,
+    tabId,
+    hidden,
+    editable,
+    etcs,
+}) => {
     const dispatch = useDispatch();
-
-    const { long } = useSelector<AppState, LongState>((state) => state.long);
 
     const handleAddEtc = () => {
         dispatch(showCreateEtcModal());
@@ -27,7 +30,7 @@ export const EtcsTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
-                {Object.entries(long.etcs).map(([key, value], i) => (
+                {Object.entries(etcs).map(([key, value], i) => (
                     <div className="col-4" key={key}>
                         <div
                             className={`${i % 3 !== 0 ? 'wr-ml' : ''} ${

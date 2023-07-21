@@ -128,3 +128,89 @@ export const ESTIMATE_ADDRESS: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+
+// 소득설정 탭 - 산출기준
+export const CALC_STANDARD: CoreSelectOption[] = [
+    {
+        label: '기본 + 성과',
+        value: '01',
+        isFixed: false,
+    },
+    {
+        label: '기본',
+        value: '02',
+        isFixed: false,
+    },
+    {
+        label: '성과',
+        value: '03',
+        isFixed: false,
+    },
+];
+
+// 보증설정 내역 설정 모달 - 보증구분
+export const GUARANTEE_DIVISION: CoreSelectOption[] = [
+    {
+        label: '이행보증',
+        value: '01',
+        isFixed: false,
+    },
+    {
+        label: '신원보증',
+        value: '02',
+        isFixed: false,
+    },
+    {
+        label: '질권설정',
+        value: '03',
+        isFixed: false,
+    },
+    {
+        label: '공증',
+        value: '04',
+        isFixed: false,
+    },
+    {
+        label: '적립금',
+        value: '05',
+        isFixed: false,
+    },
+];
+
+// 보증설정 내역 설정 모달 - 상태
+export const GUARANTEE_STATUS: CoreSelectOption[] = [
+    {
+        label: '적립중',
+        value: '01',
+        isFixed: false,
+    },
+    {
+        label: '적립완료',
+        value: '02',
+        isFixed: false,
+    },
+    {
+        label: '일시중단',
+        value: '03',
+        isFixed: false,
+    },
+];
+
+// 보증설정 내역 설정 모달 - 산출기준
+export const C_STANDARD: CoreSelectOption[] = [
+    {
+        label: '소득전체',
+        value: '01',
+        isFixed: false,
+    },
+    {
+        label: '건별수수료(전체)',
+        value: '02',
+        isFixed: false,
+    },
+    {
+        label: '건별수수료(장기)',
+        value: '03',
+        isFixed: false,
+    },
+];

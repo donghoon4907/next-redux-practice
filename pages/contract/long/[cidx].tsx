@@ -4,7 +4,6 @@ import type { LongState } from '@reducers/long';
 import Head from 'next/head';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { END } from 'redux-saga';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -16,7 +15,6 @@ import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { wrapper } from '@store/redux';
-import { getLongRequest } from '@actions/long/get-long.action';
 import { PaysTabpanel } from '@partials/long/tabpanels/Pays';
 import { StateHistoryTabpanel } from '@partials/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/long/tabpanels/ChangeHistory';
@@ -25,8 +23,8 @@ import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { EtcsTabpanel } from '@partials/long/tabpanels/Etcs';
 import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { UserHistoryModal } from '@components/modal/UserHistory';
+import longsService from '@services/longsService';
 import {
-    BIRTH_TYPE,
     CON_STATUS,
     INSU_COMP,
     INSU_DURATION,
@@ -583,6 +581,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     tabId="tabEtcs"
                                     hidden={tab.id !== 'tabEtcs'}
                                     editable={editable}
+                                    etcs={long.etcs}
                                 />
                             </div>
                         </div>
@@ -613,36 +612,34 @@ const Long: NextPage<LongState> = ({ long }) => {
                 </MyFooter>
             </MyLayout>
 
-            <UserHistoryModal />
+            <UserHistoryModal user_his={long.user_his} />
             <CreateEtcModal />
         </>
     );
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    ({ dispatch, sagaTask, getState }) =>
-        async ({ req, res, query, ...etc }) => {
-            const cidx = query.cidx as string;
+    () => async (ctx) => {
+        const { query } = ctx;
 
-            dispatch(getLongRequest({ cidx }));
+        const cidx = query.cidx as string;
 
-            dispatch(END);
+        const output: any = {
+            props: {},
+        };
+        try {
+            const { data } = await longsService.getLong({ cidx });
 
-            let props = {};
-            try {
-                await sagaTask?.toPromise();
-
-                props = getState().long;
-            } catch (e) {
-                res.statusCode = 302;
-
-                res.setHeader('Location', '/404');
-            }
-
-            return {
-                props,
+            output.props.long = data;
+        } catch {
+            output.redirect = {
+                destination: '/404',
+                permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
             };
-        },
+        }
+
+        return output;
+    },
 );
 
 export default Long;

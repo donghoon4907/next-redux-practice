@@ -2,8 +2,7 @@
     overflow: hidden;
     --wr-tab-active-color: white;
 
-    & .wr-with__label,
-    .btn {
+    & .wr-with__label {
         height: $wr-detail-filter-height;
     }
 
@@ -64,6 +63,7 @@
         align-items: center;
         flex: 1;
         gap: $wr-gutter-size;
+        height: 36px;
     }
 
     &__body {
@@ -138,6 +138,35 @@
                 color: $black;
             }
         }
+    }
+
+    &__horizontal {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: $wr-gutter-size;
+        // margin: $wr-gutter-size 0;
+        height: 36px;
+    }
+
+    &__subtitle,
+    &__toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        line-height: 35px;
+    }
+
+    &__description {
+        font-size: 12px;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: $wr-gutter-size;
     }
 
     // Custom Bootstrap

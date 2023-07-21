@@ -5,6 +5,16 @@
         background-color: $white;
     }
 
+    &--hover {
+        & tbody tr:hover {
+            background-color: $wr-table-hover-color;
+        }
+
+        & tr {
+            cursor: pointer;
+        }
+    }
+
     &--normal {
         & table td,
         & table th {
@@ -61,14 +71,6 @@
 
     & tbody {
         font-size: 12px;
-
-        & tr {
-            cursor: pointer;
-        }
-
-        & tr:hover {
-            background-color: $wr-table-hover-color;
-        }
     }
 
     & .resizer {

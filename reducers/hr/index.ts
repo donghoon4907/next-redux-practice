@@ -5,8 +5,9 @@ import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
 import { GetFcsActionTypes } from '@actions/hr/get-fcs';
 import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
-import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
-import { GetIpActionTypes } from '@actions/hr/get-ip.action';
+// import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
+// import { GetIpActionTypes } from '@actions/hr/get-ip.action';
+import { PermissionActionTypes } from '@actions/hr/set-permission.action';
 
 export interface HrState {
     /**
@@ -32,7 +33,7 @@ export interface HrState {
     /**
      * 사용자 환경의 IP
      */
-    ip: string;
+    // ip: string;
 }
 
 const initialState: HrState = {
@@ -44,7 +45,7 @@ const initialState: HrState = {
         label: '',
     },
     loggedInUser: null,
-    ip: '',
+    // ip: '',
 };
 
 export const hrReducer: Reducer<HrState, any> = (
@@ -69,12 +70,16 @@ export const hrReducer: Reducer<HrState, any> = (
                 draft.selectedOrga = action.payload;
                 break;
             }
-            case GetPermissionActionTypes.SUCCESS: {
+            // case GetPermissionActionTypes.SUCCESS: {
+            //     draft.loggedInUser = action.payload;
+            //     break;
+            // }
+            // case GetIpActionTypes.SUCCESS: {
+            //     draft.ip = action.payload.ip;
+            //     break;
+            // }
+            case PermissionActionTypes.UPDATE: {
                 draft.loggedInUser = action.payload;
-                break;
-            }
-            case GetIpActionTypes.SUCCESS: {
-                draft.ip = action.payload.ip;
                 break;
             }
             default:

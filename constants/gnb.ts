@@ -390,14 +390,14 @@ export const ASIDE_MENU: any = {
                         {
                             id: 'aside_menu_contract2-1-1',
                             level: 3,
-                            label: '자동차',
-                            to: '',
+                            label: '비교견적(자동차)',
+                            to: '/contract/car/comparison-estimate',
                             items: [],
                         },
                         {
                             id: 'aside_menu_contract2-1-2',
                             level: 3,
-                            label: '이륜차',
+                            label: '비교견적(이륜차)',
                             to: '',
                             items: [],
                         },
@@ -741,7 +741,7 @@ export const ASIDE_MENU: any = {
                 {
                     id: 'aside_menu_hr2-1',
                     level: 2,
-                    label: '영업가족',
+                    label: '영업가족등록',
                     to: '/hr/user/create',
                     items: [],
                 },

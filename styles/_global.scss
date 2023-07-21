@@ -210,6 +210,7 @@ input[type='number'] {
     display: flex;
     justify-content: center;
     align-items: center;
+    // width: 100%;
     border-radius: 0 !important;
     padding: 3px 7px !important;
 }
@@ -217,4 +218,8 @@ input[type='number'] {
 .table > :not(caption) > * > * {
     background-color: inherit;
     padding: 6px 10px !important;
+}
+// 모달내 입력창 높이 조절
+.modal-body .form-control {
+    height: $wr-list-filter-height;
 }
