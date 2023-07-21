@@ -4,7 +4,6 @@ import type { LongState } from '@reducers/long';
 import Head from 'next/head';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { END } from 'redux-saga';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -16,7 +15,6 @@ import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { wrapper } from '@store/redux';
-import { getLongRequest } from '@actions/long/get-long.action';
 import { PaysTabpanel } from '@partials/long/tabpanels/Pays';
 import { StateHistoryTabpanel } from '@partials/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/long/tabpanels/ChangeHistory';
@@ -25,17 +23,14 @@ import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { EtcsTabpanel } from '@partials/long/tabpanels/Etcs';
 import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { UserHistoryModal } from '@components/modal/UserHistory';
-import hrsService from '@services/hrsService';
 import longsService from '@services/longsService';
 import {
-    BIRTH_TYPE,
     CON_STATUS,
     INSU_COMP,
     INSU_DURATION,
     PAY_CYCLE,
     PAY_STATUS,
 } from '@constants/selectOption';
-import { commonAxiosErrorHandler } from '@utils/error';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const dispatch = useDispatch();

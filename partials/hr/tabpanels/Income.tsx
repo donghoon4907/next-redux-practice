@@ -1,14 +1,10 @@
 import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import { MyTable } from '@components/table';
-import { useColumn } from '@hooks/use-column';
-import { LONG_COL_PERFORMANCE } from '@constants/column';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 import variables from '@styles/_variables.module.scss';
 import { MyInput } from '@components/input';
-import { MyLabel } from '@components/label';
 import { MyRadio } from '@components/radio';
 import { MyCheckbox } from '@components/checkbox';
 import { MyButton } from '@components/button';

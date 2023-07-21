@@ -67,7 +67,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
     ({ dispatch }) =>
         async ({ Component, ctx, router }) => {
             const { req, res } = ctx;
-
+            // 서버에서만 실행
             if (req && res) {
                 const token = getCookie(process.env.COOKIE_TOKEN_KEY || '', {
                     req,
@@ -76,14 +76,13 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                 // axios 초기화
                 initialzeBackendAxios(token);
                 // permission 제외 페이지
-                const excludePermissionPages = ['/login', '/404'];
+                const excludePermissionPages = ['/404'];
                 // permission
                 if (excludePermissionPages.every((v) => v !== router.route)) {
                     try {
                         const { data } = await hrsService.getPermission({
                             division: 'system',
                         });
-
                         const { user_info } = data;
                         // 특정 권한 정보가 있는 경우
                         if (user_info) {
