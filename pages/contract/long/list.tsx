@@ -39,6 +39,7 @@ import {
 } from '@constants/selectOption';
 import { MyInput } from '@components/input';
 import { useDateRangepicker } from '@hooks/use-datepicker';
+import { permissionMiddleware } from '@utils/middleware/permission';
 // import {
 //     PopoverBody,
 //     PopoverHeader,
@@ -406,33 +407,30 @@ const Longs: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    ({ dispatch, sagaTask }) =>
-        async (_) => {
-            dispatch(
-                getLongsRequest({
-                    condition: {
-                        paydate: ['2023-06-01', '2023-06-30'],
-                    },
-                    page: 1,
-                    nums: 25,
-                    successAction: getLongsSuccess,
-                }),
-            );
+    permissionMiddleware(async ({ dispatch, sagaTask }) => {
+        dispatch(
+            getLongsRequest({
+                condition: {
+                    paydate: ['2023-06-01', '2023-06-30'],
+                },
+                page: 1,
+                nums: 25,
+                successAction: getLongsSuccess,
+            }),
+        );
 
-            dispatch(
-                getOrgasRequest({
-                    idx: '1',
-                }),
-            );
+        dispatch(
+            getOrgasRequest({
+                idx: '1',
+            }),
+        );
 
-            dispatch(END);
+        dispatch(END);
 
-            await sagaTask?.toPromise();
+        await sagaTask?.toPromise();
 
-            return {
-                props: {},
-            };
-        },
+        return null;
+    }),
 );
 
 export default Longs;

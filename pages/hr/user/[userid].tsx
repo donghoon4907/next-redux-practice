@@ -25,6 +25,12 @@ import { ImageUploadModal } from '@components/modal/ImageUpload';
 import { useSelect } from '@hooks/use-select';
 import { showImageUploadModal } from '@actions/modal/image-upload.action';
 import { wrapper } from '@store/redux';
+import { permissionMiddleware } from '@utils/middleware/permission';
+import { IncomeTabpanel } from '@partials/hr/tabpanels/Income';
+import { GuaranteeTabpanel } from '@partials/hr/tabpanels/Guarantee';
+import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
+import { AuthorityTabpanel } from '@partials/hr/tabpanels/Authority';
+import { QualManageTabpanel } from '@partials/hr/tabpanels/QualManage';
 import {
     CreateUserRequestPayload,
     createUserRequest,
@@ -44,11 +50,6 @@ import {
     ESTIMATE_PHONE,
     ESTIMATE_SALES,
 } from '@constants/options/user';
-import { IncomeTabpanel } from '@partials/hr/tabpanels/Income';
-import { GuaranteeTabpanel } from '@partials/hr/tabpanels/Guarantee';
-import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
-import { AuthorityTabpanel } from '@partials/hr/tabpanels/Authority';
-import { QualManageTabpanel } from '@partials/hr/tabpanels/QualManage';
 
 const User: NextPage = () => {
     const dispatch = useDispatch();
@@ -966,17 +967,18 @@ const User: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    () => async (ctx) => {
-        const { query } = ctx;
+    permissionMiddleware(async (_, ctx) => {
+        // const { query } = ctx;
 
-        const userid = query.userid as string;
+        // const userid = query.userid as string;
 
         const output: any = {
             props: {},
         };
+
         try {
-            // const { data } = await longsService.getLong({ cidx });
-            // output.props.long = data;
+            // const { data } = await hrsService.getUser({ userid });
+            output.props.user = '';
         } catch {
             output.redirect = {
                 destination: '/404',
@@ -985,7 +987,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         return output;
-    },
+    }),
 );
 
 export default User;

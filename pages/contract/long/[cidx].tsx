@@ -31,6 +31,7 @@ import {
     PAY_CYCLE,
     PAY_STATUS,
 } from '@constants/selectOption';
+import { permissionMiddleware } from '@utils/middleware/permission';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const dispatch = useDispatch();
@@ -619,7 +620,7 @@ const Long: NextPage<LongState> = ({ long }) => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    () => async (ctx) => {
+    permissionMiddleware(async (_, ctx) => {
         const { query } = ctx;
 
         const cidx = query.cidx as string;
@@ -627,6 +628,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const output: any = {
             props: {},
         };
+
         try {
             const { data } = await longsService.getLong({ cidx });
 
@@ -639,7 +641,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         return output;
-    },
+    }),
 );
 
 export default Long;

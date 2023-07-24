@@ -8,7 +8,7 @@ import { loginRequest } from '@actions/hr/login.action';
 import { useInput } from '@hooks/use-input';
 import { useTab } from '@hooks/use-tab';
 import { wrapper } from '@store/redux';
-import hrsService from '@services/hrsService';
+import externalsService from '@services/externalsService';
 
 interface LoginPageProps {
     ip: string;
@@ -135,45 +135,22 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    ({ getState }) =>
-        async ({ req }) => {
-            const { hr } = getState();
+    (_) => async (_) => {
+        let ip = '';
+        try {
+            const { data } = await externalsService.getIp({ isIPv6: true });
 
-            const output: any = {
-                props: {},
-            };
-            // 로그인한 상태인 경우
-            if (hr.loggedInUser) {
-                output.redirect = {
-                    destination: '/contract/long/list',
-                    permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
-                };
-            } else {
-                if (req) {
-                    const ipAddress =
-                        req.headers['x-forwarded-for'] ||
-                        req.connection.remoteAddress;
+            ip = data.ip;
+        } catch {
+            console.log('[ERROR|LOGIN:getIp] - 해당 사용자는 IPv6환경이 아님');
+        }
 
-                    const isIPv6 = ipAddress?.includes(':') || false;
-
-                    try {
-                        const { data } = await hrsService.getIp({ isIPv6 });
-
-                        const { ip } = data;
-
-                        output.props.ip = ip;
-                    } catch {
-                        // ip 조회 실패시 로그인 페이지 리다이렉션
-                        output.redirect = {
-                            destination: '/login',
-                            permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
-                        };
-                    }
-                }
-            }
-
-            return output;
-        },
+        return {
+            props: {
+                ip,
+            },
+        };
+    },
 );
 
 export default Login;

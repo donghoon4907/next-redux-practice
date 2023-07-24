@@ -6,7 +6,6 @@ import type { UploadState } from '@reducers/upload';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { END } from 'redux-saga';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { MySelect } from '@components/select';
 import { HR_DETAIL_TABS } from '@constants/tab';
@@ -25,7 +24,8 @@ import { SelectDepartModal } from '@components/modal/SelectDepart';
 import { ImageUploadModal } from '@components/modal/ImageUpload';
 import { useSelect } from '@hooks/use-select';
 import { showImageUploadModal } from '@actions/modal/image-upload.action';
-// import { wrapper } from '@store/redux';
+import { wrapper } from '@store/redux';
+import { permissionMiddleware } from '@utils/middleware/permission';
 import {
     CreateUserRequestPayload,
     createUserRequest,
@@ -904,17 +904,8 @@ const CreateUser: NextPage = () => {
     );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//     ({ dispatch, sagaTask }) =>
-//         async (_) => {
-//             dispatch(END);
-
-//             await sagaTask?.toPromise();
-
-//             return {
-//                 props: {},
-//             };
-//         },
-// );
+export const getServerSideProps = wrapper.getServerSideProps(
+    permissionMiddleware(),
+);
 
 export default CreateUser;

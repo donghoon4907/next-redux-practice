@@ -9,7 +9,7 @@
         height: $wr-tab-size;
         padding-left: 0;
         display: flex;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
     }
 
     &__line {
@@ -24,6 +24,7 @@
         align-items: center;
         height: 100%;
         color: inherit;
+        white-space: nowrap;
 
         // 단독인 경우
         &:not(.single) {

@@ -19,7 +19,8 @@ import { isNumberic } from '@utils/validation';
 import { CoreSelectOption } from '@interfaces/core';
 import { MyFooter } from '@components/footer';
 import { MyLabel } from '@components/label';
-// import { wrapper } from '@store/redux';
+import { wrapper } from '@store/redux';
+import { permissionMiddleware } from '@utils/middleware/permission';
 
 function getGender(residentNumber: string) {
     var genderNumber = parseInt(residentNumber);
@@ -2029,15 +2030,8 @@ const ComparisonEstimate: NextPage = () => {
     );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//     ({ dispatch, sagaTask }) =>
-//         async () => {
-//             dispatch(END);
-
-//             await sagaTask?.toPromise();
-
-//             return { props: {} };
-//         },
-// );
+export const getServerSideProps = wrapper.getServerSideProps(
+    permissionMiddleware(),
+);
 
 export default ComparisonEstimate;

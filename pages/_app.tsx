@@ -76,9 +76,9 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                 // axios 초기화
                 initialzeBackendAxios(token);
                 // permission 제외 페이지
-                const excludePermissionPages = ['/404'];
+                const excludePermissionPages = ['/', '/login', '/404'];
                 // permission
-                if (excludePermissionPages.every((v) => v !== router.route)) {
+                if (!excludePermissionPages.includes(router.route)) {
                     try {
                         const { data } = await hrsService.getPermission({
                             division: 'system',
@@ -87,15 +87,8 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                         // 특정 권한 정보가 있는 경우
                         if (user_info) {
                             dispatch(updatePermission(data));
-                        } else {
-                            throw new Error();
                         }
-                    } catch {
-                        // 로그인 페이지로 리다이렉션
-                        res.writeHead(302, { Location: '/login' });
-
-                        res.end();
-                    }
+                    } catch {}
                 }
             }
 
