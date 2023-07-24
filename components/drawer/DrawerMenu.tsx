@@ -7,7 +7,7 @@ import {
 } from 'reactstrap';
 // import { useDrawer } from '@hooks/use-drawer';
 import { CoreMenuOption } from '@interfaces/core';
-import { useTab } from '@hooks/use-tab';
+import { useLinkTab } from '@hooks/use-tab';
 
 interface Props {
     /**
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export const DrawerMenu: FC<Props> = ({ menu }) => {
-    const tab = useTab();
+    const tab = useLinkTab();
 
     // const { onToggle } = useDrawer();
 

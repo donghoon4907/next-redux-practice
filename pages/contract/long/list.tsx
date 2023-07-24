@@ -20,11 +20,11 @@ import { SearchInput } from '@components/input/Search';
 import { MyLayout } from '@components/Layout';
 import { MyFooter } from '@components/footer';
 import { useColumn } from '@hooks/use-column';
-import { useTab } from '@hooks/use-tab';
+import { useLinkTab } from '@hooks/use-tab';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { HrState } from '@reducers/hr';
 import { useSelect } from '@hooks/use-select';
-import { getFcsRequest } from '@actions/hr/get-fcs';
+import { getUsersRequest } from '@actions/hr/get-users';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import coreConstants from '@constants/core';
 import {
@@ -50,18 +50,20 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 const Longs: NextPage = () => {
     const dispatch = useDispatch();
 
-    const { orgas, fcs } = useSelector<AppState, HrState>((props) => props.hr);
+    const { orgas, users } = useSelector<AppState, HrState>(
+        (props) => props.hr,
+    );
 
     const { longs } = useSelector<AppState, LongState>((props) => props.long);
 
-    const tab = useTab();
+    const tab = useLinkTab();
 
     const columns = useColumn(longs.fields);
 
     // 검색필터 - 조직
     const [orga, setOrga] = useState<CoreSelectOption | null>(null);
     // 검색필터 - 영업가족
-    const [fc] = useSelect(fcs, null);
+    const [user] = useSelect(users, null);
     // 검색필터 - 회차
     const [beforeRound] = useNumbericInput('1', { addComma: true });
     const [afterRound] = useNumbericInput('1', { addComma: true });
@@ -87,7 +89,7 @@ const Longs: NextPage = () => {
         setOrga(org);
 
         if (org !== null) {
-            dispatch(getFcsRequest({ idx: org.value }));
+            dispatch(getUsersRequest({ idx: org.value }));
         }
     };
 
@@ -159,7 +161,7 @@ const Longs: NextPage = () => {
                                                 <MySelect
                                                     inputId="fc"
                                                     placeholder="선택"
-                                                    {...fc}
+                                                    {...user}
                                                 />
                                             </WithLabel>
                                         </div>

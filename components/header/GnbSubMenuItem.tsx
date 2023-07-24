@@ -4,14 +4,14 @@ import type {
     CoreProps,
     CoreLinkTabOption,
 } from '@interfaces/core';
-import { useTab } from '@hooks/use-tab';
+import { useLinkTab } from '@hooks/use-tab';
 
 interface Props extends CoreProps, Pick<CoreMenuOption, 'to'> {
     tabOption?: Omit<CoreLinkTabOption, 'to'>;
 }
 
 export const GnbSubMenuItem: FC<Props> = ({ to, tabOption, children }) => {
-    const tab = useTab();
+    const tab = useLinkTab();
 
     // const { onToggle } = useDrawer();
 

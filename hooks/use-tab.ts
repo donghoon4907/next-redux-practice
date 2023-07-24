@@ -1,7 +1,9 @@
+import type { CoreSetState, CoreTabOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
 import { TabModule } from '@utils/storage';
 
-export const useTab = () => {
+export const useLinkTab = () => {
     const router = useRouter();
 
     const fire = (id: string, label: string, to: string) => {
@@ -22,4 +24,21 @@ export const useTab = () => {
     };
 
     return { fire };
+};
+
+interface UseTabFunction {
+    (defaultValue: CoreTabOption): [
+        CoreTabOption,
+        (value: CoreTabOption) => void,
+    ];
+}
+
+export const useTab: UseTabFunction = (defaultValue) => {
+    const [tab, setTab] = useState<CoreTabOption>(defaultValue);
+
+    const onClick = (tab: CoreTabOption) => {
+        setTab(tab);
+    };
+
+    return [tab, onClick];
 };

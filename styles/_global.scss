@@ -120,13 +120,25 @@ td {
 //     display: none;
 // }
 // Datepicker - 입력창 설정
+// .rs-picker-toggle-wrapper {
+//     width: 100%;
+// }
 .rs-picker-toggle {
     border-radius: 0 !important;
     border: 1px solid $wr-divider-color-300 !important;
-
+    // display: flex !important;
+    // justify-content: flex-start !important;
+    // align-items: center;
+    // height: 100%;
     // &:hover {
     //     border: 1px solid $wr-hover-color !important;
     // }
+}
+
+.rs-picker-toggle-clean {
+    top: 50% !important;
+    right: $wr-gutter-size !important;
+    transform: translate3d(0, -50%, 0);
 }
 .rs-picker-default .rs-picker-toggle.rs-btn {
     padding-left: 6px !important;
@@ -178,7 +190,7 @@ td {
 
 /* Custom Bootstrap */
 // grid gutter 제거
-[class^='col'] {
+[class*='col'] {
     padding: 0 !important;
 }
 

@@ -1,4 +1,4 @@
-export type Fc = {
+export type User = {
     userid: string;
     name: string;
 };

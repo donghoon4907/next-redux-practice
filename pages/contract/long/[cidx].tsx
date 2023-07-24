@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import type { CoreTabOption } from '@interfaces/core';
 import type { LongState } from '@reducers/long';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -15,6 +14,7 @@ import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { wrapper } from '@store/redux';
+import { permissionMiddleware } from '@utils/middleware/permission';
 import { PaysTabpanel } from '@partials/long/tabpanels/Pays';
 import { StateHistoryTabpanel } from '@partials/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/long/tabpanels/ChangeHistory';
@@ -24,6 +24,7 @@ import { EtcsTabpanel } from '@partials/long/tabpanels/Etcs';
 import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import longsService from '@services/longsService';
+import { useTab } from '@hooks/use-tab';
 import {
     CON_STATUS,
     INSU_COMP,
@@ -31,14 +32,15 @@ import {
     PAY_CYCLE,
     PAY_STATUS,
 } from '@constants/selectOption';
-import { permissionMiddleware } from '@utils/middleware/permission';
 
 const Long: NextPage<LongState> = ({ long }) => {
+    const displayName = 'wr-pages-long-detail';
+
     const dispatch = useDispatch();
 
     // const createUser = useApi(createUserRequest);
     // 탭 관리
-    const [tab, setTab] = useState<CoreTabOption>(LONG_DETAIL_TABS[0]);
+    const [tab, setTab] = useTab(LONG_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(false);
     // 보험사
@@ -103,10 +105,6 @@ const Long: NextPage<LongState> = ({ long }) => {
     // 변경 내역 추가 요청한 레코드 수
     const [changeHisAddCount, setChangeHisAddCount] = useState(0);
 
-    const handleClickTab = (tab: CoreTabOption) => {
-        setTab(tab);
-    };
-
     const handleIncrementPaysAddCount = () => {
         setPaysAddCount((prev) => prev + 1);
     };
@@ -160,12 +158,16 @@ const Long: NextPage<LongState> = ({ long }) => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-long-detail row">
+                <div className={`${displayName} row`}>
                     <div className="col-5">
-                        <div className="wr-pages-long-detail__left wr-frame__section">
-                            <div className="wr-pages-long-detail__block">
+                        <div
+                            className={`${displayName}__left wr-frame__section`}
+                        >
+                            <div className={`${displayName}__block`}>
                                 <div className="wr-group">
-                                    <span className="wr-pages-long-detail__department">
+                                    <span
+                                        className={`${displayName}__department`}
+                                    >
                                         {`${long.orga} ${long.fc}`}
                                     </span>
                                     <MyButton
@@ -177,7 +179,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     </MyButton>
                                 </div>
                             </div>
-                            <div className="wr-pages-long-detail__block">
+                            <div className={`${displayName}__block`}>
                                 <div className="row">
                                     <div className="col-6">
                                         <WithLabel
@@ -261,7 +263,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-long-detail__block">
+                            <div className={`${displayName}__block`}>
                                 <div className="row">
                                     <div className="col-6">
                                         <WithLabel
@@ -285,7 +287,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                 label="보험기간"
                                                 type={labelType}
                                             >
-                                                <div className="wr-pages-long-detail__with">
+                                                <div
+                                                    className={`${displayName}__with`}
+                                                >
                                                     {/* <MySelect
                                                         inputId="bo_du"
                                                         options={INSU_DURATION}
@@ -342,7 +346,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                 label="납입기간"
                                                 type={labelType}
                                             >
-                                                <div className="wr-pages-long-detail__with">
+                                                <div
+                                                    className={`${displayName}__with`}
+                                                >
                                                     <MySelect
                                                         inputId="pay_du"
                                                         placeholder={'선택'}
@@ -372,7 +378,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                                             label="계약상태"
                                             type={labelType}
                                         >
-                                            <div className="wr-pages-long-detail__with">
+                                            <div
+                                                className={`${displayName}__with`}
+                                            >
                                                 <MyInput
                                                     type="text"
                                                     id="status_date"
@@ -409,7 +417,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                                             label="수금상태"
                                             type={labelType}
                                         >
-                                            <div className="wr-pages-long-detail__with">
+                                            <div
+                                                className={`${displayName}__with`}
+                                            >
                                                 <MyInput
                                                     type="text"
                                                     id="ps_date"
@@ -465,7 +475,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-long-detail__block">
+                            <div className={`${displayName}__block`}>
                                 <div className="row">
                                     <div className="col-6">
                                         <WithLabel
@@ -508,7 +518,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                                             label="월납환산수정P"
                                             type={labelType}
                                         >
-                                            <div className="wr-pages-long-detail__with">
+                                            <div
+                                                className={`${displayName}__with`}
+                                            >
                                                 <MyInput
                                                     type="text"
                                                     className="text-end"
@@ -532,19 +544,21 @@ const Long: NextPage<LongState> = ({ long }) => {
                         </div>
                     </div>
                     <div className="col-7">
-                        <div className="wr-pages-long-detail__right">
+                        <div className={`${displayName}__right`}>
                             <ul className="wr-tab__wrap" role="tablist">
                                 {LONG_DETAIL_TABS.map((v) => (
                                     <MyTab
                                         key={v.id}
-                                        onClick={handleClickTab}
+                                        onClick={setTab}
                                         isActive={v.id === tab.id}
                                         {...v}
                                     />
                                 ))}
                                 <li className="wr-tab__line"></li>
                             </ul>
-                            <div className="wr-pages-long-detail__body wr-frame__tabbody">
+                            <div
+                                className={`${displayName}__body wr-frame__tabbody`}
+                            >
                                 <PaysTabpanel
                                     id="tabpanelPays"
                                     tabId="tabPays"
@@ -591,7 +605,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                 <MyFooter>
                     <div className="wr-footer__between">
                         <div></div>
-                        <div className="wr-pages-long-detail__submit">
+                        <div className={`${displayName}__submit`}>
                             {editable && (
                                 <button
                                     className="btn btn-secondary btn-sm"

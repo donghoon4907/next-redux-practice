@@ -13,7 +13,7 @@ export interface CreateUserRequestPayload extends CorePayload {
     name: string;
     mobile: string;
     orga_idx: number;
-    nick?: string;
+    nickname?: string;
     idnum1?: string;
     title?: string;
     birthday?: string;

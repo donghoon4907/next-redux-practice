@@ -1,5 +1,5 @@
 import type { Action } from 'redux';
-import type { Fc } from '@models/fc';
+import type { Fc } from '@models/user';
 
 export const VIEWER_KEY = 'WR-VIEWER';
 

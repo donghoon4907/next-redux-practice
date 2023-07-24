@@ -1,6 +1,6 @@
 import type { Reducer } from 'redux';
 import type { GetPostsSuccessPayload } from '@actions/board/get-posts.action';
-import type { Fc } from '@models/fc';
+import type { Fc } from '@models/user';
 import produce from 'immer';
 import { GetPostsActionTypes } from '@actions/board/get-posts.action';
 import { GetPostActionTypes } from '@actions/board/get-post.action';

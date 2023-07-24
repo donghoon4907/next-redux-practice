@@ -1,12 +1,12 @@
 import type { FC } from 'react';
-import type { CoreTabOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { UploadState } from '@reducers/upload';
-import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { DatePicker } from 'rsuite';
+import dayjs from 'dayjs';
 import { MySelect } from '@components/select';
 import { HR_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -14,17 +14,21 @@ import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
 import { MyLayout } from '@components/Layout';
-import { useInput } from '@hooks/use-input';
+import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useApi } from '@hooks/use-api';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { MyFooter } from '@components/footer';
 import { MyButton } from '@components/button';
 import { SelectDepartModal } from '@components/modal/SelectDepart';
 import { ImageUploadModal } from '@components/modal/ImageUpload';
 import { useSelect } from '@hooks/use-select';
 import { showImageUploadModal } from '@actions/modal/image-upload.action';
-import { wrapper } from '@store/redux';
+import { IncomeTabpanel } from '@partials/hr/tabpanels/Income';
+import { GuaranteeTabpanel } from '@partials/hr/tabpanels/Guarantee';
+import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
+import { AuthorityTabpanel } from '@partials/hr/tabpanels/Authority';
+import { QualManageTabpanel } from '@partials/hr/tabpanels/QualManage';
+import { useTab } from '@hooks/use-tab';
 import {
     CreateUserRequestPayload,
     createUserRequest,
@@ -44,13 +48,187 @@ import {
     ESTIMATE_PHONE,
     ESTIMATE_SALES,
 } from '@constants/options/user';
-import { IncomeTabpanel } from '@partials/hr/tabpanels/Income';
-import { GuaranteeTabpanel } from '@partials/hr/tabpanels/Guarantee';
-import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
-import { AuthorityTabpanel } from '@partials/hr/tabpanels/Authority';
-import { QualManageTabpanel } from '@partials/hr/tabpanels/QualManage';
+import { useDatepicker } from '@hooks/use-datepicker';
+import { CoreSelectOption } from '@interfaces/core';
 
-export const UserForm: FC = () => {
+type Mode = 'create' | 'update';
+interface Props {
+    /**
+     * 모드: true(수정) / false(등록)
+     */
+    mode: Mode;
+    /**
+     * 사원번호
+     */
+    id?: string;
+    /**
+     * 별칭 기본 값
+     */
+    defaultNick?: string;
+    /**
+     * 이름 기본 값
+     */
+    defaultName?: string;
+    /**
+     * 직함 기본 값
+     */
+    defaultTitle?: string;
+    /**
+     * 주민번호 기본 값
+     */
+    defaultIdNum1?: string;
+    /**
+     * 생년월일 기본 값
+     */
+    defaultBirthday?: Date;
+    /**
+     * 생일 타입 기본 값
+     */
+    defaultBirthType?: CoreSelectOption;
+    /**
+     * 핸드폰 기본 값
+     */
+    defaultPhone?: string;
+    /**
+     * 핸드폰 회사 기본 값
+     */
+    defaultMobileCom?: CoreSelectOption;
+    /**
+     * 내선번호 기본 값
+     */
+    defaultTelephone?: string;
+    /**
+     * 직통번호 기본 값
+     */
+    defaultTelDirect?: string;
+    /**
+     * 이메일 기본 값
+     */
+    defaultEmail?: string;
+    /**
+     * 이메일 회사 기본 값
+     */
+    defaultEmailCom?: CoreSelectOption;
+    /**
+     * 우편번호 기본 값
+     */
+    defaultPostCode?: string;
+    /**
+     * 주소1 기본 값
+     */
+    defaultAddress1?: string;
+    /**
+     * 주소2 기본 값
+     */
+    defaultAddress2?: string;
+    /**
+     * 상세주소 기본 값
+     */
+    defaultAddress3?: string;
+    /**
+     * 영업 구분 기본 값
+     */
+    defaultUserType?: CoreSelectOption;
+    /**
+     * 재직 현황 기본 값
+     */
+    defaultStatus?: CoreSelectOption;
+    /**
+     * 입사일 기본 값
+     */
+    defaultIndate?: Date;
+    /**
+     * 퇴사일 기본 값
+     */
+    defaultOutdate?: Date;
+    /**
+     * 비교견적 설정 - 회사명 기본 값
+     */
+    defaultEstComNm?: string;
+    /**
+     * 비교견적 설정 - 회사명 타입 기본 값
+     */
+    defaultEstComInputType?: CoreSelectOption;
+    /**
+     * 비교견적 설정 - 영업명 기본 값
+     */
+    defaultEstSalesNm?: string;
+    /**
+     * 비교견적 설정 - 영업명 타입 기본 값
+     */
+    defaultEstSalesNmInputType?: CoreSelectOption;
+    /**
+     * 비교견적 설정 - 대표전화 기본 값
+     */
+    defaultEstPhone?: string;
+    /**
+     * 비교견적 설정 - 대표전화 타입 기본 값
+     */
+    defaultEstPhoneInputType?: CoreSelectOption;
+    /**
+     * 비교견적 설정 - 팩스번호 기본 값
+     */
+    defaultEstFax?: string;
+    /**
+     * 비교견적 설정 - 팩스번호 타입 기본 값
+     */
+    defaultEstFaxInputType?: CoreSelectOption;
+    /**
+     * 비교견적 설정 - 직통전화 기본 값
+     */
+    defaultEstDirect?: string;
+    /**
+     * 비교견적 설정 - 직통전화 타입 기본 값
+     */
+    defaultEstDirectInputType?: CoreSelectOption;
+    /**
+     * 비교견적 설정 - 표기주소 기본 값
+     */
+    defaultEstAddr?: string;
+    /**
+     * 비교견적 설정 - 표기주소 타입 기본 값
+     */
+    defaultEstAddrInputType?: CoreSelectOption;
+}
+
+export const UserForm: FC<Props> = ({
+    mode,
+    id = '',
+    defaultNick = '',
+    defaultName = '',
+    defaultTitle = '',
+    defaultIdNum1 = '',
+    defaultBirthday = new Date(),
+    defaultBirthType = BIRTH_TYPE[0],
+    defaultPhone = '',
+    defaultMobileCom = MOBILE_COM[0],
+    defaultTelephone = '',
+    defaultTelDirect = '',
+    defaultEmail = '',
+    defaultEmailCom = EMAIL_COM[0],
+    defaultPostCode = '',
+    defaultAddress1 = '',
+    defaultAddress2 = '',
+    defaultAddress3 = '',
+    defaultUserType = USER_TYPE[0],
+    defaultStatus = EMP_STATUS[0],
+    defaultIndate = new Date(),
+    defaultOutdate = new Date(),
+    defaultEstComNm = '',
+    defaultEstComInputType = ESTIMATE_COMP[0],
+    defaultEstSalesNm = '',
+    defaultEstSalesNmInputType = ESTIMATE_SALES[0],
+    defaultEstPhone = '',
+    defaultEstPhoneInputType = ESTIMATE_PHONE[0],
+    defaultEstFax = '',
+    defaultEstFaxInputType = ESTIMATE_FAX[0],
+    defaultEstDirect = '',
+    defaultEstDirectInputType = ESTIMATE_DIRECT[0],
+    defaultEstAddr = '',
+    defaultEstAddrInputType = ESTIMATE_ADDRESS[0],
+}) => {
+    const displayName = 'wr-pages-hr-detail';
+
     const dispatch = useDispatch();
 
     const { selectedOrga } = useSelector<AppState, HrState>(
@@ -64,72 +242,86 @@ export const UserForm: FC = () => {
     const open = useDaumPostcodePopup();
 
     const createUser = useApi(createUserRequest);
+
+    // const updateUser = useApi(updateUserRequest);
     // 탭 관리
-    const [tab, setTab] = useState<CoreTabOption>(HR_DETAIL_TABS[0]);
+    const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(false);
     // 별칭
-    const [nick] = useInput('');
+    const [nick] = useInput(defaultNick);
     // 이름
-    const [name] = useInput('');
+    const [name] = useInput(defaultName);
     // 직함
-    const [title] = useInput('');
+    const [title] = useInput(defaultTitle);
     // 주민번호
-    const [idnum1] = useInput('');
+    const [idnum1] = useNumbericInput(defaultIdNum1);
     // 생년월일
-    const [birthday] = useInput('');
+    const [birthday] = useDatepicker(defaultBirthday);
     // 양력 or 음력
-    const [birthType] = useSelect(BIRTH_TYPE);
+    const [birthType] = useSelect(BIRTH_TYPE, defaultBirthType);
     // 핸드폰
-    const [mobile] = useInput('');
+    const [mobile] = useInput(defaultPhone, { isNumWithHyphen: true });
     // 통신사
-    const [mobileCom] = useSelect(MOBILE_COM);
+    const [mobileCom] = useSelect(MOBILE_COM, defaultMobileCom);
     // 내선번호
-    const [telephone] = useInput('');
+    const [telephone] = useInput(defaultTelephone, { isNumWithHyphen: true });
     // 직통번호
-    const [telDirect] = useInput('');
+    const [telDirect] = useInput(defaultTelDirect, { isNumWithHyphen: true });
     // 이메일
-    const [email] = useInput('');
-    const [emailCom] = useSelect(EMAIL_COM);
+    const [email] = useInput(defaultEmail);
+    const [emailCom] = useSelect(EMAIL_COM, defaultEmailCom);
     // 우편번호
-    const [postcode, setPostcode] = useInput('');
+    const [postcode, setPostcode] = useInput(defaultPostCode);
     // 주소 검색 1
-    const [address1, setAddress1] = useInput('');
+    const [address1, setAddress1] = useInput(defaultAddress1);
     // 주소 검색 상세
-    const [address2, setAddress2] = useInput('');
+    const [address2, setAddress2] = useInput(defaultAddress2);
     // 상세 주소
-    const [address3] = useInput('');
+    const [address3] = useInput(defaultAddress3);
     // 영업구분
-    const [userType] = useSelect(USER_TYPE);
+    const [userType] = useSelect(USER_TYPE, defaultUserType);
     // 재직현황
-    const [status] = useSelect(EMP_STATUS);
+    const [status] = useSelect(EMP_STATUS, defaultStatus);
     // 입사일
-    const [indate] = useInput('');
+    const [indate] = useDatepicker(defaultIndate);
     // 퇴사일
-    const [outdate] = useInput('');
+    const [outdate] = useDatepicker(defaultOutdate);
     // 비교견적 설정 - 회사명
-    const [estComNm] = useInput('');
-    const [estComInputType] = useSelect(ESTIMATE_COMP);
+    const [estComNm] = useInput(defaultEstComNm);
+    const [estComInputType] = useSelect(ESTIMATE_COMP, defaultEstComInputType);
     // 비교견적 설정 - 영업명
-    const [estSalesNm] = useInput('');
-    const [estSalesNmInputType] = useSelect(ESTIMATE_SALES);
+    const [estSalesNm] = useInput(defaultEstSalesNm);
+    const [estSalesNmInputType] = useSelect(
+        ESTIMATE_SALES,
+        defaultEstSalesNmInputType,
+    );
     // 비교견적 설정 - 대표전화
-    const [estPhone] = useInput('');
-    const [estPhoneInputType] = useSelect(ESTIMATE_PHONE);
+    const [estPhone] = useInput(defaultEstPhone, { isNumWithHyphen: true });
+    const [estPhoneInputType] = useSelect(
+        ESTIMATE_PHONE,
+        defaultEstPhoneInputType,
+    );
     // 비교견적 설정 - 팩스번호
-    const [estFax] = useInput('');
-    const [estFaxInputType] = useSelect(ESTIMATE_FAX);
+    const [estFax] = useInput(defaultEstFax, { isNumWithHyphen: true });
+    const [estFaxInputType] = useSelect(ESTIMATE_FAX, defaultEstFaxInputType);
     // 비교견적 설정 - 직통전화
-    const [estDirect] = useInput('');
-    const [estDirectInputType] = useSelect(ESTIMATE_DIRECT);
+    const [estDirect] = useInput(defaultEstDirect, { isNumWithHyphen: true });
+    const [estDirectInputType] = useSelect(
+        ESTIMATE_DIRECT,
+        defaultEstDirectInputType,
+    );
     // 비교견적 설정 - 표기주소
-    const [estAddr] = useInput('');
-    const [estAddrInputType] = useSelect(ESTIMATE_ADDRESS);
-
-    const handleClickTab = (tab: CoreTabOption) => {
-        setTab(tab);
+    const [estAddr] = useInput(defaultEstAddr);
+    const [estAddrInputType] = useSelect(
+        ESTIMATE_ADDRESS,
+        defaultEstAddrInputType,
+    );
+    // 우편번호 클릭 핸들러
+    const handleClickPostcode = () => {
+        open({ onComplete: handleCompletePostcode });
     };
-
+    // 우편번호 선택 완료 핸들러
     const handleCompletePostcode = (data: any) => {
         // let fullAddress = data.address;
         let extraAddress = '';
@@ -154,12 +346,34 @@ export const UserForm: FC = () => {
 
         setAddress2(`(${extraAddress})`);
     };
+    // 부서변경 클릭 핸들러
+    const handleClickDepart = () => {
+        dispatch(showDepartSearchModal());
+    };
+    // 프로필 사진 클릭 핸들러
+    const handleClickImage = () => {
+        dispatch(showImageUploadModal());
+    };
+    // 수정 버튼 클릭 핸들러
+    const handleClickModify = () => {
+        setEditable(true);
+    };
+    // 취소 버튼 클릭 핸들러
+    const handleClickCancel = () => {
+        const tf = confirm('수정을 취소하시겠습니까?');
 
-    const handleClickPostcode = () => {
-        open({ onComplete: handleCompletePostcode });
+        if (tf) {
+            setEditable(false);
+        }
     };
 
-    const handleSubmit = () => {
+    const handleCreate = () => {};
+
+    const handleUpdate = () => {};
+
+    const createPayload = () => {
+        const phoneNumberRegex = /^01(?:0|1|[6-9])-(?:\d{3,4})-\d{4}$/;
+
         if (name.value === '') {
             return alert('이름을 입력하세요.');
         }
@@ -167,8 +381,6 @@ export const UserForm: FC = () => {
         if (mobile.value === '') {
             return alert('핸드폰을 입력하세요.');
         } else {
-            const phoneNumberRegex = /^01(?:0|1|[6-9])-(?:\d{3,4})-\d{4}$/;
-
             if (!phoneNumberRegex.test(mobile.value)) {
                 return alert('핸드폰을 확인하세요.');
             }
@@ -178,10 +390,15 @@ export const UserForm: FC = () => {
             return alert('부서를 선택하세요.');
         }
 
+        if (idnum1.value === '' || idnum1.value.length === 13) {
+            return alert('주민번호를 확인하세요.');
+        }
+
         const payload: CreateUserRequestPayload = {
             name: name.value,
             mobile: mobile.value,
             orga_idx: +selectedOrga.value,
+            idnum1: idnum1.value,
             est_val: {
                 comNm: estComNm.value,
                 salesNm: estSalesNm.value,
@@ -193,7 +410,7 @@ export const UserForm: FC = () => {
         };
 
         if (nick.value !== '') {
-            payload['nick'] = nick.value;
+            payload['nickname'] = nick.value;
         }
 
         if (title.value !== '') {
@@ -204,8 +421,8 @@ export const UserForm: FC = () => {
             payload['idnum1'] = idnum1.value;
         }
 
-        if (birthday.value !== '') {
-            payload['birthday'] = birthday.value;
+        if (birthday.value) {
+            payload['birthday'] = dayjs(birthday.value).format('YYYY-MM-DD');
         }
 
         if (birthType.value?.value === 'Y') {
@@ -252,55 +469,29 @@ export const UserForm: FC = () => {
             payload['address3'] = address3.value;
         }
 
-        if (indate.value !== '') {
-            payload['indate'] = indate.value;
+        if (indate.value) {
+            payload['indate'] = dayjs(indate.value).format('YYYY-MM-DD');
         }
 
-        if (outdate.value !== '') {
-            payload['outdate'] = outdate.value;
+        if (outdate.value) {
+            payload['outdate'] = dayjs(outdate.value).format('YYYY-MM-DD');
         }
 
-        createUser(payload);
+        return payload;
     };
-
-    const handleClickDepart = () => {
-        dispatch(showDepartSearchModal());
-    };
-
-    const handleClickImage = () => {
-        dispatch(showImageUploadModal());
-    };
-
-    const handleModify = () => {
-        setEditable(true);
-    };
-
-    const handleCancelModify = () => {
-        const tf = confirm('수정을 취소하시겠습니까?');
-
-        if (tf) {
-            setEditable(false);
-        }
-    };
-
-    useEffect(() => {
-        dispatch(
-            getOrgasRequest({
-                idx: '1',
-            }),
-        );
-    }, [dispatch]);
 
     return (
         <>
             <MyLayout>
-                <div className="wr-pages-hr-detail row">
-                    <div className="col wr-pages-hr-detail__left">
+                <div className={`${displayName} row`}>
+                    <div className={`${displayName}__left col`}>
                         <div className="wr-frame__section">
-                            <div className="wr-pages-hr-detail__block">
-                                <div className="wr-pages-hr-detail__content">
+                            <div className={`${displayName}__block`}>
+                                <div className={`${displayName}__content`}>
                                     <div className="wr-group">
-                                        <span className="wr-pages-hr-detail__department">
+                                        <span
+                                            className={`${displayName}__department`}
+                                        >
                                             {selectedOrga.label
                                                 ? selectedOrga.label
                                                 : '부서를 선택하세요'}
@@ -315,8 +506,8 @@ export const UserForm: FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-hr-detail__block">
-                                <div className="wr-pages-hr-detail__content">
+                            <div className={`${displayName}__block`}>
+                                <div className={`${displayName}__content`}>
                                     <div className="row">
                                         <div className="col-8">
                                             <WithLabel
@@ -364,7 +555,7 @@ export const UserForm: FC = () => {
                                                 <MyInput
                                                     type="text"
                                                     id="sNum"
-                                                    placeholder="000000-0000000"
+                                                    placeholder="주민번호"
                                                     {...idnum1}
                                                     // button={{
                                                     //     type: 'button',
@@ -381,21 +572,29 @@ export const UserForm: FC = () => {
                                                 label="생년월일"
                                                 type="active"
                                             >
-                                                <div className="wr-pages-hr-detail__with">
-                                                    <MyInput
-                                                        type="text"
-                                                        id="birthday"
-                                                        placeholder="YYYY-MM-DD"
+                                                <div
+                                                    className={`${displayName}__with`}
+                                                >
+                                                    <DatePicker
+                                                        oneTap
+                                                        format="yyyy-MM-dd"
+                                                        style={{ width: 160 }}
+                                                        size="md"
+                                                        placeholder="생년월일"
                                                         {...birthday}
                                                     />
-                                                    <MySelect
-                                                        placeholder={'선택'}
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        {...birthType}
-                                                    />
+                                                    <div style={{ width: 160 }}>
+                                                        <MySelect
+                                                            placeholder={'선택'}
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            {...birthType}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </WithLabel>
                                             <WithLabel
@@ -404,7 +603,9 @@ export const UserForm: FC = () => {
                                                 type="active"
                                                 isRequired
                                             >
-                                                <div className="wr-pages-hr-detail__with">
+                                                <div
+                                                    className={`${displayName}__with`}
+                                                >
                                                     <MyInput
                                                         type="text"
                                                         id="mobile"
@@ -426,7 +627,9 @@ export const UserForm: FC = () => {
                                                 label="내선번호"
                                                 type="active"
                                             >
-                                                <div className="wr-pages-hr-detail__with">
+                                                <div
+                                                    className={`${displayName}__with`}
+                                                >
                                                     <MyInput
                                                         type="text"
                                                         id="telephone"
@@ -445,7 +648,9 @@ export const UserForm: FC = () => {
                                                 label="이메일"
                                                 type="active"
                                             >
-                                                <div className="wr-pages-hr-detail__with">
+                                                <div
+                                                    className={`${displayName}__with`}
+                                                >
                                                     <MyInput
                                                         type="text"
                                                         id="email"
@@ -465,7 +670,9 @@ export const UserForm: FC = () => {
                                         </div>
                                         <div className="col-4">
                                             <div className="wr-ml">
-                                                <div className="wr-pages-hr-detail__avatar wr-mb">
+                                                <div
+                                                    className={`${displayName}__avatar wr-mb`}
+                                                >
                                                     <img
                                                         src={
                                                             lastUploadedPortraitImage
@@ -484,7 +691,8 @@ export const UserForm: FC = () => {
                                                 >
                                                     <MyInput
                                                         type="text"
-                                                        placeholder="W0000"
+                                                        placeholder="사원번호"
+                                                        value={id}
                                                         readOnly
                                                     />
                                                 </WithLabel>
@@ -523,15 +731,17 @@ export const UserForm: FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-hr-detail__block">
-                                <div className="wr-pages-hr-detail__content">
+                            <div className={`${displayName}__block`}>
+                                <div className={`${displayName}__content`}>
                                     <div className="row wr-mb">
                                         <div className="col-6">
                                             <WithLabel
                                                 label="주소"
                                                 type="active"
                                             >
-                                                <div className="wr-pages-hr-detail__with">
+                                                <div
+                                                    className={`${displayName}__with`}
+                                                >
                                                     <MyInput
                                                         type="text"
                                                         placeholder="우편번호"
@@ -540,16 +750,18 @@ export const UserForm: FC = () => {
                                                             handleClickPostcode
                                                         }
                                                         {...postcode}
-                                                        // button={{
-                                                        //     type: 'button',
-                                                        //     children: (
-                                                        //         <>
-                                                        //             <span>
-                                                        //                 찾기
-                                                        //             </span>
-                                                        //         </>
-                                                        //     ),
-                                                        // }}
+                                                        button={{
+                                                            type: 'button',
+                                                            onClick:
+                                                                handleClickPostcode,
+                                                            children: (
+                                                                <>
+                                                                    <span>
+                                                                        찾기
+                                                                    </span>
+                                                                </>
+                                                            ),
+                                                        }}
                                                     />
                                                 </div>
                                             </WithLabel>
@@ -558,7 +770,7 @@ export const UserForm: FC = () => {
                                             <div className="wr-ml">
                                                 <MyInput
                                                     type="text"
-                                                    placeholder=""
+                                                    placeholder="주소1"
                                                     readOnly
                                                     {...address1}
                                                 />
@@ -584,7 +796,7 @@ export const UserForm: FC = () => {
                                             <div className="wr-ml">
                                                 <MyInput
                                                     type="text"
-                                                    placeholder=""
+                                                    placeholder="주소2"
                                                     readOnly
                                                     {...address2}
                                                 />
@@ -598,10 +810,14 @@ export const UserForm: FC = () => {
                                                 label="입사일"
                                                 type="active"
                                             >
-                                                <MyInput
-                                                    type="text"
-                                                    id="indate"
-                                                    placeholder="YYYY-MM-DD"
+                                                <DatePicker
+                                                    oneTap
+                                                    format="yyyy-MM-dd"
+                                                    style={{
+                                                        width: '100%',
+                                                    }}
+                                                    size="md"
+                                                    placeholder="입사일"
                                                     {...indate}
                                                 />
                                             </WithLabel>
@@ -613,10 +829,14 @@ export const UserForm: FC = () => {
                                                     label="퇴사일"
                                                     type="active"
                                                 >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="outdate"
-                                                        placeholder="YYYY-MM-DD"
+                                                    <DatePicker
+                                                        oneTap
+                                                        format="yyyy-MM-dd"
+                                                        style={{
+                                                            width: '100%',
+                                                        }}
+                                                        size="md"
+                                                        placeholder="퇴사일"
                                                         {...outdate}
                                                     />
                                                 </WithLabel>
@@ -625,84 +845,11 @@ export const UserForm: FC = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-hr-detail__block">
-                                <div className="wr-pages-hr-detail__content">
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="bank"
-                                                label="은행명"
-                                                type="disable"
-                                            >
-                                                <MySelect
-                                                    inputId="bank"
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'선택'}
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={true}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="account"
-                                                    label="계좌번호"
-                                                    type="disable"
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="account"
-                                                        placeholder="계좌번호"
-                                                        readOnly
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="holder"
-                                                label="예금주"
-                                                type="disable"
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="holder"
-                                                    placeholder="예금주"
-                                                    readOnly
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'선택'}
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={true}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="wr-pages-hr-detail__block">
+                            <div className={`${displayName}__block`}>
                                 <div className="wr-pages-hr-detail__title">
                                     <strong>비교견적 설정</strong>
                                 </div>
-                                <div className="wr-pages-hr-detail__content">
+                                <div className={`${displayName}__content`}>
                                     <div className="row">
                                         <div className="col">
                                             <WithLabel
@@ -874,20 +1021,22 @@ export const UserForm: FC = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="col wr-pages-hr-detail__right">
+                    <div className={`${displayName}__right col`}>
                         <div className="wr-ml position-relative">
                             <ul className="wr-tab__wrap" role="tablist">
                                 {HR_DETAIL_TABS.map((v) => (
                                     <MyTab
                                         key={v.id}
-                                        onClick={handleClickTab}
+                                        onClick={setTab}
                                         isActive={v.id === tab.id}
                                         {...v}
                                     />
                                 ))}
                                 <li className="wr-tab__line"></li>
                             </ul>
-                            <div className="wr-pages-hr-detail__body wr-frame__tabbody">
+                            <div
+                                className={`${displayName}__body wr-frame__tabbody`}
+                            >
                                 <IncomeTabpanel
                                     id="tabpanelIncome"
                                     tabId="tabIncome"
@@ -931,22 +1080,37 @@ export const UserForm: FC = () => {
                 <MyFooter>
                     <div className="wr-footer__between">
                         <div></div>
-                        <div className="wr-pages-hr-detail__buttons">
+                        <div className={`${displayName}__buttons`}>
                             {editable && (
                                 <MyButton
                                     className="btn-secondary"
-                                    onClick={handleCancelModify}
+                                    onClick={handleClickCancel}
                                 >
                                     취소
                                 </MyButton>
                             )}
-                            <MyButton
-                                type="button"
-                                className="btn-primary"
-                                onClick={editable ? handleSubmit : handleModify}
-                            >
-                                {editable ? '변경 사항 적용' : '수정'}
-                            </MyButton>
+                            {mode === 'create' && (
+                                <MyButton
+                                    type="button"
+                                    className="btn-primary"
+                                    onClick={handleCreate}
+                                >
+                                    등록
+                                </MyButton>
+                            )}
+                            {mode === 'update' && (
+                                <MyButton
+                                    type="button"
+                                    className="btn-primary"
+                                    onClick={
+                                        editable
+                                            ? handleUpdate
+                                            : handleClickModify
+                                    }
+                                >
+                                    {editable ? '변경 사항 적용' : '수정'}
+                                </MyButton>
+                            )}
                         </div>
                     </div>
                 </MyFooter>

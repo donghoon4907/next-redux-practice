@@ -16,7 +16,6 @@ import { MyCheckbox } from '@components/checkbox';
 import { BOARD_SETTING_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { SetBodysTabpanel } from '@partials/board/tabpanels/SetBody';
-import { CoreSelectOption, CoreTabOption } from '@interfaces/core';
 import { SetFileTabpanel } from '@partials/board/tabpanels/SetFile';
 import variables from '@styles/_variables.module.scss';
 import { SetViewTabpanel } from '@partials/board/tabpanels/SetView';
@@ -24,13 +23,14 @@ import { SetViewerModal } from '@components/modal/SetViewer';
 import { wrapper } from '@store/redux';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { END } from 'redux-saga';
-import { getFcsRequest } from '@actions/hr/get-fcs';
+import { getUsersRequest } from '@actions/hr/get-users';
 import { ORGA_RANK } from '@constants/selectOption';
 import { useApi } from '@hooks/use-api';
 import { createPostRequest } from '@actions/board/create-post.action';
 import { useInput } from '@hooks/use-input';
 import { convertEscapeHtml } from '@utils/converter';
 import { useSelect } from '@hooks/use-select';
+import { useTab } from '@hooks/use-tab';
 
 const CreateBoard: NextPage = () => {
     const create = useApi(createPostRequest);
@@ -45,7 +45,7 @@ const CreateBoard: NextPage = () => {
 
     const tabBodyRef = useRef<HTMLDivElement>(null);
     // 선택된 탭
-    const [tab, setTab] = useState<CoreTabOption>(BOARD_SETTING_TABS[0]);
+    const [tab, setTab] = useTab(BOARD_SETTING_TABS[0]);
     // 에디터 내용
     const [content, setContent] = useState<string>('');
     // 업로드 파일 목록
@@ -58,10 +58,6 @@ const CreateBoard: NextPage = () => {
     const [orga] = useSelect(ORGA_RANK);
     // 태그
     const [tag] = useInput('');
-
-    const handleClickTab = (tab: CoreTabOption) => {
-        setTab(tab);
-    };
 
     const handleSubmit = () => {
         if (title.value === '') {
@@ -178,7 +174,7 @@ const CreateBoard: NextPage = () => {
                             {BOARD_SETTING_TABS.map((v) => (
                                 <MyTab
                                     key={v.id}
-                                    onClick={handleClickTab}
+                                    onClick={setTab}
                                     isActive={v.id === tab.id}
                                     {...v}
                                 />
@@ -246,7 +242,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             );
 
             dispatch(
-                getFcsRequest({
+                getUsersRequest({
                     idx: '1',
                 }),
             );

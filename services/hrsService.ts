@@ -2,7 +2,7 @@ import type { CreateUserRequestPayload } from '@actions/hr/create.action';
 import type { LoginRequestPayload } from '@actions/hr/login.action';
 import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas';
 import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
-import type { GetFcsRequestPayload } from '@actions/hr/get-fcs';
+import type { GetUsersRequestPayload } from '@actions/hr/get-users';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
 import { getBackendAxios } from '@utils/axios/backend';
 
@@ -30,7 +30,7 @@ export function getOrgas(payload: GetOrgasRequestPayload) {
     return getBackendAxios().get(`/orga/simpleOrgas/${payload.idx}`);
 }
 
-export function getFcs(payload: GetFcsRequestPayload) {
+export function getUsers(payload: GetUsersRequestPayload) {
     return getBackendAxios().get(`/orga/simpleUsers/${payload.idx}`);
 }
 
@@ -40,7 +40,7 @@ const rootServices = {
     createUser,
     getCompanies,
     getOrgas,
-    getFcs,
+    getUsers,
 };
 
 export default rootServices;

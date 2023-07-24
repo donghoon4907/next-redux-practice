@@ -3,7 +3,7 @@ import type { CoreSelectOption } from '@interfaces/core';
 import produce from 'immer';
 import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
-import { GetFcsActionTypes } from '@actions/hr/get-fcs';
+import { GetUsersActionTypes } from '@actions/hr/get-users';
 import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
 // import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
 // import { GetIpActionTypes } from '@actions/hr/get-ip.action';
@@ -21,7 +21,7 @@ export interface HrState {
     /**
      * 영업가족 조회 결과
      */
-    fcs: CoreSelectOption[];
+    users: CoreSelectOption[];
     /**
      * 선택한 부서(조직)
      */
@@ -39,7 +39,7 @@ export interface HrState {
 const initialState: HrState = {
     companies: [],
     orgas: [],
-    fcs: [],
+    users: [],
     selectedOrga: {
         value: '',
         label: '',
@@ -62,8 +62,8 @@ export const hrReducer: Reducer<HrState, any> = (
                 draft.orgas = action.payload;
                 break;
             }
-            case GetFcsActionTypes.SUCCESS: {
-                draft.fcs = action.payload;
+            case GetUsersActionTypes.SUCCESS: {
+                draft.users = action.payload;
                 break;
             }
             case DepartActionTypes.UPDATE: {

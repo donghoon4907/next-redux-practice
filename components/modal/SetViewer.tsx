@@ -1,5 +1,5 @@
 import type { FC, ChangeEvent } from 'react';
-import type { Fc } from '@models/fc';
+import type { User } from '@models/user';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
@@ -14,14 +14,14 @@ import { hideSetViewerModal } from '@actions/modal/set-viewer.action';
 import { IconWrapper } from '@components/IconWrapper';
 import { MyCheckbox } from '@components/checkbox';
 import { useApi } from '@hooks/use-api';
-import { getFcsRequest } from '@actions/hr/get-fcs';
+import { getUsersRequest } from '@actions/hr/get-users';
 import { updateViewer } from '@actions/board/set-viewer.action';
 import { BoardState } from '@reducers/board';
 
 function removeDuplicate(
-    defaultArr: Fc[],
-    targetArr: Fc[],
-    conditionArr: Fc[],
+    defaultArr: User[],
+    targetArr: User[],
+    conditionArr: User[],
 ) {
     const output = defaultArr;
     for (let i = 0; i < targetArr.length; i++) {
@@ -46,24 +46,26 @@ interface Props {}
 export const SetViewerModal: FC<Props> = () => {
     const dispatch = useDispatch();
 
-    const getFcs = useApi(getFcsRequest);
+    const getUsers = useApi(getUsersRequest);
 
     const { isShowSetViewerModal } = useSelector<AppState, ModalState>(
         (state) => state.modal,
     );
 
-    const { orgas, fcs } = useSelector<AppState, HrState>((state) => state.hr);
+    const { orgas, users } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
     const { viewer } = useSelector<AppState, BoardState>(
         (state) => state.board,
     );
 
     // 선택한 부서 소속 사용자
-    const [checkedFcs, setCheckedFcs] = useState<Fc[]>([]);
+    const [checkedFcs, setCheckedFcs] = useState<User[]>([]);
     // 선택된 사용자 목록
-    const [selectedFcs, setSelectedFcs] = useState<Fc[]>([]);
+    const [selectedFcs, setSelectedFcs] = useState<User[]>([]);
     // 선택한 선택된 사용자 목록
-    const [checkedSelectedFcs, setCheckedSelectedFcs] = useState<Fc[]>([]);
+    const [checkedSelectedFcs, setCheckedSelectedFcs] = useState<User[]>([]);
 
     const [depart, setDepart] = useState<CoreSelectOption | null>(null);
 
@@ -103,7 +105,7 @@ export const SetViewerModal: FC<Props> = () => {
         setDepart(depart);
 
         if (depart) {
-            getFcs({ idx: depart.value });
+            getUsers({ idx: depart.value });
 
             handleClearCheckedFcs();
         }
@@ -183,7 +185,7 @@ export const SetViewerModal: FC<Props> = () => {
                             부서 소속 사용자
                         </div>
                         <ul className="wr-select-user__list">
-                            {fcs.map((v, i) => (
+                            {users.map((v, i) => (
                                 <li
                                     key={`fc${i}`}
                                     className="wr-select-user__listitem"

@@ -6,7 +6,7 @@ import { MyCheckbox } from '@components/checkbox';
 import { useApi } from '@hooks/use-api';
 import { loginRequest } from '@actions/hr/login.action';
 import { useInput } from '@hooks/use-input';
-import { useTab } from '@hooks/use-tab';
+import { useLinkTab } from '@hooks/use-tab';
 import { wrapper } from '@store/redux';
 import externalsService from '@services/externalsService';
 
@@ -19,7 +19,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
 
     const login = useApi(loginRequest);
 
-    const tab = useTab();
+    const tab = useLinkTab();
 
     const [userid] = useInput('');
 

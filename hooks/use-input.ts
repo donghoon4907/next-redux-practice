@@ -6,6 +6,7 @@ import { isNumberic } from '@utils/validation';
 interface UseInputOption {
     noSpace?: boolean;
     addComma?: boolean;
+    isNumWithHyphen?: boolean;
     limit?: number;
 }
 
@@ -33,6 +34,10 @@ export const useInput: UseInputFunction = (defaultValue, where = {}) => {
 
         if (where.noSpace) {
             nextVal = nextVal.replace(/(^\s*)|(\s*$)/g, '');
+        }
+
+        if (where.isNumWithHyphen) {
+            nextVal = nextVal.replace(/[^0-9\-]/g, '');
         }
 
         setValue(nextVal);
