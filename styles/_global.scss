@@ -115,6 +115,7 @@ td {
     border-radius: $wr-border-radius !important;
     border: 1px solid $wr-divider-color-300 !important;
     margin-top: 2px;
+    z-index: $wr-datepicker-index !important;
 }
 // .rs-picker-daterange-header {
 //     display: none;

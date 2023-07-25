@@ -1,6 +1,5 @@
 import type { Action } from 'redux';
-import type { CorePayload } from '@interfaces/core';
-import type { User } from '@models/user';
+import type { CorePayload, CoreSelectOption } from '@interfaces/core';
 
 export const GET_USERS_KEY = 'GET_USERS';
 
@@ -14,7 +13,7 @@ export interface GetUsersRequestPayload extends CorePayload {
     idx: string;
 }
 
-export type GetUsersSuccessPayload = User[];
+export type GetUsersSuccessPayload = CoreSelectOption[];
 
 export interface GetUsersRequestAction extends Action<string> {
     payload: GetUsersRequestPayload;

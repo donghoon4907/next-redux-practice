@@ -10,7 +10,7 @@ interface UseInputOption {
     limit?: number;
 }
 
-interface UseInputOutput {
+export interface UseInputOutput {
     value: string;
     onChange: (
         evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

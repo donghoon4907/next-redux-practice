@@ -1,4 +1,4 @@
-import type { GetOrgasRequestAction } from '@actions/hr/get-orgas';
+import type { GetCompaniesRequestAction } from '@actions/hr/get-companies';
 import type { Orga } from '@models/orga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import hrsService from '@services/hrsService';
@@ -8,7 +8,7 @@ import {
     getCompaniesSuccess,
 } from '@actions/hr/get-companies';
 
-function* getCompaniesSaga({ payload }: GetOrgasRequestAction) {
+function* getCompaniesSaga({ payload }: GetCompaniesRequestAction) {
     const { data } = yield call(hrsService.getCompanies, payload);
 
     const companies = data.map((v: Orga) => ({

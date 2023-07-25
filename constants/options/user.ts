@@ -61,7 +61,7 @@ export const ESTIMATE_PHONE: CoreSelectOption[] = [
         isFixed: false,
     },
     {
-        label: '본인전화',
+        label: '내선번호',
         value: '04',
         isFixed: false,
     },
@@ -99,7 +99,7 @@ export const ESTIMATE_DIRECT: CoreSelectOption[] = [
         isFixed: false,
     },
     {
-        label: '본인전화',
+        label: '내선번호',
         value: '03',
         isFixed: false,
     },
@@ -132,7 +132,7 @@ export const ESTIMATE_ADDRESS: CoreSelectOption[] = [
 // 소득설정 탭 - 산출기준
 export const CALC_STANDARD: CoreSelectOption[] = [
     {
-        label: '기본 + 성과',
+        label: '기본+성과',
         value: '01',
         isFixed: false,
     },

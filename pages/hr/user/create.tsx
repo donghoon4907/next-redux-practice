@@ -1,10 +1,12 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserForm } from '@partials/hr/UserForm';
-import { END } from 'redux-saga';
+import { getBanksRequest } from '@actions/hr/get-banks';
+import { getAgenciesRequest } from '@actions/hr/get-agencys';
 
 const CreateUser: NextPage = () => {
     return (
@@ -28,6 +30,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 idx: '1',
             }),
         );
+
+        dispatch(getBanksRequest());
+
+        dispatch(getAgenciesRequest());
 
         dispatch(END);
 

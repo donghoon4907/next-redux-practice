@@ -11,6 +11,7 @@ import { isNumberic } from './validation';
 export class DayJSModule {
     private _instance: dayjs.Dayjs | null = null;
     private _date: string | null = null;
+    private readonly ymdRegex = /^\d{4}-\d{2}-\d{2}$/;
 
     public static isDate(date: string | number) {
         return isNumberic(date)

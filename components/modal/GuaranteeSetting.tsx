@@ -2,17 +2,29 @@ import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import { useDispatch, useSelector } from 'react-redux';
+import { DatePicker } from 'rsuite';
+import dayjs from 'dayjs';
+import addMonths from 'date-fns/addMonths';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 import { useSelect } from '@hooks/use-select';
 import { hideGuaranteeSettingModal } from '@actions/modal/guarantee-setting.action';
 import { MyInput } from '@components/input';
+import { useInput, useNumbericInput } from '@hooks/use-input';
+import { useDatepicker } from '@hooks/use-datepicker';
+import { HrState } from '@reducers/hr';
 import {
     C_STANDARD,
     GUARANTEE_DIVISION,
     GUARANTEE_STATUS,
 } from '@constants/options/user';
+
+import {
+    CreateGuaranteePayload,
+    createGuarantee,
+} from '@actions/hr/set-guarantee.action';
+import { isEmpty } from '@utils/validator/common';
 
 interface Props {}
 
@@ -23,11 +35,29 @@ export const GuaranteeSettingModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const [division] = useSelect(GUARANTEE_DIVISION);
-
-    const [status] = useSelect(GUARANTEE_STATUS);
-
-    const [cStandard] = useSelect(C_STANDARD);
+    const { agencies } = useSelector<AppState, HrState>((state) => state.hr);
+    // 보증구분
+    const [kind] = useSelect(GUARANTEE_DIVISION);
+    // 보증금
+    const [gMoney] = useNumbericInput('', { addComma: true });
+    // 보증내용
+    const [remark] = useInput('');
+    // 보증시기
+    const [sdate] = useDatepicker(new Date());
+    // 보증만기
+    const [edate] = useDatepicker(addMonths(new Date(), 24));
+    // 갱신만기
+    const [redate] = useDatepicker(addMonths(new Date(), 12));
+    // 금융기관
+    const [agencyCom] = useSelect(agencies);
+    // 적립목표(only 적립금)
+    const [accGoal] = useNumbericInput('', { addComma: true });
+    // 상태(only 적립금)
+    const [accStatus] = useSelect(GUARANTEE_STATUS);
+    // 산출기준(only 적립금)
+    const [accType] = useSelect(C_STANDARD);
+    // 적립율(only 적립금)
+    const [accRate] = useNumbericInput('');
 
     const handleClose = () => {
         dispatch(hideGuaranteeSettingModal());
@@ -36,8 +66,61 @@ export const GuaranteeSettingModal: FC<Props> = () => {
     const handleSubmit = () => {
         const tf = confirm('입력한 내용대로 설정하시겠습니까?');
         if (tf) {
+            const payload = createPayload();
+
+            dispatch(createGuarantee(payload));
+
             handleClose();
         }
+    };
+
+    const createPayload = () => {
+        const payload: CreateGuaranteePayload = {
+            kind: kind.value!.label,
+            g_money: +gMoney.value.replace(/,/g, ''),
+        };
+
+        if (kind.value) {
+            if (kind.value.value === '적립금') {
+                if (!isEmpty(accGoal.value)) {
+                    payload['accumulate_goal'] = +accGoal.value.replace(
+                        /,/g,
+                        '',
+                    );
+                }
+
+                if (accStatus.value) {
+                    payload['accumulate_status'] = accStatus.value?.value;
+                }
+
+                if (accType.value) {
+                    payload['accumulate_type'] = parseInt(accType.value?.value);
+                }
+
+                if (!isEmpty(accRate.value)) {
+                    payload['accumulate_rate'] = +accRate.value.replace(
+                        /,/g,
+                        '',
+                    );
+                }
+            } else {
+                if (!isEmpty(remark.value)) {
+                    payload['remark'] = remark.value;
+                }
+
+                if (agencyCom.value) {
+                    payload['agency_com'] = agencyCom.value.label;
+                }
+
+                payload['sdate'] = dayjs(sdate.value).format('YYYY-MM-DD');
+
+                payload['edate'] = dayjs(edate.value).format('YYYY-MM-DD');
+
+                payload['redate'] = dayjs(redate.value).format('YYYY-MM-DD');
+            }
+        }
+
+        return payload;
     };
 
     return (
@@ -50,63 +133,55 @@ export const GuaranteeSettingModal: FC<Props> = () => {
             <ModalBody>
                 <div className="row">
                     <div className="col-6">
-                        <WithLabel
-                            id="gDivision"
-                            label="보증구분"
-                            type="active"
-                        >
+                        <WithLabel id="gKind" label="보증구분" type="active">
                             <MySelect
-                                inputId="gDivision"
+                                inputId="gKind"
                                 placeholder="선택"
                                 placeHolderFontSize={16}
-                                {...division}
+                                {...kind}
                             />
                         </WithLabel>
                     </div>
                     <div className="col-6">
                         <div className="wr-ml">
-                            <WithLabel
-                                id="deposit"
-                                label="보증금"
-                                type="active"
-                            >
+                            <WithLabel id="gMoney" label="보증금" type="active">
                                 <MyInput
-                                    id="deposit"
+                                    id="gMoney"
                                     placeholder="보증금"
-                                    value="5,000,000"
+                                    {...gMoney}
                                 />
                             </WithLabel>
                         </div>
                     </div>
                 </div>
-                {division.value?.label === '적립금' ? (
+                {kind.value?.label === '적립금' ? (
                     <>
                         <div className="row wr-mt">
                             <div className="col-6">
                                 <WithLabel
-                                    id="aGoal"
+                                    id="accGoal"
                                     label="적립목표"
                                     type="active"
                                 >
                                     <MyInput
-                                        id="aGoal"
+                                        id="accGoal"
                                         placeholder="적립목표"
-                                        value=""
+                                        {...accGoal}
                                     />
                                 </WithLabel>
                             </div>
                             <div className="col-6">
                                 <div className="wr-ml">
                                     <WithLabel
-                                        id="gStatus"
+                                        id="accStatus"
                                         label="상태"
                                         type="active"
                                     >
                                         <MySelect
-                                            inputId="gStatus"
+                                            inputId="accStatus"
                                             placeholder="상태"
                                             placeHolderFontSize={16}
-                                            {...status}
+                                            {...accStatus}
                                         />
                                     </WithLabel>
                                 </div>
@@ -115,31 +190,31 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                         <div className="row wr-mt">
                             <div className="col-6">
                                 <WithLabel
-                                    id="cStandard"
+                                    id="accType"
                                     label="산출기준"
                                     type="active"
                                 >
                                     <MySelect
-                                        inputId="cStandard"
+                                        inputId="accType"
                                         placeholder="산출기준"
                                         placeHolderFontSize={16}
-                                        {...cStandard}
+                                        {...accType}
                                     />
                                 </WithLabel>
                             </div>
                             <div className="col-6">
                                 <div className="wr-ml">
                                     <WithLabel
-                                        id="aRate"
+                                        id="accRate"
                                         label="적립율"
                                         type="active"
                                     >
                                         <MyInput
-                                            id="aRate"
+                                            id="accRate"
                                             placeholder="적립율"
-                                            value="5"
                                             className="text-end"
                                             unit="%"
+                                            {...accRate}
                                         />
                                     </WithLabel>
                                 </div>
@@ -151,13 +226,14 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                         <div className="row wr-mt">
                             <div className="col">
                                 <WithLabel
-                                    id="gContent"
+                                    id="gRemark"
                                     label="보증내용"
                                     type="active"
                                 >
                                     <MyInput
-                                        id="gContent"
+                                        id="gRemark"
                                         placeholder="계약번호 또는 상세"
+                                        {...remark}
                                     />
                                 </WithLabel>
                             </div>
@@ -165,28 +241,36 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                         <div className="row wr-mt">
                             <div className="col-6">
                                 <WithLabel
-                                    id="gWhen"
+                                    id="sdate"
                                     label="보증시기"
                                     type="active"
                                 >
-                                    <MyInput
-                                        id="gWhen"
+                                    <DatePicker
+                                        id="sdate"
+                                        oneTap
+                                        format="yyyy-MM-dd"
+                                        style={{ width: '100%' }}
+                                        size="sm"
                                         placeholder="보증시기"
-                                        value="2023-01-01"
+                                        {...sdate}
                                     />
                                 </WithLabel>
                             </div>
                             <div className="col-6">
                                 <div className="wr-ml">
                                     <WithLabel
-                                        id="gDue"
+                                        id="edate"
                                         label="보증만기"
                                         type="active"
                                     >
-                                        <MyInput
-                                            id="gDue"
+                                        <DatePicker
+                                            id="edate"
+                                            oneTap
+                                            format="yyyy-MM-dd"
+                                            style={{ width: '100%' }}
+                                            size="sm"
                                             placeholder="보증만기"
-                                            value="2024-12-31"
+                                            {...edate}
                                         />
                                     </WithLabel>
                                 </div>
@@ -195,43 +279,45 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                         <div className="row wr-mt">
                             <div className="col-6">
                                 <WithLabel
-                                    id="uDue"
+                                    id="redate"
                                     label="갱신만기"
                                     type="active"
                                 >
-                                    <MyInput
-                                        id="uDue"
+                                    <DatePicker
+                                        id="redate"
+                                        oneTap
+                                        format="yyyy-MM-dd"
+                                        style={{ width: '100%' }}
+                                        size="sm"
                                         placeholder="갱신만기"
-                                        value="보증시기 + 1년"
+                                        {...redate}
                                     />
                                 </WithLabel>
                             </div>
                             <div className="col-6">
                                 <div className="wr-ml">
                                     <WithLabel
-                                        id="fi"
+                                        id="agencyCom"
                                         label="금융기관"
                                         type="active"
                                     >
                                         <MySelect
-                                            inputId="fi"
+                                            inputId="agencyCom"
                                             placeholder="금융기관"
                                             placeHolderFontSize={16}
-                                            value={null}
-                                            onChange={() => {}}
-                                            options={[]}
+                                            {...agencyCom}
                                         />
                                     </WithLabel>
                                 </div>
                             </div>
                         </div>
-                        <div className="row wr-mt">
+                        {/* <div className="row wr-mt">
                             <div className="col">
                                 <WithLabel id="gEtc" label="기타" type="active">
                                     <MyInput id="gEtc" placeholder="기타" />
                                 </WithLabel>
                             </div>
-                        </div>
+                        </div> */}
                     </>
                 )}
             </ModalBody>

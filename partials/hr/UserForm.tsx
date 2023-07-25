@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, ChangeEvent } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { UploadState } from '@reducers/upload';
@@ -41,6 +41,7 @@ import {
     USER_TYPE,
 } from '@constants/selectOption';
 import {
+    CALC_STANDARD,
     ESTIMATE_ADDRESS,
     ESTIMATE_COMP,
     ESTIMATE_DIRECT,
@@ -50,6 +51,9 @@ import {
 } from '@constants/options/user';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { CoreSelectOption } from '@interfaces/core';
+import { isEmpty } from '@utils/validator/common';
+import coreConstants from '@constants/core';
+import { CreateUserDTO } from 'dto/hr/CreateUser.dto';
 
 type Mode = 'create' | 'update';
 interface Props {
@@ -189,6 +193,46 @@ interface Props {
      * 비교견적 설정 - 표기주소 타입 기본 값
      */
     defaultEstAddrInputType?: CoreSelectOption;
+    /**
+     * 소득 설정 - 은행명 기본 값
+     */
+    defaultBank?: CoreSelectOption;
+    /**
+     * 소득 설정 - 계좌번호 기본 값
+     */
+    defaultAccount?: string;
+    /**
+     * 소득 설정 - 예금주 기본 값
+     */
+    defaultHolder?: string;
+    /**
+     * 소득 설정 - 자동차 규정 라디오(테이블, 비례) 기본 값
+     */
+    defaultCarType?: string;
+    /**
+     * 소득 설정 - 자동차 규정 셀렉트 기본 값(현재 미구현)
+     */
+    defaultCarIdx?: CoreSelectOption;
+    /**
+     * 소득 설정 - 일반 규정 체크(지급율, 비례) 기본 값
+     */
+    defaultGenType?: string;
+    /**
+     * 소득 설정 - 산출 기준 기본 값
+     */
+    defaultGenBase?: CoreSelectOption;
+    /**
+     * 소득 설정 - 지급율 기본 값
+     */
+    defaultGenRate?: string;
+    /**
+     * 소득 설정 - 일반규정 기본 값(현재 미구현)
+     */
+    defaultGenIdx?: CoreSelectOption;
+    /**
+     * 소득 설정 - 일반규정 기본 값(현재 미구현)
+     */
+    defaultLongGrade?: boolean;
 }
 
 export const UserForm: FC<Props> = ({
@@ -214,24 +258,34 @@ export const UserForm: FC<Props> = ({
     defaultStatus = EMP_STATUS[0],
     defaultIndate = new Date(),
     defaultOutdate = new Date(),
-    defaultEstComNm = '',
+    defaultEstComNm = coreConstants.COMP_NAME,
     defaultEstComInputType = ESTIMATE_COMP[0],
     defaultEstSalesNm = '',
     defaultEstSalesNmInputType = ESTIMATE_SALES[0],
-    defaultEstPhone = '',
+    defaultEstPhone = coreConstants.COMP_PHONE,
     defaultEstPhoneInputType = ESTIMATE_PHONE[0],
     defaultEstFax = '',
     defaultEstFaxInputType = ESTIMATE_FAX[0],
-    defaultEstDirect = '',
+    defaultEstDirect = coreConstants.COMP_PHONE,
     defaultEstDirectInputType = ESTIMATE_DIRECT[0],
-    defaultEstAddr = '',
+    defaultEstAddr = coreConstants.COMP_ADDR,
     defaultEstAddrInputType = ESTIMATE_ADDRESS[0],
+    defaultBank = null,
+    defaultAccount = '',
+    defaultHolder = '',
+    defaultCarType = '',
+    // defaultCarIdx
+    defaultGenType = '',
+    defaultGenBase = CALC_STANDARD[0],
+    defaultGenRate = '',
+    // defaultGenIdx
+    defaultLongGrade = false,
 }) => {
     const displayName = 'wr-pages-hr-detail';
 
     const dispatch = useDispatch();
 
-    const { selectedOrga } = useSelector<AppState, HrState>(
+    const { selectedOrga, banks } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
@@ -248,12 +302,14 @@ export const UserForm: FC<Props> = ({
     const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(false);
+    const isEditable = mode === 'create' ? true : editable;
+    const labelType = isEditable ? 'active' : 'disable';
     // 별칭
-    const [nick] = useInput(defaultNick);
+    const [nick] = useInput(defaultNick, { noSpace: true });
     // 이름
-    const [name] = useInput(defaultName);
+    const [name] = useInput(defaultName, { noSpace: true });
     // 직함
-    const [title] = useInput(defaultTitle);
+    const [title] = useInput(defaultTitle, { noSpace: true });
     // 주민번호
     const [idnum1] = useNumbericInput(defaultIdNum1);
     // 생년월일
@@ -269,7 +325,7 @@ export const UserForm: FC<Props> = ({
     // 직통번호
     const [telDirect] = useInput(defaultTelDirect, { isNumWithHyphen: true });
     // 이메일
-    const [email] = useInput(defaultEmail);
+    const [email] = useInput(defaultEmail, { noSpace: true });
     const [emailCom] = useSelect(EMAIL_COM, defaultEmailCom);
     // 우편번호
     const [postcode, setPostcode] = useInput(defaultPostCode);
@@ -288,35 +344,171 @@ export const UserForm: FC<Props> = ({
     // 퇴사일
     const [outdate] = useDatepicker(defaultOutdate);
     // 비교견적 설정 - 회사명
-    const [estComNm] = useInput(defaultEstComNm);
-    const [estComInputType] = useSelect(ESTIMATE_COMP, defaultEstComInputType);
-    // 비교견적 설정 - 영업명
-    const [estSalesNm] = useInput(defaultEstSalesNm);
-    const [estSalesNmInputType] = useSelect(
-        ESTIMATE_SALES,
-        defaultEstSalesNmInputType,
-    );
+    const [estComNm, setEstComNm] = useInput(defaultEstComNm);
+    const [estComInputType, setEstComInputType] =
+        useState<CoreSelectOption | null>(defaultEstComInputType);
+    // 비교견적 설정 - 간접영업명
+    const [estSalesNm, setEstSalesNm] = useInput(defaultEstSalesNm);
+    const [estSalesNmInputType, setEstSalesNmInputType] =
+        useState<CoreSelectOption | null>(defaultEstSalesNmInputType);
     // 비교견적 설정 - 대표전화
-    const [estPhone] = useInput(defaultEstPhone, { isNumWithHyphen: true });
-    const [estPhoneInputType] = useSelect(
-        ESTIMATE_PHONE,
-        defaultEstPhoneInputType,
-    );
+    const [estPhone, setEstPhone] = useInput(defaultEstPhone, {
+        isNumWithHyphen: true,
+    });
+    const [estPhoneInputType, setEstPhoneInputType] =
+        useState<CoreSelectOption | null>(defaultEstPhoneInputType);
     // 비교견적 설정 - 팩스번호
-    const [estFax] = useInput(defaultEstFax, { isNumWithHyphen: true });
-    const [estFaxInputType] = useSelect(ESTIMATE_FAX, defaultEstFaxInputType);
+    const [estFax, setEstFax] = useInput(defaultEstFax, {
+        isNumWithHyphen: true,
+    });
+    const [estFaxInputType, setEstFaxInputType] =
+        useState<CoreSelectOption | null>(defaultEstFaxInputType);
     // 비교견적 설정 - 직통전화
-    const [estDirect] = useInput(defaultEstDirect, { isNumWithHyphen: true });
-    const [estDirectInputType] = useSelect(
-        ESTIMATE_DIRECT,
-        defaultEstDirectInputType,
-    );
+    const [estDirect, setEstDirect] = useInput(defaultEstDirect, {
+        isNumWithHyphen: true,
+    });
+    const [estDirectInputType, setEstDirectInputType] =
+        useState<CoreSelectOption | null>(defaultEstDirectInputType);
     // 비교견적 설정 - 표기주소
-    const [estAddr] = useInput(defaultEstAddr);
-    const [estAddrInputType] = useSelect(
-        ESTIMATE_ADDRESS,
-        defaultEstAddrInputType,
-    );
+    const [estAddr, setEstAddr] = useInput(defaultEstAddr);
+    const [estAddrInputType, setEstAddrInputType] =
+        useState<CoreSelectOption | null>(defaultEstAddrInputType);
+    // 소득 설정 - 은행명
+    const [bank] = useSelect(banks, defaultBank);
+    // 소득 설정 - 계좌번호
+    const [account] = useInput(defaultAccount, { isNumWithHyphen: true });
+    // 소득 설정 - 예금주
+    const [holder] = useInput(defaultHolder, { noSpace: true });
+    // 소득 설정 - 자동차 규정 라디오(테이블, 비례)
+    const [carType, setCarType] = useState(defaultCarType);
+    // 소득 설정 - 일반 규정 라디오(테이블, 비례)
+    const [genType, setGenType] = useState(defaultGenType);
+    // 소득 설정 - 산출기준(테이블, 비례)
+    const [genBase] = useSelect(CALC_STANDARD, defaultGenBase);
+    // 소득 설정 - 지급율 기본 값
+    const [genRate] = useNumbericInput(defaultGenRate);
+    // 소득 설정 - 구간적용
+    const [longGrade, setLongGrade] = useState(defaultLongGrade);
+    // 소득 설정 - 자동차 규정 라디오 변경 핸들러
+    const handleChangeCarType = (evt: ChangeEvent<HTMLInputElement>) => {
+        setCarType(evt.target.value);
+    };
+    // 소득 설정 - 일반 규정 라디오 변경 핸들러
+    const handleChangeGenType = (evt: ChangeEvent<HTMLInputElement>) => {
+        setCarType(evt.target.value);
+    };
+    // 소득 설정 - 구간적용 체크 변경 핸들러
+    const handleChangeLongGrade = (evt: ChangeEvent<HTMLInputElement>) => {
+        setLongGrade(evt.target.checked);
+    };
+    // 이름 입력창 blur 핸들러
+    const handleBlurName = () => {
+        if (estSalesNmInputType?.value === '01') {
+            setEstSalesNm(name.value);
+        }
+    };
+    // 핸드폰 입력창 blur 핸들러
+    const handleBlurMobile = () => {
+        if (estPhoneInputType?.value === '03') {
+            setEstPhone(mobile.value);
+        }
+        if (estDirectInputType?.value === '02') {
+            setEstDirect(mobile.value);
+        }
+    };
+    // 내선번호 입력창 blur 핸들러
+    const handleBlurTelephone = () => {
+        if (estPhoneInputType?.value === '04') {
+            setEstPhone(telephone.value);
+        }
+        if (estDirectInputType?.value === '03') {
+            setEstDirect(telephone.value);
+        }
+    };
+
+    // 비교견적 설정 - 회사명 타입 변경 핸들러
+    const handleChangeEstComInputType = (option: CoreSelectOption | null) => {
+        if (option !== null) {
+            if (option.value === '01') {
+                setEstComNm(coreConstants.COMP_NAME);
+            } else if (option.value === '02') {
+                // 지점명 예정
+            }
+        }
+
+        setEstComInputType(option);
+    };
+    // 비교견적 설정 - 간접영업명 변경 핸들러
+    const handleChangeEstSalesNmInputType = (
+        option: CoreSelectOption | null,
+    ) => {
+        if (option !== null) {
+            if (option.value === '01') {
+                setEstSalesNm(name.value);
+            } else if (option.value === '02') {
+                // 지점명 예정
+            } else if (option.value === '03') {
+                setEstSalesNm('');
+            }
+        }
+
+        setEstSalesNmInputType(option);
+    };
+    // 비교견적 설정 - 대표전화 변경 핸들러
+    const handleChangeEstPhoneInputType = (option: CoreSelectOption | null) => {
+        if (option !== null) {
+            if (option.value === '01') {
+                setEstPhone(coreConstants.COMP_PHONE);
+            } else if (option.value === '02') {
+                // 지점명 예정
+            } else if (option.value === '03') {
+                setEstPhone(mobile.value);
+            } else if (option.value === '04') {
+                setEstPhone(telephone.value);
+            }
+        }
+
+        setEstPhoneInputType(option);
+    };
+    // 비교견적 설정 - 팩스번호 변경 핸들러
+    const handleChangeEstFaxInputType = (option: CoreSelectOption | null) => {
+        if (option !== null) {
+            if (option.value === '01') {
+                // 지점명 예정
+            }
+        }
+
+        setEstFaxInputType(option);
+    };
+    // 비교견적 설정 - 직통전화 변경 핸들러
+    const handleChangeEstDirectInputType = (
+        option: CoreSelectOption | null,
+    ) => {
+        if (option !== null) {
+            if (option.value === '01') {
+                setEstDirect(coreConstants.COMP_PHONE);
+            } else if (option.value === '02') {
+                setEstDirect(mobile.value);
+            } else if (option.value === '03') {
+                setEstDirect(telephone.value);
+            }
+        }
+
+        setEstDirectInputType(option);
+    };
+    // 비교견적 설정 - 표기주소 변경 핸들러
+    const handleChangeEstAddrInputType = (option: CoreSelectOption | null) => {
+        if (option !== null) {
+            if (option.value === '01') {
+                setEstAddr(coreConstants.COMP_ADDR);
+            } else if (option.value === '02') {
+                // 지점명 예정
+            }
+        }
+
+        setEstAddrInputType(option);
+    };
+
     // 우편번호 클릭 핸들러
     const handleClickPostcode = () => {
         open({ onComplete: handleCompletePostcode });
@@ -367,61 +559,64 @@ export const UserForm: FC<Props> = ({
         }
     };
 
-    const handleCreate = () => {};
+    const handleCreate = () => {
+        const payload = createPayload();
+
+        const createUserDto = new CreateUserDTO(payload);
+
+        if (createUserDto.requiredValidate()) {
+            createUser(createUserDto, () => {
+                alert('등록 성공');
+            });
+        }
+    };
 
     const handleUpdate = () => {};
 
     const createPayload = () => {
-        const phoneNumberRegex = /^01(?:0|1|[6-9])-(?:\d{3,4})-\d{4}$/;
-
-        if (name.value === '') {
-            return alert('이름을 입력하세요.');
-        }
-
-        if (mobile.value === '') {
-            return alert('핸드폰을 입력하세요.');
-        } else {
-            if (!phoneNumberRegex.test(mobile.value)) {
-                return alert('핸드폰을 확인하세요.');
-            }
-        }
-
-        if (selectedOrga.label === '') {
-            return alert('부서를 선택하세요.');
-        }
-
-        if (idnum1.value === '' || idnum1.value.length === 13) {
-            return alert('주민번호를 확인하세요.');
-        }
-
         const payload: CreateUserRequestPayload = {
             name: name.value,
             mobile: mobile.value,
             orga_idx: +selectedOrga.value,
             idnum1: idnum1.value,
             est_val: {
-                comNm: estComNm.value,
-                salesNm: estSalesNm.value,
-                phone: estPhone.value,
-                fax: estFax.value,
-                direct: estDirect.value,
-                address: estAddr.value,
+                comNm: {
+                    kind: estComInputType!.label,
+                    val: estComNm.value,
+                },
+                salesNm: {
+                    kind: estSalesNmInputType!.label,
+                    val: estSalesNm.value,
+                },
+                phone: {
+                    kind: estSalesNmInputType!.label,
+                    val: estSalesNm.value,
+                },
+                fax: {
+                    kind: estFaxInputType!.label,
+                    val: estFax.value,
+                },
+                direct: {
+                    kind: estDirectInputType!.label,
+                    val: estDirect.value,
+                },
+                address: {
+                    kind: estAddrInputType!.label,
+                    val: estAddr.value,
+                },
             },
+            cal: {},
         };
 
-        if (nick.value !== '') {
+        if (!isEmpty(nick.value)) {
             payload['nickname'] = nick.value;
         }
 
-        if (title.value !== '') {
+        if (!isEmpty(title.value)) {
             payload['title'] = title.value;
         }
 
-        if (idnum1.value !== '') {
-            payload['idnum1'] = idnum1.value;
-        }
-
-        if (birthday.value) {
+        if (!isEmpty(birthday.value)) {
             payload['birthday'] = dayjs(birthday.value).format('YYYY-MM-DD');
         }
 
@@ -431,17 +626,15 @@ export const UserForm: FC<Props> = ({
             payload['birth_type'] = false;
         }
 
-        if (telephone.value !== '') {
+        if (!isEmpty(telephone.value)) {
             payload['telephone'] = telephone.value;
         }
 
-        if (telDirect.value !== '') {
+        if (!isEmpty(telDirect.value)) {
             payload['tel_direct'] = telDirect.value;
         }
 
-        if (email.value === '') {
-            return;
-        } else {
+        if (!isEmpty(email.value)) {
             payload['email'] = `${email.value}@${emailCom.value?.value}`;
         }
 
@@ -453,19 +646,19 @@ export const UserForm: FC<Props> = ({
             payload['status'] = status.value.value;
         }
 
-        if (postcode.value !== '') {
+        if (!isEmpty(postcode.value)) {
             payload['postcode'] = postcode.value;
         }
 
-        if (address1.value !== '') {
+        if (!isEmpty(address1.value)) {
             payload['address1'] = address1.value;
         }
 
-        if (address2.value !== '') {
+        if (!isEmpty(address2.value)) {
             payload['address2'] = address2.value;
         }
 
-        if (address3.value !== '') {
+        if (!isEmpty(address3.value)) {
             payload['address3'] = address3.value;
         }
 
@@ -475,6 +668,34 @@ export const UserForm: FC<Props> = ({
 
         if (outdate.value) {
             payload['outdate'] = dayjs(outdate.value).format('YYYY-MM-DD');
+        }
+
+        if (bank.value) {
+            payload['income_bank'] = bank.value.value;
+        }
+
+        if (!isEmpty(account.value)) {
+            payload['income_account'] = account.value;
+        }
+
+        if (!isEmpty(holder.value)) {
+            payload['income_name'] = holder.value;
+        }
+
+        if (!isEmpty(carType)) {
+            payload.cal['car_cal_type'] = carType;
+        }
+
+        if (!isEmpty(genType)) {
+            payload.cal['gen_cal_type'] = genType;
+        }
+
+        if (genBase.value) {
+            payload.cal['gen_cal_base'] = +genBase.value.value;
+        }
+
+        if (!isEmpty(genRate)) {
+            payload.cal['gen_cal_ratio'] = +genRate.value;
         }
 
         return payload;
@@ -512,33 +733,34 @@ export const UserForm: FC<Props> = ({
                                         <div className="col-8">
                                             <WithLabel
                                                 id="nick"
-                                                label="별칭"
-                                                type="active"
+                                                label="영업명"
+                                                type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="nick"
-                                                    placeholder="별칭"
+                                                    placeholder="영업명"
                                                     {...nick}
                                                 />
                                             </WithLabel>
                                             <WithLabel
                                                 id="name"
                                                 label="이름"
-                                                type="active"
+                                                type={labelType}
                                                 isRequired
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="name"
                                                     placeholder="이름"
+                                                    onBlur={handleBlurName}
                                                     {...name}
                                                 />
                                             </WithLabel>
                                             <WithLabel
                                                 id="title"
                                                 label="직함"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
@@ -550,7 +772,8 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="sNum"
                                                 label="주민번호"
-                                                type="active"
+                                                type={labelType}
+                                                isRequired
                                             >
                                                 <MyInput
                                                     type="text"
@@ -570,7 +793,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="birthday"
                                                 label="생년월일"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div
                                                     className={`${displayName}__with`}
@@ -600,7 +823,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="mobile"
                                                 label="핸드폰"
-                                                type="active"
+                                                type={labelType}
                                                 isRequired
                                             >
                                                 <div
@@ -610,6 +833,9 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         id="mobile"
                                                         placeholder="000-0000-0000"
+                                                        onBlur={
+                                                            handleBlurMobile
+                                                        }
                                                         {...mobile}
                                                     />
                                                     <MySelect
@@ -625,7 +851,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="telephone"
                                                 label="내선번호"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div
                                                     className={`${displayName}__with`}
@@ -633,7 +859,10 @@ export const UserForm: FC<Props> = ({
                                                     <MyInput
                                                         type="text"
                                                         id="telephone"
-                                                        placeholder="000-0000-0000"
+                                                        placeholder="내선번호"
+                                                        onBlur={
+                                                            handleBlurTelephone
+                                                        }
                                                         {...telephone}
                                                     />
                                                     <MyInput
@@ -646,7 +875,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="email"
                                                 label="이메일"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div
                                                     className={`${displayName}__with`}
@@ -699,7 +928,7 @@ export const UserForm: FC<Props> = ({
                                                 <WithLabel
                                                     id="user_type"
                                                     label="영업구분"
-                                                    type="active"
+                                                    type={labelType}
                                                 >
                                                     <MySelect
                                                         inputId="user_type"
@@ -714,7 +943,7 @@ export const UserForm: FC<Props> = ({
                                                 <WithLabel
                                                     id="status"
                                                     label="재직현황"
-                                                    type="active"
+                                                    type={labelType}
                                                 >
                                                     <MySelect
                                                         inputId="status"
@@ -737,7 +966,7 @@ export const UserForm: FC<Props> = ({
                                         <div className="col-6">
                                             <WithLabel
                                                 label="주소"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div
                                                     className={`${displayName}__with`}
@@ -782,7 +1011,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="addr2"
                                                 label="상세주소"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
@@ -808,7 +1037,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="indate"
                                                 label="입사일"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <DatePicker
                                                     oneTap
@@ -827,7 +1056,7 @@ export const UserForm: FC<Props> = ({
                                                 <WithLabel
                                                     id="outdate"
                                                     label="퇴사일"
-                                                    type="active"
+                                                    type={labelType}
                                                 >
                                                     <DatePicker
                                                         oneTap
@@ -855,7 +1084,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="estComNm"
                                                 label="회사명"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div style={{ width: 200 }}>
                                                     <MySelect
@@ -864,7 +1093,11 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        {...estComInputType}
+                                                        options={ESTIMATE_COMP}
+                                                        value={estComInputType}
+                                                        onChange={
+                                                            handleChangeEstComInputType
+                                                        }
                                                     />
                                                 </div>
 
@@ -873,6 +1106,10 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estComNm"
                                                     placeholder="회사명"
+                                                    readOnly={
+                                                        estComInputType?.value !==
+                                                        '03'
+                                                    }
                                                     {...estComNm}
                                                 />
                                             </WithLabel>
@@ -882,8 +1119,8 @@ export const UserForm: FC<Props> = ({
                                         <div className="col">
                                             <WithLabel
                                                 id="estSalesNm"
-                                                label="영업명"
-                                                type="active"
+                                                label="견적영업명"
+                                                type={labelType}
                                             >
                                                 <div style={{ width: 200 }}>
                                                     <MySelect
@@ -892,7 +1129,13 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        {...estSalesNmInputType}
+                                                        options={ESTIMATE_SALES}
+                                                        value={
+                                                            estSalesNmInputType
+                                                        }
+                                                        onChange={
+                                                            handleChangeEstSalesNmInputType
+                                                        }
                                                     />
                                                 </div>
 
@@ -900,7 +1143,11 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     className="wr-border-l--hide"
                                                     id="estSalesNm"
-                                                    placeholder="영업명"
+                                                    placeholder="견적영업명"
+                                                    readOnly={
+                                                        estSalesNmInputType?.value !==
+                                                        '04'
+                                                    }
                                                     {...estSalesNm}
                                                 />
                                             </WithLabel>
@@ -911,7 +1158,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="estPhone"
                                                 label="대표전화"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div style={{ width: 200 }}>
                                                     <MySelect
@@ -920,7 +1167,13 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        {...estPhoneInputType}
+                                                        options={ESTIMATE_PHONE}
+                                                        value={
+                                                            estPhoneInputType
+                                                        }
+                                                        onChange={
+                                                            handleChangeEstPhoneInputType
+                                                        }
                                                     />
                                                 </div>
                                                 <MyInput
@@ -928,6 +1181,10 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estPhone"
                                                     placeholder="대표전화"
+                                                    readOnly={
+                                                        estPhoneInputType?.value !==
+                                                        '05'
+                                                    }
                                                     {...estPhone}
                                                 />
                                             </WithLabel>
@@ -938,7 +1195,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="estFax"
                                                 label="팩스번호"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div style={{ width: 200 }}>
                                                     <MySelect
@@ -947,7 +1204,11 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        {...estFaxInputType}
+                                                        options={ESTIMATE_FAX}
+                                                        value={estFaxInputType}
+                                                        onChange={
+                                                            handleChangeEstFaxInputType
+                                                        }
                                                     />
                                                 </div>
 
@@ -956,6 +1217,10 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estFax"
                                                     placeholder="팩스번호"
+                                                    readOnly={
+                                                        estFaxInputType?.value !==
+                                                        '02'
+                                                    }
                                                     {...estFax}
                                                 />
                                             </WithLabel>
@@ -966,7 +1231,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="direct"
                                                 label="직통전화"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div style={{ width: 200 }}>
                                                     <MySelect
@@ -975,7 +1240,15 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        {...estDirectInputType}
+                                                        options={
+                                                            ESTIMATE_DIRECT
+                                                        }
+                                                        value={
+                                                            estDirectInputType
+                                                        }
+                                                        onChange={
+                                                            handleChangeEstDirectInputType
+                                                        }
                                                     />
                                                 </div>
 
@@ -984,6 +1257,10 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="direct"
                                                     placeholder="직통전화"
+                                                    readOnly={
+                                                        estDirectInputType?.value !==
+                                                        '04'
+                                                    }
                                                     {...estDirect}
                                                 />
                                             </WithLabel>
@@ -994,7 +1271,7 @@ export const UserForm: FC<Props> = ({
                                             <WithLabel
                                                 id="estAddress"
                                                 label="표기주소"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div style={{ width: 200 }}>
                                                     <MySelect
@@ -1003,7 +1280,13 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        {...estAddrInputType}
+                                                        options={
+                                                            ESTIMATE_ADDRESS
+                                                        }
+                                                        value={estAddrInputType}
+                                                        onChange={
+                                                            handleChangeEstAddrInputType
+                                                        }
                                                     />
                                                 </div>
 
@@ -1012,6 +1295,10 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estAddress"
                                                     placeholder="표기주소"
+                                                    readOnly={
+                                                        estAddrInputType?.value !==
+                                                        '03'
+                                                    }
                                                     {...estAddr}
                                                 />
                                             </WithLabel>
@@ -1041,26 +1328,34 @@ export const UserForm: FC<Props> = ({
                                     id="tabpanelIncome"
                                     tabId="tabIncome"
                                     hidden={tab.id !== 'tabIncome'}
-                                    // data={long.pays}
-                                    editable={editable}
-                                    // addCount={paysAddCount}
-                                    // onAddCount={handleIncrementPaysAddCount}
+                                    editable={isEditable}
+                                    bank={bank}
+                                    account={account}
+                                    holder={holder}
+                                    carType={carType}
+                                    onChangeCarType={handleChangeCarType}
+                                    genType={genType}
+                                    onChangeGenType={handleChangeGenType}
+                                    genBase={genBase}
+                                    genRate={genRate}
+                                    longGrade={longGrade}
+                                    onChangeLongGrade={handleChangeLongGrade}
                                 />
                                 <GuaranteeTabpanel
                                     id="tabpanelGuarantee"
                                     tabId="tabGuarantee"
                                     hidden={tab.id !== 'tabGuarantee'}
                                     // data={long.pays}
-                                    editable={editable}
+                                    editable={isEditable}
                                     // addCount={paysAddCount}
                                     // onAddCount={handleIncrementPaysAddCount}
                                 />
-                                <AuthorityTabpanel
+                                {/* <AuthorityTabpanel
                                     id="tabpanelAuthority"
                                     tabId="tabAuthority"
                                     hidden={tab.id !== 'tabAuthority'}
                                     // data={long.pays}
-                                    editable={editable}
+                                    editable={isEditable}
                                     // addCount={paysAddCount}
                                     // onAddCount={handleIncrementPaysAddCount}
                                 />
@@ -1069,10 +1364,10 @@ export const UserForm: FC<Props> = ({
                                     tabId="tabQualManage"
                                     hidden={tab.id !== 'tabQualManage'}
                                     // data={long.pays}
-                                    editable={editable}
+                                    editable={isEditable}
                                     // addCount={paysAddCount}
                                     // onAddCount={handleIncrementPaysAddCount}
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>

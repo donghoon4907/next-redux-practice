@@ -96,7 +96,7 @@
         position: absolute;
         top: 0;
         left: 0;
-        z-index: $wr-overlay-index;
+        z-index: $wr-nav-index;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -112,6 +112,7 @@
 
     &__content {
         padding: $wr-gutter-size;
+        position: relative;
     }
 
     &__left {

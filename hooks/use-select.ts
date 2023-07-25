@@ -1,7 +1,7 @@
 import type { CoreSelectOption, CoreSetState } from '@interfaces/core';
 import { useState } from 'react';
 
-type UseSelectOutput = {
+export type UseSelectOutput = {
     value: CoreSelectOption | null;
     onChange: (value: CoreSelectOption | null) => void;
     options: CoreSelectOption[];

@@ -9,11 +9,10 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
 } from '@tanstack/react-table';
-import { IconWrapper } from '@components/IconWrapper';
-import { BsPlusSquare } from 'react-icons/bs';
 
 import { AdditionalTd, EmptyTd, MyTd } from './Td';
 import { MyTh } from './Th';
+import { MyTableExtension } from './Extension';
 
 interface Props {
     /**
@@ -219,13 +218,7 @@ export const MyTable: FC<Props> = ({
                     </tfoot>
                 )}
             </table>
-            {showExtension && (
-                <div className="wr-table__extension">
-                    <IconWrapper onClick={onAddCount}>
-                        <BsPlusSquare size={20} />
-                    </IconWrapper>
-                </div>
-            )}
+            {showExtension && <MyTableExtension onClick={onAddCount} />}
         </div>
     );
 };

@@ -1,47 +1,20 @@
-import type { FC, ChangeEvent } from 'react';
-import type { CoreProps } from '@interfaces/core';
+import type { FC, InputHTMLAttributes } from 'react';
 
-export interface MyRadioProps extends CoreProps {
-    /**
-     * 라디오 버튼 id, label과 연결하기 위한 고유값
-     */
-    id: string;
+export interface MyRadioProps extends InputHTMLAttributes<HTMLInputElement> {
     /**
      * 라디오 버튼 설명, 라디오 버튼 기준 오른쪽에 위치
      */
     label: string;
-    /**
-     * 기본 체크 여부
-     */
-    defaultChecked?: boolean;
-    /**
-     * 기본 체크 여부
-     */
-    name?: string;
-    // checked: boolean;
-    // onChange: (checked: boolean) => void;
 }
 
-export const MyRadio: FC<MyRadioProps> = ({
-    id,
-    label,
-    defaultChecked,
-    name,
-    // checked,
-    // onChange
-}) => {
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        // onChange(event.target.checked);
-    };
-
+export const MyRadio: FC<MyRadioProps> = ({ id, label, ...rest }) => {
     return (
         <div className="wr-radio form-check">
             <input
                 className="form-check-input"
                 type="radio"
                 id={id}
-                defaultChecked={defaultChecked}
-                name={name}
+                {...rest}
             />
             <label className="form-check-label ms-1" htmlFor={id}>
                 {label}

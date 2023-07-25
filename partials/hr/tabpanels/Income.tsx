@@ -1,5 +1,7 @@
-import type { FC } from 'react';
+import type { ChangeEvent, FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
+import type { UseSelectOutput } from '@hooks/use-select';
+import type { UseInputOutput } from '@hooks/use-input';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
@@ -7,30 +9,40 @@ import variables from '@styles/_variables.module.scss';
 import { MyInput } from '@components/input';
 import { MyRadio } from '@components/radio';
 import { MyCheckbox } from '@components/checkbox';
-import { MyButton } from '@components/button';
-import { useSelect } from '@hooks/use-select';
-import { CALC_STANDARD } from '@constants/options/user';
+import { MyTableExtension } from '@components/table/Extension';
 
 interface Props extends MyTabpanelProps {
-    // data: any[];
     editable: boolean;
-    // addCount: number;
-    // onAddCount: () => void;
+    bank: UseSelectOutput;
+    account: UseInputOutput;
+    holder: UseInputOutput;
+    carType: string;
+    onChangeCarType: (evt: ChangeEvent<HTMLInputElement>) => void;
+    genType: string;
+    onChangeGenType: (evt: ChangeEvent<HTMLInputElement>) => void;
+    genBase: UseSelectOutput;
+    genRate: UseInputOutput;
+    longGrade: boolean;
+    onChangeLongGrade: (evt: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const IncomeTabpanel: FC<Props> = ({
     id,
     tabId,
     hidden,
-    // data,
     editable,
-    // addCount,
-    // onAddCount,
+    bank,
+    account,
+    holder,
+    carType,
+    onChangeCarType,
+    genType,
+    onChangeGenType,
+    genBase,
+    genRate,
+    longGrade,
+    onChangeLongGrade,
 }) => {
-    // const columns = useColumn(LONG_COL_PERFORMANCE)
-
-    const [calcStandard] = useSelect(CALC_STANDARD);
-
     const labelType = editable ? 'active' : 'disable';
 
     return (
@@ -43,13 +55,11 @@ export const IncomeTabpanel: FC<Props> = ({
                     <WithLabel id="bank" label="은행명" type={labelType}>
                         <MySelect
                             inputId="bank"
-                            placeholder={'선택'}
+                            placeholder="선택"
                             placeHolderFontSize={16}
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
-                            options={[]}
-                            value={null}
-                            onChange={() => {}}
+                            {...bank}
                         />
                     </WithLabel>
                     <WithLabel id="account" label="계좌번호" type={labelType}>
@@ -58,6 +68,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             id="account"
                             placeholder="계좌번호"
                             readOnly={!editable}
+                            {...account}
                         />
                     </WithLabel>
                     <WithLabel id="holder" label="예금주" type={labelType}>
@@ -66,6 +77,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             id="holder"
                             placeholder="예금주"
                             readOnly={!editable}
+                            {...holder}
                         />
                     </WithLabel>
                 </div>
@@ -76,23 +88,31 @@ export const IncomeTabpanel: FC<Props> = ({
                         </div>
                         <div className="wr-pages-hr-detail__horizontal wr-mb">
                             <MyRadio
-                                id="carReg1"
-                                name="carReg"
+                                id="carTypeTable"
                                 label="테이블"
+                                value="테이블"
+                                checked={carType === '테이블'}
+                                onChange={onChangeCarType}
                             />
-                            <MyRadio id="carReg2" name="carReg" label="비례" />
+                            <MyRadio
+                                id="carTypeProportion"
+                                label="비례"
+                                value="비례"
+                                checked={carType === '비례'}
+                                onChange={onChangeCarType}
+                            />
                         </div>
                         <WithLabel
                             id="carReg"
                             label="자동차규정"
-                            type={labelType}
+                            type="disable"
                         >
                             <MySelect
                                 inputId="carReg"
                                 placeholder={'선택'}
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
-                                isDisabled={!editable}
+                                isDisabled={true}
                                 options={[]}
                                 value={null}
                                 onChange={() => {}}
@@ -107,50 +127,55 @@ export const IncomeTabpanel: FC<Props> = ({
                         </div>
                         <div className="wr-pages-hr-detail__horizontal wr-mb">
                             <MyRadio
-                                id="normalReg1"
-                                name="normalReg"
+                                id="genTypeRate"
                                 label="지급율"
+                                value="테이블"
+                                checked={genType === '테이블'}
+                                onChange={onChangeGenType}
                             />
                             <MyRadio
-                                id="normalReg2"
-                                name="normalReg"
+                                id="genTypeProportion"
                                 label="비례"
+                                value="비례"
+                                checked={genType === '비례'}
+                                onChange={onChangeGenType}
                             />
                         </div>
                         <WithLabel
-                            id="calcStandard"
+                            id="genBase"
                             label="산출기준"
                             type={labelType}
                         >
                             <MySelect
-                                inputId="calcStandard"
-                                placeholder={'선택'}
+                                inputId="genBase"
+                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
-                                {...calcStandard}
+                                {...genBase}
                             />
                         </WithLabel>
-                        <WithLabel id="payrate" label="지급율" type={labelType}>
+                        <WithLabel id="genRate" label="지급율" type={labelType}>
                             <MyInput
                                 type="text"
-                                id="payrate"
+                                id="genRate"
                                 placeholder="지급율"
                                 readOnly={!editable}
                                 unit="%"
+                                {...genRate}
                             />
                         </WithLabel>
                         <WithLabel
                             id="carReg"
                             label="일반규정"
-                            type={labelType}
+                            type={'disable'}
                         >
                             <MySelect
                                 inputId="carReg"
                                 placeholder={'선택'}
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
-                                isDisabled={!editable}
+                                isDisabled={true}
                                 options={[]}
                                 value={null}
                                 onChange={() => {}}
@@ -165,10 +190,18 @@ export const IncomeTabpanel: FC<Props> = ({
                     <div className="wr-pages-hr-detail__subtitle">
                         <strong>장기 기본지급</strong>
                         <div>
-                            <MyCheckbox id="sectionApply" label="구간적용" />
+                            <MyCheckbox
+                                id="sectionApply"
+                                label="구간적용"
+                                checked={longGrade}
+                                onChange={onChangeLongGrade}
+                            />
                         </div>
                     </div>
-                    <div className="wr-table--normal wr-mb">
+                    <div className="wr-table--normal wr-mb position-relative">
+                        <div className="wr-pages-hr-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
                         <table className="wr-table table">
                             <thead>
                                 <tr>
@@ -197,18 +230,21 @@ export const IncomeTabpanel: FC<Props> = ({
                                     <td>
                                         <span>구간</span>
                                     </td>
-                                    <td></td>
+                                    <td>-</td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <span>일반</span>
                                     </td>
-                                    <td></td>
+                                    <td>-</td>
                                 </tr>
                             </tbody>
                         </table>
+                        <MyTableExtension
+                            onClick={() => alert('준비 중입니다.')}
+                        />
                     </div>
-                    {editable && (
+                    {/* {editable && (
                         <div className="wr-pages-hr-detail__toolbar">
                             <div className="wr-pages-hr-detail__buttons">
                                 <MyButton className="btn-danger">삭제</MyButton>
@@ -222,14 +258,17 @@ export const IncomeTabpanel: FC<Props> = ({
                                 </MyButton>
                             </div>
                         </div>
-                    )}
+                    )} */}
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
                         <div className="wr-pages-hr-detail__subtitle">
                             <strong>오버라이딩</strong>
                         </div>
-                        <div className="wr-table--normal wr-mb">
+                        <div className="wr-table--normal wr-mb position-relative">
+                            <div className="wr-pages-hr-detail__lock">
+                                <p>준비 중입니다.</p>
+                            </div>
                             <table className="wr-table table">
                                 <thead>
                                     <tr>
@@ -252,7 +291,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                         <td>
                                             <span>제외</span>
                                         </td>
-                                        <td></td>
+                                        <td>-</td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -261,28 +300,14 @@ export const IncomeTabpanel: FC<Props> = ({
                                         <td>
                                             <span>포함</span>
                                         </td>
-                                        <td></td>
+                                        <td>-</td>
                                     </tr>
                                 </tbody>
                             </table>
+                            <MyTableExtension
+                                onClick={() => alert('준비 중입니다.')}
+                            />
                         </div>
-                        {editable && (
-                            <div className="wr-pages-hr-detail__toolbar">
-                                <div className="wr-pages-hr-detail__buttons">
-                                    <MyButton className="btn-danger">
-                                        삭제
-                                    </MyButton>
-                                    <MyButton className="btn-secondary">
-                                        수정
-                                    </MyButton>
-                                </div>
-                                <div>
-                                    <MyButton className="btn-primary">
-                                        추가
-                                    </MyButton>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>

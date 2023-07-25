@@ -26,6 +26,14 @@ export function getCompanies(payload: GetCompaniesRequestPayload) {
     return getBackendAxios().get('/common/company');
 }
 
+export function getBanks() {
+    return getBackendAxios().get('/common/bank');
+}
+
+export function getAgencies() {
+    return getBackendAxios().get('/common/agencycom');
+}
+
 export function getOrgas(payload: GetOrgasRequestPayload) {
     return getBackendAxios().get(`/orga/simpleOrgas/${payload.idx}`);
 }
@@ -39,6 +47,8 @@ const rootServices = {
     getPermission,
     createUser,
     getCompanies,
+    getBanks,
+    getAgencies,
     getOrgas,
     getUsers,
 };

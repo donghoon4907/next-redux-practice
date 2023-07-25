@@ -14,7 +14,7 @@ export interface CreateUserRequestPayload extends CorePayload {
     mobile: string;
     orga_idx: number;
     nickname?: string;
-    idnum1?: string;
+    idnum1: string;
     title?: string;
     birthday?: string;
     birth_type?: boolean;
@@ -31,12 +31,41 @@ export interface CreateUserRequestPayload extends CorePayload {
     status?: string;
     user_type?: string;
     est_val: {
-        comNm: string;
-        salesNm: string;
-        phone: string;
-        fax: string;
-        direct: string;
-        address: string;
+        comNm?: {
+            kind: string;
+            val: string;
+        };
+        salesNm?: {
+            kind: string;
+            val: string;
+        };
+        phone?: {
+            kind: string;
+            val: string;
+        };
+        fax?: {
+            kind: string;
+            val: string;
+        };
+        direct?: {
+            kind: string;
+            val: string;
+        };
+        address?: {
+            kind: string;
+            val: string;
+        };
+    };
+    income_bank?: string;
+    income_account?: string;
+    income_name?: string;
+    cal: {
+        car_cal_type?: string;
+        car_cal_idx?: number;
+        gen_cal_type?: string;
+        gen_cal_base?: number;
+        gen_cal_ratio?: number;
+        gen_cal_idx?: number;
     };
 }
 

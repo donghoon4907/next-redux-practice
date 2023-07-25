@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
@@ -8,6 +8,9 @@ import { MyButton } from '@components/button';
 import { useSelect } from '@hooks/use-select';
 import { CALC_STANDARD } from '@constants/options/user';
 import { showGuaranteeSettingModal } from '@actions/modal/guarantee-setting.action';
+import { AppState } from '@reducers/index';
+import { HrState } from '@reducers/hr';
+import { MyTableExtension } from '@components/table/Extension';
 
 interface Props extends MyTabpanelProps {
     // data: any[];
@@ -26,11 +29,10 @@ export const GuaranteeTabpanel: FC<Props> = ({
     // onAddCount,
 }) => {
     const dispatch = useDispatch();
-    // const columns = useColumn(LONG_COL_PERFORMANCE)
 
-    const [calcStandard] = useSelect(CALC_STANDARD);
+    const { guarantees } = useSelector<AppState, HrState>((state) => state.hr);
 
-    const labelType = editable ? 'active' : 'disable';
+    const labelType = 'disable';
 
     const handleShowSettingModal = () => {
         dispatch(showGuaranteeSettingModal());
@@ -45,9 +47,8 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             type="text"
                             id="guarGoal"
                             className="text-end"
-                            placeholder="보증목표"
-                            value="10,010"
-                            readOnly={!editable}
+                            placeholder="10,010"
+                            readOnly
                         />
                     </WithLabel>
                 </div>
@@ -62,9 +63,8 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                 type="text"
                                 id="guarTotal"
                                 className="text-end"
-                                placeholder="보증누계(유효)"
-                                value="5,465"
-                                readOnly={!editable}
+                                placeholder="5,465"
+                                readOnly
                             />
                         </WithLabel>
                     </div>
@@ -76,9 +76,8 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                 type="text"
                                 id="tmotl"
                                 className="text-end"
-                                placeholder="과부족"
-                                value="-4,655"
-                                readOnly={!editable}
+                                placeholder="-4,655"
+                                readOnly
                             />
                         </WithLabel>
                     </div>
@@ -94,9 +93,8 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                 type="text"
                                 id="account"
                                 className="text-end"
-                                placeholder="계좌번호"
-                                value="54.7"
-                                readOnly={!editable}
+                                placeholder="54.7"
+                                readOnly
                                 unit="%"
                             />
                         </WithLabel>
@@ -107,14 +105,14 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 <div className="col">
                     <div className="wr-pages-hr-detail__subtitle">
                         <strong>보증설정 내역</strong>
-                        <div>
+                        {/* <div>
                             <MyButton
                                 className="btn-primary"
                                 onClick={handleShowSettingModal}
                             >
                                 추가
                             </MyButton>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="wr-table--normal wr-mb">
                         <table className="wr-table table">
@@ -147,76 +145,64 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <span>이행보증</span>
-                                    </td>
-                                    <td className="text-end">
-                                        <span>5,000</span>
-                                    </td>
-                                    <td>
-                                        <span>100-000-202105170046</span>
-                                    </td>
-                                    <td>
-                                        <span>2022-12-31</span>
-                                    </td>
-                                    <td>
-                                        <span>2024-12-31</span>
-                                    </td>
-                                    <td>
-                                        <span>2023-12-31</span>
-                                    </td>
-                                    <td>
-                                        <span>Y</span>
-                                    </td>
-                                    <td>
-                                        <span>서울보증보험</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <span>적립금</span>
-                                    </td>
-                                    <td className="text-end">
-                                        <span>465</span>
-                                    </td>
-                                    <td>
-                                        <span>목표 5,000 / 장기수수료 5%</span>
-                                    </td>
-                                    <td>
-                                        <span>2022-10-01</span>
-                                    </td>
-                                    <td>
-                                        <span>-</span>
-                                    </td>
-                                    <td>
-                                        <span>-</span>
-                                    </td>
-                                    <td>
-                                        <span>Y</span>
-                                    </td>
-                                    <td>
-                                        <span>-</span>
-                                    </td>
-                                </tr>
+                                {guarantees.map((v, index) => {
+                                    return (
+                                        <tr key={`guarantee${index + 1}`}>
+                                            <td>
+                                                <span>{v.kind}</span>
+                                            </td>
+                                            <td className="text-end">
+                                                <span>
+                                                    {v.g_money?.toLocaleString()}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {v.kind === '적립금'
+                                                        ? `목표 ${v.accumulate_goal?.toLocaleString()} / 장기수수료 ${
+                                                              v.accumulate_rate
+                                                          }`
+                                                        : v.remark}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {v.kind !== '적립금'
+                                                        ? v.sdate
+                                                        : '-'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {v.kind !== '적립금'
+                                                        ? v.edate
+                                                        : '-'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {v.kind !== '적립금'
+                                                        ? v.redate
+                                                        : '-'}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>N</span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    {v.kind !== '적립금'
+                                                        ? v.agency_com
+                                                        : '-'}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
+                        <MyTableExtension onClick={handleShowSettingModal} />
                     </div>
-                    {editable && (
-                        <div className="wr-pages-hr-detail__toolbar">
-                            <div className="wr-pages-hr-detail__buttons">
-                                <MyButton className="btn-danger">삭제</MyButton>
-                                <MyButton className="btn-secondary">
-                                    수정
-                                </MyButton>
-                            </div>
-                            <div>
-                                <MyButton className="btn-primary">
-                                    추가
-                                </MyButton>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
             <div className="row wr-mt">
@@ -297,21 +283,6 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             </tbody>
                         </table>
                     </div>
-                    {editable && (
-                        <div className="wr-pages-hr-detail__toolbar">
-                            <div className="wr-pages-hr-detail__buttons">
-                                <MyButton className="btn-danger">삭제</MyButton>
-                                <MyButton className="btn-secondary">
-                                    수정
-                                </MyButton>
-                            </div>
-                            <div>
-                                <MyButton className="btn-primary">
-                                    추가
-                                </MyButton>
-                            </div>
-                        </div>
-                    )}
                 </div>
             </div>
         </MyTabpanel>
