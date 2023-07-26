@@ -12,6 +12,8 @@ export interface CorePayload {
 export interface CoreSelectOption {
     label: string;
     value: string;
+    // 모든 데이터
+    origin?: any;
     isFixed?: boolean;
 }
 

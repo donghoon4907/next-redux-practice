@@ -1,5 +1,5 @@
 import type { Action } from 'redux';
-import type { CorePayload, CoreSelectOption } from '@interfaces/core';
+import type { CoreSelectOption } from '@interfaces/core';
 
 export const GET_COMPANIES_KEY = 'GET_COMPANIES';
 
@@ -9,24 +9,17 @@ export const GetCompaniesActionTypes = {
     FAILURE: `${GET_COMPANIES_KEY}_FAILURE`,
 } as const;
 
-export interface GetCompaniesRequestPayload extends CorePayload {}
-
 export type GetCompaniesSuccessPayload = CoreSelectOption[];
 
-export interface GetCompaniesRequestAction extends Action<string> {
-    payload: GetCompaniesRequestPayload;
-}
+export interface GetCompaniesRequestAction extends Action<string> {}
 
 export interface GetCompaniesSuccessAction extends Action<string> {
     payload: GetCompaniesSuccessPayload;
 }
 
-export function getCompaniesRequest(
-    payload: GetCompaniesRequestPayload,
-): GetCompaniesRequestAction {
+export function getCompaniesRequest(): GetCompaniesRequestAction {
     return {
         type: GetCompaniesActionTypes.REQUEST,
-        payload,
     };
 }
 

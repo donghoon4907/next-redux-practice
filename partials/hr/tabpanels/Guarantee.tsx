@@ -1,32 +1,30 @@
-import type { FC } from 'react';
+import type { FC, ChangeEvent } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
-import { MyButton } from '@components/button';
-import { useSelect } from '@hooks/use-select';
-import { CALC_STANDARD } from '@constants/options/user';
 import { showGuaranteeSettingModal } from '@actions/modal/guarantee-setting.action';
 import { AppState } from '@reducers/index';
 import { HrState } from '@reducers/hr';
 import { MyTableExtension } from '@components/table/Extension';
+import { MyCheckbox } from '@components/checkbox';
+import { MyButton } from '@components/button';
+import {
+    deleteGuarantee,
+    updateGuarantee,
+} from '@actions/hr/set-guarantee.action';
+import { Guarantee } from '@models/guarantee';
 
 interface Props extends MyTabpanelProps {
-    // data: any[];
     editable: boolean;
-    // addCount: number;
-    // onAddCount: () => void;
 }
 
 export const GuaranteeTabpanel: FC<Props> = ({
     id,
     tabId,
     hidden,
-    // data,
     editable,
-    // addCount,
-    // onAddCount,
 }) => {
     const dispatch = useDispatch();
 
@@ -38,11 +36,45 @@ export const GuaranteeTabpanel: FC<Props> = ({
         dispatch(showGuaranteeSettingModal());
     };
 
+    const handleAllCheckGuarantee = (evt: ChangeEvent<HTMLInputElement>) => {
+        if (evt.target.checked) {
+            guarantees.forEach((v) => {
+                dispatch(updateGuarantee({ ...v, checked: true }));
+            });
+        } else {
+            guarantees.forEach((v) => {
+                dispatch(updateGuarantee({ ...v, checked: false }));
+            });
+        }
+    };
+
+    const handleCheckGuarantee = (
+        evt: ChangeEvent<HTMLInputElement>,
+        v: Guarantee,
+    ) => {
+        dispatch(updateGuarantee({ ...v, checked: evt.target.checked }));
+    };
+
+    const handleDeleteGuarantee = () => {
+        if (guarantees.findIndex((v) => v.checked) === -1) {
+            return alert('삭제할 설정을 선택해주세요.');
+        }
+
+        guarantees
+            .filter((v) => v.checked)
+            .forEach((v) => {
+                dispatch(deleteGuarantee({ index: v.index }));
+            });
+    };
+
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
                 <div className="col-3">
                     <WithLabel id="guarGoal" label="보증목표" type={labelType}>
+                        <div className="wr-pages-hr-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
                         <MyInput
                             type="text"
                             id="guarGoal"
@@ -59,6 +91,9 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             label="보증누계(유효)"
                             type={labelType}
                         >
+                            <div className="wr-pages-hr-detail__lock">
+                                <p>준비 중입니다.</p>
+                            </div>
                             <MyInput
                                 type="text"
                                 id="guarTotal"
@@ -72,6 +107,9 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 <div className="col-3">
                     <div className="wr-ml">
                         <WithLabel id="tmotl" label="과부족" type={labelType}>
+                            <div className="wr-pages-hr-detail__lock">
+                                <p>준비 중입니다.</p>
+                            </div>
                             <MyInput
                                 type="text"
                                 id="tmotl"
@@ -85,13 +123,16 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 <div className="col-3">
                     <div className="wr-ml">
                         <WithLabel
-                            id="account"
+                            id="gAccount"
                             label="유효보증율"
                             type={labelType}
                         >
+                            <div className="wr-pages-hr-detail__lock">
+                                <p>준비 중입니다.</p>
+                            </div>
                             <MyInput
                                 type="text"
-                                id="account"
+                                id="gAccount"
                                 className="text-end"
                                 placeholder="54.7"
                                 readOnly
@@ -105,19 +146,25 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 <div className="col">
                     <div className="wr-pages-hr-detail__subtitle">
                         <strong>보증설정 내역</strong>
-                        {/* <div>
+                        <div>
                             <MyButton
-                                className="btn-primary"
-                                onClick={handleShowSettingModal}
+                                className="btn-danger"
+                                onClick={handleDeleteGuarantee}
                             >
-                                추가
+                                선택삭제
                             </MyButton>
-                        </div> */}
+                        </div>
                     </div>
                     <div className="wr-table--normal wr-mb">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
+                                    <th style={{ width: 30 }}>
+                                        <MyCheckbox
+                                            label=""
+                                            onChange={handleAllCheckGuarantee}
+                                        />
+                                    </th>
                                     <th style={{ width: '100px' }}>
                                         <strong>보증구분</strong>
                                     </th>
@@ -145,25 +192,53 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                 </tr>
                             </thead>
                             <tbody>
+                                {guarantees.length === 0 && (
+                                    <tr>
+                                        <td colSpan={9}>데이터가 없습니다.</td>
+                                    </tr>
+                                )}
                                 {guarantees.map((v, index) => {
+                                    let g_money = '';
+                                    let remark = '';
+
+                                    if (v.g_money) {
+                                        g_money = v.g_money.toLocaleString();
+                                    }
+
+                                    if (v.kind === '적립금') {
+                                        if (v.accumulate_goal) {
+                                            remark += `목표 ${v.accumulate_goal?.toLocaleString()} / `;
+                                        }
+
+                                        if (v.accumulate_rate) {
+                                            remark += `장기수수료 ${v.accumulate_rate}`;
+                                        }
+                                    } else {
+                                        remark = v.remark || '';
+                                    }
+
                                     return (
                                         <tr key={`guarantee${index + 1}`}>
+                                            <td>
+                                                <MyCheckbox
+                                                    label=""
+                                                    checked={v.checked}
+                                                    onChange={(evt) =>
+                                                        handleCheckGuarantee(
+                                                            evt,
+                                                            v,
+                                                        )
+                                                    }
+                                                />
+                                            </td>
                                             <td>
                                                 <span>{v.kind}</span>
                                             </td>
                                             <td className="text-end">
-                                                <span>
-                                                    {v.g_money?.toLocaleString()}
-                                                </span>
+                                                <span>{g_money}</span>
                                             </td>
                                             <td>
-                                                <span>
-                                                    {v.kind === '적립금'
-                                                        ? `목표 ${v.accumulate_goal?.toLocaleString()} / 장기수수료 ${
-                                                              v.accumulate_rate
-                                                          }`
-                                                        : v.remark}
-                                                </span>
+                                                <span>{remark}</span>
                                             </td>
                                             <td>
                                                 <span>
@@ -216,7 +291,10 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             </span>
                         </div>
                     </div>
-                    <div className="wr-table--normal wr-mb">
+                    <div className="wr-table--normal wr-mb position-relative">
+                        <div className="wr-pages-hr-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
                         <table className="wr-table table">
                             <thead>
                                 <tr>

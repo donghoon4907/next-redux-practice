@@ -31,7 +31,8 @@
             "@models/*": ["./models/*"],
             "@store/*": ["./store/*"],
             "@constants/*": ["./constants/*"],
-            "@partials/*": ["./partials/*"]
+            "@partials/*": ["./partials/*"],
+            "@dto/*": ["./dto/*"]
         }
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

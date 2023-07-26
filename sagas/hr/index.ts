@@ -3,6 +3,7 @@ import { all, fork } from 'redux-saga/effects';
 import { watchLogin } from './login';
 import { watchCreateUser } from './create-user';
 import { watchGetOrgas } from './get-orgas';
+import { watchGetOrga } from './get-orga';
 import { watchGetUsers } from './get-users';
 import { watchGetBanks } from './get-banks';
 import { watchGetCompanies } from './get-companies';
@@ -15,6 +16,7 @@ export function* hrSaga() {
         fork(watchLogin),
         fork(watchCreateUser),
         fork(watchGetOrgas),
+        fork(watchGetOrga),
         fork(watchGetUsers),
         fork(watchGetCompanies),
         fork(watchGetBanks),

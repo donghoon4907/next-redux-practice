@@ -1,5 +1,7 @@
-import type { CorePayload } from '@interfaces/core';
 import type { Action } from 'redux';
+import type { CorePayload } from '@interfaces/core';
+import type { Guarantee } from '@models/guarantee';
+import type { Code } from '@models/code';
 
 export const CREATE_USER_KEY = 'CREATE_USER';
 
@@ -66,7 +68,24 @@ export interface CreateUserRequestPayload extends CorePayload {
         gen_cal_base?: number;
         gen_cal_ratio?: number;
         gen_cal_idx?: number;
+        long_grade: boolean;
     };
+    guarantee: Guarantee[];
+    fccode: Code[];
+    permission: {
+        permission: {
+            use_web: boolean;
+            use_mobile: boolean;
+        };
+    };
+    associate: {
+        type: string;
+        no: string;
+        wcode: number | null;
+        indate: string;
+        outdate: string;
+        qulification: string;
+    }[];
 }
 
 export interface CreateUserSuccessPayload {}

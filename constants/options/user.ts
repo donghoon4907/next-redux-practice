@@ -214,3 +214,33 @@ export const C_STANDARD: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+
+// 협회자격관리 - 자격구분
+export const QUALIFICATION_DIVISION: CoreSelectOption[] = [
+    {
+        label: '유자격자',
+        value: '01',
+        isFixed: false,
+    },
+    {
+        label: '사용인',
+        value: '02',
+        isFixed: false,
+    },
+];
+
+const rootSelectOptions = {
+    estComInputType: ESTIMATE_COMP,
+    estSalesNmInputType: ESTIMATE_SALES,
+    estPhoneInputType: ESTIMATE_PHONE,
+    estFaxInputType: ESTIMATE_FAX,
+    estDirectInputType: ESTIMATE_DIRECT,
+    estAddrInputType: ESTIMATE_ADDRESS,
+    calc_standard: CALC_STANDARD,
+    calc_standard2: C_STANDARD,
+    gDivision: GUARANTEE_DIVISION,
+    gStatus: GUARANTEE_STATUS,
+    qDivision: QUALIFICATION_DIVISION,
+};
+
+export default rootSelectOptions;

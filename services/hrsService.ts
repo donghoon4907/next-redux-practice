@@ -1,7 +1,7 @@
 import type { CreateUserRequestPayload } from '@actions/hr/create.action';
 import type { LoginRequestPayload } from '@actions/hr/login.action';
 import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas';
-import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
+import type { GetOrgaRequestPayload } from '@actions/hr/get-orga';
 import type { GetUsersRequestPayload } from '@actions/hr/get-users';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
 import { getBackendAxios } from '@utils/axios/backend';
@@ -22,7 +22,7 @@ export function createUser(payload: CreateUserRequestPayload) {
     return getBackendAxios().post('/orga/new_user', payload);
 }
 
-export function getCompanies(payload: GetCompaniesRequestPayload) {
+export function getCompanies() {
     return getBackendAxios().get('/common/company');
 }
 
@@ -38,6 +38,10 @@ export function getOrgas(payload: GetOrgasRequestPayload) {
     return getBackendAxios().get(`/orga/simpleOrgas/${payload.idx}`);
 }
 
+export function getOrga(payload: GetOrgaRequestPayload) {
+    return getBackendAxios().get(`/orga/getsimpleorgainfo/${payload.idx}`);
+}
+
 export function getUsers(payload: GetUsersRequestPayload) {
     return getBackendAxios().get(`/orga/simpleUsers/${payload.idx}`);
 }
@@ -50,6 +54,7 @@ const rootServices = {
     getBanks,
     getAgencies,
     getOrgas,
+    getOrga,
     getUsers,
 };
 

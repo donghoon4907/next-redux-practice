@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { DatePicker } from 'rsuite';
 import dayjs from 'dayjs';
 import addMonths from 'date-fns/addMonths';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -14,17 +13,13 @@ import { MyInput } from '@components/input';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { HrState } from '@reducers/hr';
-import {
-    C_STANDARD,
-    GUARANTEE_DIVISION,
-    GUARANTEE_STATUS,
-} from '@constants/options/user';
-
+import { isEmpty } from '@utils/validator/common';
+import { MyDatepicker } from '@components/datepicker';
+import userConstants from '@constants/options/user';
 import {
     CreateGuaranteePayload,
     createGuarantee,
 } from '@actions/hr/set-guarantee.action';
-import { isEmpty } from '@utils/validator/common';
 
 interface Props {}
 
@@ -35,9 +30,11 @@ export const GuaranteeSettingModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const { agencies } = useSelector<AppState, HrState>((state) => state.hr);
+    const { agencies, guarantees } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
     // 보증구분
-    const [kind] = useSelect(GUARANTEE_DIVISION);
+    const [kind] = useSelect(userConstants.gDivision);
     // 보증금
     const [gMoney] = useNumbericInput('', { addComma: true });
     // 보증내용
@@ -53,9 +50,9 @@ export const GuaranteeSettingModal: FC<Props> = () => {
     // 적립목표(only 적립금)
     const [accGoal] = useNumbericInput('', { addComma: true });
     // 상태(only 적립금)
-    const [accStatus] = useSelect(GUARANTEE_STATUS);
+    const [accStatus] = useSelect(userConstants.gStatus);
     // 산출기준(only 적립금)
-    const [accType] = useSelect(C_STANDARD);
+    const [accType] = useSelect(userConstants.calc_standard2);
     // 적립율(only 적립금)
     const [accRate] = useNumbericInput('');
 
@@ -76,12 +73,17 @@ export const GuaranteeSettingModal: FC<Props> = () => {
 
     const createPayload = () => {
         const payload: CreateGuaranteePayload = {
+            index: guarantees.length,
             kind: kind.value!.label,
-            g_money: +gMoney.value.replace(/,/g, ''),
+            checked: false,
         };
 
+        if (!isEmpty(gMoney.value)) {
+            payload['g_money'] = +gMoney.value.replace(/,/g, '');
+        }
+
         if (kind.value) {
-            if (kind.value.value === '적립금') {
+            if (kind.value.label === '적립금') {
                 if (!isEmpty(accGoal.value)) {
                     payload['accumulate_goal'] = +accGoal.value.replace(
                         /,/g,
@@ -90,7 +92,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                 }
 
                 if (accStatus.value) {
-                    payload['accumulate_status'] = accStatus.value?.value;
+                    payload['accumulate_status'] = accStatus.value.label;
                 }
 
                 if (accType.value) {
@@ -129,7 +131,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
             toggle={handleClose}
             size="lg"
         >
-            <ModalHeader toggle={handleClose}>보증설정 내역 설정</ModalHeader>
+            <ModalHeader toggle={handleClose}>보증설정</ModalHeader>
             <ModalBody>
                 <div className="row">
                     <div className="col-6">
@@ -148,6 +150,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                 <MyInput
                                     id="gMoney"
                                     placeholder="보증금"
+                                    className="text-end"
                                     {...gMoney}
                                 />
                             </WithLabel>
@@ -166,6 +169,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     <MyInput
                                         id="accGoal"
                                         placeholder="적립목표"
+                                        className="text-end"
                                         {...accGoal}
                                     />
                                 </WithLabel>
@@ -245,14 +249,11 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     label="보증시기"
                                     type="active"
                                 >
-                                    <DatePicker
+                                    <MyDatepicker
                                         id="sdate"
-                                        oneTap
-                                        format="yyyy-MM-dd"
-                                        style={{ width: '100%' }}
                                         size="sm"
                                         placeholder="보증시기"
-                                        {...sdate}
+                                        hooks={sdate}
                                     />
                                 </WithLabel>
                             </div>
@@ -263,14 +264,11 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                         label="보증만기"
                                         type="active"
                                     >
-                                        <DatePicker
+                                        <MyDatepicker
                                             id="edate"
-                                            oneTap
-                                            format="yyyy-MM-dd"
-                                            style={{ width: '100%' }}
                                             size="sm"
                                             placeholder="보증만기"
-                                            {...edate}
+                                            hooks={edate}
                                         />
                                     </WithLabel>
                                 </div>
@@ -283,14 +281,11 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     label="갱신만기"
                                     type="active"
                                 >
-                                    <DatePicker
+                                    <MyDatepicker
                                         id="redate"
-                                        oneTap
-                                        format="yyyy-MM-dd"
-                                        style={{ width: '100%' }}
                                         size="sm"
                                         placeholder="갱신만기"
-                                        {...redate}
+                                        hooks={redate}
                                     />
                                 </WithLabel>
                             </div>

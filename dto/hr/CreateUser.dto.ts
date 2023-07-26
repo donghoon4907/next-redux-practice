@@ -8,26 +8,14 @@ export class CreateUserDTO {
     requiredValidate = () => {
         const { name, mobile, orga_idx, idnum1 } = this.payload;
 
+        if (orga_idx === -1) {
+            alert('부서를 선택해주세요.');
+
+            return false;
+        }
+
         if (isEmpty(name)) {
             alert('이름을 입력해주세요.');
-
-            return false;
-        }
-
-        if (isEmpty(mobile)) {
-            alert('핸드폰을 입력해주세요.');
-
-            return false;
-        } else {
-            if (!isValidPhone(mobile)) {
-                alert('핸드폰을 확인해주세요.');
-
-                return false;
-            }
-        }
-
-        if (isEmpty(orga_idx)) {
-            alert('부서를 선택해주세요.');
 
             return false;
         }
@@ -42,6 +30,17 @@ export class CreateUserDTO {
 
                 return false;
             }
+        }
+
+        if (isEmpty(mobile)) {
+            alert('핸드폰을 입력해주세요.');
+
+            return false;
+        } else {
+            // if (mobile.length !== 11) {
+            //     alert('핸드폰을 확인해주세요.');
+            //     return false;
+            // }
         }
 
         return true;

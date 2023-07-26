@@ -33,7 +33,7 @@ export const useInput: UseInputFunction = (defaultValue, where = {}) => {
         let nextVal = evt.target.value;
 
         if (where.noSpace) {
-            nextVal = nextVal.replace(/(^\s*)|(\s*$)/g, '');
+            nextVal = nextVal.replace(/\s/g, '');
         }
 
         if (where.isNumWithHyphen) {
@@ -69,7 +69,7 @@ export const useNumbericInput: UseInputFunction = (
         if (isNumberic(nextVal)) {
             // 글자 수 제한이 있는 경우
             if (where.limit && nextVal.length > where.limit) {
-                return;
+                return alert(`${where.limit}자 이상 입력할 수 없습니다.`);
             }
 
             setValue(nextVal);

@@ -1,9 +1,10 @@
 import type { CoreSetState } from '@interfaces/core';
 import { useState } from 'react';
 
-interface UseDatepickerOutput {
+export interface UseDatepickerOutput {
     value: Date | null;
     onChange: (value: Date | null) => void;
+    onClean: () => void;
 }
 interface UseDatepickerFunction {
     (defaultValue: Date | null): [

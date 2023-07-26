@@ -57,9 +57,9 @@ const Depart: NextPage<HrState> = ({ users }) => {
     // 사업부명
     const [name] = useInput('');
     // 전화번호
-    const [phone] = useInput('', { isPhone: true });
+    const [phone] = useInput('', { isNumWithHyphen: true });
     // 팩스번호
-    const [fax] = useInput('', { isPhone: true });
+    const [fax] = useInput('', { isNumWithHyphen: true });
     // 대표자
     const [manager] = useSelect(users, null);
     // 우편번호
@@ -361,7 +361,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                             <div
                                 className={`${displayName}__body wr-frame__tabbody`}
                             >
-                                <IncomeTabpanel
+                                {/* <IncomeTabpanel
                                     id="tabpanelIncome"
                                     tabId="tabIncome"
                                     hidden={tab.id !== 'tabIncome'}
@@ -396,7 +396,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                     editable={editable}
                                     // addCount={paysAddCount}
                                     // onAddCount={handleIncrementPaysAddCount}
-                                />
+                                /> */}
                             </div>
                         </div>
                     </div>

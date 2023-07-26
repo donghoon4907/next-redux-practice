@@ -1,6 +1,8 @@
 import type { Reducer } from 'redux';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { Guarantee } from '@models/guarantee';
+import type { Code } from '@models/code';
+import type { OrgaDetail } from '@models/orga';
 import produce from 'immer';
 import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
@@ -12,6 +14,8 @@ import { PermissionActionTypes } from '@actions/hr/set-permission.action';
 import { GetBanksActionTypes } from '@actions/hr/get-banks';
 import { GuaranteeActionTypes } from '@actions/hr/set-guarantee.action';
 import { GetAgenciesActionTypes } from '@actions/hr/get-agencys';
+import { CodeActionTypes } from '@actions/hr/set-code.action';
+import { GetOrgaActionTypes } from '@actions/hr/get-orga';
 
 export interface HrState {
     /**
@@ -27,10 +31,13 @@ export interface HrState {
      */
     agencies: CoreSelectOption[];
     /**
-    /**
      * 부서목록
      */
     orgas: CoreSelectOption[];
+    /**
+     * 부서상세
+     */
+    orga: OrgaDetail | null;
     /**
      * 영업가족 목록
      */
@@ -38,7 +45,7 @@ export interface HrState {
     /**
      * 선택한 부서(조직)
      */
-    selectedOrga: CoreSelectOption;
+    selectedOrga: CoreSelectOption | null;
     /**
      * 로그인한 사용자 정보
      */
@@ -50,7 +57,11 @@ export interface HrState {
     /**
      * 보증 설정 목록
      */
-    guarantees: Partial<Guarantee>[];
+    guarantees: Guarantee[];
+    /**
+     * 보험사 코드 목록
+     */
+    codes: Code[];
 }
 
 const initialState: HrState = {
@@ -58,32 +69,13 @@ const initialState: HrState = {
     banks: [],
     agencies: [],
     orgas: [],
+    orga: null,
     users: [],
-    selectedOrga: {
-        value: '',
-        label: '',
-    },
+    selectedOrga: null,
     loggedInUser: null,
     // ip: '',
-    guarantees: [
-        {
-            kind: '이행보증',
-            g_money: 5000,
-            remark: '100-000-202105170046',
-            sdate: '2022-12-31',
-            edate: '2024-12-31',
-            redate: '2023-01-01',
-            agency_com: '서울보증보험',
-        },
-        {
-            kind: '적립금',
-            g_money: 5000,
-            accumulate_goal: 50000,
-            accumulate_status: '적립중',
-            accumulate_type: 1,
-            accumulate_rate: 5,
-        },
-    ],
+    guarantees: [],
+    codes: [],
 };
 
 export const hrReducer: Reducer<HrState, any> = (
@@ -106,6 +98,10 @@ export const hrReducer: Reducer<HrState, any> = (
             }
             case GetOrgasActionTypes.SUCCESS: {
                 draft.orgas = action.payload;
+                break;
+            }
+            case GetOrgaActionTypes.SUCCESS: {
+                draft.orga = action.payload;
                 break;
             }
             case GetUsersActionTypes.SUCCESS: {
@@ -135,11 +131,26 @@ export const hrReducer: Reducer<HrState, any> = (
             case GuaranteeActionTypes.UPDATE: {
                 const { index, ...rest } = action.payload;
 
-                draft.guarantees[index] = rest;
+                draft.guarantees[index] = { index, ...rest };
                 break;
             }
             case GuaranteeActionTypes.DELETE: {
                 draft.guarantees.splice(action.payload.index, 1);
+                break;
+            }
+            case CodeActionTypes.CREATE: {
+                draft.codes = draft.codes.concat(action.payload);
+                break;
+            }
+            case CodeActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                draft.codes[index] = { index, ...rest };
+
+                break;
+            }
+            case CodeActionTypes.DELETE: {
+                draft.codes.splice(action.payload.index, 1);
                 break;
             }
             default:

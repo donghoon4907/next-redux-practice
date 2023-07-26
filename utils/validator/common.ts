@@ -4,7 +4,7 @@ export function isEmpty(value: any) {
     let output = false;
 
     if (typeof value === 'string') {
-        output = value === '';
+        output = value.trim() === '';
     } else if (value === undefined || value === null) {
         output = true;
     } else if (Array.isArray(value)) {

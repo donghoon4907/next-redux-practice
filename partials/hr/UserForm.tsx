@@ -2,7 +2,8 @@ import type { FC, ChangeEvent } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { UploadState } from '@reducers/upload';
-import { useState } from 'react';
+import type { CreateUserRequestPayload } from '@actions/hr/create.action';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { DatePicker } from 'rsuite';
@@ -29,10 +30,15 @@ import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
 import { AuthorityTabpanel } from '@partials/hr/tabpanels/Authority';
 import { QualManageTabpanel } from '@partials/hr/tabpanels/QualManage';
 import { useTab } from '@hooks/use-tab';
-import {
-    CreateUserRequestPayload,
-    createUserRequest,
-} from '@actions/hr/create.action';
+import { useDatepicker } from '@hooks/use-datepicker';
+import { CoreSelectOption } from '@interfaces/core';
+import { isEmpty } from '@utils/validator/common';
+import coreConstants from '@constants/core';
+import userConstants from '@constants/options/user';
+import { CreateUserDTO } from '@dto/hr/CreateUser.dto';
+import { useCheckbox } from '@hooks/use-checkbox';
+import { CodeSettingModal } from '@components/modal/CodeSetting';
+import { createUserRequest } from '@actions/hr/create.action';
 import {
     BIRTH_TYPE,
     EMAIL_COM,
@@ -40,20 +46,7 @@ import {
     MOBILE_COM,
     USER_TYPE,
 } from '@constants/selectOption';
-import {
-    CALC_STANDARD,
-    ESTIMATE_ADDRESS,
-    ESTIMATE_COMP,
-    ESTIMATE_DIRECT,
-    ESTIMATE_FAX,
-    ESTIMATE_PHONE,
-    ESTIMATE_SALES,
-} from '@constants/options/user';
-import { useDatepicker } from '@hooks/use-datepicker';
-import { CoreSelectOption } from '@interfaces/core';
-import { isEmpty } from '@utils/validator/common';
-import coreConstants from '@constants/core';
-import { CreateUserDTO } from 'dto/hr/CreateUser.dto';
+import { getOrgaRequest } from '@actions/hr/get-orga';
 
 type Mode = 'create' | 'update';
 interface Props {
@@ -84,7 +77,7 @@ interface Props {
     /**
      * 생년월일 기본 값
      */
-    defaultBirthday?: Date;
+    defaultBirthday?: string | null;
     /**
      * 생일 타입 기본 값
      */
@@ -140,11 +133,11 @@ interface Props {
     /**
      * 입사일 기본 값
      */
-    defaultIndate?: Date;
+    defaultIndate?: string | null;
     /**
      * 퇴사일 기본 값
      */
-    defaultOutdate?: Date;
+    defaultOutdate?: string | null;
     /**
      * 비교견적 설정 - 회사명 기본 값
      */
@@ -233,6 +226,54 @@ interface Props {
      * 소득 설정 - 일반규정 기본 값(현재 미구현)
      */
     defaultLongGrade?: boolean;
+    /**
+     * 권한 설정 - 웹 사용 기본 값
+     */
+    defaultUseWeb?: boolean;
+    /**
+     * 권한 설정 - 모바일 사용 기본 값
+     */
+    defaultUseMobile?: boolean;
+    /**
+     * 협회자격관리 - 손보협 등록번호 기본 값
+     */
+    defaultGiaNo?: string;
+    /**
+     * 협회자격관리 - 손보협 등록보험사 기본 값
+     */
+    defaultGiaComp?: CoreSelectOption;
+    /**
+     * 협회자격관리 - 손보협 등록일 기본 값
+     */
+    defaultGiaIndate?: string | null;
+    /**
+     * 협회자격관리 - 손보협 말소일 기본 값
+     */
+    defaultGiaOutdate?: string | null;
+    /**
+     * 협회자격관리 - 손보협 자격구분 기본 값
+     */
+    defaultGiaQualification?: CoreSelectOption;
+    /**
+     * 협회자격관리 - 생보협 등록번호 기본 값
+     */
+    defaultLiaNo?: string;
+    /**
+     * 협회자격관리 - 생보협 등록보험사 기본 값
+     */
+    defaultLiaComp?: CoreSelectOption;
+    /**
+     * 협회자격관리 - 생보협 등록일 기본 값
+     */
+    defaultLiaIndate?: string | null;
+    /**
+     * 협회자격관리 - 생보협 말소일 기본 값
+     */
+    defaultLiaOutdate?: string | null;
+    /**
+     * 협회자격관리 - 생보협 자격구분 기본 값
+     */
+    defaultLiaQualification?: CoreSelectOption;
 }
 
 export const UserForm: FC<Props> = ({
@@ -242,7 +283,7 @@ export const UserForm: FC<Props> = ({
     defaultName = '',
     defaultTitle = '',
     defaultIdNum1 = '',
-    defaultBirthday = new Date(),
+    defaultBirthday = null,
     defaultBirthType = BIRTH_TYPE[0],
     defaultPhone = '',
     defaultMobileCom = MOBILE_COM[0],
@@ -256,38 +297,49 @@ export const UserForm: FC<Props> = ({
     defaultAddress3 = '',
     defaultUserType = USER_TYPE[0],
     defaultStatus = EMP_STATUS[0],
-    defaultIndate = new Date(),
-    defaultOutdate = new Date(),
+    defaultIndate = null,
+    defaultOutdate = null,
     defaultEstComNm = coreConstants.COMP_NAME,
-    defaultEstComInputType = ESTIMATE_COMP[0],
+    defaultEstComInputType = userConstants.estComInputType[0],
     defaultEstSalesNm = '',
-    defaultEstSalesNmInputType = ESTIMATE_SALES[0],
+    defaultEstSalesNmInputType = userConstants.estSalesNmInputType[0],
     defaultEstPhone = coreConstants.COMP_PHONE,
-    defaultEstPhoneInputType = ESTIMATE_PHONE[0],
+    defaultEstPhoneInputType = userConstants.estPhoneInputType[0],
     defaultEstFax = '',
-    defaultEstFaxInputType = ESTIMATE_FAX[0],
+    defaultEstFaxInputType = userConstants.estFaxInputType[0],
     defaultEstDirect = coreConstants.COMP_PHONE,
-    defaultEstDirectInputType = ESTIMATE_DIRECT[0],
+    defaultEstDirectInputType = userConstants.estDirectInputType[0],
     defaultEstAddr = coreConstants.COMP_ADDR,
-    defaultEstAddrInputType = ESTIMATE_ADDRESS[0],
+    defaultEstAddrInputType = userConstants.estAddrInputType[0],
     defaultBank = null,
     defaultAccount = '',
     defaultHolder = '',
     defaultCarType = '',
     // defaultCarIdx
     defaultGenType = '',
-    defaultGenBase = CALC_STANDARD[0],
+    defaultGenBase = userConstants.calc_standard[0],
     defaultGenRate = '',
     // defaultGenIdx
     defaultLongGrade = false,
+    defaultUseWeb = false,
+    defaultUseMobile = false,
+    defaultGiaNo = '',
+    defaultGiaComp = null,
+    defaultGiaIndate = null,
+    defaultGiaOutdate = null,
+    defaultGiaQualification = userConstants.qDivision[0],
+    defaultLiaNo = '',
+    defaultLiaComp = null,
+    defaultLiaIndate = null,
+    defaultLiaOutdate = null,
+    defaultLiaQualification = userConstants.qDivision[0],
 }) => {
     const displayName = 'wr-pages-hr-detail';
 
     const dispatch = useDispatch();
 
-    const { selectedOrga, banks } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
+    const { selectedOrga, banks, companies, orga, guarantees, codes } =
+        useSelector<AppState, HrState>((state) => state.hr);
 
     const { lastUploadedPortraitImage } = useSelector<AppState, UploadState>(
         (state) => state.upload,
@@ -311,19 +363,21 @@ export const UserForm: FC<Props> = ({
     // 직함
     const [title] = useInput(defaultTitle, { noSpace: true });
     // 주민번호
-    const [idnum1] = useNumbericInput(defaultIdNum1);
+    const [idnum1] = useNumbericInput(defaultIdNum1, { limit: 13 });
     // 생년월일
-    const [birthday] = useDatepicker(defaultBirthday);
+    const [birthday] = useDatepicker(
+        defaultBirthday ? new Date(defaultBirthday) : new Date(),
+    );
     // 양력 or 음력
     const [birthType] = useSelect(BIRTH_TYPE, defaultBirthType);
     // 핸드폰
-    const [mobile] = useInput(defaultPhone, { isNumWithHyphen: true });
+    const [mobile] = useNumbericInput(defaultPhone, { limit: 11 });
     // 통신사
     const [mobileCom] = useSelect(MOBILE_COM, defaultMobileCom);
     // 내선번호
-    const [telephone] = useInput(defaultTelephone, { isNumWithHyphen: true });
+    const [telephone] = useNumbericInput(defaultTelephone, { limit: 11 });
     // 직통번호
-    const [telDirect] = useInput(defaultTelDirect, { isNumWithHyphen: true });
+    const [telDirect] = useNumbericInput(defaultTelDirect, { limit: 4 });
     // 이메일
     const [email] = useInput(defaultEmail, { noSpace: true });
     const [emailCom] = useSelect(EMAIL_COM, defaultEmailCom);
@@ -340,9 +394,13 @@ export const UserForm: FC<Props> = ({
     // 재직현황
     const [status] = useSelect(EMP_STATUS, defaultStatus);
     // 입사일
-    const [indate] = useDatepicker(defaultIndate);
+    const [indate] = useDatepicker(
+        defaultIndate ? new Date(defaultIndate) : new Date(),
+    );
     // 퇴사일
-    const [outdate] = useDatepicker(defaultOutdate);
+    const [outdate] = useDatepicker(
+        defaultOutdate ? new Date(defaultOutdate) : new Date(),
+    );
     // 비교견적 설정 - 회사명
     const [estComNm, setEstComNm] = useInput(defaultEstComNm);
     const [estComInputType, setEstComInputType] =
@@ -352,15 +410,11 @@ export const UserForm: FC<Props> = ({
     const [estSalesNmInputType, setEstSalesNmInputType] =
         useState<CoreSelectOption | null>(defaultEstSalesNmInputType);
     // 비교견적 설정 - 대표전화
-    const [estPhone, setEstPhone] = useInput(defaultEstPhone, {
-        isNumWithHyphen: true,
-    });
+    const [estPhone, setEstPhone] = useNumbericInput(defaultEstPhone);
     const [estPhoneInputType, setEstPhoneInputType] =
         useState<CoreSelectOption | null>(defaultEstPhoneInputType);
     // 비교견적 설정 - 팩스번호
-    const [estFax, setEstFax] = useInput(defaultEstFax, {
-        isNumWithHyphen: true,
-    });
+    const [estFax, setEstFax] = useNumbericInput(defaultEstFax);
     const [estFaxInputType, setEstFaxInputType] =
         useState<CoreSelectOption | null>(defaultEstFaxInputType);
     // 비교견적 설정 - 직통전화
@@ -384,22 +438,57 @@ export const UserForm: FC<Props> = ({
     // 소득 설정 - 일반 규정 라디오(테이블, 비례)
     const [genType, setGenType] = useState(defaultGenType);
     // 소득 설정 - 산출기준(테이블, 비례)
-    const [genBase] = useSelect(CALC_STANDARD, defaultGenBase);
+    const [genBase] = useSelect(userConstants.calc_standard, defaultGenBase);
     // 소득 설정 - 지급율 기본 값
     const [genRate] = useNumbericInput(defaultGenRate);
     // 소득 설정 - 구간적용
-    const [longGrade, setLongGrade] = useState(defaultLongGrade);
+    const [longGrade] = useCheckbox(defaultLongGrade);
+    // 권한 설정 - 웹
+    const [useWeb] = useCheckbox(defaultUseWeb);
+    // 권한 설정 - 모바일
+    const [useMobile] = useCheckbox(defaultUseMobile);
+    // 협회자격관리 - 손보협 등록번호
+    const [giaNo] = useInput(defaultGiaNo, { noSpace: true });
+    // 협회자격관리 - 손보협 등록보험사
+    const [giaComp] = useSelect(companies, defaultGiaComp);
+    // 협회자격관리 - 손보협 등록일
+    const [giaIndate] = useDatepicker(
+        defaultGiaIndate ? new Date(defaultGiaIndate) : new Date(),
+    );
+    // 협회자격관리 - 손보협 말소일
+    const [giaOutdate] = useDatepicker(
+        defaultGiaOutdate ? new Date(defaultGiaOutdate) : new Date(),
+    );
+    // 협회자격관리 - 손보협 자격구분
+    const [giaQualification] = useSelect(
+        userConstants.qDivision,
+        defaultGiaQualification,
+    );
+    // 협회자격관리 - 생보협 등록번호
+    const [liaNo] = useInput(defaultLiaNo, { noSpace: true });
+    // 협회자격관리 - 생보협 등록보험사
+    const [liaComp] = useSelect(companies, defaultLiaComp);
+    // 협회자격관리 - 생보협 등록일
+    const [liaIndate] = useDatepicker(
+        defaultLiaIndate ? new Date(defaultLiaIndate) : new Date(),
+    );
+    // 협회자격관리 - 생보협 말소일
+    const [liaOutdate] = useDatepicker(
+        defaultLiaOutdate ? new Date(defaultLiaOutdate) : new Date(),
+    );
+    // 협회자격관리 - 생보협 자격구분
+    const [liaQualification] = useSelect(
+        userConstants.qDivision,
+        defaultLiaQualification,
+    );
+
     // 소득 설정 - 자동차 규정 라디오 변경 핸들러
     const handleChangeCarType = (evt: ChangeEvent<HTMLInputElement>) => {
         setCarType(evt.target.value);
     };
     // 소득 설정 - 일반 규정 라디오 변경 핸들러
     const handleChangeGenType = (evt: ChangeEvent<HTMLInputElement>) => {
-        setCarType(evt.target.value);
-    };
-    // 소득 설정 - 구간적용 체크 변경 핸들러
-    const handleChangeLongGrade = (evt: ChangeEvent<HTMLInputElement>) => {
-        setLongGrade(evt.target.checked);
+        setGenType(evt.target.value);
     };
     // 이름 입력창 blur 핸들러
     const handleBlurName = () => {
@@ -432,7 +521,11 @@ export const UserForm: FC<Props> = ({
             if (option.value === '01') {
                 setEstComNm(coreConstants.COMP_NAME);
             } else if (option.value === '02') {
-                // 지점명 예정
+                if (orga) {
+                    setEstComNm(orga.orga_name);
+                } else {
+                    return alert('먼저 부서를 선택해주세요.');
+                }
             }
         }
 
@@ -446,7 +539,11 @@ export const UserForm: FC<Props> = ({
             if (option.value === '01') {
                 setEstSalesNm(name.value);
             } else if (option.value === '02') {
-                // 지점명 예정
+                if (orga) {
+                    setEstSalesNm(orga.orga_name);
+                } else {
+                    return alert('먼저 부서를 선택해주세요.');
+                }
             } else if (option.value === '03') {
                 setEstSalesNm('');
             }
@@ -461,6 +558,11 @@ export const UserForm: FC<Props> = ({
                 setEstPhone(coreConstants.COMP_PHONE);
             } else if (option.value === '02') {
                 // 지점명 예정
+                if (orga) {
+                    setEstPhone(orga.tel);
+                } else {
+                    return alert('먼저 부서를 선택해주세요.');
+                }
             } else if (option.value === '03') {
                 setEstPhone(mobile.value);
             } else if (option.value === '04') {
@@ -474,7 +576,11 @@ export const UserForm: FC<Props> = ({
     const handleChangeEstFaxInputType = (option: CoreSelectOption | null) => {
         if (option !== null) {
             if (option.value === '01') {
-                // 지점명 예정
+                if (orga) {
+                    setEstFax(orga.fax);
+                } else {
+                    return alert('먼저 부서를 선택해주세요.');
+                }
             }
         }
 
@@ -502,7 +608,11 @@ export const UserForm: FC<Props> = ({
             if (option.value === '01') {
                 setEstAddr(coreConstants.COMP_ADDR);
             } else if (option.value === '02') {
-                // 지점명 예정
+                if (orga) {
+                    setEstAddr(orga.address);
+                } else {
+                    return alert('먼저 부서를 선택해주세요.');
+                }
             }
         }
 
@@ -565,9 +675,7 @@ export const UserForm: FC<Props> = ({
         const createUserDto = new CreateUserDTO(payload);
 
         if (createUserDto.requiredValidate()) {
-            createUser(createUserDto, () => {
-                alert('등록 성공');
-            });
+            createUser(createUserDto);
         }
     };
 
@@ -577,8 +685,8 @@ export const UserForm: FC<Props> = ({
         const payload: CreateUserRequestPayload = {
             name: name.value,
             mobile: mobile.value,
-            orga_idx: +selectedOrga.value,
             idnum1: idnum1.value,
+            orga_idx: -1,
             est_val: {
                 comNm: {
                     kind: estComInputType!.label,
@@ -605,8 +713,40 @@ export const UserForm: FC<Props> = ({
                     val: estAddr.value,
                 },
             },
-            cal: {},
+            cal: {
+                long_grade: longGrade.checked,
+            },
+            guarantee: guarantees,
+            fccode: codes,
+            permission: {
+                permission: {
+                    use_web: useWeb.checked,
+                    use_mobile: useMobile.checked,
+                },
+            },
+            associate: [
+                {
+                    type: '손보',
+                    no: giaNo.value,
+                    wcode: giaComp.value ? +giaComp.value.value : null,
+                    indate: dayjs(giaIndate.value).format('YYYY-MM-DD'),
+                    outdate: dayjs(giaOutdate.value).format('YYYY-MM-DD'),
+                    qulification: giaQualification.value!.label,
+                },
+                {
+                    type: '생보',
+                    no: liaNo.value,
+                    wcode: liaComp.value ? +liaComp.value.value : null,
+                    indate: dayjs(liaIndate.value).format('YYYY-MM-DD'),
+                    outdate: dayjs(liaOutdate.value).format('YYYY-MM-DD'),
+                    qulification: liaQualification.value!.label,
+                },
+            ],
         };
+
+        if (selectedOrga) {
+            payload['orga_idx'] = +selectedOrga.value;
+        }
 
         if (!isEmpty(nick.value)) {
             payload['nickname'] = nick.value;
@@ -694,12 +834,26 @@ export const UserForm: FC<Props> = ({
             payload.cal['gen_cal_base'] = +genBase.value.value;
         }
 
-        if (!isEmpty(genRate)) {
+        if (!isEmpty(genRate.value)) {
             payload.cal['gen_cal_ratio'] = +genRate.value;
         }
 
         return payload;
     };
+
+    useEffect(() => {
+        if (selectedOrga) {
+            dispatch(getOrgaRequest({ idx: selectedOrga.value }));
+        }
+    }, [dispatch, selectedOrga]);
+
+    useEffect(() => {
+        if (orga) {
+            if (estAddrInputType?.value === '01') {
+                setEstFax(orga.fax || '');
+            }
+        }
+    }, [dispatch, orga, estAddrInputType, setEstFax]);
 
     return (
         <>
@@ -711,9 +865,13 @@ export const UserForm: FC<Props> = ({
                                 <div className={`${displayName}__content`}>
                                     <div className="wr-group">
                                         <span
-                                            className={`${displayName}__department`}
+                                            className={`${displayName}__department ${
+                                                selectedOrga
+                                                    ? ''
+                                                    : 'wr-label--required'
+                                            }`}
                                         >
-                                            {selectedOrga.label
+                                            {selectedOrga
                                                 ? selectedOrga.label
                                                 : '부서를 선택하세요'}
                                         </span>
@@ -832,7 +990,7 @@ export const UserForm: FC<Props> = ({
                                                     <MyInput
                                                         type="text"
                                                         id="mobile"
-                                                        placeholder="000-0000-0000"
+                                                        placeholder="핸드폰"
                                                         onBlur={
                                                             handleBlurMobile
                                                         }
@@ -1093,7 +1251,9 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        options={ESTIMATE_COMP}
+                                                        options={
+                                                            userConstants.estComInputType
+                                                        }
                                                         value={estComInputType}
                                                         onChange={
                                                             handleChangeEstComInputType
@@ -1129,7 +1289,9 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        options={ESTIMATE_SALES}
+                                                        options={
+                                                            userConstants.estSalesNmInputType
+                                                        }
                                                         value={
                                                             estSalesNmInputType
                                                         }
@@ -1167,7 +1329,9 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        options={ESTIMATE_PHONE}
+                                                        options={
+                                                            userConstants.estPhoneInputType
+                                                        }
                                                         value={
                                                             estPhoneInputType
                                                         }
@@ -1204,7 +1368,9 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        options={ESTIMATE_FAX}
+                                                        options={
+                                                            userConstants.estFaxInputType
+                                                        }
                                                         value={estFaxInputType}
                                                         onChange={
                                                             handleChangeEstFaxInputType
@@ -1241,7 +1407,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         options={
-                                                            ESTIMATE_DIRECT
+                                                            userConstants.estDirectInputType
                                                         }
                                                         value={
                                                             estDirectInputType
@@ -1281,7 +1447,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         options={
-                                                            ESTIMATE_ADDRESS
+                                                            userConstants.estAddrInputType
                                                         }
                                                         value={estAddrInputType}
                                                         onChange={
@@ -1339,35 +1505,37 @@ export const UserForm: FC<Props> = ({
                                     genBase={genBase}
                                     genRate={genRate}
                                     longGrade={longGrade}
-                                    onChangeLongGrade={handleChangeLongGrade}
                                 />
                                 <GuaranteeTabpanel
                                     id="tabpanelGuarantee"
                                     tabId="tabGuarantee"
                                     hidden={tab.id !== 'tabGuarantee'}
-                                    // data={long.pays}
                                     editable={isEditable}
-                                    // addCount={paysAddCount}
-                                    // onAddCount={handleIncrementPaysAddCount}
                                 />
-                                {/* <AuthorityTabpanel
+                                <AuthorityTabpanel
                                     id="tabpanelAuthority"
                                     tabId="tabAuthority"
                                     hidden={tab.id !== 'tabAuthority'}
-                                    // data={long.pays}
                                     editable={isEditable}
-                                    // addCount={paysAddCount}
-                                    // onAddCount={handleIncrementPaysAddCount}
+                                    useWeb={useWeb}
+                                    useMobile={useMobile}
                                 />
                                 <QualManageTabpanel
                                     id="tabpanelQualManage"
                                     tabId="tabQualManage"
                                     hidden={tab.id !== 'tabQualManage'}
-                                    // data={long.pays}
                                     editable={isEditable}
-                                    // addCount={paysAddCount}
-                                    // onAddCount={handleIncrementPaysAddCount}
-                                /> */}
+                                    giaNo={giaNo}
+                                    giaComp={giaComp}
+                                    giaIndate={giaIndate}
+                                    giaOutdate={giaOutdate}
+                                    giaQualification={giaQualification}
+                                    liaNo={liaNo}
+                                    liaComp={liaComp}
+                                    liaIndate={liaIndate}
+                                    liaOutdate={liaOutdate}
+                                    liaQualification={liaQualification}
+                                />
                             </div>
                         </div>
                     </div>
@@ -1413,6 +1581,7 @@ export const UserForm: FC<Props> = ({
             <SelectDepartModal />
             <ImageUploadModal />
             <GuaranteeSettingModal />
+            <CodeSettingModal />
         </>
     );
 };

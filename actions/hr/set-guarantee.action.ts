@@ -10,13 +10,10 @@ export const GuaranteeActionTypes = {
     DELETE: `DELETE_${GUARANTEE_KEY}`,
 } as const;
 
-export interface CreateGuaranteePayload
-    extends CorePayload,
-        Partial<Guarantee> {}
+export interface CreateGuaranteePayload extends CorePayload, Guarantee {}
 
-export interface UpdateGuaranteePayload extends CreateGuaranteePayload {
-    index: number;
-}
+export interface UpdateGuaranteePayload
+    extends Partial<CreateGuaranteePayload> {}
 
 export interface DeleteGuaranteePayload extends CorePayload {
     index: number;
@@ -31,7 +28,7 @@ export interface UpdateGuaranteeAction extends Action<string> {
 }
 
 export interface DeleteGuaranteeAction extends Action<string> {
-    payload: CreateGuaranteePayload;
+    payload: DeleteGuaranteePayload;
 }
 
 export function createGuarantee(

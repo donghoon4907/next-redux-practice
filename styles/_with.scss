@@ -35,18 +35,6 @@
         &--disable {
             background-color: $wr-with-label-disable !important;
         }
-
-        &--required {
-            position: relative;
-
-            &::after {
-                content: '*';
-                color: red;
-                position: absolute;
-                top: -5px;
-                right: -7px;
-            }
-        }
     }
 
     &__badge {

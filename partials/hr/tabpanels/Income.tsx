@@ -10,6 +10,7 @@ import { MyInput } from '@components/input';
 import { MyRadio } from '@components/radio';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableExtension } from '@components/table/Extension';
+import { UseCheckboxOutput } from '@hooks/use-checkbox';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -22,8 +23,7 @@ interface Props extends MyTabpanelProps {
     onChangeGenType: (evt: ChangeEvent<HTMLInputElement>) => void;
     genBase: UseSelectOutput;
     genRate: UseInputOutput;
-    longGrade: boolean;
-    onChangeLongGrade: (evt: ChangeEvent<HTMLInputElement>) => void;
+    longGrade: UseCheckboxOutput;
 }
 
 export const IncomeTabpanel: FC<Props> = ({
@@ -41,7 +41,6 @@ export const IncomeTabpanel: FC<Props> = ({
     genBase,
     genRate,
     longGrade,
-    onChangeLongGrade,
 }) => {
     const labelType = editable ? 'active' : 'disable';
 
@@ -107,6 +106,9 @@ export const IncomeTabpanel: FC<Props> = ({
                             label="자동차규정"
                             type="disable"
                         >
+                            <div className="wr-pages-hr-detail__lock">
+                                <p>준비 중입니다.</p>
+                            </div>
                             <MySelect
                                 inputId="carReg"
                                 placeholder={'선택'}
@@ -129,8 +131,8 @@ export const IncomeTabpanel: FC<Props> = ({
                             <MyRadio
                                 id="genTypeRate"
                                 label="지급율"
-                                value="테이블"
-                                checked={genType === '테이블'}
+                                value="지급율"
+                                checked={genType === '지급율'}
                                 onChange={onChangeGenType}
                             />
                             <MyRadio
@@ -160,18 +162,22 @@ export const IncomeTabpanel: FC<Props> = ({
                                 type="text"
                                 id="genRate"
                                 placeholder="지급율"
+                                className="text-end"
                                 readOnly={!editable}
                                 unit="%"
                                 {...genRate}
                             />
                         </WithLabel>
                         <WithLabel
-                            id="carReg"
+                            id="genReg"
                             label="일반규정"
                             type={'disable'}
                         >
+                            <div className="wr-pages-hr-detail__lock">
+                                <p>준비 중입니다.</p>
+                            </div>
                             <MySelect
-                                inputId="carReg"
+                                inputId="genReg"
                                 placeholder={'선택'}
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
@@ -190,12 +196,7 @@ export const IncomeTabpanel: FC<Props> = ({
                     <div className="wr-pages-hr-detail__subtitle">
                         <strong>장기 기본지급</strong>
                         <div>
-                            <MyCheckbox
-                                id="sectionApply"
-                                label="구간적용"
-                                checked={longGrade}
-                                onChange={onChangeLongGrade}
-                            />
+                            <MyCheckbox label="구간적용" {...longGrade} />
                         </div>
                     </div>
                     <div className="wr-table--normal wr-mb position-relative">
@@ -205,6 +206,12 @@ export const IncomeTabpanel: FC<Props> = ({
                         <table className="wr-table table">
                             <thead>
                                 <tr>
+                                    <th style={{ width: 30 }}>
+                                        <MyCheckbox
+                                            label=""
+                                            // onChange={handleAllCheckDamages}
+                                        />
+                                    </th>
                                     <th style={{ width: '100px' }}>
                                         <strong>시작월</strong>
                                     </th>
@@ -221,6 +228,9 @@ export const IncomeTabpanel: FC<Props> = ({
                             </thead>
                             <tbody>
                                 <tr>
+                                    <td>
+                                        <MyCheckbox label="" />
+                                    </td>
                                     <td rowSpan={2}>
                                         <span>2022-11</span>
                                     </td>
@@ -233,6 +243,9 @@ export const IncomeTabpanel: FC<Props> = ({
                                     <td>-</td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        <MyCheckbox label="" />
+                                    </td>
                                     <td>
                                         <span>일반</span>
                                     </td>
@@ -272,6 +285,12 @@ export const IncomeTabpanel: FC<Props> = ({
                             <table className="wr-table table">
                                 <thead>
                                     <tr>
+                                        <th style={{ width: 30 }}>
+                                            <MyCheckbox
+                                                label=""
+                                                // onChange={handleAllCheckDamages}
+                                            />
+                                        </th>
                                         <th style={{ width: '100px' }}>
                                             <strong>규정구분</strong>
                                         </th>
@@ -286,6 +305,9 @@ export const IncomeTabpanel: FC<Props> = ({
                                 <tbody>
                                     <tr>
                                         <td>
+                                            <MyCheckbox label="" />
+                                        </td>
+                                        <td>
                                             <span>시작월</span>
                                         </td>
                                         <td>
@@ -294,6 +316,9 @@ export const IncomeTabpanel: FC<Props> = ({
                                         <td>-</td>
                                     </tr>
                                     <tr>
+                                        <td>
+                                            <MyCheckbox label="" />
+                                        </td>
                                         <td>
                                             <span>리크루팅</span>
                                         </td>

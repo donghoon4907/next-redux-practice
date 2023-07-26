@@ -39,11 +39,7 @@ export const WithLabel: FC<Props> = ({
                 className={`${displayName}__label ${displayName}__label--${type}`}
                 htmlFor={id}
             >
-                <span
-                    className={
-                        isRequired ? `${displayName}__label--required` : ''
-                    }
-                >
+                <span className={isRequired ? `wr-label--required` : ''}>
                     {label}
                 </span>
             </label>

@@ -3,4 +3,16 @@
     font-size: $wr-label-size;
     margin-bottom: 0.1rem;
     // margin-right: 0.8rem;
+
+    &--required {
+        position: relative;
+
+        &::after {
+            content: '*';
+            color: red;
+            position: absolute;
+            top: -5px;
+            right: -7px;
+        }
+    }
 }
