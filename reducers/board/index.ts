@@ -1,6 +1,6 @@
 import type { Reducer } from 'redux';
 import type { GetPostsSuccessPayload } from '@actions/board/get-posts.action';
-import type { Fc } from '@models/user';
+import type { User } from '@models/user';
 import produce from 'immer';
 import { GetPostsActionTypes } from '@actions/board/get-posts.action';
 import { GetPostActionTypes } from '@actions/board/get-post.action';
@@ -18,7 +18,7 @@ export interface BoardState {
     /**
      * 조회 대상 목록
      */
-    viewer: Fc[];
+    viewer: User[];
 }
 
 const initialState: BoardState = {
