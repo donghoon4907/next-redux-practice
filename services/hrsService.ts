@@ -1,9 +1,10 @@
-import type { CreateUserRequestPayload } from '@actions/hr/create.action';
+import type { CreateUserRequestPayload } from '@actions/hr/create-user.action';
 import type { LoginRequestPayload } from '@actions/hr/login.action';
 import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas';
 import type { GetOrgaRequestPayload } from '@actions/hr/get-orga';
 import type { GetUsersRequestPayload } from '@actions/hr/get-users';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
+import type { GetUserRequestPayload } from '@actions/hr/get-user';
 import { getBackendAxios } from '@utils/axios/backend';
 
 export function login(payload: LoginRequestPayload) {
@@ -46,6 +47,10 @@ export function getUsers(payload: GetUsersRequestPayload) {
     return getBackendAxios().get(`/orga/simpleUsers/${payload.idx}`);
 }
 
+export function getUser(payload: GetUserRequestPayload) {
+    return getBackendAxios().get(`/orga/userinfo/${payload.idx}`);
+}
+
 const rootServices = {
     login,
     getPermission,
@@ -56,6 +61,7 @@ const rootServices = {
     getOrgas,
     getOrga,
     getUsers,
+    getUser,
 };
 
 export default rootServices;

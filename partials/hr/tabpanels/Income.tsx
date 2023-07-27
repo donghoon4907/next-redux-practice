@@ -90,6 +90,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                 id="carTypeTable"
                                 label="테이블"
                                 value="테이블"
+                                disabled={!editable}
                                 checked={carType === '테이블'}
                                 onChange={onChangeCarType}
                             />
@@ -97,6 +98,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                 id="carTypeProportion"
                                 label="비례"
                                 value="비례"
+                                disabled={!editable}
                                 checked={carType === '비례'}
                                 onChange={onChangeCarType}
                             />
@@ -132,6 +134,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                 id="genTypeRate"
                                 label="지급율"
                                 value="지급율"
+                                disabled={!editable}
                                 checked={genType === '지급율'}
                                 onChange={onChangeGenType}
                             />
@@ -139,6 +142,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                 id="genTypeProportion"
                                 label="비례"
                                 value="비례"
+                                disabled={!editable}
                                 checked={genType === '비례'}
                                 onChange={onChangeGenType}
                             />
@@ -196,7 +200,12 @@ export const IncomeTabpanel: FC<Props> = ({
                     <div className="wr-pages-hr-detail__subtitle">
                         <strong>장기 기본지급</strong>
                         <div>
-                            <MyCheckbox label="구간적용" {...longGrade} />
+                            <MyCheckbox
+                                label="구간적용"
+                                id="longGrade"
+                                disabled={!editable}
+                                {...longGrade}
+                            />
                         </div>
                     </div>
                     <div className="wr-table--normal wr-mb position-relative">

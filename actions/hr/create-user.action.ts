@@ -20,7 +20,7 @@ export interface CreateUserRequestPayload extends CorePayload {
     title?: string;
     birthday?: string;
     birth_type?: boolean;
-    mobile_com?: string;
+    mobile_com: string;
     telephone?: string;
     tel_direct?: string;
     email?: string;
@@ -88,8 +88,6 @@ export interface CreateUserRequestPayload extends CorePayload {
     }[];
 }
 
-export interface CreateUserSuccessPayload {}
-
 export interface CreateUserRequestAction extends Action<string> {
     payload: CreateUserRequestPayload;
 }
@@ -106,9 +104,7 @@ export function createUserRequest(
 }
 
 export function createUserSuccess(): CreateUserSuccessAction {
-    // payload: CreateUserSuccessPayload
     return {
         type: CreateUserActionTypes.SUCCESS,
-        // payload,
     };
 }

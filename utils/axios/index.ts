@@ -16,7 +16,9 @@ export function createAxiosInstance(
     const newInstance = axios.create({
         baseURL,
         // timeout: 5000,
-        headers: {},
+        headers: {
+            'Content-Type': 'application/json',
+        },
     });
 
     // 서버에서 요청 시 기본 헤더를 설정
@@ -33,6 +35,12 @@ export function createAxiosInstance(
     newInstance.interceptors.request.use((config: AxiosRequestConfig) => {
         if (typeof window !== 'undefined') {
             const token = getCookie(process.env.COOKIE_TOKEN_KEY || '');
+            // let token;
+            // if (process.env.NODE_ENV === 'development') {
+            //     token = 'test';
+            // } else {
+            //     token = getCookie(process.env.COOKIE_TOKEN_KEY || '');
+            // }
 
             let authorization = 'Bearer ';
             if (token) {

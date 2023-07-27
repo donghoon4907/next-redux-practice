@@ -52,7 +52,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
     // 상태(only 적립금)
     const [accStatus] = useSelect(userConstants.gStatus);
     // 산출기준(only 적립금)
-    const [accType] = useSelect(userConstants.calc_standard2);
+    const [accType] = useSelect(userConstants.calcStandard2);
     // 적립율(only 적립금)
     const [accRate] = useNumbericInput('');
 

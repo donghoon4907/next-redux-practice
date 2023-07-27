@@ -149,6 +149,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                             id="giaIndate"
                                             size="md"
                                             placeholder="등록일"
+                                            readOnly={!editable}
                                             hooks={giaIndate}
                                         />
                                     </WithLabel>
@@ -196,6 +197,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                                 id="giaOutdate"
                                                 size="md"
                                                 placeholder="말소일"
+                                                readOnly={!editable}
                                                 hooks={giaOutdate}
                                             />
                                         </WithLabel>
@@ -236,6 +238,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                                 id="liaIndate"
                                                 size="md"
                                                 placeholder="등록일"
+                                                readOnly={!editable}
                                                 hooks={liaIndate}
                                             />
                                         </WithLabel>
@@ -283,6 +286,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                                     id="liaOutdate"
                                                     size="md"
                                                     placeholder="말소일"
+                                                    readOnly={!editable}
                                                     hooks={liaOutdate}
                                                 />
                                             </WithLabel>
@@ -298,25 +302,30 @@ export const QualManageTabpanel: FC<Props> = ({
                 <div className="col-6">
                     <div className="wr-pages-hr-detail__subtitle">
                         <strong>손보 보험사 코드</strong>
-                        <div>
-                            <MyButton
-                                className="btn-danger"
-                                onClick={handleDeleteDamages}
-                            >
-                                선택삭제
-                            </MyButton>
-                        </div>
+                        {editable && (
+                            <div>
+                                <MyButton
+                                    className="btn-danger"
+                                    onClick={handleDeleteDamages}
+                                >
+                                    선택삭제
+                                </MyButton>
+                            </div>
+                        )}
                     </div>
                     <div className="wr-table--normal wr-mb">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: 30 }}>
-                                        <MyCheckbox
-                                            label=""
-                                            onChange={handleAllCheckDamages}
-                                        />
-                                    </th>
+                                    {editable && (
+                                        <th style={{ width: 30 }}>
+                                            <MyCheckbox
+                                                label=""
+                                                onChange={handleAllCheckDamages}
+                                            />
+                                        </th>
+                                    )}
+
                                     <th style={{ width: 50 }}>
                                         <strong>보험사</strong>
                                     </th>
@@ -337,22 +346,25 @@ export const QualManageTabpanel: FC<Props> = ({
                             <tbody>
                                 {filteredDamages.length === 0 && (
                                     <tr>
-                                        <td colSpan={6}>
-                                            <span>코드를 등록하세요</span>
+                                        <td colSpan={editable ? 6 : 5}>
+                                            <span>등록된 코드가 없습니다.</span>
                                         </td>
                                     </tr>
                                 )}
                                 {filteredDamages.map((v, index) => (
                                     <tr key={`damages${index}`}>
-                                        <td>
-                                            <MyCheckbox
-                                                label=""
-                                                checked={v.checked}
-                                                onChange={(evt) =>
-                                                    handleCheckCode(evt, v)
-                                                }
-                                            />
-                                        </td>
+                                        {editable && (
+                                            <td>
+                                                <MyCheckbox
+                                                    label=""
+                                                    checked={v.checked}
+                                                    onChange={(evt) =>
+                                                        handleCheckCode(evt, v)
+                                                    }
+                                                />
+                                            </td>
+                                        )}
+
                                         <td>
                                             <span>{v.company}</span>
                                         </td>
@@ -372,32 +384,43 @@ export const QualManageTabpanel: FC<Props> = ({
                                 ))}
                             </tbody>
                         </table>
-                        <MyTableExtension onClick={handleShowSettingModal} />
+                        {editable && (
+                            <MyTableExtension
+                                onClick={handleShowSettingModal}
+                            />
+                        )}
                     </div>
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
                         <div className="wr-pages-hr-detail__subtitle">
                             <strong>생보 보험사 코드</strong>
-                            <div>
-                                <MyButton
-                                    className="btn-danger"
-                                    onClick={handleDeleteLifes}
-                                >
-                                    선택삭제
-                                </MyButton>
-                            </div>
+                            {editable && (
+                                <div>
+                                    <MyButton
+                                        className="btn-danger"
+                                        onClick={handleDeleteLifes}
+                                    >
+                                        선택삭제
+                                    </MyButton>
+                                </div>
+                            )}
                         </div>
                         <div className="wr-table--normal wr-mb">
                             <table className="wr-table table">
                                 <thead>
                                     <tr>
-                                        <th style={{ width: 30 }}>
-                                            <MyCheckbox
-                                                label=""
-                                                onChange={handleAllCheckLifes}
-                                            />
-                                        </th>
+                                        {editable && (
+                                            <th style={{ width: 30 }}>
+                                                <MyCheckbox
+                                                    label=""
+                                                    onChange={
+                                                        handleAllCheckLifes
+                                                    }
+                                                />
+                                            </th>
+                                        )}
+
                                         <th style={{ width: 30 }}>
                                             <strong>보험사</strong>
                                         </th>
@@ -419,22 +442,30 @@ export const QualManageTabpanel: FC<Props> = ({
                                     {filteredLifes.length === 0 && (
                                         <tr>
                                             <td colSpan={6}>
-                                                <span>코드를 등록하세요</span>
+                                                <span>
+                                                    등록된 코드가 없습니다.
+                                                </span>
                                             </td>
                                         </tr>
                                     )}
 
                                     {filteredLifes.map((v, index) => (
                                         <tr key={`lifes${index}`}>
-                                            <td style={{ width: 30 }}>
-                                                <MyCheckbox
-                                                    label=""
-                                                    checked={v.checked}
-                                                    onChange={(evt) =>
-                                                        handleCheckCode(evt, v)
-                                                    }
-                                                />
-                                            </td>
+                                            {editable && (
+                                                <td style={{ width: 30 }}>
+                                                    <MyCheckbox
+                                                        label=""
+                                                        checked={v.checked}
+                                                        onChange={(evt) =>
+                                                            handleCheckCode(
+                                                                evt,
+                                                                v,
+                                                            )
+                                                        }
+                                                    />
+                                                </td>
+                                            )}
+
                                             <td>
                                                 <span>{v.company}</span>
                                             </td>
@@ -454,9 +485,11 @@ export const QualManageTabpanel: FC<Props> = ({
                                     ))}
                                 </tbody>
                             </table>
-                            <MyTableExtension
-                                onClick={handleShowSettingModal}
-                            />
+                            {editable && (
+                                <MyTableExtension
+                                    onClick={handleShowSettingModal}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

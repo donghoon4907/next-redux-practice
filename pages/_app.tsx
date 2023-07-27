@@ -73,6 +73,16 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                     req,
                     res,
                 });
+                // let token;
+                // if (process.env.NODE_ENV === 'development') {
+                //     token = 'test';
+                // } else {
+                //     token = getCookie(process.env.COOKIE_TOKEN_KEY || '', {
+                //         req,
+                //         res,
+                //     });
+                // }
+
                 // axios 초기화
                 initialzeBackendAxios(token);
                 // permission 제외 페이지

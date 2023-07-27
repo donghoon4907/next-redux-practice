@@ -34,7 +34,7 @@ import { useTab } from '@hooks/use-tab';
 import {
     CreateUserRequestPayload,
     createUserRequest,
-} from '@actions/hr/create.action';
+} from '@actions/hr/create-user.action';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { END } from 'redux-saga';
 import { POINT_STATUS } from '@constants/options/department';
