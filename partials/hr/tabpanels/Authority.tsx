@@ -41,8 +41,16 @@ export const AuthorityTabpanel: FC<Props> = ({
                         </div>
                         <div className="wr-pages-hr-detail__content">
                             <div className="wr-pages-hr-detail__with">
-                                <MyCheckbox label="웹" {...useWeb} />
-                                <MyCheckbox label="모바일" {...useMobile} />
+                                <MyCheckbox
+                                    disabled={!editable}
+                                    label="웹"
+                                    {...useWeb}
+                                />
+                                <MyCheckbox
+                                    disabled={!editable}
+                                    label="모바일"
+                                    {...useMobile}
+                                />
                                 <MyCheckbox label="중복로그인" disabled />
                             </div>
                         </div>

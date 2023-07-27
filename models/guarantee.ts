@@ -1,5 +1,8 @@
 export type Guarantee = {
+    // 순서
     index: number;
+    // id
+    idx?: number;
     kind: string;
     g_money?: number;
     remark?: string;

@@ -16,6 +16,7 @@ import { GuaranteeActionTypes } from '@actions/hr/set-guarantee.action';
 import { GetAgenciesActionTypes } from '@actions/hr/get-agencys';
 import { CodeActionTypes } from '@actions/hr/set-code.action';
 import { GetOrgaActionTypes } from '@actions/hr/get-orga';
+import { GetUserActionTypes } from '@actions/hr/get-user';
 
 export interface HrState {
     /**
@@ -42,6 +43,10 @@ export interface HrState {
      * 영업가족 목록
      */
     users: CoreSelectOption[];
+    /**
+     * 영업가족 상세
+     */
+    user: any;
     /**
      * 선택한 부서(조직)
      */
@@ -71,6 +76,7 @@ const initialState: HrState = {
     orgas: [],
     orga: null,
     users: [],
+    user: null,
     selectedOrga: null,
     loggedInUser: null,
     // ip: '',
@@ -106,6 +112,10 @@ export const hrReducer: Reducer<HrState, any> = (
             }
             case GetUsersActionTypes.SUCCESS: {
                 draft.users = action.payload;
+                break;
+            }
+            case GetUserActionTypes.SUCCESS: {
+                draft.user = action.payload;
                 break;
             }
             case DepartActionTypes.UPDATE: {

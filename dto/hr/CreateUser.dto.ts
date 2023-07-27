@@ -1,9 +1,12 @@
-import type { CreateUserRequestPayload } from '@actions/hr/create.action';
-import { isEmpty, isValidDateFormat, ymdRegex } from '@utils/validator/common';
-import { isValidPhone } from '@utils/validator/user';
+import type { CreateUserRequestPayload } from '@actions/hr/create-user.action';
+import { isEmpty } from '@utils/validator/common';
 
 export class CreateUserDTO {
     constructor(private readonly payload: CreateUserRequestPayload) {}
+
+    getPayload = () => {
+        return this.payload;
+    };
 
     requiredValidate = () => {
         const { name, mobile, orga_idx, idnum1 } = this.payload;

@@ -1,5 +1,115 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
+// 생일 타입
+export const BIRTH_TYPE: CoreSelectOption[] = [
+    {
+        label: '양력',
+        value: 'Y',
+        isFixed: false,
+    },
+    {
+        label: '음력',
+        value: 'N',
+        isFixed: false,
+    },
+];
+
+// 통신사
+export const MOBILE_COM: CoreSelectOption[] = [
+    {
+        label: 'SKT',
+        value: 'SKT',
+        isFixed: false,
+    },
+    {
+        label: 'KT',
+        value: 'KT',
+        isFixed: false,
+    },
+    {
+        label: 'LGU',
+        value: 'LGU',
+        isFixed: false,
+    },
+    {
+        label: 'KT알뜰폰',
+        value: 'KT알뜰폰',
+        isFixed: false,
+    },
+    {
+        label: 'LGU알뜰폰',
+        value: 'LGU알뜰폰',
+        isFixed: false,
+    },
+];
+
+// 이메일사
+export const EMAIL_COM: CoreSelectOption[] = [
+    {
+        label: 'naver.com',
+        value: 'naver.com',
+        isFixed: false,
+    },
+    {
+        label: 'gmail.com',
+        value: 'gmail.com',
+        isFixed: false,
+    },
+    {
+        label: 'kakao.com',
+        value: 'kakao.com',
+        isFixed: false,
+    },
+    {
+        label: 'daum.net',
+        value: 'daum.net',
+        isFixed: false,
+    },
+];
+
+// 영업 가족 목록
+export const USER_TYPE: CoreSelectOption[] = [
+    {
+        label: 'FRC',
+        value: 'FRC',
+        isFixed: false,
+    },
+    {
+        label: '파트너',
+        value: '파트너',
+        isFixed: false,
+    },
+    {
+        label: 'STAFF',
+        value: 'STAFF',
+        isFixed: false,
+    },
+];
+
+// 재직 현황 목록
+export const EMP_STATUS: CoreSelectOption[] = [
+    {
+        label: '상근',
+        value: '상근',
+        isFixed: false,
+    },
+    {
+        label: '비상근',
+        value: '비상근',
+        isFixed: false,
+    },
+    {
+        label: '퇴사',
+        value: '퇴사',
+        isFixed: false,
+    },
+    {
+        label: '기타',
+        value: '기타',
+        isFixed: false,
+    },
+];
+
 // 비교견적 설정 - 회사명
 export const ESTIMATE_COMP: CoreSelectOption[] = [
     {
@@ -230,14 +340,19 @@ export const QUALIFICATION_DIVISION: CoreSelectOption[] = [
 ];
 
 const rootSelectOptions = {
+    birthType: BIRTH_TYPE,
+    mobileCom: MOBILE_COM,
+    emailCom: EMAIL_COM,
+    userType: USER_TYPE,
+    empStatus: EMP_STATUS,
     estComInputType: ESTIMATE_COMP,
     estSalesNmInputType: ESTIMATE_SALES,
     estPhoneInputType: ESTIMATE_PHONE,
     estFaxInputType: ESTIMATE_FAX,
     estDirectInputType: ESTIMATE_DIRECT,
     estAddrInputType: ESTIMATE_ADDRESS,
-    calc_standard: CALC_STANDARD,
-    calc_standard2: C_STANDARD,
+    calcStandard: CALC_STANDARD,
+    calcStandard2: C_STANDARD,
     gDivision: GUARANTEE_DIVISION,
     gStatus: GUARANTEE_STATUS,
     qDivision: QUALIFICATION_DIVISION,

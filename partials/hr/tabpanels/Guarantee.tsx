@@ -39,6 +39,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
     const handleAllCheckGuarantee = (evt: ChangeEvent<HTMLInputElement>) => {
         if (evt.target.checked) {
             guarantees.forEach((v) => {
+                console.log(v);
                 dispatch(updateGuarantee({ ...v, checked: true }));
             });
         } else {
@@ -146,25 +147,32 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 <div className="col">
                     <div className="wr-pages-hr-detail__subtitle">
                         <strong>보증설정 내역</strong>
-                        <div>
-                            <MyButton
-                                className="btn-danger"
-                                onClick={handleDeleteGuarantee}
-                            >
-                                선택삭제
-                            </MyButton>
-                        </div>
+                        {editable && (
+                            <div>
+                                <MyButton
+                                    className="btn-danger"
+                                    onClick={handleDeleteGuarantee}
+                                >
+                                    선택삭제
+                                </MyButton>
+                            </div>
+                        )}
                     </div>
                     <div className="wr-table--normal wr-mb">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: 30 }}>
-                                        <MyCheckbox
-                                            label=""
-                                            onChange={handleAllCheckGuarantee}
-                                        />
-                                    </th>
+                                    {editable && (
+                                        <th style={{ width: 30 }}>
+                                            <MyCheckbox
+                                                label=""
+                                                onChange={
+                                                    handleAllCheckGuarantee
+                                                }
+                                            />
+                                        </th>
+                                    )}
+
                                     <th style={{ width: '100px' }}>
                                         <strong>보증구분</strong>
                                     </th>
@@ -194,7 +202,9 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             <tbody>
                                 {guarantees.length === 0 && (
                                     <tr>
-                                        <td colSpan={9}>데이터가 없습니다.</td>
+                                        <td colSpan={editable ? 9 : 8}>
+                                            등록된 설정이 없습니다.
+                                        </td>
                                     </tr>
                                 )}
                                 {guarantees.map((v, index) => {
@@ -219,18 +229,21 @@ export const GuaranteeTabpanel: FC<Props> = ({
 
                                     return (
                                         <tr key={`guarantee${index + 1}`}>
-                                            <td>
-                                                <MyCheckbox
-                                                    label=""
-                                                    checked={v.checked}
-                                                    onChange={(evt) =>
-                                                        handleCheckGuarantee(
-                                                            evt,
-                                                            v,
-                                                        )
-                                                    }
-                                                />
-                                            </td>
+                                            {editable && (
+                                                <td>
+                                                    <MyCheckbox
+                                                        label=""
+                                                        checked={v.checked}
+                                                        onChange={(evt) =>
+                                                            handleCheckGuarantee(
+                                                                evt,
+                                                                v,
+                                                            )
+                                                        }
+                                                    />
+                                                </td>
+                                            )}
+
                                             <td>
                                                 <span>{v.kind}</span>
                                             </td>
@@ -276,7 +289,11 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                 })}
                             </tbody>
                         </table>
-                        <MyTableExtension onClick={handleShowSettingModal} />
+                        {editable && (
+                            <MyTableExtension
+                                onClick={handleShowSettingModal}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
