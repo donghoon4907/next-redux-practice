@@ -1,5 +1,7 @@
 export type Code = {
     index: number;
+    // id
+    idx?: number;
     wcode: number;
     fccode: string;
     password: string;

@@ -28,7 +28,11 @@ export const CodeSettingModal: FC<Props> = () => {
         (state) => state.hr,
     );
     // 보험사
-    const [comp] = useSelect(companies);
+    const [comp] = useSelect(
+        companies.filter(
+            (v) => v.origin.dist === '손해' || v.origin.dist === '생명',
+        ),
+    );
     // 등록일
     const [indate] = useDatepicker(new Date());
     // 코드

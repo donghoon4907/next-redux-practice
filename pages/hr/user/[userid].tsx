@@ -183,7 +183,7 @@ const User: NextPage<HrState> = ({ user }) => {
             </Head>
             <UserForm
                 mode="update"
-                id={user.userid}
+                id={user.idx}
                 defaultNick={user.nickname}
                 defaultName={user.name}
                 defaultTitle={user.title}
@@ -286,20 +286,28 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 }),
             );
 
-            for (let i = 0; i < user.fccode.length; i++) {
-                dispatch(
-                    createCode({ ...user.fccode[i], index: i, checked: false }),
-                );
+            if (user.guarantee) {
+                for (let i = 0; i < user.guarantee.length; i++) {
+                    dispatch(
+                        createGuarantee({
+                            ...user.guarantee[i],
+                            index: i,
+                            checked: false,
+                        }),
+                    );
+                }
             }
 
-            for (let i = 0; i < user.guarantee.length; i++) {
-                dispatch(
-                    createGuarantee({
-                        ...user.guarantee[i],
-                        index: i,
-                        checked: false,
-                    }),
-                );
+            if (user.fccode) {
+                for (let i = 0; i < user.fccode.length; i++) {
+                    dispatch(
+                        createCode({
+                            ...user.fccode[i],
+                            index: i,
+                            checked: false,
+                        }),
+                    );
+                }
             }
         } catch {
             output.redirect = {

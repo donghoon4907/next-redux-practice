@@ -1,5 +1,7 @@
 import type { Action } from 'redux';
 import type { CreateUserRequestPayload } from './create-user.action';
+import { Guarantee } from '@models/guarantee';
+import { Code } from '@models/code';
 
 export const UPDATE_USER_KEY = 'UPDATE_USER';
 
@@ -10,7 +12,12 @@ export const UpdateUserActionTypes = {
 } as const;
 
 export interface UpdateUserRequestPayload
-    extends Partial<CreateUserRequestPayload> {}
+    extends Partial<CreateUserRequestPayload> {
+    remove: {
+        guarantee?: Guarantee[];
+        fccode?: Code[];
+    };
+}
 
 export interface UpdateUserRequestAction extends Action<string> {
     payload: UpdateUserRequestPayload;

@@ -114,17 +114,17 @@ export const EMP_STATUS: CoreSelectOption[] = [
 export const ESTIMATE_COMP: CoreSelectOption[] = [
     {
         label: '회사명',
-        value: '01',
+        value: '회사명',
         isFixed: false,
     },
     {
         label: '지점명',
-        value: '02',
+        value: '지점명',
         isFixed: false,
     },
     {
         label: '직접입력',
-        value: '03',
+        value: '직접입력',
         isFixed: false,
     },
 ];
@@ -133,22 +133,22 @@ export const ESTIMATE_COMP: CoreSelectOption[] = [
 export const ESTIMATE_SALES: CoreSelectOption[] = [
     {
         label: '본인이름',
-        value: '01',
+        value: '본인이름',
         isFixed: false,
     },
     {
         label: '지점명',
-        value: '02',
+        value: '지점명',
         isFixed: false,
     },
     {
         label: '표기안함',
-        value: '03',
+        value: '표기안함',
         isFixed: false,
     },
     {
         label: '직접입력',
-        value: '04',
+        value: '직접입력',
         isFixed: false,
     },
 ];
@@ -157,27 +157,27 @@ export const ESTIMATE_SALES: CoreSelectOption[] = [
 export const ESTIMATE_PHONE: CoreSelectOption[] = [
     {
         label: '회사전화',
-        value: '01',
+        value: '회사전화',
         isFixed: false,
     },
     {
         label: '지점전화',
-        value: '02',
+        value: '지점전화',
         isFixed: false,
     },
     {
         label: '핸드폰',
-        value: '03',
+        value: '핸드폰',
         isFixed: false,
     },
     {
         label: '내선번호',
-        value: '04',
+        value: '내선번호',
         isFixed: false,
     },
     {
         label: '직접입력',
-        value: '05',
+        value: '직접입력',
         isFixed: false,
     },
 ];
@@ -186,12 +186,12 @@ export const ESTIMATE_PHONE: CoreSelectOption[] = [
 export const ESTIMATE_FAX: CoreSelectOption[] = [
     {
         label: '지점팩스',
-        value: '01',
+        value: '지점팩스',
         isFixed: false,
     },
     {
         label: '직접입력',
-        value: '02',
+        value: '직접입력',
         isFixed: false,
     },
 ];
@@ -200,22 +200,22 @@ export const ESTIMATE_FAX: CoreSelectOption[] = [
 export const ESTIMATE_DIRECT: CoreSelectOption[] = [
     {
         label: '회사전화',
-        value: '01',
+        value: '회사전화',
         isFixed: false,
     },
     {
         label: '핸드폰',
-        value: '02',
+        value: '핸드폰',
         isFixed: false,
     },
     {
         label: '내선번호',
-        value: '03',
+        value: '내선번호',
         isFixed: false,
     },
     {
         label: '직접입력',
-        value: '04',
+        value: '직접입력',
         isFixed: false,
     },
 ];
@@ -224,17 +224,17 @@ export const ESTIMATE_DIRECT: CoreSelectOption[] = [
 export const ESTIMATE_ADDRESS: CoreSelectOption[] = [
     {
         label: '회사주소',
-        value: '01',
+        value: '회사주소',
         isFixed: false,
     },
     {
         label: '지점주소',
-        value: '02',
+        value: '지점주소',
         isFixed: false,
     },
     {
         label: '직접입력',
-        value: '03',
+        value: '직접입력',
         isFixed: false,
     },
 ];
@@ -329,12 +329,12 @@ export const C_STANDARD: CoreSelectOption[] = [
 export const QUALIFICATION_DIVISION: CoreSelectOption[] = [
     {
         label: '유자격자',
-        value: '01',
+        value: '유자격자',
         isFixed: false,
     },
     {
         label: '사용인',
-        value: '02',
+        value: '사용인',
         isFixed: false,
     },
 ];

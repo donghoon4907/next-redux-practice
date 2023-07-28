@@ -10,16 +10,16 @@ import { commonMiddleware } from '@utils/generators/common';
 function* createUserSaga({ payload }: CreateUserRequestAction) {
     const { data } = yield call(hrsService.createUser, payload);
 
-    const { userid } = data;
+    const { userid, Message } = data;
 
     let message;
     if (userid) {
-        yield put(createUserSuccess());
-
         message = '사용자가 등록되었습니다.';
     } else {
-        message = 'userid is not received';
+        message = Message;
     }
+
+    yield put(createUserSuccess());
 
     alert(message);
 

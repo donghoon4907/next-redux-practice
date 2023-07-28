@@ -65,27 +65,15 @@ export const QualManageTabpanel: FC<Props> = ({
     };
 
     const handleAllCheckDamages = (evt: ChangeEvent<HTMLInputElement>) => {
-        if (evt.target.checked) {
-            filteredDamages.forEach((v) => {
-                dispatch(updateCode({ ...v, checked: true }));
-            });
-        } else {
-            filteredDamages.forEach((v) => {
-                dispatch(updateCode({ ...v, checked: false }));
-            });
-        }
+        filteredDamages.forEach((v) => {
+            dispatch(updateCode({ ...v, checked: evt.target.checked }));
+        });
     };
 
     const handleAllCheckLifes = (evt: ChangeEvent<HTMLInputElement>) => {
-        if (evt.target.checked) {
-            filteredLifes.forEach((v) => {
-                dispatch(updateCode({ ...v, checked: true }));
-            });
-        } else {
-            filteredLifes.forEach((v) => {
-                dispatch(updateCode({ ...v, checked: false }));
-            });
-        }
+        filteredLifes.forEach((v) => {
+            dispatch(updateCode({ ...v, checked: evt.target.checked }));
+        });
     };
 
     const handleCheckCode = (evt: ChangeEvent<HTMLInputElement>, v: Code) => {

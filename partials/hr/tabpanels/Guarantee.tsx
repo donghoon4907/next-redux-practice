@@ -37,16 +37,9 @@ export const GuaranteeTabpanel: FC<Props> = ({
     };
 
     const handleAllCheckGuarantee = (evt: ChangeEvent<HTMLInputElement>) => {
-        if (evt.target.checked) {
-            guarantees.forEach((v) => {
-                console.log(v);
-                dispatch(updateGuarantee({ ...v, checked: true }));
-            });
-        } else {
-            guarantees.forEach((v) => {
-                dispatch(updateGuarantee({ ...v, checked: false }));
-            });
-        }
+        guarantees.forEach((v) => {
+            dispatch(updateGuarantee({ ...v, checked: evt.target.checked }));
+        });
     };
 
     const handleCheckGuarantee = (
