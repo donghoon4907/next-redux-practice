@@ -268,7 +268,9 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                                 </span>
                                             </td>
                                             <td>
-                                                <span>N</span>
+                                                <span>
+                                                    {v.available ? 'Y' : 'N'}
+                                                </span>
                                             </td>
                                             <td>
                                                 <span>

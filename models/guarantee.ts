@@ -15,4 +15,5 @@ export type Guarantee = {
     accumulate_type?: number;
     accumulate_rate?: number;
     checked: boolean;
+    available: boolean;
 };

@@ -180,6 +180,10 @@ interface Props {
      */
     defaultEstAddrInputType?: CoreSelectOption;
     /**
+     * 소득 설정 - id
+     */
+    defaultCalIdx?: number;
+    /**
      * 소득 설정 - 은행명 기본 값
      */
     defaultBank?: CoreSelectOption;
@@ -219,6 +223,10 @@ interface Props {
      * 소득 설정 - 일반규정 기본 값(현재 미구현)
      */
     defaultLongGrade?: boolean;
+    /**
+     * 권한 설정 - id
+     */
+    defaultPermissionIdx?: number;
     /**
      * 권한 설정 - 웹 사용 기본 값
      */
@@ -300,6 +308,7 @@ export const UserForm: FC<Props> = ({
     defaultStatus = userConstants.empStatus[0],
     defaultIndate = null,
     defaultOutdate = null,
+    defaultCalIdx,
     defaultEstComNm = coreConstants.myCompNm,
     defaultEstComInputType = userConstants.estComInputType[0],
     defaultEstSalesNm = '',
@@ -322,6 +331,7 @@ export const UserForm: FC<Props> = ({
     defaultGenRate = '',
     // defaultGenIdx
     defaultLongGrade = false,
+    defaultPermissionIdx,
     defaultUseWeb = false,
     defaultUseMobile = false,
     defaultGiaIdx,
@@ -410,7 +420,7 @@ export const UserForm: FC<Props> = ({
     );
     // 퇴사일
     const [outdate] = useDatepicker(
-        defaultOutdate ? new Date(defaultOutdate) : new Date(),
+        defaultOutdate ? new Date(defaultOutdate) : null,
     );
     // 비교견적 설정 - 회사명
     const [estComNm, setEstComNm] = useInput(defaultEstComNm);
@@ -746,11 +756,15 @@ export const UserForm: FC<Props> = ({
                 },
             },
             cal: {
+                idx: defaultCalIdx,
                 long_grade: longGrade.checked,
             },
-            guarantee: guarantees,
+            guarantee: guarantees.map(({ available, ...rest }) => ({
+                ...rest,
+            })),
             fccode: codes,
             permission: {
+                idx: defaultPermissionIdx,
                 permission: {
                     use_web: useWeb.checked,
                     use_mobile: useMobile.checked,
@@ -758,7 +772,7 @@ export const UserForm: FC<Props> = ({
             },
             associate: [
                 {
-                    idx: mode === 'update' ? defaultGiaIdx : undefined,
+                    idx: defaultGiaIdx,
                     type: '손보',
                     no: giaNo.value,
                     wcode: giaComp.value ? +giaComp.value.value : null,
@@ -767,7 +781,7 @@ export const UserForm: FC<Props> = ({
                     qualification: giaQualification.value!.label,
                 },
                 {
-                    idx: mode === 'update' ? defaultLiaIdx : undefined,
+                    idx: defaultLiaIdx,
                     type: '생보',
                     no: liaNo.value,
                     wcode: liaComp.value ? +liaComp.value.value : null,

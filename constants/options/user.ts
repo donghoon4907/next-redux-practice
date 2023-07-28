@@ -243,17 +243,17 @@ export const ESTIMATE_ADDRESS: CoreSelectOption[] = [
 export const CALC_STANDARD: CoreSelectOption[] = [
     {
         label: '기본+성과',
-        value: '01',
+        value: '1',
         isFixed: false,
     },
     {
         label: '기본',
-        value: '02',
+        value: '2',
         isFixed: false,
     },
     {
         label: '성과',
-        value: '03',
+        value: '3',
         isFixed: false,
     },
 ];
