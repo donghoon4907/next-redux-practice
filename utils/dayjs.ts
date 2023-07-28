@@ -48,7 +48,7 @@ export class DayJSModule {
     };
     // Provided by changing to default date format
     public getDefaultDateFormat = () => {
-        return this._instance?.format(coreConstants.CORE_DATE_FORMAT);
+        return this._instance?.format(coreConstants.defaultDateFormat);
     };
     // Provided by changing to custom date format
     public getDateFormat = (dateFormat: string) => {

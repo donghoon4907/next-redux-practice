@@ -2,7 +2,6 @@ import type { FC, ChangeEvent } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { UploadState } from '@reducers/upload';
-import type { CreateUserRequestPayload } from '@actions/hr/create-user.action';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
@@ -34,12 +33,13 @@ import { CoreSelectOption } from '@interfaces/core';
 import { isEmpty } from '@utils/validator/common';
 import coreConstants from '@constants/core';
 import userConstants from '@constants/options/user';
-import { CreateUserDTO } from '@dto/hr/CreateUser.dto';
+import { CreateUserDTO, UpdateUserDTO } from '@dto/hr/User.dto';
 import { useCheckbox } from '@hooks/use-checkbox';
 import { CodeSettingModal } from '@components/modal/CodeSetting';
 import { createUserRequest } from '@actions/hr/create-user.action';
 import { getOrgaRequest } from '@actions/hr/get-orga';
 import { MyDatepicker } from '@components/datepicker';
+import { updateUserRequest } from '@actions/hr/update-user.action';
 
 type Mode = 'create' | 'update';
 interface Props {
@@ -180,6 +180,10 @@ interface Props {
      */
     defaultEstAddrInputType?: CoreSelectOption;
     /**
+     * 소득 설정 - id
+     */
+    defaultCalIdx?: number;
+    /**
      * 소득 설정 - 은행명 기본 값
      */
     defaultBank?: CoreSelectOption;
@@ -220,6 +224,10 @@ interface Props {
      */
     defaultLongGrade?: boolean;
     /**
+     * 권한 설정 - id
+     */
+    defaultPermissionIdx?: number;
+    /**
      * 권한 설정 - 웹 사용 기본 값
      */
     defaultUseWeb?: boolean;
@@ -227,6 +235,10 @@ interface Props {
      * 권한 설정 - 모바일 사용 기본 값
      */
     defaultUseMobile?: boolean;
+    /**
+     * 협회자격관리 - 손보협 idx
+     */
+    defaultGiaIdx?: number;
     /**
      * 협회자격관리 - 손보협 등록번호 기본 값
      */
@@ -247,6 +259,10 @@ interface Props {
      * 협회자격관리 - 손보협 자격구분 기본 값
      */
     defaultGiaQualification?: CoreSelectOption;
+    /**
+     * 협회자격관리 - 생보협 idx
+     */
+    defaultLiaIdx?: number;
     /**
      * 협회자격관리 - 생보협 등록번호 기본 값
      */
@@ -292,6 +308,7 @@ export const UserForm: FC<Props> = ({
     defaultStatus = userConstants.empStatus[0],
     defaultIndate = null,
     defaultOutdate = null,
+    defaultCalIdx,
     defaultEstComNm = coreConstants.myCompNm,
     defaultEstComInputType = userConstants.estComInputType[0],
     defaultEstSalesNm = '',
@@ -314,13 +331,16 @@ export const UserForm: FC<Props> = ({
     defaultGenRate = '',
     // defaultGenIdx
     defaultLongGrade = false,
+    defaultPermissionIdx,
     defaultUseWeb = false,
     defaultUseMobile = false,
+    defaultGiaIdx,
     defaultGiaNo = '',
     defaultGiaComp = null,
     defaultGiaIndate = null,
     defaultGiaOutdate = null,
     defaultGiaQualification = userConstants.qDivision[0],
+    defaultLiaIdx,
     defaultLiaNo = '',
     defaultLiaComp = null,
     defaultLiaIndate = null,
@@ -331,8 +351,16 @@ export const UserForm: FC<Props> = ({
 
     const dispatch = useDispatch();
 
-    const { selectedOrga, banks, companies, orga, guarantees, codes } =
-        useSelector<AppState, HrState>((state) => state.hr);
+    const {
+        selectedOrga,
+        banks,
+        companies,
+        orga,
+        guarantees,
+        codes,
+        removedGuarantees,
+        removedCodes,
+    } = useSelector<AppState, HrState>((state) => state.hr);
 
     const { lastUploadedPortraitImage } = useSelector<AppState, UploadState>(
         (state) => state.upload,
@@ -342,7 +370,7 @@ export const UserForm: FC<Props> = ({
 
     const createUser = useApi(createUserRequest);
 
-    // const updateUser = useApi(updateUserRequest);
+    const updateUser = useApi(updateUserRequest);
     // 탭 관리
     const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -392,7 +420,7 @@ export const UserForm: FC<Props> = ({
     );
     // 퇴사일
     const [outdate] = useDatepicker(
-        defaultOutdate ? new Date(defaultOutdate) : new Date(),
+        defaultOutdate ? new Date(defaultOutdate) : null,
     );
     // 비교견적 설정 - 회사명
     const [estComNm, setEstComNm] = useInput(defaultEstComNm);
@@ -443,7 +471,10 @@ export const UserForm: FC<Props> = ({
     // 협회자격관리 - 손보협 등록번호
     const [giaNo] = useInput(defaultGiaNo, { noSpace: true });
     // 협회자격관리 - 손보협 등록보험사
-    const [giaComp] = useSelect(companies, defaultGiaComp);
+    const [giaComp] = useSelect(
+        companies.filter((v) => v.origin.dist === '손해'),
+        defaultGiaComp,
+    );
     // 협회자격관리 - 손보협 등록일
     const [giaIndate] = useDatepicker(
         defaultGiaIndate ? new Date(defaultGiaIndate) : new Date(),
@@ -452,6 +483,7 @@ export const UserForm: FC<Props> = ({
     const [giaOutdate] = useDatepicker(
         defaultGiaOutdate ? new Date(defaultGiaOutdate) : new Date(),
     );
+
     // 협회자격관리 - 손보협 자격구분
     const [giaQualification] = useSelect(
         userConstants.qDivision,
@@ -460,7 +492,10 @@ export const UserForm: FC<Props> = ({
     // 협회자격관리 - 생보협 등록번호
     const [liaNo] = useInput(defaultLiaNo, { noSpace: true });
     // 협회자격관리 - 생보협 등록보험사
-    const [liaComp] = useSelect(companies, defaultLiaComp);
+    const [liaComp] = useSelect(
+        companies.filter((v) => v.origin.dist === '생명'),
+        defaultLiaComp,
+    );
     // 협회자격관리 - 생보협 등록일
     const [liaIndate] = useDatepicker(
         defaultLiaIndate ? new Date(defaultLiaIndate) : new Date(),
@@ -485,25 +520,25 @@ export const UserForm: FC<Props> = ({
     };
     // 이름 입력창 blur 핸들러
     const handleBlurName = () => {
-        if (estSalesNmInputType?.value === '01') {
+        if (estSalesNmInputType?.value === '본인이름') {
             setEstSalesNm(name.value);
         }
     };
     // 핸드폰 입력창 blur 핸들러
     const handleBlurMobile = () => {
-        if (estPhoneInputType?.value === '03') {
+        if (estPhoneInputType?.value === '핸드폰') {
             setEstPhone(mobile.value);
         }
-        if (estDirectInputType?.value === '02') {
+        if (estDirectInputType?.value === '핸드폰') {
             setEstDirect(mobile.value);
         }
     };
     // 내선번호 입력창 blur 핸들러
     const handleBlurTelephone = () => {
-        if (estPhoneInputType?.value === '04') {
+        if (estPhoneInputType?.value === '내선번호') {
             setEstPhone(telephone.value);
         }
-        if (estDirectInputType?.value === '03') {
+        if (estDirectInputType?.value === '내선번호') {
             setEstDirect(telephone.value);
         }
     };
@@ -511,9 +546,9 @@ export const UserForm: FC<Props> = ({
     // 비교견적 설정 - 회사명 타입 변경 핸들러
     const handleChangeEstComInputType = (option: CoreSelectOption | null) => {
         if (option !== null) {
-            if (option.value === '01') {
+            if (option.value === '회사명') {
                 setEstComNm(coreConstants.myCompNm);
-            } else if (option.value === '02') {
+            } else if (option.value === '지점명') {
                 if (orga) {
                     setEstComNm(orga.orga_name);
                 } else {
@@ -529,15 +564,15 @@ export const UserForm: FC<Props> = ({
         option: CoreSelectOption | null,
     ) => {
         if (option !== null) {
-            if (option.value === '01') {
+            if (option.value === '본인이름') {
                 setEstSalesNm(name.value);
-            } else if (option.value === '02') {
+            } else if (option.value === '지점명') {
                 if (orga) {
                     setEstSalesNm(orga.orga_name);
                 } else {
                     return alert('먼저 부서를 선택해주세요.');
                 }
-            } else if (option.value === '03') {
+            } else if (option.value === '표기안함') {
                 setEstSalesNm('');
             }
         }
@@ -547,18 +582,18 @@ export const UserForm: FC<Props> = ({
     // 비교견적 설정 - 대표전화 변경 핸들러
     const handleChangeEstPhoneInputType = (option: CoreSelectOption | null) => {
         if (option !== null) {
-            if (option.value === '01') {
+            if (option.value === '회사전화') {
                 setEstPhone(coreConstants.myCompPhone);
-            } else if (option.value === '02') {
+            } else if (option.value === '지점전화') {
                 // 지점명 예정
                 if (orga) {
                     setEstPhone(orga.tel);
                 } else {
                     return alert('먼저 부서를 선택해주세요.');
                 }
-            } else if (option.value === '03') {
+            } else if (option.value === '핸드폰') {
                 setEstPhone(mobile.value);
-            } else if (option.value === '04') {
+            } else if (option.value === '내선번호') {
                 setEstPhone(telephone.value);
             }
         }
@@ -568,7 +603,7 @@ export const UserForm: FC<Props> = ({
     // 비교견적 설정 - 팩스번호 변경 핸들러
     const handleChangeEstFaxInputType = (option: CoreSelectOption | null) => {
         if (option !== null) {
-            if (option.value === '01') {
+            if (option.value === '지점팩스') {
                 if (orga) {
                     setEstFax(orga.fax);
                 } else {
@@ -584,11 +619,11 @@ export const UserForm: FC<Props> = ({
         option: CoreSelectOption | null,
     ) => {
         if (option !== null) {
-            if (option.value === '01') {
+            if (option.value === '회사전화') {
                 setEstDirect(coreConstants.myCompPhone);
-            } else if (option.value === '02') {
+            } else if (option.value === '핸드폰') {
                 setEstDirect(mobile.value);
-            } else if (option.value === '03') {
+            } else if (option.value === '내선번호') {
                 setEstDirect(telephone.value);
             }
         }
@@ -598,11 +633,11 @@ export const UserForm: FC<Props> = ({
     // 비교견적 설정 - 표기주소 변경 핸들러
     const handleChangeEstAddrInputType = (option: CoreSelectOption | null) => {
         if (option !== null) {
-            if (option.value === '01') {
+            if (option.value === '회사주소') {
                 setEstAddr(coreConstants.myCompAddr);
-            } else if (option.value === '02') {
+            } else if (option.value === '지점주소') {
                 if (orga) {
-                    setEstAddr(orga.address);
+                    setEstAddr(orga.address || '');
                 } else {
                     return alert('먼저 부서를 선택해주세요.');
                 }
@@ -676,15 +711,24 @@ export const UserForm: FC<Props> = ({
         }
     };
 
-    const handleUpdate = () => {};
+    const handleUpdate = () => {
+        const payload = createPayload();
+
+        const updateUserDto = new UpdateUserDTO(payload);
+
+        if (updateUserDto.requiredValidate()) {
+            updateUser(updateUserDto.getPayload());
+        }
+    };
 
     const createPayload = () => {
-        const payload: CreateUserRequestPayload = {
+        const payload: any = {
             name: name.value,
             mobile: mobile.value,
             mobile_com: mobileCom.value!.value,
             idnum1: idnum1.value,
             orga_idx: -1,
+            remove: {},
             est_val: {
                 comNm: {
                     kind: estComInputType!.label,
@@ -695,8 +739,8 @@ export const UserForm: FC<Props> = ({
                     val: estSalesNm.value,
                 },
                 phone: {
-                    kind: estSalesNmInputType!.label,
-                    val: estSalesNm.value,
+                    kind: estPhoneInputType!.label,
+                    val: estPhone.value,
                 },
                 fax: {
                     kind: estFaxInputType!.label,
@@ -712,11 +756,15 @@ export const UserForm: FC<Props> = ({
                 },
             },
             cal: {
+                idx: defaultCalIdx,
                 long_grade: longGrade.checked,
             },
-            guarantee: guarantees,
+            guarantee: guarantees.map(({ available, ...rest }) => ({
+                ...rest,
+            })),
             fccode: codes,
             permission: {
+                idx: defaultPermissionIdx,
                 permission: {
                     use_web: useWeb.checked,
                     use_mobile: useMobile.checked,
@@ -724,23 +772,29 @@ export const UserForm: FC<Props> = ({
             },
             associate: [
                 {
+                    idx: defaultGiaIdx,
                     type: '손보',
                     no: giaNo.value,
                     wcode: giaComp.value ? +giaComp.value.value : null,
                     indate: dayjs(giaIndate.value).format('YYYY-MM-DD'),
                     outdate: dayjs(giaOutdate.value).format('YYYY-MM-DD'),
-                    qulification: giaQualification.value!.label,
+                    qualification: giaQualification.value!.label,
                 },
                 {
+                    idx: defaultLiaIdx,
                     type: '생보',
                     no: liaNo.value,
                     wcode: liaComp.value ? +liaComp.value.value : null,
                     indate: dayjs(liaIndate.value).format('YYYY-MM-DD'),
                     outdate: dayjs(liaOutdate.value).format('YYYY-MM-DD'),
-                    qulification: liaQualification.value!.label,
+                    qualification: liaQualification.value!.label,
                 },
             ],
         };
+
+        if (id) {
+            payload['idx'] = id;
+        }
 
         if (selectedOrga) {
             payload['orga_idx'] = +selectedOrga.value;
@@ -821,19 +875,27 @@ export const UserForm: FC<Props> = ({
         }
 
         if (!isEmpty(carType)) {
-            payload.cal['car_cal_type'] = carType;
+            payload.cal!['car_cal_type'] = carType;
         }
 
         if (!isEmpty(genType)) {
-            payload.cal['gen_cal_type'] = genType;
+            payload.cal!['gen_cal_type'] = genType;
         }
 
         if (genBase.value) {
-            payload.cal['gen_cal_base'] = +genBase.value.value;
+            payload.cal!['gen_cal_base'] = +genBase.value.value;
         }
 
         if (!isEmpty(genRate.value)) {
-            payload.cal['gen_cal_ratio'] = +genRate.value;
+            payload.cal!['gen_cal_ratio'] = +genRate.value;
+        }
+
+        if (removedGuarantees.length > 0) {
+            payload['remove'].guarantee = removedGuarantees.map((v) => v.idx);
+        }
+
+        if (removedCodes.length > 0) {
+            payload['remove'].fccode = removedCodes.map((v) => v.idx);
         }
 
         return payload;
@@ -847,11 +909,11 @@ export const UserForm: FC<Props> = ({
 
     useEffect(() => {
         if (orga) {
-            if (estAddrInputType?.value === '01') {
+            if (estFaxInputType?.value === '지점팩스') {
                 setEstFax(orga.fax || '');
             }
         }
-    }, [dispatch, orga, estAddrInputType, setEstFax]);
+    }, [dispatch, orga, estFaxInputType, setEstFax]);
 
     return (
         <>

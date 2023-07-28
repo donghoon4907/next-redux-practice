@@ -1,8 +1,13 @@
 import type { CreateUserRequestPayload } from '@actions/hr/create-user.action';
+import type { UpdateUserRequestPayload } from '@actions/hr/update-user.action';
 import { isEmpty } from '@utils/validator/common';
 
-export class CreateUserDTO {
-    constructor(private readonly payload: CreateUserRequestPayload) {}
+class UserDTO {
+    constructor(
+        private readonly payload:
+            | CreateUserRequestPayload
+            | UpdateUserRequestPayload,
+    ) {}
 
     getPayload = () => {
         return this.payload;
@@ -28,7 +33,7 @@ export class CreateUserDTO {
 
             return false;
         } else {
-            if (idnum1.length !== 13) {
+            if (idnum1!.length !== 13) {
                 alert('주민번호를 확인해주세요.');
 
                 return false;
@@ -48,4 +53,16 @@ export class CreateUserDTO {
 
         return true;
     };
+}
+
+export class CreateUserDTO extends UserDTO {
+    constructor(payload: CreateUserRequestPayload) {
+        super(payload);
+    }
+}
+
+export class UpdateUserDTO extends UserDTO {
+    constructor(payload: UpdateUserRequestPayload) {
+        super(payload);
+    }
 }

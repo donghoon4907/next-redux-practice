@@ -9,6 +9,7 @@ import { watchGetBanks } from './get-banks';
 import { watchGetCompanies } from './get-companies';
 import { watchGetAgencies } from './get-agencies';
 import { watchGetUser } from './get-user';
+import { watchUpdateUser } from './update-user';
 // import { watchGetPermission } from './get-permission';
 // import { watchGetIp } from './get-ip';
 
@@ -16,6 +17,7 @@ export function* hrSaga() {
     yield all([
         fork(watchLogin),
         fork(watchCreateUser),
+        fork(watchUpdateUser),
         fork(watchGetOrgas),
         fork(watchGetOrga),
         fork(watchGetUsers),

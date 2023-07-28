@@ -5,6 +5,7 @@ import type { GetOrgaRequestPayload } from '@actions/hr/get-orga';
 import type { GetUsersRequestPayload } from '@actions/hr/get-users';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
 import type { GetUserRequestPayload } from '@actions/hr/get-user';
+import type { UpdateUserRequestPayload } from '@actions/hr/update-user.action';
 import { getBackendAxios } from '@utils/axios/backend';
 
 export function login(payload: LoginRequestPayload) {
@@ -21,6 +22,10 @@ export function getPermission(payload: GetPermissionRequestPayload) {
 
 export function createUser(payload: CreateUserRequestPayload) {
     return getBackendAxios().post('/orga/new_user', payload);
+}
+
+export function updateUser(payload: UpdateUserRequestPayload) {
+    return getBackendAxios().post('/orga/user_update', payload);
 }
 
 export function getCompanies() {
@@ -55,6 +60,7 @@ const rootServices = {
     login,
     getPermission,
     createUser,
+    updateUser,
     getCompanies,
     getBanks,
     getAgencies,

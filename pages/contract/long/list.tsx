@@ -106,7 +106,7 @@ const Longs: NextPage = () => {
 
         if (contdate.value) {
             condition['paydate'] = contdate.value.map((d) =>
-                dayjs(d).format(coreConstants.CORE_DATE_FORMAT),
+                dayjs(d).format(coreConstants.defaultDateFormat),
             );
         }
 

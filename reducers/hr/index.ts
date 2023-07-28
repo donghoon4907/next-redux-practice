@@ -64,9 +64,17 @@ export interface HrState {
      */
     guarantees: Guarantee[];
     /**
+     * 삭제된 보증 설정 목록
+     */
+    removedGuarantees: Guarantee[];
+    /**
      * 보험사 코드 목록
      */
     codes: Code[];
+    /**
+     * 삭제된 보험사 코드 목록
+     */
+    removedCodes: Code[];
 }
 
 const initialState: HrState = {
@@ -81,7 +89,9 @@ const initialState: HrState = {
     loggedInUser: null,
     // ip: '',
     guarantees: [],
+    removedGuarantees: [],
     codes: [],
+    removedCodes: [],
 };
 
 export const hrReducer: Reducer<HrState, any> = (
@@ -141,11 +151,33 @@ export const hrReducer: Reducer<HrState, any> = (
             case GuaranteeActionTypes.UPDATE: {
                 const { index, ...rest } = action.payload;
 
-                draft.guarantees[index] = { index, ...rest };
+                for (let i = 0; i < draft.guarantees.length; i++) {
+                    if (draft.guarantees[i].index === index) {
+                        draft.guarantees[i] = {
+                            ...draft.guarantees[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
                 break;
             }
             case GuaranteeActionTypes.DELETE: {
-                draft.guarantees.splice(action.payload.index, 1);
+                const findIndex = draft.guarantees.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.guarantees.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedGuarantees =
+                            draft.removedGuarantees.concat(deleted);
+                    }
+                }
+
                 break;
             }
             case CodeActionTypes.CREATE: {
@@ -155,12 +187,32 @@ export const hrReducer: Reducer<HrState, any> = (
             case CodeActionTypes.UPDATE: {
                 const { index, ...rest } = action.payload;
 
-                draft.codes[index] = { index, ...rest };
+                for (let i = 0; i < draft.codes.length; i++) {
+                    if (draft.codes[i].index === index) {
+                        draft.codes[i] = {
+                            ...draft.codes[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
 
                 break;
             }
             case CodeActionTypes.DELETE: {
-                draft.codes.splice(action.payload.index, 1);
+                const findIndex = draft.codes.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.codes.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedCodes = draft.removedCodes.concat(deleted);
+                    }
+                }
+
                 break;
             }
             default:

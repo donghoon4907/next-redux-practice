@@ -76,6 +76,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
             index: guarantees.length,
             kind: kind.value!.label,
             checked: false,
+            available: false,
         };
 
         if (!isEmpty(gMoney.value)) {

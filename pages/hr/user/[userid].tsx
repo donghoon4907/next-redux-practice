@@ -20,7 +20,7 @@ import { createGuarantee } from '@actions/hr/set-guarantee.action';
 function makeSelectOption(value: any, arr: any[]) {
     let output;
     if (value) {
-        const findIndex = arr.findIndex((v) => v.value === value);
+        const findIndex = arr.findIndex((v) => v.value == value);
 
         if (findIndex !== -1) {
             output = arr[findIndex];
@@ -130,16 +130,47 @@ const User: NextPage<HrState> = ({ user }) => {
 
     const defaultBank = makeSelectOption(user.income_bank, banks);
 
-    const defaultGenBase = makeSelectOption(
-        user.cal.gen_cal_base,
-        userConstants.calcStandard,
-    );
+    let defaultCalIdx;
+    let defaultGenBase;
+    let defaultCarType;
+    let defaultGenType;
+    let defaultGenRate;
+    let defaultLongGrade;
 
+    if (user.cal?.idx) {
+        defaultCalIdx = user.cal.idx;
+    }
+
+    if (user.cal?.gen_cal_base) {
+        defaultGenBase = makeSelectOption(
+            user.cal.gen_cal_base,
+            userConstants.calcStandard,
+        );
+    }
+
+    if (user.cal?.car_cal_type) {
+        defaultCarType = user.cal.car_cal_type;
+    }
+
+    if (user.cal?.gen_cal_type) {
+        defaultGenType = user.cal.gen_cal_type;
+    }
+
+    if (user.cal?.gen_cal_ratio) {
+        defaultGenRate = user.cal.gen_cal_ratio;
+    }
+
+    if (user.cal?.long_grade) {
+        defaultLongGrade = user.cal.long_grade;
+    }
+
+    let defaultGiaIdx;
     let defaultGiaNo;
     let defaultGiaComp;
     let defaultGiaIndate;
     let defaultGiaOutdate;
     let defaultGiaQualification;
+    let defaultLiaIdx;
     let defaultLiaNo;
     let defaultLiaComp;
     let defaultLiaIndate;
@@ -151,6 +182,7 @@ const User: NextPage<HrState> = ({ user }) => {
             const iaType = ia.type;
 
             if (iaType === '손보') {
+                defaultGiaIdx = ia.idx;
                 defaultGiaNo = ia.no;
                 defaultGiaComp = makeSelectOption(ia.wcode, companies);
                 defaultGiaIndate = ia.indate;
@@ -160,6 +192,7 @@ const User: NextPage<HrState> = ({ user }) => {
                     userConstants.qDivision,
                 );
             } else if (iaType === '생보') {
+                defaultLiaIdx = ia.idx;
                 defaultLiaNo = ia.no;
                 defaultLiaComp = makeSelectOption(ia.wcode, companies);
                 defaultLiaIndate = ia.indate;
@@ -183,7 +216,7 @@ const User: NextPage<HrState> = ({ user }) => {
             </Head>
             <UserForm
                 mode="update"
-                id={user.userid}
+                id={user.idx}
                 defaultNick={user.nickname}
                 defaultName={user.name}
                 defaultTitle={user.title}
@@ -204,6 +237,7 @@ const User: NextPage<HrState> = ({ user }) => {
                 defaultStatus={defaultStatus}
                 defaultIndate={user.indate}
                 defaultOutdate={user.outdate}
+                defaultCalIdx={defaultCalIdx}
                 defaultEstComNm={defaultEstComNm}
                 defaultEstComInputType={defaultEstComInputType}
                 defaultEstSalesNm={defaultEstSalesNm}
@@ -219,18 +253,21 @@ const User: NextPage<HrState> = ({ user }) => {
                 defaultBank={defaultBank}
                 defaultAccount={user.income_account}
                 defaultHolder={user.income_name}
-                defaultCarType={user.cal.car_cal_type}
-                defaultGenType={user.cal.gen_cal_type}
+                defaultCarType={defaultCarType}
+                defaultGenType={defaultGenType}
                 defaultGenBase={defaultGenBase}
-                defaultGenRate={user.cal.gen_cal_ratio}
-                defaultLongGrade={user.cal.long_grade}
+                defaultGenRate={defaultGenRate}
+                defaultLongGrade={defaultLongGrade}
+                defaultPermissionIdx={user.permission.idx}
                 defaultUseWeb={user.permission.permission.use_web}
                 defaultUseMobile={user.permission.permission.use_mobile}
+                defaultGiaIdx={defaultGiaIdx}
                 defaultGiaNo={defaultGiaNo}
                 defaultGiaComp={defaultGiaComp}
                 defaultGiaIndate={defaultGiaIndate}
                 defaultGiaOutdate={defaultGiaOutdate}
                 defaultGiaQualification={defaultGiaQualification}
+                defaultLiaIdx={defaultLiaIdx}
                 defaultLiaNo={defaultLiaNo}
                 defaultLiaComp={defaultLiaComp}
                 defaultLiaIndate={defaultLiaIndate}
@@ -286,20 +323,28 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 }),
             );
 
-            for (let i = 0; i < user.fccode.length; i++) {
-                dispatch(
-                    createCode({ ...user.fccode[i], index: i, checked: false }),
-                );
+            if (user.guarantee) {
+                for (let i = 0; i < user.guarantee.length; i++) {
+                    dispatch(
+                        createGuarantee({
+                            ...user.guarantee[i],
+                            index: i,
+                            checked: false,
+                        }),
+                    );
+                }
             }
 
-            for (let i = 0; i < user.guarantee.length; i++) {
-                dispatch(
-                    createGuarantee({
-                        ...user.guarantee[i],
-                        index: i,
-                        checked: false,
-                    }),
-                );
+            if (user.fccode) {
+                for (let i = 0; i < user.fccode.length; i++) {
+                    dispatch(
+                        createCode({
+                            ...user.fccode[i],
+                            index: i,
+                            checked: false,
+                        }),
+                    );
+                }
             }
         } catch {
             output.redirect = {
