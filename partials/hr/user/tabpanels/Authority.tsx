@@ -1,4 +1,4 @@
-import type { FC, ChangeEvent } from 'react';
+import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';

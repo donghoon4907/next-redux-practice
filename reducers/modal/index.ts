@@ -7,6 +7,7 @@ import { SetViewerModalActionTypes } from '@actions/modal/set-viewer.action';
 import { ImageUploadModalActionTypes } from '@actions/modal/image-upload.action';
 import { GuaranteeSettingModalActionTypes } from '@actions/modal/guarantee-setting.action';
 import { CodeSettingModalActionTypes } from '@actions/modal/code-setting.action';
+import { LifeLongModalActionTypes } from '@actions/modal/life-long.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -16,6 +17,7 @@ export interface ModalState {
     isShowImageUploadModal: boolean;
     isShowGuaranteeSettingModal: boolean;
     isShowCodeSettingModal: boolean;
+    isShowLifeLongModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -26,6 +28,7 @@ const initialState: ModalState = {
     isShowImageUploadModal: false,
     isShowGuaranteeSettingModal: false,
     isShowCodeSettingModal: false,
+    isShowLifeLongModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -88,6 +91,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case CodeSettingModalActionTypes.HIDE: {
                 draft.isShowCodeSettingModal = false;
+                break;
+            }
+            case LifeLongModalActionTypes.SHOW: {
+                draft.isShowLifeLongModal = true;
+                break;
+            }
+            case LifeLongModalActionTypes.HIDE: {
+                draft.isShowLifeLongModal = false;
                 break;
             }
             default:

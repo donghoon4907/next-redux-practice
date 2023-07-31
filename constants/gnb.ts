@@ -354,13 +354,13 @@ export const ASIDE_MENU: any = {
     ],
     contract: [
         {
-            id: 'aside_menu_contract1',
+            id: 'contract-long',
             level: 1,
             label: '장기',
             to: '',
             items: [
                 {
-                    id: 'aside_menu_contract1-1',
+                    id: 'contract-long_list',
                     level: 2,
                     label: '장기계약목록',
                     to: '/contract/long/list',
@@ -376,19 +376,19 @@ export const ASIDE_MENU: any = {
             ],
         },
         {
-            id: 'aside_menu_contract2',
+            id: 'contract-car',
             level: 1,
             label: '자동차',
             to: '',
             items: [
                 {
-                    id: 'aside_menu_contract2-1',
+                    id: 'contract-car-comparison',
                     level: 2,
                     label: '비교견적',
                     to: '',
                     items: [
                         {
-                            id: 'aside_menu_contract2-1-1',
+                            id: 'contract-car-comparison_car',
                             level: 3,
                             label: '비교견적(자동차)',
                             to: '/contract/car/comparison-estimate',
@@ -718,28 +718,49 @@ export const ASIDE_MENU: any = {
     ],
     hr: [
         {
-            id: 'aside_menu_hr1',
+            id: 'hr-department',
             level: 1,
-            label: '조직부서',
+            label: '조직관리',
             to: '',
             items: [
                 {
-                    id: 'aside_menu_hr1-1',
+                    id: 'hr-department-business_create',
                     level: 2,
-                    label: '조직부서',
-                    to: '',
+                    label: '사업부등록',
+                    to: '/hr/business/create',
+                    items: [],
+                },
+                {
+                    id: 'hr-department-headquarter_create',
+                    level: 2,
+                    label: '본부등록',
+                    to: '/hr/headquarter/create',
+                    items: [],
+                },
+                {
+                    id: 'hr-department-branch_create',
+                    level: 2,
+                    label: '지점등록',
+                    to: '/hr/branch/create',
+                    items: [],
+                },
+                {
+                    id: 'hr-department-team_create',
+                    level: 2,
+                    label: '팀등록',
+                    to: '/hr/team/create',
                     items: [],
                 },
             ],
         },
         {
-            id: 'aside_menu_hr2',
+            id: 'hr-user',
             level: 1,
             label: '영업가족',
             to: '',
             items: [
                 {
-                    id: 'aside_menu_hr2-1',
+                    id: 'hr-user_create',
                     level: 2,
                     label: '영업가족등록',
                     to: '/hr/user/create',

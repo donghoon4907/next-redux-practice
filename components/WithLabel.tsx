@@ -22,6 +22,11 @@ interface Props extends CoreProps {
      *
      */
     isRequired?: boolean;
+    /**
+     * 확장 여부
+     *
+     */
+    isExpand?: boolean;
 }
 
 export const WithLabel: FC<Props> = ({
@@ -30,13 +35,16 @@ export const WithLabel: FC<Props> = ({
     label,
     type = 'active',
     isRequired = false,
+    isExpand = false,
 }) => {
     const displayName = 'wr-with';
 
     return (
         <div className={`${displayName}__wrap`}>
             <label
-                className={`${displayName}__label ${displayName}__label--${type}`}
+                className={`${displayName}__label ${displayName}__label--${type} ${
+                    isExpand ? `${displayName}__label--nowrap` : ''
+                }`}
                 htmlFor={id}
             >
                 <span className={isRequired ? `wr-label--required` : ''}>

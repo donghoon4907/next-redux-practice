@@ -35,6 +35,20 @@
         &--disable {
             background-color: $wr-with-label-disable !important;
         }
+
+        &--nowrap {
+            max-width: none;
+            white-space: nowrap;
+            padding: 0 5px;
+        }
+    }
+
+    &__checkbox {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 5px;
     }
 
     &__badge {

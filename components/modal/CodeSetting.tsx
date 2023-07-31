@@ -34,7 +34,7 @@ export const CodeSettingModal: FC<Props> = () => {
         ),
     );
     // 등록일
-    const [indate] = useDatepicker(new Date());
+    const [indate] = useDatepicker(null);
     // 코드
     const [code] = useInput('', { noSpace: true });
     // 비밀번호
@@ -68,7 +68,9 @@ export const CodeSettingModal: FC<Props> = () => {
             fccode: code.value,
             password: password.value,
             cent_val: centVal.value,
-            indate: dayjs(indate.value).format('YYYY-MM-DD'),
+            indate: indate.value
+                ? dayjs(indate.value).format('YYYY-MM-DD')
+                : null,
             dist: comp.value!.origin.dist,
             company: comp.value!.label,
             checked: false,

@@ -17,6 +17,8 @@ import { GetAgenciesActionTypes } from '@actions/hr/get-agencys';
 import { CodeActionTypes } from '@actions/hr/set-code.action';
 import { GetOrgaActionTypes } from '@actions/hr/get-orga';
 import { GetUserActionTypes } from '@actions/hr/get-user';
+import { Commission } from '@models/commission';
+import { CommissionActionTypes } from '@actions/hr/set-commission.action';
 
 export interface HrState {
     /**
@@ -75,6 +77,14 @@ export interface HrState {
      * 삭제된 보험사 코드 목록
      */
     removedCodes: Code[];
+    /**
+     * 수수료 규정 목록
+     */
+    commissions: Commission[];
+    /**
+     * 삭제된 수수료 규정 목록
+     */
+    removedCommissions: Commission[];
 }
 
 const initialState: HrState = {
@@ -92,6 +102,8 @@ const initialState: HrState = {
     removedGuarantees: [],
     codes: [],
     removedCodes: [],
+    commissions: [],
+    removedCommissions: [],
 };
 
 export const hrReducer: Reducer<HrState, any> = (
@@ -210,6 +222,42 @@ export const hrReducer: Reducer<HrState, any> = (
 
                     if (deleted.idx) {
                         draft.removedCodes = draft.removedCodes.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case CommissionActionTypes.CREATE: {
+                draft.commissions = draft.commissions.concat(action.payload);
+                break;
+            }
+            case CommissionActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.commissions.length; i++) {
+                    if (draft.commissions[i].index === index) {
+                        draft.commissions[i] = {
+                            ...draft.commissions[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case CommissionActionTypes.DELETE: {
+                const findIndex = draft.commissions.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.commissions.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedCommissions =
+                            draft.removedCommissions.concat(deleted);
                     }
                 }
 

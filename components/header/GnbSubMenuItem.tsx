@@ -19,9 +19,9 @@ export const GnbSubMenuItem: FC<Props> = ({ to, tabOption, children }) => {
         evt.preventDefault();
 
         if (tabOption) {
-            const { id, label } = tabOption;
+            // const { id, label } = tabOption;
 
-            tab.fire(id, label, to);
+            tab.move(to);
         }
     };
 

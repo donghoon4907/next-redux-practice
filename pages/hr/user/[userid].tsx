@@ -1,12 +1,13 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { UserForm } from '@partials/hr/UserForm';
+import { UserForm } from '@partials/hr/user/UserForm';
 import { getBanksRequest } from '@actions/hr/get-banks';
 import { getAgenciesRequest } from '@actions/hr/get-agencys';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
@@ -16,6 +17,8 @@ import { updateDepart } from '@actions/hr/set-depart.action';
 import { AppState } from '@reducers/index';
 import { createCode } from '@actions/hr/set-code.action';
 import { createGuarantee } from '@actions/hr/set-guarantee.action';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 
 function makeSelectOption(value: any, arr: any[]) {
     let output;
@@ -31,6 +34,8 @@ function makeSelectOption(value: any, arr: any[]) {
 }
 
 const User: NextPage<HrState> = ({ user }) => {
+    const dispatch = useDispatch();
+
     const { banks, companies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
@@ -205,6 +210,22 @@ const User: NextPage<HrState> = ({ user }) => {
         }
     }
 
+    useEffect(() => {
+        // 탭 추가
+        const tab = new TabModule();
+
+        const tabKey = `tab:hr-user_${user.userid}`;
+        if (!tab.read(tabKey)) {
+            tab.create({
+                id: tabKey,
+                label: `영업가족상세 - ${user.name}`,
+                to: `/hr/user/${user.userid}`,
+            });
+        }
+
+        dispatch(initTab(tab.getAll()));
+    }, [dispatch, user]);
+
     return (
         <>
             <Head>
@@ -216,7 +237,8 @@ const User: NextPage<HrState> = ({ user }) => {
             </Head>
             <UserForm
                 mode="update"
-                id={user.idx}
+                idx={user.idx}
+                userid={user.userid}
                 defaultNick={user.nickname}
                 defaultName={user.name}
                 defaultTitle={user.title}
@@ -259,8 +281,8 @@ const User: NextPage<HrState> = ({ user }) => {
                 defaultGenRate={defaultGenRate}
                 defaultLongGrade={defaultLongGrade}
                 defaultPermissionIdx={user.permission.idx}
-                defaultUseWeb={user.permission.permission.use_web}
-                defaultUseMobile={user.permission.permission.use_mobile}
+                defaultUseWeb={user.permission.permission.system.use_web}
+                defaultUseMobile={user.permission.permission.system.use_mobile}
                 defaultGiaIdx={defaultGiaIdx}
                 defaultGiaNo={defaultGiaNo}
                 defaultGiaComp={defaultGiaComp}

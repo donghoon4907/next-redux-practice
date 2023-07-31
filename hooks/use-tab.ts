@@ -1,4 +1,4 @@
-import type { CoreSetState, CoreTabOption } from '@interfaces/core';
+import type { CoreTabOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { TabModule } from '@utils/storage';
@@ -23,7 +23,25 @@ export const useLinkTab = () => {
         router.push(to);
     };
 
-    return { fire };
+    const move = (to: string) => {
+        // 현재 페이지인 경우
+        if (router.asPath === to) {
+            return;
+        }
+
+        router.push(to);
+    };
+
+    const replace = (to: string) => {
+        // 현재 페이지인 경우
+        if (router.asPath === to) {
+            return;
+        }
+
+        router.replace(to);
+    };
+
+    return { fire, move, replace };
 };
 
 interface UseTabFunction {

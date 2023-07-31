@@ -29,11 +29,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
         evt.preventDefault();
 
         login({ userid: userid.value, password: password.value, ip }, () => {
-            tab.fire(
-                `aside_menu_contract1-1`,
-                '장기계약목록',
-                '/contract/long/list',
-            );
+            tab.move('/contract/long/list');
         });
     };
 
