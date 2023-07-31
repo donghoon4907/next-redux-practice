@@ -45,3 +45,18 @@ export function convertEscapeHtml(htmlString: string) {
         }
     });
 }
+/**
+ * 휴대폰 번호 - 처리
+ */
+export function convertPhoneNumber(phone: string) {
+    let converted;
+    if (phone.length === 8) {
+        converted = phone.replace(/(\d{4})(\d{4})/, '$1-$2');
+    } else if (phone.length === 10) {
+        converted = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+    } else {
+        converted = phone.replace(/(\d{3})(\d{4})(\d{1})/, '$1-$2-$3');
+    }
+
+    return converted;
+}

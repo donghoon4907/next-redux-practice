@@ -216,7 +216,8 @@ const User: NextPage<HrState> = ({ user }) => {
             </Head>
             <UserForm
                 mode="update"
-                id={user.idx}
+                idx={user.idx}
+                userid={user.userid}
                 defaultNick={user.nickname}
                 defaultName={user.name}
                 defaultTitle={user.title}
@@ -259,8 +260,8 @@ const User: NextPage<HrState> = ({ user }) => {
                 defaultGenRate={defaultGenRate}
                 defaultLongGrade={defaultLongGrade}
                 defaultPermissionIdx={user.permission.idx}
-                defaultUseWeb={user.permission.permission.use_web}
-                defaultUseMobile={user.permission.permission.use_mobile}
+                defaultUseWeb={user.permission.permission.system.use_web}
+                defaultUseMobile={user.permission.permission.system.use_mobile}
                 defaultGiaIdx={defaultGiaIdx}
                 defaultGiaNo={defaultGiaNo}
                 defaultGiaComp={defaultGiaComp}

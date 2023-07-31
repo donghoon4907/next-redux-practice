@@ -4,7 +4,6 @@ import type { HrState } from '@reducers/hr';
 import type { UploadState } from '@reducers/upload';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
 import dayjs from 'dayjs';
 import { MySelect } from '@components/select';
 import { HR_DETAIL_TABS } from '@constants/tab';
@@ -13,7 +12,6 @@ import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
 import { MyLayout } from '@components/Layout';
-import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useApi } from '@hooks/use-api';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { MyFooter } from '@components/footer';
@@ -40,6 +38,14 @@ import { createUserRequest } from '@actions/hr/create-user.action';
 import { getOrgaRequest } from '@actions/hr/get-orga';
 import { MyDatepicker } from '@components/datepicker';
 import { updateUserRequest } from '@actions/hr/update-user.action';
+import { usePostcode } from '@hooks/use-postcode';
+import { convertPhoneNumber } from '@utils/converter';
+import {
+    useInput,
+    useNumbericInput,
+    usePhoneInput,
+    useResidentNumberInput,
+} from '@hooks/use-input';
 
 type Mode = 'create' | 'update';
 interface Props {
@@ -50,7 +56,11 @@ interface Props {
     /**
      * 사원번호
      */
-    id?: string;
+    userid?: string;
+    /**
+     * PK
+     */
+    idx?: string;
     /**
      * 별칭 기본 값
      */
@@ -287,7 +297,8 @@ interface Props {
 
 export const UserForm: FC<Props> = ({
     mode,
-    id = '',
+    userid = '',
+    idx = -1,
     defaultNick = '',
     defaultName = '',
     defaultTitle = '',
@@ -365,8 +376,6 @@ export const UserForm: FC<Props> = ({
     const { lastUploadedPortraitImage } = useSelector<AppState, UploadState>(
         (state) => state.upload,
     );
-    // 우편번호 팝업
-    const open = useDaumPostcodePopup();
 
     const createUser = useApi(createUserRequest);
 
@@ -384,30 +393,51 @@ export const UserForm: FC<Props> = ({
     // 직함
     const [title] = useInput(defaultTitle, { noSpace: true });
     // 주민번호
-    const [idnum1] = useNumbericInput(defaultIdNum1, { limit: 13 });
+    const [idnum1] = useResidentNumberInput(defaultIdNum1);
     // 생년월일
     const [birthday] = useDatepicker(
-        defaultBirthday ? new Date(defaultBirthday) : new Date(),
+        defaultBirthday ? new Date(defaultBirthday) : null,
     );
     // 양력 or 음력
     const [birthType] = useSelect(userConstants.birthType, defaultBirthType);
     // 핸드폰
-    const [mobile] = useNumbericInput(defaultPhone, { limit: 11 });
+    const [mobile] = usePhoneInput(defaultPhone, {
+        callbackOnBlur: (convertedVal) => {
+            if (estPhoneInputType.value?.value === '핸드폰') {
+                setEstPhone(convertedVal);
+            }
+            if (estDirectInputType.value?.value === '핸드폰') {
+                setEstDirect(convertedVal);
+            }
+        },
+    });
     // 통신사
     const [mobileCom] = useSelect(userConstants.mobileCom, defaultMobileCom);
     // 내선번호
-    const [telephone] = useNumbericInput(defaultTelephone, { limit: 11 });
+    const [telephone] = usePhoneInput(defaultTelephone, {
+        callbackOnBlur: (convertedVal) => {
+            if (estPhoneInputType.value?.value === '내선번호') {
+                setEstPhone(convertedVal);
+            }
+            if (estDirectInputType.value?.value === '내선번호') {
+                setEstDirect(convertedVal);
+            }
+        },
+    });
     // 직통번호
-    const [telDirect] = useNumbericInput(defaultTelDirect, { limit: 11 });
+    const [telDirect] = usePhoneInput(defaultTelDirect);
     // 이메일
     const [email] = useInput(defaultEmail, { noSpace: true });
     const [emailCom] = useSelect(userConstants.emailCom, defaultEmailCom);
     // 우편번호
-    const [postcode, setPostcode] = useInput(defaultPostCode);
-    // 주소 검색 1
-    const [address1, setAddress1] = useInput(defaultAddress1);
-    // 주소 검색 상세
-    const [address2, setAddress2] = useInput(defaultAddress2);
+    const [postcode, address1, address2, onClickPostcode] = usePostcode(
+        {
+            postcode: defaultPostCode,
+            address1: defaultAddress1,
+            address2: defaultAddress2,
+        },
+        { disabled: !isEditable },
+    );
     // 상세 주소
     const [address3] = useInput(defaultAddress3);
     // 영업구분
@@ -416,7 +446,7 @@ export const UserForm: FC<Props> = ({
     const [status] = useSelect(userConstants.empStatus, defaultStatus);
     // 입사일
     const [indate] = useDatepicker(
-        defaultIndate ? new Date(defaultIndate) : new Date(),
+        defaultIndate ? new Date(defaultIndate) : null,
     );
     // 퇴사일
     const [outdate] = useDatepicker(
@@ -424,34 +454,137 @@ export const UserForm: FC<Props> = ({
     );
     // 비교견적 설정 - 회사명
     const [estComNm, setEstComNm] = useInput(defaultEstComNm);
-    const [estComInputType, setEstComInputType] =
-        useState<CoreSelectOption | null>(defaultEstComInputType);
+    const [estComInputType] = useSelect(
+        userConstants.estComInputType,
+        defaultEstComInputType,
+        {
+            callbackOnChange: (option) => {
+                if (option !== null) {
+                    if (option.value === '회사명') {
+                        setEstComNm(coreConstants.myCompNm);
+                    } else if (option.value === '지점명') {
+                        if (orga) {
+                            setEstComNm(orga.orga_name);
+                        } else {
+                            return alert('먼저 부서를 선택해주세요.');
+                        }
+                    }
+                }
+            },
+        },
+    );
     // 비교견적 설정 - 간접영업명
     const [estSalesNm, setEstSalesNm] = useInput(defaultEstSalesNm);
-    const [estSalesNmInputType, setEstSalesNmInputType] =
-        useState<CoreSelectOption | null>(defaultEstSalesNmInputType);
+    const [estSalesNmInputType] = useSelect(
+        userConstants.estSalesNmInputType,
+        defaultEstSalesNmInputType,
+        {
+            callbackOnChange: (option) => {
+                if (option !== null) {
+                    if (option.value === '본인이름') {
+                        setEstSalesNm(name.value);
+                    } else if (option.value === '지점명') {
+                        if (orga) {
+                            setEstSalesNm(orga.orga_name);
+                        } else {
+                            return alert('먼저 부서를 선택해주세요.');
+                        }
+                    } else if (option.value === '표기안함') {
+                        setEstSalesNm('');
+                    }
+                }
+            },
+        },
+    );
     // 비교견적 설정 - 대표전화
-    const [estPhone, setEstPhone] = useNumbericInput(defaultEstPhone);
-    const [estPhoneInputType, setEstPhoneInputType] =
-        useState<CoreSelectOption | null>(defaultEstPhoneInputType);
+    const [estPhone, setEstPhone] = usePhoneInput(defaultEstPhone);
+    const [estPhoneInputType] = useSelect(
+        userConstants.estPhoneInputType,
+        defaultEstPhoneInputType,
+        {
+            callbackOnChange: (option) => {
+                if (option !== null) {
+                    if (option.value === '회사전화') {
+                        setEstPhone(coreConstants.myCompPhone);
+                    } else if (option.value === '지점전화') {
+                        // 지점명 예정
+                        if (orga) {
+                            setEstPhone(orga.tel);
+                        } else {
+                            return alert('먼저 부서를 선택해주세요.');
+                        }
+                    } else if (option.value === '핸드폰') {
+                        setEstPhone(mobile.value);
+                    } else if (option.value === '내선번호') {
+                        setEstPhone(telephone.value);
+                    }
+                }
+            },
+        },
+    );
     // 비교견적 설정 - 팩스번호
-    const [estFax, setEstFax] = useNumbericInput(defaultEstFax);
-    const [estFaxInputType, setEstFaxInputType] =
-        useState<CoreSelectOption | null>(defaultEstFaxInputType);
+    const [estFax, setEstFax] = usePhoneInput(defaultEstFax);
+    const [estFaxInputType] = useSelect(
+        userConstants.estFaxInputType,
+        defaultEstFaxInputType,
+        {
+            callbackOnChange: (option) => {
+                if (option !== null) {
+                    if (option.value === '지점팩스') {
+                        if (orga) {
+                            setEstFax(orga.fax);
+                        } else {
+                            return alert('먼저 부서를 선택해주세요.');
+                        }
+                    }
+                }
+            },
+        },
+    );
     // 비교견적 설정 - 직통전화
-    const [estDirect, setEstDirect] = useInput(defaultEstDirect, {
-        isNumWithHyphen: true,
-    });
-    const [estDirectInputType, setEstDirectInputType] =
-        useState<CoreSelectOption | null>(defaultEstDirectInputType);
+    const [estDirect, setEstDirect] = usePhoneInput(defaultEstDirect);
+    const [estDirectInputType] = useSelect(
+        userConstants.estDirectInputType,
+        defaultEstDirectInputType,
+        {
+            callbackOnChange: (option) => {
+                if (option !== null) {
+                    if (option.value === '회사전화') {
+                        setEstDirect(coreConstants.myCompPhone);
+                    } else if (option.value === '핸드폰') {
+                        setEstDirect(mobile.value);
+                    } else if (option.value === '내선번호') {
+                        setEstDirect(telephone.value);
+                    }
+                }
+            },
+        },
+    );
     // 비교견적 설정 - 표기주소
     const [estAddr, setEstAddr] = useInput(defaultEstAddr);
-    const [estAddrInputType, setEstAddrInputType] =
-        useState<CoreSelectOption | null>(defaultEstAddrInputType);
+    const [estAddrInputType] = useSelect(
+        userConstants.estAddrInputType,
+        defaultEstAddrInputType,
+        {
+            callbackOnChange: (option) => {
+                if (option !== null) {
+                    if (option.value === '회사주소') {
+                        setEstAddr(coreConstants.myCompAddr);
+                    } else if (option.value === '지점주소') {
+                        if (orga) {
+                            setEstAddr(orga.address || '');
+                        } else {
+                            return alert('먼저 부서를 선택해주세요.');
+                        }
+                    }
+                }
+            },
+        },
+    );
     // 소득 설정 - 은행명
     const [bank] = useSelect(banks, defaultBank);
     // 소득 설정 - 계좌번호
-    const [account] = useInput(defaultAccount, { isNumWithHyphen: true });
+    const [account] = useNumbericInput(defaultAccount);
     // 소득 설정 - 예금주
     const [holder] = useInput(defaultHolder, { noSpace: true });
     // 소득 설정 - 자동차 규정 라디오(테이블, 비례)
@@ -477,11 +610,11 @@ export const UserForm: FC<Props> = ({
     );
     // 협회자격관리 - 손보협 등록일
     const [giaIndate] = useDatepicker(
-        defaultGiaIndate ? new Date(defaultGiaIndate) : new Date(),
+        defaultGiaIndate ? new Date(defaultGiaIndate) : null,
     );
     // 협회자격관리 - 손보협 말소일
     const [giaOutdate] = useDatepicker(
-        defaultGiaOutdate ? new Date(defaultGiaOutdate) : new Date(),
+        defaultGiaOutdate ? new Date(defaultGiaOutdate) : null,
     );
 
     // 협회자격관리 - 손보협 자격구분
@@ -498,11 +631,11 @@ export const UserForm: FC<Props> = ({
     );
     // 협회자격관리 - 생보협 등록일
     const [liaIndate] = useDatepicker(
-        defaultLiaIndate ? new Date(defaultLiaIndate) : new Date(),
+        defaultLiaIndate ? new Date(defaultLiaIndate) : null,
     );
     // 협회자격관리 - 생보협 말소일
     const [liaOutdate] = useDatepicker(
-        defaultLiaOutdate ? new Date(defaultLiaOutdate) : new Date(),
+        defaultLiaOutdate ? new Date(defaultLiaOutdate) : null,
     );
     // 협회자격관리 - 생보협 자격구분
     const [liaQualification] = useSelect(
@@ -520,163 +653,9 @@ export const UserForm: FC<Props> = ({
     };
     // 이름 입력창 blur 핸들러
     const handleBlurName = () => {
-        if (estSalesNmInputType?.value === '본인이름') {
+        if (estSalesNmInputType.value?.value === '본인이름') {
             setEstSalesNm(name.value);
         }
-    };
-    // 핸드폰 입력창 blur 핸들러
-    const handleBlurMobile = () => {
-        if (estPhoneInputType?.value === '핸드폰') {
-            setEstPhone(mobile.value);
-        }
-        if (estDirectInputType?.value === '핸드폰') {
-            setEstDirect(mobile.value);
-        }
-    };
-    // 내선번호 입력창 blur 핸들러
-    const handleBlurTelephone = () => {
-        if (estPhoneInputType?.value === '내선번호') {
-            setEstPhone(telephone.value);
-        }
-        if (estDirectInputType?.value === '내선번호') {
-            setEstDirect(telephone.value);
-        }
-    };
-
-    // 비교견적 설정 - 회사명 타입 변경 핸들러
-    const handleChangeEstComInputType = (option: CoreSelectOption | null) => {
-        if (option !== null) {
-            if (option.value === '회사명') {
-                setEstComNm(coreConstants.myCompNm);
-            } else if (option.value === '지점명') {
-                if (orga) {
-                    setEstComNm(orga.orga_name);
-                } else {
-                    return alert('먼저 부서를 선택해주세요.');
-                }
-            }
-        }
-
-        setEstComInputType(option);
-    };
-    // 비교견적 설정 - 간접영업명 변경 핸들러
-    const handleChangeEstSalesNmInputType = (
-        option: CoreSelectOption | null,
-    ) => {
-        if (option !== null) {
-            if (option.value === '본인이름') {
-                setEstSalesNm(name.value);
-            } else if (option.value === '지점명') {
-                if (orga) {
-                    setEstSalesNm(orga.orga_name);
-                } else {
-                    return alert('먼저 부서를 선택해주세요.');
-                }
-            } else if (option.value === '표기안함') {
-                setEstSalesNm('');
-            }
-        }
-
-        setEstSalesNmInputType(option);
-    };
-    // 비교견적 설정 - 대표전화 변경 핸들러
-    const handleChangeEstPhoneInputType = (option: CoreSelectOption | null) => {
-        if (option !== null) {
-            if (option.value === '회사전화') {
-                setEstPhone(coreConstants.myCompPhone);
-            } else if (option.value === '지점전화') {
-                // 지점명 예정
-                if (orga) {
-                    setEstPhone(orga.tel);
-                } else {
-                    return alert('먼저 부서를 선택해주세요.');
-                }
-            } else if (option.value === '핸드폰') {
-                setEstPhone(mobile.value);
-            } else if (option.value === '내선번호') {
-                setEstPhone(telephone.value);
-            }
-        }
-
-        setEstPhoneInputType(option);
-    };
-    // 비교견적 설정 - 팩스번호 변경 핸들러
-    const handleChangeEstFaxInputType = (option: CoreSelectOption | null) => {
-        if (option !== null) {
-            if (option.value === '지점팩스') {
-                if (orga) {
-                    setEstFax(orga.fax);
-                } else {
-                    return alert('먼저 부서를 선택해주세요.');
-                }
-            }
-        }
-
-        setEstFaxInputType(option);
-    };
-    // 비교견적 설정 - 직통전화 변경 핸들러
-    const handleChangeEstDirectInputType = (
-        option: CoreSelectOption | null,
-    ) => {
-        if (option !== null) {
-            if (option.value === '회사전화') {
-                setEstDirect(coreConstants.myCompPhone);
-            } else if (option.value === '핸드폰') {
-                setEstDirect(mobile.value);
-            } else if (option.value === '내선번호') {
-                setEstDirect(telephone.value);
-            }
-        }
-
-        setEstDirectInputType(option);
-    };
-    // 비교견적 설정 - 표기주소 변경 핸들러
-    const handleChangeEstAddrInputType = (option: CoreSelectOption | null) => {
-        if (option !== null) {
-            if (option.value === '회사주소') {
-                setEstAddr(coreConstants.myCompAddr);
-            } else if (option.value === '지점주소') {
-                if (orga) {
-                    setEstAddr(orga.address || '');
-                } else {
-                    return alert('먼저 부서를 선택해주세요.');
-                }
-            }
-        }
-
-        setEstAddrInputType(option);
-    };
-
-    // 우편번호 클릭 핸들러
-    const handleClickPostcode = () => {
-        if (isEditable) {
-            open({ onComplete: handleCompletePostcode });
-        }
-    };
-    // 우편번호 선택 완료 핸들러
-    const handleCompletePostcode = (data: any) => {
-        // let fullAddress = data.address;
-        let extraAddress = '';
-        if (data.addressType === 'R') {
-            if (data.bname !== '') {
-                extraAddress += data.bname;
-            }
-
-            if (data.buildingName !== '') {
-                extraAddress +=
-                    extraAddress !== ''
-                        ? `, ${data.buildingName}`
-                        : data.buildingName;
-            }
-
-            // fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
-        }
-
-        setPostcode(data.zonecode);
-
-        setAddress1(data.jibunAddress);
-
-        setAddress2(`(${extraAddress})`);
     };
     // 부서변경 클릭 핸들러
     const handleClickDepart = () => {
@@ -724,34 +703,34 @@ export const UserForm: FC<Props> = ({
     const createPayload = () => {
         const payload: any = {
             name: name.value,
-            mobile: mobile.value,
+            mobile: mobile.value.replace(/-/g, ''),
             mobile_com: mobileCom.value!.value,
-            idnum1: idnum1.value,
+            idnum1: idnum1.value.replace(/-/g, ''),
             orga_idx: -1,
             remove: {},
             est_val: {
                 comNm: {
-                    kind: estComInputType!.label,
+                    kind: estComInputType.value?.value,
                     val: estComNm.value,
                 },
                 salesNm: {
-                    kind: estSalesNmInputType!.label,
+                    kind: estSalesNmInputType.value?.value,
                     val: estSalesNm.value,
                 },
                 phone: {
-                    kind: estPhoneInputType!.label,
-                    val: estPhone.value,
+                    kind: estPhoneInputType.value?.value,
+                    val: estPhone.value.replace(/-/g, ''),
                 },
                 fax: {
-                    kind: estFaxInputType!.label,
-                    val: estFax.value,
+                    kind: estFaxInputType.value?.value,
+                    val: estFax.value.replace(/-/g, ''),
                 },
                 direct: {
-                    kind: estDirectInputType!.label,
-                    val: estDirect.value,
+                    kind: estDirectInputType.value?.value,
+                    val: estDirect.value.replace(/-/g, ''),
                 },
                 address: {
-                    kind: estAddrInputType!.label,
+                    kind: estAddrInputType.value?.value,
                     val: estAddr.value,
                 },
             },
@@ -776,8 +755,12 @@ export const UserForm: FC<Props> = ({
                     type: '손보',
                     no: giaNo.value,
                     wcode: giaComp.value ? +giaComp.value.value : null,
-                    indate: dayjs(giaIndate.value).format('YYYY-MM-DD'),
-                    outdate: dayjs(giaOutdate.value).format('YYYY-MM-DD'),
+                    indate: giaIndate.value
+                        ? dayjs(giaIndate.value).format('YYYY-MM-DD')
+                        : null,
+                    outdate: giaOutdate.value
+                        ? dayjs(giaOutdate.value).format('YYYY-MM-DD')
+                        : null,
                     qualification: giaQualification.value!.label,
                 },
                 {
@@ -785,15 +768,19 @@ export const UserForm: FC<Props> = ({
                     type: '생보',
                     no: liaNo.value,
                     wcode: liaComp.value ? +liaComp.value.value : null,
-                    indate: dayjs(liaIndate.value).format('YYYY-MM-DD'),
-                    outdate: dayjs(liaOutdate.value).format('YYYY-MM-DD'),
+                    indate: liaIndate.value
+                        ? dayjs(liaIndate.value).format('YYYY-MM-DD')
+                        : null,
+                    outdate: liaOutdate.value
+                        ? dayjs(liaOutdate.value).format('YYYY-MM-DD')
+                        : null,
                     qualification: liaQualification.value!.label,
                 },
             ],
         };
 
-        if (id) {
-            payload['idx'] = id;
+        if (idx !== -1) {
+            payload['idx'] = idx;
         }
 
         if (selectedOrga) {
@@ -819,11 +806,11 @@ export const UserForm: FC<Props> = ({
         }
 
         if (!isEmpty(telephone.value)) {
-            payload['telephone'] = telephone.value;
+            payload['telephone'] = telephone.value.replace(/-/g, '');
         }
 
         if (!isEmpty(telDirect.value)) {
-            payload['tel_direct'] = telDirect.value;
+            payload['tel_direct'] = telDirect.value.replace(/-/g, '');
         }
 
         if (!isEmpty(email.value)) {
@@ -909,11 +896,13 @@ export const UserForm: FC<Props> = ({
 
     useEffect(() => {
         if (orga) {
-            if (estFaxInputType?.value === '지점팩스') {
-                setEstFax(orga.fax || '');
+            if (orga.fax) {
+                if (estFaxInputType.value?.value === '지점팩스') {
+                    setEstFax(convertPhoneNumber(orga.fax));
+                }
             }
         }
-    }, [dispatch, orga, estFaxInputType, setEstFax]);
+    }, [orga, estFaxInputType, setEstFax]);
 
     return (
         <>
@@ -1056,9 +1045,6 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         id="mobile"
                                                         placeholder="핸드폰"
-                                                        onBlur={
-                                                            handleBlurMobile
-                                                        }
                                                         readOnly={!isEditable}
                                                         {...mobile}
                                                     />
@@ -1085,9 +1071,6 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         id="telephone"
                                                         placeholder="내선번호"
-                                                        onBlur={
-                                                            handleBlurTelephone
-                                                        }
                                                         readOnly={!isEditable}
                                                         {...telephone}
                                                     />
@@ -1154,7 +1137,7 @@ export const UserForm: FC<Props> = ({
                                                     <MyInput
                                                         type="text"
                                                         placeholder="사원번호"
-                                                        value={id}
+                                                        value={userid}
                                                         readOnly
                                                     />
                                                 </WithLabel>
@@ -1211,7 +1194,7 @@ export const UserForm: FC<Props> = ({
                                                         placeholder="우편번호"
                                                         readOnly
                                                         onClick={
-                                                            handleClickPostcode
+                                                            onClickPostcode
                                                         }
                                                         {...postcode}
                                                         button={{
@@ -1219,7 +1202,7 @@ export const UserForm: FC<Props> = ({
                                                             disabled:
                                                                 !isEditable,
                                                             onClick:
-                                                                handleClickPostcode,
+                                                                onClickPostcode,
                                                             children: (
                                                                 <>
                                                                     <span>
@@ -1326,13 +1309,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!isEditable}
-                                                        options={
-                                                            userConstants.estComInputType
-                                                        }
-                                                        value={estComInputType}
-                                                        onChange={
-                                                            handleChangeEstComInputType
-                                                        }
+                                                        {...estComInputType}
                                                     />
                                                 </div>
 
@@ -1341,10 +1318,12 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estComNm"
                                                     placeholder="회사명"
-                                                    readOnly={
+                                                    disabled={
                                                         isEditable
-                                                            ? estComInputType?.value !==
-                                                              '03'
+                                                            ? estComInputType
+                                                                  .value
+                                                                  ?.value !==
+                                                              '직접입력'
                                                             : true
                                                     }
                                                     {...estComNm}
@@ -1367,15 +1346,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!isEditable}
-                                                        options={
-                                                            userConstants.estSalesNmInputType
-                                                        }
-                                                        value={
-                                                            estSalesNmInputType
-                                                        }
-                                                        onChange={
-                                                            handleChangeEstSalesNmInputType
-                                                        }
+                                                        {...estSalesNmInputType}
                                                     />
                                                 </div>
 
@@ -1384,10 +1355,12 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estSalesNm"
                                                     placeholder="견적영업명"
-                                                    readOnly={
+                                                    disabled={
                                                         isEditable
-                                                            ? estSalesNmInputType?.value !==
-                                                              '04'
+                                                            ? estSalesNmInputType
+                                                                  .value
+                                                                  ?.value !==
+                                                              '직접입력'
                                                             : true
                                                     }
                                                     {...estSalesNm}
@@ -1410,15 +1383,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!isEditable}
-                                                        options={
-                                                            userConstants.estPhoneInputType
-                                                        }
-                                                        value={
-                                                            estPhoneInputType
-                                                        }
-                                                        onChange={
-                                                            handleChangeEstPhoneInputType
-                                                        }
+                                                        {...estPhoneInputType}
                                                     />
                                                 </div>
                                                 <MyInput
@@ -1426,10 +1391,12 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estPhone"
                                                     placeholder="대표전화"
-                                                    readOnly={
+                                                    disabled={
                                                         isEditable
-                                                            ? estPhoneInputType?.value !==
-                                                              '05'
+                                                            ? estPhoneInputType
+                                                                  .value
+                                                                  ?.value !==
+                                                              '직접입력'
                                                             : true
                                                     }
                                                     {...estPhone}
@@ -1452,13 +1419,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!isEditable}
-                                                        options={
-                                                            userConstants.estFaxInputType
-                                                        }
-                                                        value={estFaxInputType}
-                                                        onChange={
-                                                            handleChangeEstFaxInputType
-                                                        }
+                                                        {...estFaxInputType}
                                                     />
                                                 </div>
 
@@ -1467,10 +1428,12 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estFax"
                                                     placeholder="팩스번호"
-                                                    readOnly={
+                                                    disabled={
                                                         isEditable
-                                                            ? estFaxInputType?.value !==
-                                                              '02'
+                                                            ? estFaxInputType
+                                                                  .value
+                                                                  ?.value !==
+                                                              '직접입력'
                                                             : true
                                                     }
                                                     {...estFax}
@@ -1493,15 +1456,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!isEditable}
-                                                        options={
-                                                            userConstants.estDirectInputType
-                                                        }
-                                                        value={
-                                                            estDirectInputType
-                                                        }
-                                                        onChange={
-                                                            handleChangeEstDirectInputType
-                                                        }
+                                                        {...estDirectInputType}
                                                     />
                                                 </div>
 
@@ -1510,10 +1465,12 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="direct"
                                                     placeholder="직통전화"
-                                                    readOnly={
+                                                    disabled={
                                                         isEditable
-                                                            ? estDirectInputType?.value !==
-                                                              '04'
+                                                            ? estDirectInputType
+                                                                  .value
+                                                                  ?.value !==
+                                                              '직접입력'
                                                             : true
                                                     }
                                                     {...estDirect}
@@ -1536,13 +1493,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!isEditable}
-                                                        options={
-                                                            userConstants.estAddrInputType
-                                                        }
-                                                        value={estAddrInputType}
-                                                        onChange={
-                                                            handleChangeEstAddrInputType
-                                                        }
+                                                        {...estAddrInputType}
                                                     />
                                                 </div>
 
@@ -1551,10 +1502,12 @@ export const UserForm: FC<Props> = ({
                                                     className="wr-border-l--hide"
                                                     id="estAddress"
                                                     placeholder="표기주소"
-                                                    readOnly={
+                                                    disabled={
                                                         isEditable
-                                                            ? estAddrInputType?.value !==
-                                                              '03'
+                                                            ? estAddrInputType
+                                                                  .value
+                                                                  ?.value !==
+                                                              '직접입력'
                                                             : true
                                                     }
                                                     {...estAddr}

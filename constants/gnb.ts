@@ -726,8 +726,8 @@ export const ASIDE_MENU: any = {
                 {
                     id: 'aside_menu_hr1-1',
                     level: 2,
-                    label: '조직부서',
-                    to: '',
+                    label: '조직부서등록',
+                    to: '/hr/department/create',
                     items: [],
                 },
             ],

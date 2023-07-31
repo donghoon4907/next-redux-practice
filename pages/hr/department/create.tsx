@@ -1,110 +1,70 @@
 import type { NextPage } from 'next';
-import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
-import type { UploadState } from '@reducers/upload';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { MySelect } from '@components/select';
-import { HR_DETAIL_TABS } from '@constants/tab';
+import { DEPART_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
 import { MyLayout } from '@components/Layout';
-import { useInput } from '@hooks/use-input';
+import { useInput, usePhoneInput } from '@hooks/use-input';
 import { useApi } from '@hooks/use-api';
-import { showDepartSearchModal } from '@actions/modal/depart-search.action';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { MyFooter } from '@components/footer';
 import { MyButton } from '@components/button';
 import { SelectDepartModal } from '@components/modal/SelectDepart';
 import { ImageUploadModal } from '@components/modal/ImageUpload';
 import { useSelect } from '@hooks/use-select';
-import { showImageUploadModal } from '@actions/modal/image-upload.action';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { IncomeTabpanel } from '@partials/hr/tabpanels/Income';
-import { GuaranteeTabpanel } from '@partials/hr/tabpanels/Guarantee';
 import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
-import { AuthorityTabpanel } from '@partials/hr/tabpanels/Authority';
-import { QualManageTabpanel } from '@partials/hr/tabpanels/QualManage';
 import { useTab } from '@hooks/use-tab';
-import {
-    CreateUserRequestPayload,
-    createUserRequest,
-} from '@actions/hr/create-user.action';
-import { getUsersRequest } from '@actions/hr/get-users';
 import { END } from 'redux-saga';
 import { POINT_STATUS } from '@constants/options/department';
-import { DatePicker } from 'rsuite';
 import { useDatepicker } from '@hooks/use-datepicker';
+import { usePostcode } from '@hooks/use-postcode';
+import { MyDatepicker } from '@components/datepicker';
+import { MyCheckbox } from '@components/checkbox';
 
-const Depart: NextPage<HrState> = ({ users }) => {
+const CreateDepart: NextPage<HrState> = ({ users }) => {
     const displayName = 'wr-pages-hr-detail';
 
     const dispatch = useDispatch();
 
-    // 우편번호 팝업
-    const open = useDaumPostcodePopup();
-
-    const createUser = useApi(createUserRequest);
+    // const createUser = useApi(createUserRequest);
     // 탭 관리
-    const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
+    const [tab, setTab] = useTab(DEPART_DETAIL_TABS[0]);
     // 수정 모드 여부
-    const [editable, setEditable] = useState(false);
+    const [editable, setEditable] = useState(true);
     // 사업부명
     const [name] = useInput('');
     // 전화번호
-    const [phone] = useInput('', { isNumWithHyphen: true });
+    const [phone] = usePhoneInput('');
     // 팩스번호
-    const [fax] = useInput('', { isNumWithHyphen: true });
+    const [fax] = usePhoneInput('');
     // 대표자
     const [manager] = useSelect(users, null);
     // 우편번호
-    const [postcode, setPostcode] = useInput('');
-    // 주소 검색 1
-    const [address1, setAddress1] = useInput('');
-    // 주소 검색 상세
-    const [address2, setAddress2] = useInput('');
+    const [postcode, address1, address2, onClickPostcode] = usePostcode(
+        {
+            postcode: '',
+            address1: '',
+            address2: '',
+        },
+        { disabled: !editable },
+    );
     // 상세 주소
     const [address3] = useInput('');
     // 지점현황
-    const [pointStatus] = useSelect(POINT_STATUS, null);
+    const [pointStatus] = useSelect(POINT_STATUS, POINT_STATUS[0]);
     // 개점일자
-    const [openDate, setOpenDate] = useDatepicker(new Date());
+    const [openDate] = useDatepicker(null);
+    // 폐점일자
+    const [closeDate] = useDatepicker(null);
     // 양력 or 음력
     // const [birthType] = useSelect(BIRTH_TYPE);
-
-    const handleCompletePostcode = (data: any) => {
-        // let fullAddress = data.address;
-        let extraAddress = '';
-        if (data.addressType === 'R') {
-            if (data.bname !== '') {
-                extraAddress += data.bname;
-            }
-
-            if (data.buildingName !== '') {
-                extraAddress +=
-                    extraAddress !== ''
-                        ? `, ${data.buildingName}`
-                        : data.buildingName;
-            }
-
-            // fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
-        }
-
-        setPostcode(data.zonecode);
-
-        setAddress1(data.jibunAddress);
-
-        setAddress2(`(${extraAddress})`);
-    };
-
-    const handleClickPostcode = () => {
-        open({ onComplete: handleCompletePostcode });
-    };
 
     const handleSubmit = () => {
         if (name.value === '') {
@@ -126,6 +86,8 @@ const Depart: NextPage<HrState> = ({ users }) => {
         }
     };
 
+    const labelType = editable ? 'active' : 'disable';
+
     return (
         <>
             <Head>
@@ -146,12 +108,13 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                             <WithLabel
                                                 id="name"
                                                 label="사업부명"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="name"
                                                     placeholder="사업부명"
+                                                    readOnly={!editable}
                                                 />
                                             </WithLabel>
                                         </div>
@@ -160,7 +123,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                                 <WithLabel
                                                     id="manager"
                                                     label="대표자"
-                                                    type="active"
+                                                    type={labelType}
                                                 >
                                                     <MySelect
                                                         placeholder={'선택'}
@@ -168,6 +131,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
+                                                        isDisabled={!editable}
                                                         {...manager}
                                                     />
                                                 </WithLabel>
@@ -179,12 +143,13 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                             <WithLabel
                                                 id="phone"
                                                 label="전화번호"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="phone"
                                                     placeholder="전화번호"
+                                                    readOnly={!editable}
                                                     {...phone}
                                                 />
                                             </WithLabel>
@@ -194,12 +159,13 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                                 <WithLabel
                                                     id="fax"
                                                     label="팩스번호"
-                                                    type="active"
+                                                    type={labelType}
                                                 >
                                                     <MyInput
                                                         type="text"
                                                         id="fax"
                                                         placeholder="팩스번호"
+                                                        readOnly={!editable}
                                                         {...fax}
                                                     />
                                                 </WithLabel>
@@ -210,7 +176,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                         <div className="col-6">
                                             <WithLabel
                                                 label="주소"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <div
                                                     className={`${displayName}__with`}
@@ -220,19 +186,22 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                                         placeholder="우편번호"
                                                         readOnly
                                                         onClick={
-                                                            handleClickPostcode
+                                                            onClickPostcode
                                                         }
                                                         {...postcode}
-                                                        // button={{
-                                                        //     type: 'button',
-                                                        //     children: (
-                                                        //         <>
-                                                        //             <span>
-                                                        //                 찾기
-                                                        //             </span>
-                                                        //         </>
-                                                        //     ),
-                                                        // }}
+                                                        button={{
+                                                            type: 'button',
+                                                            disabled: !editable,
+                                                            onClick:
+                                                                onClickPostcode,
+                                                            children: (
+                                                                <>
+                                                                    <span>
+                                                                        찾기
+                                                                    </span>
+                                                                </>
+                                                            ),
+                                                        }}
                                                     />
                                                 </div>
                                             </WithLabel>
@@ -241,7 +210,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                             <div className="wr-ml">
                                                 <MyInput
                                                     type="text"
-                                                    placeholder=""
+                                                    placeholder="주소1"
                                                     readOnly
                                                     {...address1}
                                                 />
@@ -253,12 +222,13 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                             <WithLabel
                                                 id="addr2"
                                                 label="상세주소"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="addr2"
                                                     placeholder="상세주소"
+                                                    readOnly={!editable}
                                                     {...address3}
                                                 />
                                             </WithLabel>
@@ -267,7 +237,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                             <div className="wr-ml">
                                                 <MyInput
                                                     type="text"
-                                                    placeholder=""
+                                                    placeholder="주소2"
                                                     readOnly
                                                     {...address2}
                                                 />
@@ -279,7 +249,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                             <WithLabel
                                                 id="pointStatus"
                                                 label="지점현황"
-                                                type="active"
+                                                type={labelType}
                                             >
                                                 <MySelect
                                                     inputId="pointStatus"
@@ -288,6 +258,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
+                                                    isDisabled={!editable}
                                                     {...pointStatus}
                                                 />
                                             </WithLabel>
@@ -297,15 +268,14 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                                 <WithLabel
                                                     id="openDate"
                                                     label="개점일자"
-                                                    type="active"
+                                                    type={labelType}
                                                 >
-                                                    <DatePicker
-                                                        oneTap
-                                                        format="yyyy-MM-dd"
-                                                        size="sm"
+                                                    <MyDatepicker
+                                                        id="openDate"
+                                                        size="md"
                                                         placeholder="개점일자"
-                                                        placement="bottomEnd"
-                                                        {...openDate}
+                                                        readOnly={!editable}
+                                                        hooks={openDate}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -314,14 +284,16 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="pointStatus"
+                                                id="closeDate"
                                                 label="폐점일자"
-                                                type="active"
+                                                type={labelType}
                                             >
-                                                <MyInput
-                                                    type="text"
-                                                    id="pointStatus"
+                                                <MyDatepicker
+                                                    id="closeDate"
+                                                    size="md"
                                                     placeholder="폐점일자"
+                                                    readOnly={!editable}
+                                                    hooks={closeDate}
                                                 />
                                             </WithLabel>
                                         </div>
@@ -330,13 +302,16 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                                 <WithLabel
                                                     id="orSet"
                                                     label="OR설정"
-                                                    type="active"
+                                                    type="disable"
                                                 >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="orSet"
-                                                        placeholder="OR설정"
-                                                    />
+                                                    <div
+                                                        style={{
+                                                            height: variables.detailFilterHeight,
+                                                        }}
+                                                        className="wr-with__checkbox wr-border"
+                                                    >
+                                                        <MyCheckbox label="부서장제외" />
+                                                    </div>
                                                 </WithLabel>
                                             </div>
                                         </div>
@@ -348,7 +323,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                     <div className={`${displayName}__right col`}>
                         <div className="wr-ml position-relative">
                             <ul className="wr-tab__wrap" role="tablist">
-                                {HR_DETAIL_TABS.map((v) => (
+                                {DEPART_DETAIL_TABS.map((v) => (
                                     <MyTab
                                         key={v.id}
                                         onClick={setTab}
@@ -418,7 +393,7 @@ const Depart: NextPage<HrState> = ({ users }) => {
                                 className="btn-primary"
                                 onClick={editable ? handleSubmit : handleModify}
                             >
-                                {editable ? '변경 사항 적용' : '수정'}
+                                등록
                             </MyButton>
                         </div>
                     </div>
@@ -433,37 +408,12 @@ const Depart: NextPage<HrState> = ({ users }) => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask, getState }, ctx) => {
-        // const { query } = ctx;
-
-        // const userid = query.userid as string;
-
-        const output: any = {
-            props: {},
-        };
-
-        dispatch(
-            getUsersRequest({
-                idx: '1',
-            }),
-        );
-
         dispatch(END);
 
-        try {
-            await sagaTask?.toPromise();
+        await sagaTask?.toPromise();
 
-            const { hr } = getState();
-
-            output.props.users = hr.users;
-        } catch {
-            output.redirect = {
-                destination: '/404',
-                permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
-            };
-        }
-
-        return output;
+        return null;
     }),
 );
 
-export default Depart;
+export default CreateDepart;

@@ -37,6 +37,14 @@
         }
     }
 
+    &__checkbox {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding-left: 5px;
+    }
+
     &__badge {
         position: relative;
         width: 100%;
