@@ -718,16 +718,37 @@ export const ASIDE_MENU: any = {
     ],
     hr: [
         {
-            id: 'hr-depart',
+            id: 'hr-department',
             level: 1,
-            label: '조직부서',
+            label: '조직관리',
             to: '',
             items: [
                 {
-                    id: 'hr-depart_create',
+                    id: 'hr-department-business_create',
                     level: 2,
-                    label: '조직부서등록',
-                    to: '/hr/department/create',
+                    label: '사업부등록',
+                    to: '/hr/department/business/create',
+                    items: [],
+                },
+                {
+                    id: 'hr-department-headquarter_create',
+                    level: 2,
+                    label: '본부등록',
+                    to: '/hr/department/headquarter/create',
+                    items: [],
+                },
+                {
+                    id: 'hr-department-branch_create',
+                    level: 2,
+                    label: '지점등록',
+                    to: '/hr/department/branch/create',
+                    items: [],
+                },
+                {
+                    id: 'hr-department-team_create',
+                    level: 2,
+                    label: '팀등록',
+                    to: '/hr/department/team/create',
                     items: [],
                 },
             ],

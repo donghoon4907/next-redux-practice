@@ -36,4 +36,10 @@ export const DEPART_DETAIL_TABS: CoreTabOption[] = [
     { id: 'tabCommission', label: '수수료규정', panelId: 'tabpanelCommission' },
     { id: 'tabPayment', label: '지급설정', panelId: 'tabpanelPayment' },
     { id: 'tabMemo', label: '메모', panelId: 'tabpanelMemo' },
+    { id: 'tabARI', label: '협회등록정보', panelId: 'tabpanelARI' },
+    {
+        id: 'tabRentalProperty',
+        label: '임대자산',
+        panelId: 'tabpanelRentalProperty',
+    },
 ];

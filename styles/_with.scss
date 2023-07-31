@@ -35,6 +35,12 @@
         &--disable {
             background-color: $wr-with-label-disable !important;
         }
+
+        &--nowrap {
+            max-width: none;
+            white-space: nowrap;
+            padding: 0 5px;
+        }
     }
 
     &__checkbox {

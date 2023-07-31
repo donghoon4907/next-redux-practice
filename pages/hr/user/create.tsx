@@ -6,7 +6,7 @@ import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { UserForm } from '@partials/hr/UserForm';
+import { UserForm } from '@partials/hr/user/UserForm';
 import { getBanksRequest } from '@actions/hr/get-banks';
 import { getAgenciesRequest } from '@actions/hr/get-agencys';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
