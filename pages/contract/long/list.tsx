@@ -3,7 +3,7 @@ import type { AppState } from '@reducers/index';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { LongState } from '@reducers/long';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import dayjs from 'dayjs';
@@ -40,6 +40,8 @@ import {
 import { MyInput } from '@components/input';
 import { useDateRangepicker } from '@hooks/use-datepicker';
 import { permissionMiddleware } from '@utils/middleware/permission';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 // import {
 //     PopoverBody,
 //     PopoverHeader,
@@ -94,11 +96,7 @@ const Longs: NextPage = () => {
     };
 
     const handleClickRow = ({ cidx, cname }: any) => {
-        tab.fire(
-            `long${cidx}`,
-            `장기계약상세(${cname})`,
-            `/contract/long/${cidx}`,
-        );
+        tab.move(`/contract/long/${cidx}`);
     };
 
     const handleSearch = () => {
@@ -119,6 +117,22 @@ const Longs: NextPage = () => {
             }),
         );
     };
+
+    useEffect(() => {
+        // 탭 추가
+        const tab = new TabModule();
+
+        const tabKey = 'tab:contract-long_list';
+        if (!tab.read(tabKey)) {
+            tab.create({
+                id: tabKey,
+                label: '장기계약목록',
+                to: '/contract/long/list',
+            });
+        }
+
+        dispatch(initTab(tab.getAll()));
+    }, [dispatch]);
 
     return (
         <>

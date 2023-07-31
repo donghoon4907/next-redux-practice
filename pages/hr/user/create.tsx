@@ -11,12 +11,28 @@ import { getBanksRequest } from '@actions/hr/get-banks';
 import { getAgenciesRequest } from '@actions/hr/get-agencys';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 
 const CreateUser: NextPage = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        // 부서 선택 모달 열기
         dispatch(showDepartSearchModal());
+        // 탭 추가
+        const tab = new TabModule();
+
+        const tabKey = 'tab:hr-user_create';
+        if (!tab.read(tabKey)) {
+            tab.create({
+                id: tabKey,
+                label: '영업가족등록',
+                to: '/hr/user/create',
+            });
+        }
+
+        dispatch(initTab(tab.getAll()));
     }, [dispatch]);
 
     return (

@@ -14,8 +14,8 @@ import { getCookie } from 'cookies-next';
 import { wrapper } from '@store/redux';
 // import { MyDrawer } from '@components/drawer';
 import { MyProvider } from '@components/Provider';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
+// import { TabModule } from '@utils/storage';
+// import { initTab } from '@actions/tab/tab.action';
 import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
@@ -29,10 +29,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     const dispatch = useDispatch();
     // 라우팅 시 탭 및 GNB 갱신
     useEffect(() => {
-        // 탭 처리
-        const tab = new TabModule();
-
-        dispatch(initTab(tab.getAll()));
         // GNB 처리
         const [_, gnb] = asPath.split('/');
 
@@ -41,9 +37,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         }
 
         function onRouteChange(url: string) {
-            tab.initialize();
-
-            dispatch(initTab(tab.getAll()));
+            // 탭 처리
+            // const tab = new TabModule();
+            // dispatch(initTab(tab.getAll()));
         }
 
         events.on('routeChangeComplete', onRouteChange);

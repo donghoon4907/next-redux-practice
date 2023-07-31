@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import type { ChangeEvent } from 'react';
 import Head from 'next/head';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { DatePicker } from 'rsuite';
 import addMonths from 'date-fns/addMonths';
@@ -21,6 +21,8 @@ import { MyFooter } from '@components/footer';
 import { MyLabel } from '@components/label';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 
 function getGender(residentNumber: string) {
     var genderNumber = parseInt(residentNumber);
@@ -74,11 +76,11 @@ const ComparisonEstimate: NextPage = () => {
     // 차량 번호 - 지역
     const [carLocale, setCarLocale] = useSelect(CAR_LOCALE);
     // 차량 번호 - 차종
-    const [carType, setCarType] = useNumbericInput('', { limit: 3 });
+    const [carType, setCarType] = useNumbericInput('', { maxLength: 3 });
     // 차량 번호 - 용도
     const [carUsage, setCarUsage] = useSelect(CAR_USAGE);
     // 차량 번호 - 등록 번호
-    const [carRegiNum, setCarRegiNum] = useNumbericInput('', { limit: 4 });
+    const [carRegiNum, setCarRegiNum] = useNumbericInput('', { maxLength: 4 });
     // 차량 번호 - 직접입력
     const [directCarNum] = useInput('');
     // const directCarNumRef = useRef<HTMLInputElement>(null);
@@ -266,6 +268,22 @@ const ComparisonEstimate: NextPage = () => {
 
         setEndJoinDate(addMonths(new Date(), 12));
     };
+
+    useEffect(() => {
+        // 탭 추가
+        const tab = new TabModule();
+
+        const tabKey = 'tab:contract-car-comparison_car';
+        if (!tab.read(tabKey)) {
+            tab.create({
+                id: tabKey,
+                label: '비교견적(자동차)',
+                to: '/contract/car/comparison-estimate',
+            });
+        }
+
+        dispatch(initTab(tab.getAll()));
+    }, [dispatch]);
 
     return (
         <>

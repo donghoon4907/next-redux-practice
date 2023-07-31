@@ -1,7 +1,8 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { wrapper } from '@store/redux';
@@ -16,6 +17,8 @@ import { updateDepart } from '@actions/hr/set-depart.action';
 import { AppState } from '@reducers/index';
 import { createCode } from '@actions/hr/set-code.action';
 import { createGuarantee } from '@actions/hr/set-guarantee.action';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 
 function makeSelectOption(value: any, arr: any[]) {
     let output;
@@ -31,6 +34,8 @@ function makeSelectOption(value: any, arr: any[]) {
 }
 
 const User: NextPage<HrState> = ({ user }) => {
+    const dispatch = useDispatch();
+
     const { banks, companies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
@@ -204,6 +209,22 @@ const User: NextPage<HrState> = ({ user }) => {
             }
         }
     }
+
+    useEffect(() => {
+        // 탭 추가
+        const tab = new TabModule();
+
+        const tabKey = `tab:hr-user_${user.userid}`;
+        if (!tab.read(tabKey)) {
+            tab.create({
+                id: tabKey,
+                label: `영업가족상세 - ${user.name}`,
+                to: `/hr/user/${user.userid}`,
+            });
+        }
+
+        dispatch(initTab(tab.getAll()));
+    }, [dispatch, user]);
 
     return (
         <>

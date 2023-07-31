@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import type { LongState } from '@reducers/long';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
@@ -32,6 +32,8 @@ import {
     PAY_CYCLE,
     PAY_STATUS,
 } from '@constants/selectOption';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const displayName = 'wr-pages-long-detail';
@@ -147,6 +149,22 @@ const Long: NextPage<LongState> = ({ long }) => {
         remark: v.content.remark,
         body: ['button', '보기', () => handleShowHistory(v.content.body)],
     }));
+
+    useEffect(() => {
+        // 탭 추가
+        const tab = new TabModule();
+
+        const tabKey = `tab:contract-long_${long.idx}`;
+        if (!tab.read(tabKey)) {
+            tab.create({
+                id: tabKey,
+                label: `장기계약상세 - ${long.cname}`,
+                to: `/contract/long/${long.idx}`,
+            });
+        }
+
+        dispatch(initTab(tab.getAll()));
+    }, [dispatch, long]);
 
     return (
         <>
