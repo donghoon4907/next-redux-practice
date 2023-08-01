@@ -66,7 +66,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             type="text"
                             id="account"
                             placeholder="계좌번호"
-                            readOnly={!editable}
+                            disabled={!editable}
                             {...account}
                         />
                     </WithLabel>
@@ -75,7 +75,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             type="text"
                             id="holder"
                             placeholder="예금주"
-                            readOnly={!editable}
+                            disabled={!editable}
                             {...holder}
                         />
                     </WithLabel>
@@ -167,7 +167,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                 id="genRate"
                                 placeholder="지급율"
                                 className="text-end"
-                                readOnly={!editable}
+                                disabled={!editable}
                                 unit="%"
                                 {...genRate}
                             />

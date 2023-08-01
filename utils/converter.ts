@@ -60,3 +60,10 @@ export function convertPhoneNumber(phone: string) {
 
     return converted;
 }
+
+/**
+ * 휴대폰 번호 - 처리
+ */
+export function convertResidentNumber(residentNumber: string) {
+    return residentNumber.replace(/(\d{6})(\d{1})/, '$1-$2');
+}

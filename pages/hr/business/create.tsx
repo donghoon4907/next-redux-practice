@@ -100,7 +100,7 @@ const CreateBusiness: NextPage<HrState> = ({ users }) => {
             tab.create({
                 id: tabKey,
                 label: '사업부등록',
-                to: '/hr/department/business/create',
+                to: '/hr/business/create',
             });
         }
 

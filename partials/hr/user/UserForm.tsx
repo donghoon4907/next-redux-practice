@@ -39,7 +39,8 @@ import { getOrgaRequest } from '@actions/hr/get-orga';
 import { MyDatepicker } from '@components/datepicker';
 import { updateUserRequest } from '@actions/hr/update-user.action';
 import { usePostcode } from '@hooks/use-postcode';
-import { convertPhoneNumber } from '@utils/converter';
+import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
+import { uploadPortraitRequest } from '@actions/upload/portrait.action';
 import {
     useInput,
     useNumbericInput,
@@ -343,8 +344,8 @@ export const UserForm: FC<Props> = ({
     // defaultGenIdx
     defaultLongGrade = false,
     defaultPermissionIdx,
-    defaultUseWeb = false,
-    defaultUseMobile = false,
+    defaultUseWeb = true,
+    defaultUseMobile = true,
     defaultGiaIdx,
     defaultGiaNo = '',
     defaultGiaComp = null,
@@ -373,13 +374,14 @@ export const UserForm: FC<Props> = ({
         removedCodes,
     } = useSelector<AppState, HrState>((state) => state.hr);
 
-    const { lastUploadedPortraitImage } = useSelector<AppState, UploadState>(
-        (state) => state.upload,
-    );
+    const { lastSetPortraitImageFile, lastSetPortraitImagePreview } =
+        useSelector<AppState, UploadState>((state) => state.upload);
 
     const createUser = useApi(createUserRequest);
 
     const updateUser = useApi(updateUserRequest);
+
+    const upload = useApi(uploadPortraitRequest);
     // 탭 관리
     const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -686,7 +688,28 @@ export const UserForm: FC<Props> = ({
         const createUserDto = new CreateUserDTO(payload);
 
         if (createUserDto.requiredValidate()) {
-            createUser(createUserDto.getPayload());
+            createUser(createUserDto.getPayload(), ({ userid }) => {
+                if (userid) {
+                    // 프로필 사진을 설정한 경우
+                    if (lastSetPortraitImageFile) {
+                        const formData = new FormData();
+
+                        formData.append('file', lastSetPortraitImageFile);
+
+                        upload(
+                            {
+                                userid,
+                                formData,
+                            },
+                            () => {
+                                alert('사용자가 등록되었습니다.');
+                            },
+                        );
+                    } else {
+                        alert('사용자가 등록되었습니다.');
+                    }
+                }
+            });
         }
     };
 
@@ -696,7 +719,28 @@ export const UserForm: FC<Props> = ({
         const updateUserDto = new UpdateUserDTO(payload);
 
         if (updateUserDto.requiredValidate()) {
-            updateUser(updateUserDto.getPayload());
+            updateUser(updateUserDto.getPayload(), ({ Message }) => {
+                if (Message === 'Success') {
+                    // 프로필 사진을 설정한 경우
+                    if (lastSetPortraitImageFile) {
+                        const formData = new FormData();
+
+                        formData.append('file', lastSetPortraitImageFile);
+
+                        upload(
+                            {
+                                userid,
+                                formData,
+                            },
+                            () => {
+                                alert('수정되었습니다.');
+                            },
+                        );
+                    } else {
+                        alert('수정되었습니다.');
+                    }
+                }
+            });
         }
     };
 
@@ -745,8 +789,10 @@ export const UserForm: FC<Props> = ({
             permission: {
                 idx: defaultPermissionIdx,
                 permission: {
-                    use_web: useWeb.checked,
-                    use_mobile: useMobile.checked,
+                    system: {
+                        use_web: useWeb.checked,
+                        use_mobile: useMobile.checked,
+                    },
                 },
             },
             associate: [
@@ -949,7 +995,7 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     id="nick"
                                                     placeholder="영업명"
-                                                    readOnly={!isEditable}
+                                                    disabled={!isEditable}
                                                     {...nick}
                                                 />
                                             </WithLabel>
@@ -964,7 +1010,7 @@ export const UserForm: FC<Props> = ({
                                                     id="name"
                                                     placeholder="이름"
                                                     onBlur={handleBlurName}
-                                                    readOnly={!isEditable}
+                                                    disabled={!isEditable}
                                                     {...name}
                                                 />
                                             </WithLabel>
@@ -977,7 +1023,7 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     id="title"
                                                     placeholder="직함"
-                                                    readOnly={!isEditable}
+                                                    disabled={!isEditable}
                                                     {...title}
                                                 />
                                             </WithLabel>
@@ -991,7 +1037,7 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     id="sNum"
                                                     placeholder="주민번호"
-                                                    readOnly={!isEditable}
+                                                    disabled={!isEditable}
                                                     {...idnum1}
                                                 />
                                             </WithLabel>
@@ -1045,7 +1091,7 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         id="mobile"
                                                         placeholder="핸드폰"
-                                                        readOnly={!isEditable}
+                                                        disabled={!isEditable}
                                                         {...mobile}
                                                     />
                                                     <MySelect
@@ -1071,13 +1117,13 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         id="telephone"
                                                         placeholder="내선번호"
-                                                        readOnly={!isEditable}
+                                                        disabled={!isEditable}
                                                         {...telephone}
                                                     />
                                                     <MyInput
                                                         type="text"
                                                         placeholder="직통번호"
-                                                        readOnly={!isEditable}
+                                                        disabled={!isEditable}
                                                         {...telDirect}
                                                     />
                                                 </div>
@@ -1094,7 +1140,7 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         id="email"
                                                         placeholder="이메일"
-                                                        readOnly={!isEditable}
+                                                        disabled={!isEditable}
                                                         {...email}
                                                     />
                                                     <MySelect
@@ -1120,8 +1166,8 @@ export const UserForm: FC<Props> = ({
                                                 >
                                                     <img
                                                         src={
-                                                            lastUploadedPortraitImage
-                                                                ? `${process.env.STORAGE_PATH}/${lastUploadedPortraitImage}`
+                                                            lastSetPortraitImagePreview
+                                                                ? lastSetPortraitImagePreview
                                                                 : 'http://via.placeholder.com/200x220'
                                                         }
                                                         alt="Avatar"
@@ -1138,7 +1184,7 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         placeholder="사원번호"
                                                         value={userid}
-                                                        readOnly
+                                                        disabled
                                                     />
                                                 </WithLabel>
                                                 <WithLabel
@@ -1192,7 +1238,7 @@ export const UserForm: FC<Props> = ({
                                                     <MyInput
                                                         type="text"
                                                         placeholder="우편번호"
-                                                        readOnly
+                                                        disabled
                                                         onClick={
                                                             onClickPostcode
                                                         }
@@ -1220,7 +1266,7 @@ export const UserForm: FC<Props> = ({
                                                 <MyInput
                                                     type="text"
                                                     placeholder="주소1"
-                                                    readOnly
+                                                    disabled
                                                     {...address1}
                                                 />
                                             </div>
@@ -1237,7 +1283,7 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     id="addr2"
                                                     placeholder="상세주소"
-                                                    readOnly={!isEditable}
+                                                    disabled={!isEditable}
                                                     {...address3}
                                                 />
                                             </WithLabel>
@@ -1247,7 +1293,7 @@ export const UserForm: FC<Props> = ({
                                                 <MyInput
                                                     type="text"
                                                     placeholder="주소2"
-                                                    readOnly
+                                                    disabled
                                                     {...address2}
                                                 />
                                             </div>

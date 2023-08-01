@@ -12,16 +12,11 @@ function* createUserSaga({ payload }: CreateUserRequestAction) {
 
     const { userid, Message } = data;
 
-    let message;
-    if (userid) {
-        message = '사용자가 등록되었습니다.';
-    } else {
-        message = Message;
+    if (!userid) {
+        alert(Message);
     }
 
     yield put(createUserSuccess());
-
-    alert(message);
 
     return data;
 }

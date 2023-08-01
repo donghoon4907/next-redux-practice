@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
+import type { AppState } from '@reducers/index';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +31,9 @@ import { CommissionTabpanel } from '@partials/hr/department/tabpanels/Commission
 import { LifeLongModal } from '@components/modal/LifeLong';
 import { PaymentTabpanel } from '@partials/hr/department/tabpanels/Payment';
 import { MemoTabpanel } from '@partials/hr/department/tabpanels/Memo';
+import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { AssociationRegistTabpanel } from '@partials/hr/department/tabpanels/AssociationRegist';
+import { RentalAssetTabpanel } from '@partials/hr/department/tabpanels/RentalAsset';
 
 const CreateBranch: NextPage<HrState> = ({ users }) => {
     const displayName = 'wr-pages-hr-detail';
@@ -37,6 +41,11 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
     const dispatch = useDispatch();
 
     // const createUser = useApi(createUserRequest);
+
+    const { orgas } = useSelector<AppState, HrState>((state) => state.hr);
+
+    const [depart] = useSelect(orgas, null);
+
     // 탭 관리
     const [tab, setTab] = useTab(DEPART_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -100,7 +109,7 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
             tab.create({
                 id: tabKey,
                 label: '지점등록',
-                to: '/hr/department/branch/create',
+                to: '/hr/branch/create',
             });
         }
 
@@ -125,14 +134,60 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                     <div className="row">
                                         <div className="col-6">
                                             <WithLabel
+                                                id="depart"
+                                                label="사업부"
+                                                type={labelType}
+                                            >
+                                                <MySelect
+                                                    inputId="depart"
+                                                    placeholder={'선택'}
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...depart}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="headquarter"
+                                                    label="본부"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="headquarter"
+                                                        placeholder={'선택'}
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        options={[]}
+                                                        value={null}
+                                                        onChange={() => {}}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={`${displayName}__block`}>
+                                <div className={`${displayName}__content`}>
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <WithLabel
                                                 id="name"
-                                                label="사업부명"
+                                                label="지점명"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="name"
-                                                    placeholder="사업부명"
+                                                    placeholder="지점명"
                                                     readOnly={!editable}
                                                 />
                                             </WithLabel>
@@ -266,35 +321,40 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="pointStatus"
-                                                label="지점현황"
+                                                id="pointDivision"
+                                                label="지점구분"
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="pointStatus"
-                                                    placeholder="선택"
+                                                    inputId="pointDivision"
+                                                    placeholder={'선택'}
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
                                                     isDisabled={!editable}
-                                                    {...pointStatus}
+                                                    options={[]}
+                                                    value={null}
+                                                    onChange={() => {}}
                                                 />
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="openDate"
-                                                    label="개점일자"
+                                                    id="pointStatus"
+                                                    label="지점현황"
                                                     type={labelType}
                                                 >
-                                                    <MyDatepicker
-                                                        id="openDate"
-                                                        size="md"
-                                                        placeholder="개점일자"
-                                                        readOnly={!editable}
-                                                        hooks={openDate}
+                                                    <MySelect
+                                                        inputId="pointStatus"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...pointStatus}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -303,34 +363,33 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="closeDate"
-                                                label="폐점일자"
+                                                id="openDate"
+                                                label="개점일자"
                                                 type={labelType}
                                             >
                                                 <MyDatepicker
-                                                    id="closeDate"
+                                                    id="openDate"
                                                     size="md"
-                                                    placeholder="폐점일자"
+                                                    placeholder="개점일자"
                                                     readOnly={!editable}
-                                                    hooks={closeDate}
+                                                    hooks={openDate}
                                                 />
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="orSet"
-                                                    label="OR설정"
-                                                    type="disable"
+                                                    id="closeDate"
+                                                    label="폐점일자"
+                                                    type={labelType}
                                                 >
-                                                    <div
-                                                        style={{
-                                                            height: variables.detailFilterHeight,
-                                                        }}
-                                                        className="wr-with__checkbox wr-border"
-                                                    >
-                                                        <MyCheckbox label="부서장제외" />
-                                                    </div>
+                                                    <MyDatepicker
+                                                        id="closeDate"
+                                                        size="md"
+                                                        placeholder="폐점일자"
+                                                        readOnly={!editable}
+                                                        hooks={closeDate}
+                                                    />
                                                 </WithLabel>
                                             </div>
                                         </div>
@@ -342,7 +401,7 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                     <div className={`${displayName}__right col`}>
                         <div className="wr-ml position-relative">
                             <ul className="wr-tab__wrap" role="tablist">
-                                {DEPART_DETAIL_TABS.slice(0, 3).map((v) => (
+                                {DEPART_DETAIL_TABS.map((v) => (
                                     <MyTab
                                         key={v.id}
                                         onClick={setTab}
@@ -371,6 +430,18 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                     id="tabpanelMemo"
                                     tabId="tabMemo"
                                     hidden={tab.id !== 'tabMemo'}
+                                    editable={editable}
+                                />
+                                <AssociationRegistTabpanel
+                                    id="tabpanelAssociationRegist"
+                                    tabId="tabAssociationRegist"
+                                    hidden={tab.id !== 'tabAssociationRegist'}
+                                    editable={editable}
+                                />
+                                <RentalAssetTabpanel
+                                    id="tabpanelRentalAsset"
+                                    tabId="tabRentalAsset"
+                                    hidden={tab.id !== 'tabRentalAsset'}
                                     editable={editable}
                                 />
                             </div>
@@ -407,6 +478,12 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask, getState }, ctx) => {
+        dispatch(
+            getOrgasRequest({
+                idx: '1',
+            }),
+        );
+
         dispatch(END);
 
         await sagaTask?.toPromise();

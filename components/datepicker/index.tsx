@@ -14,7 +14,7 @@ interface Props {
      */
     format?: string;
     placeholder?: string;
-    hooks: UseDatepickerOutput;
+    hooks?: UseDatepickerOutput;
     placement?: TypeAttributes.Placement;
     readOnly?: boolean;
     width?: number;

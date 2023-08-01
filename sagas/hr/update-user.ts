@@ -12,16 +12,11 @@ function* updateUserSaga({ payload }: UpdateUserRequestAction) {
 
     const { Message } = data;
 
-    let message;
-    if (Message === 'Success') {
-        message = '수정되었습니다.';
-    } else {
-        message = Message;
+    if (Message !== 'Success') {
+        alert(Message);
     }
 
     yield put(updateUserSuccess());
-
-    alert(message);
 
     return data;
 }
