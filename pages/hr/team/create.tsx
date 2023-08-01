@@ -1,5 +1,6 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
+import type { AppState } from '@reducers/index';
 import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,6 +31,7 @@ import { CommissionTabpanel } from '@partials/hr/department/tabpanels/Commission
 import { LifeLongModal } from '@components/modal/LifeLong';
 import { PaymentTabpanel } from '@partials/hr/department/tabpanels/Payment';
 import { MemoTabpanel } from '@partials/hr/department/tabpanels/Memo';
+import { getOrgasRequest } from '@actions/hr/get-orgas';
 
 const CreateTeam: NextPage<HrState> = ({ users }) => {
     const displayName = 'wr-pages-hr-detail';
@@ -37,6 +39,10 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
     const dispatch = useDispatch();
 
     // const createUser = useApi(createUserRequest);
+    const { orgas } = useSelector<AppState, HrState>((state) => state.hr);
+
+    const [depart] = useSelect(orgas, null);
+
     // 탭 관리
     const [tab, setTab] = useTab(DEPART_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -100,7 +106,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
             tab.create({
                 id: tabKey,
                 label: '팀등록',
-                to: '/hr/department/team/create',
+                to: '/hr/team/create',
             });
         }
 
@@ -125,14 +131,82 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
                                     <div className="row">
                                         <div className="col-6">
                                             <WithLabel
+                                                id="depart"
+                                                label="사업부"
+                                                type={labelType}
+                                            >
+                                                <MySelect
+                                                    inputId="depart"
+                                                    placeholder={'선택'}
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...depart}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="headquarter"
+                                                    label="본부"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="headquarter"
+                                                        placeholder={'선택'}
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        options={[]}
+                                                        value={null}
+                                                        onChange={() => {}}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
+                                            <WithLabel
+                                                id="branch"
+                                                label="지점"
+                                                type={labelType}
+                                            >
+                                                <MySelect
+                                                    inputId="branch"
+                                                    placeholder={'지점'}
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    options={[]}
+                                                    value={null}
+                                                    onChange={() => {}}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={`${displayName}__block`}>
+                                <div className={`${displayName}__content`}>
+                                    <div className="row">
+                                        <div className="col-6">
+                                            <WithLabel
                                                 id="name"
-                                                label="사업부명"
+                                                label="팀명"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="name"
-                                                    placeholder="사업부명"
+                                                    placeholder="팀명"
                                                     readOnly={!editable}
                                                 />
                                             </WithLabel>
@@ -316,24 +390,6 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
                                                 />
                                             </WithLabel>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="orSet"
-                                                    label="OR설정"
-                                                    type="disable"
-                                                >
-                                                    <div
-                                                        style={{
-                                                            height: variables.detailFilterHeight,
-                                                        }}
-                                                        className="wr-with__checkbox wr-border"
-                                                    >
-                                                        <MyCheckbox label="부서장제외" />
-                                                    </div>
-                                                </WithLabel>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -407,6 +463,12 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask, getState }, ctx) => {
+        dispatch(
+            getOrgasRequest({
+                idx: '1',
+            }),
+        );
+
         dispatch(END);
 
         await sagaTask?.toPromise();

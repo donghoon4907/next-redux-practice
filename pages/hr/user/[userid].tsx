@@ -214,6 +214,7 @@ const User: NextPage<HrState> = ({ user }) => {
         // 탭 추가
         const tab = new TabModule();
 
+        console.log(user.userid);
         const tabKey = `tab:hr-user_${user.userid}`;
         if (!tab.read(tabKey)) {
             tab.create({

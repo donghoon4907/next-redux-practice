@@ -21,33 +21,33 @@ import { MyButton } from '@components/button';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
-    giaNo: UseInputOutput;
-    giaComp: UseSelectOutput;
-    giaIndate: UseDatepickerOutput;
-    giaOutdate: UseDatepickerOutput;
-    giaQualification: UseSelectOutput;
-    liaNo: UseInputOutput;
-    liaComp: UseSelectOutput;
-    liaIndate: UseDatepickerOutput;
-    liaOutdate: UseDatepickerOutput;
-    liaQualification: UseSelectOutput;
+    // giaNo: UseInputOutput;
+    // giaComp: UseSelectOutput;
+    // giaIndate: UseDatepickerOutput;
+    // giaOutdate: UseDatepickerOutput;
+    // giaQualification: UseSelectOutput;
+    // liaNo: UseInputOutput;
+    // liaComp: UseSelectOutput;
+    // liaIndate: UseDatepickerOutput;
+    // liaOutdate: UseDatepickerOutput;
+    // liaQualification: UseSelectOutput;
 }
 
-export const QualManageTabpanel: FC<Props> = ({
+export const AssociationRegistTabpanel: FC<Props> = ({
     id,
     tabId,
     hidden,
     editable,
-    giaNo,
-    giaComp,
-    giaIndate,
-    giaOutdate,
-    giaQualification,
-    liaNo,
-    liaComp,
-    liaIndate,
-    liaOutdate,
-    liaQualification,
+    // giaNo,
+    // giaComp,
+    // giaIndate,
+    // giaOutdate,
+    // giaQualification,
+    // liaNo,
+    // liaComp,
+    // liaIndate,
+    // liaOutdate,
+    // liaQualification,
 }) => {
     const dispatch = useDispatch();
 
@@ -109,7 +109,7 @@ export const QualManageTabpanel: FC<Props> = ({
                 <div className="col-6">
                     <div className="wr-pages-hr-detail__block">
                         <div className="wr-pages-hr-detail__title">
-                            <strong>손해보험협회</strong>
+                            <strong>손해보험협회 등록사항</strong>
                         </div>
                         <div className="wr-pages-hr-detail__content">
                             <div className="row">
@@ -123,8 +123,8 @@ export const QualManageTabpanel: FC<Props> = ({
                                             type="text"
                                             id="giaNo"
                                             placeholder="등록번호"
-                                            disabled={!editable}
-                                            {...giaNo}
+                                            readOnly={!editable}
+                                            // {...giaNo}
                                         />
                                     </WithLabel>
                                     <WithLabel
@@ -137,23 +137,20 @@ export const QualManageTabpanel: FC<Props> = ({
                                             size="md"
                                             placeholder="등록일"
                                             readOnly={!editable}
-                                            hooks={giaIndate}
+                                            // hooks={giaIndate}
                                         />
                                     </WithLabel>
                                     <WithLabel
                                         id="giaQualification"
-                                        label="자격구분"
+                                        label="등록지점장"
                                         type={labelType}
                                     >
-                                        <MySelect
-                                            inputId="giaQualification"
-                                            placeholder="선택"
-                                            placeHolderFontSize={16}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
-                                            isDisabled={!editable}
-                                            {...giaQualification}
+                                        <MyInput
+                                            type="text"
+                                            id="giaQualification"
+                                            placeholder="등록지점장"
+                                            readOnly={!editable}
+                                            // {...giaNo}
                                         />
                                     </WithLabel>
                                 </div>
@@ -172,20 +169,20 @@ export const QualManageTabpanel: FC<Props> = ({
                                                     variables.detailFilterHeight
                                                 }
                                                 isDisabled={!editable}
-                                                {...giaComp}
+                                                // {...giaComp}
                                             />
                                         </WithLabel>
                                         <WithLabel
                                             id="giaOutdate"
-                                            label="말소일"
+                                            label="생년월일"
                                             type={labelType}
                                         >
                                             <MyDatepicker
                                                 id="giaOutdate"
                                                 size="md"
-                                                placeholder="말소일"
+                                                placeholder="생년월일"
                                                 readOnly={!editable}
-                                                hooks={giaOutdate}
+                                                // hooks={giaOutdate}
                                             />
                                         </WithLabel>
                                     </div>
@@ -198,7 +195,7 @@ export const QualManageTabpanel: FC<Props> = ({
                     <div className="wr-ml">
                         <div className="wr-pages-hr-detail__block">
                             <div className="wr-pages-hr-detail__title">
-                                <strong>생명보험협회</strong>
+                                <strong>생명보험협회 등록사항</strong>
                             </div>
                             <div className="wr-pages-hr-detail__content">
                                 <div className="row">
@@ -212,8 +209,8 @@ export const QualManageTabpanel: FC<Props> = ({
                                                 type="text"
                                                 id="liaNo"
                                                 placeholder="등록번호"
-                                                disabled={!editable}
-                                                {...liaNo}
+                                                readOnly={!editable}
+                                                // {...liaNo}
                                             />
                                         </WithLabel>
                                         <WithLabel
@@ -226,23 +223,20 @@ export const QualManageTabpanel: FC<Props> = ({
                                                 size="md"
                                                 placeholder="등록일"
                                                 readOnly={!editable}
-                                                hooks={liaIndate}
+                                                // hooks={liaIndate}
                                             />
                                         </WithLabel>
                                         <WithLabel
                                             id="liaQualification"
-                                            label="자격구분"
+                                            label="등록지점장"
                                             type={labelType}
                                         >
-                                            <MySelect
-                                                inputId="liaQualification"
-                                                placeholder="선택"
-                                                placeHolderFontSize={16}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...liaQualification}
+                                            <MyInput
+                                                type="text"
+                                                id="liaQualification"
+                                                placeholder="등록지점장"
+                                                readOnly={!editable}
+                                                // {...giaNo}
                                             />
                                         </WithLabel>
                                     </div>
@@ -261,20 +255,20 @@ export const QualManageTabpanel: FC<Props> = ({
                                                         variables.detailFilterHeight
                                                     }
                                                     isDisabled={!editable}
-                                                    {...liaComp}
+                                                    // {...liaComp}
                                                 />
                                             </WithLabel>
                                             <WithLabel
                                                 id="liaOutdate"
-                                                label="말소일"
+                                                label="생년월일"
                                                 type={labelType}
                                             >
                                                 <MyDatepicker
                                                     id="liaOutdate"
                                                     size="md"
-                                                    placeholder="말소일"
+                                                    placeholder="생년월일"
                                                     readOnly={!editable}
-                                                    hooks={liaOutdate}
+                                                    // hooks={liaOutdate}
                                                 />
                                             </WithLabel>
                                         </div>
@@ -320,13 +314,10 @@ export const QualManageTabpanel: FC<Props> = ({
                                         <strong>등록일</strong>
                                     </th>
                                     <th>
-                                        <strong>코드</strong>
+                                        <strong>사용인코드</strong>
                                     </th>
                                     <th>
-                                        <strong>비밀번호</strong>
-                                    </th>
-                                    <th>
-                                        <strong>인증번호</strong>
+                                        <strong>(기타)코드</strong>
                                     </th>
                                 </tr>
                             </thead>
@@ -415,20 +406,17 @@ export const QualManageTabpanel: FC<Props> = ({
                                             <strong>등록일</strong>
                                         </th>
                                         <th>
-                                            <strong>코드</strong>
+                                            <strong>사용인코드</strong>
                                         </th>
                                         <th>
-                                            <strong>비밀번호</strong>
-                                        </th>
-                                        <th>
-                                            <strong>인증번호</strong>
+                                            <strong>(기타)코드</strong>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {filteredLifes.length === 0 && (
                                         <tr>
-                                            <td colSpan={6}>
+                                            <td colSpan={5}>
                                                 <span>
                                                     등록된 코드가 없습니다.
                                                 </span>

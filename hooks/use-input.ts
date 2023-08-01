@@ -2,7 +2,7 @@ import type { ChangeEvent } from 'react';
 import type { CoreSetState } from '@interfaces/core';
 import { useState } from 'react';
 import { isNumberic } from '@utils/validation';
-import { convertPhoneNumber } from '@utils/converter';
+import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
 
 interface UseInputOption {
     /**
@@ -125,7 +125,9 @@ export const useNumbericInput: UseInputFunction = (
  * 전화번호 입력 hooks
  */
 export const usePhoneInput: UseInputFunction = (defaultValue, where = {}) => {
-    const [phone, setPhone] = useNumbericInput(defaultValue || '');
+    const [phone, setPhone] = useNumbericInput(
+        defaultValue ? convertPhoneNumber(defaultValue) : '',
+    );
 
     const onFocus = () => {
         setPhone((prev) => prev.replace(/\-/g, ''));
@@ -150,7 +152,9 @@ export const useResidentNumberInput: UseInputFunction = (
     defaultValue,
     where = {},
 ) => {
-    const [residentNum, setResidentNum] = useNumbericInput(defaultValue || '');
+    const [residentNum, setResidentNum] = useNumbericInput(
+        defaultValue ? convertResidentNumber(defaultValue) : '',
+    );
 
     const onFocus = () => {
         setResidentNum((prev) => prev.replace(/\-/g, ''));
@@ -158,7 +162,7 @@ export const useResidentNumberInput: UseInputFunction = (
 
     const onBlur = () => {
         // 마지막 자리의 경우 자리수에 상관없이 -가 생기도록
-        const converted = residentNum.value.replace(/(\d{6})(\d{1})/, '$1-$2');
+        const converted = convertResidentNumber(residentNum.value);
 
         setResidentNum(converted);
 

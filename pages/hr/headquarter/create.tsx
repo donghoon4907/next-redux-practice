@@ -32,13 +32,17 @@ import { LifeLongModal } from '@components/modal/LifeLong';
 import { PaymentTabpanel } from '@partials/hr/department/tabpanels/Payment';
 import { MemoTabpanel } from '@partials/hr/department/tabpanels/Memo';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { showDepartSearchModal } from '@actions/modal/depart-search.action';
+import { SelectDepartModal } from '@components/modal/SelectDepart';
 
 const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
     const displayName = 'wr-pages-hr-detail';
 
     const dispatch = useDispatch();
 
-    const { orgas } = useSelector<AppState, HrState>((state) => state.hr);
+    const { orgas, selectedOrga } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
     const [depart] = useSelect(orgas, null);
 
@@ -75,6 +79,10 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
     // 양력 or 음력
     // const [birthType] = useSelect(BIRTH_TYPE);
 
+    const handleClickDepart = () => {
+        dispatch(showDepartSearchModal());
+    };
+
     const handleSubmit = () => {
         if (name.value === '') {
             return alert('이름을 입력하세요.');
@@ -106,7 +114,7 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
             tab.create({
                 id: tabKey,
                 label: '본부등록',
-                to: '/hr/department/headquarter/create',
+                to: '/hr/headquarter/create',
             });
         }
 
@@ -128,36 +136,60 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                         <div className="wr-frame__section">
                             <div className={`${displayName}__block`}>
                                 <div className={`${displayName}__content`}>
+                                    <div className="wr-group">
+                                        <span
+                                            className={`${displayName}__department ${
+                                                selectedOrga
+                                                    ? ''
+                                                    : 'wr-label--required'
+                                            }`}
+                                        >
+                                            {selectedOrga
+                                                ? selectedOrga.label
+                                                : '사업부를 선택하세요'}
+                                        </span>
+                                        <button
+                                            className="btn btn-primary btn-sm"
+                                            type="button"
+                                            onClick={handleClickDepart}
+                                        >
+                                            사업부변경
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={`${displayName}__block`}>
+                                <div className={`${displayName}__content`}>
                                     <div className="row">
                                         <div className="col-6">
                                             <WithLabel
                                                 id="name"
-                                                label="사업부"
+                                                label="본부명"
                                                 type={labelType}
                                             >
-                                                <MySelect
-                                                    placeholder={'선택'}
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...depart}
+                                                <MyInput
+                                                    type="text"
+                                                    id="name"
+                                                    placeholder="본부명"
+                                                    readOnly={!editable}
                                                 />
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="name"
-                                                    label="본부명"
+                                                    id="manager"
+                                                    label="대표자"
                                                     type={labelType}
                                                 >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="name"
-                                                        placeholder="본부명"
-                                                        readOnly={!editable}
+                                                    <MySelect
+                                                        placeholder={'선택'}
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...manager}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -166,34 +198,32 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="manager"
-                                                label="대표자"
+                                                id="phone"
+                                                label="전화번호"
                                                 type={labelType}
                                             >
-                                                <MySelect
-                                                    placeholder={'선택'}
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...manager}
+                                                <MyInput
+                                                    type="text"
+                                                    id="phone"
+                                                    placeholder="전화번호"
+                                                    readOnly={!editable}
+                                                    {...phone}
                                                 />
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="phone"
-                                                    label="전화번호"
+                                                    id="fax"
+                                                    label="팩스번호"
                                                     type={labelType}
                                                 >
                                                     <MyInput
                                                         type="text"
-                                                        id="phone"
-                                                        placeholder="전화번호"
+                                                        id="fax"
+                                                        placeholder="팩스번호"
                                                         readOnly={!editable}
-                                                        {...phone}
+                                                        {...fax}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -274,35 +304,35 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="fax"
-                                                label="팩스번호"
+                                                id="pointStatus"
+                                                label="지점현황"
                                                 type={labelType}
                                             >
-                                                <MyInput
-                                                    type="text"
-                                                    id="fax"
-                                                    placeholder="팩스번호"
-                                                    readOnly={!editable}
-                                                    {...fax}
+                                                <MySelect
+                                                    inputId="pointStatus"
+                                                    placeholder="선택"
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...pointStatus}
                                                 />
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="pointStatus"
-                                                    label="지점현황"
+                                                    id="openDate"
+                                                    label="개점일자"
                                                     type={labelType}
                                                 >
-                                                    <MySelect
-                                                        inputId="pointStatus"
-                                                        placeholder="선택"
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...pointStatus}
+                                                    <MyDatepicker
+                                                        id="openDate"
+                                                        size="md"
+                                                        placeholder="개점일자"
+                                                        readOnly={!editable}
+                                                        hooks={openDate}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -311,35 +341,18 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="openDate"
-                                                label="개점일자"
+                                                id="closeDate"
+                                                label="폐점일자"
                                                 type={labelType}
                                             >
                                                 <MyDatepicker
-                                                    id="openDate"
+                                                    id="closeDate"
                                                     size="md"
-                                                    placeholder="개점일자"
+                                                    placeholder="폐점일자"
                                                     readOnly={!editable}
-                                                    hooks={openDate}
+                                                    hooks={closeDate}
                                                 />
                                             </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="closeDate"
-                                                    label="폐점일자"
-                                                    type={labelType}
-                                                >
-                                                    <MyDatepicker
-                                                        id="closeDate"
-                                                        size="md"
-                                                        placeholder="폐점일자"
-                                                        readOnly={!editable}
-                                                        hooks={closeDate}
-                                                    />
-                                                </WithLabel>
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -408,6 +421,7 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                 </MyFooter>
             </MyLayout>
             <LifeLongModal />
+            <SelectDepartModal />
         </>
     );
 };

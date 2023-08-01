@@ -18,12 +18,22 @@ export interface UploadState {
      * 단일 사진 업로드 - 최근 업로드된 프로필 사진
      */
     lastUploadedPortraitImage: string;
+    /**
+     * 단일 사진 업로드 - 최근 설정된 프로필 사진(파일)
+     */
+    lastSetPortraitImageFile: File | null;
+    /**
+     * 단일 사진 업로드 - 최근 설정된 프로필 사진(파일)
+     */
+    lastSetPortraitImagePreview: string | null;
 }
 
 const initialState: UploadState = {
     uploadedFiles: [],
     lastUploadedImage: '',
     lastUploadedPortraitImage: '',
+    lastSetPortraitImageFile: null,
+    lastSetPortraitImagePreview: null,
 };
 
 export const uploadReducer: Reducer<UploadState, any> = (
@@ -63,6 +73,13 @@ export const uploadReducer: Reducer<UploadState, any> = (
             }
             case UploadPortraitActionTypes.SUCCESS: {
                 draft.lastUploadedPortraitImage = action.payload;
+
+                break;
+            }
+            case UploadPortraitActionTypes.UPDATE: {
+                draft.lastSetPortraitImageFile = action.payload.file;
+
+                draft.lastSetPortraitImagePreview = action.payload.preview;
 
                 break;
             }

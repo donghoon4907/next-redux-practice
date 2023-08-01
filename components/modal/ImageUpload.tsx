@@ -1,14 +1,12 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { HrState } from '@reducers/hr';
 import { useState, createRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Cropper, { ReactCropperElement } from 'react-cropper';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideImageUploadModal } from '@actions/modal/image-upload.action';
-import { useApi } from '@hooks/use-api';
-import { uploadPortraitRequest } from '@actions/upload/portrait.action';
+import { uploadPortraitUpdate } from '@actions/upload/portrait.action';
 
 // import Uppy from '@uppy/core';
 // import { Dashboard } from '@uppy/react';
@@ -23,15 +21,9 @@ export const ImageUploadModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const { loggedInUser } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
-
-    const upload = useApi(uploadPortraitRequest);
-
     const cropperRef = createRef<ReactCropperElement>();
 
-    const [image, setImage] = useState('');
+    const [preview, setPreview] = useState('');
 
     const handleChange = (e: any) => {
         e.preventDefault();
@@ -45,7 +37,7 @@ export const ImageUploadModal: FC<Props> = () => {
 
         const reader = new FileReader();
         reader.onload = () => {
-            setImage(reader.result as any);
+            setPreview(reader.result as any);
         };
 
         reader.readAsDataURL(files[0]);
@@ -63,23 +55,23 @@ export const ImageUploadModal: FC<Props> = () => {
                 .getCroppedCanvas()
                 .toBlob(function (blob) {
                     if (blob) {
-                        const formData = new FormData();
-
                         const file = new File([blob], 'example.jpg', {
                             type: 'image/jpeg',
                         });
 
-                        formData.append('file', file);
+                        const reader = new FileReader();
+                        reader.onload = () => {
+                            dispatch(
+                                uploadPortraitUpdate({
+                                    file,
+                                    preview: reader.result as string,
+                                }),
+                            );
 
-                        upload(
-                            {
-                                userid: loggedInUser.userid,
-                                formData,
-                            },
-                            (filename) => {
-                                handleClose();
-                            },
-                        );
+                            handleClose();
+                        };
+
+                        reader.readAsDataURL(file);
                     }
                 });
         }
@@ -98,7 +90,7 @@ export const ImageUploadModal: FC<Props> = () => {
         <Modal
             isOpen={isShowImageUploadModal}
             toggle={handleClose}
-            size={image ? 'xl' : 'lg'}
+            size={preview ? 'xl' : 'lg'}
         >
             <ModalHeader toggle={handleClose}>프로필 사진 설정</ModalHeader>
             <ModalBody>
@@ -113,7 +105,7 @@ export const ImageUploadModal: FC<Props> = () => {
                             zoomTo={0.5}
                             aspectRatio={200 / 220}
                             preview=".img-preview"
-                            src={image}
+                            src={preview}
                             viewMode={1}
                             // cropBoxResizable={false}
                             background={true}
@@ -123,7 +115,7 @@ export const ImageUploadModal: FC<Props> = () => {
                             guides={true}
                         />
                     </div>
-                    {image && (
+                    {preview && (
                         <div className="col-6">
                             <div className="wr-ml">
                                 <h3>Preview</h3>

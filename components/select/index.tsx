@@ -9,17 +9,17 @@ export interface MySelectProps {
      * 옵션 목록
      *
      */
-    options: readonly CoreSelectOption[];
+    options?: readonly CoreSelectOption[];
     /**
      * 외부 상태값
      *
      */
-    value: CoreSelectOption | null;
+    value?: CoreSelectOption | null;
     /**
      * 외부 상태를 변경하는 핸들러
      *
      */
-    onChange: (selectedOption: CoreSelectOption | null) => void;
+    onChange?: (selectedOption: CoreSelectOption | null) => void;
     /**
      * 가이드 코멘트
      *
@@ -55,8 +55,8 @@ export interface MySelectProps {
 
 export const MySelect: FC<MySelectProps> = ({
     inputId,
-    options,
-    value,
+    options = [],
+    value = null,
     onChange,
     placeholder,
     width,
@@ -66,7 +66,7 @@ export const MySelect: FC<MySelectProps> = ({
     isDisabled = false,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
-        onChange(option);
+        onChange?.(option);
     };
 
     return (
