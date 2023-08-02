@@ -1,831 +1,603 @@
 import type { CoreMenuOption } from '@interfaces/core';
 
 export const GNBS: CoreMenuOption[] = [
-    { id: 'gnb1', level: 1, label: '고객', to: '/customer' },
-    { id: 'gnb2', level: 1, label: '영업', to: '/sales' },
-    { id: 'gnb3', level: 1, label: '계약', to: '/contract/long/list' },
-    { id: 'gnb4', level: 1, label: '소득', to: '/income' },
-    { id: 'gnb5', level: 1, label: '인사', to: '/hr' },
+    { id: 'gnb1', label: '고객', to: '/customer' },
+    { id: 'gnb2', label: '영업', to: '/sales' },
+    { id: 'gnb3', label: '계약', to: '/contract/long/list' },
+    { id: 'gnb4', label: '소득', to: '/income' },
+    { id: 'gnb5', label: '인사', to: '/hr' },
     // { id: 'gnb5', level: 1, label: 'Admin', to: '#' },
 ];
 
 export const SUBMENUS: CoreMenuOption[] = [
-    { id: 'submenu1', level: 1, label: '통합검색', to: '#' },
-    { id: 'submenu2', level: 1, label: '게시판', to: '#' },
-    { id: 'submenu3', level: 1, label: '일정관리', to: '#' },
-    { id: 'submenu3', level: 1, label: 'SMS/Fax', to: '#' },
-    { id: 'submenu3', level: 1, label: 'Mypage', to: '#' },
+    { id: 'submenu1', label: '통합검색', to: '#' },
+    { id: 'submenu2', label: '게시판', to: '#' },
+    { id: 'submenu3', label: '일정관리', to: '#' },
+    { id: 'submenu3', label: 'SMS/Fax', to: '#' },
+    { id: 'submenu3', label: 'Mypage', to: '#' },
 ];
 
 export const ASIDE_MENU: any = {
-    customer: [
-        {
-            id: 'aside_menu_customer1',
-            level: 1,
+    customer: {
+        join: {
+            id: 'customer-join',
             label: '가입고객',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_customer1-1',
-                    level: 2,
-                    label: '가입고객',
-                    to: '',
-                    items: [],
-                },
-            ],
+            join: {
+                id: 'customer-join_join',
+                label: '가입고객',
+                to: '/customer/join/join',
+            },
         },
-        {
-            id: 'aside_menu_customer2',
-            level: 1,
+        nojoin: {
+            id: 'customer-nojoin',
             label: '미가입고객',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_customer2-1',
-                    level: 2,
-                    label: '미가입고객',
-                    to: '',
-                    items: [],
-                },
-            ],
+            nojoin: {
+                id: 'customer-nojoin_nojoin',
+                label: '미가입고객',
+                to: '/customer/nojoin/nojoin',
+            },
         },
-        {
-            id: 'aside_menu_customer3',
-            level: 1,
+        incoming: {
+            id: 'customer-incoming',
             label: '유입고객',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_customer3-1',
-                    level: 2,
-                    label: '유입고객',
-                    to: '',
-                    items: [],
-                },
-            ],
+            incoming: {
+                id: 'customer-incoming_incoming',
+                label: '유입고객',
+                to: '/customer/incoming/incoming',
+            },
         },
-        {
-            id: 'aside_menu_customer4',
-            level: 1,
+        history: {
+            id: 'customer-history',
             label: '고객접촉이력',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_customer4-1',
-                    level: 2,
-                    label: '고객접촉명세',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_customer4-2',
-                    level: 2,
-                    label: '고객대면관리',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_customer4-3',
-                    level: 2,
-                    label: '녹취내역',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_customer4-4',
-                    level: 2,
-                    label: '메시징/발송',
-                    to: '',
-                    items: [],
-                },
-            ],
+            spec: {
+                id: 'customer-history_spec',
+                label: '고객접촉명세',
+                to: '/customer/history/spec',
+            },
+            ftfm: {
+                id: 'customer-history_ftfm',
+                label: '고객대면관리',
+                to: '/customer/history/ftfm',
+            },
+            transcript: {
+                id: 'customer-history_transcript',
+                label: '녹취내역',
+                to: '/customer/history/transcript',
+            },
+            send: {
+                id: 'customer-history_send',
+                label: '메시징/발송',
+                to: '/customer/history/send',
+            },
         },
-        {
-            id: 'aside_menu_customer5',
-            level: 1,
+        status: {
+            id: 'customer-status',
             label: '고객현황',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_customer5-1',
-                    level: 2,
-                    label: '지역별 고객현황',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_customer5-2',
-                    level: 2,
-                    label: '고객별 계약현황',
-                    to: '',
-                    items: [],
-                },
-            ],
+            region: {
+                id: 'customer-status_region',
+                label: '지역별 고객현황',
+                to: '/customer/status/region',
+            },
+            contract: {
+                id: 'customer-status_contract',
+                label: '고객별 계약현황',
+                to: '/customer/status/contract',
+            },
         },
-    ],
-    sales: [
-        {
-            id: 'aside_menu_sales1',
-            level: 1,
+    },
+    sales: {
+        spec: {
+            id: 'sales-spec',
             label: '영업명세총괄',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_sales1-1',
-                    level: 2,
-                    label: '영업명세총괄',
-                    to: '',
-                    items: [],
-                },
-            ],
+            spec: {
+                id: 'sales-spec_spec',
+                label: '영업명세총괄',
+                to: '/sales/spec/spec',
+            },
         },
-        {
-            id: 'aside_menu_sales2',
-            level: 1,
+        trend: {
+            id: 'sales-trend',
             label: '영업추이',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_sales2-1',
-                    level: 2,
-                    label: '종합매출추이',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_sales2-2',
-                    level: 2,
-                    label: '장기',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_sales2-3',
-                    level: 2,
-                    label: '자동차',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_sales2-4',
-                    level: 2,
-                    label: '일반',
-                    to: '',
-                    items: [],
-                },
-            ],
+            total: {
+                id: 'sales-trend_total',
+                label: '종합매출추이',
+                to: '/sales/trend/total',
+            },
+            long: {
+                id: 'sales-trend_long',
+                label: '장기',
+                to: '/sales/trend/long',
+            },
+            car: {
+                id: 'sales-trend_car',
+                label: '자동차',
+                to: '/sales/trend/car',
+            },
+            normal: {
+                id: 'sales-trend_normal',
+                label: '일반',
+                to: '/sales/trend/normal',
+            },
         },
-        {
-            id: 'aside_menu_sales3',
-            level: 1,
+        crate: {
+            id: 'sales-crate',
             label: '수금율',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_sales3-1',
-                    level: 2,
-                    label: '수금율',
-                    to: '',
-                    items: [],
-                },
-            ],
+            crate: {
+                id: 'sales-crate_crate',
+                label: '수금율',
+                to: '/sales/crate/crate',
+            },
         },
-        {
-            id: 'aside_menu_sales4',
-            level: 1,
+        department: {
+            id: 'sales-department',
             label: '영업조직',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_sales4-1',
-                    level: 2,
-                    label: '가동현황',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_sales4-2',
-                    level: 2,
-                    label: '정착율 현황',
-                    to: '',
-                    items: [],
-                },
-            ],
+            ostatus: {
+                id: 'sales-department_ostatus',
+                label: '가동현황',
+                to: '/sales/department/ostatus',
+            },
+            sstatus: {
+                id: 'sales-department_sstatus',
+                label: '정착율 현황',
+                to: '/sales/department/sstatus',
+            },
         },
-        {
-            id: 'aside_menu_sales5',
-            level: 1,
+        risk: {
+            id: 'sales-risk',
             label: '리스크관리',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_sales5-1',
-                    level: 2,
-                    label: '계약모집지표',
-                    to: '',
-                    items: [
-                        {
-                            id: 'aside_menu_sales5-1-1',
-                            level: 3,
-                            label: '종합모집지표',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-1-2',
-                            level: 3,
-                            label: '불완전판매명세',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-1-3',
-                            level: 3,
-                            label: '모집민원명세',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-1-4',
-                            level: 3,
-                            label: '월초월말계약집중 명세',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-1-5',
-                            level: 3,
-                            label: '청약철회율',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-1-6',
-                            level: 3,
-                            label: '고액계약명세',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+            cri: {
+                id: 'sales-risk-cri',
+                label: '계약모집지표',
+                to: '',
+                total: {
+                    id: 'sales-risk-cri_total',
+                    label: '종합모집지표',
+                    to: '/sales/risk/cri/total',
                 },
-                {
-                    id: 'aside_menu_sales5-2',
-                    level: 2,
-                    label: '계약관리지표',
-                    to: '',
-                    items: [
-                        {
-                            id: 'aside_menu_sales5-2-1',
-                            level: 3,
-                            label: '계약유지율지표',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-2-2',
-                            level: 3,
-                            label: '모집-수금설계사 상이율',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-2-3',
-                            level: 3,
-                            label: '모집-수금설계사 상이내역',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+                is: {
+                    id: 'sales-risk-cri_is',
+                    label: '불완전판매명세',
+                    to: '/sales/risk/cri/is',
                 },
-                {
-                    id: 'aside_menu_sales5-3',
-                    level: 2,
-                    label: '대리점 운영지표',
-                    to: '',
-                    items: [
-                        {
-                            id: 'aside_menu_sales5-3-1',
-                            level: 3,
-                            label: '수수료 환수율',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+                rc: {
+                    id: 'sales-risk-cri_rc',
+                    label: '모집민원명세',
+                    to: '/sales/risk/cri/rc',
                 },
-                {
-                    id: 'aside_menu_sales5-4',
-                    level: 2,
-                    label: '계약자관리지표',
-                    to: '',
-                    items: [
-                        {
-                            id: 'aside_menu_sales5-4-1',
-                            level: 3,
-                            label: '누계5건이상 계약자',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_sales5-4-2',
-                            level: 3,
-                            label: '누계월납 100만원 이상 계약자',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+                emem: {
+                    id: 'sales-risk-cri_emem',
+                    label: '월초월말계약집중 명세',
+                    to: '/sales/risk/cri/emem',
                 },
-                {
-                    id: 'aside_menu_sales5-5',
-                    level: 2,
-                    label: 'FRC관리지표',
-                    to: '',
-                    items: [
-                        {
-                            id: 'aside_menu_sales5-5-1',
-                            level: 3,
-                            label: '자기계약건수 3건 이상 FC',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+                swr: {
+                    id: 'sales-risk-cri_swr',
+                    label: '청약철회율',
+                    to: '/sales/risk/cri/swr',
                 },
-            ],
+                lc: {
+                    id: 'sales-risk-cri_lc',
+                    label: '고액계약명세',
+                    to: '/sales/risk/cri/lc',
+                },
+            },
+            cmi: {
+                id: 'sales-risk-cmi',
+                label: '계약관리지표',
+                to: '',
+                crr: {
+                    id: 'sales-risk-cmi_crr',
+                    label: '계약유지율지표',
+                    to: '/sales/risk/cmi/crr',
+                },
+                rcpr: {
+                    id: 'sales-risk-cmi_rcpr',
+                    label: '모집-수금설계사 상이율',
+                    to: '/sales/risk/cmi/rcpr',
+                },
+                rcpd: {
+                    id: 'sales-risk-cmi_rcpd',
+                    label: '모집-수금설계사 상이내역',
+                    to: '/sales/risk/cmi/rcpd',
+                },
+            },
+            doi: {
+                id: 'sales-risk-doi',
+                label: '대리점 운영지표',
+                to: '',
+                frr: {
+                    id: 'sales-risk-doi_frr',
+                    label: '수수료 환수율',
+                    to: '/sales/risk/doi/frr',
+                },
+            },
+            crmi: {
+                id: 'sales-risk-crmi',
+                label: '계약자관리지표',
+                to: '',
+                tom: {
+                    id: 'sales-risk-crmi_tom',
+                    label: '누계5건이상 계약자',
+                    to: '/sales/risk/crmi/tom',
+                },
+                tmp: {
+                    id: 'sales-risk-crmi_tmp',
+                    label: '누계월납 100만원 이상 계약자',
+                    to: '/sales/risk/crmi/tmp',
+                },
+            },
+            frc: {
+                id: 'sales-risk-frc',
+                label: 'FRC관리지표',
+                to: '',
+                sc: {
+                    id: 'sales-risk-frc_sc',
+                    label: '자기계약건수 3건 이상 FC',
+                    to: '/sales/risk/frc/sc',
+                },
+            },
         },
-    ],
-    contract: [
-        {
+    },
+    contract: {
+        long: {
             id: 'contract-long',
-            level: 1,
             label: '장기',
             to: '',
-            items: [
-                {
-                    id: 'contract-long_list',
-                    level: 2,
-                    label: '장기계약목록',
-                    to: '/contract/long/list',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_contract1-2',
-                    level: 2,
-                    label: '상태변경내역',
-                    to: '',
-                    items: [],
-                },
-            ],
+            list: {
+                id: 'contract-long_list',
+                label: '장기계약목록',
+                to: '/contract/long/list',
+            },
+            sch: {
+                id: 'contract-long_sch',
+                label: '상태변경내역',
+                to: '/contract/long/sch',
+            },
         },
-        {
+        car: {
             id: 'contract-car',
-            level: 1,
             label: '자동차',
             to: '',
-            items: [
-                {
-                    id: 'contract-car-comparison',
-                    level: 2,
-                    label: '비교견적',
-                    to: '',
-                    items: [
-                        {
-                            id: 'contract-car-comparison_car',
-                            level: 3,
-                            label: '비교견적(자동차)',
-                            to: '/contract/car/comparison-estimate',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_contract2-1-2',
-                            level: 3,
-                            label: '비교견적(이륜차)',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+            comparison: {
+                id: 'contract-car-comparison',
+                label: '비교견적',
+                to: '',
+                car: {
+                    id: 'contract-car-comparison_car',
+                    label: '비교견적(자동차)',
+                    to: '/contract/car/comparison/car',
                 },
-                {
-                    id: 'aside_menu_customer2-2',
-                    level: 2,
-                    label: '보유계약',
-                    to: '',
-                    items: [],
+                truck: {
+                    id: 'contract-car-comparison_truck',
+                    label: '비교견적(이륜차)',
+                    to: '/contract/car/comparison/truck',
                 },
-                {
-                    id: 'aside_menu_customer2-3',
-                    level: 2,
-                    label: '만기계약',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_customer2-4',
-                    level: 2,
-                    label: '분납관리',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_customer2-5',
-                    level: 2,
-                    label: '상태변경내역',
-                    to: '',
-                    items: [],
-                },
-            ],
+            },
+            hc: {
+                id: 'contract-car_hc',
+                label: '보유계약',
+                to: '/contract/car/hc',
+            },
+            mc: {
+                id: 'contract-car_mc',
+                label: '만기계약',
+                to: '/contract/car/mc',
+            },
+            im: {
+                id: 'contract-car_im',
+                label: '분납관리',
+                to: '/contract/car/im',
+            },
+            sch: {
+                id: 'contract-car_sch',
+                label: '상태변경내역',
+                to: '/contract/car/sch',
+            },
         },
-        {
-            id: 'aside_menu_contract3',
-            level: 1,
+        normal: {
+            id: 'contract-normal',
             label: '일반',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_contract3-1',
-                    level: 2,
-                    label: '보유계약',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_contract3-2',
-                    level: 2,
-                    label: '만기계약',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_contract3-3',
-                    level: 2,
-                    label: '상태변경내역',
-                    to: '',
-                    items: [],
-                },
-            ],
+            hc: {
+                id: 'contract-normal_hc',
+                label: '보유계약',
+                to: '/contract/normal/hc',
+            },
+            mc: {
+                id: 'contract-normal_mc',
+                label: '만기계약',
+                to: '/contract/normal/mc',
+            },
+            sch: {
+                id: 'contract-normal_sch',
+                label: '상태변경내역',
+                to: '/contract/normal/sch',
+            },
         },
-        {
-            id: 'aside_menu_contract4',
-            level: 1,
+        monitoring: {
+            id: 'contract-monitoring',
             label: '판매모니터링',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_contract4-1',
-                    level: 2,
-                    label: '판매모니터링',
-                    to: '',
-                    items: [],
-                },
-            ],
+            monitoring: {
+                id: 'contract-monitoring_monitoring',
+                label: '판매모니터링',
+                to: '/contract/monitoring/monitoring',
+            },
         },
-        {
-            id: 'aside_menu_contract5',
-            level: 1,
+        mcp: {
+            id: 'contract-mcp',
             label: '월마감실적',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_contract5-1',
-                    level: 2,
-                    label: '장기',
-                    to: '',
-                    items: [
-                        {
-                            id: 'aside_menu_contract5-1-1',
-                            level: 3,
-                            label: '장기입출금명세',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_contract5-1-2',
-                            level: 3,
-                            label: '장기배서명세',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_contract5-1-3',
-                            level: 3,
-                            label: '장기보험상품',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_contract5-1-4',
-                            level: 3,
-                            label: '수금관리',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+            long: {
+                id: 'contract-mcp-long',
+                label: '장기',
+                to: '',
+                dw: {
+                    id: 'contract-mcp-long_dw',
+                    label: '장기입출금명세',
+                    to: '/contract/mcp/long/dw',
                 },
-                {
-                    id: 'aside_menu_contract5-2',
-                    level: 3,
-                    label: '자동차',
-                    to: '',
-                    items: [],
+                te: {
+                    id: 'contract-mcp-long_te',
+                    label: '장기배서명세',
+                    to: '/contract/mcp/long/te',
                 },
-                {
-                    id: 'aside_menu_contract5-3',
-                    level: 3,
-                    label: '일반',
-                    to: '',
-                    items: [],
+                ti: {
+                    id: 'contract-mcp-long_ti',
+                    label: '장기보험상품',
+                    to: '/contract/mcp/long/ti',
                 },
-            ],
+                cm: {
+                    id: 'contract-mcp-long_cm',
+                    label: '수금관리',
+                    to: '/contract/mcp/long/cm',
+                },
+            },
+            car: {
+                id: 'contract-mcp_car',
+                label: '자동차',
+                to: '/contract/mcp/car',
+            },
+            normal: {
+                id: 'contract-mcp_normal',
+                label: '일반',
+                to: '/contract/mcp/normal',
+            },
         },
-        {
-            id: 'aside_menu_contract6',
-            level: 1,
+        upload: {
+            id: 'contract-upload',
             label: '자동업로드관리',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_contract6-1',
-                    level: 2,
-                    label: '자동업로드관리',
-                    to: '',
-                    items: [],
-                },
-            ],
+            upload: {
+                id: 'contract-upload_upload',
+                label: '자동업로드관리',
+                to: '/contract/upload/upload',
+            },
         },
-        {
-            id: 'aside_menu_contract7',
-            level: 1,
+        escalation: {
+            id: 'contract-escalation',
             label: '이관',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_contract7-1',
-                    level: 2,
-                    label: '이관',
-                    to: '',
-                    items: [],
-                },
-            ],
+            upload: {
+                id: 'contract-escalation_escalation',
+                label: '이관',
+                to: '/contract/escalation/escalation',
+            },
         },
-    ],
-    income: [
-        {
-            id: 'aside_menu_income1',
-            level: 1,
+    },
+    income: {
+        ps: {
+            id: 'income-ps',
             label: '지급제도',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_income1-1',
-                    level: 2,
-                    label: '보유계약',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_income1-2',
-                    level: 2,
-                    label: '상태변경내역',
-                    to: '',
-                    items: [],
-                },
-            ],
+            hc: {
+                id: 'income-ps_hc',
+                label: '지급제도',
+                to: '/income/ps/hc',
+            },
+            sch: {
+                id: 'income-ps_sch',
+                label: '상태변경내역',
+                to: '/income/ps/sch',
+            },
         },
-        {
-            id: 'aside_menu_income2',
-            level: 1,
+        sc: {
+            id: 'income-sc',
             label: '정산건별명세',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_income2-1',
-                    level: 2,
-                    label: '장기',
-                    to: '',
-                    items: [
-                        {
-                            id: 'aside_menu_income2-1-1',
-                            level: 3,
-                            label: '장기성적',
-                            to: '',
-                            items: [],
-                        },
-                        {
-                            id: 'aside_menu_income2-1-2',
-                            level: 3,
-                            label: '장기계속분',
-                            to: '',
-                            items: [],
-                        },
-                    ],
+            long: {
+                id: 'income-sc-long',
+                label: '장기',
+                to: '',
+                lp: {
+                    id: 'income-sc-long_lp',
+                    label: '장기성적',
+                    to: '/income/sc/long/lp',
                 },
-                {
-                    id: 'aside_menu_income2-2',
-                    level: 2,
-                    label: '자동차',
-                    to: '',
-                    items: [],
+                lt: {
+                    id: 'income-sc-long_lt',
+                    label: '장기계속분',
+                    to: '/income/sc/long/lt',
                 },
-                {
-                    id: 'aside_menu_income2-3',
-                    level: 2,
-                    label: '일반',
-                    to: '',
-                    items: [],
-                },
-            ],
+            },
+            car: {
+                id: 'income-sc_car',
+                label: '자동차',
+                to: '/income/sc/car',
+            },
+            normal: {
+                id: 'income-sc_normal',
+                label: '일반',
+                to: '/income/sc/normal',
+            },
         },
-        {
-            id: 'aside_menu_income3',
-            level: 1,
+        sms: {
+            id: 'income-sms',
             label: 'SMS/FAX',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_income3-1',
-                    level: 2,
-                    label: '발송내역',
-                    to: '',
-                    items: [],
-                },
-            ],
+            sh: {
+                id: 'income-sms_sh',
+                label: '발송내역',
+                to: '/income/sms/sh',
+            },
         },
-        {
-            id: 'aside_menu_income4',
-            level: 1,
+        rm: {
+            id: 'income-rm',
             label: '임대관리',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_income4-1',
-                    level: 2,
-                    label: '전산장비',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_income4-2',
-                    level: 2,
-                    label: '기타임대',
-                    to: '',
-                    items: [],
-                },
-            ],
+            se: {
+                id: 'income-rm_se',
+                label: '전산장비',
+                to: '/income/rm/se',
+            },
+            etc: {
+                id: 'income-rm_etc',
+                label: '기타임대',
+                to: '/income/rm/etc',
+            },
         },
-        {
-            id: 'aside_menu_income5',
-            level: 1,
+        as: {
+            id: 'income-as',
             label: '추가/공제',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_income5-1',
-                    level: 2,
-                    label: '추가/공제',
-                    to: '',
-                    items: [],
-                },
-            ],
+            as: {
+                id: 'income-as_as',
+                label: '추가/공제',
+                to: '/income/as/as',
+            },
         },
-        {
-            id: 'aside_menu_income6',
-            level: 1,
+        ip: {
+            id: 'income-ip',
             label: '소득지급현황(명세)',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_income6-1',
-                    level: 2,
-                    label: '소득지급현황(명세)',
-                    to: '',
-                    items: [],
-                },
-            ],
+            ip: {
+                id: 'income-ip_ip',
+                label: '소득지급현황(명세)',
+                to: '/income/ip/ip',
+            },
         },
-        {
-            id: 'aside_menu_income7',
-            level: 1,
+        cm: {
+            id: 'income-cm',
             label: '이월관리',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_income7-1',
-                    level: 2,
-                    label: '이월관리',
-                    to: '',
-                    items: [],
-                },
-            ],
+            cm: {
+                id: 'income-cm_cm',
+                label: '이월관리',
+                to: '/income/cm/cm',
+            },
         },
-    ],
-    hr: [
-        {
+    },
+    hr: {
+        department: {
             id: 'hr-department',
-            level: 1,
             label: '조직관리',
             to: '',
-            items: [
-                {
+            business: {
+                id: 'hr-department-business',
+                label: '사업부',
+                to: '',
+                create: {
                     id: 'hr-department-business_create',
-                    level: 2,
                     label: '사업부등록',
-                    to: '/hr/business/create',
-                    items: [],
+                    to: '/hr/department/business/create',
                 },
-                {
+            },
+            headquarter: {
+                id: 'hr-department-headquarter',
+                label: '본부',
+                to: '',
+                create: {
                     id: 'hr-department-headquarter_create',
-                    level: 2,
                     label: '본부등록',
-                    to: '/hr/headquarter/create',
-                    items: [],
+                    to: '/hr/department/headquarter/create',
                 },
-                {
+            },
+            branch: {
+                id: 'hr-department-branch',
+                label: '지점',
+                to: '',
+                create: {
                     id: 'hr-department-branch_create',
-                    level: 2,
                     label: '지점등록',
-                    to: '/hr/branch/create',
-                    items: [],
+                    to: '/hr/department/branch/create',
                 },
-                {
+            },
+            team: {
+                id: 'hr-department-team',
+                label: '팀',
+                to: '',
+                create: {
                     id: 'hr-department-team_create',
-                    level: 2,
                     label: '팀등록',
-                    to: '/hr/team/create',
-                    items: [],
+                    to: '/hr/department/team/create',
                 },
-            ],
+            },
         },
-        {
+        user: {
             id: 'hr-user',
-            level: 1,
             label: '영업가족',
             to: '',
-            items: [
-                {
-                    id: 'hr-user_create',
-                    level: 2,
-                    label: '영업가족등록',
-                    to: '/hr/user/create',
-                    items: [],
-                },
-            ],
+            create: {
+                id: 'hr-user_create',
+                label: '영업가족등록',
+                to: '/hr/user/create',
+            },
         },
-        {
-            id: 'aside_menu_hr3',
-            level: 1,
+        manage: {
+            id: 'hr-manage',
             label: '사용인관리',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_hr3-1',
-                    level: 2,
-                    label: '협회등록현황',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_hr3-2',
-                    level: 2,
-                    label: '보험사별코드',
-                    to: '',
-                    items: [],
-                },
-                {
-                    id: 'aside_menu_hr3-3',
-                    level: 2,
-                    label: '산재고용보험',
-                    to: '',
-                    items: [],
-                },
-            ],
+            ars: {
+                id: 'hr-manage_ars',
+                label: '협회등록현황',
+                to: '/hr/manage/ars',
+            },
+            code: {
+                id: 'hr-manage_code',
+                label: '보험사별코드',
+                to: '/hr/manage/code',
+            },
+            iaei: {
+                id: 'hr-manage_iaei',
+                label: '산재고용보험',
+                to: '/hr/manage/iaei',
+            },
         },
-        {
-            id: 'aside_menu_hr4',
-            level: 1,
+        oa: {
+            id: 'hr-oa',
             label: '조직위촉',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_hr4-1',
-                    level: 2,
-                    label: '시험신청 및 관리',
-                    to: '',
-                    items: [],
-                },
-            ],
+            tam: {
+                id: 'hr-oa_tam',
+                label: '시험신청 및 관리',
+                to: '/hr/oa/tam',
+            },
         },
-        {
-            id: 'aside_menu_hr5',
-            level: 1,
+        ioc: {
+            id: 'hr-ioc',
             label: '제증명서발급',
             to: '',
-            items: [
-                {
-                    id: 'aside_menu_hr5-1',
-                    level: 2,
-                    label: '제증명서발급',
-                    to: '',
-                    items: [],
-                },
-            ],
+            ioc: {
+                id: 'hr-ioc_ioc',
+                label: '제증명서발급',
+                to: '/hr/ioc/ioc',
+            },
         },
-    ],
+    },
+    board: {
+        list: {
+            id: 'contract-long_list',
+            label: '게시판목록',
+            to: '/board/list',
+        },
+    },
 };

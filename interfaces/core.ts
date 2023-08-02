@@ -21,8 +21,8 @@ export interface CoreMenuOption {
     id: string;
     to: string;
     label: string;
-    level: number;
-    items?: CoreMenuOption[];
+    // level: number;
+    // items?: CoreMenuOption[];
 }
 
 export interface CoreTabOption {

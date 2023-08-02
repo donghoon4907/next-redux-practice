@@ -37,6 +37,7 @@ $wr-hover-color: #adb5bd;
 $wr-table-hover-color: #e2eaf2;
 $wr-disable-bg-color: #c1c7cc;
 $wr-disable-font-color: #6c757d;
+$wr-disable-input-color: #e9ecef;
 
 // custom bootstrap variables
 // $accordion-icon-active-color: white;
@@ -53,4 +54,5 @@ $wr-disable-font-color: #6c757d;
     headerHeight: $wr-header-size;
     gutterSize: $wr-gutter-size;
     selectZindex: $wr-select-index;
+    disabledInputColor: $wr-disable-input-color;
 }

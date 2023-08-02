@@ -14,9 +14,13 @@ interface Props {
      * 메뉴 생성에 필요한 데이터, 특정 형식을 따릅니다.
      */
     menu: CoreMenuOption[];
+    /**
+     * menu depth
+     */
+    depth?: number;
 }
 
-export const DrawerMenu: FC<Props> = ({ menu }) => {
+export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
     const tab = useLinkTab();
 
     // const { onToggle } = useDrawer();
@@ -32,41 +36,44 @@ export const DrawerMenu: FC<Props> = ({ menu }) => {
 
     return (
         <>
-            {menu.map((v) =>
-                v.items && v.items.length > 0 ? (
+            {Object.entries(menu).map(([k, v]) => {
+                const { id, label, to, ...rest } = v;
+
+                const children = Object.keys(rest);
+
+                return children.length > 0 ? (
                     <UncontrolledAccordion
                         stayOpen
-                        key={v.id}
-                        style={{ paddingLeft: (v.level - 1) * 15 }}
+                        key={id}
+                        style={{ paddingLeft: (depth - 1) * 15 }}
                     >
                         <AccordionItem>
-                            <AccordionHeader
-                                targetId={v.id}
-                                role="tab"
-                                id={v.id}
-                            >
-                                {v.label}
+                            <AccordionHeader targetId={id} role="tab" id={id}>
+                                {label}
                             </AccordionHeader>
                             <AccordionBody
-                                accordionId={v.id}
+                                accordionId={id}
                                 role="tabpanel"
-                                aria-labelledby={v.id}
+                                aria-labelledby={id}
                             >
-                                <DrawerMenu menu={v.items} />
+                                <DrawerMenu
+                                    menu={rest as CoreMenuOption[]}
+                                    depth={depth + 1}
+                                />
                             </AccordionBody>
                         </AccordionItem>
                     </UncontrolledAccordion>
                 ) : (
                     <a
-                        key={v.id}
+                        key={id}
                         className="wr-drawer__subtitle"
-                        href={v.to}
+                        href={to}
                         onClick={(evt) => handleClick(evt, v)}
                     >
-                        {v.label}
+                        {label}
                     </a>
-                ),
-            )}
+                );
+            })}
         </>
     );
 };

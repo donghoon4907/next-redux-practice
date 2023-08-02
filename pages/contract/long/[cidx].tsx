@@ -154,12 +154,12 @@ const Long: NextPage<LongState> = ({ long }) => {
         // 탭 추가
         const tab = new TabModule();
 
-        const tabKey = `tab:contract-long_${long.idx}`;
-        if (!tab.read(tabKey)) {
+        const to = `/contract/long/${long.idx}`;
+        if (!tab.read(to)) {
             tab.create({
-                id: tabKey,
+                id: to,
                 label: `장기계약상세 - ${long.cname}`,
-                to: `/contract/long/${long.idx}`,
+                to,
             });
         }
 

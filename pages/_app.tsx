@@ -3,6 +3,7 @@ import '@styles/main.scss';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import 'rsuite/dist/rsuite.css';
 import 'cropperjs/dist/cropper.css';
+
 // import '@uppy/core/dist/style.min.css';
 // import '@uppy/dashboard/dist/style.min.css';
 
@@ -22,32 +23,70 @@ import { ASIDE_MENU } from '@constants/gnb';
 import { initialzeBackendAxios } from '@utils/axios/backend';
 import hrsService from '@services/hrsService';
 import { updatePermission } from '@actions/hr/set-permission.action';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const { events, asPath } = useRouter();
+    const { events, asPath, route } = useRouter();
 
     const dispatch = useDispatch();
+
     // 라우팅 시 탭 및 GNB 갱신
     useEffect(() => {
-        // GNB 처리
-        const [_, gnb] = asPath.split('/');
+        // 404, 500 페이지 제한
+        if (['/404', '/500'].includes(route)) {
+            const tab = new TabModule();
 
-        if (!['login', 'board'].some((d) => d === gnb)) {
-            dispatch(updateGnb(ASIDE_MENU[gnb]));
+            dispatch(initTab(tab.getAll()));
+        } else {
+            const [_, gnb] = asPath.split('/');
+            // 로그인 페이지 추가 제한
+            if (gnb !== 'login') {
+                initializeTab(asPath);
+                // 게시판 페이지 추가 제한
+                if (gnb !== 'board') {
+                    dispatch(updateGnb(ASIDE_MENU[gnb]));
+                }
+            }
         }
 
-        function onRouteChange(url: string) {
-            // 탭 처리
-            // const tab = new TabModule();
-            // dispatch(initTab(tab.getAll()));
+        // 탭 활성화
+        function initializeTab(url: string) {
+            const [_, gnb, ...lnbs] = url.split('/');
+
+            let target = ASIDE_MENU[gnb];
+            for (let i = 0; i < lnbs.length; i++) {
+                target = target[lnbs[i]];
+            }
+
+            // 상세페이지인 경우
+            if (!target) {
+                return;
+            }
+
+            const tab = new TabModule();
+
+            if (!tab.read(url)) {
+                tab.create({
+                    id: url,
+                    label: target.label,
+                    to: url,
+                });
+            }
+
+            dispatch(initTab(tab.getAll()));
         }
 
-        events.on('routeChangeComplete', onRouteChange);
+        // function onRouteChange(url: string) {
+        //     initializeTab(url);
+        // }
+
+        // events.on('routeChangeComplete', onRouteChange);
 
         return () => {
-            events.off('routeChangeComplete', onRouteChange);
+            // events.off('routeChangeComplete', onRouteChange);
         };
-    }, [events, asPath, dispatch]);
+    }, [dispatch, route, asPath]);
 
     return (
         <MyProvider>
@@ -69,20 +108,10 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                     req,
                     res,
                 });
-                // let token;
-                // if (process.env.NODE_ENV === 'development') {
-                //     token = 'test';
-                // } else {
-                //     token = getCookie(process.env.COOKIE_TOKEN_KEY || '', {
-                //         req,
-                //         res,
-                //     });
-                // }
-
                 // axios 초기화
                 initialzeBackendAxios(token);
                 // permission 제외 페이지
-                const excludePermissionPages = ['/', '/login', '/404'];
+                const excludePermissionPages = ['/', '/login'];
                 // permission
                 if (!excludePermissionPages.includes(router.route)) {
                     try {
@@ -94,7 +123,9 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                         if (user_info) {
                             dispatch(updatePermission(data));
                         }
-                    } catch {}
+                    } catch (err) {
+                        console.log(err);
+                    }
                 }
             }
 

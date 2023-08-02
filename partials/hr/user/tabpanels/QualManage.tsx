@@ -136,7 +136,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                             id="giaIndate"
                                             size="md"
                                             placeholder="등록일"
-                                            readOnly={!editable}
+                                            disabled={!editable}
                                             hooks={giaIndate}
                                         />
                                     </WithLabel>
@@ -184,7 +184,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                                 id="giaOutdate"
                                                 size="md"
                                                 placeholder="말소일"
-                                                readOnly={!editable}
+                                                disabled={!editable}
                                                 hooks={giaOutdate}
                                             />
                                         </WithLabel>
@@ -225,7 +225,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                                 id="liaIndate"
                                                 size="md"
                                                 placeholder="등록일"
-                                                readOnly={!editable}
+                                                disabled={!editable}
                                                 hooks={liaIndate}
                                             />
                                         </WithLabel>
@@ -273,7 +273,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                                     id="liaOutdate"
                                                     size="md"
                                                     placeholder="말소일"
-                                                    readOnly={!editable}
+                                                    disabled={!editable}
                                                     hooks={liaOutdate}
                                                 />
                                             </WithLabel>

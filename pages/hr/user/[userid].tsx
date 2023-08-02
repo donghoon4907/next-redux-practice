@@ -214,13 +214,12 @@ const User: NextPage<HrState> = ({ user }) => {
         // 탭 추가
         const tab = new TabModule();
 
-        console.log(user.userid);
-        const tabKey = `tab:hr-user_${user.userid}`;
-        if (!tab.read(tabKey)) {
+        const to = `/hr/user/${user.userid}`;
+        if (!tab.read(to)) {
             tab.create({
-                id: tabKey,
+                id: to,
                 label: `영업가족상세 - ${user.name}`,
-                to: `/hr/user/${user.userid}`,
+                to,
             });
         }
 

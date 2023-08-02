@@ -30,7 +30,8 @@ const Boards: NextPage = () => {
     const tab = useLinkTab();
 
     const handleClickRow = (row: any) => {
-        tab.fire(`board${row.idx}`, `게시글(${row.idx})`, `/board/${row.idx}`);
+        // tab.fire(`board${row.idx}`, `게시글(${row.idx})`, `/board/${row.idx}`);
+        alert('준비중입니다');
     };
 
     const handleCreatePost = () => {
@@ -92,7 +93,7 @@ const Boards: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="wr-pages-board-list__body wr-table--scrollable wr-mt">
+                    <div className="wr-pages-board-list__body wr-table--scrollable wr-table--hover wr-mt">
                         <MyTable
                             columns={columns}
                             data={boards.rows}

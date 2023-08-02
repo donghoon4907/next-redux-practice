@@ -88,6 +88,9 @@ export const MySelect: FC<MySelectProps> = ({
                     height,
                     borderColor: variables.dividerColor,
                     borderRadius: variables.filterBorderRadius,
+                    backgroundColor: isDisabled
+                        ? variables.disabledInputColor
+                        : 'white',
                     boxShadow: 'none',
                     '&:hover': {
                         borderColor: variables.dividerColor,

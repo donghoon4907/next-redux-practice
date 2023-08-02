@@ -3,17 +3,17 @@ import type { AppState } from '@reducers/index';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { LongState } from '@reducers/long';
 import Head from 'next/head';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import dayjs from 'dayjs';
+import { DateRangePicker } from 'rsuite';
 import startOfMonth from 'date-fns/startOfMonth';
 import endOfMonth from 'date-fns/endOfMonth';
 import addMonths from 'date-fns/addMonths';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MySelect } from '@components/select';
-import { DateRangePicker } from 'rsuite';
 import { MyPagination } from '@components/pagination';
 import { WithLabel } from '@components/WithLabel';
 import { SearchInput } from '@components/input/Search';
@@ -27,6 +27,9 @@ import { useSelect } from '@hooks/use-select';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import coreConstants from '@constants/core';
+import { MyInput } from '@components/input';
+import { useDateRangepicker } from '@hooks/use-datepicker';
+import { permissionMiddleware } from '@utils/middleware/permission';
 import {
     getLongsRequest,
     getLongsSuccess,
@@ -37,17 +40,6 @@ import {
     PAY_CYCLE,
     PRODUCT_TYPE,
 } from '@constants/selectOption';
-import { MyInput } from '@components/input';
-import { useDateRangepicker } from '@hooks/use-datepicker';
-import { permissionMiddleware } from '@utils/middleware/permission';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
-// import {
-//     PopoverBody,
-//     PopoverHeader,
-//     Popover,
-//     UncontrolledPopover,
-// } from 'reactstrap';
 
 const Longs: NextPage = () => {
     const dispatch = useDispatch();
@@ -117,22 +109,6 @@ const Longs: NextPage = () => {
             }),
         );
     };
-
-    useEffect(() => {
-        // 탭 추가
-        const tab = new TabModule();
-
-        const tabKey = 'tab:contract-long_list';
-        if (!tab.read(tabKey)) {
-            tab.create({
-                id: tabKey,
-                label: '장기계약목록',
-                to: '/contract/long/list',
-            });
-        }
-
-        dispatch(initTab(tab.getAll()));
-    }, [dispatch]);
 
     return (
         <>

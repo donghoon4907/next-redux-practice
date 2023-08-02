@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import type { ChangeEvent } from 'react';
 import Head from 'next/head';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { DatePicker } from 'rsuite';
 import addMonths from 'date-fns/addMonths';
@@ -21,8 +21,6 @@ import { MyFooter } from '@components/footer';
 import { MyLabel } from '@components/label';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
 
 function getGender(residentNumber: string) {
     var genderNumber = parseInt(residentNumber);
@@ -268,22 +266,6 @@ const ComparisonEstimate: NextPage = () => {
 
         setEndJoinDate(addMonths(new Date(), 12));
     };
-
-    useEffect(() => {
-        // 탭 추가
-        const tab = new TabModule();
-
-        const tabKey = 'tab:contract-car-comparison_car';
-        if (!tab.read(tabKey)) {
-            tab.create({
-                id: tabKey,
-                label: '비교견적(자동차)',
-                to: '/contract/car/comparison-estimate',
-            });
-        }
-
-        dispatch(initTab(tab.getAll()));
-    }, [dispatch]);
 
     return (
         <>

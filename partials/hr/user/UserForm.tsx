@@ -1054,7 +1054,7 @@ export const UserForm: FC<Props> = ({
                                                             id="birthday"
                                                             size="md"
                                                             placeholder="생년월일"
-                                                            readOnly={
+                                                            disabled={
                                                                 !isEditable
                                                             }
                                                             hooks={birthday}
@@ -1310,7 +1310,7 @@ export const UserForm: FC<Props> = ({
                                                     id="indate"
                                                     size="md"
                                                     placeholder="입사일"
-                                                    readOnly={!isEditable}
+                                                    disabled={!isEditable}
                                                     hooks={indate}
                                                 />
                                             </WithLabel>
@@ -1326,7 +1326,7 @@ export const UserForm: FC<Props> = ({
                                                         id="outdate"
                                                         size="md"
                                                         placeholder="퇴사일"
-                                                        readOnly={!isEditable}
+                                                        disabled={!isEditable}
                                                         hooks={outdate}
                                                     />
                                                 </WithLabel>

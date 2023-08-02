@@ -136,7 +136,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                             id="giaIndate"
                                             size="md"
                                             placeholder="등록일"
-                                            readOnly={!editable}
+                                            disabled={!editable}
                                             // hooks={giaIndate}
                                         />
                                     </WithLabel>
@@ -181,7 +181,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                                 id="giaOutdate"
                                                 size="md"
                                                 placeholder="생년월일"
-                                                readOnly={!editable}
+                                                disabled={!editable}
                                                 // hooks={giaOutdate}
                                             />
                                         </WithLabel>
@@ -222,7 +222,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                                 id="liaIndate"
                                                 size="md"
                                                 placeholder="등록일"
-                                                readOnly={!editable}
+                                                disabled={!editable}
                                                 // hooks={liaIndate}
                                             />
                                         </WithLabel>
@@ -267,7 +267,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                                     id="liaOutdate"
                                                     size="md"
                                                     placeholder="생년월일"
-                                                    readOnly={!editable}
+                                                    disabled={!editable}
                                                     // hooks={liaOutdate}
                                                 />
                                             </WithLabel>

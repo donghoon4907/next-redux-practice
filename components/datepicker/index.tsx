@@ -17,6 +17,7 @@ interface Props {
     hooks?: UseDatepickerOutput;
     placement?: TypeAttributes.Placement;
     readOnly?: boolean;
+    disabled?: boolean;
     width?: number;
 }
 
@@ -28,6 +29,7 @@ export const MyDatepicker: FC<Props> = ({
     hooks,
     placement = 'bottomStart',
     readOnly,
+    disabled,
     width,
 }) => {
     return (
@@ -35,11 +37,14 @@ export const MyDatepicker: FC<Props> = ({
             id={id}
             oneTap
             format={format}
-            style={{ width: width ? `width: ${width}px` : '100%' }}
+            style={{
+                width: width ? `width: ${width}px` : '100%',
+            }}
             size={size}
             placeholder={placeholder}
             placement={placement}
             readOnly={readOnly}
+            disabled={disabled}
             {...hooks}
         />
     );
