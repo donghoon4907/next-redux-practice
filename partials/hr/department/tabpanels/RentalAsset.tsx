@@ -64,7 +64,7 @@ export const RentalAssetTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
                 <div className="col">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>자산 설정 내역</strong>
                         <div>
                             <MyButton className="btn-danger">선택삭제</MyButton>

@@ -66,7 +66,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
             <div className="row">
                 <div className="col-3">
                     <WithLabel id="guarGoal" label="보증목표" type={labelType}>
-                        <div className="wr-pages-hr-detail__lock">
+                        <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
                         <MyInput
@@ -85,7 +85,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             label="보증누계(유효)"
                             type={labelType}
                         >
-                            <div className="wr-pages-hr-detail__lock">
+                            <div className="wr-pages-detail__lock">
                                 <p>준비 중입니다.</p>
                             </div>
                             <MyInput
@@ -101,7 +101,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 <div className="col-3">
                     <div className="wr-ml">
                         <WithLabel id="tmotl" label="과부족" type={labelType}>
-                            <div className="wr-pages-hr-detail__lock">
+                            <div className="wr-pages-detail__lock">
                                 <p>준비 중입니다.</p>
                             </div>
                             <MyInput
@@ -121,7 +121,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             label="유효보증율"
                             type={labelType}
                         >
-                            <div className="wr-pages-hr-detail__lock">
+                            <div className="wr-pages-detail__lock">
                                 <p>준비 중입니다.</p>
                             </div>
                             <MyInput
@@ -138,7 +138,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
             </div>
             <div className="row wr-mt">
                 <div className="col">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>보증설정 내역</strong>
                         {editable && (
                             <div>
@@ -294,17 +294,17 @@ export const GuaranteeTabpanel: FC<Props> = ({
             </div>
             <div className="row wr-mt">
                 <div className="col">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>적립금 관리 내역</strong>
                         <div>
-                            <span className="wr-pages-hr-detail__description">
+                            <span className="wr-pages-detail__description">
                                 목표액 : 5,000, 적립기준 : 소득전체 5%, 단위 :
                                 천원
                             </span>
                         </div>
                     </div>
                     <div className="wr-table--normal wr-mb position-relative">
-                        <div className="wr-pages-hr-detail__lock">
+                        <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
                         <table className="wr-table table">

@@ -22,6 +22,33 @@ export const LONG_DETAIL_TABS: CoreTabOption[] = [
     { id: 'tabEtcs', label: '기타항목', panelId: 'tabpanelEtcs' },
 ];
 /**
+ * 고객 상세 페이지 탭 목록
+ */
+export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [
+    { id: 'tabContactHis', label: '접촉이력', panelId: 'tabpanelContactHis' },
+    {
+        id: 'tabHoldingContract',
+        label: '보유계약',
+        panelId: 'tabpanelHoldingContract',
+    },
+    {
+        id: 'tabOtherContract',
+        label: '타사계약',
+        panelId: 'tabpanelOtherContract',
+    },
+    {
+        id: 'tabSecuredDebt',
+        label: '피담보물/차량',
+        panelId: 'tabpanelSecuredDebt',
+    },
+    { id: 'tabFamily', label: '가족/지인', panelId: 'tabpanelFamily' },
+    {
+        id: 'tabAnniversary',
+        label: '기념일관리',
+        panelId: 'tabpanelAnniversary',
+    },
+];
+/**
  * 게시판 등록 페이지 탭 목록
  */
 export const BOARD_SETTING_TABS: CoreTabOption[] = [

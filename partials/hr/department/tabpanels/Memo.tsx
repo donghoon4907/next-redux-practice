@@ -110,7 +110,7 @@ export const MemoTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             </div>
             <div className="row wr-mt">
                 <div className="col">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>상담내역</strong>
                         {editable && (
                             <div>

@@ -1,7 +1,7 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
 // 생일 타입
-export const BIRTH_TYPE: CoreSelectOption[] = [
+const BIRTH_TYPE: CoreSelectOption[] = [
     {
         label: '양력',
         value: 'Y',
@@ -15,7 +15,7 @@ export const BIRTH_TYPE: CoreSelectOption[] = [
 ];
 
 // 통신사
-export const MOBILE_COM: CoreSelectOption[] = [
+const MOBILE_COM: CoreSelectOption[] = [
     {
         label: 'SKT',
         value: 'SKT',
@@ -44,7 +44,7 @@ export const MOBILE_COM: CoreSelectOption[] = [
 ];
 
 // 이메일사
-export const EMAIL_COM: CoreSelectOption[] = [
+const EMAIL_COM: CoreSelectOption[] = [
     {
         label: 'naver.com',
         value: 'naver.com',
@@ -68,7 +68,7 @@ export const EMAIL_COM: CoreSelectOption[] = [
 ];
 
 // 영업 가족 목록
-export const USER_TYPE: CoreSelectOption[] = [
+const USER_TYPE: CoreSelectOption[] = [
     {
         label: 'FRC',
         value: 'FRC',
@@ -87,7 +87,7 @@ export const USER_TYPE: CoreSelectOption[] = [
 ];
 
 // 재직 현황 목록
-export const EMP_STATUS: CoreSelectOption[] = [
+const EMP_STATUS: CoreSelectOption[] = [
     {
         label: '상근',
         value: '상근',
@@ -111,7 +111,7 @@ export const EMP_STATUS: CoreSelectOption[] = [
 ];
 
 // 비교견적 설정 - 회사명
-export const ESTIMATE_COMP: CoreSelectOption[] = [
+const ESTIMATE_COMP: CoreSelectOption[] = [
     {
         label: '회사명',
         value: '회사명',
@@ -130,7 +130,7 @@ export const ESTIMATE_COMP: CoreSelectOption[] = [
 ];
 
 // 비교견적 설정 - 영업명
-export const ESTIMATE_SALES: CoreSelectOption[] = [
+const ESTIMATE_SALES: CoreSelectOption[] = [
     {
         label: '본인이름',
         value: '본인이름',
@@ -154,7 +154,7 @@ export const ESTIMATE_SALES: CoreSelectOption[] = [
 ];
 
 // 비교견적 설정 - 대표전화
-export const ESTIMATE_PHONE: CoreSelectOption[] = [
+const ESTIMATE_PHONE: CoreSelectOption[] = [
     {
         label: '회사전화',
         value: '회사전화',
@@ -183,7 +183,7 @@ export const ESTIMATE_PHONE: CoreSelectOption[] = [
 ];
 
 // 비교견적 설정 - 팩스번호
-export const ESTIMATE_FAX: CoreSelectOption[] = [
+const ESTIMATE_FAX: CoreSelectOption[] = [
     {
         label: '지점팩스',
         value: '지점팩스',
@@ -197,7 +197,7 @@ export const ESTIMATE_FAX: CoreSelectOption[] = [
 ];
 
 // 비교견적 설정 - 직통전화
-export const ESTIMATE_DIRECT: CoreSelectOption[] = [
+const ESTIMATE_DIRECT: CoreSelectOption[] = [
     {
         label: '회사전화',
         value: '회사전화',
@@ -221,7 +221,7 @@ export const ESTIMATE_DIRECT: CoreSelectOption[] = [
 ];
 
 // 비교견적 설정 - 표기주소
-export const ESTIMATE_ADDRESS: CoreSelectOption[] = [
+const ESTIMATE_ADDRESS: CoreSelectOption[] = [
     {
         label: '회사주소',
         value: '회사주소',
@@ -240,7 +240,7 @@ export const ESTIMATE_ADDRESS: CoreSelectOption[] = [
 ];
 
 // 소득설정 탭 - 산출기준
-export const CALC_STANDARD: CoreSelectOption[] = [
+const CALC_STANDARD: CoreSelectOption[] = [
     {
         label: '기본+성과',
         value: '1',
@@ -259,7 +259,7 @@ export const CALC_STANDARD: CoreSelectOption[] = [
 ];
 
 // 보증설정 내역 설정 모달 - 보증구분
-export const GUARANTEE_DIVISION: CoreSelectOption[] = [
+const GUARANTEE_DIVISION: CoreSelectOption[] = [
     {
         label: '이행보증',
         value: '01',
@@ -288,7 +288,7 @@ export const GUARANTEE_DIVISION: CoreSelectOption[] = [
 ];
 
 // 보증설정 내역 설정 모달 - 상태
-export const GUARANTEE_STATUS: CoreSelectOption[] = [
+const GUARANTEE_STATUS: CoreSelectOption[] = [
     {
         label: '적립중',
         value: '01',
@@ -307,7 +307,7 @@ export const GUARANTEE_STATUS: CoreSelectOption[] = [
 ];
 
 // 보증설정 내역 설정 모달 - 산출기준
-export const C_STANDARD: CoreSelectOption[] = [
+const C_STANDARD: CoreSelectOption[] = [
     {
         label: '소득전체',
         value: '01',
@@ -326,7 +326,7 @@ export const C_STANDARD: CoreSelectOption[] = [
 ];
 
 // 협회자격관리 - 자격구분
-export const QUALIFICATION_DIVISION: CoreSelectOption[] = [
+const QUALIFICATION_DIVISION: CoreSelectOption[] = [
     {
         label: '유자격자',
         value: '유자격자',

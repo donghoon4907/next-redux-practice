@@ -48,7 +48,7 @@ export const IncomeTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
                 <div className="col-4">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>기본 설정</strong>
                     </div>
                     <WithLabel id="bank" label="은행명" type={labelType}>
@@ -82,10 +82,10 @@ export const IncomeTabpanel: FC<Props> = ({
                 </div>
                 <div className="col-4">
                     <div className="wr-ml">
-                        <div className="wr-pages-hr-detail__subtitle">
+                        <div className="wr-pages-detail__subtitle">
                             <strong>자동차 규정</strong>
                         </div>
-                        <div className="wr-pages-hr-detail__horizontal wr-mb">
+                        <div className="wr-pages-detail__horizontal wr-mb">
                             <MyRadio
                                 id="carTypeTable"
                                 label="테이블"
@@ -108,7 +108,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             label="자동차규정"
                             type="disable"
                         >
-                            <div className="wr-pages-hr-detail__lock">
+                            <div className="wr-pages-detail__lock">
                                 <p>준비 중입니다.</p>
                             </div>
                             <MySelect
@@ -126,10 +126,10 @@ export const IncomeTabpanel: FC<Props> = ({
                 </div>
                 <div className="col-4">
                     <div className="wr-ml">
-                        <div className="wr-pages-hr-detail__subtitle">
+                        <div className="wr-pages-detail__subtitle">
                             <strong>일반규정</strong>
                         </div>
-                        <div className="wr-pages-hr-detail__horizontal wr-mb">
+                        <div className="wr-pages-detail__horizontal wr-mb">
                             <MyRadio
                                 id="genTypeRate"
                                 label="지급율"
@@ -177,7 +177,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             label="일반규정"
                             type={'disable'}
                         >
-                            <div className="wr-pages-hr-detail__lock">
+                            <div className="wr-pages-detail__lock">
                                 <p>준비 중입니다.</p>
                             </div>
                             <MySelect
@@ -197,7 +197,7 @@ export const IncomeTabpanel: FC<Props> = ({
             <hr />
             <div className="row">
                 <div className="col-6">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>장기 기본지급</strong>
                         <div>
                             <MyCheckbox
@@ -209,7 +209,7 @@ export const IncomeTabpanel: FC<Props> = ({
                         </div>
                     </div>
                     <div className="wr-table--normal wr-mb position-relative">
-                        <div className="wr-pages-hr-detail__lock">
+                        <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
                         <table className="wr-table table">
@@ -267,8 +267,8 @@ export const IncomeTabpanel: FC<Props> = ({
                         />
                     </div>
                     {/* {editable && (
-                        <div className="wr-pages-hr-detail__toolbar">
-                            <div className="wr-pages-hr-detail__buttons">
+                        <div className="wr-pages-detail__toolbar">
+                            <div className="wr-pages-detail__buttons">
                                 <MyButton className="btn-danger">삭제</MyButton>
                                 <MyButton className="btn-secondary">
                                     수정
@@ -284,11 +284,11 @@ export const IncomeTabpanel: FC<Props> = ({
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
-                        <div className="wr-pages-hr-detail__subtitle">
+                        <div className="wr-pages-detail__subtitle">
                             <strong>오버라이딩</strong>
                         </div>
                         <div className="wr-table--normal wr-mb position-relative">
-                            <div className="wr-pages-hr-detail__lock">
+                            <div className="wr-pages-detail__lock">
                                 <p>준비 중입니다.</p>
                             </div>
                             <table className="wr-table table">

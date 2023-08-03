@@ -1,4 +1,4 @@
-.wr-pages-long-detail {
+.wr-pages-customer-detail {
     overflow: hidden;
     --wr-tab-active-color: white;
 
@@ -33,6 +33,14 @@
         }
     }
 
+    &__block {
+        @include wr-card;
+
+        & + & {
+            margin-top: $wr-gutter-size;
+        }
+    }
+
     &__department {
         font-size: 15px;
     }
@@ -41,6 +49,14 @@
         margin-bottom: $wr-gutter-size;
         --bs-border-radius: 0;
         --bs-border-color: #aaa;
+    }
+
+    &__with {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+        gap: $wr-gutter-size;
     }
 
     &__body {

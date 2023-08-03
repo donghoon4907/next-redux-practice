@@ -13,7 +13,16 @@ const Test: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <h2>내용을 입력하세요</h2>
+                <div
+                    style={{
+                        backgroundColor: 'white',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                    }}
+                ></div>
             </MyLayout>
         </>
     );

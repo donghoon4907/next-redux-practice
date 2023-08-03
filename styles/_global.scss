@@ -26,6 +26,11 @@ hr {
     margin-bottom: $wr-gutter-size !important;
 }
 
+textarea {
+    display: block;
+    resize: none;
+}
+
 ul,
 ol {
     margin: 0 !important;

@@ -39,7 +39,7 @@ import { getOrgaRequest } from '@actions/hr/get-orga';
 import { MyDatepicker } from '@components/datepicker';
 import { updateUserRequest } from '@actions/hr/update-user.action';
 import { usePostcode } from '@hooks/use-postcode';
-import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
+import { convertPhoneNumber } from '@utils/converter';
 import { uploadPortraitRequest } from '@actions/upload/portrait.action';
 import {
     useInput,
@@ -956,8 +956,8 @@ export const UserForm: FC<Props> = ({
                 <div className={`${displayName} row`}>
                     <div className={`${displayName}__left col`}>
                         <div className="wr-frame__section">
-                            <div className={`${displayName}__block`}>
-                                <div className={`${displayName}__content`}>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
                                     <div className="wr-group">
                                         <span
                                             className={`${displayName}__department ${
@@ -982,8 +982,8 @@ export const UserForm: FC<Props> = ({
                                     </div>
                                 </div>
                             </div>
-                            <div className={`${displayName}__block`}>
-                                <div className={`${displayName}__content`}>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
                                     <div className="row">
                                         <div className="col-8">
                                             <WithLabel
@@ -1046,9 +1046,7 @@ export const UserForm: FC<Props> = ({
                                                 label="생년월일"
                                                 type={labelType}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
-                                                >
+                                                <div className="wr-pages-detail__with">
                                                     <div style={{ width: 160 }}>
                                                         <MyDatepicker
                                                             id="birthday"
@@ -1084,9 +1082,7 @@ export const UserForm: FC<Props> = ({
                                                 type={labelType}
                                                 isRequired={isEditable}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
-                                                >
+                                                <div className="wr-pages-detail__with">
                                                     <MyInput
                                                         type="text"
                                                         id="mobile"
@@ -1110,9 +1106,7 @@ export const UserForm: FC<Props> = ({
                                                 label="내선번호"
                                                 type={labelType}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
-                                                >
+                                                <div className="wr-pages-detail__with">
                                                     <MyInput
                                                         type="text"
                                                         id="telephone"
@@ -1133,9 +1127,7 @@ export const UserForm: FC<Props> = ({
                                                 label="이메일"
                                                 type={labelType}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
-                                                >
+                                                <div className="wr-pages-detail__with">
                                                     <MyInput
                                                         type="text"
                                                         id="email"
@@ -1224,17 +1216,15 @@ export const UserForm: FC<Props> = ({
                                     </div>
                                 </div>
                             </div>
-                            <div className={`${displayName}__block`}>
-                                <div className={`${displayName}__content`}>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
                                     <div className="row wr-mb">
                                         <div className="col-6">
                                             <WithLabel
                                                 label="주소"
                                                 type={labelType}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
-                                                >
+                                                <div className="wr-pages-detail__with">
                                                     <MyInput
                                                         type="text"
                                                         placeholder="우편번호"
@@ -1335,11 +1325,11 @@ export const UserForm: FC<Props> = ({
                                     </div>
                                 </div>
                             </div>
-                            <div className={`${displayName}__block`}>
-                                <div className="wr-pages-hr-detail__title">
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__title">
                                     <strong>비교견적 설정</strong>
                                 </div>
-                                <div className={`${displayName}__content`}>
+                                <div className="wr-pages-detail__content">
                                     <div className="row">
                                         <div className="col">
                                             <WithLabel
@@ -1634,7 +1624,7 @@ export const UserForm: FC<Props> = ({
                 <MyFooter>
                     <div className="wr-footer__between">
                         <div></div>
-                        <div className={`${displayName}__buttons`}>
+                        <div className="wr-pages-detail__buttons">
                             {editable && (
                                 <MyButton
                                     className="btn-secondary"

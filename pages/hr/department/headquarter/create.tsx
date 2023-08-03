@@ -115,8 +115,8 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                 <div className={`${displayName} row`}>
                     <div className={`${displayName}__left col`}>
                         <div className="wr-frame__section">
-                            <div className={`${displayName}__block`}>
-                                <div className={`${displayName}__content`}>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
                                     <div className="wr-group">
                                         <span
                                             className={`${displayName}__department ${
@@ -139,8 +139,8 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className={`${displayName}__block`}>
-                                <div className={`${displayName}__content`}>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
                                     <div className="row">
                                         <div className="col-6">
                                             <WithLabel
@@ -216,9 +216,7 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                                 label="주소"
                                                 type={labelType}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
-                                                >
+                                                <div className="wr-pages-detail__with">
                                                     <MyInput
                                                         type="text"
                                                         placeholder="우편번호"
@@ -381,7 +379,7 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                 <MyFooter>
                     <div className="wr-footer__between">
                         <div></div>
-                        <div className={`${displayName}__buttons`}>
+                        <div className="wr-pages-detail__buttons">
                             {editable && (
                                 <MyButton
                                     className="btn-secondary"

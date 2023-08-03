@@ -59,7 +59,7 @@ export const PaymentTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="wr-pages-hr-detail__subtitle">
+            <div className="wr-pages-detail__subtitle">
                 <strong>소득지급 설정</strong>
             </div>
             <div className="row">
@@ -147,7 +147,7 @@ export const PaymentTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             </div>
             <div className="row wr-mt">
                 <div className="col">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>정기공제관리</strong>
                         {editable && (
                             <div>

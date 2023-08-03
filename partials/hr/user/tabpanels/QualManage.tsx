@@ -107,11 +107,11 @@ export const QualManageTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row wr-mb">
                 <div className="col-6">
-                    <div className="wr-pages-hr-detail__block">
-                        <div className="wr-pages-hr-detail__title">
+                    <div className="wr-pages-detail__block">
+                        <div className="wr-pages-detail__title">
                             <strong>손해보험협회</strong>
                         </div>
-                        <div className="wr-pages-hr-detail__content">
+                        <div className="wr-pages-detail__content">
                             <div className="row">
                                 <div className="col-6">
                                     <WithLabel
@@ -196,11 +196,11 @@ export const QualManageTabpanel: FC<Props> = ({
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
-                        <div className="wr-pages-hr-detail__block">
-                            <div className="wr-pages-hr-detail__title">
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__title">
                                 <strong>생명보험협회</strong>
                             </div>
-                            <div className="wr-pages-hr-detail__content">
+                            <div className="wr-pages-detail__content">
                                 <div className="row">
                                     <div className="col-6">
                                         <WithLabel
@@ -287,7 +287,7 @@ export const QualManageTabpanel: FC<Props> = ({
             </div>
             <div className="row">
                 <div className="col-6">
-                    <div className="wr-pages-hr-detail__subtitle">
+                    <div className="wr-pages-detail__subtitle">
                         <strong>손보 보험사 코드</strong>
                         {editable && (
                             <div>
@@ -380,7 +380,7 @@ export const QualManageTabpanel: FC<Props> = ({
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
-                        <div className="wr-pages-hr-detail__subtitle">
+                        <div className="wr-pages-detail__subtitle">
                             <strong>생보 보험사 코드</strong>
                             {editable && (
                                 <div>

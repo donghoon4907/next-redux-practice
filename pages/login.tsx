@@ -1,12 +1,12 @@
 import type { NextPage } from 'next';
 import type { FormEvent } from 'react';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { FaUser, FaKey, FaPowerOff, FaHeadset } from 'react-icons/fa';
 import { MyCheckbox } from '@components/checkbox';
 import { useApi } from '@hooks/use-api';
 import { loginRequest } from '@actions/hr/login.action';
 import { useInput } from '@hooks/use-input';
-import { useLinkTab } from '@hooks/use-tab';
 import { wrapper } from '@store/redux';
 import externalsService from '@services/externalsService';
 
@@ -17,9 +17,9 @@ interface LoginPageProps {
 const Login: NextPage<LoginPageProps> = ({ ip }) => {
     const displayName = 'wr-pages-login';
 
-    const login = useApi(loginRequest);
+    const router = useRouter();
 
-    const tab = useLinkTab();
+    const login = useApi(loginRequest);
 
     const [userid] = useInput('');
 
@@ -29,7 +29,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
         evt.preventDefault();
 
         login({ userid: userid.value, password: password.value, ip }, () => {
-            tab.move('/contract/long/list');
+            router.push('/contract/long/list');
         });
     };
 

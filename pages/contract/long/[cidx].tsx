@@ -181,134 +181,142 @@ const Long: NextPage<LongState> = ({ long }) => {
                         <div
                             className={`${displayName}__left wr-frame__section`}
                         >
-                            <div className={`${displayName}__block`}>
-                                <div className="wr-group">
-                                    <span
-                                        className={`${displayName}__department`}
-                                    >
-                                        {`${long.orga} ${long.fc}`}
-                                    </span>
-                                    <MyButton
-                                        type="button"
-                                        className="btn-primary"
-                                        onClick={handleClickChangeHistory}
-                                    >
-                                        담당변경이력
-                                    </MyButton>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
+                                    <div className="wr-group">
+                                        <span
+                                            className={`${displayName}__department`}
+                                        >
+                                            {`${long.orga} ${long.fc}`}
+                                        </span>
+                                        <MyButton
+                                            type="button"
+                                            className="btn-primary"
+                                            onClick={handleClickChangeHistory}
+                                        >
+                                            담당변경이력
+                                        </MyButton>
+                                    </div>
                                 </div>
                             </div>
-                            <div className={`${displayName}__block`}>
-                                <div className="row">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="company"
-                                            label="보험사"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="company"
-                                                placeholder={'선택'}
-                                                placeHolderFontSize={16}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...comp}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
+                                    <div className="row">
+                                        <div className="col-6">
                                             <WithLabel
-                                                id="cnum"
-                                                label="계약번호"
+                                                id="company"
+                                                label="보험사"
+                                                type={labelType}
+                                            >
+                                                <MySelect
+                                                    inputId="company"
+                                                    placeholder={'선택'}
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...comp}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="cnum"
+                                                    label="계약번호"
+                                                    type={labelType}
+                                                >
+                                                    <div className="wr-with__badge">
+                                                        <MyInput
+                                                            type="text"
+                                                            id="cnum"
+                                                            placeholder="계약번호"
+                                                            readOnly={!editable}
+                                                            className="wr-with__badge--inside-right-1"
+                                                            {...cnum}
+                                                        />
+                                                        {long.confirm ===
+                                                            'Y' && (
+                                                            <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
+                                                                검증
+                                                                <span className="visually-hidden">
+                                                                    검증
+                                                                </span>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row wr-mt">
+                                        <div className="col">
+                                            <WithLabel
+                                                id="ptitle"
+                                                label="상품명"
                                                 type={labelType}
                                             >
                                                 <div className="wr-with__badge">
                                                     <MyInput
                                                         type="text"
-                                                        id="cnum"
-                                                        placeholder="계약번호"
+                                                        id="ptitle"
+                                                        className="wr-with__badge--inside-left-2"
+                                                        placeholder="상품명"
                                                         readOnly={!editable}
-                                                        className="wr-with__badge--inside-right-1"
-                                                        {...cnum}
+                                                        {...ptitle}
                                                     />
-                                                    {long.confirm === 'Y' && (
-                                                        <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
-                                                            검증
+                                                    <div className="wr-with__badge--left wr-badge__wrap">
+                                                        <span className="badge rounded-pill bg-primary wr-badge">
+                                                            {long.product_type}
                                                             <span className="visually-hidden">
-                                                                검증
+                                                                {
+                                                                    long.product_type
+                                                                }
                                                             </span>
-                                                        </div>
-                                                    )}
+                                                        </span>
+                                                        <span className="badge rounded-pill bg-warning wr-badge">
+                                                            {long.subcategory}
+                                                            <span className="visually-hidden">
+                                                                {
+                                                                    long.subcategory
+                                                                }
+                                                            </span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </WithLabel>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row wr-mt">
-                                    <div className="col">
-                                        <WithLabel
-                                            id="ptitle"
-                                            label="상품명"
-                                            type={labelType}
-                                        >
-                                            <div className="wr-with__badge">
-                                                <MyInput
-                                                    type="text"
-                                                    id="ptitle"
-                                                    className="wr-with__badge--inside-left-2"
-                                                    placeholder="상품명"
-                                                    readOnly={!editable}
-                                                    {...ptitle}
-                                                />
-                                                <div className="wr-with__badge--left wr-badge__wrap">
-                                                    <span className="badge rounded-pill bg-primary wr-badge">
-                                                        {long.product_type}
-                                                        <span className="visually-hidden">
-                                                            {long.product_type}
-                                                        </span>
-                                                    </span>
-                                                    <span className="badge rounded-pill bg-warning wr-badge">
-                                                        {long.subcategory}
-                                                        <span className="visually-hidden">
-                                                            {long.subcategory}
-                                                        </span>
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </WithLabel>
-                                    </div>
-                                </div>
                             </div>
-                            <div className={`${displayName}__block`}>
-                                <div className="row">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="contdate"
-                                            label="계약일자"
-                                            type={labelType}
-                                        >
-                                            <MyInput
-                                                type="text"
-                                                id="contdate"
-                                                placeholder="계약일자"
-                                                readOnly={!editable}
-                                                {...contdate}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
+                                    <div className="row">
+                                        <div className="col-6">
                                             <WithLabel
-                                                id="bo_dateto"
-                                                label="보험기간"
+                                                id="contdate"
+                                                label="계약일자"
                                                 type={labelType}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
+                                                <MyInput
+                                                    type="text"
+                                                    id="contdate"
+                                                    placeholder="계약일자"
+                                                    readOnly={!editable}
+                                                    {...contdate}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="bo_dateto"
+                                                    label="보험기간"
+                                                    type={labelType}
                                                 >
-                                                    {/* <MySelect
+                                                    <div className="wr-pages-detail__with">
+                                                        {/* <MySelect
                                                         inputId="bo_du"
                                                         options={INSU_DURATION}
                                                         placeholder={'선택'}
@@ -319,244 +327,243 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                         isDisabled={!editable}
                                                         {...boDu}
                                                     /> */}
-                                                    <MyInput
-                                                        type="text"
-                                                        id="bo_du"
-                                                        placeholder="보험기간"
-                                                        readOnly={!editable}
-                                                        {...boDu}
-                                                    />
-                                                    <MyInput
-                                                        type="text"
-                                                        id="bo_dateto"
-                                                        placeholder="보험기간"
-                                                        readOnly={!editable}
-                                                        {...boDateto}
-                                                    />
-                                                </div>
-                                            </WithLabel>
+                                                        <MyInput
+                                                            type="text"
+                                                            id="bo_du"
+                                                            placeholder="보험기간"
+                                                            readOnly={!editable}
+                                                            {...boDu}
+                                                        />
+                                                        <MyInput
+                                                            type="text"
+                                                            id="bo_dateto"
+                                                            placeholder="보험기간"
+                                                            readOnly={!editable}
+                                                            {...boDateto}
+                                                        />
+                                                    </div>
+                                                </WithLabel>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="contdate"
-                                            label="납입주기"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="contdate"
-                                                placeholder={'선택'}
-                                                placeHolderFontSize={16}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...payCycle}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
                                             <WithLabel
-                                                id="pay_dateto"
-                                                label="납입기간"
+                                                id="contdate"
+                                                label="납입주기"
                                                 type={labelType}
                                             >
-                                                <div
-                                                    className={`${displayName}__with`}
+                                                <MySelect
+                                                    inputId="contdate"
+                                                    placeholder={'선택'}
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...payCycle}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="pay_dateto"
+                                                    label="납입기간"
+                                                    type={labelType}
                                                 >
+                                                    <div className="wr-pages-detail__with">
+                                                        <MySelect
+                                                            inputId="pay_du"
+                                                            placeholder={'선택'}
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                            {...payDu}
+                                                        />
+                                                        <MyInput
+                                                            type="text"
+                                                            id="pay_dateto"
+                                                            placeholder="납입기간"
+                                                            readOnly={!editable}
+                                                            {...payDateto}
+                                                        />
+                                                    </div>
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
+                                            <WithLabel
+                                                id="status_date"
+                                                label="계약상태"
+                                                type={labelType}
+                                            >
+                                                <div className="wr-pages-detail__with">
+                                                    <MyInput
+                                                        type="text"
+                                                        id="status_date"
+                                                        placeholder="계약상태"
+                                                        readOnly={!editable}
+                                                        {...statusDate}
+                                                    />
                                                     <MySelect
-                                                        inputId="pay_du"
                                                         placeholder={'선택'}
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
-                                                        {...payDu}
-                                                    />
-                                                    <MyInput
-                                                        type="text"
-                                                        id="pay_dateto"
-                                                        placeholder="납입기간"
-                                                        readOnly={!editable}
-                                                        {...payDateto}
+                                                        {...status}
                                                     />
                                                 </div>
                                             </WithLabel>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="status_date"
-                                            label="계약상태"
-                                            type={labelType}
-                                        >
-                                            <div
-                                                className={`${displayName}__with`}
-                                            >
+                                        <div className="col-6">
+                                            <div className="wr-ml">
                                                 <MyInput
                                                     type="text"
-                                                    id="status_date"
-                                                    placeholder="계약상태"
-                                                    readOnly={!editable}
-                                                    {...statusDate}
-                                                />
-                                                <MySelect
-                                                    placeholder={'선택'}
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...status}
+                                                    placeholder="계약상태 (추후 업데이트 예정)"
+                                                    readOnly
                                                 />
                                             </div>
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <MyInput
-                                                type="text"
-                                                placeholder="계약상태 (추후 업데이트 예정)"
-                                                readOnly
-                                            />
                                         </div>
                                     </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="ps_date"
-                                            label="수금상태"
-                                            type={labelType}
-                                        >
-                                            <div
-                                                className={`${displayName}__with`}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="ps_date"
-                                                    placeholder="수금상태"
-                                                    readOnly={!editable}
-                                                    {...psDate}
-                                                />
-                                                <MySelect
-                                                    placeholder={'선택'}
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...payStatus}
-                                                />
-                                            </div>
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
                                             <WithLabel
-                                                id="last_month"
-                                                label="최종납입월"
+                                                id="ps_date"
+                                                label="수금상태"
+                                                type={labelType}
+                                            >
+                                                <div className="wr-pages-detail__with">
+                                                    <MyInput
+                                                        type="text"
+                                                        id="ps_date"
+                                                        placeholder="수금상태"
+                                                        readOnly={!editable}
+                                                        {...psDate}
+                                                    />
+                                                    <MySelect
+                                                        placeholder={'선택'}
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...payStatus}
+                                                    />
+                                                </div>
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="last_month"
+                                                    label="최종납입월"
+                                                    type={labelType}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="last_month"
+                                                        placeholder="최종납입월"
+                                                        readOnly={!editable}
+                                                        {...lastMonth}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
+                                            <WithLabel
+                                                id="last_whoi"
+                                                label="종납회차"
                                                 type={labelType}
                                             >
                                                 <MyInput
-                                                    type="text"
-                                                    id="last_month"
-                                                    placeholder="최종납입월"
+                                                    type="number"
+                                                    id="last_whoi"
+                                                    placeholder="종납회차"
                                                     readOnly={!editable}
-                                                    {...lastMonth}
+                                                    {...lastWhoi}
                                                 />
                                             </WithLabel>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="last_whoi"
-                                            label="종납회차"
-                                            type={labelType}
-                                        >
-                                            <MyInput
-                                                type="number"
-                                                id="last_whoi"
-                                                placeholder="종납회차"
-                                                readOnly={!editable}
-                                                {...lastWhoi}
-                                            />
-                                        </WithLabel>
                                     </div>
                                 </div>
                             </div>
-                            <div className={`${displayName}__block`}>
-                                <div className="row">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="pay_m"
-                                            label="월납환산보험료"
-                                            type={labelType}
-                                        >
-                                            <MyInput
-                                                type="text"
-                                                id="pay_m"
-                                                className="text-end"
-                                                placeholder="월납환산보험료"
-                                                readOnly={!editable}
-                                                {...payM}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
+                                    <div className="row">
+                                        <div className="col-6">
                                             <WithLabel
-                                                id="payoutRate"
-                                                label="보험료"
+                                                id="pay_m"
+                                                label="월납환산보험료"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
+                                                    id="pay_m"
                                                     className="text-end"
-                                                    placeholder="보험료"
+                                                    placeholder="월납환산보험료"
                                                     readOnly={!editable}
-                                                    {...payment}
+                                                    {...payM}
                                                 />
                                             </WithLabel>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            id="payoutRate"
-                                            label="월납환산수정P"
-                                            type={labelType}
-                                        >
-                                            <div
-                                                className={`${displayName}__with`}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    className="text-end"
-                                                    placeholder="월납환산수정P"
-                                                    // readOnly={!editable}
-                                                    {...tp}
-                                                />
-                                                <MyInput
-                                                    type="number"
-                                                    placeholder="월납환산수정P 수치"
-                                                    unit="%"
-                                                    readOnly={!editable}
-                                                    {...tpRate}
-                                                />
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="payoutRate"
+                                                    label="보험료"
+                                                    type={labelType}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        className="text-end"
+                                                        placeholder="보험료"
+                                                        readOnly={!editable}
+                                                        {...payment}
+                                                    />
+                                                </WithLabel>
                                             </div>
-                                        </WithLabel>
+                                        </div>
                                     </div>
-                                    <div className="col-6"></div>
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
+                                            <WithLabel
+                                                id="payoutRate"
+                                                label="월납환산수정P"
+                                                type={labelType}
+                                            >
+                                                <div className="wr-pages-detail__with">
+                                                    <MyInput
+                                                        type="text"
+                                                        className="text-end"
+                                                        placeholder="월납환산수정P"
+                                                        // readOnly={!editable}
+                                                        {...tp}
+                                                    />
+                                                    <MyInput
+                                                        type="number"
+                                                        placeholder="월납환산수정P 수치"
+                                                        unit="%"
+                                                        readOnly={!editable}
+                                                        {...tpRate}
+                                                    />
+                                                </div>
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
