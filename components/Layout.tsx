@@ -15,13 +15,10 @@ export const MyLayout: FC<Props> = ({ children }) => {
     const hasGnb = Object.keys(activeGnb).length > 0;
     return (
         <div className="row">
-            {hasGnb && (
-                <div className="col-1 wr-border-r">
-                    <MyNav menu={activeGnb} />
-                </div>
-            )}
-
-            <div className={`col-${hasGnb ? '11' : '12'}`}>
+            <div className="col-1 wr-border-r">
+                <MyNav menu={activeGnb} />
+            </div>
+            <div className={`col-11`}>
                 <MyHeader />
                 <section>
                     <main className="wr-main wr-frame__body">
