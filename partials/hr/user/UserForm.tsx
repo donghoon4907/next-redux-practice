@@ -1046,34 +1046,24 @@ export const UserForm: FC<Props> = ({
                                                 label="생년월일"
                                                 type={labelType}
                                             >
-                                                <div className="wr-pages-detail__with">
-                                                    <div style={{ width: 160 }}>
-                                                        <MyDatepicker
-                                                            id="birthday"
-                                                            size="md"
-                                                            placeholder="생년월일"
-                                                            disabled={
-                                                                !isEditable
-                                                            }
-                                                            hooks={birthday}
-                                                        />
-                                                    </div>
-
-                                                    <div style={{ width: 160 }}>
-                                                        <MySelect
-                                                            placeholder={'선택'}
-                                                            placeHolderFontSize={
-                                                                16
-                                                            }
-                                                            height={
-                                                                variables.detailFilterHeight
-                                                            }
-                                                            isDisabled={
-                                                                !isEditable
-                                                            }
-                                                            {...birthType}
-                                                        />
-                                                    </div>
+                                                <MyDatepicker
+                                                    id="birthday"
+                                                    size="md"
+                                                    placeholder="생년월일"
+                                                    disabled={!isEditable}
+                                                    hooks={birthday}
+                                                />
+                                                <div style={{ width: 200 }}>
+                                                    <MySelect
+                                                        placeholder={'선택'}
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        placement="right"
+                                                        isDisabled={!isEditable}
+                                                        {...birthType}
+                                                    />
                                                 </div>
                                             </WithLabel>
                                             <WithLabel
@@ -1082,20 +1072,21 @@ export const UserForm: FC<Props> = ({
                                                 type={labelType}
                                                 isRequired={isEditable}
                                             >
-                                                <div className="wr-pages-detail__with">
-                                                    <MyInput
-                                                        type="text"
-                                                        id="mobile"
-                                                        placeholder="핸드폰"
-                                                        disabled={!isEditable}
-                                                        {...mobile}
-                                                    />
+                                                <MyInput
+                                                    type="text"
+                                                    id="mobile"
+                                                    placeholder="핸드폰"
+                                                    disabled={!isEditable}
+                                                    {...mobile}
+                                                />
+                                                <div style={{ width: 200 }}>
                                                     <MySelect
                                                         placeholder={'선택'}
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
+                                                        placement="right"
                                                         isDisabled={!isEditable}
                                                         {...mobileCom}
                                                     />
@@ -1106,16 +1097,17 @@ export const UserForm: FC<Props> = ({
                                                 label="내선번호"
                                                 type={labelType}
                                             >
-                                                <div className="wr-pages-detail__with">
+                                                <MyInput
+                                                    type="text"
+                                                    id="telephone"
+                                                    placeholder="내선번호"
+                                                    disabled={!isEditable}
+                                                    {...telephone}
+                                                />
+                                                <div style={{ width: 200 }}>
                                                     <MyInput
                                                         type="text"
-                                                        id="telephone"
-                                                        placeholder="내선번호"
-                                                        disabled={!isEditable}
-                                                        {...telephone}
-                                                    />
-                                                    <MyInput
-                                                        type="text"
+                                                        className="wr-border-l--hide"
                                                         placeholder="직통번호"
                                                         disabled={!isEditable}
                                                         {...telDirect}
@@ -1127,20 +1119,21 @@ export const UserForm: FC<Props> = ({
                                                 label="이메일"
                                                 type={labelType}
                                             >
-                                                <div className="wr-pages-detail__with">
-                                                    <MyInput
-                                                        type="text"
-                                                        id="email"
-                                                        placeholder="이메일"
-                                                        disabled={!isEditable}
-                                                        {...email}
-                                                    />
+                                                <MyInput
+                                                    type="text"
+                                                    id="email"
+                                                    placeholder="이메일"
+                                                    disabled={!isEditable}
+                                                    {...email}
+                                                />
+                                                <div style={{ width: 400 }}>
                                                     <MySelect
                                                         placeholder={'선택'}
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
+                                                        placement="right"
                                                         isDisabled={!isEditable}
                                                         {...emailCom}
                                                     />

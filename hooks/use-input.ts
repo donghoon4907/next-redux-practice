@@ -94,6 +94,7 @@ export const useNumbericInput: UseInputFunction = (
         const noSpaceVal = value.replace(/(^\s*)|(\s*$)/g, '');
         // 콤마 제거
         const nextVal = noSpaceVal.replace(/,/g, '');
+
         // 빈 값 업데이트 허용
         if (value === '') {
             setValue(value);

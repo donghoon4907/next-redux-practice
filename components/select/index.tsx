@@ -29,7 +29,7 @@ export interface MySelectProps {
      * 셀렉트 너비
      *
      */
-    width?: number;
+    // width?: number;
     /**
      * Placeholder 폰트 크기
      *
@@ -51,6 +51,11 @@ export interface MySelectProps {
      *
      */
     isDisabled?: boolean;
+
+    /**
+     * with another ui
+     */
+    placement?: 'right' | 'left' | 'single';
 }
 
 export const MySelect: FC<MySelectProps> = ({
@@ -59,11 +64,12 @@ export const MySelect: FC<MySelectProps> = ({
     value = null,
     onChange,
     placeholder,
-    width,
+    // width,
     height = variables.filterHeight,
     placeHolderFontSize = variables.filterFontSize,
     styles,
     isDisabled = false,
+    placement = 'single',
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange?.(option);
@@ -92,6 +98,7 @@ export const MySelect: FC<MySelectProps> = ({
                         ? variables.disabledInputColor
                         : 'white',
                     boxShadow: 'none',
+                    borderLeftWidth: placement === 'right' ? '0' : '1px',
                     '&:hover': {
                         borderColor: variables.dividerColor,
                     },

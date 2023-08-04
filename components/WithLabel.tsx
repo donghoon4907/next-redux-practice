@@ -1,5 +1,6 @@
 import type { FC } from 'react';
 import type { CoreProps } from '@interfaces/core';
+import { Fragment } from 'react';
 
 interface Props extends CoreProps {
     /**
@@ -11,7 +12,7 @@ interface Props extends CoreProps {
      * 셀렉트 너비
      *
      */
-    label: string;
+    label: string | string[];
     /**
      * label type
      *
@@ -47,9 +48,24 @@ export const WithLabel: FC<Props> = ({
                 }`}
                 htmlFor={id}
             >
-                <span className={isRequired ? `wr-label--required` : ''}>
-                    {label}
-                </span>
+                <div className={isRequired ? `wr-label--required` : ''}>
+                    <span>
+                        {Array.isArray(label)
+                            ? label.map((v, index) => {
+                                  if (index === 0) {
+                                      return v;
+                                  } else {
+                                      return (
+                                          <Fragment key={`wr-label-${v}`}>
+                                              <br />
+                                              {v}
+                                          </Fragment>
+                                      );
+                                  }
+                              })
+                            : label}
+                    </span>
+                </div>
             </label>
 
             {children}

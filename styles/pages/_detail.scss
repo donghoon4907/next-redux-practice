@@ -75,4 +75,10 @@
         align-items: center;
         gap: $wr-gutter-size;
     }
+
+    &__center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 }

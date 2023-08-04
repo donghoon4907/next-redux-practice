@@ -3,13 +3,14 @@ import type { CoreColumnOption } from '@interfaces/core';
 export const LONG_COL_PERFORMANCE: CoreColumnOption = {
     paydate: '영수일',
     whoi: '회차',
-    dist: '실적구분',
+    dist: '납입구분',
     hmonth: '대상년월',
     distkind: '입금구분',
     pay: '수금실적',
     paykind: '금종',
     cycle: '납입주기',
     confirm: '실적확인',
+    unknown: '정산여부',
     insert: '입력',
 };
 
