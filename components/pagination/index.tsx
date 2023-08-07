@@ -124,7 +124,7 @@ export const MyPagination: FC<Props> = ({
             <nav className="wr-pagination__body" aria-label="Page navigation">
                 <div>
                     <MySelect
-                        width={150}
+                        // width={150}
                         options={LIST_COUNTS}
                         value={showCounts}
                         onChange={handleChangeCount}

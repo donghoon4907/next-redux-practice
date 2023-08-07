@@ -9,7 +9,7 @@ interface Props {
 
 export const MyNav: FC<Props> = ({ menu }) => {
     return (
-        <div className="wr-nav">
+        <div className="wr-nav wr-border-r">
             <div className="wr-nav__logo wr-frame__header">
                 <Link href="/">
                     <a>

@@ -13,19 +13,25 @@ export const MyLayout: FC<Props> = ({ children }) => {
     const { activeGnb } = useSelector<AppState, GnbState>((state) => state.gnb);
 
     const hasGnb = Object.keys(activeGnb).length > 0;
+
     return (
-        <div className="row">
-            <div className="col-1 wr-border-r">
+        <div className="wr-layout">
+            <nav
+                className="wr-layout__left"
+                style={{
+                    minWidth: hasGnb ? 150 : 0,
+                    flexBasis: hasGnb ? 150 : 0,
+                }}
+            >
                 <MyNav menu={activeGnb} />
-            </div>
-            <div className={`col-11`}>
+            </nav>
+
+            <div className="wr-layout__right">
                 <MyHeader />
-                <section>
-                    <main className="wr-main wr-frame__body">
-                        <div className="wr-main__inner">{children}</div>
-                        {/* <footer className="wr-footer">{footer}</footer> */}
-                    </main>
-                </section>
+                <main className="wr-layout__main wr-frame__body">
+                    <div className="wr-layout__inner">{children}</div>
+                    {/* <footer className="wr-footer">{footer}</footer> */}
+                </main>
             </div>
         </div>
     );

@@ -48,7 +48,12 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
                         style={{ paddingLeft: (depth - 1) * 15 }}
                     >
                         <AccordionItem>
-                            <AccordionHeader targetId={id} role="tab" id={id}>
+                            <AccordionHeader
+                                targetId={id}
+                                role="tab"
+                                id={id}
+                                style={{ whiteSpace: 'nowrap' }}
+                            >
                                 {label}
                             </AccordionHeader>
                             <AccordionBody

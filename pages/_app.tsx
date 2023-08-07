@@ -34,7 +34,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     // 라우팅 시 탭 및 GNB 갱신
     useEffect(() => {
         // 404, 500 페이지 제한
-        if (['/404', '/500', '/test'].includes(route)) {
+        if (['/404', '/500', '/test', '/etc/shop_list'].includes(route)) {
             const tab = new TabModule();
 
             dispatch(initTab(tab.getAll()));

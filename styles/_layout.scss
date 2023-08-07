@@ -1,9 +1,33 @@
-.wr-main {
-    position: relative;
-    width: 100%;
-    height: calc(100vh - 110px - $wr-footer-size);
-    margin: 0 auto;
+.wr-layout {
+    display: flex;
+    flex-direction: row;
     overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+
+    &__left {
+        height: 100%;
+        // min-width: 150px;
+        // flex-basis: 150px;
+        flex-shrink: 0;
+        flex-grow: 0;
+        order: 1;
+        transition: all 0.5s ease-out;
+    }
+
+    &__right {
+        min-width: calc(100vw - 150px);
+        flex: 1;
+        height: 100%;
+        order: 2;
+    }
+
+    &__main {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        overflow: hidden;
+    }
 
     &__inner {
         // margin: 0 20px;
