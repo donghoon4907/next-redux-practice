@@ -3,6 +3,7 @@ import type { CoreSelectOption } from '@interfaces/core';
 import type { Guarantee } from '@models/guarantee';
 import type { Code } from '@models/code';
 import type { OrgaDetail } from '@models/orga';
+import type { UserUpdatePayload } from '@actions/hr/set-user.action';
 import produce from 'immer';
 import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
@@ -19,6 +20,7 @@ import { GetOrgaActionTypes } from '@actions/hr/get-orga';
 import { GetUserActionTypes } from '@actions/hr/get-user';
 import { Commission } from '@models/commission';
 import { CommissionActionTypes } from '@actions/hr/set-commission.action';
+import { UserActionTypes } from '@actions/hr/set-user.action';
 
 export interface HrState {
     /**
@@ -53,6 +55,10 @@ export interface HrState {
      * 선택한 부서(조직)
      */
     selectedOrga: CoreSelectOption | null;
+    /**
+     * 선택한 사용자
+     */
+    selectedUser: UserUpdatePayload | null;
     /**
      * 로그인한 사용자 정보
      */
@@ -96,6 +102,7 @@ const initialState: HrState = {
     users: [],
     user: null,
     selectedOrga: null,
+    selectedUser: null,
     loggedInUser: null,
     // ip: '',
     guarantees: [],
@@ -142,6 +149,10 @@ export const hrReducer: Reducer<HrState, any> = (
             }
             case DepartActionTypes.UPDATE: {
                 draft.selectedOrga = action.payload;
+                break;
+            }
+            case UserActionTypes.UPDATE: {
+                draft.selectedUser = action.payload;
                 break;
             }
             // case GetPermissionActionTypes.SUCCESS: {

@@ -12,6 +12,23 @@
     &__content {
         padding: $wr-gutter-size;
         position: relative;
+
+        & .accordion-item {
+            border: none;
+        }
+
+        & .accordion-button,
+        & .accordion-body {
+            padding: 0 !important;
+        }
+
+        & .accordion-button::after {
+            display: none;
+        }
+
+        & .accordion-button {
+            box-shadow: none !important;
+        }
     }
 
     &__with {
@@ -45,6 +62,10 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+    }
+
+    &__department {
+        font-size: 15px;
     }
 
     &__horizontal {

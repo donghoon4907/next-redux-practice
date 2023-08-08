@@ -48,12 +48,11 @@ import {
     useResidentNumberInput,
 } from '@hooks/use-input';
 
-type Mode = 'create' | 'update';
 interface Props {
     /**
      * 모드: true(수정) / false(등록)
      */
-    mode: Mode;
+    mode: 'create' | 'update';
     /**
      * 사원번호
      */

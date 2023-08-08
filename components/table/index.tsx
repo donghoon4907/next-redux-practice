@@ -43,11 +43,11 @@ interface Props {
     /**
      * 새롭게 추가된 레코드의 수
      */
-    addCount?: number;
+    // addCount?: number;
     /**
      * 새로운 레코드 추가 외부 이벤트
      */
-    onAddCount?: () => void;
+    onClickAddRow?: () => void;
 }
 
 export const MyTable: FC<Props> = ({
@@ -58,8 +58,8 @@ export const MyTable: FC<Props> = ({
     pageSize = 25,
     onClickRow,
     showExtension,
-    addCount = 0,
-    onAddCount,
+    // addCount = 0,
+    onClickAddRow,
 }) => {
     const tableRef = useRef<HTMLTableElement>(null);
 
@@ -182,12 +182,11 @@ export const MyTable: FC<Props> = ({
                     ))}
                 </thead>
                 <tbody>
-                    {table.getRowModel().rows.length === 0 &&
-                        addCount === 0 && (
-                            <tr>
-                                <EmptyTd colSpan={columns.length} />
-                            </tr>
-                        )}
+                    {table.getRowModel().rows.length === 0 && (
+                        <tr>
+                            <EmptyTd colSpan={columns.length} />
+                        </tr>
+                    )}
                     {table.getRowModel().rows.map((row) => {
                         return (
                             <tr
@@ -201,7 +200,7 @@ export const MyTable: FC<Props> = ({
                         );
                     })}
                 </tbody>
-                {addCount > 0 && (
+                {/* {addCount > 0 && (
                     <tfoot>
                         {Array.from({ length: addCount }).map((_, index) => (
                             <tr key={`additionalRow${index}`}>
@@ -216,9 +215,9 @@ export const MyTable: FC<Props> = ({
                             </tr>
                         ))}
                     </tfoot>
-                )}
+                )} */}
             </table>
-            {showExtension && <MyTableExtension onClick={onAddCount} />}
+            {showExtension && <MyTableExtension onClick={onClickAddRow} />}
         </div>
     );
 };

@@ -1,8 +1,9 @@
-import type { NextPage } from 'next';
-import type { CustomerState } from '@reducers/customer';
-import Head from 'next/head';
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import type { FC } from 'react';
+import type { CoreSelectOption } from '@interfaces/core';
+import type { AppState } from '@reducers/index';
+import type { HrState } from '@reducers/hr';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { MySelect } from '@components/select';
 import { CUSTOMER_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -10,21 +11,11 @@ import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
 import { MyLayout } from '@components/Layout';
-import {
-    useInput,
-    useNumbericInput,
-    usePhoneInput,
-    useResidentNumberInput,
-} from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
-import { wrapper } from '@store/redux';
-import { permissionMiddleware } from '@utils/middleware/permission';
 import { MyButton } from '@components/button';
 import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { useTab } from '@hooks/use-tab';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
 import { MyDatepicker } from '@components/datepicker';
 import { usePostcode } from '@hooks/use-postcode';
 import { ContactHisTabpanel } from '@partials/customer/tabpanels/ContactHis';
@@ -36,91 +27,261 @@ import { AnniversaryTabpanel } from '@partials/customer/tabpanels/Anniversary';
 import customerConstants from '@constants/options/customer';
 import userConstants from '@constants/options/user';
 import { useDatepicker } from '@hooks/use-datepicker';
+import { isEmpty } from '@utils/validator/common';
+import { CustomerManagerAccordion } from '@components/accordion/CustomerManagerHistory';
+import {
+    useInput,
+    useNumbericInput,
+    usePhoneInput,
+    useResidentNumberInput,
+} from '@hooks/use-input';
+import { UserHistoryModal } from '@components/modal/UserHistory';
 
-const Customer: NextPage<CustomerState> = ({ customer }) => {
+interface Props {
+    /**
+     * 모드: true(수정) / false(등록)
+     */
+    mode: 'create' | 'update';
+    /**
+     * 고객명 기본 값
+     */
+    defaultName?: string;
+    /**
+     * 고객구분 기본 값
+     */
+    defaultCusttype?: CoreSelectOption;
+    /**
+     * 주민번호 기본 값
+     */
+    defaultIdnum1?: string;
+    /**
+     * 사업자등록번호 기본 값
+     */
+    defaultComRegNum?: string;
+    /**
+     * 나이 기본 값
+     */
+    defaultAge?: string;
+    defaultAgeType?: CoreSelectOption;
+    /**
+     * 생년월일 기본 값
+     */
+    defaultBirthday?: string;
+    defaultBtype?: boolean;
+    /**
+     * 법인설립일 기본 값
+     */
+    defaultIdate?: string;
+    /**
+     * 상령일 기본 값
+     */
+    defaultSday?: string;
+    /**
+     * 핸드폰 기본 값
+     */
+    defaultMobile?: string;
+    defaultMobileCom?: CoreSelectOption;
+    /**
+     * 대표전화 기본 값
+     */
+    defaultPhone?: string;
+    /**
+     * 이메일 기본 값
+     */
+    defaultEmail?: string;
+    defaultEmailCom?: CoreSelectOption;
+    /**
+     * 홈페이지 기본 값
+     */
+    defaultHomepage?: string;
+    /**
+     * 우편번호 기본 값
+     */
+    defaultPostCode?: string;
+    defaultAddress1?: string;
+    defaultAddress2?: string;
+    defaultAddress3?: string;
+    /**
+     * 유입경로 기본 값
+     */
+    defaultInflowPath?: CoreSelectOption;
+    /**
+     * 고객등급 기본 값
+     */
+    defaultGrade?: CoreSelectOption;
+    /**
+     * 개인정보활용동의 기본 값
+     */
+    defaultPia?: CoreSelectOption;
+    /**
+     * 동의일시 기본 값
+     */
+    defaultAday?: string;
+    /**
+     * 고객생성일시 기본 값
+     */
+    defaultCreateDay?: string;
+    /**
+     * 회사명 기본 값
+     */
+    defaultCompany?: string;
+    /**
+     * 부서/직함 기본 값
+     */
+    defaultTitle?: string;
+    /**
+     * 회사 전화번호 기본 값
+     */
+    defaultComPhone?: string;
+    /**
+     * 팩스 기본 값
+     */
+    defaultCfax?: string;
+    /**
+     * 회사 우편번호 기본 값
+     */
+    defaultCpostcode?: string;
+    defaultCaddress1?: string;
+    defaultCaddress2?: string;
+    defaultCaddress3?: string;
+}
+
+export const CustomerForm: FC<Props> = ({
+    mode,
+    defaultName = '',
+    defaultCusttype = customerConstants.division[0],
+    defaultIdnum1 = '',
+    defaultComRegNum = '',
+    defaultAge = '',
+    defaultAgeType = customerConstants.age[0],
+    defaultBirthday = null,
+    defaultBtype = true,
+    defaultIdate = null,
+    defaultSday = null,
+    defaultMobile = '',
+    defaultMobileCom = userConstants.mobileCom[0],
+    defaultPhone = '',
+    defaultEmail = '',
+    defaultEmailCom = userConstants.emailCom[0],
+    defaultHomepage = '',
+    defaultPostCode = '',
+    defaultAddress1 = '',
+    defaultAddress2 = '',
+    defaultAddress3 = '',
+    defaultInflowPath = customerConstants.inflowPath[0],
+    defaultGrade = customerConstants.grade[0],
+    defaultPia = customerConstants.pia[0],
+    defaultAday = null,
+    defaultCreateDay = null,
+    defaultCompany = '',
+    defaultTitle = '',
+    defaultComPhone = '',
+    defaultCfax = '',
+    defaultCpostcode = '',
+    defaultCaddress1 = '',
+    defaultCaddress2 = '',
+    defaultCaddress3 = '',
+}) => {
     const displayName = 'wr-pages-customer-detail';
 
     const dispatch = useDispatch();
+
+    const { loggedInUser } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
     // const createUser = useApi(createUserRequest);
     // 탭 관리
     const [tab, setTab] = useTab(CUSTOMER_DETAIL_TABS[0]);
     // 수정 모드 여부
-    const [editable, setEditable] = useState(false);
+    const [editable, setEditable] = useState(mode === 'create' ? true : false);
     // 고객명
-    const [name] = useInput('', { noSpace: true });
+    const [name] = useInput(defaultName, { noSpace: true });
     // 고객구분
-    const [division] = useSelect(customerConstants.division);
+    const [custtype] = useSelect(customerConstants.division, defaultCusttype);
     // 주민번호
-    const [idnum1] = useResidentNumberInput('');
+    const [idnum1] = useResidentNumberInput(defaultIdnum1);
     // 사업자등록번호
-    const [comRegNum] = useNumbericInput('');
+    const [comRegNum] = useNumbericInput(defaultComRegNum);
     // 나이
-    const [age] = useNumbericInput('');
-    const [ageType] = useSelect(customerConstants.age);
+    const [age] = useNumbericInput(defaultAge);
+    const [ageType] = useSelect(customerConstants.age, defaultAgeType);
     // 생년월일
-    const [birthday] = useDatepicker(null);
-    const [birthType] = useSelect(userConstants.birthType);
+    const [birthday] = useDatepicker(
+        defaultBirthday ? new Date(defaultBirthday) : null,
+    );
+    const [bType, setBtype] = useState(defaultBtype);
     // 법인설립일
-    const [iDate] = useDatepicker(null);
+    const [iDate] = useDatepicker(defaultIdate ? new Date(defaultIdate) : null);
     // 상령일
-    const [sDay] = useDatepicker(null);
+    const [sDay] = useDatepicker(defaultSday ? new Date(defaultSday) : null);
     // 핸드폰
-    const [mobile] = usePhoneInput('');
-    const [mobileCom] = useSelect(userConstants.mobileCom);
+    const [mobile] = usePhoneInput(defaultMobile);
+    const [mobileCom] = useSelect(userConstants.mobileCom, defaultMobileCom);
     // 대표전화
-    const [phone] = usePhoneInput('');
+    const [phone] = usePhoneInput(defaultPhone);
     // 이메일
-    const [email] = useInput('', { noSpace: true });
-    const [emailCom] = useSelect(userConstants.emailCom);
+    const [email] = useInput(defaultEmail, { noSpace: true });
+    const [emailCom] = useSelect(userConstants.emailCom, defaultEmailCom);
     // 홈페이지
-    const [homepage] = useInput('', { noSpace: true });
+    const [homepage] = useInput(defaultHomepage, { noSpace: true });
     // 우편번호
     const [postcode, address1, address2, onClickPostcode] = usePostcode(
         {
-            postcode: '',
-            address1: '',
-            address2: '',
+            postcode: defaultPostCode,
+            address1: defaultAddress1,
+            address2: defaultAddress2,
         },
         { disabled: !editable },
     );
     // 상세 주소
-    const [address3] = useInput('');
+    const [address3] = useInput(defaultAddress3);
     // 유입경로
-    const [inflowPath] = useSelect(customerConstants.inflowPath);
+    const [inflowPath] = useSelect(
+        customerConstants.inflowPath,
+        defaultInflowPath,
+    );
     // 고객등급
-    const [grade] = useSelect(customerConstants.grade);
+    const [grade] = useSelect(customerConstants.grade, defaultGrade);
     // 개인정보활용동의
-    const [pia] = useSelect(customerConstants.pia);
+    const [pia] = useSelect(customerConstants.pia, defaultPia);
     // 동의일시
-    const [aDay] = useDatepicker(null);
+    const [aDay] = useDatepicker(defaultAday ? new Date(defaultAday) : null);
     // 고객생성일시
-    const [createDay] = useDatepicker(null);
+    const [createDay] = useDatepicker(
+        defaultCreateDay ? new Date(defaultCreateDay) : null,
+    );
     // 회사명
-    const [company] = useInput('');
+    const [company] = useInput(defaultCompany);
     // 부서/직함
-    const [title] = useInput('');
+    const [title] = useInput(defaultTitle);
     // 회사 전화번호
-    const [comPhone] = usePhoneInput('');
+    const [comPhone] = usePhoneInput(defaultComPhone);
     // 팩스
-    const [cFax] = usePhoneInput('');
+    const [cFax] = usePhoneInput(defaultCfax);
     // 회사 우편번호
     const [cPostcode, cAddress1, cAddress2, onClickCPostcode] = usePostcode(
         {
-            postcode: '',
-            address1: '',
-            address2: '',
+            postcode: defaultCpostcode,
+            address1: defaultCaddress1,
+            address2: defaultCaddress2,
         },
         { disabled: !editable },
     );
     // 회사 상세 주소
-    const [cAddress3] = useInput('');
+    const [cAddress3] = useInput(defaultCaddress3);
+    const labelType = editable ? 'active' : 'disable';
+    // 개인 여부
+    const isIndividual = custtype.value?.value === '개인';
+    // 법인 여부
+    const isCorporation = custtype.value?.value === '법인';
 
     const handleClickChangeHistory = () => {
         dispatch(showUserHistoryModal());
     };
 
-    const handleCancelModify = () => {
+    // 취소 버튼 클릭 핸들러
+    const handleClickCancel = () => {
         const tf = confirm('수정을 취소하시겠습니까?');
 
         if (tf) {
@@ -128,41 +289,98 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
         }
     };
 
-    const handleModify = () => {
+    const handleClickModify = () => {
         setEditable(true);
     };
 
-    const labelType = editable ? 'active' : 'disable';
-    // 개인 여부
-    const isIndividual = division.value?.value === '개인';
-    // 법인 여부
-    const isCorporation = division.value?.value === '법인';
+    const handleCreate = () => {
+        const payload = createPayload();
 
-    // useEffect(() => {
-    //     // 탭 추가
-    //     const tab = new TabModule();
+        // const createUserDto = new CreateUserDTO(payload);
 
-    //     const to = `/customer/join/${customer.idx}`;
-    //     if (!tab.read(to)) {
-    //         tab.create({
-    //             id: to,
-    //             label: `고객상세 - ${customer.cname}`,
-    //             to,
-    //         });
-    //     }
+        // if (createUserDto.requiredValidate()) {
+        //     createUser(createUserDto.getPayload(), ({ userid }) => {
+        //         if (userid) {
+        //             // 프로필 사진을 설정한 경우
+        //             if (lastSetPortraitImageFile) {
+        //                 const formData = new FormData();
 
-    //     dispatch(initTab(tab.getAll()));
-    // }, [dispatch, customer]);
+        //                 formData.append('file', lastSetPortraitImageFile);
+
+        //                 upload(
+        //                     {
+        //                         userid,
+        //                         formData,
+        //                     },
+        //                     () => {
+        //                         alert('사용자가 등록되었습니다.');
+        //                     },
+        //                 );
+        //             } else {
+        //                 alert('사용자가 등록되었습니다.');
+        //             }
+        //         }
+        //     });
+        // }
+    };
+
+    const handleUpdate = () => {
+        const payload = createPayload();
+
+        // const updateUserDto = new UpdateUserDTO(payload);
+
+        // if (updateUserDto.requiredValidate()) {
+        //     updateUser(updateUserDto.getPayload(), ({ Message }) => {
+        //         if (Message === 'Success') {
+        //             // 프로필 사진을 설정한 경우
+        //             if (lastSetPortraitImageFile) {
+        //                 const formData = new FormData();
+
+        //                 formData.append('file', lastSetPortraitImageFile);
+
+        //                 upload(
+        //                     {
+        //                         userid,
+        //                         formData,
+        //                     },
+        //                     () => {
+        //                         alert('수정되었습니다.');
+        //                     },
+        //                 );
+        //             } else {
+        //                 alert('수정되었습니다.');
+        //             }
+        //         }
+        //     });
+        // }
+    };
+
+    const createPayload = () => {
+        const payload: any = {
+            custtype: custtype.value?.value,
+            idnum1: idnum1.value.replace(/-/g, ''),
+        };
+
+        if (!isEmpty(name.value)) {
+            payload['name'] = name.value;
+        }
+
+        if (!isEmpty(birthday.value)) {
+            payload['birthday'] = birthday.value;
+        }
+
+        if (typeof bType === 'boolean') {
+            payload['b_type'] = bType;
+        }
+
+        if (isIndividual) {
+        }
+
+        return payload;
+    };
 
     return (
         <>
-            <Head>
-                <title>고객상세</title>
-                <meta
-                    name="description"
-                    content="Generated by create next app"
-                />
-            </Head>
             <MyLayout>
                 <div className={`${displayName} row`}>
                     <div className="col-5">
@@ -171,22 +389,10 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                         >
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
-                                    <div className="wr-group">
-                                        <span
-                                            className={`${displayName}__department`}
-                                        >
-                                            {/* {`${long.orga} ${long.fc}`} */}
-                                            개인영업1 / 신노원사업단 / 업무보전
-                                            양성태
-                                        </span>
-                                        <MyButton
-                                            type="button"
-                                            className="btn-primary"
-                                            onClick={handleClickChangeHistory}
-                                        >
-                                            담당변경이력
-                                        </MyButton>
-                                    </div>
+                                    <CustomerManagerAccordion
+                                        defaultTitle={`${loggedInUser.user_info.fulls} ${loggedInUser.user_info.name}`}
+                                        data={[]}
+                                    />
                                 </div>
                             </div>
                             <div className="wr-pages-detail__block">
@@ -210,18 +416,18 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="division"
+                                                    id="custtype"
                                                     label="고객구분"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="division"
+                                                        inputId="custtype"
                                                         placeholder="선택"
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
-                                                        {...division}
+                                                        {...custtype}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -234,7 +440,7 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                                                     id="idnum1"
                                                     label="주민번호"
                                                     type={labelType}
-                                                    isRequired={editable}
+                                                    // isRequired={editable}
                                                 >
                                                     <MyInput
                                                         type="text"
@@ -279,10 +485,26 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                                                         />
                                                         <div
                                                             style={{
-                                                                width: 230,
+                                                                width: 70,
                                                             }}
                                                         >
-                                                            <MySelect
+                                                            <MyButton
+                                                                className={
+                                                                    bType
+                                                                        ? 'btn-primary'
+                                                                        : 'btn-secondary'
+                                                                }
+                                                                onClick={() =>
+                                                                    setBtype(
+                                                                        !bType,
+                                                                    )
+                                                                }
+                                                            >
+                                                                {bType
+                                                                    ? '양력'
+                                                                    : '음력'}
+                                                            </MyButton>
+                                                            {/* <MySelect
                                                                 placeholder={
                                                                     '선택'
                                                                 }
@@ -296,8 +518,8 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                                                                 isDisabled={
                                                                     !editable
                                                                 }
-                                                                {...birthType}
-                                                            />
+                                                                {...bType}
+                                                            /> */}
                                                         </div>
                                                     </WithLabel>
                                                 )}
@@ -983,56 +1205,44 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                                 다른 담당자 내용
                             </MyButton>
                         </div>
-                        <div className={`${displayName}__submit`}>
+                        <div className="wr-pages-detail__buttons">
                             {editable && (
-                                <button
-                                    className="btn btn-secondary btn-sm"
-                                    type="button"
-                                    onClick={handleCancelModify}
+                                <MyButton
+                                    className="btn-secondary"
+                                    onClick={handleClickCancel}
                                 >
                                     취소
-                                </button>
+                                </MyButton>
                             )}
-                            <button
-                                className="btn btn-primary btn-sm"
-                                type="button"
-                                onClick={handleModify}
-                            >
-                                {editable ? '변경 사항 적용' : '수정'}
-                            </button>
+                            {mode === 'create' && (
+                                <MyButton
+                                    type="button"
+                                    className="btn-primary"
+                                    onClick={handleCreate}
+                                >
+                                    등록
+                                </MyButton>
+                            )}
+                            {mode === 'update' && (
+                                <MyButton
+                                    type="button"
+                                    className="btn-primary"
+                                    onClick={
+                                        editable
+                                            ? handleUpdate
+                                            : handleClickModify
+                                    }
+                                >
+                                    {editable ? '변경 사항 적용' : '수정'}
+                                </MyButton>
+                            )}
                         </div>
                     </div>
                 </MyFooter>
             </MyLayout>
 
-            {/* <UserHistoryModal user_his={long.user_his} /> */}
+            <UserHistoryModal />
             {/* <CreateEtcModal /> */}
         </>
     );
 };
-
-export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async (_, ctx) => {
-        const { query } = ctx;
-
-        const idx = query.idx as string;
-
-        const output: any = {
-            props: {},
-        };
-
-        try {
-            // const { data } = await longsService.getLong({ cidx });
-            // output.props.long = data;
-        } catch {
-            output.redirect = {
-                destination: '/404',
-                permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
-            };
-        }
-
-        return output;
-    }),
-);
-
-export default Customer;

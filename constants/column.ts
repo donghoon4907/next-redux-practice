@@ -39,3 +39,10 @@ export const LONG_USER_HISTORY: CoreColumnOption = {
     사용인명: '사용인명',
     사용인코드: '사용인코드',
 };
+
+export const CUSTOMER_USER_HISTORY: CoreColumnOption = {
+    insert_datetime: '등록일',
+    userid: '사용자 ID',
+    remark: '비고',
+    username: '등록자',
+};
