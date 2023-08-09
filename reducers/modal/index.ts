@@ -8,6 +8,7 @@ import { ImageUploadModalActionTypes } from '@actions/modal/image-upload.action'
 import { GuaranteeSettingModalActionTypes } from '@actions/modal/guarantee-setting.action';
 import { CodeSettingModalActionTypes } from '@actions/modal/code-setting.action';
 import { LifeLongModalActionTypes } from '@actions/modal/life-long.action';
+import { CreateExcontractModalActionTypes } from '@actions/modal/create-excontract.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -18,6 +19,9 @@ export interface ModalState {
     isShowGuaranteeSettingModal: boolean;
     isShowCodeSettingModal: boolean;
     isShowLifeLongModal: boolean;
+    isShowCreateExcontractLongModal: boolean;
+    isShowCreateExcontractCarModal: boolean;
+    isShowCreateExcontractGenModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -29,6 +33,9 @@ const initialState: ModalState = {
     isShowGuaranteeSettingModal: false,
     isShowCodeSettingModal: false,
     isShowLifeLongModal: false,
+    isShowCreateExcontractLongModal: false,
+    isShowCreateExcontractCarModal: false,
+    isShowCreateExcontractGenModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -99,6 +106,26 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case LifeLongModalActionTypes.HIDE: {
                 draft.isShowLifeLongModal = false;
+                break;
+            }
+            case CreateExcontractModalActionTypes.SHOW: {
+                if (action.payload === 'long') {
+                    draft.isShowCreateExcontractLongModal = true;
+                } else if (action.payload === 'car') {
+                    draft.isShowCreateExcontractCarModal = true;
+                } else if (action.payload === 'gen') {
+                    draft.isShowCreateExcontractGenModal = true;
+                }
+                break;
+            }
+            case CreateExcontractModalActionTypes.HIDE: {
+                if (action.payload === 'long') {
+                    draft.isShowCreateExcontractLongModal = false;
+                } else if (action.payload === 'car') {
+                    draft.isShowCreateExcontractCarModal = false;
+                } else if (action.payload === 'gen') {
+                    draft.isShowCreateExcontractGenModal = false;
+                }
                 break;
             }
             default:

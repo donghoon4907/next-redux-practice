@@ -1,7 +1,9 @@
 import type { Reducer } from 'redux';
 import type { Contact } from '@models/contact';
+import type { Excontract } from '@models/excontract';
 import produce from 'immer';
 import { ContactActionTypes } from '@actions/customer/set-contact.action';
+import { ExcontractActionTypes } from '@actions/customer/set-excontract.action';
 
 export interface CustomerState {
     /**
@@ -20,6 +22,14 @@ export interface CustomerState {
      * 삭제한 접촉이력 목록
      */
     removedContacts: Contact[];
+    /**
+     * 타사 보험 목록
+     */
+    excontracts: Excontract[];
+    /**
+     * 삭제한 타사 보험 목록
+     */
+    removedExcontracts: Excontract[];
 }
 
 const initialState: CustomerState = {
@@ -33,6 +43,8 @@ const initialState: CustomerState = {
     customer: null,
     contacts: [],
     removedContacts: [],
+    excontracts: [],
+    removedExcontracts: [],
 };
 
 export const customerReducer: Reducer<CustomerState, any> = (
@@ -72,6 +84,42 @@ export const customerReducer: Reducer<CustomerState, any> = (
                     if (deleted.idx) {
                         draft.removedContacts =
                             draft.removedContacts.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case ExcontractActionTypes.CREATE: {
+                draft.excontracts = draft.excontracts.concat(action.payload);
+                break;
+            }
+            case ExcontractActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.excontracts.length; i++) {
+                    if (draft.excontracts[i].index === index) {
+                        draft.excontracts[i] = {
+                            ...draft.excontracts[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case ExcontractActionTypes.DELETE: {
+                const findIndex = draft.excontracts.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.excontracts.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedExcontracts =
+                            draft.removedExcontracts.concat(deleted);
                     }
                 }
 

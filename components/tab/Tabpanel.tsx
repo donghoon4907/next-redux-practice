@@ -11,7 +11,7 @@ export const MyTabpanel: FC<MyTabpanelProps> = ({
 }) => {
     return (
         <div
-            className="wr-tabpanel"
+            className="wr-tabpanel position-relative"
             role="tabpanel"
             id={id}
             aria-labelledby={tabId}

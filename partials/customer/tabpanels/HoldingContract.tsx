@@ -24,6 +24,9 @@ export const HoldingContractTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
+            <div className="wr-pages-detail__lock">
+                <span>준비 중입니다.</span>
+            </div>
             <div className="wr-pages-detail__title">
                 <strong>우리회사에서 가입한 보험계약 내역</strong>
                 <span className="wr-pages-detail__description">

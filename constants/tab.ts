@@ -38,9 +38,9 @@ export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [
         panelId: 'tabpanelHoldingContract',
     },
     {
-        id: 'tabOtherContract',
+        id: 'tabExcontract',
         label: '타사계약',
-        panelId: 'tabpanelOtherContract',
+        panelId: 'tabpanelExcontract',
     },
     {
         id: 'tabSecuredDebt',

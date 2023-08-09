@@ -7,6 +7,7 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { END } from 'redux-saga';
 import { getUsersRequest } from '@actions/hr/get-users';
+import { getCompaniesRequest } from '@actions/hr/get-companies';
 
 const CreateCustomer: NextPage = () => {
     return (
@@ -30,6 +31,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 idx: '1',
             }),
         );
+
+        dispatch(getCompaniesRequest());
 
         dispatch(
             getUsersRequest({

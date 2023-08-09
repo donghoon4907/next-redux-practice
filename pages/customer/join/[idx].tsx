@@ -29,7 +29,7 @@ import { MyDatepicker } from '@components/datepicker';
 import { usePostcode } from '@hooks/use-postcode';
 import { ContactHisTabpanel } from '@partials/customer/tabpanels/ContactHis';
 import { HoldingContractTabpanel } from '@partials/customer/tabpanels/HoldingContract';
-import { OtherContractTabpanel } from '@partials/customer/tabpanels/OtherContract';
+import { OtherContractTabpanel } from '@partials/customer/tabpanels/Excontract';
 import { SecuredDebtTabpanel } from '@partials/customer/tabpanels/SecuredDebt';
 import { FamilyTabpanel } from '@partials/customer/tabpanels/Family';
 import { AnniversaryTabpanel } from '@partials/customer/tabpanels/Anniversary';

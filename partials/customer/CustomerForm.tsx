@@ -21,7 +21,7 @@ import { MyDatepicker } from '@components/datepicker';
 import { usePostcode } from '@hooks/use-postcode';
 import { ContactHisTabpanel } from '@partials/customer/tabpanels/ContactHis';
 import { HoldingContractTabpanel } from '@partials/customer/tabpanels/HoldingContract';
-import { OtherContractTabpanel } from '@partials/customer/tabpanels/OtherContract';
+import { ExcontractTabpanel } from '@partials/customer/tabpanels/Excontract';
 import { SecuredDebtTabpanel } from '@partials/customer/tabpanels/SecuredDebt';
 import { FamilyTabpanel } from '@partials/customer/tabpanels/Family';
 import { AnniversaryTabpanel } from '@partials/customer/tabpanels/Anniversary';
@@ -31,12 +31,15 @@ import { useDatepicker } from '@hooks/use-datepicker';
 import { isEmpty } from '@utils/validator/common';
 import { CustomerManagerAccordion } from '@components/accordion/CustomerManagerHistory';
 import { UserHistoryModal } from '@components/modal/UserHistory';
+import { CreateExcontractLongModal } from '@components/modal/CreateExcontractLong';
 import {
     useInput,
     useNumbericInput,
     usePhoneInput,
     useResidentNumberInput,
 } from '@hooks/use-input';
+import { CreateExcontractCarModal } from '@components/modal/CreateExcontractCar';
+import { CreateExcontractGenModal } from '@components/modal/CreateExcontractGen';
 
 interface Props {
     /**
@@ -218,7 +221,7 @@ export const CustomerForm: FC<Props> = ({
         (state) => state.hr,
     );
 
-    const { contacts } = useSelector<AppState, CustomerState>(
+    const { contacts, excontracts } = useSelector<AppState, CustomerState>(
         (state) => state.customer,
     );
 
@@ -320,10 +323,6 @@ export const CustomerForm: FC<Props> = ({
     // 법인 여부
     const isCorporation = custtype.value?.value === '법인';
 
-    const handleClickChangeHistory = () => {
-        dispatch(showUserHistoryModal());
-    };
-
     // 취소 버튼 클릭 핸들러
     const handleClickCancel = () => {
         const tf = confirm('수정을 취소하시겠습니까?');
@@ -404,6 +403,7 @@ export const CustomerForm: FC<Props> = ({
             name: name.value,
             custtype: custtype.value?.value,
             contacts,
+            excontracts,
         };
 
         if (inflowPath.value) {
@@ -1290,10 +1290,10 @@ export const CustomerForm: FC<Props> = ({
                                     hidden={tab.id !== 'tabHoldingContract'}
                                     editable={editable}
                                 />
-                                <OtherContractTabpanel
-                                    id="tabpanelOtherContract"
-                                    tabId="tabOtherContract"
-                                    hidden={tab.id !== 'tabOtherContract'}
+                                <ExcontractTabpanel
+                                    id="tabpanelExcontract"
+                                    tabId="tabExcontract"
+                                    hidden={tab.id !== 'tabExcontract'}
                                     editable={editable}
                                 />
                                 <SecuredDebtTabpanel
@@ -1362,7 +1362,9 @@ export const CustomerForm: FC<Props> = ({
             </MyLayout>
 
             <UserHistoryModal />
-            {/* <CreateEtcModal /> */}
+            <CreateExcontractLongModal />
+            <CreateExcontractCarModal />
+            <CreateExcontractGenModal />
         </>
     );
 };
