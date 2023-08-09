@@ -29,12 +29,7 @@ interface Props extends MyTabpanelProps {
     editable: boolean;
 }
 
-export const ContactHisTabpanel: FC<Props> = ({
-    id,
-    tabId,
-    hidden,
-    editable,
-}) => {
+export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
     const dispatch = useDispatch();
 
     const { loggedInUser } = useSelector<AppState, HrState>(
@@ -47,7 +42,7 @@ export const ContactHisTabpanel: FC<Props> = ({
     const [kind, setKind] = useSelect(customerConstants.counselingDivision);
     // 채널
     const [channel, setChannel] = useSelect(customerConstants.channel);
-    // 계약종목
+    // 계약종목(미구현)
     const [spe, setSpe] = useSelect(customerConstants.category, null);
     // 사유발생일
     const [issuedate, setIssuedate] = useDatepicker(null);
@@ -108,7 +103,7 @@ export const ContactHisTabpanel: FC<Props> = ({
 
     const createPayload = () => {
         const payload: CreateContactPayload = {
-            index: contacts.length,
+            index: contacts[contacts.length - 1].index + 1,
             kind: kind.value!.value,
             channel: channel.value!.value,
             comment: comment.value,

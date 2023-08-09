@@ -17,6 +17,7 @@ import { MyDatepicker } from '@components/datepicker';
 import { hideCreateExcontractModal } from '@actions/modal/create-excontract.action';
 import { isEmpty } from '@utils/validator/common';
 import { createExcontract } from '@actions/customer/set-excontract.action';
+import { generateIndex } from '@utils/generate';
 
 interface Props {}
 
@@ -65,7 +66,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
     const createPayload = () => {
         const payload: Excontract = {
             spe: 'long',
-            index: excontracts.length,
+            index: generateIndex(excontracts),
             wcode: +comp.value!.value,
             wname: comp.value!.label,
             checked: false,
@@ -188,7 +189,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
                     취소
                 </Button>
                 <Button color="primary" onClick={handleSubmit}>
-                    적용
+                    등록
                 </Button>
             </ModalFooter>
         </Modal>

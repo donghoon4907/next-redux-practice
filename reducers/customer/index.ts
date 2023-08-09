@@ -1,9 +1,11 @@
 import type { Reducer } from 'redux';
 import type { Contact } from '@models/contact';
 import type { Excontract } from '@models/excontract';
+import type { Custcar } from '@models/custcar';
 import produce from 'immer';
 import { ContactActionTypes } from '@actions/customer/set-contact.action';
 import { ExcontractActionTypes } from '@actions/customer/set-excontract.action';
+import { CustcarActionTypes } from '@actions/customer/set-custcar.action';
 
 export interface CustomerState {
     /**
@@ -30,6 +32,14 @@ export interface CustomerState {
      * 삭제한 타사 보험 목록
      */
     removedExcontracts: Excontract[];
+    /**
+     * 피담보물/차량 목록
+     */
+    custcars: Custcar[];
+    /**
+     * 삭제한 피담보물/차량 목록
+     */
+    removedCustcars: Custcar[];
 }
 
 const initialState: CustomerState = {
@@ -45,6 +55,8 @@ const initialState: CustomerState = {
     removedContacts: [],
     excontracts: [],
     removedExcontracts: [],
+    custcars: [],
+    removedCustcars: [],
 };
 
 export const customerReducer: Reducer<CustomerState, any> = (
@@ -120,6 +132,42 @@ export const customerReducer: Reducer<CustomerState, any> = (
                     if (deleted.idx) {
                         draft.removedExcontracts =
                             draft.removedExcontracts.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case CustcarActionTypes.CREATE: {
+                draft.custcars = draft.custcars.concat(action.payload);
+                break;
+            }
+            case CustcarActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.custcars.length; i++) {
+                    if (draft.custcars[i].index === index) {
+                        draft.custcars[i] = {
+                            ...draft.custcars[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case CustcarActionTypes.DELETE: {
+                const findIndex = draft.custcars.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.custcars.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedCustcars =
+                            draft.removedCustcars.concat(deleted);
                     }
                 }
 

@@ -14,6 +14,7 @@ import { HrState } from '@reducers/hr';
 import { MyDatepicker } from '@components/datepicker';
 import { hideCodeSettingModal } from '@actions/modal/code-setting.action';
 import { CreateCodePayload, createCode } from '@actions/hr/set-code.action';
+import { generateIndex } from '@utils/generate';
 
 interface Props {}
 
@@ -63,7 +64,7 @@ export const CodeSettingModal: FC<Props> = () => {
 
     const createPayload = () => {
         const payload: CreateCodePayload = {
-            index: codes.length,
+            index: generateIndex(codes),
             wcode: +comp.value!.value,
             fccode: code.value,
             password: password.value,

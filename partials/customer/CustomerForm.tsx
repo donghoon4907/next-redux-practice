@@ -19,10 +19,10 @@ import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { useTab } from '@hooks/use-tab';
 import { MyDatepicker } from '@components/datepicker';
 import { usePostcode } from '@hooks/use-postcode';
-import { ContactHisTabpanel } from '@partials/customer/tabpanels/ContactHis';
+import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { HoldingContractTabpanel } from '@partials/customer/tabpanels/HoldingContract';
 import { ExcontractTabpanel } from '@partials/customer/tabpanels/Excontract';
-import { SecuredDebtTabpanel } from '@partials/customer/tabpanels/SecuredDebt';
+import { CustcarTabpanel } from '@partials/customer/tabpanels/Custcar';
 import { FamilyTabpanel } from '@partials/customer/tabpanels/Family';
 import { AnniversaryTabpanel } from '@partials/customer/tabpanels/Anniversary';
 import customerConstants from '@constants/options/customer';
@@ -40,6 +40,8 @@ import {
 } from '@hooks/use-input';
 import { CreateExcontractCarModal } from '@components/modal/CreateExcontractCar';
 import { CreateExcontractGenModal } from '@components/modal/CreateExcontractGen';
+import { CreateCustcarCarModal } from '@components/modal/CreateCustcarCar';
+import { CreateCustcarCustModal } from '@components/modal/CreateCustcarCust';
 
 interface Props {
     /**
@@ -1278,7 +1280,7 @@ export const CustomerForm: FC<Props> = ({
                             <div
                                 className={`${displayName}__body wr-frame__tabbody`}
                             >
-                                <ContactHisTabpanel
+                                <ContactTabpanel
                                     id="tabpanelContactHis"
                                     tabId="tabContactHis"
                                     hidden={tab.id !== 'tabContactHis'}
@@ -1296,10 +1298,10 @@ export const CustomerForm: FC<Props> = ({
                                     hidden={tab.id !== 'tabExcontract'}
                                     editable={editable}
                                 />
-                                <SecuredDebtTabpanel
-                                    id="tabpanelSecuredDebt"
-                                    tabId="tabSecuredDebt"
-                                    hidden={tab.id !== 'tabSecuredDebt'}
+                                <CustcarTabpanel
+                                    id="tabpanelCustcar"
+                                    tabId="tabCustcar"
+                                    hidden={tab.id !== 'tabCustcar'}
                                     editable={editable}
                                 />
                                 <FamilyTabpanel
@@ -1365,6 +1367,8 @@ export const CustomerForm: FC<Props> = ({
             <CreateExcontractLongModal />
             <CreateExcontractCarModal />
             <CreateExcontractGenModal />
+            <CreateCustcarCarModal />
+            <CreateCustcarCustModal />
         </>
     );
 };

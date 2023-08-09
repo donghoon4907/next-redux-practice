@@ -43,9 +43,9 @@ export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [
         panelId: 'tabpanelExcontract',
     },
     {
-        id: 'tabSecuredDebt',
+        id: 'tabCustcar',
         label: '피담보물/차량',
-        panelId: 'tabpanelSecuredDebt',
+        panelId: 'tabpanelCustcar',
     },
     { id: 'tabFamily', label: '가족/지인', panelId: 'tabpanelFamily' },
     {

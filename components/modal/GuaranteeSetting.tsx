@@ -20,6 +20,7 @@ import {
     CreateGuaranteePayload,
     createGuarantee,
 } from '@actions/hr/set-guarantee.action';
+import { generateIndex } from '@utils/generate';
 
 interface Props {}
 
@@ -73,7 +74,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
 
     const createPayload = () => {
         const payload: CreateGuaranteePayload = {
-            index: guarantees.length,
+            index: generateIndex(guarantees),
             kind: kind.value!.label,
             checked: false,
             available: false,

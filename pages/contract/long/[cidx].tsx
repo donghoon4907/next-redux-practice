@@ -38,7 +38,7 @@ import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
 import { CustomerTabpanel } from '@partials/long/tabpanels/Customer';
 import { EndorsementTabpanel } from '@partials/long/tabpanels/Endorsement';
-import { ContactHisTabpanel } from '@partials/customer/tabpanels/ContactHis';
+import { ContactHisTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/long/tabpanels/CalcPerform';
 
 const Long: NextPage<LongState> = ({ long }) => {

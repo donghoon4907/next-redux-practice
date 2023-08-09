@@ -9,6 +9,7 @@ import { GuaranteeSettingModalActionTypes } from '@actions/modal/guarantee-setti
 import { CodeSettingModalActionTypes } from '@actions/modal/code-setting.action';
 import { LifeLongModalActionTypes } from '@actions/modal/life-long.action';
 import { CreateExcontractModalActionTypes } from '@actions/modal/create-excontract.action';
+import { CreateCustcarModalActionTypes } from '@actions/modal/create-custcar.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -22,6 +23,8 @@ export interface ModalState {
     isShowCreateExcontractLongModal: boolean;
     isShowCreateExcontractCarModal: boolean;
     isShowCreateExcontractGenModal: boolean;
+    isShowCreateCustcarCarModal: boolean;
+    isShowCreateCustcarCustModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -36,6 +39,8 @@ const initialState: ModalState = {
     isShowCreateExcontractLongModal: false,
     isShowCreateExcontractCarModal: false,
     isShowCreateExcontractGenModal: false,
+    isShowCreateCustcarCarModal: false,
+    isShowCreateCustcarCustModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -125,6 +130,22 @@ export const modalReducer: Reducer<ModalState, any> = (
                     draft.isShowCreateExcontractCarModal = false;
                 } else if (action.payload === 'gen') {
                     draft.isShowCreateExcontractGenModal = false;
+                }
+                break;
+            }
+            case CreateCustcarModalActionTypes.SHOW: {
+                if (action.payload === 'car') {
+                    draft.isShowCreateCustcarCarModal = true;
+                } else if (action.payload === 'cust') {
+                    draft.isShowCreateCustcarCustModal = true;
+                }
+                break;
+            }
+            case CreateCustcarModalActionTypes.HIDE: {
+                if (action.payload === 'car') {
+                    draft.isShowCreateCustcarCarModal = false;
+                } else if (action.payload === 'cust') {
+                    draft.isShowCreateCustcarCustModal = false;
                 }
                 break;
             }
