@@ -1,6 +1,8 @@
-export type Code = {
-    index: number;
-    // id
+import type { CoreDeleteableObject } from './core';
+/**
+ * 보험사 코드
+ */
+export type Code = CoreDeleteableObject & {
     idx?: number;
     wcode: number;
     fccode: string;
@@ -11,5 +13,4 @@ export type Code = {
     dist: string;
     // 회사명
     company: string;
-    checked: boolean;
 };

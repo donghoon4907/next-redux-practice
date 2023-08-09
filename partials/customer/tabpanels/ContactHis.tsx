@@ -1,5 +1,12 @@
-import type { FC } from 'react';
+import type { FC, ChangeEvent } from 'react';
+import type { Contact } from '@models/contact';
+import type { AppState } from '@reducers/index';
+import type { HrState } from '@reducers/hr';
+import type { CustomerState } from '@reducers/customer';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
+import type { CreateContactPayload } from '@actions/customer/set-contact.action';
+import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyCheckbox } from '@components/checkbox';
@@ -8,7 +15,15 @@ import { MySelect } from '@components/select';
 import variables from '@styles/_variables.module.scss';
 import { MyDatepicker } from '@components/datepicker';
 import { MyButton } from '@components/button';
-import { MyTableExtension } from '@components/table/Extension';
+import { useSelect } from '@hooks/use-select';
+import customerConstants from '@constants/options/customer';
+import { useDatepicker } from '@hooks/use-datepicker';
+import { useInput } from '@hooks/use-input';
+import {
+    createContact,
+    deleteContact,
+    updateContact,
+} from '@actions/customer/set-contact.action';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -20,7 +35,104 @@ export const ContactHisTabpanel: FC<Props> = ({
     hidden,
     editable,
 }) => {
+    const dispatch = useDispatch();
+
+    const { loggedInUser } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
+    const { contacts } = useSelector<AppState, CustomerState>(
+        (state) => state.customer,
+    );
+    // 상담구분
+    const [kind, setKind] = useSelect(customerConstants.counselingDivision);
+    // 채널
+    const [channel, setChannel] = useSelect(customerConstants.channel);
+    // 계약종목
+    const [spe, setSpe] = useSelect(customerConstants.category, null);
+    // 사유발생일
+    const [issuedate, setIssuedate] = useDatepicker(null);
+    // 응대예정일시
+    const [replydatetime, setReplydatetimet] = useDatepicker(null);
+    // 계약번호(미구현)
+    // 진행상태
+    const [status, setStatus] = useSelect(customerConstants.status, null);
+    // 내용
+    const [comment, setComment] = useInput('');
+
     const labelType = editable ? 'active' : 'disable';
+
+    const handleReset = () => {
+        const tf = confirm('설정한 내용을 초기화하시겠습니까?');
+
+        if (tf) {
+            setKind(null);
+            setChannel(null);
+            setSpe(null);
+            setIssuedate(null);
+            setReplydatetimet(null);
+            setStatus(null);
+            setComment('');
+        }
+    };
+
+    const handleAllCheck = (evt: ChangeEvent<HTMLInputElement>) => {
+        contacts.forEach((v) => {
+            dispatch(updateContact({ ...v, checked: evt.target.checked }));
+        });
+    };
+
+    const handleCheck = (evt: ChangeEvent<HTMLInputElement>, v: Contact) => {
+        dispatch(updateContact({ ...v, checked: evt.target.checked }));
+    };
+
+    const handleCreate = () => {
+        const tf = confirm('입력한 내용대로 설정하시겠습니까?');
+        if (tf) {
+            const payload = createPayload();
+
+            dispatch(createContact(payload));
+        }
+    };
+
+    const handleDelete = () => {
+        if (contacts.findIndex((v) => v.checked) === -1) {
+            return alert('삭제할 설정을 선택해주세요.');
+        }
+
+        contacts
+            .filter((v) => v.checked)
+            .forEach((v) => {
+                dispatch(deleteContact({ index: v.index }));
+            });
+    };
+
+    const createPayload = () => {
+        const payload: CreateContactPayload = {
+            index: contacts.length,
+            kind: kind.value!.value,
+            channel: channel.value!.value,
+            comment: comment.value,
+            insert_username: loggedInUser.user_info.name,
+            insert_userid: loggedInUser.userid,
+            checked: false,
+        };
+
+        if (issuedate.value) {
+            payload['issuedate'] = dayjs(issuedate.value).format('YYYY-MM-DD');
+        }
+
+        if (replydatetime.value) {
+            payload['replydatetime'] = dayjs(replydatetime.value).format(
+                'yyyy-MM-dd HH:mm',
+            );
+        }
+
+        if (status.value) {
+            payload['status'] = status.value.value;
+        }
+
+        return payload;
+    };
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
@@ -40,6 +152,7 @@ export const ContactHisTabpanel: FC<Props> = ({
                                         id="counselingDivision"
                                         label="상담구분"
                                         type={labelType}
+                                        isRequired={editable}
                                     >
                                         <MySelect
                                             inputId="counselingDivision"
@@ -48,6 +161,7 @@ export const ContactHisTabpanel: FC<Props> = ({
                                                 variables.detailFilterHeight
                                             }
                                             isDisabled={!editable}
+                                            {...kind}
                                         />
                                     </WithLabel>
                                 </div>
@@ -57,6 +171,7 @@ export const ContactHisTabpanel: FC<Props> = ({
                                             id="channel"
                                             label="채널"
                                             type={labelType}
+                                            isRequired={editable}
                                         >
                                             <MySelect
                                                 inputId="counselingDivision"
@@ -65,6 +180,7 @@ export const ContactHisTabpanel: FC<Props> = ({
                                                     variables.detailFilterHeight
                                                 }
                                                 isDisabled={!editable}
+                                                {...channel}
                                             />
                                         </WithLabel>
                                     </div>
@@ -82,7 +198,8 @@ export const ContactHisTabpanel: FC<Props> = ({
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
-                                                isDisabled={!editable}
+                                                isDisabled={true}
+                                                // {...spe}
                                             />
                                         </WithLabel>
                                     </div>
@@ -100,6 +217,7 @@ export const ContactHisTabpanel: FC<Props> = ({
                                             size="md"
                                             placeholder="사유발생일"
                                             disabled={!editable}
+                                            hooks={issuedate}
                                         />
                                     </WithLabel>
                                 </div>
@@ -107,14 +225,16 @@ export const ContactHisTabpanel: FC<Props> = ({
                                     <div className="wr-ml">
                                         <WithLabel
                                             id="rDate"
-                                            label="응대예정일"
+                                            label="응대예정일시"
                                             type={labelType}
                                         >
                                             <MyDatepicker
                                                 id="rDate"
                                                 size="md"
-                                                placeholder="응대예정일"
+                                                placeholder="응대예정일시"
+                                                format="yyyy-MM-dd HH:mm"
                                                 disabled={!editable}
+                                                hooks={replydatetime}
                                             />
                                         </WithLabel>
                                     </div>
@@ -132,7 +252,7 @@ export const ContactHisTabpanel: FC<Props> = ({
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
-                                                isDisabled={!editable}
+                                                isDisabled={true}
                                             />
                                         </WithLabel>
                                     </div>
@@ -140,13 +260,20 @@ export const ContactHisTabpanel: FC<Props> = ({
                             </div>
                             <div className="row wr-mt">
                                 <div className="col-8">
-                                    <textarea
-                                        style={{
-                                            width: '100%',
-                                            height: 128,
-                                            margin: 0,
-                                        }}
-                                    />
+                                    <div className="form-floating">
+                                        <textarea
+                                            className="form-control"
+                                            placeholder="내용"
+                                            id="floatingTextarea"
+                                            {...comment}
+                                            style={{
+                                                height: 128,
+                                            }}
+                                        />
+                                        <label htmlFor="floatingTextarea">
+                                            내용
+                                        </label>
+                                    </div>
                                 </div>
                                 <div className="col-4">
                                     <div className="wr-ml">
@@ -162,26 +289,31 @@ export const ContactHisTabpanel: FC<Props> = ({
                                                     variables.detailFilterHeight
                                                 }
                                                 isDisabled={!editable}
+                                                {...status}
                                             />
                                         </WithLabel>
                                         <WithLabel
-                                            id="writer"
                                             label="작성자"
                                             type={labelType}
                                             isRequired={editable}
                                         >
                                             <MyInput
                                                 type="text"
-                                                id="writer"
-                                                placeholder="작성자"
-                                                disabled={!editable}
+                                                placeholder={`${loggedInUser.user_info.name} (${loggedInUser.userid})`}
+                                                disabled
                                             />
                                         </WithLabel>
                                         <div className="wr-pages-detail__toolbar wr-mt">
-                                            <MyButton className="btn-outline-secondary">
+                                            <MyButton
+                                                className="btn-outline-secondary"
+                                                onClick={handleReset}
+                                            >
                                                 원래대로
                                             </MyButton>
-                                            <MyButton className="btn-primary">
+                                            <MyButton
+                                                className="btn-primary"
+                                                onClick={handleCreate}
+                                            >
                                                 저장
                                             </MyButton>
                                         </div>
@@ -195,7 +327,9 @@ export const ContactHisTabpanel: FC<Props> = ({
             <div className="wr-pages-detail__subtitle wr-mt">
                 <div></div>
                 <div>
-                    <MyButton className="btn-danger">선택삭제</MyButton>
+                    <MyButton className="btn-danger" onClick={handleDelete}>
+                        선택삭제
+                    </MyButton>
                 </div>
             </div>
             <div className="wr-table--normal wr-mt">
@@ -203,7 +337,10 @@ export const ContactHisTabpanel: FC<Props> = ({
                     <thead>
                         <tr>
                             <th style={{ width: '30px' }}>
-                                <MyCheckbox label="" />
+                                <MyCheckbox
+                                    label=""
+                                    onChange={handleAllCheck}
+                                />
                             </th>
                             <th style={{ width: '100px' }}>
                                 <strong>상담구분</strong>
@@ -238,58 +375,67 @@ export const ContactHisTabpanel: FC<Props> = ({
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>
-                                <MyCheckbox label="" />
-                            </td>
-                            <td>
-                                <span>계약</span>
-                            </td>
-                            <td>
-                                <span>통화</span>
-                            </td>
-                            <td>
-                                <span>자동차</span>
-                            </td>
-                            <td>
-                                <span>M2023589</span>
-                            </td>
-                            <td>
-                                <span>2022-10-12</span>
-                            </td>
-                            <td>
-                                <div
-                                    className="text-truncate"
-                                    style={{ width: 200 }}
-                                >
-                                    안녕하세요! 이 텍스트는 테스트를 위해
-                                    만들어졌습니다. 이번 테스트는 여러 가지
-                                    주제에 대한 내용들을 다룰 예정이며, 다양한
-                                    지식과 정보들이 포함되어 있습니다. 자세한
-                                    내용을 살펴보시면서 테스트를 진행해 보시기
-                                    바랍니다.
-                                </div>
-                            </td>
-                            <td>
-                                <span>김서윤</span>
-                                <br />
-                                <span>(W2323)</span>
-                            </td>
-                            <td>
-                                <span>2022-10-12 14:00</span>
-                            </td>
-                            <td>
-                                <span>2022-10-12 14:00</span>
-                            </td>
-                            <td>
-                                <span>진행중</span>
-                            </td>
-                        </tr>
+                        {contacts.length === 0 && (
+                            <tr>
+                                <td colSpan={11}>접촉 이력이 없습니다.</td>
+                            </tr>
+                        )}
+                        {contacts.map((v, i) => (
+                            <tr key={`contact${i}`}>
+                                <td>
+                                    <MyCheckbox
+                                        label=""
+                                        checked={v.checked}
+                                        onChange={(evt) => handleCheck(evt, v)}
+                                    />
+                                </td>
+                                <td>
+                                    <span>{v.kind}</span>
+                                </td>
+                                <td>
+                                    <span>{v.channel}</span>
+                                </td>
+                                <td>
+                                    <span>{v.spe ? v.spe : '-'}</span>
+                                </td>
+                                <td>
+                                    <span>{v.cnum ? v.cnum : '-'}</span>
+                                </td>
+                                <td>
+                                    <span>
+                                        {v.issuedate ? v.issuedate : '-'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div
+                                        className="text-truncate"
+                                        style={{ width: 200 }}
+                                    >
+                                        {v.comment}
+                                    </div>
+                                </td>
+                                <td>
+                                    <span>{v.insert_username}</span>
+                                    <br />
+                                    <span>({v.insert_userid})</span>
+                                </td>
+                                <td>
+                                    <span>-</span>
+                                </td>
+                                <td>
+                                    <span>
+                                        {v.replydatetime
+                                            ? v.replydatetime
+                                            : '-'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span>{v.status ? v.status : '-'}</span>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
-                <MyTableExtension
-                // onClick={handleShowSettingModal}
-                />
             </div>
         </MyTabpanel>
     );

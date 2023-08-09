@@ -627,7 +627,7 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                                                         id="aDay"
                                                         size="md"
                                                         placeholder="동의일시"
-                                                        format="YYYY-MM-DD HH:mm"
+                                                        format="yyyy-MM-dd HH:mm"
                                                         disabled={!editable}
                                                         hooks={aDay}
                                                     />
@@ -646,7 +646,7 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                                                     id="createDay"
                                                     size="md"
                                                     placeholder="고객생성일시"
-                                                    format="YYYY-MM-DD HH:mm"
+                                                    format="yyyy-MM-dd HH:mm"
                                                     disabled={!editable}
                                                     hooks={createDay}
                                                 />

@@ -170,17 +170,17 @@ const C_CHANNEL: CoreSelectOption[] = [
 const C_CATEGORY: CoreSelectOption[] = [
     {
         label: '장기',
-        value: '장기',
+        value: 'long',
         isFixed: false,
     },
     {
         label: '자동차',
-        value: '자동차',
+        value: 'car',
         isFixed: false,
     },
     {
         label: '일반',
-        value: '일반',
+        value: 'gen',
         isFixed: false,
     },
     {

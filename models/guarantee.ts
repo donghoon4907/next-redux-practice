@@ -1,6 +1,9 @@
-export type Guarantee = {
-    // 순서
-    index: number;
+import type { CoreDeleteableObject } from './core';
+
+/**
+ * 보증 설정
+ */
+export type Guarantee = CoreDeleteableObject & {
     // id
     idx?: number;
     kind: string;
@@ -14,6 +17,5 @@ export type Guarantee = {
     accumulate_status?: string;
     accumulate_type?: number;
     accumulate_rate?: number;
-    checked: boolean;
     available: boolean;
 };

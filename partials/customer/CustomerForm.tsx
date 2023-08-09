@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { CustomerState } from '@reducers/customer';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MySelect } from '@components/select';
@@ -29,13 +30,13 @@ import userConstants from '@constants/options/user';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { isEmpty } from '@utils/validator/common';
 import { CustomerManagerAccordion } from '@components/accordion/CustomerManagerHistory';
+import { UserHistoryModal } from '@components/modal/UserHistory';
 import {
     useInput,
     useNumbericInput,
     usePhoneInput,
     useResidentNumberInput,
 } from '@hooks/use-input';
-import { UserHistoryModal } from '@components/modal/UserHistory';
 
 interface Props {
     /**
@@ -53,7 +54,7 @@ interface Props {
     /**
      * 주민번호 기본 값
      */
-    defaultIdnum1?: string;
+    defaultIdnum?: string;
     /**
      * 사업자등록번호 기본 값
      */
@@ -122,6 +123,10 @@ interface Props {
      */
     defaultCreateDay?: string;
     /**
+     * 직업 기본 값
+     */
+    defaultJob?: string;
+    /**
      * 회사명 기본 값
      */
     defaultCompany?: string;
@@ -144,13 +149,30 @@ interface Props {
     defaultCaddress1?: string;
     defaultCaddress2?: string;
     defaultCaddress3?: string;
+    /**
+     * 담당자 이름 기본 값
+     */
+    defaultMname?: string;
+    /**
+     * 담당자 직함 기본 값
+     */
+    defaultMtitle?: string;
+    /**
+     * 담당자 전화번호 기본 값
+     */
+    defaultMphone?: string;
+    /**
+     * 담당자 이메일 기본 값
+     */
+    defaultMemail?: string;
+    defaultMemailCom?: CoreSelectOption;
 }
 
 export const CustomerForm: FC<Props> = ({
     mode,
     defaultName = '',
     defaultCusttype = customerConstants.division[0],
-    defaultIdnum1 = '',
+    defaultIdnum = '',
     defaultComRegNum = '',
     defaultAge = '',
     defaultAgeType = customerConstants.age[0],
@@ -173,6 +195,7 @@ export const CustomerForm: FC<Props> = ({
     defaultPia = customerConstants.pia[0],
     defaultAday = null,
     defaultCreateDay = null,
+    defaultJob = '',
     defaultCompany = '',
     defaultTitle = '',
     defaultComPhone = '',
@@ -181,6 +204,11 @@ export const CustomerForm: FC<Props> = ({
     defaultCaddress1 = '',
     defaultCaddress2 = '',
     defaultCaddress3 = '',
+    defaultMname = '',
+    defaultMtitle = '',
+    defaultMphone = '',
+    defaultMemail = '',
+    defaultMemailCom = userConstants.emailCom[0],
 }) => {
     const displayName = 'wr-pages-customer-detail';
 
@@ -188,6 +216,10 @@ export const CustomerForm: FC<Props> = ({
 
     const { loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
+    );
+
+    const { contacts } = useSelector<AppState, CustomerState>(
+        (state) => state.customer,
     );
 
     // const createUser = useApi(createUserRequest);
@@ -200,7 +232,7 @@ export const CustomerForm: FC<Props> = ({
     // 고객구분
     const [custtype] = useSelect(customerConstants.division, defaultCusttype);
     // 주민번호
-    const [idnum1] = useResidentNumberInput(defaultIdnum1);
+    const [idnum] = useResidentNumberInput(defaultIdnum);
     // 사업자등록번호
     const [comRegNum] = useNumbericInput(defaultComRegNum);
     // 나이
@@ -251,6 +283,8 @@ export const CustomerForm: FC<Props> = ({
     const [createDay] = useDatepicker(
         defaultCreateDay ? new Date(defaultCreateDay) : null,
     );
+    // 직업
+    const [job] = useInput(defaultJob);
     // 회사명
     const [company] = useInput(defaultCompany);
     // 부서/직함
@@ -270,6 +304,16 @@ export const CustomerForm: FC<Props> = ({
     );
     // 회사 상세 주소
     const [cAddress3] = useInput(defaultCaddress3);
+    // 담당자명
+    const [mName] = useInput(defaultMname);
+    // 담당자 부서/직함
+    const [mTitle] = useInput(defaultMtitle);
+    // 담당자 전화번호
+    const [mPhone] = useInput(defaultMphone);
+    // 담당자 이메일
+    const [mEmail] = useInput(defaultMemail, { noSpace: true });
+    const [mEmailCom] = useSelect(userConstants.emailCom, defaultMemailCom);
+
     const labelType = editable ? 'active' : 'disable';
     // 개인 여부
     const isIndividual = custtype.value?.value === '개인';
@@ -357,23 +401,96 @@ export const CustomerForm: FC<Props> = ({
 
     const createPayload = () => {
         const payload: any = {
+            name: name.value,
             custtype: custtype.value?.value,
-            idnum1: idnum1.value.replace(/-/g, ''),
+            contacts,
         };
 
-        if (!isEmpty(name.value)) {
-            payload['name'] = name.value;
+        if (inflowPath.value) {
+            payload['sourceroot'] = inflowPath.value.value;
         }
 
-        if (!isEmpty(birthday.value)) {
-            payload['birthday'] = birthday.value;
+        if (grade.value) {
+            payload['customer_rate'] = grade.value.value;
         }
 
-        if (typeof bType === 'boolean') {
-            payload['b_type'] = bType;
+        if (pia.value) {
+            payload['privacyinfo'] = {
+                type: pia.value.value,
+                insert_datetime: aDay.value === null ? undefined : aDay.value,
+            };
         }
 
+        // 개인: 나이 상령일 X
         if (isIndividual) {
+            payload['idnum'] = idnum.value.replace(/-/g, '');
+
+            if (!isEmpty(birthday.value)) {
+                payload['birthday'] = birthday.value;
+            }
+
+            if (typeof bType === 'boolean') {
+                payload['b_type'] = bType;
+            }
+
+            if (!isEmpty(mobile.value)) {
+                payload['mobile'] = mobile.value;
+                payload['mobile_com'] = mobileCom.value!.value;
+            }
+
+            if (!isEmpty(email.value)) {
+                payload['emailhome'] = `${email.value}@${
+                    emailCom.value!.value
+                }`;
+            }
+
+            if (!isEmpty(postcode.value)) {
+                payload['postcode'] = postcode.value;
+            }
+
+            if (!isEmpty(address1.value)) {
+                payload['address1'] = address1.value;
+            }
+
+            if (!isEmpty(address2.value)) {
+                payload['address2'] = address2.value;
+            }
+
+            if (!isEmpty(address3.value)) {
+                payload['address3'] = address3.value;
+            }
+
+            if (!isEmpty(job.value)) {
+                payload['job'] = job.value;
+            }
+
+            payload['office'] = {
+                comname: company.value,
+                title: title.value,
+                tel: comPhone.value,
+                fax: cFax.value,
+                postcode: cPostcode.value,
+                address1: cAddress1.value,
+                address2: cAddress2.value,
+                address3: cAddress3.value,
+            };
+        }
+        // 법인
+        if (isCorporation) {
+            if (!isEmpty(comRegNum.value)) {
+                payload['idnum'] = comRegNum.value;
+            }
+
+            if (!isEmpty(iDate.value)) {
+                payload['birthday'] = iDate.value;
+            }
+
+            payload['manager'] = {
+                name: mName.value,
+                orgatitle: mTitle.value,
+                tel: mPhone.value,
+                email: `${mEmail.value}@${mEmailCom.value!.value}`,
+            };
         }
 
         return payload;
@@ -447,7 +564,7 @@ export const CustomerForm: FC<Props> = ({
                                                         id="idnum1"
                                                         placeholder="주민번호"
                                                         disabled={!editable}
-                                                        {...idnum1}
+                                                        {...idnum}
                                                     />
                                                 </WithLabel>
                                             )}
@@ -849,7 +966,7 @@ export const CustomerForm: FC<Props> = ({
                                                         id="aDay"
                                                         size="md"
                                                         placeholder="동의일시"
-                                                        format="YYYY-MM-DD HH:mm"
+                                                        format="yyyy-MM-dd HH:mm"
                                                         disabled={!editable}
                                                         hooks={aDay}
                                                     />
@@ -868,28 +985,31 @@ export const CustomerForm: FC<Props> = ({
                                                     id="createDay"
                                                     size="md"
                                                     placeholder="고객생성일시"
-                                                    format="YYYY-MM-DD HH:mm"
+                                                    format="yyyy-MM-dd HH:mm"
                                                     disabled={!editable}
                                                     hooks={createDay}
                                                 />
                                             </WithLabel>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="job"
-                                                    label="직업"
-                                                    type={labelType}
-                                                >
-                                                    <MyInput
-                                                        type="text"
+                                        {isIndividual && (
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
                                                         id="job"
-                                                        placeholder="직업"
-                                                        disabled={!editable}
-                                                    />
-                                                </WithLabel>
+                                                        label="직업"
+                                                        type={labelType}
+                                                    >
+                                                        <MyInput
+                                                            type="text"
+                                                            id="job"
+                                                            placeholder="직업"
+                                                            disabled={!editable}
+                                                            {...job}
+                                                        />
+                                                    </WithLabel>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>

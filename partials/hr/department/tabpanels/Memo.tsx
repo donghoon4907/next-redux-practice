@@ -95,7 +95,7 @@ export const MemoTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 id="consultingDate"
                                 size="md"
                                 placeholder="상담예정"
-                                format="YYYY-MM-DD HH:mm:ss"
+                                format="yyyy-MM-dd HH:mm:ss"
                                 disabled={!editable}
                                 hooks={consultingDate}
                             />
