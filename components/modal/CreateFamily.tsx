@@ -14,7 +14,7 @@ import { useDatepicker } from '@hooks/use-datepicker';
 import { isEmpty } from '@utils/validator/common';
 import { generateIndex } from '@utils/generate';
 import { MyRadio } from '@components/radio';
-import { BirthDayInput } from '@partials/common/input/Birthday';
+import { DateAndSLInput } from '@partials/common/input/DateAndSL';
 import { createFamily } from '@actions/customer/set-family.action';
 import { hideCreateFamilyModal } from '@actions/modal/create-family.action';
 
@@ -73,7 +73,6 @@ export const CreateFamilyModal: FC<Props> = () => {
             type,
             index: generateIndex(family),
             checked: false,
-            birth_type: bType,
             sex,
         };
 
@@ -87,6 +86,8 @@ export const CreateFamilyModal: FC<Props> = () => {
 
         if (!isEmpty(birthday.value)) {
             payload['birthday'] = dayjs(birthday.value).format('YYYY-MM-DD');
+
+            payload['birth_type'] = bType;
         }
 
         if (!isEmpty(remark.value)) {
@@ -145,12 +146,13 @@ export const CreateFamilyModal: FC<Props> = () => {
                     </div>
                     <div className="col-6">
                         <div className="wr-ml">
-                            <BirthDayInput
+                            <DateAndSLInput
+                                id="fbirthday"
+                                label="생년월일"
                                 dateHooks={birthday}
                                 type={bType}
                                 setType={setBtype}
                                 labelType="active"
-                                idPrefix="f"
                                 size="sm"
                             />
                         </div>

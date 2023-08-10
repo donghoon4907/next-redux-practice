@@ -202,6 +202,29 @@ const C_STATUS: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 관리여부
+const C_NOTICE: CoreSelectOption[] = [
+    {
+        label: '자동 알림톡',
+        value: '자동 알림톡',
+        isFixed: false,
+    },
+    {
+        label: '자동 SMS',
+        value: '자동 SMS',
+        isFixed: false,
+    },
+    {
+        label: '무시',
+        value: '무시',
+        isFixed: false,
+    },
+    {
+        label: '안내만',
+        value: '안내만',
+        isFixed: false,
+    },
+];
 
 const rootSelectOptions = {
     division: C_DIVISION,
@@ -213,6 +236,7 @@ const rootSelectOptions = {
     channel: C_CHANNEL,
     category: C_CATEGORY,
     status: C_STATUS,
+    notice: C_NOTICE,
 };
 
 export default rootSelectOptions;

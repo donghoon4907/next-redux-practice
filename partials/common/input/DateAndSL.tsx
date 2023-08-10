@@ -7,7 +7,8 @@ import { MyButton } from '@components/button';
 import { CoreSetState } from '@interfaces/core';
 
 interface Props {
-    idPrefix?: string;
+    id: string;
+    label: string;
     disabled?: boolean;
     dateHooks?: UseDatepickerOutput;
     type?: boolean;
@@ -16,8 +17,9 @@ interface Props {
     size: TypeAttributes.Size;
 }
 
-export const BirthDayInput: FC<Props> = ({
-    idPrefix = '',
+export const DateAndSLInput: FC<Props> = ({
+    id,
+    label,
     disabled = false,
     dateHooks,
     type,
@@ -25,18 +27,16 @@ export const BirthDayInput: FC<Props> = ({
     labelType,
     size,
 }) => {
-    const id = idPrefix + 'birthday';
-
     const handleClickButton = () => {
         setType?.((prev) => !prev);
     };
 
     return (
-        <WithLabel id={id} label="생년월일" type={labelType}>
+        <WithLabel id={id} label={label} type={labelType}>
             <MyDatepicker
                 id={id}
                 size={size}
-                placeholder="생년월일"
+                placeholder={label}
                 disabled={disabled}
                 hooks={dateHooks}
             />

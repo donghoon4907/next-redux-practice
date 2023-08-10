@@ -32,7 +32,7 @@ import { HoldingContractTabpanel } from '@partials/customer/tabpanels/HoldingCon
 import { OtherContractTabpanel } from '@partials/customer/tabpanels/Excontract';
 import { SecuredDebtTabpanel } from '@partials/customer/tabpanels/Custcar';
 import { FamilyTabpanel } from '@partials/customer/tabpanels/Family';
-import { AnniversaryTabpanel } from '@partials/customer/tabpanels/Anniversary';
+import { AnniversaryTabpanel } from '@partials/customer/tabpanels/Event';
 import customerConstants from '@constants/options/customer';
 import userConstants from '@constants/options/user';
 import { useDatepicker } from '@hooks/use-datepicker';

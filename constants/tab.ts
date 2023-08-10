@@ -49,9 +49,9 @@ export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [
     },
     { id: 'tabFamily', label: '가족/지인', panelId: 'tabpanelFamily' },
     {
-        id: 'tabAnniversary',
+        id: 'tabEvent',
         label: '기념일관리',
-        panelId: 'tabpanelAnniversary',
+        panelId: 'tabpanelEvent',
     },
 ];
 /**

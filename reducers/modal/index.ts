@@ -11,6 +11,7 @@ import { LifeLongModalActionTypes } from '@actions/modal/life-long.action';
 import { CreateExcontractModalActionTypes } from '@actions/modal/create-excontract.action';
 import { CreateCustcarModalActionTypes } from '@actions/modal/create-custcar.action';
 import { CreateFamilyModalActionTypes } from '@actions/modal/create-family.action';
+import { CreateEventModalActionTypes } from '@actions/modal/create-event.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -27,6 +28,7 @@ export interface ModalState {
     isShowCreateCustcarCarModal: boolean;
     isShowCreateCustcarCustModal: boolean;
     isShowCreateFamilyModal: boolean;
+    isShowCreateEventModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -44,6 +46,7 @@ const initialState: ModalState = {
     isShowCreateCustcarCarModal: false,
     isShowCreateCustcarCustModal: false,
     isShowCreateFamilyModal: false,
+    isShowCreateEventModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -158,6 +161,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case CreateFamilyModalActionTypes.HIDE: {
                 draft.isShowCreateFamilyModal = false;
+                break;
+            }
+            case CreateEventModalActionTypes.SHOW: {
+                draft.isShowCreateEventModal = true;
+                break;
+            }
+            case CreateEventModalActionTypes.HIDE: {
+                draft.isShowCreateEventModal = false;
                 break;
             }
             default:

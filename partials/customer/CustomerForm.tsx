@@ -23,7 +23,7 @@ import { HoldingContractTabpanel } from '@partials/customer/tabpanels/HoldingCon
 import { ExcontractTabpanel } from '@partials/customer/tabpanels/Excontract';
 import { CustcarTabpanel } from '@partials/customer/tabpanels/Custcar';
 import { FamilyTabpanel } from '@partials/customer/tabpanels/Family';
-import { AnniversaryTabpanel } from '@partials/customer/tabpanels/Anniversary';
+import { EventTabpanel } from '@partials/customer/tabpanels/Event';
 import customerConstants from '@constants/options/customer';
 import userConstants from '@constants/options/user';
 import { useDatepicker } from '@hooks/use-datepicker';
@@ -35,7 +35,7 @@ import { CreateExcontractCarModal } from '@components/modal/CreateExcontractCar'
 import { CreateExcontractGenModal } from '@components/modal/CreateExcontractGen';
 import { CreateCustcarCarModal } from '@components/modal/CreateCustcarCar';
 import { CreateCustcarCustModal } from '@components/modal/CreateCustcarCust';
-import { BirthDayInput } from '@partials/common/input/Birthday';
+import { DateAndSLInput } from '@partials/common/input/DateAndSL';
 import { CreateFamilyModal } from '@components/modal/CreateFamily';
 import {
     useInput,
@@ -44,6 +44,7 @@ import {
     useResidentNumberInput,
 } from '@hooks/use-input';
 import { PostcodeInput } from '@partials/common/input/Postcode';
+import { CreateEventModal } from '@components/modal/CreateEvent';
 
 interface Props {
     /**
@@ -592,7 +593,9 @@ export const CustomerForm: FC<Props> = ({
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 {isIndividual && (
-                                                    <BirthDayInput
+                                                    <DateAndSLInput
+                                                        id="birthday"
+                                                        label="생년월일"
                                                         disabled={!editable}
                                                         dateHooks={birthday}
                                                         type={bType}
@@ -1148,10 +1151,10 @@ export const CustomerForm: FC<Props> = ({
                                     hidden={tab.id !== 'tabFamily'}
                                     editable={editable}
                                 />
-                                <AnniversaryTabpanel
-                                    id="tabpanelAnniversary"
-                                    tabId="tabAnniversary"
-                                    hidden={tab.id !== 'tabAnniversary'}
+                                <EventTabpanel
+                                    id="tabpanelEvent"
+                                    tabId="tabEvent"
+                                    hidden={tab.id !== 'tabEvent'}
                                     editable={editable}
                                 />
                             </div>
@@ -1208,6 +1211,7 @@ export const CustomerForm: FC<Props> = ({
             <CreateCustcarCarModal />
             <CreateCustcarCustModal />
             <CreateFamilyModal />
+            <CreateEventModal />
         </>
     );
 };

@@ -8,6 +8,8 @@ import { ContactActionTypes } from '@actions/customer/set-contact.action';
 import { ExcontractActionTypes } from '@actions/customer/set-excontract.action';
 import { CustcarActionTypes } from '@actions/customer/set-custcar.action';
 import { FamilyActionTypes } from '@actions/customer/set-family.action';
+import { Event } from '@models/event';
+import { EventActionTypes } from '@actions/customer/set-event.action';
 
 export interface CustomerState {
     /**
@@ -50,6 +52,14 @@ export interface CustomerState {
      * 삭제한 가족 목록
      */
     removedFamily: Family[];
+    /**
+     * 기념일 목록
+     */
+    events: Event[];
+    /**
+     * 삭제한 기념일 목록
+     */
+    removedEvents: Event[];
 }
 
 const initialState: CustomerState = {
@@ -69,6 +79,8 @@ const initialState: CustomerState = {
     removedCustcars: [],
     family: [],
     removedFamily: [],
+    events: [],
+    removedEvents: [],
 };
 
 export const customerReducer: Reducer<CustomerState, any> = (
@@ -216,6 +228,42 @@ export const customerReducer: Reducer<CustomerState, any> = (
                     if (deleted.idx) {
                         draft.removedFamily =
                             draft.removedFamily.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case EventActionTypes.CREATE: {
+                draft.events = draft.events.concat(action.payload);
+                break;
+            }
+            case EventActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.events.length; i++) {
+                    if (draft.events[i].index === index) {
+                        draft.events[i] = {
+                            ...draft.events[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case EventActionTypes.DELETE: {
+                const findIndex = draft.events.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.events.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedEvents =
+                            draft.removedEvents.concat(deleted);
                     }
                 }
 
