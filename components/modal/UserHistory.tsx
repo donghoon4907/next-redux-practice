@@ -23,7 +23,7 @@ export const UserHistoryModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const { orgas, users } = useSelector<AppState, HrState>(
+    const { orgas, users, loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
     // 부서
@@ -50,6 +50,7 @@ export const UserHistoryModal: FC<Props> = () => {
                     userid: user.value?.value,
                     department: depart.value!.label,
                     name: user.value?.label,
+                    insert_userid: loggedInUser.userid,
                     remark: remark.value,
                 }),
             );

@@ -21,6 +21,7 @@ import { GetUserActionTypes } from '@actions/hr/get-user';
 import { Commission } from '@models/commission';
 import { CommissionActionTypes } from '@actions/hr/set-commission.action';
 import { UserActionTypes } from '@actions/hr/set-user.action';
+import { UserHistory } from '@models/user-history';
 
 export interface HrState {
     /**
@@ -58,7 +59,7 @@ export interface HrState {
     /**
      * 선택한 사용자
      */
-    selectedUser: UserUpdatePayload | null;
+    selectedUser: UserHistory | null;
     /**
      * 로그인한 사용자 정보
      */

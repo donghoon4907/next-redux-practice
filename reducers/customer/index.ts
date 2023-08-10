@@ -10,6 +10,7 @@ import { CustcarActionTypes } from '@actions/customer/set-custcar.action';
 import { FamilyActionTypes } from '@actions/customer/set-family.action';
 import { Event } from '@models/event';
 import { EventActionTypes } from '@actions/customer/set-event.action';
+import { UserHistory } from '@models/user-history';
 
 export interface CustomerState {
     /**
@@ -60,6 +61,10 @@ export interface CustomerState {
      * 삭제한 기념일 목록
      */
     removedEvents: Event[];
+    /**
+     * 담당변경이력 목록
+     */
+    userid_his: UserHistory[];
 }
 
 const initialState: CustomerState = {
@@ -81,6 +86,7 @@ const initialState: CustomerState = {
     removedFamily: [],
     events: [],
     removedEvents: [],
+    userid_his: [],
 };
 
 export const customerReducer: Reducer<CustomerState, any> = (

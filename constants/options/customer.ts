@@ -4,12 +4,12 @@ import type { CoreSelectOption } from '@interfaces/core';
 const C_DIVISION: CoreSelectOption[] = [
     {
         label: '개인',
-        value: '개인',
+        value: '0',
         isFixed: false,
     },
     {
         label: '법인',
-        value: '법인',
+        value: '1',
         isFixed: false,
     },
 ];

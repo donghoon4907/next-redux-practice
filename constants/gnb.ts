@@ -24,9 +24,9 @@ export const ASIDE_MENU: any = {
             label: '가입고객',
             to: '',
             join: {
-                id: 'customer-join_join',
-                label: '가입고객',
-                to: '/customer/join/join',
+                id: 'customer-join_create',
+                label: '고객 등록',
+                to: '/customer/join/create',
             },
         },
         nojoin: {

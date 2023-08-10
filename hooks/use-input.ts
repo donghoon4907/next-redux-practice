@@ -108,6 +108,8 @@ export const useNumbericInput: UseInputFunction = (
                 setValue(nextVal);
             }
         }
+
+        where.callbackOnChange?.(nextVal);
     };
 
     let output: UseInputOutput = { value, onChange };
@@ -128,6 +130,7 @@ export const useNumbericInput: UseInputFunction = (
 export const usePhoneInput: UseInputFunction = (defaultValue, where = {}) => {
     const [phone, setPhone] = useNumbericInput(
         defaultValue ? convertPhoneNumber(defaultValue) : '',
+        where,
     );
 
     const onFocus = () => {
@@ -155,6 +158,7 @@ export const useResidentNumberInput: UseInputFunction = (
 ) => {
     const [residentNum, setResidentNum] = useNumbericInput(
         defaultValue ? convertResidentNumber(defaultValue) : '',
+        where,
     );
 
     const onFocus = () => {

@@ -5,6 +5,8 @@ import type { HrState } from '@reducers/hr';
 import type { CustomerState } from '@reducers/customer';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
+import addMonths from 'date-fns/addMonths';
 import { MySelect } from '@components/select';
 import { CUSTOMER_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -29,7 +31,6 @@ import userConstants from '@constants/options/user';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { isEmpty } from '@utils/validator/common';
 import { CustomerManagerAccordion } from '@components/accordion/CustomerManagerHistory';
-import { UserHistoryModal } from '@components/modal/UserHistory';
 import { CreateExcontractLongModal } from '@components/modal/CreateExcontractLong';
 import { CreateExcontractCarModal } from '@components/modal/CreateExcontractCar';
 import { CreateExcontractGenModal } from '@components/modal/CreateExcontractGen';
@@ -37,14 +38,25 @@ import { CreateCustcarCarModal } from '@components/modal/CreateCustcarCar';
 import { CreateCustcarCustModal } from '@components/modal/CreateCustcarCust';
 import { DateAndSLInput } from '@partials/common/input/DateAndSL';
 import { CreateFamilyModal } from '@components/modal/CreateFamily';
+import { PostcodeInput } from '@partials/common/input/Postcode';
+import { CreateEventModal } from '@components/modal/CreateEvent';
+import {
+    CreateCustomerRequestPayload,
+    createCustomerRequest,
+} from '@actions/customer/create-customer.action';
+import { useApi } from '@hooks/use-api';
 import {
     useInput,
     useNumbericInput,
     usePhoneInput,
     useResidentNumberInput,
 } from '@hooks/use-input';
-import { PostcodeInput } from '@partials/common/input/Postcode';
-import { CreateEventModal } from '@components/modal/CreateEvent';
+import { CreateCustomerDTO } from '@dto/customer/Customer.dto';
+import {
+    birthdayToAge,
+    residentNumToAge,
+    residentNumToBirthday,
+} from '@utils/calculator';
 
 interface Props {
     /**
@@ -70,8 +82,8 @@ interface Props {
     /**
      * 나이 기본 값
      */
-    defaultAge?: string;
-    defaultAgeType?: CoreSelectOption;
+    // defaultAge?: string;
+    // defaultAgeType?: CoreSelectOption;
     /**
      * 생년월일 기본 값
      */
@@ -84,7 +96,7 @@ interface Props {
     /**
      * 상령일 기본 값
      */
-    defaultSday?: string;
+    // defaultSday?: string;
     /**
      * 핸드폰 기본 값
      */
@@ -182,12 +194,12 @@ export const CustomerForm: FC<Props> = ({
     defaultCusttype = customerConstants.division[0],
     defaultIdnum = '',
     defaultComRegNum = '',
-    defaultAge = '',
-    defaultAgeType = customerConstants.age[0],
+    // defaultAge = '',
+    // defaultAgeType = customerConstants.age[0],
     defaultBirthday = null,
     defaultBtype = true,
     defaultIdate = null,
-    defaultSday = null,
+    // defaultSday = null,
     defaultMobile = '',
     defaultMobileCom = userConstants.mobileCom[0],
     defaultPhone = '',
@@ -199,8 +211,8 @@ export const CustomerForm: FC<Props> = ({
     defaultAddress2 = '',
     defaultAddress3 = '',
     defaultInflowPath = customerConstants.inflowPath[0],
-    defaultGrade = customerConstants.grade[0],
-    defaultPia = customerConstants.pia[0],
+    defaultGrade = null,
+    defaultPia = null,
     defaultAday = null,
     defaultCreateDay = null,
     defaultJob = '',
@@ -222,39 +234,132 @@ export const CustomerForm: FC<Props> = ({
 
     const dispatch = useDispatch();
 
-    const { loggedInUser } = useSelector<AppState, HrState>(
+    const { loggedInUser, selectedUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
-    const { contacts, excontracts } = useSelector<AppState, CustomerState>(
-        (state) => state.customer,
-    );
+    const { contacts, excontracts, custcars, family, events, userid_his } =
+        useSelector<AppState, CustomerState>((state) => state.customer);
 
-    // const createUser = useApi(createUserRequest);
+    const createCustomer = useApi(createCustomerRequest);
     // 탭 관리
     const [tab, setTab] = useTab(CUSTOMER_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
+    const labelType = editable ? 'active' : 'disable';
     // 고객명
     const [name] = useInput(defaultName, { noSpace: true });
     // 고객구분
     const [custtype] = useSelect(customerConstants.division, defaultCusttype);
-    // 주민번호
-    const [idnum] = useResidentNumberInput(defaultIdnum);
-    // 사업자등록번호
-    const [comRegNum] = useNumbericInput(defaultComRegNum);
+    // 개인 여부
+    const isIndividual = custtype.value?.value === '0';
+    // 법인 여부
+    const isCorporation = custtype.value?.value === '1';
     // 나이
-    const [age] = useNumbericInput(defaultAge);
-    const [ageType] = useSelect(customerConstants.age, defaultAgeType);
+    const [age, setAge] = useState('');
+    const [ageType] = useSelect(customerConstants.age, undefined, {
+        callbackOnChange: (option) => {
+            if (isEmpty(idnum.value)) {
+                if (birthday.value) {
+                    if (isEmpty(idnum.value)) {
+                        // 상령일
+                        const sday = addMonths(birthday.value, 6);
+
+                        setSday(dayjs(sday).format('YYYY-MM-DD'));
+                        // 일반나이
+                        const age = birthdayToAge(birthday.value);
+                        if (option!.value === '만나이') {
+                            setAge(`${age - 1}`);
+                        } else if (option!.value === '보험나이') {
+                            setAge(birthdayToAge(sday).toString());
+                        } else if (option!.value === '일반나이') {
+                            setAge(`${age}`);
+                        }
+                    }
+                }
+            } else {
+                const pureIdnum = idnum.value.replace(/-/g, '');
+
+                if (pureIdnum.length === 13) {
+                    // 생년월일
+                    const strbirthday = residentNumToBirthday(pureIdnum);
+                    // 상령일
+                    const sday = addMonths(new Date(strbirthday), 6);
+
+                    setBirthday(new Date(strbirthday));
+
+                    setSday(dayjs(sday).format('YYYY-MM-DD'));
+                    // 일반나이
+                    const age = residentNumToAge(idnum.value!);
+                    if (option!.value === '만나이') {
+                        setAge(`${age - 1}`);
+                    } else if (option!.value === '보험나이') {
+                        setAge(birthdayToAge(sday).toString());
+                    } else if (option!.value === '일반나이') {
+                        setAge(`${age}`);
+                    }
+                }
+            }
+        },
+    });
     // 생년월일
-    const [birthday] = useDatepicker(
+    const [birthday, setBirthday] = useDatepicker(
         defaultBirthday ? new Date(defaultBirthday) : null,
+        {
+            callbackOnChange: (nextdate) => {
+                if (nextdate) {
+                    if (isEmpty(idnum.value)) {
+                        // 상령일
+                        const sday = addMonths(new Date(nextdate), 6);
+
+                        setSday(dayjs(sday).format('YYYY-MM-DD'));
+                        // 일반나이
+                        const age = birthdayToAge(nextdate);
+                        if (ageType.value!.value === '만나이') {
+                            setAge(`${age - 1}`);
+                        } else if (ageType.value!.value === '보험나이') {
+                            setAge(birthdayToAge(sday).toString());
+                        } else if (ageType.value!.value === '일반나이') {
+                            setAge(`${age}`);
+                        }
+                    }
+                }
+            },
+        },
     );
     const [bType, setBtype] = useState(defaultBtype);
+    // 상령일
+    const [sDay, setSday] = useState('');
+    // 주민번호
+    const [idnum] = useResidentNumberInput(defaultIdnum, {
+        callbackOnChange: (nextval) => {
+            if (!isEmpty(nextval)) {
+                if (nextval!.length === 13) {
+                    // 생년월일
+                    const strbirthday = residentNumToBirthday(nextval!);
+                    // 상령일
+                    const sday = addMonths(new Date(strbirthday), 6);
+
+                    setBirthday(new Date(strbirthday));
+
+                    setSday(dayjs(sday).format('YYYY-MM-DD'));
+                    // 일반나이
+                    const age = residentNumToAge(nextval!);
+                    if (ageType.value!.value === '만나이') {
+                        setAge(`${age - 1}`);
+                    } else if (ageType.value!.value === '보험나이') {
+                        setAge(birthdayToAge(sday).toString());
+                    } else if (ageType.value!.value === '일반나이') {
+                        setAge(`${age}`);
+                    }
+                }
+            }
+        },
+    });
+    // 사업자등록번호
+    const [comRegNum] = useNumbericInput(defaultComRegNum);
     // 법인설립일
     const [iDate] = useDatepicker(defaultIdate ? new Date(defaultIdate) : null);
-    // 상령일
-    const [sDay] = useDatepicker(defaultSday ? new Date(defaultSday) : null);
     // 핸드폰
     const [mobile] = usePhoneInput(defaultMobile);
     const [mobileCom] = useSelect(userConstants.mobileCom, defaultMobileCom);
@@ -322,12 +427,6 @@ export const CustomerForm: FC<Props> = ({
     const [mEmail] = useInput(defaultMemail, { noSpace: true });
     const [mEmailCom] = useSelect(userConstants.emailCom, defaultMemailCom);
 
-    const labelType = editable ? 'active' : 'disable';
-    // 개인 여부
-    const isIndividual = custtype.value?.value === '개인';
-    // 법인 여부
-    const isCorporation = custtype.value?.value === '법인';
-
     // 취소 버튼 클릭 핸들러
     const handleClickCancel = () => {
         const tf = confirm('수정을 취소하시겠습니까?');
@@ -344,32 +443,11 @@ export const CustomerForm: FC<Props> = ({
     const handleCreate = () => {
         const payload = createPayload();
 
-        // const createUserDto = new CreateUserDTO(payload);
+        const createCustomerDto = new CreateCustomerDTO(payload);
 
-        // if (createUserDto.requiredValidate()) {
-        //     createUser(createUserDto.getPayload(), ({ userid }) => {
-        //         if (userid) {
-        //             // 프로필 사진을 설정한 경우
-        //             if (lastSetPortraitImageFile) {
-        //                 const formData = new FormData();
-
-        //                 formData.append('file', lastSetPortraitImageFile);
-
-        //                 upload(
-        //                     {
-        //                         userid,
-        //                         formData,
-        //                     },
-        //                     () => {
-        //                         alert('사용자가 등록되었습니다.');
-        //                     },
-        //                 );
-        //             } else {
-        //                 alert('사용자가 등록되었습니다.');
-        //             }
-        //         }
-        //     });
-        // }
+        if (createCustomerDto.requiredValidate()) {
+            createCustomer(createCustomerDto.getPayload());
+        }
     };
 
     const handleUpdate = () => {
@@ -404,12 +482,39 @@ export const CustomerForm: FC<Props> = ({
     };
 
     const createPayload = () => {
-        const payload: any = {
+        const payload: CreateCustomerRequestPayload = {
             name: name.value,
-            custtype: custtype.value?.value,
-            contacts,
-            excontracts,
+            custtype: +custtype.value!.value,
+            userid: selectedUser ? selectedUser.userid : loggedInUser.userid,
         };
+
+        if (selectedUser) {
+            payload['userid_his'] = [...userid_his, selectedUser];
+        } else {
+            if (userid_his.length > 0) {
+                payload['userid_his'] = userid_his;
+            }
+        }
+
+        if (contacts.length > 0) {
+            payload['contacts'] = contacts;
+        }
+
+        if (excontracts.length > 0) {
+            payload['excontracts'] = excontracts;
+        }
+
+        if (custcars.length > 0) {
+            payload['custcars'] = custcars;
+        }
+
+        if (family.length > 0) {
+            payload['family'] = family;
+        }
+
+        if (events.length > 0) {
+            payload['events'] = events;
+        }
 
         if (inflowPath.value) {
             payload['sourceroot'] = inflowPath.value.value;
@@ -422,19 +527,26 @@ export const CustomerForm: FC<Props> = ({
         if (pia.value) {
             payload['privacyinfo'] = {
                 type: pia.value.value,
-                insert_datetime: aDay.value === null ? undefined : aDay.value,
             };
+
+            if (aDay.value) {
+                payload.privacyinfo['insert_datetime'] = dayjs(
+                    aDay.value,
+                ).format('YYYY-MM-DD HH:mm');
+            }
         }
 
         // 개인: 나이 상령일 X
         if (isIndividual) {
-            payload['idnum'] = idnum.value.replace(/-/g, '');
-
-            if (!isEmpty(birthday.value)) {
-                payload['birthday'] = birthday.value;
+            if (!isEmpty(idnum.value)) {
+                payload['idnum'] = idnum.value.replace(/-/g, '');
             }
 
-            if (typeof bType === 'boolean') {
+            if (birthday.value) {
+                payload['birthday'] = dayjs(birthday.value).format(
+                    'YYYY-MM-DD',
+                );
+
                 payload['b_type'] = bType;
             }
 
@@ -486,8 +598,16 @@ export const CustomerForm: FC<Props> = ({
                 payload['idnum'] = comRegNum.value;
             }
 
-            if (!isEmpty(iDate.value)) {
-                payload['birthday'] = iDate.value;
+            if (iDate.value) {
+                payload['birthday'] = dayjs(iDate.value).format('YYYY-MM-DD');
+            }
+
+            if (!isEmpty(phone.value)) {
+                payload['mobile'] = phone.value;
+            }
+
+            if (!isEmpty(homepage.value)) {
+                payload['emailhome'] = homepage.value;
             }
 
             payload['manager'] = {
@@ -525,6 +645,7 @@ export const CustomerForm: FC<Props> = ({
                                                 id="name"
                                                 label="고객명"
                                                 type={labelType}
+                                                isRequired={editable}
                                             >
                                                 <MyInput
                                                     type="text"
@@ -626,18 +747,16 @@ export const CustomerForm: FC<Props> = ({
                                         <div className="row wr-mt">
                                             <div className="col-6">
                                                 <WithLabel
-                                                    id="age"
                                                     label="나이"
                                                     type={labelType}
                                                 >
                                                     <MyInput
                                                         type="text"
-                                                        id="age"
                                                         placeholder="나이"
-                                                        disabled={!editable}
-                                                        {...age}
+                                                        disabled={true}
+                                                        value={age}
                                                     />
-                                                    <div style={{ width: 230 }}>
+                                                    <div style={{ width: 300 }}>
                                                         <MySelect
                                                             placeholder="선택"
                                                             placeHolderFontSize={
@@ -647,9 +766,6 @@ export const CustomerForm: FC<Props> = ({
                                                                 variables.detailFilterHeight
                                                             }
                                                             placement="right"
-                                                            isDisabled={
-                                                                !editable
-                                                            }
                                                             {...ageType}
                                                         />
                                                     </div>
@@ -658,16 +774,14 @@ export const CustomerForm: FC<Props> = ({
                                             <div className="col-6">
                                                 <div className="wr-ml">
                                                     <WithLabel
-                                                        id="sDay"
                                                         label="상령일"
                                                         type={labelType}
                                                     >
-                                                        <MyDatepicker
-                                                            id="sDay"
-                                                            size="md"
+                                                        <MyInput
+                                                            type="text"
                                                             placeholder="상령일"
-                                                            disabled={!editable}
-                                                            hooks={sDay}
+                                                            disabled={true}
+                                                            value={sDay}
                                                         />
                                                     </WithLabel>
                                                 </div>
@@ -693,7 +807,7 @@ export const CustomerForm: FC<Props> = ({
                                                         disabled={!editable}
                                                         {...mobile}
                                                     />
-                                                    <div style={{ width: 230 }}>
+                                                    <div style={{ width: 300 }}>
                                                         <MySelect
                                                             placeholder={'선택'}
                                                             placeHolderFontSize={
@@ -828,7 +942,7 @@ export const CustomerForm: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="grade"
-                                                        placeholder="고객등급"
+                                                        placeholder="선택"
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -848,7 +962,7 @@ export const CustomerForm: FC<Props> = ({
                                             >
                                                 <MySelect
                                                     inputId="pia"
-                                                    placeholder="개인정보동의"
+                                                    placeholder="선택"
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -888,7 +1002,7 @@ export const CustomerForm: FC<Props> = ({
                                                     size="md"
                                                     placeholder="고객생성일시"
                                                     format="yyyy-MM-dd HH:mm"
-                                                    disabled={!editable}
+                                                    disabled={true}
                                                     hooks={createDay}
                                                 />
                                             </WithLabel>
@@ -1203,8 +1317,6 @@ export const CustomerForm: FC<Props> = ({
                     </div>
                 </MyFooter>
             </MyLayout>
-
-            <UserHistoryModal />
             <CreateExcontractLongModal />
             <CreateExcontractCarModal />
             <CreateExcontractGenModal />

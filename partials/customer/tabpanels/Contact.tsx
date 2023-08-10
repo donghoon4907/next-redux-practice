@@ -24,6 +24,7 @@ import {
     deleteContact,
     updateContact,
 } from '@actions/customer/set-contact.action';
+import { generateIndex } from '@utils/generate';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -103,7 +104,7 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
 
     const createPayload = () => {
         const payload: CreateContactPayload = {
-            index: contacts[contacts.length - 1].index + 1,
+            index: generateIndex(contacts),
             kind: kind.value!.value,
             channel: channel.value!.value,
             comment: comment.value,
