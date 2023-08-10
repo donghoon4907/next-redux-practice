@@ -115,7 +115,7 @@ export const MemoTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         {editable && (
                             <div>
                                 <MyButton
-                                    className="btn-danger"
+                                    className="btn-danger btn-sm"
                                     onClick={handleDeleteCommission}
                                 >
                                     선택삭제

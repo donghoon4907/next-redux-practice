@@ -11,7 +11,7 @@ export const MyRadio: FC<MyRadioProps> = ({ id, label, ...rest }) => {
     return (
         <div className="wr-radio form-check">
             <input
-                className="form-check-input"
+                className="form-check-input wr-radio--adjust"
                 type="radio"
                 id={id}
                 {...rest}

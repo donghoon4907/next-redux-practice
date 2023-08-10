@@ -5,7 +5,7 @@ interface Props extends CoreProps, ButtonHTMLAttributes<HTMLButtonElement> {}
 
 export const MyButton: FC<Props> = ({ children, className, ...rest }) => {
     return (
-        <button className={`btn btn-sm ${className}`} {...rest}>
+        <button className={`btn ${className}`} {...rest}>
             {children}
         </button>
     );

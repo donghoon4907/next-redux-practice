@@ -1,6 +1,7 @@
 import type { InputHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import type { CoreProps } from '@interfaces/core';
 import { forwardRef } from 'react';
+import { MyButton } from '@components/button';
 
 export interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
     button?: CoreProps & ButtonHTMLAttributes<HTMLButtonElement>;
@@ -14,13 +15,9 @@ export const MyInput = forwardRef<HTMLInputElement, MyInputProps>(
         let unitTxt = null;
 
         if (button) {
-            const { children, className = 'btn-primary', ...ano } = button;
+            const { children, ...ano } = button;
 
-            btn = (
-                <button className={`btn btn-sm ${className}`} {...ano}>
-                    {children}
-                </button>
-            );
+            btn = <MyButton {...ano}>{children}</MyButton>;
         }
 
         if (unit) {

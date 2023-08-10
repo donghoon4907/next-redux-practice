@@ -37,10 +37,10 @@ export const HoldingContractTabpanel: FC<Props> = ({
             <div className="wr-pages-detail__subtitle wr-mt">
                 <strong>장기보험 (1)</strong>
                 <div>
-                    <MyButton className="btn-danger">선택삭제</MyButton>
+                    <MyButton className="btn-danger btn-sm">선택삭제</MyButton>
                 </div>
             </div>
-            <div className="wr-table--normal wr-mt">
+            <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>
@@ -118,10 +118,10 @@ export const HoldingContractTabpanel: FC<Props> = ({
             <div className="wr-pages-detail__subtitle wr-mt">
                 <strong>자동차보험 (1)</strong>
                 <div>
-                    <MyButton className="btn-danger">선택삭제</MyButton>
+                    <MyButton className="btn-danger btn-sm">선택삭제</MyButton>
                 </div>
             </div>
-            <div className="wr-table--normal wr-mt">
+            <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>
@@ -206,7 +206,7 @@ export const HoldingContractTabpanel: FC<Props> = ({
             <div className="wr-pages-detail__subtitle wr-mt">
                 <strong>일반보험 (1)</strong>
                 <div>
-                    <MyButton className="btn-danger">선택삭제</MyButton>
+                    <MyButton className="btn-danger btn-sm">선택삭제</MyButton>
                 </div>
             </div>
             <div className="wr-table--normal wr-mt">

@@ -83,12 +83,15 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             <div className="wr-pages-detail__subtitle wr-mt">
                 <strong>보유차량</strong>
                 <div>
-                    <MyButton className="btn-danger" onClick={handleDeleteCars}>
+                    <MyButton
+                        className="btn-danger btn-sm"
+                        onClick={handleDeleteCars}
+                    >
                         선택삭제
                     </MyButton>
                 </div>
             </div>
-            <div className="wr-table--normal wr-mt">
+            <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>
@@ -168,14 +171,14 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                 <strong>피담보물건</strong>
                 <div>
                     <MyButton
-                        className="btn-danger"
+                        className="btn-danger btn-sm"
                         onClick={handleDeleteCusts}
                     >
                         선택삭제
                     </MyButton>
                 </div>
             </div>
-            <div className="wr-table--normal wr-mt">
+            <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>

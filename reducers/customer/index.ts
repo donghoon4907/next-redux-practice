@@ -2,10 +2,12 @@ import type { Reducer } from 'redux';
 import type { Contact } from '@models/contact';
 import type { Excontract } from '@models/excontract';
 import type { Custcar } from '@models/custcar';
+import type { Family } from '@models/family';
 import produce from 'immer';
 import { ContactActionTypes } from '@actions/customer/set-contact.action';
 import { ExcontractActionTypes } from '@actions/customer/set-excontract.action';
 import { CustcarActionTypes } from '@actions/customer/set-custcar.action';
+import { FamilyActionTypes } from '@actions/customer/set-family.action';
 
 export interface CustomerState {
     /**
@@ -40,6 +42,14 @@ export interface CustomerState {
      * 삭제한 피담보물/차량 목록
      */
     removedCustcars: Custcar[];
+    /**
+     * 가족 목록
+     */
+    family: Family[];
+    /**
+     * 삭제한 가족 목록
+     */
+    removedFamily: Family[];
 }
 
 const initialState: CustomerState = {
@@ -57,6 +67,8 @@ const initialState: CustomerState = {
     removedExcontracts: [],
     custcars: [],
     removedCustcars: [],
+    family: [],
+    removedFamily: [],
 };
 
 export const customerReducer: Reducer<CustomerState, any> = (
@@ -168,6 +180,42 @@ export const customerReducer: Reducer<CustomerState, any> = (
                     if (deleted.idx) {
                         draft.removedCustcars =
                             draft.removedCustcars.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case FamilyActionTypes.CREATE: {
+                draft.family = draft.family.concat(action.payload);
+                break;
+            }
+            case FamilyActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.family.length; i++) {
+                    if (draft.family[i].index === index) {
+                        draft.family[i] = {
+                            ...draft.family[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case FamilyActionTypes.DELETE: {
+                const findIndex = draft.family.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.family.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedFamily =
+                            draft.removedFamily.concat(deleted);
                     }
                 }
 

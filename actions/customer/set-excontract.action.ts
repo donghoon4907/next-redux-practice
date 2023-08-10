@@ -1,5 +1,4 @@
 import type { Action } from 'redux';
-import type { CorePayload } from '@interfaces/core';
 import type { Excontract } from '@models/excontract';
 
 export const EXCONTRACT_KEY = 'WR-EXCONTRACT';
@@ -10,12 +9,12 @@ export const ExcontractActionTypes = {
     DELETE: `DELETE_${EXCONTRACT_KEY}`,
 } as const;
 
-export interface CreateExcontractPayload extends CorePayload, Excontract {}
+export interface CreateExcontractPayload extends Excontract {}
 
 export interface UpdateExcontractPayload
     extends Partial<CreateExcontractPayload> {}
 
-export interface DeleteExcontractPayload extends CorePayload {
+export interface DeleteExcontractPayload {
     index: number;
 }
 

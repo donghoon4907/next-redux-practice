@@ -1,5 +1,4 @@
 import type { Action } from 'redux';
-import type { CorePayload } from '@interfaces/core';
 import type { Contact } from '@models/contact';
 
 export const CONTACT_KEY = 'WR-CONTACT';
@@ -10,11 +9,11 @@ export const ContactActionTypes = {
     DELETE: `DELETE_${CONTACT_KEY}`,
 } as const;
 
-export interface CreateContactPayload extends CorePayload, Contact {}
+export interface CreateContactPayload extends Contact {}
 
 export interface UpdateContactPayload extends Partial<CreateContactPayload> {}
 
-export interface DeleteContactPayload extends CorePayload {
+export interface DeleteContactPayload {
     index: number;
 }
 

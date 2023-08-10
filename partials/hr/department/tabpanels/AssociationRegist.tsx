@@ -286,7 +286,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                         {editable && (
                             <div>
                                 <MyButton
-                                    className="btn-danger"
+                                    className="btn-danger btn-sm"
                                     onClick={handleDeleteDamages}
                                 >
                                     선택삭제
@@ -376,7 +376,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                             {editable && (
                                 <div>
                                     <MyButton
-                                        className="btn-danger"
+                                        className="btn-danger btn-sm"
                                         onClick={handleDeleteLifes}
                                     >
                                         선택삭제

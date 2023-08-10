@@ -120,7 +120,7 @@ export const CommissionTabpanel: FC<Props> = ({
                         {editable && (
                             <div>
                                 <MyButton
-                                    className="btn-danger"
+                                    className="btn-danger btn-sm"
                                     onClick={handleDeleteCommission}
                                 >
                                     선택삭제

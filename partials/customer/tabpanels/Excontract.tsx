@@ -114,14 +114,14 @@ export const ExcontractTabpanel: FC<Props> = ({
                         <strong>장기보험 ({filteredLongs.length})</strong>
                         <div>
                             <MyButton
-                                className="btn-danger"
+                                className="btn-danger btn-sm"
                                 onClick={handleDeleteLongs}
                             >
                                 선택삭제
                             </MyButton>
                         </div>
                     </div>
-                    <div className="wr-table--normal wr-mt">
+                    <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
@@ -219,14 +219,14 @@ export const ExcontractTabpanel: FC<Props> = ({
                         <strong>자동차보험 ({filteredCars.length})</strong>
                         <div>
                             <MyButton
-                                className="btn-danger"
+                                className="btn-danger btn-sm"
                                 onClick={handleDeleteCars}
                             >
                                 선택삭제
                             </MyButton>
                         </div>
                     </div>
-                    <div className="wr-table--normal wr-mt">
+                    <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
@@ -331,14 +331,14 @@ export const ExcontractTabpanel: FC<Props> = ({
                         <strong>일반보험 ({filteredGens.length})</strong>
                         <div>
                             <MyButton
-                                className="btn-danger"
+                                className="btn-danger btn-sm"
                                 onClick={handleDeleteGens}
                             >
                                 선택삭제
                             </MyButton>
                         </div>
                     </div>
-                    <div className="wr-table--normal wr-mt">
+                    <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
                                 <tr>

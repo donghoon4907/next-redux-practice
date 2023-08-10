@@ -12,6 +12,7 @@ import { MyCheckbox } from '@components/checkbox';
 import { MyDatepicker } from '@components/datepicker';
 import { MyButton } from '@components/button';
 import { AiOutlinePicture } from 'react-icons/ai';
+import { BirthDayInput } from '@partials/common/input/Birthday';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;

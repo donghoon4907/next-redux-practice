@@ -1,5 +1,4 @@
 import type { Action } from 'redux';
-import type { CorePayload } from '@interfaces/core';
 import type { Custcar } from '@models/custcar';
 
 export const CUSTCAR_KEY = 'WR-CUSTCAR';
@@ -10,11 +9,11 @@ export const CustcarActionTypes = {
     DELETE: `DELETE_${CUSTCAR_KEY}`,
 } as const;
 
-export interface CreateCustcarPayload extends CorePayload, Custcar {}
+export interface CreateCustcarPayload extends Custcar {}
 
 export interface UpdateCustcarPayload extends Partial<CreateCustcarPayload> {}
 
-export interface DeleteCustcarPayload extends CorePayload {
+export interface DeleteCustcarPayload {
     index: number;
 }
 

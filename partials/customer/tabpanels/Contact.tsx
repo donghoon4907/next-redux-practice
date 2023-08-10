@@ -135,10 +135,10 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                 <div className="col">
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__title">
-                            <strong>상세</strong>
-                            <span className="wr-pages-detail__description">
+                            <strong>상담 설정</strong>
+                            {/* <span className="wr-pages-detail__description">
                                 작성일시: 2023-12-12 13:22
-                            </span>
+                            </span> */}
                         </div>
                         <div className="wr-pages-detail__content">
                             <div className="row">
@@ -300,13 +300,13 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                         </WithLabel>
                                         <div className="wr-pages-detail__toolbar wr-mt">
                                             <MyButton
-                                                className="btn-outline-secondary"
+                                                className="btn-outline-secondary btn-md"
                                                 onClick={handleReset}
                                             >
                                                 원래대로
                                             </MyButton>
                                             <MyButton
-                                                className="btn-primary"
+                                                className="btn-primary btn-md"
                                                 onClick={handleCreate}
                                             >
                                                 저장
@@ -322,7 +322,10 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             <div className="wr-pages-detail__subtitle wr-mt">
                 <div></div>
                 <div>
-                    <MyButton className="btn-danger" onClick={handleDelete}>
+                    <MyButton
+                        className="btn-danger btn-sm"
+                        onClick={handleDelete}
+                    >
                         선택삭제
                     </MyButton>
                 </div>

@@ -47,6 +47,7 @@ import {
     usePhoneInput,
     useResidentNumberInput,
 } from '@hooks/use-input';
+import { PostcodeInput } from '@partials/common/input/Postcode';
 
 interface Props {
     /**
@@ -1210,77 +1211,16 @@ export const UserForm: FC<Props> = ({
                             </div>
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
-                                    <div className="row wr-mb">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                label="주소"
-                                                type={labelType}
-                                            >
-                                                <div className="wr-pages-detail__with">
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="우편번호"
-                                                        disabled
-                                                        onClick={
-                                                            onClickPostcode
-                                                        }
-                                                        {...postcode}
-                                                        button={{
-                                                            type: 'button',
-                                                            disabled:
-                                                                !isEditable,
-                                                            onClick:
-                                                                onClickPostcode,
-                                                            children: (
-                                                                <>
-                                                                    <span>
-                                                                        찾기
-                                                                    </span>
-                                                                </>
-                                                            ),
-                                                        }}
-                                                    />
-                                                </div>
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="주소1"
-                                                    disabled
-                                                    {...address1}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="addr2"
-                                                label="상세주소"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="addr2"
-                                                    placeholder="상세주소"
-                                                    disabled={!isEditable}
-                                                    {...address3}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="주소2"
-                                                    disabled
-                                                    {...address2}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <PostcodeInput
+                                        disabled={!isEditable}
+                                        labelType={labelType}
+                                        size="md"
+                                        postcodeHooks={postcode}
+                                        address1Hooks={address1}
+                                        address2Hooks={address2}
+                                        address3Hooks={address3}
+                                        onClickPostcode={onClickPostcode}
+                                    />
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
@@ -1619,7 +1559,7 @@ export const UserForm: FC<Props> = ({
                         <div className="wr-pages-detail__buttons">
                             {editable && (
                                 <MyButton
-                                    className="btn-secondary"
+                                    className="btn-secondary btn-sm"
                                     onClick={handleClickCancel}
                                 >
                                     취소
@@ -1628,7 +1568,7 @@ export const UserForm: FC<Props> = ({
                             {mode === 'create' && (
                                 <MyButton
                                     type="button"
-                                    className="btn-primary"
+                                    className="btn-primary btn-sm"
                                     onClick={handleCreate}
                                 >
                                     등록
@@ -1637,7 +1577,7 @@ export const UserForm: FC<Props> = ({
                             {mode === 'update' && (
                                 <MyButton
                                     type="button"
-                                    className="btn-primary"
+                                    className="btn-primary btn-sm"
                                     onClick={
                                         editable
                                             ? handleUpdate

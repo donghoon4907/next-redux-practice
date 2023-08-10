@@ -46,7 +46,9 @@ export const CustomerManagerAccordion: FC<Props> = ({ defaultTitle, data }) => {
                         role="tab"
                         id="user_his"
                     >
-                        <span className="btn btn-primary">담당변경이력</span>
+                        <span className="btn btn-primary btn-sm">
+                            담당변경이력
+                        </span>
                     </AccordionHeader>
                 </div>
 

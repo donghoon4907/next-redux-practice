@@ -2,8 +2,7 @@
     overflow: hidden;
     --wr-tab-active-color: white;
 
-    & .wr-with__label,
-    .btn {
+    & .wr-with__label {
         height: $wr-detail-filter-height;
     }
 

@@ -15,7 +15,6 @@ import { MyLayout } from '@components/Layout';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { MyButton } from '@components/button';
-import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { useTab } from '@hooks/use-tab';
 import { MyDatepicker } from '@components/datepicker';
 import { usePostcode } from '@hooks/use-postcode';
@@ -32,16 +31,19 @@ import { isEmpty } from '@utils/validator/common';
 import { CustomerManagerAccordion } from '@components/accordion/CustomerManagerHistory';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { CreateExcontractLongModal } from '@components/modal/CreateExcontractLong';
+import { CreateExcontractCarModal } from '@components/modal/CreateExcontractCar';
+import { CreateExcontractGenModal } from '@components/modal/CreateExcontractGen';
+import { CreateCustcarCarModal } from '@components/modal/CreateCustcarCar';
+import { CreateCustcarCustModal } from '@components/modal/CreateCustcarCust';
+import { BirthDayInput } from '@partials/common/input/Birthday';
+import { CreateFamilyModal } from '@components/modal/CreateFamily';
 import {
     useInput,
     useNumbericInput,
     usePhoneInput,
     useResidentNumberInput,
 } from '@hooks/use-input';
-import { CreateExcontractCarModal } from '@components/modal/CreateExcontractCar';
-import { CreateExcontractGenModal } from '@components/modal/CreateExcontractGen';
-import { CreateCustcarCarModal } from '@components/modal/CreateCustcarCar';
-import { CreateCustcarCustModal } from '@components/modal/CreateCustcarCust';
+import { PostcodeInput } from '@partials/common/input/Postcode';
 
 interface Props {
     /**
@@ -590,57 +592,14 @@ export const CustomerForm: FC<Props> = ({
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 {isIndividual && (
-                                                    <WithLabel
-                                                        id="birthday"
-                                                        label="생년월일"
-                                                        type={labelType}
-                                                    >
-                                                        <MyDatepicker
-                                                            id="birthday"
-                                                            size="md"
-                                                            placeholder="생년월일"
-                                                            disabled={!editable}
-                                                            hooks={birthday}
-                                                        />
-                                                        <div
-                                                            style={{
-                                                                width: 70,
-                                                            }}
-                                                        >
-                                                            <MyButton
-                                                                className={
-                                                                    bType
-                                                                        ? 'btn-primary'
-                                                                        : 'btn-secondary'
-                                                                }
-                                                                onClick={() =>
-                                                                    setBtype(
-                                                                        !bType,
-                                                                    )
-                                                                }
-                                                            >
-                                                                {bType
-                                                                    ? '양력'
-                                                                    : '음력'}
-                                                            </MyButton>
-                                                            {/* <MySelect
-                                                                placeholder={
-                                                                    '선택'
-                                                                }
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                placement="right"
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                {...bType}
-                                                            /> */}
-                                                        </div>
-                                                    </WithLabel>
+                                                    <BirthDayInput
+                                                        disabled={!editable}
+                                                        dateHooks={birthday}
+                                                        type={bType}
+                                                        setType={setBtype}
+                                                        labelType={labelType}
+                                                        size="md"
+                                                    />
                                                 )}
                                                 {isCorporation && (
                                                     <WithLabel
@@ -823,79 +782,17 @@ export const CustomerForm: FC<Props> = ({
                                         </div>
                                     </div>
                                     {isIndividual && (
-                                        <>
-                                            <div className="row wr-mt">
-                                                <div className="col-6">
-                                                    <WithLabel
-                                                        label="주소"
-                                                        type={labelType}
-                                                    >
-                                                        <div className="wr-pages-detail__with">
-                                                            <MyInput
-                                                                type="text"
-                                                                placeholder="우편번호"
-                                                                disabled
-                                                                onClick={
-                                                                    onClickPostcode
-                                                                }
-                                                                {...postcode}
-                                                                button={{
-                                                                    type: 'button',
-                                                                    disabled:
-                                                                        !editable,
-                                                                    onClick:
-                                                                        onClickPostcode,
-                                                                    children: (
-                                                                        <>
-                                                                            <span>
-                                                                                찾기
-                                                                            </span>
-                                                                        </>
-                                                                    ),
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </WithLabel>
-                                                </div>
-                                                <div className="col-6">
-                                                    <div className="wr-ml">
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="주소1"
-                                                            disabled
-                                                            {...address1}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="row wr-mt">
-                                                <div className="col-6">
-                                                    <WithLabel
-                                                        id="addr3"
-                                                        label="상세주소"
-                                                        type={labelType}
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            id="addr3"
-                                                            placeholder="상세주소"
-                                                            disabled={!editable}
-                                                            {...address3}
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                                <div className="col-6">
-                                                    <div className="wr-ml">
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="주소2"
-                                                            disabled
-                                                            {...address2}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </>
+                                        <PostcodeInput
+                                            isMt={true}
+                                            disabled={!editable}
+                                            labelType={labelType}
+                                            size="md"
+                                            postcodeHooks={postcode}
+                                            address1Hooks={address1}
+                                            address2Hooks={address2}
+                                            address3Hooks={address3}
+                                            onClickPostcode={onClickPostcode}
+                                        />
                                     )}
                                 </div>
                             </div>
@@ -1089,77 +986,18 @@ export const CustomerForm: FC<Props> = ({
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="row wr-mt">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    label="회사주소"
-                                                    type={labelType}
-                                                >
-                                                    <div className="wr-pages-detail__with">
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="우편번호"
-                                                            disabled
-                                                            onClick={
-                                                                onClickCPostcode
-                                                            }
-                                                            {...cPostcode}
-                                                            button={{
-                                                                type: 'button',
-                                                                disabled:
-                                                                    !editable,
-                                                                onClick:
-                                                                    onClickCPostcode,
-                                                                children: (
-                                                                    <>
-                                                                        <span>
-                                                                            찾기
-                                                                        </span>
-                                                                    </>
-                                                                ),
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="주소1"
-                                                        disabled
-                                                        {...cAddress1}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="row wr-mt">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="cAddr3"
-                                                    label="상세주소"
-                                                    type={labelType}
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="cAddr3"
-                                                        placeholder="상세주소"
-                                                        disabled={!editable}
-                                                        {...cAddress3}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="주소2"
-                                                        disabled
-                                                        {...cAddress2}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <PostcodeInput
+                                            isMt={true}
+                                            idPrefix="c"
+                                            disabled={!editable}
+                                            labelType={labelType}
+                                            size="md"
+                                            postcodeHooks={cPostcode}
+                                            address1Hooks={cAddress1}
+                                            address2Hooks={cAddress2}
+                                            address3Hooks={cAddress3}
+                                            onClickPostcode={onClickCPostcode}
+                                        />
                                     </div>
                                 </div>
                             )}
@@ -1323,14 +1161,14 @@ export const CustomerForm: FC<Props> = ({
                 <MyFooter>
                     <div className="wr-footer__between">
                         <div>
-                            <MyButton className="btn-warning">
+                            <MyButton className="btn-warning btn-sm">
                                 다른 담당자 내용
                             </MyButton>
                         </div>
                         <div className="wr-pages-detail__buttons">
                             {editable && (
                                 <MyButton
-                                    className="btn-secondary"
+                                    className="btn-secondary btn-sm"
                                     onClick={handleClickCancel}
                                 >
                                     취소
@@ -1339,7 +1177,7 @@ export const CustomerForm: FC<Props> = ({
                             {mode === 'create' && (
                                 <MyButton
                                     type="button"
-                                    className="btn-primary"
+                                    className="btn-primary btn-sm"
                                     onClick={handleCreate}
                                 >
                                     등록
@@ -1348,7 +1186,7 @@ export const CustomerForm: FC<Props> = ({
                             {mode === 'update' && (
                                 <MyButton
                                     type="button"
-                                    className="btn-primary"
+                                    className="btn-primary btn-sm"
                                     onClick={
                                         editable
                                             ? handleUpdate
@@ -1369,6 +1207,7 @@ export const CustomerForm: FC<Props> = ({
             <CreateExcontractGenModal />
             <CreateCustcarCarModal />
             <CreateCustcarCustModal />
+            <CreateFamilyModal />
         </>
     );
 };

@@ -67,7 +67,9 @@ export const RentalAssetTabpanel: FC<Props> = ({
                     <div className="wr-pages-detail__subtitle">
                         <strong>자산 설정 내역</strong>
                         <div>
-                            <MyButton className="btn-danger">선택삭제</MyButton>
+                            <MyButton className="btn-danger btn-sm">
+                                선택삭제
+                            </MyButton>
                         </div>
                     </div>
                     <div className="wr-table--normal wr-mb position-relative">

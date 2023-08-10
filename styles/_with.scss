@@ -43,6 +43,29 @@
         }
     }
 
+    &--md {
+        height: $wr-detail-filter-height !important;
+    }
+
+    &--sm {
+        height: $wr-filter-height !important;
+    }
+
+    &__extension {
+        flex-shrink: 0;
+    }
+
+    &__container {
+        flex: 1;
+        border: 1px solid $wr-divider-color-300;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: $wr-gutter-size;
+        padding: 0 8px;
+        height: $wr-filter-height;
+    }
+
     &__checkbox {
         width: 100%;
         display: flex;
