@@ -39,7 +39,7 @@ export const CustomerManagerAccordion: FC<Props> = ({ defaultTitle, data }) => {
     return (
         <UncontrolledAccordion stayOpen>
             <AccordionItem>
-                <div className="wr-group">
+                <div className="wr-group wr-accordion__button--hide">
                     <span className="wr-pages-detail__department">{title}</span>
                     <AccordionHeader
                         targetId="user_his"

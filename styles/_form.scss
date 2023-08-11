@@ -7,6 +7,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0 5px;
+        padding: 0 10px;
+        border: 1px solid $wr-divider-color-300;
+        background-color: $gray-300;
     }
 }

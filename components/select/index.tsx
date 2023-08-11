@@ -108,6 +108,11 @@ export const MySelect: FC<MySelectProps> = ({
                     height,
                     padding: '0 6px',
                 }),
+                singleValue: (provided, state) => ({
+                    ...provided,
+                    color: 'black',
+                    fontSize: 16,
+                }),
                 placeholder: (defaultStyles) => {
                     return {
                         ...defaultStyles,

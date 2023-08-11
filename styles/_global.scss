@@ -166,6 +166,14 @@ td {
 }
 .rs-picker-toggle-placeholder {
     font-size: $wr-filter-font-size;
+    color: $black !important;
+}
+.rs-btn-sm {
+    height: 30px;
+}
+
+.rs-btn-md {
+    height: 36px;
 }
 
 /* Custom Toast Editor */

@@ -12,7 +12,6 @@ import { MyCheckbox } from '@components/checkbox';
 import { MyDatepicker } from '@components/datepicker';
 import { MyButton } from '@components/button';
 import { AiOutlinePicture } from 'react-icons/ai';
-import { BirthDayInput } from '@partials/common/input/DateAndSL';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -46,6 +45,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                     disabled={!editable}
                                     button={{
                                         type: 'button',
+                                        className: 'btn-primary btn-md',
                                         disabled: !editable,
                                         children: (
                                             <>
@@ -104,7 +104,10 @@ export const CustomerTabpanel: FC<Props> = ({
                                     placeholder="핸드폰"
                                     disabled={!editable}
                                 />
-                                <div style={{ width: 280 }}>
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 148 }}
+                                >
                                     <MySelect
                                         placeholder={'선택'}
                                         placeHolderFontSize={16}
@@ -129,7 +132,10 @@ export const CustomerTabpanel: FC<Props> = ({
                                     placeholder="이메일"
                                     disabled={!editable}
                                 />
-                                <div style={{ width: 280 }}>
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 148 }}
+                                >
                                     <MySelect
                                         placeholder={'선택'}
                                         placeHolderFontSize={16}
@@ -204,6 +210,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                             button={{
                                                 type: 'button',
                                                 disabled: !editable,
+                                                className: 'btn-primary btn-md',
                                                 children: (
                                                     <>
                                                         <span>
@@ -220,13 +227,13 @@ export const CustomerTabpanel: FC<Props> = ({
                                 <div className="col">
                                     <WithLabel
                                         id="homePhone"
-                                        label="집전화"
+                                        label="연락처"
                                         type={labelType}
                                     >
                                         <MyInput
                                             type="text"
                                             id="homePhone"
-                                            placeholder="집전화"
+                                            placeholder="연락처"
                                             disabled={!editable}
                                         />
                                     </WithLabel>
@@ -245,7 +252,10 @@ export const CustomerTabpanel: FC<Props> = ({
                                             placeholder="생년월일"
                                             disabled={!editable}
                                         />
-                                        <div style={{ width: 100 }}>
+                                        <div
+                                            className="wr-with__extension wr-form__unit wr-border-l--hide"
+                                            style={{ height: 36 }}
+                                        >
                                             만 60세
                                         </div>
                                     </WithLabel>

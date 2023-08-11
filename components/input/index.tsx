@@ -22,6 +22,7 @@ export const MyInput = forwardRef<HTMLInputElement, MyInputProps>(
 
         if (unit) {
             unitTxt = <span className="wr-form__unit">{unit}</span>;
+            // unitTxt = <span className="input-group-text">{unit}</span>;
         }
 
         return (

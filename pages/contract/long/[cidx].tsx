@@ -38,8 +38,10 @@ import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
 import { CustomerTabpanel } from '@partials/long/tabpanels/Customer';
 import { EndorsementTabpanel } from '@partials/long/tabpanels/Endorsement';
-import { ContactHisTabpanel } from '@partials/customer/tabpanels/Contact';
+import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/long/tabpanels/CalcPerform';
+import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
+import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const displayName = 'wr-pages-long-detail';
@@ -65,11 +67,14 @@ const Long: NextPage<LongState> = ({ long }) => {
         long.contdate ? new Date(long.contdate) : null,
     );
     // 보험기간
-    // const boDu = useSelect(
+    // const [boDu] = useSelect(
+    //     INSU_DURATION,
     //     INSU_DURATION.filter(({ value }) => value === long.bo_du)[0],
     // );
-    const [boDu] = useInput(long.bo_du);
-    const [boDateto] = useInput(long.bo_dateto);
+    // const [boDu] = useInput(long.bo_du);
+    const [boDateto] = useDatepicker(
+        long.bo_dateto ? new Date(long.bo_dateto) : null,
+    );
     // 납입주기
     const [payCycle] = useSelect(
         PAY_CYCLE,
@@ -80,15 +85,17 @@ const Long: NextPage<LongState> = ({ long }) => {
         INSU_DURATION,
         INSU_DURATION.filter(({ value }) => value === long.pay_du)[0],
     );
-    const [payDateto] = useInput(long.pay_dateto);
+    const [payDateto] = useDatepicker(
+        long.pay_dateto ? new Date(long.pay_dateto) : null,
+    );
     // 계약상태
-    const [statusDate] = useInput(long.status_date);
+    // const [statusDate] = useInput(long.status_date);
     const [status] = useSelect(
         CON_STATUS,
         CON_STATUS.filter(({ value }) => value === long.status)[0],
     );
-    // 수금상태
-    const [psDate] = useInput(long.ps_date);
+    // 납입상태
+    // const [psDate] = useInput(long.ps_date);
     const [payStatus] = useSelect(
         PAY_STATUS,
         PAY_STATUS.filter(({ value }) => value === long.pay_status)[0],
@@ -191,20 +198,10 @@ const Long: NextPage<LongState> = ({ long }) => {
                         >
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
-                                    <div className="wr-group">
-                                        <span
-                                            className={`${displayName}__department`}
-                                        >
-                                            {`${long.orga} ${long.fc}`}
-                                        </span>
-                                        <MyButton
-                                            type="button"
-                                            className="btn-primary"
-                                            onClick={handleClickChangeHistory}
-                                        >
-                                            담당변경이력
-                                        </MyButton>
-                                    </div>
+                                    <LongManagerAccordion
+                                        defaultTitle={`${long.orga} ${long.fc}`}
+                                        data={long.user_his}
+                                    />
                                 </div>
                             </div>
                             <div className="wr-pages-detail__block">
@@ -273,6 +270,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                         placeholder="상품명"
                                                         disabled={!editable}
                                                         {...ptitle}
+                                                        unit="보장"
                                                     />
                                                     <div className="wr-with__badge--left wr-badge__wrap">
                                                         <span className="badge rounded-pill bg-primary wr-badge">
@@ -349,9 +347,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                     size="md"
                                                     placeholder="보장만기"
                                                     disabled={!editable}
-                                                    // hooks={contdate}
+                                                    hooks={boDateto}
                                                 />
-                                                <div style={{ width: 230 }}>
+                                                <div className="wr-with__extension">
                                                     <MySelect
                                                         placeholder="전기납"
                                                         placeHolderFontSize={16}
@@ -376,9 +374,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                         size="md"
                                                         placeholder="납입만기"
                                                         disabled={!editable}
-                                                        // hooks={contdate}
+                                                        hooks={payDateto}
                                                     />
-                                                    <div style={{ width: 230 }}>
+                                                    <div className="wr-with__extension">
                                                         <MySelect
                                                             placeholder="20년"
                                                             placeHolderFontSize={
@@ -391,6 +389,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                                 !editable
                                                             }
                                                             placement="right"
+                                                            {...payDu}
                                                         />
                                                     </div>
                                                 </WithLabel>
@@ -422,22 +421,15 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                     label="납입상태"
                                                     type={labelType}
                                                 >
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="납입상태"
-                                                        disabled
-                                                        value="납입중"
-                                                        button={{
-                                                            type: 'button',
-                                                            disabled: !editable,
-                                                            children: (
-                                                                <>
-                                                                    <span>
-                                                                        이력
-                                                                    </span>
-                                                                </>
-                                                            ),
-                                                        }}
+                                                    <MySelect
+                                                        inputId="pStatus"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...payStatus}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -446,20 +438,20 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="contdate"
+                                                id="statDate"
                                                 label="상태반영일"
                                                 type={labelType}
                                             >
                                                 <MyDatepicker
-                                                    id="contdate"
+                                                    id="statDate"
                                                     size="md"
-                                                    placeholder="계약일자"
+                                                    placeholder="상태반영일"
                                                     disabled={!editable}
-                                                    hooks={contdate}
+                                                    // hooks={contdate}
                                                 />
-                                                <div style={{ width: 70 }}>
+                                                <div className="wr-with__extension">
                                                     <MyButton
-                                                        className="btn-primary"
+                                                        className="btn-primary btn-md"
                                                         disabled={!editable}
                                                     >
                                                         이력
@@ -482,7 +474,10 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                         disabled={!editable}
                                                         hooks={contdate}
                                                     />
-                                                    <div style={{ width: 230 }}>
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 100 }}
+                                                    >
                                                         <MyInput
                                                             type="number"
                                                             className="wr-border-l--hide"
@@ -503,112 +498,98 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     <div className="row">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="pCommission"
+                                                id="payment"
                                                 label="실적보험료"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
-                                                    id="pCommission"
+                                                    id="payment"
                                                     className="text-end"
-                                                    placeholder="실적보험료"
+                                                    placeholder="0"
                                                     disabled={!editable}
                                                     // {...payM}
                                                 />
                                             </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="mCommission"
-                                                    label={[
-                                                        '수정보험료',
-                                                        '(1차수정)',
-                                                    ]}
-                                                    type={labelType}
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="mCommission"
-                                                        className="text-end"
-                                                        placeholder="1차수정"
-                                                        disabled={!editable}
-                                                        {...payment}
-                                                    />
-                                                    <div style={{ width: 230 }}>
-                                                        <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            disabled={!editable}
-                                                            value="240"
-                                                            unit="%"
-                                                        />
-                                                    </div>
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
                                             <WithLabel
-                                                id="mps"
+                                                id="pay_m"
                                                 label="월납기준"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
-                                                    id="mps"
+                                                    id="pay_m"
                                                     className="text-end"
-                                                    placeholder="월납기준"
-                                                    value="197,440"
+                                                    placeholder="0"
                                                     disabled={!editable}
                                                 />
                                             </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="secondMCommission"
-                                                    label="2차수정"
-                                                    type={labelType}
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="secondMCommission"
-                                                        className="text-end"
-                                                        placeholder="2차수정"
-                                                        disabled={!editable}
-                                                        {...payment}
-                                                    />
-                                                    <div style={{ width: 230 }}>
-                                                        <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            disabled={!editable}
-                                                            value="240"
-                                                            unit="%"
-                                                        />
-                                                    </div>
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
                                             <WithLabel
-                                                id="gCommission"
+                                                id="pay_bo"
                                                 label="보장보험료"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
-                                                    id="gCommission"
+                                                    id="pay_bo"
                                                     className="text-end"
-                                                    placeholder="보장보험료"
+                                                    placeholder="0"
                                                     disabled={!editable}
-                                                    value="0"
                                                 />
-                                                <div style={{ width: 230 }}>
+                                                <div
+                                                    className="wr-with__extension"
+                                                    style={{ width: 100 }}
+                                                >
+                                                    <MyInput
+                                                        type="number"
+                                                        className="wr-border-l--hide"
+                                                        disabled={!editable}
+                                                        value="240"
+                                                        unit="%"
+                                                    />
+                                                </div>
+                                            </WithLabel>
+                                            <WithLabel
+                                                id="pay_j"
+                                                label="적립보험료"
+                                                type={labelType}
+                                            >
+                                                <MyInput
+                                                    type="text"
+                                                    id="pay_j"
+                                                    className="text-end"
+                                                    placeholder="0"
+                                                    disabled={!editable}
+                                                />
+                                                <div
+                                                    className="wr-with__extension"
+                                                    style={{ width: 100 }}
+                                                >
+                                                    <MyInput
+                                                        type="number"
+                                                        className="wr-border-l--hide"
+                                                        disabled={!editable}
+                                                        value="240"
+                                                        unit="%"
+                                                    />
+                                                </div>
+                                            </WithLabel>
+                                            <WithLabel
+                                                id="pay_sil"
+                                                label="실손보험료"
+                                                type={labelType}
+                                            >
+                                                <MyInput
+                                                    type="text"
+                                                    id="pay_sil"
+                                                    className="text-end"
+                                                    placeholder="0"
+                                                    disabled={!editable}
+                                                />
+                                                <div
+                                                    className="wr-with__extension"
+                                                    style={{ width: 100 }}
+                                                >
                                                     <MyInput
                                                         type="number"
                                                         className="wr-border-l--hide"
@@ -622,19 +603,21 @@ const Long: NextPage<LongState> = ({ long }) => {
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="thirdMCommission"
-                                                    label="3차수정"
+                                                    id="tp"
+                                                    label="수정보험료"
                                                     type={labelType}
                                                 >
                                                     <MyInput
                                                         type="text"
-                                                        id="thirdMCommission"
+                                                        id="tp"
                                                         className="text-end"
-                                                        placeholder="3차수정"
+                                                        placeholder="0"
                                                         disabled={!editable}
-                                                        {...payment}
                                                     />
-                                                    <div style={{ width: 230 }}>
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 100 }}
+                                                    >
                                                         <MyInput
                                                             type="number"
                                                             className="wr-border-l--hide"
@@ -644,37 +627,81 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                         />
                                                     </div>
                                                 </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="aCommission"
-                                                label="적립보험료"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="gCommission"
-                                                    className="text-end"
-                                                    placeholder="적립보험료"
-                                                    disabled={!editable}
-                                                    value="0"
-                                                />
-                                                <div style={{ width: 230 }}>
+                                                <WithLabel
+                                                    id="tp1"
+                                                    label="1차수정"
+                                                    type={labelType}
+                                                >
                                                     <MyInput
-                                                        type="number"
-                                                        className="wr-border-l--hide"
+                                                        type="text"
+                                                        id="tp1"
+                                                        className="text-end"
+                                                        placeholder="0"
                                                         disabled={!editable}
-                                                        value="240"
-                                                        unit="%"
                                                     />
-                                                </div>
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 100 }}
+                                                    >
+                                                        <MyInput
+                                                            type="number"
+                                                            className="wr-border-l--hide"
+                                                            disabled={!editable}
+                                                            value="240"
+                                                            unit="%"
+                                                        />
+                                                    </div>
+                                                </WithLabel>
+                                                <WithLabel
+                                                    id="tp2"
+                                                    label="2차수정"
+                                                    type={labelType}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="tp2"
+                                                        className="text-end"
+                                                        placeholder="0"
+                                                        disabled={!editable}
+                                                    />
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 100 }}
+                                                    >
+                                                        <MyInput
+                                                            type="number"
+                                                            className="wr-border-l--hide"
+                                                            disabled={!editable}
+                                                            value="240"
+                                                            unit="%"
+                                                        />
+                                                    </div>
+                                                </WithLabel>
+                                                <WithLabel
+                                                    id="tp3"
+                                                    label="3차수정"
+                                                    type={labelType}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="tp3"
+                                                        className="text-end"
+                                                        placeholder="0"
+                                                        disabled={!editable}
+                                                    />
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 100 }}
+                                                    >
+                                                        <MyInput
+                                                            type="number"
+                                                            className="wr-border-l--hide"
+                                                            disabled={!editable}
+                                                            value="240"
+                                                            unit="%"
+                                                        />
+                                                    </div>
+                                                </WithLabel>
                                                 <WithLabel
                                                     id="ksm"
                                                     label="저축유지수정"
@@ -684,10 +711,13 @@ const Long: NextPage<LongState> = ({ long }) => {
                                                         type="text"
                                                         id="ksm"
                                                         className="text-end"
-                                                        placeholder="저축유지수정"
+                                                        placeholder="0"
                                                         disabled={!editable}
                                                     />
-                                                    <div style={{ width: 230 }}>
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 100 }}
+                                                    >
                                                         <MyInput
                                                             type="number"
                                                             className="wr-border-l--hide"
@@ -780,6 +810,11 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     </div>
                                 </div>
                             </div>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
+                                    <CustomSettingAccordion data={[]} />
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="col-7">
@@ -825,7 +860,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     hidden={tab.id !== 'tabCalcPerform'}
                                     editable={editable}
                                 />
-                                <ContactHisTabpanel
+                                <ContactTabpanel
                                     id="tabpanelContactHis"
                                     tabId="tabContactHis"
                                     hidden={tab.id !== 'tabContactHis'}
@@ -880,7 +915,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                 </MyFooter>
             </MyLayout>
 
-            <UserHistoryModal user_his={long.user_his} />
+            {/* <UserHistoryModal user_his={long.user_his} /> */}
             <CreateEtcModal />
         </>
     );

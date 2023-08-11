@@ -1,0 +1,9 @@
+.wr-accordion {
+    &__button {
+        &--hide {
+            & .accordion-button::after {
+                display: none;
+            }
+        }
+    }
+}
