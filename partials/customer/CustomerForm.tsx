@@ -1,10 +1,12 @@
 import type { FC } from 'react';
+import type { Spe } from '@models/spe';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CustomerState } from '@reducers/customer';
+import type { CreateCustomerRequestPayload } from '@actions/customer/create-customer.action';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import addMonths from 'date-fns/addMonths';
 import { MySelect } from '@components/select';
@@ -40,18 +42,18 @@ import { DateAndSLInput } from '@partials/common/input/DateAndSL';
 import { CreateFamilyModal } from '@components/modal/CreateFamily';
 import { PostcodeInput } from '@partials/common/input/Postcode';
 import { CreateEventModal } from '@components/modal/CreateEvent';
-import {
-    CreateCustomerRequestPayload,
-    createCustomerRequest,
-} from '@actions/customer/create-customer.action';
+import { createCustomerRequest } from '@actions/customer/create-customer.action';
 import { useApi } from '@hooks/use-api';
+import { CreateCustomerDTO } from '@dto/customer/Customer.dto';
+import { WithSelectInput } from '@partials/common/input/WithSelect';
+import { UserHistoryModal } from '@components/modal/UserHistory';
+import { getCompanyRegNumRequest } from '@actions/hr/get-company-regnum';
 import {
     useInput,
     useNumbericInput,
     usePhoneInput,
     useResidentNumberInput,
 } from '@hooks/use-input';
-import { CreateCustomerDTO } from '@dto/customer/Customer.dto';
 import {
     birthdayToAge,
     residentNumToAge,
@@ -63,6 +65,10 @@ interface Props {
      * 모드: true(수정) / false(등록)
      */
     mode: 'create' | 'update';
+    /**
+     *
+     */
+    spe: Spe;
     /**
      * 고객명 기본 값
      */
@@ -190,6 +196,7 @@ interface Props {
 
 export const CustomerForm: FC<Props> = ({
     mode,
+    spe,
     defaultName = '',
     defaultCusttype = customerConstants.division[0],
     defaultIdnum = '',
@@ -232,8 +239,6 @@ export const CustomerForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-customer-detail';
 
-    const dispatch = useDispatch();
-
     const { loggedInUser, selectedUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
@@ -242,6 +247,8 @@ export const CustomerForm: FC<Props> = ({
         useSelector<AppState, CustomerState>((state) => state.customer);
 
     const createCustomer = useApi(createCustomerRequest);
+
+    const getCompanyRegNum = useApi(getCompanyRegNumRequest);
     // 탭 관리
     const [tab, setTab] = useTab(CUSTOMER_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -249,6 +256,8 @@ export const CustomerForm: FC<Props> = ({
     const labelType = editable ? 'active' : 'disable';
     // 고객명
     const [name] = useInput(defaultName, { noSpace: true });
+    // 회사명
+    const [cname, setCname] = useInput(defaultName, { noSpace: true });
     // 고객구분
     const [custtype] = useSelect(customerConstants.division, defaultCusttype);
     // 개인 여부
@@ -422,10 +431,28 @@ export const CustomerForm: FC<Props> = ({
     // 담당자 부서/직함
     const [mTitle] = useInput(defaultMtitle);
     // 담당자 전화번호
-    const [mPhone] = useInput(defaultMphone);
+    const [mPhone] = usePhoneInput(defaultMphone);
     // 담당자 이메일
     const [mEmail] = useInput(defaultMemail, { noSpace: true });
     const [mEmailCom] = useSelect(userConstants.emailCom, defaultMemailCom);
+
+    const handleBlurComRegNum = () => {
+        if (!isEmpty(comRegNum.value)) {
+            getCompanyRegNum(
+                {
+                    num: comRegNum.value,
+                },
+                ({ company_name }) => {
+                    const tf = confirm(
+                        `입력하신 사업자등록번호의 회사명은 ${company_name}입니다. 변경하시겠습니까?`,
+                    );
+                    if (tf) {
+                        setCname(company_name);
+                    }
+                },
+            );
+        }
+    };
 
     // 취소 버튼 클릭 핸들러
     const handleClickCancel = () => {
@@ -483,7 +510,7 @@ export const CustomerForm: FC<Props> = ({
 
     const createPayload = () => {
         const payload: CreateCustomerRequestPayload = {
-            name: name.value,
+            name: isIndividual ? name.value : cname.value,
             custtype: +custtype.value!.value,
             userid: selectedUser ? selectedUser.userid : loggedInUser.userid,
         };
@@ -501,11 +528,11 @@ export const CustomerForm: FC<Props> = ({
         }
 
         if (excontracts.length > 0) {
-            payload['excontracts'] = excontracts;
+            payload['excontract'] = excontracts;
         }
 
         if (custcars.length > 0) {
-            payload['custcars'] = custcars;
+            payload['custcar'] = custcars;
         }
 
         if (family.length > 0) {
@@ -513,7 +540,7 @@ export const CustomerForm: FC<Props> = ({
         }
 
         if (events.length > 0) {
-            payload['events'] = events;
+            payload['event'] = events;
         }
 
         if (inflowPath.value) {
@@ -524,17 +551,17 @@ export const CustomerForm: FC<Props> = ({
             payload['customer_rate'] = grade.value.value;
         }
 
-        if (pia.value) {
-            payload['privacyinfo'] = {
-                type: pia.value.value,
-            };
+        // if (pia.value) {
+        //     payload['privacyinfo'] = {
+        //         type: pia.value.value,
+        //     };
 
-            if (aDay.value) {
-                payload.privacyinfo['insert_datetime'] = dayjs(
-                    aDay.value,
-                ).format('YYYY-MM-DD HH:mm');
-            }
-        }
+        //     if (aDay.value) {
+        //         payload.privacyinfo['insert_datetime'] = dayjs(
+        //             aDay.value,
+        //         ).format('YYYY-MM-DD HH:mm');
+        //     }
+        // }
 
         // 개인: 나이 상령일 X
         if (isIndividual) {
@@ -551,7 +578,7 @@ export const CustomerForm: FC<Props> = ({
             }
 
             if (!isEmpty(mobile.value)) {
-                payload['mobile'] = mobile.value;
+                payload['mobile'] = mobile.value.replace(/-/g, '');
                 payload['mobile_com'] = mobileCom.value!.value;
             }
 
@@ -584,8 +611,8 @@ export const CustomerForm: FC<Props> = ({
             payload['office'] = {
                 comname: company.value,
                 title: title.value,
-                tel: comPhone.value,
-                fax: cFax.value,
+                tel: comPhone.value.replace(/-/g, ''),
+                fax: cFax.value.replace(/-/g, ''),
                 postcode: cPostcode.value,
                 address1: cAddress1.value,
                 address2: cAddress2.value,
@@ -603,7 +630,7 @@ export const CustomerForm: FC<Props> = ({
             }
 
             if (!isEmpty(phone.value)) {
-                payload['mobile'] = phone.value;
+                payload['mobile'] = phone.value.replace(/-/g, '');
             }
 
             if (!isEmpty(homepage.value)) {
@@ -613,7 +640,7 @@ export const CustomerForm: FC<Props> = ({
             payload['manager'] = {
                 name: mName.value,
                 orgatitle: mTitle.value,
-                tel: mPhone.value,
+                tel: mPhone.value.replace(/-/g, ''),
                 email: `${mEmail.value}@${mEmailCom.value!.value}`,
             };
         }
@@ -641,20 +668,38 @@ export const CustomerForm: FC<Props> = ({
                                 <div className="wr-pages-detail__content">
                                     <div className="row">
                                         <div className="col-6">
-                                            <WithLabel
-                                                id="name"
-                                                label="고객명"
-                                                type={labelType}
-                                                isRequired={editable}
-                                            >
-                                                <MyInput
-                                                    type="text"
+                                            {isIndividual && (
+                                                <WithLabel
                                                     id="name"
-                                                    placeholder="고객명"
-                                                    disabled={!editable}
-                                                    {...name}
-                                                />
-                                            </WithLabel>
+                                                    label="고객명"
+                                                    type={labelType}
+                                                    isRequired={editable}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="name"
+                                                        placeholder="고객명"
+                                                        disabled={!editable}
+                                                        {...name}
+                                                    />
+                                                </WithLabel>
+                                            )}
+                                            {isCorporation && (
+                                                <WithLabel
+                                                    id="cname"
+                                                    label="회사명"
+                                                    type={labelType}
+                                                    isRequired={editable}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="cname"
+                                                        placeholder="회사명"
+                                                        disabled={!editable}
+                                                        {...cname}
+                                                    />
+                                                </WithLabel>
+                                            )}
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
@@ -706,6 +751,9 @@ export const CustomerForm: FC<Props> = ({
                                                         id="comRegNum"
                                                         placeholder="사업자등록번호"
                                                         disabled={!editable}
+                                                        onBlur={
+                                                            handleBlurComRegNum
+                                                        }
                                                         {...comRegNum}
                                                     />
                                                 </WithLabel>
@@ -756,7 +804,10 @@ export const CustomerForm: FC<Props> = ({
                                                         disabled={true}
                                                         value={age}
                                                     />
-                                                    <div style={{ width: 300 }}>
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 140 }}
+                                                    >
                                                         <MySelect
                                                             placeholder="선택"
                                                             placeHolderFontSize={
@@ -795,35 +846,15 @@ export const CustomerForm: FC<Props> = ({
                                     <div className="row">
                                         <div className="col-6">
                                             {isIndividual && (
-                                                <WithLabel
+                                                <WithSelectInput
                                                     id="mobile"
                                                     label="핸드폰"
-                                                    type={labelType}
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        id="mobile"
-                                                        placeholder="핸드폰"
-                                                        disabled={!editable}
-                                                        {...mobile}
-                                                    />
-                                                    <div style={{ width: 300 }}>
-                                                        <MySelect
-                                                            placeholder={'선택'}
-                                                            placeHolderFontSize={
-                                                                16
-                                                            }
-                                                            height={
-                                                                variables.detailFilterHeight
-                                                            }
-                                                            placement="right"
-                                                            isDisabled={
-                                                                !editable
-                                                            }
-                                                            {...mobileCom}
-                                                        />
-                                                    </div>
-                                                </WithLabel>
+                                                    selectWidth={140}
+                                                    labelType={labelType}
+                                                    inputHooks={mobile}
+                                                    selectHooks={mobileCom}
+                                                    disabled={!editable}
+                                                />
                                             )}
                                             {isCorporation && (
                                                 <WithLabel
@@ -844,41 +875,15 @@ export const CustomerForm: FC<Props> = ({
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 {isIndividual && (
-                                                    <WithLabel
+                                                    <WithSelectInput
                                                         id="email"
                                                         label="이메일"
-                                                        type={labelType}
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            id="email"
-                                                            placeholder="이메일"
-                                                            disabled={!editable}
-                                                            {...email}
-                                                        />
-                                                        <div
-                                                            style={{
-                                                                width: 350,
-                                                            }}
-                                                        >
-                                                            <MySelect
-                                                                placeholder={
-                                                                    '선택'
-                                                                }
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                placement="right"
-                                                                {...emailCom}
-                                                            />
-                                                        </div>
-                                                    </WithLabel>
+                                                        selectWidth={140}
+                                                        labelType={labelType}
+                                                        inputHooks={email}
+                                                        selectHooks={emailCom}
+                                                        disabled={!editable}
+                                                    />
                                                 )}
                                                 {isCorporation && (
                                                     <WithLabel
@@ -954,7 +959,10 @@ export const CustomerForm: FC<Props> = ({
                                         </div>
                                     </div>
                                     <div className="row wr-mt">
-                                        <div className="col-6">
+                                        <div className="col-6 position-relative">
+                                            <div className="wr-pages-detail__lock">
+                                                <span>준비중입니다.</span>
+                                            </div>
                                             <WithLabel
                                                 id="pia"
                                                 label="개인정보동의"
@@ -971,7 +979,10 @@ export const CustomerForm: FC<Props> = ({
                                                 />
                                             </WithLabel>
                                         </div>
-                                        <div className="col-6">
+                                        <div className="col-6 position-relative">
+                                            <div className="wr-pages-detail__lock">
+                                                <span>준비중입니다.</span>
+                                            </div>
                                             <div className="wr-ml">
                                                 <WithLabel
                                                     id="aDay"
@@ -1136,7 +1147,7 @@ export const CustomerForm: FC<Props> = ({
                                                         id="mName"
                                                         placeholder="담당자명"
                                                         disabled={!editable}
-                                                        // {...company}
+                                                        {...mName}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -1152,7 +1163,7 @@ export const CustomerForm: FC<Props> = ({
                                                             id="mTitle"
                                                             placeholder="부서/직함"
                                                             disabled={!editable}
-                                                            // {...title}
+                                                            {...mTitle}
                                                         />
                                                     </WithLabel>
                                                 </div>
@@ -1170,47 +1181,21 @@ export const CustomerForm: FC<Props> = ({
                                                         id="cPhone"
                                                         placeholder="전화번호"
                                                         disabled={!editable}
-                                                        // {...comPhone}
+                                                        {...mPhone}
                                                     />
                                                 </WithLabel>
                                             </div>
                                             <div className="col-6">
                                                 <div className="wr-ml">
-                                                    <WithLabel
+                                                    <WithSelectInput
                                                         id="mEmail"
                                                         label="이메일"
-                                                        type={labelType}
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            id="mEmail"
-                                                            placeholder="이메일"
-                                                            disabled={!editable}
-                                                            // {...email}
-                                                        />
-                                                        <div
-                                                            style={{
-                                                                width: 350,
-                                                            }}
-                                                        >
-                                                            <MySelect
-                                                                placeholder={
-                                                                    '선택'
-                                                                }
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                placement="right"
-                                                                // {...emailCom}
-                                                            />
-                                                        </div>
-                                                    </WithLabel>
+                                                        selectWidth={140}
+                                                        labelType={labelType}
+                                                        inputHooks={mEmail}
+                                                        selectHooks={mEmailCom}
+                                                        disabled={!editable}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -1240,6 +1225,7 @@ export const CustomerForm: FC<Props> = ({
                                     tabId="tabContactHis"
                                     hidden={tab.id !== 'tabContactHis'}
                                     editable={editable}
+                                    spe={spe}
                                 />
                                 <HoldingContractTabpanel
                                     id="tabpanelHoldingContract"
@@ -1317,6 +1303,7 @@ export const CustomerForm: FC<Props> = ({
                     </div>
                 </MyFooter>
             </MyLayout>
+            <UserHistoryModal />
             <CreateExcontractLongModal />
             <CreateExcontractCarModal />
             <CreateExcontractGenModal />

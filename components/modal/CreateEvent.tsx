@@ -41,9 +41,9 @@ export const CreateEventModal: FC<Props> = () => {
     // 대상자구분
     const [typeWho, setTypeWho] = useState('');
     // 기념일내용
-    const [title] = useInput('', { noSpace: true });
+    const [title] = useInput('');
     // 기념일상세
-    const [description] = useInput('', { noSpace: true });
+    const [description] = useInput('');
     // 기념일
     const [eventdate] = useDatepicker(null);
     const [dType, setDtype] = useState(true);
@@ -99,9 +99,9 @@ export const CreateEventModal: FC<Props> = () => {
             payload['d_type'] = dType;
         }
 
-        if (notice.value) {
-            payload['notice'] = notice.value.value;
-        }
+        // if (notice.value) {
+        //     payload['notice'] = notice.value.value;
+        // }
 
         if (!isEmpty(remark.value)) {
             payload['remark'] = remark.value;

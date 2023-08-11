@@ -225,6 +225,29 @@ const C_NOTICE: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 계약종목
+const C_SPE: CoreSelectOption[] = [
+    {
+        label: '고객',
+        value: 'customer',
+        isFixed: false,
+    },
+    {
+        label: '장기',
+        value: 'long',
+        isFixed: false,
+    },
+    {
+        label: '자동차',
+        value: 'car',
+        isFixed: false,
+    },
+    {
+        label: '일반',
+        value: 'gen',
+        isFixed: false,
+    },
+];
 
 const rootSelectOptions = {
     division: C_DIVISION,
@@ -237,6 +260,7 @@ const rootSelectOptions = {
     category: C_CATEGORY,
     status: C_STATUS,
     notice: C_NOTICE,
+    spe: C_SPE,
 };
 
 export default rootSelectOptions;

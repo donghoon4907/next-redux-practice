@@ -8,7 +8,7 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserForm } from '@partials/hr/user/UserForm';
-import { getBanksRequest } from '@actions/hr/get-banks';
+// import { getBanksRequest } from '@actions/hr/get-banks';
 import { getAgenciesRequest } from '@actions/hr/get-agencys';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import hrsService from '@services/hrsService';
@@ -19,35 +19,16 @@ import { createCode } from '@actions/hr/set-code.action';
 import { createGuarantee } from '@actions/hr/set-guarantee.action';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
-
-function makeSelectOption(value: any, arr: any[]) {
-    let output;
-    if (value) {
-        const findIndex = arr.findIndex((v) => v.value == value);
-
-        if (findIndex !== -1) {
-            output = arr[findIndex];
-        }
-    }
-
-    return output;
-}
+import { findSelectOption } from '@utils/getter';
 
 const User: NextPage<HrState> = ({ user }) => {
     const dispatch = useDispatch();
 
-    const { banks, companies } = useSelector<AppState, HrState>(
+    const { banks, allCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
-    let defaultBirthType;
-    if (user.birth_type) {
-        defaultBirthType = userConstants.birthType[0];
-    } else {
-        defaultBirthType = userConstants.birthType[1];
-    }
-
-    const defaultMobileCom = makeSelectOption(
+    const defaultMobileCom = findSelectOption(
         user.mobile_com,
         userConstants.mobileCom,
     );
@@ -59,15 +40,15 @@ const User: NextPage<HrState> = ({ user }) => {
 
         defaultEmail = email;
 
-        defaultEmailCom = makeSelectOption(emailCom, userConstants.emailCom);
+        defaultEmailCom = findSelectOption(emailCom, userConstants.emailCom);
     }
 
-    const defaultUserType = makeSelectOption(
+    const defaultUserType = findSelectOption(
         user.user_type,
         userConstants.userType,
     );
 
-    const defaultStatus = makeSelectOption(
+    const defaultStatus = findSelectOption(
         user.status,
         userConstants.empStatus,
     );
@@ -86,7 +67,7 @@ const User: NextPage<HrState> = ({ user }) => {
     if (user.est_val) {
         if (user.est_val.comNm) {
             defaultEstComNm = user.est_val.comNm.val;
-            defaultEstComInputType = makeSelectOption(
+            defaultEstComInputType = findSelectOption(
                 user.est_val.comNm.kind,
                 userConstants.estComInputType,
             );
@@ -94,7 +75,7 @@ const User: NextPage<HrState> = ({ user }) => {
 
         if (user.est_val.salesNm) {
             defaultEstSalesNm = user.est_val.salesNm.val;
-            defaultEstSalesNmInputType = makeSelectOption(
+            defaultEstSalesNmInputType = findSelectOption(
                 user.est_val.salesNm.kind,
                 userConstants.estSalesNmInputType,
             );
@@ -102,7 +83,7 @@ const User: NextPage<HrState> = ({ user }) => {
 
         if (user.est_val.phone) {
             defaultEstPhone = user.est_val.phone.val;
-            defaultEstPhoneInputType = makeSelectOption(
+            defaultEstPhoneInputType = findSelectOption(
                 user.est_val.phone.kind,
                 userConstants.estPhoneInputType,
             );
@@ -110,7 +91,7 @@ const User: NextPage<HrState> = ({ user }) => {
 
         if (user.est_val.fax) {
             defaultEstFax = user.est_val.fax.val;
-            defaultEstFaxInputType = makeSelectOption(
+            defaultEstFaxInputType = findSelectOption(
                 user.est_val.fax.kind,
                 userConstants.estFaxInputType,
             );
@@ -118,7 +99,7 @@ const User: NextPage<HrState> = ({ user }) => {
 
         if (user.est_val.direct) {
             defaultEstDirect = user.est_val.direct.val;
-            defaultEstDirectInputType = makeSelectOption(
+            defaultEstDirectInputType = findSelectOption(
                 user.est_val.direct.kind,
                 userConstants.estDirectInputType,
             );
@@ -126,14 +107,14 @@ const User: NextPage<HrState> = ({ user }) => {
 
         if (user.est_val.address) {
             defaultEstAddr = user.est_val.address.val;
-            defaultEstAddrInputType = makeSelectOption(
+            defaultEstAddrInputType = findSelectOption(
                 user.est_val.address.kind,
                 userConstants.estAddrInputType,
             );
         }
     }
 
-    const defaultBank = makeSelectOption(user.income_bank, banks);
+    const defaultBank = findSelectOption(user.income_bank, banks);
 
     let defaultCalIdx;
     let defaultGenBase;
@@ -147,7 +128,7 @@ const User: NextPage<HrState> = ({ user }) => {
     }
 
     if (user.cal?.gen_cal_base) {
-        defaultGenBase = makeSelectOption(
+        defaultGenBase = findSelectOption(
             user.cal.gen_cal_base,
             userConstants.calcStandard,
         );
@@ -189,20 +170,20 @@ const User: NextPage<HrState> = ({ user }) => {
             if (iaType === '손보') {
                 defaultGiaIdx = ia.idx;
                 defaultGiaNo = ia.no;
-                defaultGiaComp = makeSelectOption(ia.wcode, companies);
+                defaultGiaComp = findSelectOption(ia.wcode, allCompanies);
                 defaultGiaIndate = ia.indate;
                 defaultGiaOutdate = ia.outdate;
-                defaultGiaQualification = makeSelectOption(
+                defaultGiaQualification = findSelectOption(
                     ia.qualification,
                     userConstants.qDivision,
                 );
             } else if (iaType === '생보') {
                 defaultLiaIdx = ia.idx;
                 defaultLiaNo = ia.no;
-                defaultLiaComp = makeSelectOption(ia.wcode, companies);
+                defaultLiaComp = findSelectOption(ia.wcode, allCompanies);
                 defaultLiaIndate = ia.indate;
                 defaultLiaOutdate = ia.outdate;
-                defaultLiaQualification = makeSelectOption(
+                defaultLiaQualification = findSelectOption(
                     ia.qualification,
                     userConstants.qDivision,
                 );
@@ -244,7 +225,7 @@ const User: NextPage<HrState> = ({ user }) => {
                 defaultTitle={user.title}
                 defaultIdNum1={user.idnum1}
                 defaultBirthday={user.birthday}
-                defaultBirthType={defaultBirthType}
+                defaultBirthType={user.birth_type}
                 defaultPhone={user.mobile}
                 defaultMobileCom={defaultMobileCom}
                 defaultTelephone={user.telephone}
@@ -306,11 +287,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         const userid = query.userid as string;
 
-        dispatch(getBanksRequest());
+        // dispatch(getBanksRequest());
 
         dispatch(getAgenciesRequest());
 
-        dispatch(getCompaniesRequest());
+        dispatch(getCompaniesRequest('insu'));
+
+        dispatch(getCompaniesRequest('bank'));
 
         const output: any = {
             props: {},

@@ -25,13 +25,13 @@ export const CodeSettingModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const { companies, codes } = useSelector<AppState, HrState>(
+    const { allCompanies, codes } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
     // 보험사
     const [comp] = useSelect(
-        companies.filter(
-            (v) => v.origin.dist === '손해' || v.origin.dist === '생명',
+        allCompanies.filter(
+            (v) => v.origin.dist === '손보' || v.origin.dist === '생보',
         ),
     );
     // 등록일

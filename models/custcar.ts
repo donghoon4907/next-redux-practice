@@ -2,7 +2,7 @@ import { CoreDeleteableObject } from './core';
 
 export type Custcar = CoreDeleteableObject & {
     idx?: number;
-    type: 'car' | 'cust';
+    p_type: 'car' | 'gen';
     /**
      * 차량번호
      */

@@ -55,10 +55,10 @@ export interface CreateCustomerRequestPayload extends CorePayload {
         email?: string;
     };
     contacts?: Contact[];
-    excontracts?: Excontract[];
-    custcars?: Custcar[];
+    excontract?: Excontract[];
+    custcar?: Custcar[];
     family?: Family[];
-    events?: Event[];
+    event?: Event[];
 }
 
 export interface CreateCustomerRequestAction extends Action<string> {

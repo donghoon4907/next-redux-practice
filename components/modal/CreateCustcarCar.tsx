@@ -57,7 +57,7 @@ export const CreateCustcarCarModal: FC<Props> = () => {
 
     const createPayload = () => {
         const payload: Custcar = {
-            type: 'car',
+            p_type: 'car',
             index: generateIndex(custcars),
             checked: false,
         };

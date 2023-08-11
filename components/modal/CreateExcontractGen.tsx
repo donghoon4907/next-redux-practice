@@ -29,14 +29,16 @@ export const CreateExcontractGenModal: FC<Props> = () => {
         ModalState
     >((state) => state.modal);
 
-    const { companies } = useSelector<AppState, HrState>((state) => state.hr);
+    const { genCompanies } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
     const { excontracts } = useSelector<AppState, CustomerState>(
         (state) => state.customer,
     );
 
     // 보험사
-    const [comp] = useSelect(companies);
+    const [comp] = useSelect(genCompanies);
     // 상품명
     const [title] = useInput('');
     // 보험료

@@ -9,17 +9,37 @@ export const GetCompaniesActionTypes = {
     FAILURE: `${GET_COMPANIES_KEY}_FAILURE`,
 } as const;
 
-export type GetCompaniesSuccessPayload = CoreSelectOption[];
+export type GetCompaniesRequestPayload =
+    | 'bank'
+    | 'card'
+    | 'insu'
+    | 'long-view'
+    | 'car-view'
+    | 'gen-view'
+    | 'long-use'
+    | 'car-use'
+    | 'gen-use'
+    | 'board';
 
-export interface GetCompaniesRequestAction extends Action<string> {}
+export interface GetCompaniesSuccessPayload {
+    type: GetCompaniesRequestPayload;
+    companies: CoreSelectOption[];
+}
+
+export interface GetCompaniesRequestAction extends Action<string> {
+    payload: GetCompaniesRequestPayload;
+}
 
 export interface GetCompaniesSuccessAction extends Action<string> {
     payload: GetCompaniesSuccessPayload;
 }
 
-export function getCompaniesRequest(): GetCompaniesRequestAction {
+export function getCompaniesRequest(
+    payload: GetCompaniesRequestPayload,
+): GetCompaniesRequestAction {
     return {
         type: GetCompaniesActionTypes.REQUEST,
+        payload,
     };
 }
 

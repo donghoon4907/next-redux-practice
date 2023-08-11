@@ -50,7 +50,7 @@ export const CreateCustcarCustModal: FC<Props> = () => {
 
     const createPayload = () => {
         const payload: Custcar = {
-            type: 'cust',
+            p_type: 'gen',
             index: generateIndex(custcars),
             checked: false,
         };

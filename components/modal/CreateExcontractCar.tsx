@@ -29,14 +29,16 @@ export const CreateExcontractCarModal: FC<Props> = () => {
         ModalState
     >((state) => state.modal);
 
-    const { companies } = useSelector<AppState, HrState>((state) => state.hr);
+    const { carCompanies } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
     const { excontracts } = useSelector<AppState, CustomerState>(
         (state) => state.customer,
     );
 
     // 보험사
-    const [comp] = useSelect(companies);
+    const [comp] = useSelect(carCompanies);
     // 차량번호
     const [carnum] = useInput('');
     // 보험료
@@ -124,7 +126,7 @@ export const CreateExcontractCarModal: FC<Props> = () => {
                                 <MyInput
                                     type="text"
                                     id="cCarNum"
-                                    placeholder="차량번호"
+                                    placeholder="서울00가0000"
                                     {...carnum}
                                 />
                             </WithLabel>

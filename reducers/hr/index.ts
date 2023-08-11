@@ -12,7 +12,7 @@ import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
 // import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
 // import { GetIpActionTypes } from '@actions/hr/get-ip.action';
 import { PermissionActionTypes } from '@actions/hr/set-permission.action';
-import { GetBanksActionTypes } from '@actions/hr/get-banks';
+import { GetBanksActionTypes } from '@actions/hr/get-banks.deprecated';
 import { GuaranteeActionTypes } from '@actions/hr/set-guarantee.action';
 import { GetAgenciesActionTypes } from '@actions/hr/get-agencys';
 import { CodeActionTypes } from '@actions/hr/set-code.action';
@@ -25,9 +25,21 @@ import { UserHistory } from '@models/user-history';
 
 export interface HrState {
     /**
-     * 보험사목록
+     * 국내 전체 보험사목록
      */
-    companies: CoreSelectOption[];
+    allCompanies: CoreSelectOption[];
+    /**
+     * 장기 계약 관련 보험사목록
+     */
+    longCompanies: CoreSelectOption[];
+    /**
+     * 자동차 계약 관련 보험사목록
+     */
+    carCompanies: CoreSelectOption[];
+    /**
+     * 일반 계약 관련 보험사목록
+     */
+    genCompanies: CoreSelectOption[];
     /**
      * 은행목록
      */
@@ -95,7 +107,10 @@ export interface HrState {
 }
 
 const initialState: HrState = {
-    companies: [],
+    longCompanies: [],
+    carCompanies: [],
+    genCompanies: [],
+    allCompanies: [],
     banks: [],
     agencies: [],
     orgas: [],
@@ -121,13 +136,29 @@ export const hrReducer: Reducer<HrState, any> = (
     produce(state, (draft) => {
         switch (action.type) {
             case GetCompaniesActionTypes.SUCCESS: {
-                draft.companies = action.payload;
+                if (action.payload.type === 'bank') {
+                    draft.banks = action.payload.companies;
+                } else if (action.payload.type === 'card') {
+                } else if (action.payload.type === 'insu') {
+                    draft.allCompanies = action.payload.companies;
+                } else if (action.payload.type === 'long-view') {
+                    draft.longCompanies = action.payload.companies;
+                } else if (action.payload.type === 'car-view') {
+                    draft.carCompanies = action.payload.companies;
+                } else if (action.payload.type === 'gen-view') {
+                    draft.genCompanies = action.payload.companies;
+                } else if (action.payload.type === 'long-use') {
+                } else if (action.payload.type === 'car-use') {
+                } else if (action.payload.type === 'gen-use') {
+                } else if (action.payload.type === 'board') {
+                }
+
                 break;
             }
-            case GetBanksActionTypes.SUCCESS: {
-                draft.banks = action.payload;
-                break;
-            }
+            // case GetBanksActionTypes.SUCCESS: {
+            //     draft.banks = action.payload;
+            //     break;
+            // }
             case GetAgenciesActionTypes.SUCCESS: {
                 draft.agencies = action.payload;
                 break;

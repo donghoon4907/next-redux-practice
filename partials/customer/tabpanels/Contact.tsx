@@ -1,5 +1,6 @@
 import type { FC, ChangeEvent } from 'react';
 import type { Contact } from '@models/contact';
+import type { Spe } from '@models/spe';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CustomerState } from '@reducers/customer';
@@ -25,12 +26,20 @@ import {
     updateContact,
 } from '@actions/customer/set-contact.action';
 import { generateIndex } from '@utils/generate';
+import { findSelectOption } from '@utils/getter';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
+    spe: Spe;
 }
 
-export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
+export const ContactTabpanel: FC<Props> = ({
+    id,
+    tabId,
+    hidden,
+    editable,
+    spe,
+}) => {
     const dispatch = useDispatch();
 
     const { loggedInUser } = useSelector<AppState, HrState>(
@@ -43,8 +52,11 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
     const [kind, setKind] = useSelect(customerConstants.counselingDivision);
     // 채널
     const [channel, setChannel] = useSelect(customerConstants.channel);
-    // 계약종목(미구현)
-    const [spe, setSpe] = useSelect(customerConstants.category, null);
+    // 계약종목
+    const [_spe] = useSelect(
+        customerConstants.spe,
+        findSelectOption(spe, customerConstants.spe),
+    );
     // 사유발생일
     const [issuedate, setIssuedate] = useDatepicker(null);
     // 응대예정일시
@@ -61,9 +73,8 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
         const tf = confirm('설정한 내용을 초기화하시겠습니까?');
 
         if (tf) {
-            setKind(null);
-            setChannel(null);
-            setSpe(null);
+            setKind(customerConstants.counselingDivision[0]);
+            setChannel(customerConstants.channel[0]);
             setIssuedate(null);
             setReplydatetimet(null);
             setStatus(null);
@@ -111,6 +122,8 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             insert_username: loggedInUser.user_info.name,
             insert_userid: loggedInUser.userid,
             checked: false,
+            spe: _spe.value!.value,
+            spe_label: _spe.value!.label,
         };
 
         if (issuedate.value) {
@@ -119,7 +132,7 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
 
         if (replydatetime.value) {
             payload['replydatetime'] = dayjs(replydatetime.value).format(
-                'yyyy-MM-dd HH:mm',
+                'YYYY-MM-DD HH:mm',
             );
         }
 
@@ -195,7 +208,7 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                                     variables.detailFilterHeight
                                                 }
                                                 isDisabled={true}
-                                                // {...spe}
+                                                {..._spe}
                                             />
                                         </WithLabel>
                                     </div>
@@ -395,7 +408,7 @@ export const ContactTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                     <span>{v.channel}</span>
                                 </td>
                                 <td>
-                                    <span>{v.spe ? v.spe : '-'}</span>
+                                    <span>{v.spe_label}</span>
                                 </td>
                                 <td>
                                     <span>{v.cnum ? v.cnum : '-'}</span>

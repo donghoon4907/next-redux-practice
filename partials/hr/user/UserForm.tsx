@@ -48,6 +48,8 @@ import {
     useResidentNumberInput,
 } from '@hooks/use-input';
 import { PostcodeInput } from '@partials/common/input/Postcode';
+import { DateAndSLInput } from '@partials/common/input/DateAndSL';
+import { WithSelectInput } from '@partials/common/input/WithSelect';
 
 interface Props {
     /**
@@ -85,7 +87,7 @@ interface Props {
     /**
      * 생일 타입 기본 값
      */
-    defaultBirthType?: CoreSelectOption;
+    defaultBirthType?: boolean;
     /**
      * 핸드폰 기본 값
      */
@@ -305,7 +307,7 @@ export const UserForm: FC<Props> = ({
     defaultTitle = '',
     defaultIdNum1 = '',
     defaultBirthday = null,
-    defaultBirthType = userConstants.birthType[0],
+    defaultBirthType = true,
     defaultPhone = '',
     defaultMobileCom = userConstants.mobileCom[0],
     defaultTelephone = '',
@@ -366,7 +368,7 @@ export const UserForm: FC<Props> = ({
     const {
         selectedOrga,
         banks,
-        companies,
+        allCompanies,
         orga,
         guarantees,
         codes,
@@ -401,7 +403,7 @@ export const UserForm: FC<Props> = ({
         defaultBirthday ? new Date(defaultBirthday) : null,
     );
     // 양력 or 음력
-    const [birthType] = useSelect(userConstants.birthType, defaultBirthType);
+    const [birthType, setBirthType] = useState(defaultBirthType);
     // 핸드폰
     const [mobile] = usePhoneInput(defaultPhone, {
         callbackOnBlur: (convertedVal) => {
@@ -607,7 +609,7 @@ export const UserForm: FC<Props> = ({
     const [giaNo] = useInput(defaultGiaNo, { noSpace: true });
     // 협회자격관리 - 손보협 등록보험사
     const [giaComp] = useSelect(
-        companies.filter((v) => v.origin.dist === '손해'),
+        allCompanies.filter((v) => v.origin.dist === '손해'),
         defaultGiaComp,
     );
     // 협회자격관리 - 손보협 등록일
@@ -628,7 +630,7 @@ export const UserForm: FC<Props> = ({
     const [liaNo] = useInput(defaultLiaNo, { noSpace: true });
     // 협회자격관리 - 생보협 등록보험사
     const [liaComp] = useSelect(
-        companies.filter((v) => v.origin.dist === '생명'),
+        allCompanies.filter((v) => v.origin.dist === '생명'),
         defaultLiaComp,
     );
     // 협회자격관리 - 생보협 등록일
@@ -843,12 +845,7 @@ export const UserForm: FC<Props> = ({
 
         if (!isEmpty(birthday.value)) {
             payload['birthday'] = dayjs(birthday.value).format('YYYY-MM-DD');
-        }
-
-        if (birthType.value?.value === 'Y') {
-            payload['birth_type'] = true;
-        } else if (birthType.value?.value === 'N') {
-            payload['birth_type'] = false;
+            payload['birth_type'] = birthType;
         }
 
         if (!isEmpty(telephone.value)) {
@@ -1041,31 +1038,16 @@ export const UserForm: FC<Props> = ({
                                                     {...idnum1}
                                                 />
                                             </WithLabel>
-                                            <WithLabel
+                                            <DateAndSLInput
                                                 id="birthday"
                                                 label="생년월일"
-                                                type={labelType}
-                                            >
-                                                <MyDatepicker
-                                                    id="birthday"
-                                                    size="md"
-                                                    placeholder="생년월일"
-                                                    disabled={!isEditable}
-                                                    hooks={birthday}
-                                                />
-                                                <div style={{ width: 200 }}>
-                                                    <MySelect
-                                                        placeholder={'선택'}
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        placement="right"
-                                                        isDisabled={!isEditable}
-                                                        {...birthType}
-                                                    />
-                                                </div>
-                                            </WithLabel>
+                                                dateHooks={birthday}
+                                                type={birthType}
+                                                setType={setBirthType}
+                                                labelType={labelType}
+                                                disabled={!isEditable}
+                                                size="md"
+                                            />
                                             <WithLabel
                                                 id="mobile"
                                                 label="핸드폰"
@@ -1114,31 +1096,15 @@ export const UserForm: FC<Props> = ({
                                                     />
                                                 </div>
                                             </WithLabel>
-                                            <WithLabel
+                                            <WithSelectInput
                                                 id="email"
                                                 label="이메일"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="email"
-                                                    placeholder="이메일"
-                                                    disabled={!isEditable}
-                                                    {...email}
-                                                />
-                                                <div style={{ width: 400 }}>
-                                                    <MySelect
-                                                        placeholder={'선택'}
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        placement="right"
-                                                        isDisabled={!isEditable}
-                                                        {...emailCom}
-                                                    />
-                                                </div>
-                                            </WithLabel>
+                                                selectWidth={140}
+                                                labelType={labelType}
+                                                inputHooks={email}
+                                                selectHooks={emailCom}
+                                                disabled={!isEditable}
+                                            />
                                         </div>
                                         <div className="col-4">
                                             <div className="wr-ml">

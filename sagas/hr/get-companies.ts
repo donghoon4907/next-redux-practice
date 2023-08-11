@@ -9,15 +9,20 @@ import {
 } from '@actions/hr/get-companies';
 
 function* getCompaniesSaga(action: GetCompaniesRequestAction) {
-    const { data } = yield call(hrsService.getCompanies);
+    const { data } = yield call(hrsService.getCompanies, action.payload);
 
     const companies = data.map((v: Company) => ({
-        label: v.company,
+        label: v.name,
         value: v.wcode,
         origin: v,
     }));
 
-    yield put(getCompaniesSuccess(companies));
+    yield put(
+        getCompaniesSuccess({
+            type: action.payload,
+            companies,
+        }),
+    );
 
     return data;
 }

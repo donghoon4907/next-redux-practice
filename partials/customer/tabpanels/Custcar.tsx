@@ -26,9 +26,9 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
         (state) => state.customer,
     );
 
-    const filteredCars = custcars.filter((v) => v.type === 'car');
+    const filteredCars = custcars.filter((v) => v.p_type === 'car');
 
-    const filteredCusts = custcars.filter((v) => v.type === 'cust');
+    const filteredCusts = custcars.filter((v) => v.p_type === 'gen');
 
     const handleShowCreateModal = (payload: CreateCustcarModalPayload) => {
         dispatch(showCreateCustcarModal(payload));

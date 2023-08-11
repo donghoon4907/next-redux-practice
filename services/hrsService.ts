@@ -6,6 +6,8 @@ import type { GetUsersRequestPayload } from '@actions/hr/get-users';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
 import type { GetUserRequestPayload } from '@actions/hr/get-user';
 import type { UpdateUserRequestPayload } from '@actions/hr/update-user.action';
+import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
+import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum';
 import { getBackendAxios } from '@utils/axios/backend';
 
 export function login(payload: LoginRequestPayload) {
@@ -28,13 +30,17 @@ export function updateUser(payload: UpdateUserRequestPayload) {
     return getBackendAxios().post('/orga/user_update', payload);
 }
 
-export function getCompanies() {
-    return getBackendAxios().get('/common/company');
+export function getCompanies(payload: GetCompaniesRequestPayload) {
+    return getBackendAxios().get(`/finance/${payload}`);
 }
 
-export function getBanks() {
-    return getBackendAxios().get('/common/bank');
+export function getCompanyRegNum(payload: GetCompanyRegNumRequestPayload) {
+    return getBackendAxios().get(`/customer/ckCompanyCust/${payload.num}`);
 }
+
+// export function getBanks() {
+//     return getBackendAxios().get('/common/bank');
+// }
 
 export function getAgencies() {
     return getBackendAxios().get('/common/agencycom');
@@ -62,7 +68,8 @@ const rootServices = {
     createUser,
     updateUser,
     getCompanies,
-    getBanks,
+    getCompanyRegNum,
+    // getBanks,
     getAgencies,
     getOrgas,
     getOrga,

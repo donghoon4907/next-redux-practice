@@ -865,6 +865,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     tabId="tabContactHis"
                                     hidden={tab.id !== 'tabContactHis'}
                                     editable={editable}
+                                    spe="long"
                                 />
 
                                 <ChangeHistoryTabpanel
