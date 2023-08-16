@@ -42,6 +42,8 @@ export const ContactTabpanel: FC<Props> = ({
 }) => {
     const dispatch = useDispatch();
 
+    const findSpeSelectOption = findSelectOption(spe, customerConstants.spe);
+
     const { loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
@@ -53,10 +55,7 @@ export const ContactTabpanel: FC<Props> = ({
     // 채널
     const [channel, setChannel] = useSelect(customerConstants.channel);
     // 계약종목
-    const [_spe] = useSelect(
-        customerConstants.spe,
-        findSelectOption(spe, customerConstants.spe),
-    );
+    const [_spe] = useSelect(customerConstants.spe, findSpeSelectOption);
     // 사유발생일
     const [issuedate, setIssuedate] = useDatepicker(null);
     // 응대예정일시
@@ -276,8 +275,9 @@ export const ContactTabpanel: FC<Props> = ({
                                             id="floatingTextarea"
                                             {...comment}
                                             style={{
-                                                height: 128,
+                                                height: editable ? 128 : 82,
                                             }}
+                                            disabled={!editable}
                                         />
                                         <label htmlFor="floatingTextarea">
                                             내용
@@ -312,20 +312,24 @@ export const ContactTabpanel: FC<Props> = ({
                                                 disabled
                                             />
                                         </WithLabel>
-                                        <div className="wr-pages-detail__toolbar wr-mt">
-                                            <MyButton
-                                                className="btn-outline-secondary btn-md"
-                                                onClick={handleReset}
-                                            >
-                                                원래대로
-                                            </MyButton>
-                                            <MyButton
-                                                className="btn-primary btn-md"
-                                                onClick={handleCreate}
-                                            >
-                                                저장
-                                            </MyButton>
-                                        </div>
+                                        {editable && (
+                                            <div className="wr-pages-detail__toolbar wr-mt">
+                                                <MyButton
+                                                    className="btn-outline-secondary btn-md"
+                                                    onClick={handleReset}
+                                                    disabled={!editable}
+                                                >
+                                                    원래대로
+                                                </MyButton>
+                                                <MyButton
+                                                    className="btn-primary btn-md"
+                                                    onClick={handleCreate}
+                                                    disabled={!editable}
+                                                >
+                                                    저장
+                                                </MyButton>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -333,27 +337,33 @@ export const ContactTabpanel: FC<Props> = ({
                     </div>
                 </div>
             </div>
-            <div className="wr-pages-detail__subtitle wr-mt">
-                <div></div>
-                <div>
-                    <MyButton
-                        className="btn-danger btn-sm"
-                        onClick={handleDelete}
-                    >
-                        선택삭제
-                    </MyButton>
+            {editable && (
+                <div className="wr-pages-detail__subtitle wr-mt">
+                    <div></div>
+                    <div>
+                        <MyButton
+                            className="btn-danger btn-sm"
+                            onClick={handleDelete}
+                        >
+                            선택삭제
+                        </MyButton>
+                    </div>
                 </div>
-            </div>
+            )}
+
             <div className="wr-table--normal wr-mt">
                 <table className="wr-table table">
                     <thead>
                         <tr>
-                            <th style={{ width: '30px' }}>
-                                <MyCheckbox
-                                    label=""
-                                    onChange={handleAllCheck}
-                                />
-                            </th>
+                            {editable && (
+                                <th style={{ width: '30px' }}>
+                                    <MyCheckbox
+                                        label=""
+                                        onChange={handleAllCheck}
+                                    />
+                                </th>
+                            )}
+
                             <th style={{ width: '100px' }}>
                                 <strong>상담구분</strong>
                             </th>
@@ -369,7 +379,7 @@ export const ContactTabpanel: FC<Props> = ({
                             <th style={{ width: '100px' }}>
                                 <strong>사유발생일</strong>
                             </th>
-                            <th style={{ width: '200px' }}>
+                            <th>
                                 <strong>내용</strong>
                             </th>
                             <th style={{ width: '100px' }}>
@@ -389,18 +399,25 @@ export const ContactTabpanel: FC<Props> = ({
                     <tbody>
                         {contacts.length === 0 && (
                             <tr>
-                                <td colSpan={11}>접촉 이력이 없습니다.</td>
+                                <td colSpan={editable ? 11 : 10}>
+                                    접촉 이력이 없습니다.
+                                </td>
                             </tr>
                         )}
                         {contacts.map((v, i) => (
                             <tr key={`contact${i}`}>
-                                <td>
-                                    <MyCheckbox
-                                        label=""
-                                        checked={v.checked}
-                                        onChange={(evt) => handleCheck(evt, v)}
-                                    />
-                                </td>
+                                {editable && (
+                                    <td>
+                                        <MyCheckbox
+                                            label=""
+                                            checked={v.checked}
+                                            onChange={(evt) =>
+                                                handleCheck(evt, v)
+                                            }
+                                        />
+                                    </td>
+                                )}
+
                                 <td>
                                     <span>{v.kind}</span>
                                 </td>
@@ -408,7 +425,7 @@ export const ContactTabpanel: FC<Props> = ({
                                     <span>{v.channel}</span>
                                 </td>
                                 <td>
-                                    <span>{v.spe_label}</span>
+                                    <span>{findSpeSelectOption.label}</span>
                                 </td>
                                 <td>
                                     <span>{v.cnum ? v.cnum : '-'}</span>
@@ -421,7 +438,7 @@ export const ContactTabpanel: FC<Props> = ({
                                 <td>
                                     <div
                                         className="text-truncate"
-                                        style={{ width: 200 }}
+                                        style={{ width: 150 }}
                                     >
                                         {v.comment}
                                     </div>
@@ -432,7 +449,11 @@ export const ContactTabpanel: FC<Props> = ({
                                     <span>({v.insert_userid})</span>
                                 </td>
                                 <td>
-                                    <span>-</span>
+                                    <span>
+                                        {v.insert_datetime
+                                            ? v.insert_datetime
+                                            : '-'}
+                                    </span>
                                 </td>
                                 <td>
                                     <span>

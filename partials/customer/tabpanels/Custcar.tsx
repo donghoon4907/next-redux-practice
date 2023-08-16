@@ -82,25 +82,30 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
 
             <div className="wr-pages-detail__subtitle wr-mt">
                 <strong>보유차량</strong>
-                <div>
-                    <MyButton
-                        className="btn-danger btn-sm"
-                        onClick={handleDeleteCars}
-                    >
-                        선택삭제
-                    </MyButton>
-                </div>
+                {editable && (
+                    <div>
+                        <MyButton
+                            className="btn-danger btn-sm"
+                            onClick={handleDeleteCars}
+                        >
+                            선택삭제
+                        </MyButton>
+                    </div>
+                )}
             </div>
             <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>
-                            <th style={{ width: '30px' }}>
-                                <MyCheckbox
-                                    label=""
-                                    onChange={handleAllCheckCars}
-                                />
-                            </th>
+                            {editable && (
+                                <th style={{ width: '30px' }}>
+                                    <MyCheckbox
+                                        label=""
+                                        onChange={handleAllCheckCars}
+                                    />
+                                </th>
+                            )}
+
                             <th style={{ width: '100px' }}>
                                 <strong>차량번호</strong>
                             </th>
@@ -124,18 +129,25 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     <tbody>
                         {filteredCars.length === 0 && (
                             <tr>
-                                <td colSpan={7}>내역이 없습니다.</td>
+                                <td colSpan={editable ? 7 : 6}>
+                                    내역이 없습니다.
+                                </td>
                             </tr>
                         )}
                         {filteredCars.map((v, i) => (
                             <tr key={`custcarCar${i}`}>
-                                <td>
-                                    <MyCheckbox
-                                        label=""
-                                        checked={v.checked}
-                                        onChange={(evt) => handleCheck(evt, v)}
-                                    />
-                                </td>
+                                {editable && (
+                                    <td>
+                                        <MyCheckbox
+                                            label=""
+                                            checked={v.checked}
+                                            onChange={(evt) =>
+                                                handleCheck(evt, v)
+                                            }
+                                        />
+                                    </td>
+                                )}
+
                                 <td>
                                     <span>{v.carnum ? v.carnum : '-'}</span>
                                 </td>
@@ -162,32 +174,39 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         ))}
                     </tbody>
                 </table>
-                <MyTableExtension
-                    onClick={() => handleShowCreateModal('car')}
-                />
+                {editable && (
+                    <MyTableExtension
+                        onClick={() => handleShowCreateModal('car')}
+                    />
+                )}
             </div>
 
             <div className="wr-pages-detail__subtitle wr-mt">
                 <strong>피담보물건</strong>
-                <div>
-                    <MyButton
-                        className="btn-danger btn-sm"
-                        onClick={handleDeleteCusts}
-                    >
-                        선택삭제
-                    </MyButton>
-                </div>
+                {editable && (
+                    <div>
+                        <MyButton
+                            className="btn-danger btn-sm"
+                            onClick={handleDeleteCusts}
+                        >
+                            선택삭제
+                        </MyButton>
+                    </div>
+                )}
             </div>
             <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>
-                            <th style={{ width: '30px' }}>
-                                <MyCheckbox
-                                    label=""
-                                    onChange={handleAllCheckCusts}
-                                />
-                            </th>
+                            {editable && (
+                                <th style={{ width: '30px' }}>
+                                    <MyCheckbox
+                                        label=""
+                                        onChange={handleAllCheckCusts}
+                                    />
+                                </th>
+                            )}
+
                             <th style={{ width: '100px' }}>
                                 <strong>피담보물</strong>
                             </th>
@@ -205,18 +224,25 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     <tbody>
                         {filteredCusts.length === 0 && (
                             <tr>
-                                <td colSpan={5}>내역이 없습니다.</td>
+                                <td colSpan={editable ? 5 : 4}>
+                                    내역이 없습니다.
+                                </td>
                             </tr>
                         )}
                         {filteredCusts.map((v, i) => (
                             <tr key={`custcarCust${i}`}>
-                                <td>
-                                    <MyCheckbox
-                                        label=""
-                                        checked={v.checked}
-                                        onChange={(evt) => handleCheck(evt, v)}
-                                    />
-                                </td>
+                                {editable && (
+                                    <td>
+                                        <MyCheckbox
+                                            label=""
+                                            checked={v.checked}
+                                            onChange={(evt) =>
+                                                handleCheck(evt, v)
+                                            }
+                                        />
+                                    </td>
+                                )}
+
                                 <td>
                                     <span>{v.p_title ? v.p_title : '-'}</span>
                                 </td>
@@ -237,9 +263,11 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         ))}
                     </tbody>
                 </table>
-                <MyTableExtension
-                    onClick={() => handleShowCreateModal('cust')}
-                />
+                {editable && (
+                    <MyTableExtension
+                        onClick={() => handleShowCreateModal('cust')}
+                    />
+                )}
             </div>
         </MyTabpanel>
     );

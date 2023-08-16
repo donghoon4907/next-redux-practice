@@ -8,8 +8,6 @@ import { MyTabpanel } from '@components/tab/Tabpanel';
 interface Props extends MyTabpanelProps {
     data: any[];
     editable: boolean;
-    addCount: number;
-    onAddCount: () => void;
 }
 
 export const PaysTabpanel: FC<Props> = ({
@@ -18,10 +16,10 @@ export const PaysTabpanel: FC<Props> = ({
     hidden,
     data,
     editable,
-    addCount,
-    onAddCount,
 }) => {
     const columns = useColumn(LONG_COL_PERFORMANCE);
+
+    const handleShowSettingModal = () => {};
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
@@ -32,8 +30,7 @@ export const PaysTabpanel: FC<Props> = ({
                             columns={columns}
                             data={data}
                             showExtension={editable}
-                            addCount={addCount}
-                            onAddCount={onAddCount}
+                            onClickRow={handleShowSettingModal}
                         />
                     </div>
                 </div>

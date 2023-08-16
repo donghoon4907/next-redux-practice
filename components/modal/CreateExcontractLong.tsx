@@ -29,7 +29,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
         ModalState
     >((state) => state.modal);
 
-    const { longCompanies } = useSelector<AppState, HrState>(
+    const { allCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
@@ -38,7 +38,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
     );
 
     // 보험사
-    const [comp] = useSelect(longCompanies);
+    const [comp] = useSelect(allCompanies);
     // 상품명
     const [title] = useInput('');
     // 세부보종

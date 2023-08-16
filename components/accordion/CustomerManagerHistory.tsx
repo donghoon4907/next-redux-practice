@@ -15,9 +15,14 @@ import {
 interface Props {
     defaultTitle: string;
     data: Array<any>;
+    editable: boolean;
 }
 
-export const CustomerManagerAccordion: FC<Props> = ({ defaultTitle, data }) => {
+export const CustomerManagerAccordion: FC<Props> = ({
+    defaultTitle,
+    data,
+    editable,
+}) => {
     const dispatch = useDispatch();
 
     const { selectedUser } = useSelector<AppState, HrState>(
@@ -82,20 +87,20 @@ export const CustomerManagerAccordion: FC<Props> = ({ defaultTitle, data }) => {
                                     <tr key={`customerManagerHistory${i}`}>
                                         <td>
                                             <span>
-                                                {v.insert_datetime
-                                                    ? v.insert_datetime
+                                                {v.insert_date
+                                                    ? v.insert_date
                                                     : ''}
                                             </span>
                                         </td>
                                         <td>
-                                            <span>{`${v.name} (${v.userid})`}</span>
+                                            <span>{`${v.username} (${v.userid})`}</span>
                                         </td>
                                         <td>
                                             <span>{v.remark}</span>
                                         </td>
                                     </tr>
                                 ))}
-                                {selectedUser && (
+                                {/* {selectedUser && (
                                     <tr>
                                         <td>
                                             <span>-</span>
@@ -107,10 +112,12 @@ export const CustomerManagerAccordion: FC<Props> = ({ defaultTitle, data }) => {
                                             <span>{selectedUser.remark}</span>
                                         </td>
                                     </tr>
-                                )}
+                                )} */}
                             </tbody>
                         </table>
-                        <MyTableExtension onClick={handleShowModal} />
+                        {editable && (
+                            <MyTableExtension onClick={handleShowModal} />
+                        )}
                     </div>
                 </AccordionBody>
             </AccordionItem>

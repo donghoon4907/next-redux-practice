@@ -69,25 +69,30 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             </div>
             <div className="wr-pages-detail__subtitle wr-mt">
                 <strong></strong>
-                <div>
-                    <MyButton
-                        className="btn-danger btn-sm"
-                        onClick={handleDelete}
-                    >
-                        선택삭제
-                    </MyButton>
-                </div>
+                {editable && (
+                    <div>
+                        <MyButton
+                            className="btn-danger btn-sm"
+                            onClick={handleDelete}
+                        >
+                            선택삭제
+                        </MyButton>
+                    </div>
+                )}
             </div>
             <div className="wr-table--normal wr-mt">
                 <table className="wr-table table">
                     <thead>
                         <tr>
-                            <th style={{ width: '30px' }}>
-                                <MyCheckbox
-                                    label=""
-                                    onChange={handleAllCheck}
-                                />
-                            </th>
+                            {editable && (
+                                <th style={{ width: '30px' }}>
+                                    <MyCheckbox
+                                        label=""
+                                        onChange={handleAllCheck}
+                                    />
+                                </th>
+                            )}
+
                             <th style={{ width: '100px' }}>
                                 <strong>이름</strong>
                             </th>
@@ -111,18 +116,25 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     <tbody>
                         {family.length === 0 && (
                             <tr>
-                                <td colSpan={7}>데이터가 없습니다.</td>
+                                <td colSpan={editable ? 7 : 6}>
+                                    데이터가 없습니다.
+                                </td>
                             </tr>
                         )}
                         {family.map((v, i) => (
                             <tr key={`family${i}`}>
-                                <td>
-                                    <MyCheckbox
-                                        label=""
-                                        checked={v.checked}
-                                        onChange={(evt) => handleCheck(evt, v)}
-                                    />
-                                </td>
+                                {editable && (
+                                    <td>
+                                        <MyCheckbox
+                                            label=""
+                                            checked={v.checked}
+                                            onChange={(evt) =>
+                                                handleCheck(evt, v)
+                                            }
+                                        />
+                                    </td>
+                                )}
+
                                 <td>
                                     <span>{v.name ? v.name : '-'}</span>
                                 </td>
@@ -147,7 +159,9 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         ))}
                     </tbody>
                 </table>
-                <MyTableExtension onClick={handleShowSettingModal} />
+                {editable && (
+                    <MyTableExtension onClick={handleShowSettingModal} />
+                )}
             </div>
         </MyTabpanel>
     );

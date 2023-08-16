@@ -3,14 +3,16 @@ import type { Contact } from '@models/contact';
 import type { Excontract } from '@models/excontract';
 import type { Custcar } from '@models/custcar';
 import type { Family } from '@models/family';
+import type { Event } from '@models/event';
+import type { UserHistory } from '@models/user-history';
 import produce from 'immer';
 import { ContactActionTypes } from '@actions/customer/set-contact.action';
 import { ExcontractActionTypes } from '@actions/customer/set-excontract.action';
 import { CustcarActionTypes } from '@actions/customer/set-custcar.action';
 import { FamilyActionTypes } from '@actions/customer/set-family.action';
-import { Event } from '@models/event';
 import { EventActionTypes } from '@actions/customer/set-event.action';
-import { UserHistory } from '@models/user-history';
+import { GetCustomerActionTypes } from '@actions/customer/get-customer';
+import { UserHistoryActionTypes } from '@actions/customer/set-user-history.action';
 
 export interface CustomerState {
     /**
@@ -273,6 +275,14 @@ export const customerReducer: Reducer<CustomerState, any> = (
                     }
                 }
 
+                break;
+            }
+            case GetCustomerActionTypes.SUCCESS: {
+                draft.customer = action.payload;
+                break;
+            }
+            case UserHistoryActionTypes.CREATE: {
+                draft.userid_his = draft.userid_his.concat(action.payload);
                 break;
             }
             default:

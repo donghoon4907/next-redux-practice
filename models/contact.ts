@@ -14,4 +14,5 @@ export type Contact = CoreDeleteableObject & {
     comment: string;
     insert_username: string;
     insert_userid: string;
+    insert_datetime?: string;
 };

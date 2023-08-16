@@ -845,8 +845,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     hidden={tab.id !== 'tabPays'}
                                     data={long.pays}
                                     editable={editable}
-                                    addCount={paysAddCount}
-                                    onAddCount={handleIncrementPaysAddCount}
                                 />
                                 <EndorsementTabpanel
                                     id="tabpanelEndorsement"
@@ -875,10 +873,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                                     data={log}
                                     editable={editable}
                                     selectedData={selectedChangeHis}
-                                    addCount={changeHisAddCount}
-                                    onAddCount={
-                                        handleIncrementChangeHisAddCount
-                                    }
                                 />
                                 {/* <EtcsTabpanel
                                     id="tabpanelEtcs"

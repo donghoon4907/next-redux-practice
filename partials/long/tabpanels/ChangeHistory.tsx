@@ -9,8 +9,6 @@ interface Props extends MyTabpanelProps {
     data: any[];
     selectedData: any;
     editable: boolean;
-    addCount: number;
-    onAddCount: () => void;
 }
 
 export const ChangeHistoryTabpanel: FC<Props> = ({
@@ -20,10 +18,10 @@ export const ChangeHistoryTabpanel: FC<Props> = ({
     data,
     selectedData,
     editable,
-    addCount,
-    onAddCount,
 }) => {
     const columns = useColumn(LONG_CHANGE_HISTORY);
+
+    const handleShowSettingModal = () => {};
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
@@ -34,8 +32,7 @@ export const ChangeHistoryTabpanel: FC<Props> = ({
                             columns={columns}
                             data={data}
                             showExtension={editable}
-                            addCount={addCount}
-                            onAddCount={onAddCount}
+                            onClickAddRow={handleShowSettingModal}
                         />
                     </div>
                 </div>

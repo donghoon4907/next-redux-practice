@@ -29,7 +29,7 @@ export const CreateExcontractCarModal: FC<Props> = () => {
         ModalState
     >((state) => state.modal);
 
-    const { carCompanies } = useSelector<AppState, HrState>(
+    const { allCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
@@ -38,7 +38,7 @@ export const CreateExcontractCarModal: FC<Props> = () => {
     );
 
     // 보험사
-    const [comp] = useSelect(carCompanies);
+    const [comp] = useSelect(allCompanies);
     // 차량번호
     const [carnum] = useInput('');
     // 보험료

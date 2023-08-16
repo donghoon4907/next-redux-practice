@@ -44,7 +44,10 @@ import { PostcodeInput } from '@partials/common/input/Postcode';
 import { CreateEventModal } from '@components/modal/CreateEvent';
 import { createCustomerRequest } from '@actions/customer/create-customer.action';
 import { useApi } from '@hooks/use-api';
-import { CreateCustomerDTO } from '@dto/customer/Customer.dto';
+import {
+    CreateCustomerDTO,
+    updateCustomerDTO,
+} from '@dto/customer/Customer.dto';
 import { WithSelectInput } from '@partials/common/input/WithSelect';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { getCompanyRegNumRequest } from '@actions/hr/get-company-regnum';
@@ -59,6 +62,7 @@ import {
     residentNumToAge,
     residentNumToBirthday,
 } from '@utils/calculator';
+import { updateCustomerRequest } from '@actions/customer/update-customer.action';
 
 interface Props {
     /**
@@ -69,6 +73,22 @@ interface Props {
      *
      */
     spe: Spe;
+    /**
+     * PK
+     */
+    idx?: string;
+    /**
+     * 담당자 기본 ID
+     */
+    defaultUserid: string;
+    /**
+     * 담당자 기본 값
+     */
+    defaultUsername: string;
+    /**
+     * 담당자 기본 부서 값
+     */
+    defaultUserFulls: string;
     /**
      * 고객명 기본 값
      */
@@ -88,7 +108,7 @@ interface Props {
     /**
      * 나이 기본 값
      */
-    // defaultAge?: string;
+    defaultAge?: string;
     // defaultAgeType?: CoreSelectOption;
     /**
      * 생년월일 기본 값
@@ -102,7 +122,7 @@ interface Props {
     /**
      * 상령일 기본 값
      */
-    // defaultSday?: string;
+    defaultSday?: string;
     /**
      * 핸드폰 기본 값
      */
@@ -197,16 +217,20 @@ interface Props {
 export const CustomerForm: FC<Props> = ({
     mode,
     spe,
+    idx = -1,
+    defaultUserid,
+    defaultUsername,
+    defaultUserFulls,
     defaultName = '',
     defaultCusttype = customerConstants.division[0],
     defaultIdnum = '',
     defaultComRegNum = '',
-    // defaultAge = '',
+    defaultAge = '',
     // defaultAgeType = customerConstants.age[0],
     defaultBirthday = null,
     defaultBtype = true,
     defaultIdate = null,
-    // defaultSday = null,
+    defaultSday = '',
     defaultMobile = '',
     defaultMobileCom = userConstants.mobileCom[0],
     defaultPhone = '',
@@ -243,10 +267,23 @@ export const CustomerForm: FC<Props> = ({
         (state) => state.hr,
     );
 
-    const { contacts, excontracts, custcars, family, events, userid_his } =
-        useSelector<AppState, CustomerState>((state) => state.customer);
+    const {
+        contacts,
+        excontracts,
+        custcars,
+        family,
+        events,
+        userid_his,
+        removedContacts,
+        removedExcontracts,
+        removedCustcars,
+        removedFamily,
+        removedEvents,
+    } = useSelector<AppState, CustomerState>((state) => state.customer);
 
     const createCustomer = useApi(createCustomerRequest);
+
+    const updateCustomer = useApi(updateCustomerRequest);
 
     const getCompanyRegNum = useApi(getCompanyRegNumRequest);
     // 탭 관리
@@ -265,7 +302,7 @@ export const CustomerForm: FC<Props> = ({
     // 법인 여부
     const isCorporation = custtype.value?.value === '1';
     // 나이
-    const [age, setAge] = useState('');
+    const [age, setAge] = useState(defaultAge);
     const [ageType] = useSelect(customerConstants.age, undefined, {
         callbackOnChange: (option) => {
             if (isEmpty(idnum.value)) {
@@ -338,7 +375,7 @@ export const CustomerForm: FC<Props> = ({
     );
     const [bType, setBtype] = useState(defaultBtype);
     // 상령일
-    const [sDay, setSday] = useState('');
+    const [sDay, setSday] = useState(defaultSday);
     // 주민번호
     const [idnum] = useResidentNumberInput(defaultIdnum, {
         callbackOnChange: (nextval) => {
@@ -480,47 +517,37 @@ export const CustomerForm: FC<Props> = ({
     const handleUpdate = () => {
         const payload = createPayload();
 
-        // const updateUserDto = new UpdateUserDTO(payload);
+        const updateUserDto = new updateCustomerDTO(payload);
 
-        // if (updateUserDto.requiredValidate()) {
-        //     updateUser(updateUserDto.getPayload(), ({ Message }) => {
-        //         if (Message === 'Success') {
-        //             // 프로필 사진을 설정한 경우
-        //             if (lastSetPortraitImageFile) {
-        //                 const formData = new FormData();
-
-        //                 formData.append('file', lastSetPortraitImageFile);
-
-        //                 upload(
-        //                     {
-        //                         userid,
-        //                         formData,
-        //                     },
-        //                     () => {
-        //                         alert('수정되었습니다.');
-        //                     },
-        //                 );
-        //             } else {
-        //                 alert('수정되었습니다.');
-        //             }
-        //         }
-        //     });
-        // }
+        if (updateUserDto.requiredValidate()) {
+            updateCustomer(updateUserDto.getPayload(), ({ Message }) => {
+                if (Message === 'Success') {
+                    alert('수정되었습니다.');
+                }
+            });
+        }
     };
 
     const createPayload = () => {
-        const payload: CreateCustomerRequestPayload = {
+        const payload: any = {
             name: isIndividual ? name.value : cname.value,
             custtype: +custtype.value!.value,
-            userid: selectedUser ? selectedUser.userid : loggedInUser.userid,
+            userid: selectedUser ? selectedUser.userid : defaultUserid,
+            remove: {},
         };
 
+        if (idx !== -1) {
+            payload['idx'] = idx;
+        }
+
         if (selectedUser) {
-            payload['userid_his'] = [...userid_his, selectedUser];
-        } else {
-            if (userid_his.length > 0) {
-                payload['userid_his'] = userid_his;
-            }
+            payload['userid_his'] = [
+                ...userid_his,
+                {
+                    ...selectedUser,
+                    insert_date: dayjs().format('YYYY-MM-DD'),
+                },
+            ];
         }
 
         if (contacts.length > 0) {
@@ -549,6 +576,28 @@ export const CustomerForm: FC<Props> = ({
 
         if (grade.value) {
             payload['customer_rate'] = grade.value.value;
+        }
+
+        if (removedContacts.length > 0) {
+            payload['remove']['contacts'] = removedContacts.map((v) => v.idx);
+        }
+
+        if (removedExcontracts.length > 0) {
+            payload['remove']['excontract'] = removedExcontracts.map(
+                (v) => v.idx,
+            );
+        }
+
+        if (removedCustcars.length > 0) {
+            payload['remove']['custcar'] = removedCustcars.map((v) => v.idx);
+        }
+
+        if (removedFamily.length > 0) {
+            payload['remove']['family'] = removedFamily.map((v) => v.idx);
+        }
+
+        if (removedEvents.length > 0) {
+            payload['remove']['event'] = removedEvents.map((v) => v.idx);
         }
 
         // if (pia.value) {
@@ -659,8 +708,13 @@ export const CustomerForm: FC<Props> = ({
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
                                     <CustomerManagerAccordion
-                                        defaultTitle={`${loggedInUser.user_info.fulls} ${loggedInUser.user_info.name}`}
-                                        data={[]}
+                                        defaultTitle={
+                                            defaultUserid
+                                                ? `${defaultUserFulls} ${defaultUsername}`
+                                                : `${loggedInUser.user_info.fulls} ${loggedInUser.user_info.name}`
+                                        }
+                                        data={userid_his}
+                                        editable={editable}
                                     />
                                 </div>
                             </div>
@@ -728,7 +782,7 @@ export const CustomerForm: FC<Props> = ({
                                                     id="idnum1"
                                                     label="주민번호"
                                                     type={labelType}
-                                                    // isRequired={editable}
+                                                    isRequired={editable}
                                                 >
                                                     <MyInput
                                                         type="text"

@@ -112,25 +112,30 @@ export const ExcontractTabpanel: FC<Props> = ({
                 <div className="col">
                     <div className="wr-pages-detail__subtitle">
                         <strong>장기보험 ({filteredLongs.length})</strong>
-                        <div>
-                            <MyButton
-                                className="btn-danger btn-sm"
-                                onClick={handleDeleteLongs}
-                            >
-                                선택삭제
-                            </MyButton>
-                        </div>
+                        {editable && (
+                            <div>
+                                <MyButton
+                                    className="btn-danger btn-sm"
+                                    onClick={handleDeleteLongs}
+                                >
+                                    선택삭제
+                                </MyButton>
+                            </div>
+                        )}
                     </div>
                     <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: '30px' }}>
-                                        <MyCheckbox
-                                            label=""
-                                            onChange={handleAllCheckLongs}
-                                        />
-                                    </th>
+                                    {editable && (
+                                        <th style={{ width: '30px' }}>
+                                            <MyCheckbox
+                                                label=""
+                                                onChange={handleAllCheckLongs}
+                                            />
+                                        </th>
+                                    )}
+
                                     <th style={{ width: '100px' }}>
                                         <strong>보험사</strong>
                                     </th>
@@ -154,20 +159,25 @@ export const ExcontractTabpanel: FC<Props> = ({
                             <tbody>
                                 {filteredLongs.length === 0 && (
                                     <tr>
-                                        <td colSpan={7}>내역이 없습니다.</td>
+                                        <td colSpan={editable ? 7 : 6}>
+                                            내역이 없습니다.
+                                        </td>
                                     </tr>
                                 )}
                                 {filteredLongs.map((v, i) => (
                                     <tr key={`excontractLong${i}`}>
-                                        <td>
-                                            <MyCheckbox
-                                                label=""
-                                                checked={v.checked}
-                                                onChange={(evt) =>
-                                                    handleCheck(evt, v)
-                                                }
-                                            />
-                                        </td>
+                                        {editable && (
+                                            <td>
+                                                <MyCheckbox
+                                                    label=""
+                                                    checked={v.checked}
+                                                    onChange={(evt) =>
+                                                        handleCheck(evt, v)
+                                                    }
+                                                />
+                                            </td>
+                                        )}
+
                                         <td>
                                             <span>{v.wname}</span>
                                         </td>
@@ -207,9 +217,11 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 ))}
                             </tbody>
                         </table>
-                        <MyTableExtension
-                            onClick={() => handleShowCreateModal('long')}
-                        />
+                        {editable && (
+                            <MyTableExtension
+                                onClick={() => handleShowCreateModal('long')}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -217,25 +229,30 @@ export const ExcontractTabpanel: FC<Props> = ({
                 <div className="col">
                     <div className="wr-pages-detail__subtitle">
                         <strong>자동차보험 ({filteredCars.length})</strong>
-                        <div>
-                            <MyButton
-                                className="btn-danger btn-sm"
-                                onClick={handleDeleteCars}
-                            >
-                                선택삭제
-                            </MyButton>
-                        </div>
+                        {editable && (
+                            <div>
+                                <MyButton
+                                    className="btn-danger btn-sm"
+                                    onClick={handleDeleteCars}
+                                >
+                                    선택삭제
+                                </MyButton>
+                            </div>
+                        )}
                     </div>
                     <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: '30px' }}>
-                                        <MyCheckbox
-                                            label=""
-                                            onChange={handleAllCheckCars}
-                                        />
-                                    </th>
+                                    {editable && (
+                                        <th style={{ width: '30px' }}>
+                                            <MyCheckbox
+                                                label=""
+                                                onChange={handleAllCheckCars}
+                                            />
+                                        </th>
+                                    )}
+
                                     <th style={{ width: '100px' }}>
                                         <strong>보험사</strong>
                                     </th>
@@ -262,20 +279,25 @@ export const ExcontractTabpanel: FC<Props> = ({
                             <tbody>
                                 {filteredCars.length === 0 && (
                                     <tr>
-                                        <td colSpan={8}>내역이 없습니다.</td>
+                                        <td colSpan={editable ? 8 : 7}>
+                                            내역이 없습니다.
+                                        </td>
                                     </tr>
                                 )}
                                 {filteredCars.map((v, i) => (
                                     <tr key={`excontractCar${i}`}>
-                                        <td>
-                                            <MyCheckbox
-                                                label=""
-                                                checked={v.checked}
-                                                onChange={(evt) =>
-                                                    handleCheck(evt, v)
-                                                }
-                                            />
-                                        </td>
+                                        {editable && (
+                                            <td>
+                                                <MyCheckbox
+                                                    label=""
+                                                    checked={v.checked}
+                                                    onChange={(evt) =>
+                                                        handleCheck(evt, v)
+                                                    }
+                                                />
+                                            </td>
+                                        )}
+
                                         <td>
                                             <span>{v.wname}</span>
                                         </td>
@@ -319,9 +341,11 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 ))}
                             </tbody>
                         </table>
-                        <MyTableExtension
-                            onClick={() => handleShowCreateModal('car')}
-                        />
+                        {editable && (
+                            <MyTableExtension
+                                onClick={() => handleShowCreateModal('car')}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -329,25 +353,30 @@ export const ExcontractTabpanel: FC<Props> = ({
                 <div className="col">
                     <div className="wr-pages-detail__subtitle">
                         <strong>일반보험 ({filteredGens.length})</strong>
-                        <div>
-                            <MyButton
-                                className="btn-danger btn-sm"
-                                onClick={handleDeleteGens}
-                            >
-                                선택삭제
-                            </MyButton>
-                        </div>
+                        {editable && (
+                            <div>
+                                <MyButton
+                                    className="btn-danger btn-sm"
+                                    onClick={handleDeleteGens}
+                                >
+                                    선택삭제
+                                </MyButton>
+                            </div>
+                        )}
                     </div>
                     <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: '30px' }}>
-                                        <MyCheckbox
-                                            label=""
-                                            onChange={handleAllCheckGens}
-                                        />
-                                    </th>
+                                    {editable && (
+                                        <th style={{ width: '30px' }}>
+                                            <MyCheckbox
+                                                label=""
+                                                onChange={handleAllCheckGens}
+                                            />
+                                        </th>
+                                    )}
+
                                     <th style={{ width: '100px' }}>
                                         <strong>보험사</strong>
                                     </th>
@@ -374,20 +403,25 @@ export const ExcontractTabpanel: FC<Props> = ({
                             <tbody>
                                 {filteredGens.length === 0 && (
                                     <tr>
-                                        <td colSpan={8}>내역이 없습니다.</td>
+                                        <td colSpan={editable ? 8 : 7}>
+                                            내역이 없습니다.
+                                        </td>
                                     </tr>
                                 )}
                                 {filteredGens.map((v, i) => (
                                     <tr key={`excontractGen${i}`}>
-                                        <td>
-                                            <MyCheckbox
-                                                label=""
-                                                checked={v.checked}
-                                                onChange={(evt) =>
-                                                    handleCheck(evt, v)
-                                                }
-                                            />
-                                        </td>
+                                        {editable && (
+                                            <td>
+                                                <MyCheckbox
+                                                    label=""
+                                                    checked={v.checked}
+                                                    onChange={(evt) =>
+                                                        handleCheck(evt, v)
+                                                    }
+                                                />
+                                            </td>
+                                        )}
+
                                         <td>
                                             <span>{v.wname}</span>
                                         </td>
@@ -431,9 +465,11 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 ))}
                             </tbody>
                         </table>
-                        <MyTableExtension
-                            onClick={() => handleShowCreateModal('gen')}
-                        />
+                        {editable && (
+                            <MyTableExtension
+                                onClick={() => handleShowCreateModal('gen')}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
