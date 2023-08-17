@@ -8,6 +8,7 @@ import type { GetUserRequestPayload } from '@actions/hr/get-user';
 import type { UpdateUserRequestPayload } from '@actions/hr/update-user.action';
 import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
 import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum';
+import type { GetProductsRequestPayload } from '@actions/hr/get-products';
 import { getBackendAxios } from '@utils/axios/backend';
 
 export function login(payload: LoginRequestPayload) {
@@ -16,9 +17,7 @@ export function login(payload: LoginRequestPayload) {
 
 export function getPermission(payload: GetPermissionRequestPayload) {
     return getBackendAxios().get(
-        `/orga/permission${
-            payload.division ? `?division${payload.division}` : ''
-        }`,
+        `/orga/permission?division=${payload.division}`,
     );
 }
 
@@ -37,10 +36,6 @@ export function getCompanies(payload: GetCompaniesRequestPayload) {
 export function getCompanyRegNum(payload: GetCompanyRegNumRequestPayload) {
     return getBackendAxios().get(`/customer/ckCompanyCust/${payload.num}`);
 }
-
-// export function getBanks() {
-//     return getBackendAxios().get('/common/bank');
-// }
 
 export function getAgencies() {
     return getBackendAxios().get('/common/agencycom');
@@ -62,6 +57,14 @@ export function getUser(payload: GetUserRequestPayload) {
     return getBackendAxios().get(`/orga/userinfo/${payload.idx}`);
 }
 
+export function getProducts(payload: GetProductsRequestPayload) {
+    return getBackendAxios().get(
+        `/product/${payload.spe}/${payload.wcode}${
+            payload.type ? `?type=${payload.type}` : ''
+        }`,
+    );
+}
+
 const rootServices = {
     login,
     getPermission,
@@ -69,12 +72,12 @@ const rootServices = {
     updateUser,
     getCompanies,
     getCompanyRegNum,
-    // getBanks,
     getAgencies,
     getOrgas,
     getOrga,
     getUsers,
     getUser,
+    getProducts,
 };
 
 export default rootServices;

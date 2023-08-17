@@ -22,6 +22,8 @@ import { Commission } from '@models/commission';
 import { CommissionActionTypes } from '@actions/hr/set-commission.action';
 import { UserActionTypes } from '@actions/hr/set-user.action';
 import { UserHistory } from '@models/user-history';
+import { GetProductsActionTypes } from '@actions/hr/get-products';
+import { Product } from '@models/product';
 
 export interface HrState {
     /**
@@ -31,7 +33,11 @@ export interface HrState {
     /**
      * 장기 계약 관련 보험사목록
      */
-    longCompanies: CoreSelectOption[];
+    longViewCompanies: CoreSelectOption[];
+    /**
+     * 장기 계약 관련 보험사목록
+     */
+    longUseCompanies: CoreSelectOption[];
     /**
      * 자동차 계약 관련 보험사목록
      */
@@ -104,13 +110,18 @@ export interface HrState {
      * 삭제된 수수료 규정 목록
      */
     removedCommissions: Commission[];
+    /**
+     * 보험사의 상품 목록
+     */
+    products: Product[];
 }
 
 const initialState: HrState = {
-    longCompanies: [],
+    allCompanies: [],
+    longViewCompanies: [],
+    longUseCompanies: [],
     carCompanies: [],
     genCompanies: [],
-    allCompanies: [],
     banks: [],
     agencies: [],
     orgas: [],
@@ -127,6 +138,7 @@ const initialState: HrState = {
     removedCodes: [],
     commissions: [],
     removedCommissions: [],
+    products: [],
 };
 
 export const hrReducer: Reducer<HrState, any> = (
@@ -142,12 +154,13 @@ export const hrReducer: Reducer<HrState, any> = (
                 } else if (action.payload.type === 'insu') {
                     draft.allCompanies = action.payload.companies;
                 } else if (action.payload.type === 'long-view') {
-                    draft.longCompanies = action.payload.companies;
+                    draft.longViewCompanies = action.payload.companies;
                 } else if (action.payload.type === 'car-view') {
                     draft.carCompanies = action.payload.companies;
                 } else if (action.payload.type === 'gen-view') {
                     draft.genCompanies = action.payload.companies;
                 } else if (action.payload.type === 'long-use') {
+                    draft.longUseCompanies = action.payload.companies;
                 } else if (action.payload.type === 'car-use') {
                 } else if (action.payload.type === 'gen-use') {
                 } else if (action.payload.type === 'board') {
@@ -303,6 +316,11 @@ export const hrReducer: Reducer<HrState, any> = (
                             draft.removedCommissions.concat(deleted);
                     }
                 }
+
+                break;
+            }
+            case GetProductsActionTypes.SUCCESS: {
+                draft.products = action.payload;
 
                 break;
             }

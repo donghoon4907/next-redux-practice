@@ -1,8 +1,10 @@
 import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import { useState, Fragment } from 'react';
-import { useColumn } from '@hooks/use-column';
-import { LONG_CHANGE_HISTORY } from '@constants/column';
+import type { AppState } from '@reducers/index';
+import type { CustomerState } from '@reducers/customer';
+import { useState, Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AiOutlinePicture } from 'react-icons/ai';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
@@ -11,10 +13,16 @@ import variables from '@styles/_variables.module.scss';
 import { MyCheckbox } from '@components/checkbox';
 import { MyDatepicker } from '@components/datepicker';
 import { MyButton } from '@components/button';
-import { AiOutlinePicture } from 'react-icons/ai';
+import { useInput } from '@hooks/use-input';
+import { useApi } from '@hooks/use-api';
+import { showCustomerSearchModal } from '@actions/modal/customer-search.action';
+import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
+import { isEmpty } from '@utils/validator/common';
+import { convertPhoneNumber } from '@utils/converter';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
+    userid: string;
 }
 
 export const CustomerTabpanel: FC<Props> = ({
@@ -22,10 +30,38 @@ export const CustomerTabpanel: FC<Props> = ({
     tabId,
     hidden,
     editable,
+    userid,
 }) => {
+    const dispatch = useDispatch();
+
+    const { customer } = useSelector<AppState, CustomerState>(
+        (state) => state.customer,
+    );
+
+    const getUserCustomers = useApi(getUserCustomersRequest);
+
+    // 계약자명
+    const [username, setUsername] = useInput('', { noSpace: true });
+
     const [addCount, setAddCount] = useState(1);
 
     const labelType = editable ? 'active' : 'disable';
+
+    const handleClickConnectCustomer = () => {
+        if (isEmpty(username.value)) {
+            return alert('계약자명을 입력하세요.');
+        }
+
+        getUserCustomers({ userid, username: username.value }, () => {
+            dispatch(showCustomerSearchModal());
+        });
+    };
+
+    useEffect(() => {
+        if (customer) {
+            setUsername(customer.name);
+        }
+    }, [customer, setUsername]);
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
@@ -35,18 +71,20 @@ export const CustomerTabpanel: FC<Props> = ({
                         <div className="col">
                             <WithLabel
                                 id="cname"
-                                label="계약자"
+                                label="계약자명"
                                 type={labelType}
                             >
                                 <MyInput
                                     type="text"
                                     id="cname"
-                                    placeholder="계약자"
+                                    placeholder="계약자명"
                                     disabled={!editable}
+                                    {...username}
                                     button={{
                                         type: 'button',
                                         className: 'btn-primary btn-md',
                                         disabled: !editable,
+                                        onClick: handleClickConnectCustomer,
                                         children: (
                                             <>
                                                 <span>고객정보연결</span>
@@ -57,132 +95,113 @@ export const CustomerTabpanel: FC<Props> = ({
                             </WithLabel>
                         </div>
                     </div>
-                    <div className="row wr-mt">
-                        <div className="col-6">
-                            <WithLabel
-                                id="division"
-                                label="고객구분"
-                                type={labelType}
-                            >
-                                <MySelect
-                                    inputId="division"
-                                    placeholder="선택"
-                                    height={variables.detailFilterHeight}
-                                    isDisabled={!editable}
-                                    // {...division}
-                                />
-                            </WithLabel>
-                        </div>
-                        <div className="col-6">
-                            <div className="wr-ml">
-                                <WithLabel
-                                    id="inflowPath"
-                                    label="유입경로"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        inputId="inflowPath"
-                                        placeholder="유입경로"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                    />
-                                </WithLabel>
+                    {customer && (
+                        <>
+                            <div className="row wr-mt">
+                                <div className="col-6">
+                                    <WithLabel label="고객구분" type="disable">
+                                        <MyInput
+                                            type="text"
+                                            disabled={true}
+                                            value={
+                                                customer.custtype === 0
+                                                    ? '개인'
+                                                    : '법인'
+                                            }
+                                        />
+                                    </WithLabel>
+                                </div>
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <WithLabel
+                                            label="유입경로"
+                                            type="disable"
+                                        >
+                                            <MyInput
+                                                type="text"
+                                                disabled={true}
+                                                value={customer.sourceroot}
+                                            />
+                                        </WithLabel>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className="row wr-mt">
-                        <div className="col">
-                            <WithLabel
-                                id="mobile"
-                                label="핸드폰"
-                                type={labelType}
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="mobile"
-                                    className="wr-border-r--hide"
-                                    placeholder="핸드폰"
-                                    disabled={!editable}
-                                />
-                                <div
-                                    className="wr-with__extension"
-                                    style={{ width: 148 }}
-                                >
-                                    <MySelect
-                                        placeholder={'선택'}
-                                        placeHolderFontSize={16}
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                    />
+                            <div className="row wr-mt">
+                                <div className="col-6">
+                                    <WithLabel label="핸드폰" type="disable">
+                                        <MyInput
+                                            type="text"
+                                            placeholder="핸드폰"
+                                            disabled={true}
+                                            value={convertPhoneNumber(
+                                                customer.mobile,
+                                            )}
+                                        />
+                                    </WithLabel>
                                 </div>
-                            </WithLabel>
-                        </div>
-                    </div>
-                    <div className="row wr-mt">
-                        <div className="col">
-                            <WithLabel
-                                id="email"
-                                label="이메일"
-                                type={labelType}
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="email"
-                                    className="wr-border-r--hide"
-                                    placeholder="이메일"
-                                    disabled={!editable}
-                                />
-                                <div
-                                    className="wr-with__extension"
-                                    style={{ width: 148 }}
-                                >
-                                    <MySelect
-                                        placeholder={'선택'}
-                                        placeHolderFontSize={16}
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                    />
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <WithLabel
+                                            label="이메일"
+                                            type="disable"
+                                        >
+                                            <MyInput
+                                                type="text"
+                                                placeholder="이메일"
+                                                disabled={true}
+                                                value={customer.emailhome}
+                                            />
+                                        </WithLabel>
+                                    </div>
                                 </div>
-                            </WithLabel>
-                        </div>
-                    </div>
-                    <div className="row wr-mt">
-                        <div className="col-6">
-                            <WithLabel label="주소" type={labelType}>
-                                <div className="wr-pages-detail__with">
-                                    <MyInput
-                                        type="text"
-                                        placeholder="우편번호"
-                                        disabled
-                                    />
+                            </div>
+                            <div className="row wr-mt">
+                                <div className="col-6">
+                                    <WithLabel label="우편번호" type="disable">
+                                        <MyInput
+                                            type="text"
+                                            placeholder="우편번호"
+                                            disabled={true}
+                                            value={customer.postcode}
+                                        />
+                                    </WithLabel>
                                 </div>
-                            </WithLabel>
-                        </div>
-                        <div className="col-6">
-                            <MyInput
-                                type="text"
-                                className="wr-border-l--hide"
-                                placeholder="주소1"
-                                disabled
-                            />
-                        </div>
-                    </div>
-                    <div className="row wr-mt">
-                        <div className="col">
-                            <WithLabel
-                                id="addr2"
-                                label="상세주소"
-                                type={labelType}
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="addr2"
-                                    placeholder="상세주소"
-                                    disabled={!editable}
-                                />
-                            </WithLabel>
-                        </div>
-                    </div>
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <MyInput
+                                            type="text"
+                                            placeholder="주소1"
+                                            disabled={true}
+                                            value={customer.address1}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="row wr-mt">
+                                <div className="col-6">
+                                    <WithLabel label="상세주소" type="disable">
+                                        <MyInput
+                                            type="text"
+                                            placeholder="우편번호"
+                                            disabled={true}
+                                            value={customer.address3}
+                                        />
+                                    </WithLabel>
+                                </div>
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <MyInput
+                                            type="text"
+                                            placeholder="주소2"
+                                            disabled={true}
+                                            value={customer.address2}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
                     <hr />
                     {Array.from({ length: addCount }).map((v, index) => (
                         <Fragment key={`iPerson${index}`}>

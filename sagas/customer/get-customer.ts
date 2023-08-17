@@ -10,7 +10,7 @@ import {
 function* getCustomerSaga({ payload }: GetCustomerRequestAction) {
     const { data } = yield call(customersService.getCustomer, payload);
 
-    yield put(getCustomerSuccess(data));
+    yield put(getCustomerSuccess(data.data));
 
     return data;
 }

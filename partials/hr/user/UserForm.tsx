@@ -53,7 +53,7 @@ import { WithSelectInput } from '@partials/common/input/WithSelect';
 
 interface Props {
     /**
-     * 모드: true(수정) / false(등록)
+     * 모드: 등록 / 수정
      */
     mode: 'create' | 'update';
     /**
@@ -387,9 +387,8 @@ export const UserForm: FC<Props> = ({
     // 탭 관리
     const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
     // 수정 모드 여부
-    const [editable, setEditable] = useState(false);
-    const isEditable = mode === 'create' ? true : editable;
-    const labelType = isEditable ? 'active' : 'disable';
+    const [editable, setEditable] = useState(mode === 'create' ? true : false);
+    const labelType = editable ? 'active' : 'disable';
     // 별칭
     const [nick] = useInput(defaultNick, { noSpace: true });
     // 이름
@@ -440,7 +439,7 @@ export const UserForm: FC<Props> = ({
             address1: defaultAddress1,
             address2: defaultAddress2,
         },
-        { disabled: !isEditable },
+        { disabled: !editable },
     );
     // 상세 주소
     const [address3] = useInput(defaultAddress3);
@@ -667,7 +666,7 @@ export const UserForm: FC<Props> = ({
     };
     // 프로필 사진 클릭 핸들러
     const handleClickImage = () => {
-        if (isEditable) {
+        if (editable) {
             dispatch(showImageUploadModal());
         }
     };
@@ -967,7 +966,7 @@ export const UserForm: FC<Props> = ({
                                                 ? selectedOrga.label
                                                 : '부서를 선택하세요'}
                                         </span>
-                                        {isEditable && (
+                                        {editable && (
                                             <button
                                                 className="btn btn-primary btn-sm"
                                                 type="button"
@@ -992,7 +991,7 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     id="nick"
                                                     placeholder="영업명"
-                                                    disabled={!isEditable}
+                                                    disabled={!editable}
                                                     {...nick}
                                                 />
                                             </WithLabel>
@@ -1000,14 +999,14 @@ export const UserForm: FC<Props> = ({
                                                 id="name"
                                                 label="이름"
                                                 type={labelType}
-                                                isRequired={isEditable}
+                                                isRequired={editable}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="name"
                                                     placeholder="이름"
                                                     onBlur={handleBlurName}
-                                                    disabled={!isEditable}
+                                                    disabled={!editable}
                                                     {...name}
                                                 />
                                             </WithLabel>
@@ -1020,7 +1019,7 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     id="title"
                                                     placeholder="직함"
-                                                    disabled={!isEditable}
+                                                    disabled={!editable}
                                                     {...title}
                                                 />
                                             </WithLabel>
@@ -1028,13 +1027,13 @@ export const UserForm: FC<Props> = ({
                                                 id="sNum"
                                                 label="주민번호"
                                                 type={labelType}
-                                                isRequired={isEditable}
+                                                isRequired={editable}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="sNum"
                                                     placeholder="주민번호"
-                                                    disabled={!isEditable}
+                                                    disabled={!editable}
                                                     {...idnum1}
                                                 />
                                             </WithLabel>
@@ -1045,20 +1044,20 @@ export const UserForm: FC<Props> = ({
                                                 type={birthType}
                                                 setType={setBirthType}
                                                 labelType={labelType}
-                                                disabled={!isEditable}
+                                                disabled={!editable}
                                                 size="md"
                                             />
                                             <WithLabel
                                                 id="mobile"
                                                 label="핸드폰"
                                                 type={labelType}
-                                                isRequired={isEditable}
+                                                isRequired={editable}
                                             >
                                                 <MyInput
                                                     type="text"
                                                     id="mobile"
                                                     placeholder="핸드폰"
-                                                    disabled={!isEditable}
+                                                    disabled={!editable}
                                                     {...mobile}
                                                 />
                                                 <div style={{ width: 200 }}>
@@ -1069,7 +1068,7 @@ export const UserForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         placement="right"
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...mobileCom}
                                                     />
                                                 </div>
@@ -1083,7 +1082,7 @@ export const UserForm: FC<Props> = ({
                                                     type="text"
                                                     id="telephone"
                                                     placeholder="내선번호"
-                                                    disabled={!isEditable}
+                                                    disabled={!editable}
                                                     {...telephone}
                                                 />
                                                 <div style={{ width: 200 }}>
@@ -1091,7 +1090,7 @@ export const UserForm: FC<Props> = ({
                                                         type="text"
                                                         className="wr-border-l--hide"
                                                         placeholder="직통번호"
-                                                        disabled={!isEditable}
+                                                        disabled={!editable}
                                                         {...telDirect}
                                                     />
                                                 </div>
@@ -1103,14 +1102,14 @@ export const UserForm: FC<Props> = ({
                                                 labelType={labelType}
                                                 inputHooks={email}
                                                 selectHooks={emailCom}
-                                                disabled={!isEditable}
+                                                disabled={!editable}
                                             />
                                         </div>
                                         <div className="col-4">
                                             <div className="wr-ml">
                                                 <div
                                                     className={`${displayName}__avatar wr-mb ${
-                                                        isEditable
+                                                        editable
                                                             ? 'wr-cursor--pointer'
                                                             : ''
                                                     }`}
@@ -1150,7 +1149,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...userType}
                                                     />
                                                 </WithLabel>
@@ -1166,7 +1165,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...status}
                                                     />
                                                 </WithLabel>
@@ -1178,7 +1177,7 @@ export const UserForm: FC<Props> = ({
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
                                     <PostcodeInput
-                                        disabled={!isEditable}
+                                        disabled={!editable}
                                         labelType={labelType}
                                         size="md"
                                         postcodeHooks={postcode}
@@ -1198,7 +1197,7 @@ export const UserForm: FC<Props> = ({
                                                     id="indate"
                                                     size="md"
                                                     placeholder="입사일"
-                                                    disabled={!isEditable}
+                                                    disabled={!editable}
                                                     hooks={indate}
                                                 />
                                             </WithLabel>
@@ -1214,7 +1213,7 @@ export const UserForm: FC<Props> = ({
                                                         id="outdate"
                                                         size="md"
                                                         placeholder="퇴사일"
-                                                        disabled={!isEditable}
+                                                        disabled={!editable}
                                                         hooks={outdate}
                                                     />
                                                 </WithLabel>
@@ -1242,7 +1241,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...estComInputType}
                                                     />
                                                 </div>
@@ -1253,7 +1252,7 @@ export const UserForm: FC<Props> = ({
                                                     id="estComNm"
                                                     placeholder="회사명"
                                                     disabled={
-                                                        isEditable
+                                                        editable
                                                             ? estComInputType
                                                                   .value
                                                                   ?.value !==
@@ -1279,7 +1278,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...estSalesNmInputType}
                                                     />
                                                 </div>
@@ -1290,7 +1289,7 @@ export const UserForm: FC<Props> = ({
                                                     id="estSalesNm"
                                                     placeholder="견적영업명"
                                                     disabled={
-                                                        isEditable
+                                                        editable
                                                             ? estSalesNmInputType
                                                                   .value
                                                                   ?.value !==
@@ -1316,7 +1315,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...estPhoneInputType}
                                                     />
                                                 </div>
@@ -1326,7 +1325,7 @@ export const UserForm: FC<Props> = ({
                                                     id="estPhone"
                                                     placeholder="대표전화"
                                                     disabled={
-                                                        isEditable
+                                                        editable
                                                             ? estPhoneInputType
                                                                   .value
                                                                   ?.value !==
@@ -1352,7 +1351,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...estFaxInputType}
                                                     />
                                                 </div>
@@ -1363,7 +1362,7 @@ export const UserForm: FC<Props> = ({
                                                     id="estFax"
                                                     placeholder="팩스번호"
                                                     disabled={
-                                                        isEditable
+                                                        editable
                                                             ? estFaxInputType
                                                                   .value
                                                                   ?.value !==
@@ -1389,7 +1388,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...estDirectInputType}
                                                     />
                                                 </div>
@@ -1400,7 +1399,7 @@ export const UserForm: FC<Props> = ({
                                                     id="direct"
                                                     placeholder="직통전화"
                                                     disabled={
-                                                        isEditable
+                                                        editable
                                                             ? estDirectInputType
                                                                   .value
                                                                   ?.value !==
@@ -1426,7 +1425,7 @@ export const UserForm: FC<Props> = ({
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
-                                                        isDisabled={!isEditable}
+                                                        isDisabled={!editable}
                                                         {...estAddrInputType}
                                                     />
                                                 </div>
@@ -1437,7 +1436,7 @@ export const UserForm: FC<Props> = ({
                                                     id="estAddress"
                                                     placeholder="표기주소"
                                                     disabled={
-                                                        isEditable
+                                                        editable
                                                             ? estAddrInputType
                                                                   .value
                                                                   ?.value !==
@@ -1473,7 +1472,7 @@ export const UserForm: FC<Props> = ({
                                     id="tabpanelIncome"
                                     tabId="tabIncome"
                                     hidden={tab.id !== 'tabIncome'}
-                                    editable={isEditable}
+                                    editable={editable}
                                     bank={bank}
                                     account={account}
                                     holder={holder}
@@ -1489,13 +1488,13 @@ export const UserForm: FC<Props> = ({
                                     id="tabpanelGuarantee"
                                     tabId="tabGuarantee"
                                     hidden={tab.id !== 'tabGuarantee'}
-                                    editable={isEditable}
+                                    editable={editable}
                                 />
                                 <AuthorityTabpanel
                                     id="tabpanelAuthority"
                                     tabId="tabAuthority"
                                     hidden={tab.id !== 'tabAuthority'}
-                                    editable={isEditable}
+                                    editable={editable}
                                     useWeb={useWeb}
                                     useMobile={useMobile}
                                 />
@@ -1503,7 +1502,7 @@ export const UserForm: FC<Props> = ({
                                     id="tabpanelQualManage"
                                     tabId="tabQualManage"
                                     hidden={tab.id !== 'tabQualManage'}
-                                    editable={isEditable}
+                                    editable={editable}
                                     giaNo={giaNo}
                                     giaComp={giaComp}
                                     giaIndate={giaIndate}

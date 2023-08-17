@@ -16,9 +16,11 @@ export const MyRadio: FC<MyRadioProps> = ({ id, label, ...rest }) => {
                 id={id}
                 {...rest}
             />
-            <label className="form-check-label ms-1" htmlFor={id}>
-                {label}
-            </label>
+            {label && (
+                <label className="form-check-label ms-1" htmlFor={id}>
+                    {label}
+                </label>
+            )}
         </div>
     );
 };

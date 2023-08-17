@@ -4,7 +4,6 @@ import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CustomerState } from '@reducers/customer';
-import type { CreateCustomerRequestPayload } from '@actions/customer/create-customer.action';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';

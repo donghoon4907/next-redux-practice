@@ -1,8 +1,9 @@
-import { CoreDeleteableObject } from './core';
+import type { CoreDeleteableObject } from './core';
+import type { Spe } from './spe';
 
 export type Excontract = CoreDeleteableObject & {
     idx?: number;
-    spe: 'car' | 'gen' | 'long';
+    spe: Spe;
     /**
      * 보험사코드
      */

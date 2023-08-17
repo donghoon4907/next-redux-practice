@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import type { CustomerState } from '@reducers/customer';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
 import { addMonths } from 'date-fns';
@@ -26,8 +27,12 @@ import {
     residentNumToBirthday,
 } from '@utils/calculator';
 import userConstants from '@constants/options/user';
+import { TabModule } from '@utils/storage';
+import { initTab } from '@actions/tab/tab.action';
 
 const Customer: NextPage<CustomerState> = ({ customer }) => {
+    const dispatch = useDispatch();
+
     const defaultCusttype = findSelectOption(
         customer.custtype.toString(),
         customerConstants.division,
@@ -134,6 +139,22 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
         customer.customer_rate,
         customerConstants.grade,
     );
+
+    useEffect(() => {
+        // 탭 추가
+        const tab = new TabModule();
+
+        const to = `/customer/join/${customer.idx}`;
+        if (!tab.read(to)) {
+            tab.create({
+                id: to,
+                label: `고객상세 - ${customer.name}`,
+                to,
+            });
+        }
+
+        dispatch(initTab(tab.getAll()));
+    }, [dispatch, customer]);
 
     return (
         <>

@@ -5,14 +5,14 @@ import { watchCreateUser } from './create-user';
 import { watchGetOrgas } from './get-orgas';
 import { watchGetOrga } from './get-orga';
 import { watchGetUsers } from './get-users';
-// import { watchGetBanks } from './get-banks';
 import { watchGetCompanies } from './get-companies';
 import { watchGetAgencies } from './get-agencies';
-// import { watchGetUser } from './get-user';
 import { watchUpdateUser } from './update-user';
 import { watchGetCompanyRegNum } from './get-company-regnum';
+import { watchGetProducts } from './get-products';
 // import { watchGetPermission } from './get-permission';
 // import { watchGetIp } from './get-ip';
+// import { watchGetUser } from './get-user';
 
 export function* hrSaga() {
     yield all([
@@ -25,8 +25,8 @@ export function* hrSaga() {
         // fork(watchGetUser),
         fork(watchGetCompanies),
         fork(watchGetCompanyRegNum),
-        // fork(watchGetBanks),
         fork(watchGetAgencies),
+        fork(watchGetProducts),
         // fork(watchGetPermission),
         // fork(watchGetIp),
     ]);

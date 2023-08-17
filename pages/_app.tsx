@@ -40,6 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             dispatch(initTab(tab.getAll()));
         } else {
             const [_, gnb] = asPath.split('/');
+
             // 로그인 페이지 추가 제한
             if (gnb !== 'login') {
                 initializeTab(asPath);

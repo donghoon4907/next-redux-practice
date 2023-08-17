@@ -34,17 +34,14 @@ import {
     getLongsRequest,
     getLongsSuccess,
 } from '@actions/long/get-longs.action';
-import {
-    COMPANY,
-    DISTS,
-    PAY_CYCLE,
-    PRODUCT_TYPE,
-} from '@constants/selectOption';
+import { DISTS, PRODUCT_TYPE } from '@constants/selectOption';
+import { getCompaniesRequest } from '@actions/hr/get-companies';
+import longConstants from '@constants/options/long';
 
 const Longs: NextPage = () => {
     const dispatch = useDispatch();
 
-    const { orgas, users } = useSelector<AppState, HrState>(
+    const { orgas, users, longViewCompanies } = useSelector<AppState, HrState>(
         (props) => props.hr,
     );
 
@@ -67,13 +64,13 @@ const Longs: NextPage = () => {
         new Date('2023-06-30'),
     ]);
     // 검색필터 - 보험사
-    const [company] = useSelect(COMPANY, null);
+    const [company] = useSelect(longViewCompanies, null);
     // 검색필터 - 보종
     const [productType] = useSelect(PRODUCT_TYPE, null);
     // 검색필터 - 상품명
     const [ptitle] = useSelect(longs.ptitles, null);
     // 검색필터 - 납입주기
-    const [cycle] = useSelect(PAY_CYCLE, null);
+    const [cycle] = useSelect(longConstants.payCycle, null);
     // 검색필터 - 입금구분
     const [dist] = useSelect(DISTS, null);
     // 검색필터 - 검색어
@@ -400,6 +397,8 @@ const Longs: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
+        dispatch(getCompaniesRequest('long-view'));
+
         dispatch(
             getLongsRequest({
                 condition: {

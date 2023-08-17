@@ -23,7 +23,7 @@ export const ASIDE_MENU: any = {
             id: 'customer-join',
             label: '가입고객',
             to: '',
-            join: {
+            create: {
                 id: 'customer-join_create',
                 label: '고객 등록',
                 to: '/customer/join/create',

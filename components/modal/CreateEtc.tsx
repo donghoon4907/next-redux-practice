@@ -7,7 +7,7 @@ import { hideCreateEtcModal } from '@actions/modal/create-etc.action';
 import { WithInput } from '@components/WithInput';
 import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
-import { updateEtcRequest } from '@actions/long/update-etc.action';
+import { updateLongEtcRequest } from '@actions/long/set-long-etc.action';
 
 interface Props {}
 
@@ -39,7 +39,7 @@ export const CreateEtcModal: FC<Props> = () => {
 
         if (tf) {
             dispatch(
-                updateEtcRequest({
+                updateLongEtcRequest({
                     field: field.value,
                     content: content.value,
                 }),

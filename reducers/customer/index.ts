@@ -4,6 +4,7 @@ import type { Excontract } from '@models/excontract';
 import type { Custcar } from '@models/custcar';
 import type { Family } from '@models/family';
 import type { Event } from '@models/event';
+import type { UserCustomer } from '@models/customer';
 import type { UserHistory } from '@models/user-history';
 import produce from 'immer';
 import { ContactActionTypes } from '@actions/customer/set-contact.action';
@@ -13,6 +14,7 @@ import { FamilyActionTypes } from '@actions/customer/set-family.action';
 import { EventActionTypes } from '@actions/customer/set-event.action';
 import { GetCustomerActionTypes } from '@actions/customer/get-customer';
 import { UserHistoryActionTypes } from '@actions/customer/set-user-history.action';
+import { GetUserCustomersActionTypes } from '@actions/customer/get-user-customers';
 
 export interface CustomerState {
     /**
@@ -23,6 +25,10 @@ export interface CustomerState {
      * 고객 상세 정보
      */
     customer: any;
+    /**
+     * 특정 사용자의 고객 목록
+     */
+    userCustomers: UserCustomer[];
     /**
      * 접촉이력 목록
      */
@@ -78,6 +84,7 @@ const initialState: CustomerState = {
         lastPayload: null,
     },
     customer: null,
+    userCustomers: [],
     contacts: [],
     removedContacts: [],
     excontracts: [],
@@ -283,6 +290,13 @@ export const customerReducer: Reducer<CustomerState, any> = (
             }
             case UserHistoryActionTypes.CREATE: {
                 draft.userid_his = draft.userid_his.concat(action.payload);
+                break;
+            }
+            case GetUserCustomersActionTypes.SUCCESS: {
+                if (Array.isArray(action.payload)) {
+                    draft.userCustomers = action.payload;
+                }
+
                 break;
             }
             default:
