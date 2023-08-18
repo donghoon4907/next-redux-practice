@@ -14,6 +14,8 @@ import { CreateFamilyModalActionTypes } from '@actions/modal/create-family.actio
 import { CreateEventModalActionTypes } from '@actions/modal/create-event.action';
 import { ProductSearchModalActionTypes } from '@actions/modal/product-search.action';
 import { CustomerSearchModalActionTypes } from '@actions/modal/customer-search.action';
+import { CreatePayModalActionTypes } from '@actions/modal/create-pay.action';
+import { CreateEndorsementModalActionTypes } from '@actions/modal/create-endorsement.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -33,6 +35,8 @@ export interface ModalState {
     isShowCreateEventModal: boolean;
     isShowProductSearchModal: boolean;
     isShowCustomerSearchModal: boolean;
+    isShowCreatePayModal: boolean;
+    isShowCreateEndorsementModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -53,6 +57,8 @@ const initialState: ModalState = {
     isShowCreateEventModal: false,
     isShowProductSearchModal: false,
     isShowCustomerSearchModal: false,
+    isShowCreatePayModal: false,
+    isShowCreateEndorsementModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -191,6 +197,22 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case CustomerSearchModalActionTypes.HIDE: {
                 draft.isShowCustomerSearchModal = false;
+                break;
+            }
+            case CreatePayModalActionTypes.SHOW: {
+                draft.isShowCreatePayModal = true;
+                break;
+            }
+            case CreatePayModalActionTypes.HIDE: {
+                draft.isShowCreatePayModal = false;
+                break;
+            }
+            case CreateEndorsementModalActionTypes.SHOW: {
+                draft.isShowCreateEndorsementModal = true;
+                break;
+            }
+            case CreateEndorsementModalActionTypes.HIDE: {
+                draft.isShowCreateEndorsementModal = false;
                 break;
             }
             default:

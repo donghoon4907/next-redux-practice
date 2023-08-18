@@ -5,6 +5,7 @@ import type { HrState } from '@reducers/hr';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import addMonths from 'date-fns/addMonths';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -12,7 +13,7 @@ import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
 import { MyLayout } from '@components/Layout';
-import { useInput } from '@hooks/use-input';
+import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { PaysTabpanel } from '@partials/contract/long/tabpanels/Pays';
@@ -34,6 +35,9 @@ import { showProductSearchModal } from '@actions/modal/product-search.action';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
+import { CreatePayModal } from '@components/modal/CreatePay';
+import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
+import { isEmpty } from '@utils/validator/common';
 
 interface Props {
     /**
@@ -113,6 +117,10 @@ interface Props {
      * 정산보종 기본 값
      */
     defaultCalSpec?: string;
+    /**
+     * 실적보험료 기본 값
+     */
+    defaultPayment?: string;
 }
 
 export const LongForm: FC<Props> = ({
@@ -136,6 +144,7 @@ export const LongForm: FC<Props> = ({
     defaultSubCategory = '',
     defaultIsConfirm = 'N',
     defaultCalSpec = '',
+    defaultPayment = '',
 }) => {
     const displayName = 'wr-pages-long-detail';
 
@@ -164,6 +173,15 @@ export const LongForm: FC<Props> = ({
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : null,
+        // {
+        //     callbackOnChange: (next) => {
+        //         if (!next) {
+        //             if (tab.label === '납입실적') {
+        //                 setTab(LONG_DETAIL_TABS[0]);
+        //             }
+        //         }
+        //     },
+        // },
     );
     // 보험기간
     const [boDateto] = useDatepicker(
@@ -172,8 +190,27 @@ export const LongForm: FC<Props> = ({
     // 납입주기
     const [payCycle] = useSelect(longConstants.payCycle, defaultPayCycle);
     // 납입기간
-    const [payDu] = useSelect(longConstants.payDu, defaultPayDu);
-    const [payDateto] = useDatepicker(
+    const [payDu] = useSelect(longConstants.payDu, defaultPayDu, {
+        callbackOnChange: (next) => {
+            if (next) {
+                if (contdate.value) {
+                    if (next.value === '종신') {
+                        setPayDateto(null);
+                    } else {
+                        const date = addMonths(
+                            contdate.value,
+                            12 * +next.value,
+                        );
+
+                        setPayDateto(date);
+                    }
+                } else {
+                    alert('계약일을 입력해주세요');
+                }
+            }
+        },
+    });
+    const [payDateto, setPayDateto] = useDatepicker(
         defaultPayDateto ? new Date(defaultPayDateto) : null,
     );
     // 계약상태
@@ -188,8 +225,8 @@ export const LongForm: FC<Props> = ({
     // const [lastMonth] = useInput(long.last_month);
     // 종납회차
     const [lastWhoi] = useInput(defaultLastWhoi);
-    // 월납환산보험료
-    // const [payM] = useNumbericInput(long.pay_m.toString(), { addComma: true });
+    // 실적보험료
+    const [payment] = useNumbericInput(defaultPayment, { addComma: true });
     // 보험료
     // const [payment] = useNumbericInput(long.payment.toString(), {
     //     addComma: true,
@@ -277,6 +314,7 @@ export const LongForm: FC<Props> = ({
                                                 id="company"
                                                 label="보험사"
                                                 type={labelType}
+                                                isRequired={editable}
                                             >
                                                 <MySelect
                                                     inputId="company"
@@ -296,6 +334,7 @@ export const LongForm: FC<Props> = ({
                                                     id="cnum"
                                                     label="계약번호"
                                                     type={labelType}
+                                                    isRequired={editable}
                                                 >
                                                     <div className="wr-with__badge">
                                                         <MyInput
@@ -393,6 +432,7 @@ export const LongForm: FC<Props> = ({
                                                 id="contdate"
                                                 label="계약일자"
                                                 type={labelType}
+                                                isRequired={editable}
                                             >
                                                 <MyDatepicker
                                                     id="contdate"
@@ -409,6 +449,7 @@ export const LongForm: FC<Props> = ({
                                                     id="contdate"
                                                     label="납입주기"
                                                     type={labelType}
+                                                    isRequired={editable}
                                                 >
                                                     <MySelect
                                                         inputId="contdate"
@@ -461,17 +502,18 @@ export const LongForm: FC<Props> = ({
                                                     id="pExpireDate"
                                                     label="납입만기"
                                                     type={labelType}
+                                                    isRequired={editable}
                                                 >
                                                     <MyDatepicker
                                                         id="pExpireDate"
                                                         size="md"
                                                         placeholder="납입만기"
-                                                        disabled={!editable}
+                                                        disabled={true}
                                                         hooks={payDateto}
                                                     />
                                                     <div className="wr-with__extension">
                                                         <MySelect
-                                                            placeholder="20년"
+                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -594,6 +636,7 @@ export const LongForm: FC<Props> = ({
                                                 id="payment"
                                                 label="실적보험료"
                                                 type={labelType}
+                                                isRequired={editable}
                                             >
                                                 <MyInput
                                                     type="text"
@@ -601,7 +644,7 @@ export const LongForm: FC<Props> = ({
                                                     className="text-end"
                                                     placeholder="0"
                                                     disabled={!editable}
-                                                    // {...payM}
+                                                    {...payment}
                                                 />
                                             </WithLabel>
                                             <WithLabel
@@ -913,14 +956,22 @@ export const LongForm: FC<Props> = ({
                     <div className="col-7">
                         <div className={`${displayName}__right`}>
                             <ul className="wr-tab__wrap" role="tablist">
-                                {LONG_DETAIL_TABS.map((v) => (
-                                    <MyTab
-                                        key={v.id}
-                                        onClick={setTab}
-                                        isActive={v.id === tab.id}
-                                        {...v}
-                                    />
-                                ))}
+                                {LONG_DETAIL_TABS.map((v) => {
+                                    // if (v.label === '납입실적') {
+                                    //     if (!contdate.value) {
+                                    //         return null;
+                                    //     }
+                                    // }
+
+                                    return (
+                                        <MyTab
+                                            key={v.id}
+                                            onClick={setTab}
+                                            isActive={v.id === tab.id}
+                                            {...v}
+                                        />
+                                    );
+                                })}
                                 <li className="wr-tab__line"></li>
                             </ul>
                             <div
@@ -933,13 +984,12 @@ export const LongForm: FC<Props> = ({
                                     editable={editable}
                                     userid={defaultUserid}
                                 />
-                                {/* <PaysTabpanel
+                                <PaysTabpanel
                                     id="tabpanelPays"
                                     tabId="tabPays"
                                     hidden={tab.id !== 'tabPays'}
-                                    data={long.pays}
                                     editable={editable}
-                                /> */}
+                                />
                                 <EndorsementTabpanel
                                     id="tabpanelEndorsement"
                                     tabId="tabEndorsement"
@@ -1024,6 +1074,8 @@ export const LongForm: FC<Props> = ({
                 />
             )}
             <CustomerSearchModal />
+            <CreatePayModal contdate={contdate.value} payment={payment.value} />
+            <CreateEndorsementModal />
             <CreateEtcModal />
         </>
     );

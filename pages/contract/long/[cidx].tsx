@@ -18,7 +18,7 @@ import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
-    console.log(long);
+    // console.log(long);
     const dispatch = useDispatch();
 
     const { longUseCompanies } = useSelector<AppState, HrState>(
@@ -32,7 +32,10 @@ const Long: NextPage<LongState> = ({ long }) => {
         longConstants.payCycle,
     );
 
-    const defaultPayDu = findSelectOption(long.pay_du, longConstants.payDu);
+    const defaultPayDu = findSelectOptionByLabel(
+        long.pay_du,
+        longConstants.payDu,
+    );
 
     const defaultStatus = findSelectOption(long.status, longConstants.status);
 
@@ -94,6 +97,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                 defaultSubCategory={long.subcategory}
                 defaultIsConfirm={long.confirm}
                 defaultCalSpec={long.cal_spec}
+                defaultPayment={long.payment.toString()}
             />
         </>
     );

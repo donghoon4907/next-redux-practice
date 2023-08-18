@@ -1,19 +1,5 @@
 import type { CoreColumnOption } from '@interfaces/core';
 
-export const LONG_COL_PERFORMANCE: CoreColumnOption = {
-    paydate: '영수일',
-    whoi: '회차',
-    dist: '납입구분',
-    hmonth: '대상년월',
-    distkind: '입금구분',
-    pay: '수금실적',
-    paykind: '금종',
-    cycle: '납입주기',
-    confirm: '실적확인',
-    unknown: '정산여부',
-    insert: '입력',
-};
-
 export const LONG_STATE_HISTORY: CoreColumnOption = {
     stdate: '상태발생일',
     type: '상태구분',
@@ -38,11 +24,4 @@ export const LONG_USER_HISTORY: CoreColumnOption = {
     사원번호: '사원번호',
     사용인명: '사용인명',
     사용인코드: '사용인코드',
-};
-
-export const CUSTOMER_USER_HISTORY: CoreColumnOption = {
-    insert_datetime: '등록일',
-    userid: '사용자 ID',
-    remark: '비고',
-    username: '등록자',
 };
