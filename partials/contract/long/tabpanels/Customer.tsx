@@ -218,13 +218,13 @@ export const CustomerTabpanel: FC<Props> = ({
                                 <div className="col">
                                     <WithLabel
                                         id="iPerson"
-                                        label="피보험자"
+                                        label="피보험자명"
                                         type={labelType}
                                     >
                                         <MyInput
                                             type="text"
                                             id="iPerson"
-                                            placeholder="피보험자"
+                                            placeholder="피보험자명"
                                             disabled={!editable}
                                             button={{
                                                 type: 'button',
@@ -243,7 +243,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                 </div>
                             </div>
                             <div className="row wr-mt">
-                                <div className="col">
+                                <div className="col-6">
                                     <WithLabel
                                         id="homePhone"
                                         label="연락처"
@@ -256,6 +256,24 @@ export const CustomerTabpanel: FC<Props> = ({
                                             disabled={!editable}
                                         />
                                     </WithLabel>
+                                </div>
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <WithLabel
+                                            id="job"
+                                            label="직업"
+                                            type={labelType}
+                                        >
+                                            <MySelect
+                                                placeholder="선택"
+                                                placeHolderFontSize={16}
+                                                height={
+                                                    variables.detailFilterHeight
+                                                }
+                                                isDisabled={!editable}
+                                            />
+                                        </WithLabel>
+                                    </div>
                                 </div>
                             </div>
                             <div className="row wr-mt">
@@ -280,50 +298,42 @@ export const CustomerTabpanel: FC<Props> = ({
                                     </WithLabel>
                                 </div>
                             </div>
-                            <div className="row wr-mt">
-                                <div className="col-6">
-                                    <WithLabel
-                                        id="job"
-                                        label="직업"
-                                        type={labelType}
-                                    >
-                                        <MySelect
-                                            placeholder="선택"
-                                            placeHolderFontSize={16}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
-                                            isDisabled={!editable}
-                                        />
-                                    </WithLabel>
-                                </div>
-                                <div className="col-3">
-                                    {index === addCount - 1 && index !== 0 && (
-                                        <MyButton
-                                            className="btn-danger"
-                                            style={{ width: '100%' }}
-                                            onClick={() =>
-                                                setAddCount(addCount - 1)
-                                            }
+                            {editable && (
+                                <div className="row wr-mt">
+                                    <div className="col-6">
+                                        {addCount > 1 && (
+                                            <MyButton
+                                                className="btn-danger"
+                                                onClick={() =>
+                                                    setAddCount(addCount - 1)
+                                                }
+                                            >
+                                                설정 삭제
+                                            </MyButton>
+                                        )}
+                                    </div>
+                                    <div className="col-6">
+                                        <div
+                                            style={{
+                                                float: 'right',
+                                            }}
                                         >
-                                            피보험자 제거
-                                        </MyButton>
-                                    )}
+                                            {index === addCount - 1 && (
+                                                <MyButton
+                                                    className="btn-primary"
+                                                    onClick={() =>
+                                                        setAddCount(
+                                                            addCount + 1,
+                                                        )
+                                                    }
+                                                >
+                                                    피보험자 설정 추가
+                                                </MyButton>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="col-3">
-                                    {index === addCount - 1 && (
-                                        <MyButton
-                                            className="btn-primary"
-                                            style={{ width: '100%' }}
-                                            onClick={() =>
-                                                setAddCount(addCount + 1)
-                                            }
-                                        >
-                                            피보험자 추가
-                                        </MyButton>
-                                    )}
-                                </div>
-                            </div>
+                            )}
                         </Fragment>
                     ))}
                 </div>

@@ -22,6 +22,7 @@ export const SearchInput: FC<Props> = ({ onSearch, ...rest }) => {
                 {...rest}
                 button={{
                     type: 'submit',
+                    className: 'btn-primary',
                     children: (
                         <>
                             <AccessibleText>검색</AccessibleText>

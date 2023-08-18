@@ -3,7 +3,8 @@ import type { CoreSelectOption } from '@interfaces/core';
 import type { Guarantee } from '@models/guarantee';
 import type { Code } from '@models/code';
 import type { OrgaDetail } from '@models/orga';
-// import type { UserUpdatePayload } from '@actions/hr/set-user.action';
+import type { Commission } from '@models/commission';
+import type { Product } from '@models/product';
 import produce from 'immer';
 import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
@@ -12,18 +13,13 @@ import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
 // import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
 // import { GetIpActionTypes } from '@actions/hr/get-ip.action';
 import { PermissionActionTypes } from '@actions/hr/set-permission.action';
-// import { GetBanksActionTypes } from '@actions/hr/get-banks.deprecated';
 import { GuaranteeActionTypes } from '@actions/hr/set-guarantee.action';
 import { GetAgenciesActionTypes } from '@actions/hr/get-agencys';
 import { CodeActionTypes } from '@actions/hr/set-code.action';
 import { GetOrgaActionTypes } from '@actions/hr/get-orga';
 import { GetUserActionTypes } from '@actions/hr/get-user';
-import { Commission } from '@models/commission';
 import { CommissionActionTypes } from '@actions/hr/set-commission.action';
-import { UserActionTypes } from '@actions/hr/set-user.action';
-import { UserHistory } from '@models/user-history';
 import { GetProductsActionTypes } from '@actions/hr/get-products';
-import { Product } from '@models/product';
 
 export interface HrState {
     /**
@@ -75,10 +71,6 @@ export interface HrState {
      */
     selectedOrga: CoreSelectOption | null;
     /**
-     * 선택한 사용자
-     */
-    selectedUser: UserHistory | null;
-    /**
      * 로그인한 사용자 정보
      */
     loggedInUser: any;
@@ -129,7 +121,6 @@ const initialState: HrState = {
     users: [],
     user: null,
     selectedOrga: null,
-    selectedUser: null,
     loggedInUser: null,
     // ip: '',
     guarantees: [],
@@ -194,10 +185,6 @@ export const hrReducer: Reducer<HrState, any> = (
             }
             case DepartActionTypes.UPDATE: {
                 draft.selectedOrga = action.payload;
-                break;
-            }
-            case UserActionTypes.UPDATE: {
-                draft.selectedUser = action.payload;
                 break;
             }
             // case GetPermissionActionTypes.SUCCESS: {

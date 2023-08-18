@@ -1,8 +1,8 @@
-import type { CoreDeleteableObject } from './core';
+import type { CoreCheckableModel } from './core';
 /**
  * 보험사 코드
  */
-export type Code = CoreDeleteableObject & {
+export type Code = CoreCheckableModel & {
     idx?: number;
     wcode: number;
     fccode: string;

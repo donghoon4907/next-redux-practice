@@ -1,19 +1,15 @@
 import type { Reducer } from 'redux';
-import type { Contact } from '@models/contact';
 import type { Excontract } from '@models/excontract';
 import type { Custcar } from '@models/custcar';
 import type { Family } from '@models/family';
 import type { Event } from '@models/event';
 import type { UserCustomer } from '@models/customer';
-import type { UserHistory } from '@models/user-history';
 import produce from 'immer';
-import { ContactActionTypes } from '@actions/customer/set-contact.action';
 import { ExcontractActionTypes } from '@actions/customer/set-excontract.action';
 import { CustcarActionTypes } from '@actions/customer/set-custcar.action';
 import { FamilyActionTypes } from '@actions/customer/set-family.action';
 import { EventActionTypes } from '@actions/customer/set-event.action';
 import { GetCustomerActionTypes } from '@actions/customer/get-customer';
-import { UserHistoryActionTypes } from '@actions/customer/set-user-history.action';
 import { GetUserCustomersActionTypes } from '@actions/customer/get-user-customers';
 
 export interface CustomerState {
@@ -29,14 +25,6 @@ export interface CustomerState {
      * 특정 사용자의 고객 목록
      */
     userCustomers: UserCustomer[];
-    /**
-     * 접촉이력 목록
-     */
-    contacts: Contact[];
-    /**
-     * 삭제한 접촉이력 목록
-     */
-    removedContacts: Contact[];
     /**
      * 타사 보험 목록
      */
@@ -69,10 +57,6 @@ export interface CustomerState {
      * 삭제한 기념일 목록
      */
     removedEvents: Event[];
-    /**
-     * 담당변경이력 목록
-     */
-    userid_his: UserHistory[];
 }
 
 const initialState: CustomerState = {
@@ -85,8 +69,6 @@ const initialState: CustomerState = {
     },
     customer: null,
     userCustomers: [],
-    contacts: [],
-    removedContacts: [],
     excontracts: [],
     removedExcontracts: [],
     custcars: [],
@@ -95,7 +77,6 @@ const initialState: CustomerState = {
     removedFamily: [],
     events: [],
     removedEvents: [],
-    userid_his: [],
 };
 
 export const customerReducer: Reducer<CustomerState, any> = (
@@ -104,42 +85,6 @@ export const customerReducer: Reducer<CustomerState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
-            case ContactActionTypes.CREATE: {
-                draft.contacts = draft.contacts.concat(action.payload);
-                break;
-            }
-            case ContactActionTypes.UPDATE: {
-                const { index, ...rest } = action.payload;
-
-                for (let i = 0; i < draft.contacts.length; i++) {
-                    if (draft.contacts[i].index === index) {
-                        draft.contacts[i] = {
-                            ...draft.contacts[i],
-                            ...rest,
-                        };
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-            case ContactActionTypes.DELETE: {
-                const findIndex = draft.contacts.findIndex(
-                    (v) => v.index === action.payload.index,
-                );
-
-                if (findIndex !== -1) {
-                    const [deleted] = draft.contacts.splice(findIndex, 1);
-
-                    if (deleted.idx) {
-                        draft.removedContacts =
-                            draft.removedContacts.concat(deleted);
-                    }
-                }
-
-                break;
-            }
             case ExcontractActionTypes.CREATE: {
                 draft.excontracts = draft.excontracts.concat(action.payload);
                 break;
@@ -286,10 +231,6 @@ export const customerReducer: Reducer<CustomerState, any> = (
             }
             case GetCustomerActionTypes.SUCCESS: {
                 draft.customer = action.payload;
-                break;
-            }
-            case UserHistoryActionTypes.CREATE: {
-                draft.userid_his = draft.userid_his.concat(action.payload);
                 break;
             }
             case GetUserCustomersActionTypes.SUCCESS: {

@@ -1,9 +1,9 @@
-import type { CoreDeleteableObject } from './core';
+import type { CoreCheckableModel } from './core';
 
 /**
  * 보증 설정
  */
-export type Guarantee = CoreDeleteableObject & {
+export type Guarantee = CoreCheckableModel & {
     // id
     idx?: number;
     kind: string;

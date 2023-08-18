@@ -1,8 +1,7 @@
 export type UserHistory = {
-    // id
-    // idx?: number;
     userid: string;
-    name?: string;
+    // name?: string;
+    username?: string;
     department?: string;
     insert_userid: string;
     insert_date?: string;

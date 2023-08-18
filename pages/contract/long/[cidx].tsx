@@ -5,6 +5,7 @@ import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import longsService from '@services/longsService';
@@ -12,12 +13,12 @@ import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
-import { END } from 'redux-saga';
 import { LongForm } from '@partials/contract/long/LongForm';
 import longConstants from '@constants/options/long';
+import { createUserHistory } from '@actions/common/set-user-history.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
-    // console.log(long);
+    console.log(long);
     const dispatch = useDispatch();
 
     const { longUseCompanies } = useSelector<AppState, HrState>(
@@ -74,10 +75,9 @@ const Long: NextPage<LongState> = ({ long }) => {
             <LongForm
                 mode="update"
                 defaultFc={long.fc}
-                // defaultUserid={long.userid}
-                defaultUserid="w1068"
+                defaultUserid={long.userid}
+                // defaultUserid="w1068"
                 defaultOrga={long.orga}
-                defaultUserHis={long.user_his}
                 defaultComp={defaultComp}
                 defaultCnum={long.cnum}
                 defaultPtitle={long.ptitle}
@@ -121,6 +121,16 @@ export const getServerSideProps = wrapper.getServerSideProps(
             const long = data;
 
             output.props.long = long;
+
+            if (long.user_his) {
+                for (let i = 0; i < long.user_his.length; i++) {
+                    dispatch(
+                        createUserHistory({
+                            ...long.user_his[i],
+                        }),
+                    );
+                }
+            }
         } catch {
             output.redirect = {
                 destination: '/404',

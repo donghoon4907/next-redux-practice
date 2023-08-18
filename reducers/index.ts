@@ -12,6 +12,7 @@ import { gnbReducer } from './gnb';
 import { modalReducer } from './modal';
 import { hrReducer } from './hr';
 import { customerReducer } from './customer';
+import { commonReducer } from './common';
 
 const combinedReducer = combineReducers({
     tab: tabReducer,
@@ -25,6 +26,7 @@ const combinedReducer = combineReducers({
     modal: modalReducer,
     hr: hrReducer,
     customer: customerReducer,
+    common: commonReducer,
 });
 
 export const rootReducer = (state: any, action: AnyAction) => {

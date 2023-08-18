@@ -1,33 +1,32 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
+import type { CommonState } from '@reducers/common';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { showUserHistoryModal } from '@actions/modal/user-history.action';
-import { MyTableExtension } from '@components/table/Extension';
 import {
     UncontrolledAccordion,
     AccordionItem,
     AccordionHeader,
     AccordionBody,
 } from 'reactstrap';
+import { showUserHistoryModal } from '@actions/modal/user-history.action';
+import { MyTableExtension } from '@components/table/Extension';
 
 interface Props {
     defaultTitle: string;
-    data: Array<any>;
     editable: boolean;
 }
 
 export const CustomerManagerAccordion: FC<Props> = ({
     defaultTitle,
-    data,
     editable,
 }) => {
     const dispatch = useDispatch();
 
-    const { selectedUser } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
+    const { userHistories, newUserHistory } = useSelector<
+        AppState,
+        CommonState
+    >((state) => state.common);
 
     const [title, setTitle] = useState(defaultTitle);
 
@@ -36,10 +35,10 @@ export const CustomerManagerAccordion: FC<Props> = ({
     };
 
     useEffect(() => {
-        if (selectedUser) {
-            setTitle(`${selectedUser.department} ${selectedUser.name}`);
+        if (newUserHistory) {
+            setTitle(`${newUserHistory.department} ${newUserHistory.username}`);
         }
-    }, [selectedUser]);
+    }, [newUserHistory]);
 
     return (
         <UncontrolledAccordion stayOpen>
@@ -78,12 +77,12 @@ export const CustomerManagerAccordion: FC<Props> = ({
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.length === 0 && selectedUser === null && (
+                                {userHistories.length === 0 && (
                                     <tr>
                                         <td colSpan={3}>이력이 없습니다.</td>
                                     </tr>
                                 )}
-                                {data.map((v, i) => (
+                                {userHistories.map((v, i) => (
                                     <tr key={`customerManagerHistory${i}`}>
                                         <td>
                                             <span>
@@ -100,19 +99,6 @@ export const CustomerManagerAccordion: FC<Props> = ({
                                         </td>
                                     </tr>
                                 ))}
-                                {/* {selectedUser && (
-                                    <tr>
-                                        <td>
-                                            <span>-</span>
-                                        </td>
-                                        <td>
-                                            <span>{`${selectedUser.name} (${selectedUser.userid})`}</span>
-                                        </td>
-                                        <td>
-                                            <span>{selectedUser.remark}</span>
-                                        </td>
-                                    </tr>
-                                )} */}
                             </tbody>
                         </table>
                         {editable && (

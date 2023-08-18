@@ -12,7 +12,7 @@ import { useSelect } from '@hooks/use-select';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
-import { updateUser } from '@actions/hr/set-user.action';
+import { insertUserHistory } from '@actions/common/set-user-history.action';
 
 interface Props {}
 
@@ -46,10 +46,10 @@ export const UserHistoryModal: FC<Props> = () => {
 
         if (tf) {
             dispatch(
-                updateUser({
+                insertUserHistory({
                     userid: user.value?.value,
                     department: depart.value!.label,
-                    name: user.value?.label,
+                    username: user.value?.label,
                     insert_userid: loggedInUser.userid,
                     remark: remark.value,
                 }),

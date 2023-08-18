@@ -19,7 +19,6 @@ import { PaysTabpanel } from '@partials/contract/long/tabpanels/Pays';
 import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/contract/long/tabpanels/ChangeHistory';
 import { MyButton } from '@components/button';
-import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
@@ -111,10 +110,6 @@ interface Props {
      */
     defaultIsConfirm?: string;
     /**
-     * 담당자 변경이력 기본 값
-     */
-    defaultUserHis?: any[];
-    /**
      * 정산보종 기본 값
      */
     defaultCalSpec?: string;
@@ -140,7 +135,6 @@ export const LongForm: FC<Props> = ({
     defaultProductType = '',
     defaultSubCategory = '',
     defaultIsConfirm = 'N',
-    defaultUserHis = [],
     defaultCalSpec = '',
 }) => {
     const displayName = 'wr-pages-long-detail';
@@ -166,7 +160,7 @@ export const LongForm: FC<Props> = ({
     // 계약번호
     const [cnum] = useInput(defaultCnum);
     // 상품명
-    const [ptitle] = useInput(defaultPtitle);
+    // const [ptitle] = useInput(defaultPtitle);
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : null,
@@ -272,7 +266,6 @@ export const LongForm: FC<Props> = ({
                                 <div className="wr-pages-detail__content">
                                     <LongManagerAccordion
                                         defaultTitle={`${defaultOrga} ${defaultFc}`}
-                                        data={defaultUserHis}
                                     />
                                 </div>
                             </div>
@@ -946,7 +939,7 @@ export const LongForm: FC<Props> = ({
                                     hidden={tab.id !== 'tabPays'}
                                     data={long.pays}
                                     editable={editable}
-                                />
+                                /> */}
                                 <EndorsementTabpanel
                                     id="tabpanelEndorsement"
                                     tabId="tabEndorsement"
@@ -967,7 +960,7 @@ export const LongForm: FC<Props> = ({
                                     spe="long"
                                 />
 
-                                <ChangeHistoryTabpanel
+                                {/* <ChangeHistoryTabpanel
                                     id="tabpanelChangeHis"
                                     tabId="tabChangeHis"
                                     hidden={tab.id !== 'tabChangeHis'}

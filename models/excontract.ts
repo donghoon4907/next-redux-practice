@@ -1,7 +1,7 @@
-import type { CoreDeleteableObject } from './core';
+import type { CoreCheckableModel } from './core';
 import type { Spe } from './spe';
 
-export type Excontract = CoreDeleteableObject & {
+export type Excontract = CoreCheckableModel & {
     idx?: number;
     spe: Spe;
     /**

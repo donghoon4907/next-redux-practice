@@ -1,6 +1,6 @@
-import { CoreDeleteableObject } from './core';
+import type { CoreCheckableModel } from './core';
 
-export type Custcar = CoreDeleteableObject & {
+export type Custcar = CoreCheckableModel & {
     idx?: number;
     p_type: 'car' | 'gen';
     /**

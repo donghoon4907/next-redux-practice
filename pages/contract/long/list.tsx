@@ -138,7 +138,7 @@ const Longs: NextPage = () => {
                                             />
                                         </WithLabel>
                                     </div>
-                                    <div className="col-3">
+                                    <div className="col-6">
                                         <div className="wr-ml">
                                             <WithLabel
                                                 id="fc"
@@ -251,13 +251,18 @@ const Longs: NextPage = () => {
                                                     unit="~"
                                                     {...beforeRound}
                                                 />
-                                                <MyInput
-                                                    type="text"
-                                                    id="round_after"
-                                                    className="text-end"
-                                                    placeholder="입력"
-                                                    {...afterRound}
-                                                />
+                                                <div
+                                                    className="wr-with__extension"
+                                                    style={{ width: 150 }}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="round_after"
+                                                        className="text-end wr-border-l--hide"
+                                                        placeholder="입력"
+                                                        {...afterRound}
+                                                    />
+                                                </div>
                                             </WithLabel>
                                         </div>
                                     </div>
@@ -415,6 +420,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 idx: '1',
             }),
         );
+
+        dispatch(getUsersRequest({ idx: '1' }));
 
         dispatch(END);
 

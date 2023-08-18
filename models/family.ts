@@ -1,6 +1,6 @@
-import { CoreDeleteableObject } from './core';
+import { CoreCheckableModel } from './core';
 
-export type Family = CoreDeleteableObject & {
+export type Family = CoreCheckableModel & {
     // id
     idx?: number;
     name?: string;

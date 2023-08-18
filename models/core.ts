@@ -1,7 +1,7 @@
 /**
- * 삭제가능
+ * 체크가능한 객체
  */
-export type CoreDeleteableObject = {
+export type CoreCheckableModel = {
     index: number;
     checked: boolean;
 };

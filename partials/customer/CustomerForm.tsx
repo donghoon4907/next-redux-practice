@@ -4,6 +4,7 @@ import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CustomerState } from '@reducers/customer';
+import type { CommonState } from '@reducers/common';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -262,23 +263,23 @@ export const CustomerForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-customer-detail';
 
-    const { loggedInUser, selectedUser } = useSelector<AppState, HrState>(
+    const { loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
     const {
-        contacts,
         excontracts,
         custcars,
         family,
         events,
-        userid_his,
-        removedContacts,
         removedExcontracts,
         removedCustcars,
         removedFamily,
         removedEvents,
     } = useSelector<AppState, CustomerState>((state) => state.customer);
+
+    const { contacts, removedContacts, userHistories, newUserHistory } =
+        useSelector<AppState, CommonState>((state) => state.common);
 
     const createCustomer = useApi(createCustomerRequest);
 
@@ -531,7 +532,7 @@ export const CustomerForm: FC<Props> = ({
         const payload: any = {
             name: isIndividual ? name.value : cname.value,
             custtype: +custtype.value!.value,
-            userid: selectedUser ? selectedUser.userid : defaultUserid,
+            userid: newUserHistory ? newUserHistory.userid : defaultUserid,
             remove: {},
         };
 
@@ -539,11 +540,11 @@ export const CustomerForm: FC<Props> = ({
             payload['idx'] = idx;
         }
 
-        if (selectedUser) {
+        if (newUserHistory) {
             payload['userid_his'] = [
-                ...userid_his,
+                ...userHistories,
                 {
-                    ...selectedUser,
+                    ...newUserHistory,
                     insert_date: dayjs().format('YYYY-MM-DD'),
                 },
             ];
@@ -712,7 +713,6 @@ export const CustomerForm: FC<Props> = ({
                                                 ? `${defaultUserFulls} ${defaultUsername}`
                                                 : `${loggedInUser.user_info.fulls} ${loggedInUser.user_info.name}`
                                         }
-                                        data={userid_his}
                                         editable={editable}
                                     />
                                 </div>

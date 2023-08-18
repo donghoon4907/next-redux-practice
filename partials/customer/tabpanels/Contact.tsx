@@ -3,9 +3,9 @@ import type { Contact } from '@models/contact';
 import type { Spe } from '@models/spe';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
-import type { CustomerState } from '@reducers/customer';
+import type { CommonState } from '@reducers/common';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import type { CreateContactPayload } from '@actions/customer/set-contact.action';
+import type { CreateContactPayload } from '@actions/common/set-contact.action';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { MyTabpanel } from '@components/tab/Tabpanel';
@@ -24,7 +24,7 @@ import {
     createContact,
     deleteContact,
     updateContact,
-} from '@actions/customer/set-contact.action';
+} from '@actions/common/set-contact.action';
 import { generateIndex } from '@utils/generate';
 import { findSelectOption } from '@utils/getter';
 
@@ -47,8 +47,8 @@ export const ContactTabpanel: FC<Props> = ({
     const { loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
-    const { contacts } = useSelector<AppState, CustomerState>(
-        (state) => state.customer,
+    const { contacts } = useSelector<AppState, CommonState>(
+        (state) => state.common,
     );
     // 상담구분
     const [kind, setKind] = useSelect(customerConstants.counselingDivision);

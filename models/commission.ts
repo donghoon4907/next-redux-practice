@@ -1,9 +1,9 @@
-import type { CoreDeleteableObject } from './core';
+import type { CoreCheckableModel } from './core';
 
 /**
  * 수수료 설정
  */
-export type Commission = CoreDeleteableObject & {
+export type Commission = CoreCheckableModel & {
     idx?: number;
     sMonth: string;
     eMonth: string;

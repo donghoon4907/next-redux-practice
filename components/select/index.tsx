@@ -138,15 +138,18 @@ export const MySelect: FC<MySelectProps> = ({
                     ...provided,
                     color: variables.dividerColor,
                 }),
-                menu: (provided, state) => ({
-                    ...provided,
-                    borderRadius: variables.filterBorderRadius,
-                    margin: 0,
-                    border: `1px solid ${variables.dividerColor}`,
-                    borderTopWidth: 0,
-                    boxShadow: 'none',
-                    zIndex: variables.selectZindex,
-                }),
+                menu: (provided, state) => {
+                    return {
+                        ...provided,
+                        borderRadius: variables.filterBorderRadius,
+                        margin: 0,
+                        border: `1px solid ${variables.dividerColor}`,
+                        borderTopWidth: state.placement === 'top' ? 1 : 0,
+                        borderBottomWidth: state.placement === 'top' ? 0 : 1,
+                        boxShadow: 'none',
+                        zIndex: variables.selectZindex,
+                    };
+                },
                 menuList: (provided, state) => ({
                     ...provided,
                     padding: 0,

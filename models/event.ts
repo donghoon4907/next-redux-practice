@@ -1,6 +1,6 @@
-import { CoreDeleteableObject } from './core';
+import type { CoreCheckableModel } from './core';
 
-export type Event = CoreDeleteableObject & {
+export type Event = CoreCheckableModel & {
     // id
     idx?: number;
     name?: string;

@@ -8,13 +8,19 @@ import {
 import { MyTable } from '@components/table';
 import { useColumn } from '@hooks/use-column';
 import { LONG_USER_HISTORY } from '@constants/column';
+import { useSelector } from 'react-redux';
+import { AppState } from '@reducers/index';
+import { CommonState } from '@reducers/common';
 
 interface Props {
     defaultTitle: string;
-    data: Array<any>;
 }
 
-export const LongManagerAccordion: FC<Props> = ({ defaultTitle, data }) => {
+export const LongManagerAccordion: FC<Props> = ({ defaultTitle }) => {
+    const { userHistories } = useSelector<AppState, CommonState>(
+        (state) => state.common,
+    );
+
     const columns = useColumn(LONG_USER_HISTORY);
 
     return (
@@ -41,7 +47,7 @@ export const LongManagerAccordion: FC<Props> = ({ defaultTitle, data }) => {
                     aria-labelledby="user_his"
                 >
                     <div className="wr-table--normal wr-mt">
-                        <MyTable columns={columns} data={data} />
+                        <MyTable columns={columns} data={userHistories} />
                     </div>
                 </AccordionBody>
             </AccordionItem>
