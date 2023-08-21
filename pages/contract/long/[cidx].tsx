@@ -25,17 +25,14 @@ const Long: NextPage<LongState> = ({ long }) => {
         (state) => state.hr,
     );
 
-    const defaultComp = findSelectOptionByLabel(long.company, longUseCompanies);
+    const defaultComp = findSelectOption(long.wcode, longUseCompanies);
 
     const defaultPayCycle = findSelectOption(
         long.pay_cycle,
         longConstants.payCycle,
     );
 
-    const defaultPayDu = findSelectOptionByLabel(
-        long.pay_du,
-        longConstants.payDu,
-    );
+    const defaultPayDu = findSelectOption(long.pay_du, longConstants.payDu);
 
     const defaultStatus = findSelectOption(long.status, longConstants.status);
 
@@ -58,7 +55,7 @@ const Long: NextPage<LongState> = ({ long }) => {
         if (!tab.read(to)) {
             tab.create({
                 id: to,
-                label: `장기계약상세 - ${long.cname}`,
+                label: `장기계약상세 - ${long.c_name}`,
                 to,
             });
         }
@@ -77,13 +74,10 @@ const Long: NextPage<LongState> = ({ long }) => {
             </Head>
             <LongForm
                 mode="update"
-                defaultFc={long.fc}
                 defaultUserid={long.userid}
-                // defaultUserid="w1068"
-                defaultOrga={long.orga}
                 defaultComp={defaultComp}
                 defaultCnum={long.cnum}
-                defaultPtitle={long.ptitle}
+                defaultTitle={long.title}
                 defaultContdate={long.contdate}
                 defaultBodateto={long.bo_dateto}
                 defaultPayCycle={defaultPayCycle}
@@ -92,12 +86,14 @@ const Long: NextPage<LongState> = ({ long }) => {
                 defaultStatus={defaultStatus}
                 defaultPstatus={defaultPstatus}
                 defaultStatusDate={long.status_date}
-                defaultLastWhoi={long.last_whoi}
+                defaultLastMonth={long.lastmonth}
+                defaultLastWhoi={long.lastwhoi}
                 defaultProductType={long.product_type}
                 defaultSubCategory={long.subcategory}
                 defaultIsConfirm={long.confirm}
                 defaultCalSpec={long.cal_spec}
                 defaultPayment={long.payment.toString()}
+                defaultTp={long.tp.toString()}
             />
         </>
     );
@@ -122,15 +118,16 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             const { data } = await longsService.getLong({ cidx });
 
-            const long = data;
+            const long = data.data;
 
             output.props.long = long;
 
-            if (long.user_his) {
-                for (let i = 0; i < long.user_his.length; i++) {
+            if (long.userid_his) {
+                for (let i = 0; i < long.userid_his.length; i++) {
                     dispatch(
                         createUserHistory({
-                            ...long.user_his[i],
+                            ...long.userid_his[i],
+                            username: long.userid_his[i].fcname,
                         }),
                     );
                 }

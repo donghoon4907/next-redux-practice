@@ -173,13 +173,15 @@ export const MyTable: FC<Props> = ({
                 // style={{ width: table.getCenterTotalSize() }}
             >
                 <thead>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <tr key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => (
-                                <MyTh key={header.id} {...header} />
-                            ))}
-                        </tr>
-                    ))}
+                    {table.getHeaderGroups().map((headerGroup) => {
+                        return (
+                            <tr key={headerGroup.id}>
+                                {headerGroup.headers.map((header) => (
+                                    <MyTh key={header.id} {...header} />
+                                ))}
+                            </tr>
+                        );
+                    })}
                 </thead>
                 <tbody>
                     {table.getRowModel().rows.length === 0 && (

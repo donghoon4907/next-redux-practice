@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
+import type { CommonState } from '@reducers/common';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -13,6 +14,7 @@ import { getUsersRequest } from '@actions/hr/get-users';
 import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { insertUserHistory } from '@actions/common/set-user-history.action';
+import { generateIndex } from '@utils/generate';
 
 interface Props {}
 
@@ -25,6 +27,10 @@ export const UserHistoryModal: FC<Props> = () => {
 
     const { orgas, users, loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
+    );
+
+    const { userHistories } = useSelector<AppState, CommonState>(
+        (state) => state.common,
     );
     // 부서
     const [depart] = useSelect(orgas);
@@ -47,6 +53,8 @@ export const UserHistoryModal: FC<Props> = () => {
         if (tf) {
             dispatch(
                 insertUserHistory({
+                    index: generateIndex(userHistories),
+                    checked: false,
                     userid: user.value?.value,
                     department: depart.value!.label,
                     username: user.value?.label,

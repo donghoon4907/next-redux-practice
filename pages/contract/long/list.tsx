@@ -425,7 +425,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         dispatch(END);
 
-        await sagaTask?.toPromise();
+        try {
+            await sagaTask?.toPromise();
+        } catch (e) {
+            console.log(e);
+        }
 
         return null;
     }),

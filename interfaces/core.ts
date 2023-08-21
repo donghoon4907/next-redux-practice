@@ -69,3 +69,7 @@ export interface CorePaginateSuccessPayload<T extends CorePayload> {
 }
 
 export type CoreSetState<T> = Dispatch<SetStateAction<T>>;
+
+export interface CoreEditableComponent {
+    editable: boolean;
+}

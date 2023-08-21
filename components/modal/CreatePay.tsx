@@ -78,7 +78,7 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
     // 수금실적
     const [pay, setPay] = useNumbericInput('', { addComma: true });
     // 금종
-    const [paykind] = useSelect(longConstants.payKind, null);
+    const [paykind] = useSelect(longConstants.payKind);
     // 납입주기
     const [cycle, setCycle] = useSelect(longConstants.payCycle);
 

@@ -16,12 +16,3 @@ export const LONG_CHANGE_HISTORY: CoreColumnOption = {
     body: '변경사항',
     insert: '일시',
 };
-
-export const LONG_USER_HISTORY: CoreColumnOption = {
-    기준일: '기준일',
-    구분: '구분',
-    지점: '지점',
-    사원번호: '사원번호',
-    사용인명: '사용인명',
-    사용인코드: '사용인코드',
-};

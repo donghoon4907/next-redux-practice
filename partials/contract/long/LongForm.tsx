@@ -3,9 +3,10 @@ import type { LongState } from '@reducers/long';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CoreSelectOption } from '@interfaces/core';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import addMonths from 'date-fns/addMonths';
+import differenceInMonths from 'date-fns/differenceInMonths';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -38,6 +39,8 @@ import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { CreatePayModal } from '@components/modal/CreatePay';
 import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
+import { findSelectOption } from '@utils/getter';
+import { getUsersRequest } from '@actions/hr/get-users';
 
 interface Props {
     /**
@@ -45,17 +48,13 @@ interface Props {
      */
     mode: 'create' | 'update';
     /**
-     * 담당자 기본 값
-     */
-    defaultFc: string;
-    /**
      * 담당자 기본 ID
      */
     defaultUserid: string;
     /**
-     * 담당자 기본 부서 값
+     * 담당자 조직 기본 ID
      */
-    defaultOrga: string;
+    defaultOrga?: CoreSelectOption;
     /**
      * 보험사 기본 값
      */
@@ -67,15 +66,16 @@ interface Props {
     /**
      * 상품명 기본 값
      */
-    defaultPtitle?: string;
+    defaultTitle?: string;
     /**
      * 계약일자 기본 값
      */
     defaultContdate?: string;
     /**
-     * 보험기간 기본 값
+     * 보장만기 기본 값
      */
     defaultBodateto?: string;
+    defaultBodu?: string;
     /**
      * 납입주기 기본 값
      */
@@ -102,6 +102,10 @@ interface Props {
      */
     defaultLastWhoi?: string;
     /**
+     * 종납회차일 기본 값
+     */
+    defaultLastMonth?: string;
+    /**
      * 상품타입 기본 값
      */
     defaultProductType?: string;
@@ -121,36 +125,77 @@ interface Props {
      * 실적보험료 기본 값
      */
     defaultPayment?: string;
+    /**
+     * 수정보험료 기본 값
+     */
+    defaultTp?: string;
+    /**
+     * 월납기준 기본 값
+     */
+    // defaultPayMonth?: string;
+    /**
+     * 1차수정 기본 값
+     */
+    defaultTp1?: string;
+    /**
+     * 2차수정 기본 값
+     */
+    defaultTp2?: string;
+    /**
+     * 3차수정 기본 값
+     */
+    defaultTp3?: string;
+    /**
+     * 보장보험료 기본 값
+     */
+    defaultPayBo?: string;
+    /**
+     * 적립보험료 기본 값
+     */
+    defaultPayJ?: string;
+    /**
+     * 저축유지수정 기본 값
+     */
+    defaultTpu?: string;
 }
 
 export const LongForm: FC<Props> = ({
     mode,
-    defaultFc,
     defaultUserid,
-    defaultOrga,
+    defaultOrga = null,
     defaultComp = null,
     defaultCnum = '',
-    defaultPtitle = '',
+    defaultTitle = '',
     defaultContdate = null,
     defaultBodateto = null,
-    defaultPayCycle = null,
+    defaultBodu = null,
+    defaultPayCycle = longConstants.payCycle[0],
     defaultPayDateto = null,
     defaultPayDu = null,
     defaultStatus = null,
     defaultPstatus = null,
     defaultStatusDate = null,
-    defaultLastWhoi = '',
+    defaultLastWhoi = '0',
+    defaultLastMonth = '',
     defaultProductType = '',
     defaultSubCategory = '',
     defaultIsConfirm = 'N',
     defaultCalSpec = '',
     defaultPayment = '',
+    // defaultPayMonth = '',
+    defaultTp = '',
+    defaultTp1 = '',
+    defaultTp2 = '',
+    defaultTp3 = '',
+    defaultPayBo = '',
+    defaultPayJ = '',
+    defaultTpu = '',
 }) => {
     const displayName = 'wr-pages-long-detail';
 
     const dispatch = useDispatch();
 
-    const { longUseCompanies } = useSelector<AppState, HrState>(
+    const { longUseCompanies, orgas, users } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
@@ -164,29 +209,27 @@ export const LongForm: FC<Props> = ({
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
     const labelType = editable ? 'active' : 'disable';
+    // 조직
+    const [orga] = useSelect(orgas, defaultOrga, {
+        callbackOnChange: (next) => {
+            console.log('test');
+        },
+    });
+    // 담당자
+    const [manager, setManager] = useSelect(users);
     // 보험사
     const [comp] = useSelect(longUseCompanies, defaultComp);
     // 계약번호
     const [cnum] = useInput(defaultCnum);
-    // 상품명
-    // const [ptitle] = useInput(defaultPtitle);
     // 계약일자
     const [contdate] = useDatepicker(
-        defaultContdate ? new Date(defaultContdate) : null,
-        // {
-        //     callbackOnChange: (next) => {
-        //         if (!next) {
-        //             if (tab.label === '납입실적') {
-        //                 setTab(LONG_DETAIL_TABS[0]);
-        //             }
-        //         }
-        //     },
-        // },
+        defaultContdate ? new Date(defaultContdate) : new Date(),
     );
-    // 보험기간
+    // 보장만기
     const [boDateto] = useDatepicker(
         defaultBodateto ? new Date(defaultBodateto) : null,
     );
+    // const [boDu] = useSelect()
     // 납입주기
     const [payCycle] = useSelect(longConstants.payCycle, defaultPayCycle);
     // 납입기간
@@ -224,24 +267,26 @@ export const LongForm: FC<Props> = ({
     // 최종납입월
     // const [lastMonth] = useInput(long.last_month);
     // 종납회차
+    const [lastMonth] = useDatepicker(
+        defaultLastMonth ? new Date(defaultLastMonth) : null,
+    );
     const [lastWhoi] = useInput(defaultLastWhoi);
     // 실적보험료
     const [payment] = useNumbericInput(defaultPayment, { addComma: true });
-    // 보험료
-    // const [payment] = useNumbericInput(long.payment.toString(), {
-    //     addComma: true,
-    // });
-    // 월납환산수정P
-    // const [tp] = useNumbericInput(long.tp.toString(), { addComma: true });
-    // const [tpRate] = useInput(long.tp_rate);
-    // 선택한 변경사항
-    // const [selectedChangeHis, setSelectedChangeHis] = useState('');
-    // 수금 실적 추가 요청한 레코드 수
-    // const [paysAddCount, setPaysAddCount] = useState(0);
-    // 상태 이력 추가 요청한 레코드 수
-    // const [statusHisAddCount, setStatusHisAddCount] = useState(0);
-    // 변경 내역 추가 요청한 레코드 수
-    // const [changeHisAddCount, setChangeHisAddCount] = useState(0);
+    // 수정보험료
+    const [tp] = useNumbericInput(defaultTp, { addComma: true });
+    // 1차수정
+    const [tp1] = useNumbericInput(defaultTp1, { addComma: true });
+    // 2차수정
+    const [tp2] = useNumbericInput(defaultTp2, { addComma: true });
+    // 3차수정
+    const [tp3] = useNumbericInput(defaultTp3, { addComma: true });
+    // 보장보험료
+    const [payBo] = useNumbericInput(defaultPayBo, { addComma: true });
+    // 적립보험료
+    const [payJ] = useNumbericInput(defaultPayJ, { addComma: true });
+    // 저축유지수정
+    const [tpu] = useNumbericInput(defaultTpu, { addComma: true });
 
     const handleCreate = () => {};
 
@@ -259,8 +304,12 @@ export const LongForm: FC<Props> = ({
         }
     };
     // 상품명 찾기 클릭 핸들러
-    const handleClickSearchPtitle = () => {
-        dispatch(showProductSearchModal());
+    const handleClickSearchtitle = () => {
+        if (comp.value) {
+            dispatch(showProductSearchModal());
+        } else {
+            alert('보험사를 선택하세요.');
+        }
     };
 
     // const handleShowHistory = (body: any) => {
@@ -272,6 +321,9 @@ export const LongForm: FC<Props> = ({
     //     remark: v.content.remark,
     //     body: ['button', '보기', () => handleShowHistory(v.content.body)],
     // }));
+    // console.log(payCycle);
+
+    // 상품명 badge 관련
     const productType = selectedProduct
         ? selectedProduct.spec
         : defaultProductType;
@@ -279,8 +331,7 @@ export const LongForm: FC<Props> = ({
         ? selectedProduct.subcategory
         : defaultSubCategory;
     const calSpec = selectedProduct ? selectedProduct.cal_spec : defaultCalSpec;
-
-    const pTitle = selectedProduct ? selectedProduct.title : defaultPtitle;
+    const title = selectedProduct ? selectedProduct.title : defaultTitle;
 
     let pTitlePaddingRate = 0;
     if (productType) {
@@ -290,6 +341,121 @@ export const LongForm: FC<Props> = ({
     if (subCategory) {
         pTitlePaddingRate += 1;
     }
+    // 월납기준
+    let payM = 0;
+    // 보장보험료 비율
+    let payBoRate = 0;
+    // 적립보험료 비율
+    let payJRate = 0;
+    // 수정보험료 비율
+    let tpRate = 0;
+    // 1차수정 비율
+    let tp1Rate = 0;
+    // 2차수정 비율
+    let tp2Rate = 0;
+    // 3차수정 비율
+    let tp3Rate = 0;
+    // 저축유지수정 비율
+    let tpuRate = 0;
+    if (!isEmpty(payment.value)) {
+        if (payCycle.value) {
+            if (payCycle.value.value === '일시납') {
+                if (boDateto.value && contdate.value) {
+                    payM = Math.floor(
+                        parseInt(payment.value.replace(/,/g, ''), 10) /
+                            differenceInMonths(boDateto.value, contdate.value),
+                    );
+                }
+            } else {
+                let cycle = -1;
+                if (payCycle.value.value === '월납') {
+                    cycle = 1;
+                } else if (payCycle.value.value === '3월납') {
+                    cycle = 3;
+                } else if (payCycle.value.value === '6월납') {
+                    cycle = 6;
+                } else if (payCycle.value.value === '연납') {
+                    cycle = 12;
+                }
+
+                payM = Math.floor(
+                    parseInt(payment.value.replace(/,/g, ''), 10) / cycle,
+                );
+            }
+        }
+
+        if (!isEmpty(payBo.value)) {
+            payBoRate = Math.floor(
+                (parseInt(payBo.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+
+        if (!isEmpty(payJ.value)) {
+            payJRate = Math.floor(
+                (parseInt(payJ.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+
+        if (!isEmpty(tp.value)) {
+            tpRate = Math.floor(
+                (parseInt(tp.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+
+        if (!isEmpty(tp1.value)) {
+            tp1Rate = Math.floor(
+                (parseInt(tp1.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+
+        if (!isEmpty(tp2.value)) {
+            tp2Rate = Math.floor(
+                (parseInt(tp2.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+
+        if (!isEmpty(tp3.value)) {
+            tp3Rate = Math.floor(
+                (parseInt(tp3.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+
+        if (!isEmpty(tpu.value)) {
+            tpuRate = Math.floor(
+                (parseInt(tpu.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+    }
+
+    useEffect(() => {
+        if (orga.value) {
+            dispatch(
+                getUsersRequest({
+                    idx: orga.value.value,
+                }),
+            );
+        }
+    }, [dispatch, orga.value]);
+
+    useEffect(() => {
+        if (users.length > 0) {
+            setManager(findSelectOption(defaultUserid, users));
+        }
+    }, [dispatch, users, defaultUserid, setManager]);
 
     return (
         <>
@@ -301,9 +467,58 @@ export const LongForm: FC<Props> = ({
                         >
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
-                                    <LongManagerAccordion
-                                        defaultTitle={`${defaultOrga} ${defaultFc}`}
-                                    />
+                                    {mode === 'create' ? (
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="orga"
+                                                    label="조직"
+                                                    type={labelType}
+                                                    isRequired={editable}
+                                                >
+                                                    <MySelect
+                                                        inputId="orga"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...orga}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
+                                                        id="manager"
+                                                        label="담당자"
+                                                        type={labelType}
+                                                        isRequired={editable}
+                                                    >
+                                                        <MySelect
+                                                            inputId="manager"
+                                                            placeholder="선택"
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                            {...manager}
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <LongManagerAccordion
+                                            editable={editable}
+                                        />
+                                    )}
                                 </div>
                             </div>
                             <div className="wr-pages-detail__block">
@@ -362,37 +577,33 @@ export const LongForm: FC<Props> = ({
                                     <div className="row wr-mt">
                                         <div className="col">
                                             <WithLabel
-                                                id="ptitle"
+                                                id="title"
                                                 label="상품명"
                                                 type={labelType}
+                                                isRequired={editable}
                                             >
                                                 <div className="wr-with__badge">
                                                     <MyInput
                                                         type="text"
-                                                        id="ptitle"
+                                                        id="title"
                                                         className={`wr-with__badge--inside-left-${pTitlePaddingRate}`}
                                                         placeholder=""
                                                         disabled={true}
-                                                        value={pTitle}
-                                                        button={
-                                                            comp.value &&
-                                                            editable
-                                                                ? {
-                                                                      className:
-                                                                          'btn-md btn-primary',
-                                                                      onClick:
-                                                                          handleClickSearchPtitle,
-                                                                      children:
-                                                                          (
-                                                                              <>
-                                                                                  <span>
-                                                                                      찾기
-                                                                                  </span>
-                                                                              </>
-                                                                          ),
-                                                                  }
-                                                                : undefined
-                                                        }
+                                                        value={title}
+                                                        button={{
+                                                            className:
+                                                                'btn-md btn-primary',
+                                                            onClick:
+                                                                handleClickSearchtitle,
+                                                            disabled: !editable,
+                                                            children: (
+                                                                <>
+                                                                    <span>
+                                                                        찾기
+                                                                    </span>
+                                                                </>
+                                                            ),
+                                                        }}
                                                         unit={
                                                             editable
                                                                 ? ''
@@ -446,13 +657,13 @@ export const LongForm: FC<Props> = ({
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="contdate"
+                                                    id="pay_cycle"
                                                     label="납입주기"
                                                     type={labelType}
                                                     isRequired={editable}
                                                 >
                                                     <MySelect
-                                                        inputId="contdate"
+                                                        inputId="pay_cycle"
                                                         placeholder={'선택'}
                                                         placeHolderFontSize={16}
                                                         height={
@@ -597,17 +808,17 @@ export const LongForm: FC<Props> = ({
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="last_whoi"
+                                                    id="last_month"
                                                     label="종납회차"
                                                     type={labelType}
                                                 >
                                                     <MyDatepicker
-                                                        id="last_whoi"
+                                                        id="last_month"
                                                         size="md"
                                                         format="yyyy-MM"
                                                         placeholder="종납회차"
                                                         disabled={!editable}
-                                                        hooks={contdate}
+                                                        hooks={lastMonth}
                                                     />
                                                     <div
                                                         className="wr-with__extension"
@@ -648,16 +859,15 @@ export const LongForm: FC<Props> = ({
                                                 />
                                             </WithLabel>
                                             <WithLabel
-                                                id="pay_m"
                                                 label="월납기준"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
-                                                    id="pay_m"
                                                     className="text-end"
                                                     placeholder="0"
-                                                    disabled={!editable}
+                                                    disabled
+                                                    value={payM.toLocaleString()}
                                                 />
                                             </WithLabel>
                                             <WithLabel
@@ -671,16 +881,17 @@ export const LongForm: FC<Props> = ({
                                                     className="text-end"
                                                     placeholder="0"
                                                     disabled={!editable}
+                                                    {...payBo}
                                                 />
                                                 <div
                                                     className="wr-with__extension"
                                                     style={{ width: 100 }}
                                                 >
                                                     <MyInput
-                                                        type="number"
-                                                        className="wr-border-l--hide"
-                                                        disabled={!editable}
-                                                        value="240"
+                                                        type="text"
+                                                        className="text-end wr-border-l--hide"
+                                                        disabled
+                                                        value={payBoRate}
                                                         unit="%"
                                                     />
                                                 </div>
@@ -696,16 +907,17 @@ export const LongForm: FC<Props> = ({
                                                     className="text-end"
                                                     placeholder="0"
                                                     disabled={!editable}
+                                                    {...payJ}
                                                 />
                                                 <div
                                                     className="wr-with__extension"
                                                     style={{ width: 100 }}
                                                 >
                                                     <MyInput
-                                                        type="number"
-                                                        className="wr-border-l--hide"
-                                                        disabled={!editable}
-                                                        value="240"
+                                                        type="text"
+                                                        className="text-end wr-border-l--hide"
+                                                        disabled
+                                                        value={payJRate}
                                                         unit="%"
                                                     />
                                                 </div>
@@ -722,18 +934,6 @@ export const LongForm: FC<Props> = ({
                                                     placeholder="0"
                                                     disabled={!editable}
                                                 />
-                                                <div
-                                                    className="wr-with__extension"
-                                                    style={{ width: 100 }}
-                                                >
-                                                    <MyInput
-                                                        type="number"
-                                                        className="wr-border-l--hide"
-                                                        disabled={!editable}
-                                                        value="240"
-                                                        unit="%"
-                                                    />
-                                                </div>
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
@@ -749,16 +949,17 @@ export const LongForm: FC<Props> = ({
                                                         className="text-end"
                                                         placeholder="0"
                                                         disabled={!editable}
+                                                        {...tp}
                                                     />
                                                     <div
                                                         className="wr-with__extension"
                                                         style={{ width: 100 }}
                                                     >
                                                         <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            disabled={!editable}
-                                                            value="240"
+                                                            type="text"
+                                                            className="text-end wr-border-l--hide"
+                                                            disabled
+                                                            value={tpRate}
                                                             unit="%"
                                                         />
                                                     </div>
@@ -774,16 +975,17 @@ export const LongForm: FC<Props> = ({
                                                         className="text-end"
                                                         placeholder="0"
                                                         disabled={!editable}
+                                                        {...tp1}
                                                     />
                                                     <div
                                                         className="wr-with__extension"
                                                         style={{ width: 100 }}
                                                     >
                                                         <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            disabled={!editable}
-                                                            value="240"
+                                                            type="text"
+                                                            className="text-end wr-border-l--hide"
+                                                            disabled
+                                                            value={tp1Rate}
                                                             unit="%"
                                                         />
                                                     </div>
@@ -799,16 +1001,17 @@ export const LongForm: FC<Props> = ({
                                                         className="text-end"
                                                         placeholder="0"
                                                         disabled={!editable}
+                                                        {...tp2}
                                                     />
                                                     <div
                                                         className="wr-with__extension"
                                                         style={{ width: 100 }}
                                                     >
                                                         <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            disabled={!editable}
-                                                            value="240"
+                                                            type="text"
+                                                            className="text-end wr-border-l--hide"
+                                                            disabled
+                                                            value={tp2Rate}
                                                             unit="%"
                                                         />
                                                     </div>
@@ -824,41 +1027,43 @@ export const LongForm: FC<Props> = ({
                                                         className="text-end"
                                                         placeholder="0"
                                                         disabled={!editable}
+                                                        {...tp3}
                                                     />
                                                     <div
                                                         className="wr-with__extension"
                                                         style={{ width: 100 }}
                                                     >
                                                         <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            disabled={!editable}
-                                                            value="240"
+                                                            type="text"
+                                                            className="text-end wr-border-l--hide"
+                                                            disabled
+                                                            value={tp3Rate}
                                                             unit="%"
                                                         />
                                                     </div>
                                                 </WithLabel>
                                                 <WithLabel
-                                                    id="ksm"
+                                                    id="tpu"
                                                     label="저축유지수정"
                                                     type={labelType}
                                                 >
                                                     <MyInput
                                                         type="text"
-                                                        id="ksm"
+                                                        id="tpu"
                                                         className="text-end"
                                                         placeholder="0"
                                                         disabled={!editable}
+                                                        {...tpu}
                                                     />
                                                     <div
                                                         className="wr-with__extension"
                                                         style={{ width: 100 }}
                                                     >
                                                         <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            disabled={!editable}
-                                                            value="240"
+                                                            type="text"
+                                                            className="text-end wr-border-l--hide"
+                                                            disabled
+                                                            value={tpuRate}
                                                             unit="%"
                                                         />
                                                     </div>

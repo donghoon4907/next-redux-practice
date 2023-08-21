@@ -3,11 +3,6 @@ import type { CoreSelectOption } from '@interfaces/core';
 // 납입주기
 const L_PAYCYCLE: CoreSelectOption[] = [
     {
-        label: '일시납',
-        value: '일시납',
-        isFixed: false,
-    },
-    {
         label: '월납',
         value: '월납',
         isFixed: false,
@@ -25,6 +20,11 @@ const L_PAYCYCLE: CoreSelectOption[] = [
     {
         label: '연납',
         value: '연납',
+        isFixed: false,
+    },
+    {
+        label: '일시납',
+        value: '일시납',
         isFixed: false,
     },
 ];

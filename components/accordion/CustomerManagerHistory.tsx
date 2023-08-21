@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { CommonState } from '@reducers/common';
+import type { CoreEditableComponent } from '@interfaces/core';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -12,9 +13,8 @@ import {
 import { showUserHistoryModal } from '@actions/modal/user-history.action';
 import { MyTableExtension } from '@components/table/Extension';
 
-interface Props {
+interface Props extends CoreEditableComponent {
     defaultTitle: string;
-    editable: boolean;
 }
 
 export const CustomerManagerAccordion: FC<Props> = ({
@@ -88,14 +88,16 @@ export const CustomerManagerAccordion: FC<Props> = ({
                                             <span>
                                                 {v.insert_date
                                                     ? v.insert_date
-                                                    : ''}
+                                                    : '-'}
                                             </span>
                                         </td>
                                         <td>
                                             <span>{`${v.username} (${v.userid})`}</span>
                                         </td>
                                         <td>
-                                            <span>{v.remark}</span>
+                                            <span>
+                                                {v.remark ? v.remark : '-'}
+                                            </span>
                                         </td>
                                     </tr>
                                 ))}

@@ -257,6 +257,11 @@ export const ASIDE_MENU: any = {
                 label: '장기계약목록',
                 to: '/contract/long/list',
             },
+            create: {
+                id: 'contract-long_create',
+                label: '장기계약등록',
+                to: '/contract/long/create',
+            },
             sch: {
                 id: 'contract-long_sch',
                 label: '상태변경내역',

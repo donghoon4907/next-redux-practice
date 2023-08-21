@@ -1,8 +1,5 @@
 import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import { MyTable } from '@components/table';
-import { useColumn } from '@hooks/use-column';
-import { LONG_COL_PERFORMANCE } from '@constants/column';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
