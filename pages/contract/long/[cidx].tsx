@@ -32,7 +32,7 @@ const Long: NextPage<LongState> = ({ long }) => {
         longConstants.payCycle,
     );
 
-    const defaultPayDu = findSelectOption(long.pay_du, longConstants.payDu);
+    // const defaultPayDu = findSelectOption(long.pay_du, longConstants.payDu);
 
     const defaultStatus = findSelectOption(long.status, longConstants.status);
 
@@ -82,7 +82,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                 defaultBodateto={long.bo_dateto}
                 defaultPayCycle={defaultPayCycle}
                 defaultPayDateto={long.pay_dateto}
-                defaultPayDu={defaultPayDu}
+                // defaultPayDu={defaultPayDu}
                 defaultStatus={defaultStatus}
                 defaultPstatus={defaultPstatus}
                 defaultStatusDate={long.status_date}

@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const PRODUCT_SEARCH_MODAL_KEY = 'PRODUCT_SEARCH_MODAL_KEY';
+export const PRODUCT_SEARCH_MODAL_KEY = 'PRODUCT_SEARCH_MODAL';
 
 export const ProductSearchModalActionTypes = {
     SHOW: `SHOW_${PRODUCT_SEARCH_MODAL_KEY}`,

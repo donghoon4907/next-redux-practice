@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CREATE_ETC_MODAL_KEY = 'CREATE_ETC_MODAL_KEY';
+export const CREATE_ETC_MODAL_KEY = 'CREATE-ETC-MODAL';
 
 export const CreateEtcModalActionTypes = {
     SHOW: `SHOW_${CREATE_ETC_MODAL_KEY}`,

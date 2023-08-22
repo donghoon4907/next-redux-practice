@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const IMAGE_UPLOAD_MODAL_KEY = 'IMAGE_UPLOAD_MODAL_KEY';
+export const IMAGE_UPLOAD_MODAL_KEY = 'IMAGE_UPLOAD_MODAL';
 
 export const ImageUploadModalActionTypes = {
     SHOW: `SHOW_${IMAGE_UPLOAD_MODAL_KEY}`,

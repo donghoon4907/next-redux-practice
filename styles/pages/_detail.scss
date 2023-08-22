@@ -1,4 +1,13 @@
 .wr-pages-detail {
+    & .rs-picker-toggle-placeholder {
+        font-size: 16px;
+    }
+
+    & .wr-with__label,
+    & .wr-with__extension {
+        height: $wr-detail-filter-height;
+    }
+
     &__block {
         position: relative;
         padding: 0 !important;
@@ -33,6 +42,10 @@
         & .accordion-button {
             box-shadow: none !important;
         }
+
+        & + & {
+            border-top: 1px solid $wr-divider-color-300;
+        }
     }
 
     &__with {
@@ -63,6 +76,15 @@
         border-bottom: 1px solid $wr-divider-color-300;
         padding: $wr-gutter-size;
         font-size: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__footer {
+        height: 36px;
+        border-top: 1px solid $wr-divider-color-300;
+        padding: $wr-gutter-size;
         display: flex;
         justify-content: space-between;
         align-items: center;

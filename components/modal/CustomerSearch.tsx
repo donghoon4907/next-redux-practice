@@ -1,27 +1,31 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
-import type { ModalState } from '@reducers/modal';
 import type { CustomerState } from '@reducers/customer';
 import type { UserCustomer } from '@models/customer';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { MyRadio } from '@components/radio';
-import { hideCustomerSearchModal } from '@actions/modal/customer-search.action';
+import {
+    hideContractorSearchModal,
+    hideInsuredPersonSearchModal,
+} from '@actions/modal/customer-search.action';
 import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
 import { useApi } from '@hooks/use-api';
 import { getCustomerRequest } from '@actions/customer/get-customer';
+import {
+    updateLoadedContractor,
+    updateLoadedInsuredPerson,
+} from '@actions/long/set-loaded-customer.action';
 
-interface Props {}
+interface Props {
+    type: 'contractor' | 'insured-person';
+}
 
-export const CustomerSearchModal: FC<Props> = () => {
+export const CustomerSearchModal: FC<Props> = ({ type }) => {
     const dispatch = useDispatch();
 
     const getCustomer = useApi(getCustomerRequest);
-
-    const { isShowCustomerSearchModal } = useSelector<AppState, ModalState>(
-        (state) => state.modal,
-    );
 
     const { userCustomers } = useSelector<AppState, CustomerState>(
         (state) => state.customer,
@@ -33,12 +37,21 @@ export const CustomerSearchModal: FC<Props> = () => {
     );
 
     const handleClose = () => {
-        dispatch(hideCustomerSearchModal());
+        if (type === 'contractor') {
+            dispatch(hideContractorSearchModal());
+        } else if (type === 'insured-person') {
+            dispatch(hideInsuredPersonSearchModal());
+        }
     };
 
     const handleSubmit = () => {
         if (checkedCustomer) {
-            getCustomer({ idx: checkedCustomer.idx }, () => {
+            getCustomer({ idx: checkedCustomer.idx }, ({ data }) => {
+                if (type === 'contractor') {
+                    dispatch(updateLoadedContractor(data));
+                } else if (type === 'insured-person') {
+                    dispatch(updateLoadedInsuredPerson(data));
+                }
                 handleClose();
             });
         } else {
@@ -55,11 +68,7 @@ export const CustomerSearchModal: FC<Props> = () => {
     }, [userCustomers]);
 
     return (
-        <Modal
-            isOpen={isShowCustomerSearchModal}
-            toggle={handleClose}
-            size="lg"
-        >
+        <Modal isOpen toggle={handleClose} size="xl">
             <ModalHeader toggle={handleClose}>고객 선택</ModalHeader>
             <ModalBody>
                 <div

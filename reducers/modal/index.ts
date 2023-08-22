@@ -13,7 +13,10 @@ import { CreateCustcarModalActionTypes } from '@actions/modal/create-custcar.act
 import { CreateFamilyModalActionTypes } from '@actions/modal/create-family.action';
 import { CreateEventModalActionTypes } from '@actions/modal/create-event.action';
 import { ProductSearchModalActionTypes } from '@actions/modal/product-search.action';
-import { CustomerSearchModalActionTypes } from '@actions/modal/customer-search.action';
+import {
+    ContractorSearchModalActionTypes,
+    InsuredPersonSearchModalActionTypes,
+} from '@actions/modal/customer-search.action';
 import { CreatePayModalActionTypes } from '@actions/modal/create-pay.action';
 import { CreateEndorsementModalActionTypes } from '@actions/modal/create-endorsement.action';
 
@@ -34,7 +37,8 @@ export interface ModalState {
     isShowCreateFamilyModal: boolean;
     isShowCreateEventModal: boolean;
     isShowProductSearchModal: boolean;
-    isShowCustomerSearchModal: boolean;
+    isShowContractorSearchModal: boolean;
+    isShowInsuredPersonSearchModal: boolean;
     isShowCreatePayModal: boolean;
     isShowCreateEndorsementModal: boolean;
 }
@@ -56,7 +60,8 @@ const initialState: ModalState = {
     isShowCreateFamilyModal: false,
     isShowCreateEventModal: false,
     isShowProductSearchModal: false,
-    isShowCustomerSearchModal: false,
+    isShowContractorSearchModal: false,
+    isShowInsuredPersonSearchModal: false,
     isShowCreatePayModal: false,
     isShowCreateEndorsementModal: false,
 };
@@ -191,12 +196,20 @@ export const modalReducer: Reducer<ModalState, any> = (
                 draft.isShowProductSearchModal = false;
                 break;
             }
-            case CustomerSearchModalActionTypes.SHOW: {
-                draft.isShowCustomerSearchModal = true;
+            case ContractorSearchModalActionTypes.SHOW: {
+                draft.isShowContractorSearchModal = true;
                 break;
             }
-            case CustomerSearchModalActionTypes.HIDE: {
-                draft.isShowCustomerSearchModal = false;
+            case ContractorSearchModalActionTypes.HIDE: {
+                draft.isShowContractorSearchModal = false;
+                break;
+            }
+            case InsuredPersonSearchModalActionTypes.SHOW: {
+                draft.isShowInsuredPersonSearchModal = true;
+                break;
+            }
+            case InsuredPersonSearchModalActionTypes.HIDE: {
+                draft.isShowInsuredPersonSearchModal = false;
                 break;
             }
             case CreatePayModalActionTypes.SHOW: {

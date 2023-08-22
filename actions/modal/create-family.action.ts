@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CREATE_FAMILY_MODAL_KEY = 'CREATE_FAMILY_MODAL_KEY';
+export const CREATE_FAMILY_MODAL_KEY = 'CREATE-FAMILY-MODAL';
 
 export const CreateFamilyModalActionTypes = {
     SHOW: `SHOW_${CREATE_FAMILY_MODAL_KEY}`,

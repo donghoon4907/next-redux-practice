@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CREATE_EXCONTRACT_MODAL_KEY = 'CREATE_EXCONTRACT_MODAL_KEY';
+export const CREATE_EXCONTRACT_MODAL_KEY = 'CREATE-EXCONTRACT-MODAL';
 
 export const CreateExcontractModalActionTypes = {
     SHOW: `SHOW_${CREATE_EXCONTRACT_MODAL_KEY}`,

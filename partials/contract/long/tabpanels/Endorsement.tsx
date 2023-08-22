@@ -61,6 +61,9 @@ export const EndorsementTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
+            <div className="wr-pages-detail__lock">
+                <p>준비 중입니다.</p>
+            </div>
             {editable && (
                 <div className="wr-pages-detail__subtitle">
                     <strong>목록 ({endorsements.length})</strong>

@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CREATE_EVENT_MODAL_KEY = 'CREATE_EVENT_MODAL_KEY';
+export const CREATE_EVENT_MODAL_KEY = 'CREATE-EVENT-MODAL';
 
 export const CreateEventModalActionTypes = {
     SHOW: `SHOW_${CREATE_EVENT_MODAL_KEY}`,

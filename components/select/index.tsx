@@ -1,6 +1,7 @@
 import type { FC } from 'react';
+import type { GroupBase, MenuPlacement, StylesConfig } from 'react-select';
 import type { CoreSelectOption } from '@interfaces/core';
-import Select, { GroupBase, StylesConfig } from 'react-select';
+import Select from 'react-select';
 import variables from '@styles/_variables.module.scss';
 
 export interface MySelectProps {
@@ -56,6 +57,10 @@ export interface MySelectProps {
      * with another ui
      */
     placement?: 'right' | 'left' | 'single';
+    /**
+     * with another ui
+     */
+    menuPlacement?: MenuPlacement;
 }
 
 export const MySelect: FC<MySelectProps> = ({
@@ -70,6 +75,7 @@ export const MySelect: FC<MySelectProps> = ({
     styles,
     isDisabled = false,
     placement = 'single',
+    menuPlacement = 'auto',
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange?.(option);
@@ -83,7 +89,7 @@ export const MySelect: FC<MySelectProps> = ({
             value={value}
             onChange={handleChange}
             placeholder={placeholder}
-            menuPlacement="auto"
+            menuPlacement={menuPlacement}
             isDisabled={isDisabled}
             noOptionsMessage={() => '데이터가 없습니다.'}
             styles={{

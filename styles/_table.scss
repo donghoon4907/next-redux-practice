@@ -24,9 +24,11 @@
     }
 
     &--scrollable {
+        border-bottom-width: 0 !important;
+
         & table {
             border-collapse: separate !important;
-            padding-bottom: 5px;
+            // padding-bottom: 5px;
         }
 
         & table td,

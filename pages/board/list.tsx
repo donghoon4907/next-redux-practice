@@ -93,13 +93,15 @@ const Boards: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="wr-pages-board-list__body wr-table--scrollable wr-table--hover wr-mt">
-                        <MyTable
-                            columns={columns}
-                            data={boards.rows}
-                            pageSize={boards.lastPayload?.nums}
-                            onClickRow={handleClickRow}
-                        />
+                    <div className="wr-pages-board-list__body wr-mt">
+                        <div className="wr-table--scrollable wr-table--hover">
+                            <MyTable
+                                columns={columns}
+                                data={boards.rows}
+                                pageSize={boards.lastPayload?.nums}
+                                onClickRow={handleClickRow}
+                            />
+                        </div>
                     </div>
 
                     <MyFooter>

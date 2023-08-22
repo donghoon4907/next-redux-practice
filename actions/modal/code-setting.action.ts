@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CODE_SETTING_MODAL_KEY = 'CODE_SETTING_MODAL_KEY';
+export const CODE_SETTING_MODAL_KEY = 'CODE-SETTING-MODAL';
 
 export const CodeSettingModalActionTypes = {
     SHOW: `SHOW_${CODE_SETTING_MODAL_KEY}`,

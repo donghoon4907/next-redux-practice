@@ -20,6 +20,9 @@ export const CalcPerformTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
+            <div className="wr-pages-detail__lock">
+                <p>준비 중입니다.</p>
+            </div>
             <div className="row">
                 <div className="col-3">
                     <WithLabel id="grade" label="등급" type="disable">

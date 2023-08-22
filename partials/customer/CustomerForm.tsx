@@ -700,11 +700,9 @@ export const CustomerForm: FC<Props> = ({
     return (
         <>
             <MyLayout>
-                <div className={`${displayName} row`}>
-                    <div className="col-5">
-                        <div
-                            className={`${displayName}__left wr-frame__section`}
-                        >
+                <div className={`${displayName} wr-pages-detail row`}>
+                    <div className={`${displayName}__left col`}>
+                        <div className="wr-frame__section">
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
                                     <CustomerManagerAccordion
@@ -1257,60 +1255,58 @@ export const CustomerForm: FC<Props> = ({
                             )}
                         </div>
                     </div>
-                    <div className="col-7">
-                        <div className={`${displayName}__right`}>
-                            <ul className="wr-tab__wrap" role="tablist">
-                                {CUSTOMER_DETAIL_TABS.map((v) => (
-                                    <MyTab
-                                        key={v.id}
-                                        onClick={setTab}
-                                        isActive={v.id === tab.id}
-                                        {...v}
-                                    />
-                                ))}
-                                <li className="wr-tab__line"></li>
-                            </ul>
-                            <div
-                                className={`${displayName}__body wr-frame__tabbody`}
-                            >
-                                <ContactTabpanel
-                                    id="tabpanelContactHis"
-                                    tabId="tabContactHis"
-                                    hidden={tab.id !== 'tabContactHis'}
-                                    editable={editable}
-                                    spe={spe}
+                    <div className={`${displayName}__right col`}>
+                        <ul className="wr-tab__wrap" role="tablist">
+                            {CUSTOMER_DETAIL_TABS.map((v) => (
+                                <MyTab
+                                    key={v.id}
+                                    onClick={setTab}
+                                    isActive={v.id === tab.id}
+                                    {...v}
                                 />
-                                <HoldingContractTabpanel
-                                    id="tabpanelHoldingContract"
-                                    tabId="tabHoldingContract"
-                                    hidden={tab.id !== 'tabHoldingContract'}
-                                    editable={editable}
-                                />
-                                <ExcontractTabpanel
-                                    id="tabpanelExcontract"
-                                    tabId="tabExcontract"
-                                    hidden={tab.id !== 'tabExcontract'}
-                                    editable={editable}
-                                />
-                                <CustcarTabpanel
-                                    id="tabpanelCustcar"
-                                    tabId="tabCustcar"
-                                    hidden={tab.id !== 'tabCustcar'}
-                                    editable={editable}
-                                />
-                                <FamilyTabpanel
-                                    id="tabpanelFamily"
-                                    tabId="tabFamily"
-                                    hidden={tab.id !== 'tabFamily'}
-                                    editable={editable}
-                                />
-                                <EventTabpanel
-                                    id="tabpanelEvent"
-                                    tabId="tabEvent"
-                                    hidden={tab.id !== 'tabEvent'}
-                                    editable={editable}
-                                />
-                            </div>
+                            ))}
+                            <li className="wr-tab__line"></li>
+                        </ul>
+                        <div
+                            className={`${displayName}__body wr-frame__tabbody`}
+                        >
+                            <ContactTabpanel
+                                id="tabpanelContactHis"
+                                tabId="tabContactHis"
+                                hidden={tab.id !== 'tabContactHis'}
+                                editable={editable}
+                                spe={spe}
+                            />
+                            <HoldingContractTabpanel
+                                id="tabpanelHoldingContract"
+                                tabId="tabHoldingContract"
+                                hidden={tab.id !== 'tabHoldingContract'}
+                                editable={editable}
+                            />
+                            <ExcontractTabpanel
+                                id="tabpanelExcontract"
+                                tabId="tabExcontract"
+                                hidden={tab.id !== 'tabExcontract'}
+                                editable={editable}
+                            />
+                            <CustcarTabpanel
+                                id="tabpanelCustcar"
+                                tabId="tabCustcar"
+                                hidden={tab.id !== 'tabCustcar'}
+                                editable={editable}
+                            />
+                            <FamilyTabpanel
+                                id="tabpanelFamily"
+                                tabId="tabFamily"
+                                hidden={tab.id !== 'tabFamily'}
+                                editable={editable}
+                            />
+                            <EventTabpanel
+                                id="tabpanelEvent"
+                                tabId="tabEvent"
+                                hidden={tab.id !== 'tabEvent'}
+                                editable={editable}
+                            />
                         </div>
                     </div>
                 </div>

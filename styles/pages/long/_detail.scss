@@ -2,16 +2,13 @@
     overflow: hidden;
     --wr-tab-active-color: white;
 
-    & .rs-picker-toggle-placeholder {
-        font-size: 16px;
-    }
-
-    & .wr-with__label {
-        height: $wr-detail-filter-height;
-    }
-
     &__left {
-        overflow-y: auto;
+        overflow: auto;
+        height: 100%;
+        min-width: 800px;
+        flex-basis: 800px;
+        flex-shrink: 0;
+        flex-grow: 0;
     }
 
     &__right {

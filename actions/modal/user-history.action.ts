@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const USER_HISTORY_MODAL_KEY = 'USER_HISTORY_MODAL_KEY';
+export const USER_HISTORY_MODAL_KEY = 'USER_HISTORY_MODAL';
 
 export const UserHistoryModalActionTypes = {
     SHOW: `SHOW_${USER_HISTORY_MODAL_KEY}`,

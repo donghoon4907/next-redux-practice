@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CREATE_CUSTCAR_MODAL_KEY = 'CREATE_CUSTCAR_MODAL_KEY';
+export const CREATE_CUSTCAR_MODAL_KEY = 'CREATE-CUSTCAR-MODAL';
 
 export const CreateCustcarModalActionTypes = {
     SHOW: `SHOW_${CREATE_CUSTCAR_MODAL_KEY}`,

@@ -367,13 +367,15 @@ const Longs: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="wr-pages-long-list__body wr-table--scrollable wr-table--hover wr-mt">
-                        <MyTable
-                            columns={columns}
-                            data={longs.rows}
-                            pageSize={longs.lastPayload?.nums}
-                            onClickRow={handleClickRow}
-                        />
+                    <div className="wr-pages-long-list__body wr-mt">
+                        <div className="wr-table--scrollable wr-table--hover">
+                            <MyTable
+                                columns={columns}
+                                data={longs.rows}
+                                pageSize={longs.lastPayload?.nums}
+                                onClickRow={handleClickRow}
+                            />
+                        </div>
                     </div>
 
                     <MyFooter>

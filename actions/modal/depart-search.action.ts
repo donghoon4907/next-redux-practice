@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const DEPART_SEARCH_MODAL_KEY = 'DEPART_SEARCH_MODAL_KEY';
+export const DEPART_SEARCH_MODAL_KEY = 'DEPART_SEARCH_MODAL';
 
 export const DepartSearchModalActionTypes = {
     SHOW: `SHOW_${DEPART_SEARCH_MODAL_KEY}`,

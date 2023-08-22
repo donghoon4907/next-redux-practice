@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const SET_VIEWER_MODAL_KEY = 'SET_VIEWER_MODAL_KEY';
+export const SET_VIEWER_MODAL_KEY = 'SET_VIEWER_MODAL';
 
 export const SetViewerModalActionTypes = {
     SHOW: `SHOW_${SET_VIEWER_MODAL_KEY}`,

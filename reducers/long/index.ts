@@ -2,6 +2,7 @@ import type { Reducer } from 'redux';
 import type { Product } from '@models/product';
 import type { Pay } from '@models/pay';
 import type { Endorsement } from '@models/endorsement';
+import type { InsuredPerson } from '@models/insured-person';
 import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
 import produce from 'immer';
 import { GetLongsActionTypes } from '@actions/long/get-longs.action';
@@ -10,6 +11,11 @@ import { GetLongActionTypes } from '@actions/long/get-long.action';
 import { LongProductActionTypes } from '@actions/long/set-long-product.action';
 import { PayActionTypes } from '@actions/long/set-pay.action';
 import { EndorsementActionTypes } from '@actions/long/set-endorsement.action';
+import { InsuredPersonActionTypes } from '@actions/long/set-insured-person.action';
+import {
+    LoadedContractorActionTypes,
+    LoadedInsuredPersonActionTypes,
+} from '@actions/long/set-loaded-customer.action';
 
 export interface LongState {
     /**
@@ -40,6 +46,22 @@ export interface LongState {
      * 삭제한 배서 목록
      */
     removedEndorsements: Endorsement[];
+    /**
+     * 피보험자 목록
+     */
+    insuredPeople: InsuredPerson[];
+    /**
+     * 삭제한 피보험자 목록
+     */
+    removedInsuredPeople: InsuredPerson[];
+    /**
+     * 불러온 계약자
+     */
+    loadedContract: any;
+    /**
+     * 불러온 피보험자
+     */
+    loadedInsuredPerson: any;
 }
 
 const initialState: LongState = {
@@ -90,6 +112,10 @@ const initialState: LongState = {
         },
     ],
     removedEndorsements: [],
+    insuredPeople: [],
+    removedInsuredPeople: [],
+    loadedContract: null,
+    loadedInsuredPerson: null,
 };
 
 export const longReducer: Reducer<LongState, any> = (
@@ -186,6 +212,54 @@ export const longReducer: Reducer<LongState, any> = (
                             draft.removedEndorsements.concat(deleted);
                     }
                 }
+
+                break;
+            }
+            case InsuredPersonActionTypes.CREATE: {
+                draft.insuredPeople = draft.insuredPeople.concat(
+                    action.payload,
+                );
+                break;
+            }
+            case InsuredPersonActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.insuredPeople.length; i++) {
+                    if (draft.insuredPeople[i].index === index) {
+                        draft.insuredPeople[i] = {
+                            ...draft.insuredPeople[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case InsuredPersonActionTypes.DELETE: {
+                const findIndex = draft.insuredPeople.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.insuredPeople.splice(findIndex, 1);
+
+                    if (deleted.p_idx) {
+                        draft.removedInsuredPeople =
+                            draft.removedInsuredPeople.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case LoadedContractorActionTypes.UPDATE: {
+                draft.loadedContract = action.payload;
+
+                break;
+            }
+            case LoadedInsuredPersonActionTypes.UPDATE: {
+                draft.loadedInsuredPerson = action.payload;
 
                 break;
             }

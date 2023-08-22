@@ -134,30 +134,40 @@ export const L_PSTATUS: CoreSelectOption[] = [
         isFixed: false,
     },
     {
-        label: '임의해지',
-        value: '임의해지',
+        label: '부활대상',
+        value: '부활대상',
         isFixed: false,
     },
     {
-        label: '미납실효',
-        value: '미납실효',
+        label: '납입불가',
+        value: '납입불가',
         isFixed: false,
     },
-    {
-        label: '보장종료',
-        value: '보장종료',
-        isFixed: false,
-    },
-    {
-        label: '계약종료',
-        value: '계약종료',
-        isFixed: false,
-    },
-    {
-        label: '타사이관',
-        value: '타사이관',
-        isFixed: false,
-    },
+    // {
+    //     label: '임의해지',
+    //     value: '임의해지',
+    //     isFixed: false,
+    // },
+    // {
+    //     label: '미납실효',
+    //     value: '미납실효',
+    //     isFixed: false,
+    // },
+    // {
+    //     label: '보장종료',
+    //     value: '보장종료',
+    //     isFixed: false,
+    // },
+    // {
+    //     label: '계약종료',
+    //     value: '계약종료',
+    //     isFixed: false,
+    // },
+    // {
+    //     label: '타사이관',
+    //     value: '타사이관',
+    //     isFixed: false,
+    // },
 ];
 
 // 납입구분
@@ -236,6 +246,52 @@ export const L_PAYKIND: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 정산구분
+export const L_CALTYPE: CoreSelectOption[] = [
+    {
+        label: '기본정산',
+        value: '기본정산',
+        isFixed: false,
+    },
+    {
+        label: '기본정산 + 갱신',
+        value: '기본정산 + 갱신',
+        isFixed: false,
+    },
+    {
+        label: '보류(회차변환O)',
+        value: '보류(회차변환O)',
+        isFixed: false,
+    },
+    {
+        label: '보류(회차변환X)',
+        value: '보류(회차변환X)',
+        isFixed: false,
+    },
+    {
+        label: '정산안함',
+        value: '정산안함',
+        isFixed: false,
+    },
+];
+// 본인계약여부
+export const L_FAMILY: CoreSelectOption[] = [
+    {
+        label: '해당없음',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: '본인계약',
+        value: 'Y',
+        isFixed: false,
+    },
+    {
+        label: '가족계약',
+        value: 'N',
+        isFixed: false,
+    },
+];
 
 const rootSelectOptions = {
     payCycle: L_PAYCYCLE,
@@ -245,6 +301,8 @@ const rootSelectOptions = {
     pDist: L_PDIST,
     eDist: L_EDIST,
     payKind: L_PAYKIND,
+    calType: L_CALTYPE,
+    family: L_FAMILY,
 };
 
 export default rootSelectOptions;

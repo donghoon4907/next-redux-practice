@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const GUARANTEE_SETTING_MODAL_KEY = 'GUARANTEE_SETTING_MODAL_KEY';
+export const GUARANTEE_SETTING_MODAL_KEY = 'GUARANTEE_SETTING_MODAL';
 
 export const GuaranteeSettingModalActionTypes = {
     SHOW: `SHOW_${GUARANTEE_SETTING_MODAL_KEY}`,

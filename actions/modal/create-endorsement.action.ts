@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CREATE_ENDORSEMENT_MODAL_KEY = 'CREATE_ENDORSEMENT_MODAL_KEY';
+export const CREATE_ENDORSEMENT_MODAL_KEY = 'CREATE-ENDORSEMENT-MODAL';
 
 export const CreateEndorsementModalActionTypes = {
     SHOW: `SHOW_${CREATE_ENDORSEMENT_MODAL_KEY}`,

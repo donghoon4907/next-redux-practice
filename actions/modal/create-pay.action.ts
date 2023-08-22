@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const CREATE_PAY_MODAL_KEY = 'CREATE_PAY_MODAL_KEY';
+export const CREATE_PAY_MODAL_KEY = 'CREATE-PAY-MODAL';
 
 export const CreatePayModalActionTypes = {
     SHOW: `SHOW_${CREATE_PAY_MODAL_KEY}`,

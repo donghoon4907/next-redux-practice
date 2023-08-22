@@ -949,7 +949,7 @@ export const UserForm: FC<Props> = ({
     return (
         <>
             <MyLayout>
-                <div className={`${displayName} row`}>
+                <div className={`${displayName} wr-pages-detail row`}>
                     <div className={`${displayName}__left col`}>
                         <div className="wr-frame__section">
                             <div className="wr-pages-detail__block">

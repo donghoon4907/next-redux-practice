@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 
-export const LIFE_LONG_MODAL_KEY = 'LIFE_LONG_MODAL_KEY';
+export const LIFE_LONG_MODAL_KEY = 'LIFE_LONG_MODAL';
 
 export const LifeLongModalActionTypes = {
     SHOW: `SHOW_${LIFE_LONG_MODAL_KEY}`,
