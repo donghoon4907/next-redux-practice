@@ -4,27 +4,27 @@ import type { CoreSelectOption } from '@interfaces/core';
 const L_PAYCYCLE: CoreSelectOption[] = [
     {
         label: '월납',
-        value: '월납',
+        value: '1',
         isFixed: false,
     },
     {
         label: '3월납',
-        value: '3월납',
+        value: '3',
         isFixed: false,
     },
     {
         label: '6월납',
-        value: '6월납',
+        value: '6',
         isFixed: false,
     },
     {
         label: '연납',
-        value: '연납',
+        value: '12',
         isFixed: false,
     },
     {
         label: '일시납',
-        value: '일시납',
+        value: '0',
         isFixed: false,
     },
 ];
@@ -292,6 +292,29 @@ export const L_FAMILY: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 보종 목록
+export const L_PTYPE: CoreSelectOption[] = [
+    {
+        label: '인보장',
+        value: '인보장',
+        isFixed: false,
+    },
+    {
+        label: '재물',
+        value: '재물',
+        isFixed: false,
+    },
+    {
+        label: '연저축',
+        value: '연저축',
+        isFixed: false,
+    },
+    // {
+    //     label: '결산',
+    //     value: '결산',
+    //     isFixed: false,
+    // },
+];
 
 const rootSelectOptions = {
     payCycle: L_PAYCYCLE,
@@ -303,6 +326,7 @@ const rootSelectOptions = {
     payKind: L_PAYKIND,
     calType: L_CALTYPE,
     family: L_FAMILY,
+    productType: L_PTYPE,
 };
 
 export default rootSelectOptions;

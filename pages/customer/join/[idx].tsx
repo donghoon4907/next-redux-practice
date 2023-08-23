@@ -154,7 +154,7 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
         }
 
         dispatch(initTab(tab.getAll()));
-    }, [dispatch, customer]);
+    }, [customer]);
 
     return (
         <>

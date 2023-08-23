@@ -17,7 +17,7 @@ export type Pay = CoreCheckableModel & {
     /**
      * 대상년월
      */
-    hmonth?: string;
+    gdate?: string;
     /**
      * 입금구분
      */
@@ -29,11 +29,11 @@ export type Pay = CoreCheckableModel & {
     /**
      * 금종
      */
-    paykind?: string;
+    method?: string;
     /**
      * 납입주기
      */
-    cycle: string;
+    cycle: number;
     /**
      * 실적확인
      */

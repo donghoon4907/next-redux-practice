@@ -379,6 +379,8 @@ export const UserForm: FC<Props> = ({
     const { lastSetPortraitImageFile, lastSetPortraitImagePreview } =
         useSelector<AppState, UploadState>((state) => state.upload);
 
+    const getOrga = useApi(getOrgaRequest);
+
     const createUser = useApi(createUserRequest);
 
     const updateUser = useApi(updateUserRequest);
@@ -679,7 +681,7 @@ export const UserForm: FC<Props> = ({
         const tf = confirm('수정을 취소하시겠습니까?');
 
         if (tf) {
-            setEditable(false);
+            location.reload();
         }
     };
 
@@ -932,9 +934,9 @@ export const UserForm: FC<Props> = ({
 
     useEffect(() => {
         if (selectedOrga) {
-            dispatch(getOrgaRequest({ idx: selectedOrga.value }));
+            getOrga({ idx: selectedOrga.value });
         }
-    }, [dispatch, selectedOrga]);
+    }, [selectedOrga]);
 
     useEffect(() => {
         if (orga) {
@@ -944,7 +946,7 @@ export const UserForm: FC<Props> = ({
                 }
             }
         }
-    }, [orga, estFaxInputType, setEstFax]);
+    }, [orga, estFaxInputType.value]);
 
     return (
         <>

@@ -34,7 +34,7 @@ import {
     getLongsRequest,
     getLongsSuccess,
 } from '@actions/long/get-longs.action';
-import { DISTS, PRODUCT_TYPE } from '@constants/selectOption';
+import { DISTS } from '@constants/selectOption';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import longConstants from '@constants/options/long';
 
@@ -59,14 +59,11 @@ const Longs: NextPage = () => {
     const [beforeRound] = useNumbericInput('1', { addComma: true });
     const [afterRound] = useNumbericInput('1', { addComma: true });
     // 검색필터 - 계약일자
-    const contdate = useDateRangepicker([
-        new Date('2023-06-01'),
-        new Date('2023-06-30'),
-    ]);
+    const contdate = useDateRangepicker([startOfMonth(new Date()), new Date()]);
     // 검색필터 - 보험사
     const [company] = useSelect(longViewCompanies, null);
     // 검색필터 - 보종
-    const [productType] = useSelect(PRODUCT_TYPE, null);
+    const [productType] = useSelect(longConstants.productType, null);
     // 검색필터 - 상품명
     const [ptitle] = useSelect(longs.ptitles, null);
     // 검색필터 - 납입주기

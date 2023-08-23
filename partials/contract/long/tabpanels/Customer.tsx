@@ -1,7 +1,9 @@
-import type { FC, FormEvent } from 'react';
+import type { FC, FormEvent, ChangeEvent } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { AppState } from '@reducers/index';
 import type { LongState } from '@reducers/long';
+import type { CoreEditableComponent } from '@interfaces/core';
+import type { InsuredPerson } from '@models/insured-person';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
@@ -14,12 +16,16 @@ import { useApi } from '@hooks/use-api';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
 import { isEmpty } from '@utils/validator/common';
 import { convertPhoneNumber } from '@utils/converter';
+import { showContractorSearchModal } from '@actions/modal/customer-search.action';
+import {
+    deleteInsuredPerson,
+    updateInsuredPerson,
+} from '@actions/long/set-insured-person.action';
+
 import { InsuredPersonTemplate } from '../template/InsuredPerson';
 import { InsuredPersonForm } from '../InsuredPersonForm';
-import { showContractorSearchModal } from '@actions/modal/customer-search.action';
 
-interface Props extends MyTabpanelProps {
-    editable: boolean;
+interface Props extends MyTabpanelProps, CoreEditableComponent {
     userid: string;
 }
 
@@ -41,8 +47,6 @@ export const CustomerTabpanel: FC<Props> = ({
     // 계약자명
     const [username, setUsername] = useInput('', { noSpace: true });
 
-    // const [addCount, setAddCount] = useState(1);
-
     const labelType = editable ? 'active' : 'disable';
 
     const handleSearchCustomer = (evt: FormEvent) => {
@@ -57,11 +61,30 @@ export const CustomerTabpanel: FC<Props> = ({
         });
     };
 
+    const handleCheck = (
+        evt: ChangeEvent<HTMLInputElement>,
+        v: InsuredPerson,
+    ) => {
+        dispatch(updateInsuredPerson({ ...v, checked: evt.target.checked }));
+    };
+
+    const handleDelete = () => {
+        if (insuredPeople.findIndex((v) => v.checked) === -1) {
+            return alert('삭제할 피보험자를 선택해주세요.');
+        }
+
+        insuredPeople
+            .filter((v) => v.checked)
+            .forEach((v) => {
+                dispatch(deleteInsuredPerson({ index: v.index }));
+            });
+    };
+
     useEffect(() => {
         if (loadedContract) {
             setUsername(loadedContract.name);
         }
-    }, [loadedContract, setUsername]);
+    }, [loadedContract]);
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
@@ -238,25 +261,32 @@ export const CustomerTabpanel: FC<Props> = ({
                             </div>
                         </div>
                     </div>
+                    {editable && (
+                        <div className="wr-pages-detail__block wr-mt">
+                            <div className="wr-pages-detail__title">
+                                <strong>피보험자 등록</strong>
+                                <div></div>
+                            </div>
+                            <div className="wr-pages-detail__content">
+                                <InsuredPersonForm userid={userid} />
+                            </div>
+                        </div>
+                    )}
 
-                    <div className="wr-pages-detail__block wr-mt">
-                        <div className="wr-pages-detail__title">
-                            <strong>피보험자 등록</strong>
-                            <div></div>
-                        </div>
-                        <div className="wr-pages-detail__content">
-                            <InsuredPersonForm userid={userid} />
-                        </div>
-                    </div>
                     {insuredPeople.length > 0 && (
                         <div className="wr-pages-detail__block wr-mt">
                             <div className="wr-pages-detail__title">
                                 <strong>피보험자 목록</strong>
-                                <div>
-                                    <MyButton className="btn-danger btn-sm">
-                                        선택삭제
-                                    </MyButton>
-                                </div>
+                                {editable && (
+                                    <div>
+                                        <MyButton
+                                            className="btn-danger btn-sm"
+                                            onClick={handleDelete}
+                                        >
+                                            선택삭제
+                                        </MyButton>
+                                    </div>
+                                )}
                             </div>
                             {insuredPeople.map((v, index) => (
                                 <div
@@ -264,16 +294,31 @@ export const CustomerTabpanel: FC<Props> = ({
                                     key={`iPerson${index}`}
                                 >
                                     <div className="row">
-                                        <div
-                                            className="col-1"
-                                            style={{ width: 20 }}
-                                        >
-                                            <MyCheckbox label="" />
-                                        </div>
-                                        <div className="col">
-                                            <div className="wr-ml">
-                                                <InsuredPersonTemplate {...v} />
+                                        {editable && (
+                                            <div
+                                                className="col-1"
+                                                style={{ width: 20 }}
+                                            >
+                                                <MyCheckbox
+                                                    label=""
+                                                    checked={v.checked}
+                                                    onChange={(evt) =>
+                                                        handleCheck(evt, v)
+                                                    }
+                                                />
                                             </div>
+                                        )}
+
+                                        <div className="col">
+                                            {editable ? (
+                                                <div className="wr-ml">
+                                                    <InsuredPersonTemplate
+                                                        {...v}
+                                                    />
+                                                </div>
+                                            ) : (
+                                                <InsuredPersonTemplate {...v} />
+                                            )}
                                         </div>
                                     </div>
                                 </div>
@@ -284,6 +329,9 @@ export const CustomerTabpanel: FC<Props> = ({
                 <div className="col-5">
                     <div className="wr-ml">
                         <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__lock">
+                                <p>준비 중입니다.</p>
+                            </div>
                             <div className="wr-pages-detail__title">
                                 <strong>개인정보활용동의</strong>
                             </div>

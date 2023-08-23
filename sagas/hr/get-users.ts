@@ -8,14 +8,14 @@ import { GetUsersActionTypes, getUsersSuccess } from '@actions/hr/get-users';
 function* getUsersSaga({ payload }: GetUsersRequestAction) {
     const { data } = yield call(hrsService.getUsers, payload);
 
-    const fcs = data.map((v: User) => ({
+    const users = data.map((v: User) => ({
         label: v.name,
         value: v.userid,
     }));
 
-    yield put(getUsersSuccess(fcs));
+    yield put(getUsersSuccess(users));
 
-    return data;
+    return users;
 }
 
 export function* watchGetUsers() {

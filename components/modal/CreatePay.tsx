@@ -78,7 +78,7 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
     // 수금실적
     const [pay, setPay] = useNumbericInput('', { addComma: true });
     // 금종
-    const [paykind] = useSelect(longConstants.payKind);
+    const [method] = useSelect(longConstants.payKind);
     // 납입주기
     const [cycle, setCycle] = useSelect(longConstants.payCycle);
 
@@ -160,10 +160,10 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
             whoi: +whoi.value,
             dist: dist.value!.value,
             pay: +pay.value.replace(/,/g, ''),
-            paykind: paykind.value?.value,
-            cycle: cycle.value!.value,
-            hmonth: isPay
-                ? dayjs(setMonth(contdate!, nextMonth - 1)).format('YYYY-MM')
+            method: method.value?.value,
+            cycle: +cycle.value!.value,
+            gdate: isPay
+                ? dayjs(setMonth(contdate!, nextMonth - 1)).format('YYYY-MM-01')
                 : undefined,
             distkind: isPay ? distkind : undefined,
         };
@@ -212,9 +212,9 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
             <ModalBody>
                 <div className="row">
                     <div className="col-6">
-                        <WithLabel id="paydate" label="영수일" type="active">
+                        <WithLabel id="ppaydate" label="영수일" type="active">
                             <MyDatepicker
-                                id="paydate"
+                                id="ppaydate"
                                 size="sm"
                                 placeholder="영수일"
                                 disabled={pays.length === 0}
@@ -251,10 +251,14 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
                     </div>
                     <div className="col-6">
                         <div className="wr-ml">
-                            <WithLabel id="pay" label="수금실적" type="active">
+                            <WithLabel
+                                id="ppayment"
+                                label="수금실적"
+                                type="active"
+                            >
                                 <MyInput
                                     type="text"
-                                    id="pay"
+                                    id="ppayment"
                                     placeholder="0"
                                     className="text-end"
                                     disabled={isDisablePayment}
@@ -266,23 +270,24 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
                 </div>
                 <div className="row wr-mt">
                     <div className="col-6">
-                        <WithLabel id="paykind" label="금종" type="active">
+                        <WithLabel id="pmethod" label="금종" type="active">
                             <MySelect
-                                inputId="paykind"
+                                inputId="pmethod"
                                 placeholder="선택"
                                 placeHolderFontSize={16}
-                                {...paykind}
+                                {...method}
                             />
                         </WithLabel>
                     </div>
                     <div className="col-6">
                         <div className="wr-ml">
                             <WithLabel
-                                id="cycle"
+                                id="pcycle"
                                 label="납입주기"
                                 type="active"
                             >
                                 <MySelect
+                                    inputId="pcycle"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
                                     {...cycle}

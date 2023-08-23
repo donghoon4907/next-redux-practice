@@ -10,7 +10,12 @@ import {
 function* getProductsSaga({ payload }: GetProductsRequestAction) {
     const { data } = yield call(hrsService.getProducts, payload);
 
-    yield put(getProductsSuccess(data));
+    yield put(
+        getProductsSuccess({
+            data,
+            wcode: payload.wcode,
+        }),
+    );
 
     return data;
 }

@@ -20,6 +20,7 @@ import { useApi } from '@hooks/use-api';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
 import { showInsuredPersonSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber } from '@utils/converter';
+import { updateLoadedInsuredPerson } from '@actions/long/set-loaded-customer.action';
 
 interface Props {
     userid: string;
@@ -54,7 +55,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
     // 생년월일
     const [ibirthday, setIbirthday] = useDatepicker(null);
     // 성별
-    const [igender] = useInput('');
+    const [igender, setIgender] = useInput('');
 
     let age = -1;
     if (ibirthday.value) {
@@ -62,20 +63,41 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
     }
 
     const handleCreate = () => {
+        // 계약자와 동일 체크 시 계약자를 설정하지 않은 경우
+        if (isContract.checked && !loadedContract) {
+            return alert('계약자 설정을 해주세요.');
+        }
+        // p_idx의 우선순위
+        // 1. 계약자와 동일 체크
+        // 2. 고객정보연결
         dispatch(
             createInsuredPerson({
                 index: generateIndex(insuredPeople),
                 checked: false,
                 name: iname.value,
-                tel: isFetus.checked ? '' : itel.value,
-                job: isFetus.checked ? '' : ijob.value,
+                tel: isFetus.checked
+                    ? undefined
+                    : itel.value.replace(/\-/g, ''),
+                job: isFetus.checked ? undefined : ijob.value,
                 birthday: isFetus.checked
-                    ? ''
+                    ? undefined
                     : dayjs(ibirthday.value).format('YYYY-MM-DD'),
-                sex: isFetus.checked ? '' : igender.value,
-                p_idx: isContract.checked ? loadedInsuredPerson.idx : undefined,
+                sex: isFetus.checked ? undefined : igender.value,
+                p_idx: isContract.checked
+                    ? loadedInsuredPerson.idx
+                    : loadedInsuredPerson
+                    ? loadedInsuredPerson.idx
+                    : undefined,
             }),
         );
+
+        dispatch(updateLoadedInsuredPerson(null));
+
+        setIname('');
+        setItel('');
+        setIjob('');
+        setIbirthday(null);
+        setIgender('');
     };
 
     const handleSearchCustomer = (evt: FormEvent) => {
@@ -101,7 +123,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
             setIjob(loadedInsuredPerson.job || '');
             setIbirthday(new Date(loadedInsuredPerson.birthday || null));
         }
-    }, [loadedInsuredPerson, setIname, setItel, setIjob, setIbirthday]);
+    }, [loadedInsuredPerson]);
 
     useEffect(() => {
         if (isContract.checked && loadedContract) {
@@ -110,14 +132,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
             setIjob(loadedContract.job || '');
             setIbirthday(new Date(loadedContract.birthday || null));
         }
-    }, [
-        isContract.checked,
-        loadedContract,
-        setIname,
-        setItel,
-        setIjob,
-        setIbirthday,
-    ]);
+    }, [isContract.checked, loadedContract]);
 
     return (
         <>

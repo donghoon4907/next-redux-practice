@@ -1,5 +1,6 @@
 import type { Action } from 'redux';
 import type { CorePayload } from '@interfaces/core';
+import { InsuredPerson } from '@models/insured-person';
 
 export const CREATE_LONG_KEY = 'CREATE_LONG';
 
@@ -31,45 +32,49 @@ export interface CreateLongRequestPayload extends CorePayload {
     // 납입주기
     pay_cycle: number;
     // 보장만기일
-    bo_dateto: string;
+    bo_dateto?: string;
     // 보장만기년수
-    bo_desc: string;
+    bo_desc?: string;
     // 납입만기일
     pay_dateto: string;
     // 납입만기년수
     pay_du: number;
     // 계약상태
-    status: string;
+    status?: string;
     // 납입상태
-    pay_status: string;
+    pay_status?: string;
     // 상태반영일
-    status_date: string;
+    status_date?: string;
     // 실적보험료
     payment: number;
     // 월납기준
     pay_month: number;
     // 보장보험료
-    pay_bo: number;
+    pay_bo?: number;
     // 적립보험료
-    pay_j: number;
+    pay_j?: number;
     // 수정보험료
-    tp: number;
+    tp?: number;
     // 1차수정
-    tp1: number;
+    tp1?: number;
     // 2차수정
-    tp2: number;
+    tp2?: number;
     // 3차수정
-    tp3: number;
+    tp3?: number;
     // 저축유지수정
-    tpu: number;
+    tpu?: number;
     // 정산구분
-    // cal_type: 'string';
+    cal_type?: string;
     // 정산개시월
-    // cal_datefrom: string;
+    cal_datefrom?: string;
     // 본인계약여부
-    // family: boolean;
+    family?: boolean;
     // 계약자 ID
-    // c_idx: number;
+    c_idx?: number;
+    // 계약자 이름
+    c_name?: string;
+    // 피보험자 목록
+    p_persions?: InsuredPerson[];
 }
 
 export interface CreateLongRequestAction extends Action<string> {

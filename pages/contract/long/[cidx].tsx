@@ -9,6 +9,7 @@ import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import longsService from '@services/longsService';
+import customersService from '@services/customersService';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
@@ -16,6 +17,8 @@ import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
 import { LongForm } from '@partials/contract/long/LongForm';
 import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
+import { updateLoadedContractor } from '@actions/long/set-loaded-customer.action';
+import { createInsuredPerson } from '@actions/long/set-insured-person.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
     // console.log(long);
@@ -27,7 +30,7 @@ const Long: NextPage<LongState> = ({ long }) => {
 
     const defaultComp = findSelectOption(long.wcode, longUseCompanies);
 
-    const defaultPayCycle = findSelectOption(
+    const defaultPayCycle = findSelectOptionByLabel(
         long.pay_cycle,
         longConstants.payCycle,
     );
@@ -53,15 +56,17 @@ const Long: NextPage<LongState> = ({ long }) => {
 
         const to = `/contract/long/${long.idx}`;
         if (!tab.read(to)) {
-            tab.create({
-                id: to,
-                label: `장기계약상세 - ${long.c_name}`,
-                to,
-            });
+            if (long.c_name) {
+                tab.create({
+                    id: to,
+                    label: `장기계약상세 - ${long.c_name}`,
+                    to,
+                });
+            }
         }
 
         dispatch(initTab(tab.getAll()));
-    }, [dispatch, long]);
+    }, [long]);
 
     return (
         <>
@@ -80,20 +85,27 @@ const Long: NextPage<LongState> = ({ long }) => {
                 defaultTitle={long.title}
                 defaultContdate={long.contdate}
                 defaultBodateto={long.bo_dateto}
+                defaultBoDu={long.bo_du}
                 defaultPayCycle={defaultPayCycle}
                 defaultPayDateto={long.pay_dateto}
-                // defaultPayDu={defaultPayDu}
+                defaultPayDu={long.pay_du}
                 defaultStatus={defaultStatus}
                 defaultPstatus={defaultPstatus}
                 defaultStatusDate={long.status_date}
                 defaultLastMonth={long.lastmonth}
                 defaultLastWhoi={long.lastwhoi}
-                defaultProductType={long.product_type}
+                defaultSpec={long.spec}
                 defaultSubCategory={long.subcategory}
                 defaultIsConfirm={long.confirm}
                 defaultCalSpec={long.cal_spec}
                 defaultPayment={long.payment.toString()}
-                defaultTp={long.tp.toString()}
+                defaultTp={long.tp ? long.tp.toString() : ''}
+                defaultTp1={long.tp1 ? long.tp1.toString() : ''}
+                defaultTp2={long.tp2 ? long.tp2.toString() : ''}
+                defaultTp3={long.tp3 ? long.tp3.toString() : ''}
+                defaultTpu={long.tpu ? long.tpu.toString() : ''}
+                defaultPayBo={long.pay_bo ? long.pay_bo.toString() : ''}
+                defaultPayJ={long.pay_j ? long.pay_j.toString() : ''}
             />
         </>
     );
@@ -122,12 +134,32 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             output.props.long = long;
 
+            if (long.c_idx) {
+                const { data } = await customersService.getCustomer({
+                    idx: long.c_idx,
+                });
+
+                dispatch(updateLoadedContractor(data.data));
+            }
+
             if (long.userid_his) {
                 for (let i = 0; i < long.userid_his.length; i++) {
                     dispatch(
                         createUserHistory({
                             ...long.userid_his[i],
                             username: long.userid_his[i].fcname,
+                        }),
+                    );
+                }
+            }
+
+            if (long.p_persons) {
+                for (let i = 0; i < long.p_persons.length; i++) {
+                    dispatch(
+                        createInsuredPerson({
+                            ...long.p_persons[i],
+                            index: i,
+                            checked: false,
                         }),
                     );
                 }

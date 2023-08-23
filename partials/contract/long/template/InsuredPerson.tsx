@@ -2,13 +2,13 @@ import type { FC } from 'react';
 import type { InsuredPerson } from '@models/insured-person';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
-import { MyDatepicker } from '@components/datepicker';
 import { birthdayToAge } from '@utils/calculator';
+import { convertPhoneNumber } from '@utils/converter';
 
 interface Props extends Partial<InsuredPerson> {}
 
 export const InsuredPersonTemplate: FC<Props> = ({
-    index = -1,
+    // index = -1,
     name = '',
     tel = '',
     job = '',
@@ -43,7 +43,7 @@ export const InsuredPersonTemplate: FC<Props> = ({
                                     type="text"
                                     placeholder="연락처"
                                     disabled={true}
-                                    value={tel}
+                                    value={convertPhoneNumber(tel)}
                                 />
                             </WithLabel>
                         </div>

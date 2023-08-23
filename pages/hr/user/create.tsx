@@ -18,7 +18,7 @@ const CreateUser: NextPage = () => {
     useEffect(() => {
         // 부서 선택 모달 열기
         dispatch(showDepartSearchModal());
-    }, [dispatch]);
+    }, []);
 
     return (
         <>

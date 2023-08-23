@@ -71,7 +71,7 @@ export const UserHistoryModal: FC<Props> = () => {
         if (depart.value) {
             dispatch(getUsersRequest({ idx: depart.value?.value }));
         }
-    }, [dispatch, depart.value]);
+    }, [depart.value]);
 
     return (
         <Modal isOpen={isShowUserHistoryModal} toggle={handleClose} size="lg">

@@ -9,10 +9,17 @@ class LongDTO {
     };
 
     requiredValidate = () => {
-        const { wcode, cnum, p_code, contdate, pay_cycle, pay_dateto } =
-            this.payload;
+        const {
+            wcode,
+            cnum,
+            p_code,
+            contdate,
+            pay_cycle,
+            pay_dateto,
+            payment,
+        } = this.payload;
 
-        if (isEmpty(wcode)) {
+        if (wcode === -1) {
             alert('보험사를 선택해주세요.');
 
             return false;
@@ -44,6 +51,12 @@ class LongDTO {
 
         if (isEmpty(pay_dateto)) {
             alert('납입만기를 입력해주세요.');
+
+            return false;
+        }
+
+        if (payment === -1) {
+            alert('실적보험료를 입력해주세요.');
 
             return false;
         }

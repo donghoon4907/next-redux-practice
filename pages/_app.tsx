@@ -87,7 +87,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         return () => {
             // events.off('routeChangeComplete', onRouteChange);
         };
-    }, [dispatch, route, asPath]);
+    }, [route, asPath]);
 
     return (
         <MyProvider>

@@ -10,6 +10,8 @@ import { deletePay, updatePay } from '@actions/long/set-pay.action';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableExtension } from '@components/table/Extension';
 import { showCreatePayModal } from '@actions/modal/create-pay.action';
+import { findSelectOption } from '@utils/getter';
+import longConstants from '@constants/options/long';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -139,7 +141,11 @@ export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                     <span>{v.dist ? v.dist : '-'}</span>
                                 </td>
                                 <td>
-                                    <span>{v.hmonth ? v.hmonth : '-'}</span>
+                                    <span>
+                                        {v.gdate
+                                            ? v.gdate.substring(0, 7)
+                                            : '-'}
+                                    </span>
                                 </td>
                                 <td>
                                     <span>{v.distkind ? v.distkind : '-'}</span>
@@ -150,10 +156,17 @@ export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                     </span>
                                 </td>
                                 <td>
-                                    <span>{v.paykind ? v.paykind : '-'}</span>
+                                    <span>{v.method ? v.method : '-'}</span>
                                 </td>
                                 <td>
-                                    <span>{v.cycle ? v.cycle : '-'}</span>
+                                    <span>
+                                        {v.cycle
+                                            ? findSelectOption(
+                                                  v.cycle,
+                                                  longConstants.payCycle,
+                                              ).label
+                                            : '-'}
+                                    </span>
                                 </td>
                                 <td>
                                     <span>{v.confirm ? v.confirm : '-'}</span>

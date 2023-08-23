@@ -45,7 +45,7 @@ export const SelectDepartModal: FC<Props> = () => {
 
     useEffect(() => {
         setDepart(orgas[0]);
-    }, [orgas, setDepart]);
+    }, [orgas]);
 
     return (
         <Modal isOpen={isShowdepartSearchModal} toggle={handleClose}>

@@ -12,17 +12,13 @@ import { useSelect } from '@hooks/use-select';
 import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { hideProductSearchModal } from '@actions/modal/product-search.action';
-import { PRODUCT_TYPE } from '@constants/selectOption';
-import { getProductsRequest } from '@actions/hr/get-products';
+import longConstants from '@constants/options/long';
 import { MyRadio } from '@components/radio';
 import { updateLongProduct } from '@actions/long/set-long-product.action';
 
-interface Props {
-    wname: string;
-    wcode: string;
-}
+interface Props {}
 
-export const ProductSearchModal: FC<Props> = ({ wname, wcode }) => {
+export const ProductSearchModal: FC<Props> = () => {
     const dispatch = useDispatch();
 
     const { isShowProductSearchModal } = useSelector<AppState, ModalState>(
@@ -32,7 +28,7 @@ export const ProductSearchModal: FC<Props> = ({ wname, wcode }) => {
     const { products } = useSelector<AppState, HrState>((state) => state.hr);
 
     // 보종
-    const [pType] = useSelect(PRODUCT_TYPE, null);
+    const [pType] = useSelect(longConstants.productType, null);
     // 검색어
     const [search] = useInput('');
     // 선택된 상품
@@ -40,8 +36,13 @@ export const ProductSearchModal: FC<Props> = ({ wname, wcode }) => {
 
     // 검색어 필터링된 상품목록
     const filteredProducts = useMemo(
-        () => products.filter((v) => v.title.includes(search.value)),
-        [products, search.value],
+        () =>
+            products.data.filter(
+                (v) =>
+                    v.title.includes(search.value) &&
+                    (pType.value ? v.spec === pType.value.value : true),
+            ),
+        [products.data, pType.value, search.value],
     );
 
     const handleClose = () => {
@@ -63,22 +64,12 @@ export const ProductSearchModal: FC<Props> = ({ wname, wcode }) => {
     };
 
     useEffect(() => {
-        dispatch(
-            getProductsRequest({
-                wcode,
-                spe: 'long',
-                type: pType.value ? pType.value.value : 'all',
-            }),
-        );
-    }, [dispatch, wcode, pType.value]);
-
-    useEffect(() => {
         setCheckedProduct(null);
     }, [filteredProducts]);
 
     return (
         <Modal isOpen={isShowProductSearchModal} toggle={handleClose} size="lg">
-            <ModalHeader toggle={handleClose}>{wname} 상품 검색</ModalHeader>
+            <ModalHeader toggle={handleClose}>상품 검색</ModalHeader>
             <ModalBody>
                 <div className="row">
                     <div className="col-6">

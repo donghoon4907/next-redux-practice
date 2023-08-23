@@ -88,7 +88,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
         const tf = confirm('수정을 취소하시겠습니까?');
 
         if (tf) {
-            setEditable(false);
+            location.reload();
         }
     };
 

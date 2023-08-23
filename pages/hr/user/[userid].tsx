@@ -205,7 +205,7 @@ const User: NextPage<HrState> = ({ user }) => {
         }
 
         dispatch(initTab(tab.getAll()));
-    }, [dispatch, user]);
+    }, [user]);
 
     return (
         <>

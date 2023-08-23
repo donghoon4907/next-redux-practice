@@ -5,8 +5,10 @@ import type { HrState } from '@reducers/hr';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import differenceInYears from 'date-fns/differenceInYears';
+import addYears from 'date-fns/addYears';
 import addDays from 'date-fns/addDays';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
@@ -46,6 +48,7 @@ import { CommonState } from '@reducers/common';
 import { CreateLongDTO } from '@dto/long/Long.dto';
 import { createLongRequest } from '@actions/long/create-long.action';
 import { ModalState } from '@reducers/modal';
+import { getProductsRequest } from '@actions/hr/get-products';
 
 interface Props {
     /**
@@ -80,7 +83,7 @@ interface Props {
      * 보장만기 기본 값
      */
     defaultBodateto?: string;
-    // defaultBodu?: string;
+    defaultBoDu?: number;
     /**
      * 납입주기 기본 값
      */
@@ -89,7 +92,7 @@ interface Props {
      * 납입기간 기본 값
      */
     defaultPayDateto?: string;
-    // defaultPayDu?: CoreSelectOption;
+    defaultPayDu?: number;
     /**
      * 계약상태 기본 값
      */
@@ -111,9 +114,9 @@ interface Props {
      */
     defaultLastMonth?: string;
     /**
-     * 상품타입 기본 값
+     * 보종 기본 값
      */
-    defaultProductType?: string;
+    defaultSpec?: string;
     /**
      * 상품보종 기본 값
      */
@@ -159,6 +162,10 @@ interface Props {
      */
     defaultPayJ?: string;
     /**
+     * 실손보험료 기본 값
+     */
+    defaultPayS?: string;
+    /**
      * 저축유지수정 기본 값
      */
     defaultTpu?: string;
@@ -178,17 +185,17 @@ export const LongForm: FC<Props> = ({
     defaultCnum = '',
     defaultTitle = '',
     defaultContdate = null,
-    defaultBodateto = null,
-    // defaultBodu = null,
+    defaultBodateto = '',
+    defaultBoDu = -1,
     defaultPayCycle = longConstants.payCycle[0],
-    defaultPayDateto = null,
-    // defaultPayDu = null,
+    defaultPayDateto = '',
+    defaultPayDu = -1,
     defaultStatus = null,
     defaultPstatus = null,
     defaultStatusDate = null,
     defaultLastWhoi = '0',
     defaultLastMonth = '',
-    defaultProductType = '',
+    defaultSpec = '',
     defaultSubCategory = '',
     defaultIsConfirm = 'N',
     defaultCalSpec = '',
@@ -198,14 +205,20 @@ export const LongForm: FC<Props> = ({
     defaultTp1 = '',
     defaultTp2 = '',
     defaultTp3 = '',
+    defaultTpu = '',
     defaultPayBo = '',
     defaultPayJ = '',
-    defaultTpu = '',
+    defaultPayS = '',
     defaultCalType = null,
     defaultCalDatefrom = null,
     defaultFamily = null,
 }) => {
     const displayName = 'wr-pages-long-detail';
+
+    const duSelectOptions = Array.from({ length: 50 }).map((_, i) => ({
+        label: `${i + 1}년`,
+        value: `${i + 1}`,
+    }));
 
     const dispatch = useDispatch();
 
@@ -218,25 +231,24 @@ export const LongForm: FC<Props> = ({
         (state) => state.hr,
     );
 
-    const { selectedProduct, insuredPeople } = useSelector<AppState, LongState>(
-        (state) => state.long,
-    );
+    const { selectedProduct, insuredPeople, loadedContract, pays } =
+        useSelector<AppState, LongState>((state) => state.long);
 
     const { isShowContractorSearchModal, isShowInsuredPersonSearchModal } =
         useSelector<AppState, ModalState>((state) => state.modal);
 
     const createLong = useApi(createLongRequest);
+
+    const getProducts = useApi(getProductsRequest);
+
+    const getUsers = useApi(getUsersRequest);
     // 탭 관리
     const [tab, setTab] = useTab(LONG_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
     const labelType = editable ? 'active' : 'disable';
     // 조직
-    const [orga] = useSelect(orgas, defaultOrga, {
-        callbackOnChange: (next) => {
-            console.log('test');
-        },
-    });
+    const [orga] = useSelect(orgas, defaultOrga);
     // 담당자
     const [manager, setManager] = useSelect(users);
     // 보험사
@@ -246,44 +258,68 @@ export const LongForm: FC<Props> = ({
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : new Date(),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    if (payDu.value) {
+                        const date = addYears(next, +payDu.value.value);
+
+                        setPayDateto(dayjs(date).format('YYYY-MM-DD'));
+                    }
+
+                    if (boDu.value) {
+                        const date = addYears(next, +boDu.value.value);
+
+                        setBoDateto(dayjs(date).format('YYYY-MM-DD'));
+                    }
+                }
+            },
+        },
     );
     // 보장만기
-    const [boDateto] = useDatepicker(
-        defaultBodateto ? new Date(defaultBodateto) : null,
+    const [boDateto, setBoDateto] = useInput(defaultBodateto);
+    const [boDu] = useSelect(
+        duSelectOptions,
+        findSelectOption(defaultBoDu.toString(), duSelectOptions),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    if (contdate.value) {
+                        const date = addYears(contdate.value, +next.value);
+
+                        setBoDateto(dayjs(date).format('YYYY-MM-DD'));
+                    } else {
+                        alert('계약일을 입력해주세요');
+                    }
+                }
+            },
+        },
     );
     // 보장만기 년수: 365일도 1년으로 간주하기 위해 addDays 사용
-    const bo_desc = boDateto.value
-        ? differenceInYears(addDays(boDateto.value, 1), contdate.value!)
-        : -1;
+    // const bo_desc = boDateto.value
+    //     ? differenceInYears(addDays(boDateto.value, 1), contdate.value!)
+    //     : -1;
     // 납입주기
     const [payCycle] = useSelect(longConstants.payCycle, defaultPayCycle);
     // 납입기간
-    // const [payDu] = useSelect(longConstants.payDu, defaultPayDu, {
-    //     callbackOnChange: (next) => {
-    //         if (next) {
-    //             if (contdate.value) {
-    //                 if (next.value === '종신') {
-    //                     setPayDateto(null);
-    //                 } else {
-    //                     const date = addMonths(
-    //                         contdate.value,
-    //                         12 * +next.value,
-    //                     );
+    const [payDateto, setPayDateto] = useInput(defaultPayDateto);
+    const [payDu] = useSelect(
+        duSelectOptions,
+        findSelectOption(defaultPayDu.toString(), duSelectOptions),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    if (contdate.value) {
+                        const date = addYears(contdate.value, +next.value);
 
-    //                     setPayDateto(date);
-    //                 }
-    //             } else {
-    //                 alert('계약일을 입력해주세요');
-    //             }
-    //         }
-    //     },
-    // });
-    const [payDateto] = useDatepicker(
-        defaultPayDateto ? new Date(defaultPayDateto) : null,
+                        setPayDateto(dayjs(date).format('YYYY-MM-DD'));
+                    } else {
+                        alert('계약일을 입력해주세요');
+                    }
+                }
+            },
+        },
     );
-    const pay_du = payDateto.value
-        ? differenceInYears(addDays(payDateto.value, 1), contdate.value!)
-        : -1;
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
     // 납입상태
@@ -311,6 +347,8 @@ export const LongForm: FC<Props> = ({
     const [payBo] = useNumbericInput(defaultPayBo, { addComma: true });
     // 적립보험료
     const [payJ] = useNumbericInput(defaultPayJ, { addComma: true });
+    // 실손보험료
+    const [payS] = useNumbericInput(defaultPayS, { addComma: true });
     // 저축유지수정
     const [tpu] = useNumbericInput(defaultTpu, { addComma: true });
     // 정산구분
@@ -330,21 +368,28 @@ export const LongForm: FC<Props> = ({
         const tf = confirm('수정을 취소하시겠습니까?');
 
         if (tf) {
-            setEditable(false);
+            location.reload();
         }
     };
     // 상품명 찾기 클릭 핸들러
     const handleClickSearchtitle = () => {
         if (comp.value) {
-            dispatch(showProductSearchModal());
+            getProducts(
+                {
+                    wcode: comp.value.value,
+                    spe: 'long',
+                    type: 'all',
+                },
+                () => {
+                    dispatch(showProductSearchModal());
+                },
+            );
         } else {
             alert('보험사를 선택하세요.');
         }
     };
     // 상품명 badge 관련
-    const productType = selectedProduct
-        ? selectedProduct.spec
-        : defaultProductType;
+    const spec = selectedProduct ? selectedProduct.spec : defaultSpec;
     const subCategory = selectedProduct
         ? selectedProduct.subcategory
         : defaultSubCategory;
@@ -352,7 +397,7 @@ export const LongForm: FC<Props> = ({
     const title = selectedProduct ? selectedProduct.title : defaultTitle;
 
     let pTitlePaddingRate = 0;
-    if (productType) {
+    if (spec) {
         pTitlePaddingRate += 1;
     }
 
@@ -365,6 +410,8 @@ export const LongForm: FC<Props> = ({
     let payBoRate = 0;
     // 적립보험료 비율
     let payJRate = 0;
+    // 실손보험료 비율
+    let paySRate = 0;
     // 수정보험료 비율
     let tpRate = 0;
     // 1차수정 비율
@@ -377,27 +424,25 @@ export const LongForm: FC<Props> = ({
     let tpuRate = 0;
     if (!isEmpty(payment.value)) {
         if (payCycle.value) {
-            if (payCycle.value.value === '일시납') {
-                if (boDateto.value && contdate.value) {
+            if (payCycle.value.value === '0') {
+                if (!isEmpty(boDateto.value) && contdate.value) {
+                    let diff = differenceInMonths(
+                        new Date(boDateto.value),
+                        contdate.value,
+                    );
+
+                    if (diff === 0) {
+                        diff = 1;
+                    }
+
                     payM = Math.floor(
-                        parseInt(payment.value.replace(/,/g, ''), 10) /
-                            differenceInMonths(boDateto.value, contdate.value),
+                        parseInt(payment.value.replace(/,/g, ''), 10) / diff,
                     );
                 }
             } else {
-                let cycle = -1;
-                if (payCycle.value.value === '월납') {
-                    cycle = 1;
-                } else if (payCycle.value.value === '3월납') {
-                    cycle = 3;
-                } else if (payCycle.value.value === '6월납') {
-                    cycle = 6;
-                } else if (payCycle.value.value === '연납') {
-                    cycle = 12;
-                }
-
                 payM = Math.floor(
-                    parseInt(payment.value.replace(/,/g, ''), 10) / cycle,
+                    parseInt(payment.value.replace(/,/g, ''), 10) /
+                        +payCycle.value.value,
                 );
             }
         }
@@ -413,6 +458,14 @@ export const LongForm: FC<Props> = ({
         if (!isEmpty(payJ.value)) {
             payJRate = Math.floor(
                 (parseInt(payJ.value.replace(/,/g, ''), 10) /
+                    parseInt(payment.value.replace(/,/g, ''), 10)) *
+                    100,
+            );
+        }
+
+        if (!isEmpty(payS.value)) {
+            paySRate = Math.floor(
+                (parseInt(payS.value.replace(/,/g, ''), 10) /
                     parseInt(payment.value.replace(/,/g, ''), 10)) *
                     100,
             );
@@ -473,15 +526,31 @@ export const LongForm: FC<Props> = ({
 
     const createPayload = () => {
         const payload: any = {
-            wcode: comp.value!.value,
+            wcode: -1,
             cnum: cnum.value,
-            contdate: contdate.value,
-            // pay_cycle: payCycle.value!.value,
-            pay_dateto: payDateto.value,
-            pay_du: pay_du,
-            payment: +payment.value.replace(/,/g, ''),
+            contdate: dayjs(contdate.value).format('YYYY-MM-DD'),
+            pay_cycle: -1,
+            pay_dateto: null,
+            payment: -1,
             remove: {},
         };
+
+        if (comp.value) {
+            payload.wcode = comp.value.value;
+        }
+
+        if (!isEmpty(payDateto.value)) {
+            payload.pay_dateto = payDateto.value;
+            payload['pay_du'] = payDu.value!.value;
+        }
+
+        if (payCycle.value) {
+            payload.pay_cycle = +payCycle.value.value;
+        }
+
+        if (!isEmpty(payment.value)) {
+            payload.payment = +payment.value.replace(/,/g, '');
+        }
 
         if (selectedProduct) {
             payload['p_code'] = selectedProduct.p_code;
@@ -491,22 +560,22 @@ export const LongForm: FC<Props> = ({
             payload['cal_spec'] = selectedProduct.cal_spec;
         }
 
-        if (boDateto.value) {
+        if (!isEmpty(boDateto.value)) {
             payload['bo_dateto'] = boDateto.value;
-            payload['bo_desc'] = bo_desc;
+            payload['bo_du'] = boDu.value!.value;
         }
 
-        if (status.value) {
-            payload['status'] = status.value.value;
-        }
+        // if (status.value) {
+        //     payload['status'] = status.value.value;
+        // }
 
-        if (payStatus.value) {
-            payload['pay_status'] = payStatus.value.value;
-        }
+        // if (payStatus.value) {
+        //     payload['pay_status'] = payStatus.value.value;
+        // }
 
-        if (statusDate.value) {
-            payload['status_date'] = statusDate.value;
-        }
+        // if (statusDate.value) {
+        //     payload['status_date'] = statusDate.value;
+        // }
 
         if (payM !== -1) {
             payload['pay_month'] = payM;
@@ -518,6 +587,10 @@ export const LongForm: FC<Props> = ({
 
         if (!isEmpty(payJ.value)) {
             payload['pay_j'] = +payJ.value.replace(/,/g, '');
+        }
+
+        if (!isEmpty(payS.value)) {
+            payload['pay_s'] = +payS.value.replace(/,/g, '');
         }
 
         if (!isEmpty(tp.value)) {
@@ -540,8 +613,27 @@ export const LongForm: FC<Props> = ({
             payload['tpu'] = +tpu.value.replace(/,/g, '');
         }
 
+        if (calType.value) {
+            payload['cal_type'] = calType.value.value;
+        }
+
+        if (calDatefrom.value) {
+            payload['cal_datefrom'] = dayjs(calDatefrom.value).format(
+                'YYYY-MM-01',
+            );
+        }
+
+        if (family.value) {
+            payload['family'] = family.value.value === 'Y' ? true : false;
+        }
+
+        if (loadedContract) {
+            payload['c_idx'] = loadedContract.idx;
+            payload['c_name'] = loadedContract.name;
+        }
+
         if (mode === 'create') {
-            payload['userid'] = manager.value;
+            payload['userid'] = manager.value!.value;
         } else if (mode === 'update') {
             if (newUserHistory) {
                 payload['userid'] = newUserHistory.userid;
@@ -568,24 +660,25 @@ export const LongForm: FC<Props> = ({
             payload['p_persons'] = insuredPeople;
         }
 
+        if (pays.length > 0) {
+            payload['pays'] = pays;
+        }
+
         return payload;
     };
 
     useEffect(() => {
         if (orga.value) {
-            dispatch(
-                getUsersRequest({
+            getUsers(
+                {
                     idx: orga.value.value,
-                }),
+                },
+                (users) => {
+                    setManager(findSelectOption(defaultUserid, users));
+                },
             );
         }
-    }, [dispatch, orga.value]);
-
-    useEffect(() => {
-        if (users.length > 0) {
-            setManager(findSelectOption(defaultUserid, users));
-        }
-    }, [dispatch, users, defaultUserid, setManager]);
+    }, [defaultUserid, orga.value]);
 
     return (
         <>
@@ -602,7 +695,7 @@ export const LongForm: FC<Props> = ({
                                                     id="orga"
                                                     label="조직"
                                                     type={labelType}
-                                                    isRequired={editable}
+                                                    // isRequired={editable}
                                                 >
                                                     <MySelect
                                                         inputId="orga"
@@ -718,20 +811,24 @@ export const LongForm: FC<Props> = ({
                                                         placeholder=""
                                                         disabled={true}
                                                         value={title}
-                                                        button={{
-                                                            className:
-                                                                'btn-md btn-primary',
-                                                            onClick:
-                                                                handleClickSearchtitle,
-                                                            disabled: !editable,
-                                                            children: (
-                                                                <>
-                                                                    <span>
-                                                                        찾기
-                                                                    </span>
-                                                                </>
-                                                            ),
-                                                        }}
+                                                        button={
+                                                            editable
+                                                                ? {
+                                                                      className:
+                                                                          'btn-md btn-primary',
+                                                                      onClick:
+                                                                          handleClickSearchtitle,
+                                                                      children:
+                                                                          (
+                                                                              <>
+                                                                                  <span>
+                                                                                      찾기
+                                                                                  </span>
+                                                                              </>
+                                                                          ),
+                                                                  }
+                                                                : undefined
+                                                        }
                                                         unit={
                                                             editable
                                                                 ? ''
@@ -740,13 +837,11 @@ export const LongForm: FC<Props> = ({
                                                     />
 
                                                     <div className="wr-with__badge--left wr-badge__wrap">
-                                                        {productType && (
+                                                        {spec && (
                                                             <span className="badge rounded-pill bg-primary wr-badge">
-                                                                {productType}
+                                                                {spec}
                                                                 <span className="visually-hidden">
-                                                                    {
-                                                                        productType
-                                                                    }
+                                                                    {spec}
                                                                 </span>
                                                             </span>
                                                         )}
@@ -811,6 +906,33 @@ export const LongForm: FC<Props> = ({
                                     <div className="row">
                                         <div className="col-6">
                                             <WithLabel
+                                                label="보장만기"
+                                                type={labelType}
+                                            >
+                                                <MyInput
+                                                    type="text"
+                                                    placeholder="보장만기"
+                                                    disabled={true}
+                                                    className="wr-with__badge--inside-right-1"
+                                                    {...boDateto}
+                                                />
+                                                <div
+                                                    className="wr-with__extension"
+                                                    style={{ width: 100 }}
+                                                >
+                                                    <MySelect
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        placement="right"
+                                                        {...boDu}
+                                                    />
+                                                </div>
+                                            </WithLabel>
+                                            {/* <WithLabel
                                                 id="gExpireDate"
                                                 label="보장만기"
                                                 type={labelType}
@@ -829,31 +951,26 @@ export const LongForm: FC<Props> = ({
                                                             : '1년 미만'}
                                                     </div>
                                                 )}
-                                            </WithLabel>
+                                            </WithLabel> */}
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="pExpireDate"
                                                     label="납입만기"
                                                     type={labelType}
                                                     isRequired={editable}
                                                 >
-                                                    <MyDatepicker
-                                                        id="pExpireDate"
-                                                        size="md"
+                                                    <MyInput
+                                                        type="text"
                                                         placeholder="납입만기"
-                                                        disabled={!editable}
-                                                        hooks={payDateto}
+                                                        disabled={true}
+                                                        className="wr-with__badge--inside-right-1"
+                                                        {...payDateto}
                                                     />
-                                                    {pay_du !== -1 && (
-                                                        <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                            {pay_du > 0
-                                                                ? `${pay_du}년`
-                                                                : '1년 미만'}
-                                                        </div>
-                                                    )}
-                                                    {/* <div className="wr-with__extension">
+                                                    <div
+                                                        className="wr-with__extension"
+                                                        style={{ width: 100 }}
+                                                    >
                                                         <MySelect
                                                             placeholder="선택"
                                                             placeHolderFontSize={
@@ -868,106 +985,128 @@ export const LongForm: FC<Props> = ({
                                                             placement="right"
                                                             {...payDu}
                                                         />
-                                                    </div> */}
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="status"
-                                                label="계약상태"
-                                                type={labelType}
-                                            >
-                                                <MySelect
-                                                    placeholder="선택"
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...status}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="pStatus"
-                                                    label="납입상태"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        inputId="pStatus"
-                                                        placeholder="선택"
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...payStatus}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="statusDate"
-                                                label="상태반영일"
-                                                type={labelType}
-                                            >
-                                                <MyDatepicker
-                                                    id="statusDate"
-                                                    size="md"
-                                                    placeholder="상태반영일"
-                                                    disabled={!editable}
-                                                    hooks={statusDate}
-                                                />
-                                                <div className="wr-with__extension">
-                                                    <MyButton
-                                                        className="btn-primary btn-md"
-                                                        disabled={!editable}
-                                                    >
-                                                        이력
-                                                    </MyButton>
-                                                </div>
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    id="last_month"
-                                                    label="종납회차"
-                                                    type={labelType}
-                                                >
-                                                    <MyDatepicker
-                                                        id="last_month"
-                                                        size="md"
-                                                        format="yyyy-MM"
-                                                        placeholder=" "
-                                                        disabled={!editable}
-                                                        hooks={lastMonth}
-                                                    />
-                                                    <div
-                                                        className="wr-with__extension"
-                                                        style={{ width: 100 }}
-                                                    >
-                                                        <MyInput
-                                                            type="number"
-                                                            className="wr-border-l--hide"
-                                                            placeholder="종납회차"
-                                                            disabled={!editable}
-                                                            {...lastWhoi}
-                                                            unit="회"
-                                                        />
                                                     </div>
                                                 </WithLabel>
                                             </div>
                                         </div>
                                     </div>
+                                    {mode === 'update' && (
+                                        <>
+                                            <div className="row wr-mt">
+                                                <div className="col-6">
+                                                    <WithLabel
+                                                        id="status"
+                                                        label="계약상태"
+                                                        type={labelType}
+                                                    >
+                                                        <MySelect
+                                                            placeholder="선택"
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                            {...status}
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                                <div className="col-6">
+                                                    <div className="wr-ml">
+                                                        <WithLabel
+                                                            id="pStatus"
+                                                            label="납입상태"
+                                                            type={labelType}
+                                                        >
+                                                            <MySelect
+                                                                inputId="pStatus"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                                {...payStatus}
+                                                            />
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="row wr-mt">
+                                                <div className="col-6">
+                                                    <WithLabel
+                                                        id="statusDate"
+                                                        label="상태반영일"
+                                                        type={labelType}
+                                                    >
+                                                        <MyDatepicker
+                                                            id="statusDate"
+                                                            size="md"
+                                                            placeholder="상태반영일"
+                                                            disabled={!editable}
+                                                            hooks={statusDate}
+                                                        />
+                                                        <div className="wr-with__extension">
+                                                            <MyButton
+                                                                className="btn-primary btn-md"
+                                                                disabled={
+                                                                    !editable
+                                                                }
+                                                            >
+                                                                이력
+                                                            </MyButton>
+                                                        </div>
+                                                    </WithLabel>
+                                                </div>
+                                                <div className="col-6">
+                                                    <div className="wr-ml">
+                                                        <WithLabel
+                                                            id="last_month"
+                                                            label="종납회차"
+                                                            type={labelType}
+                                                        >
+                                                            <MyDatepicker
+                                                                id="last_month"
+                                                                size="md"
+                                                                format="yyyy-MM"
+                                                                placeholder=" "
+                                                                disabled={
+                                                                    !editable
+                                                                }
+                                                                hooks={
+                                                                    lastMonth
+                                                                }
+                                                            />
+                                                            <div
+                                                                className="wr-with__extension"
+                                                                style={{
+                                                                    width: 100,
+                                                                }}
+                                                            >
+                                                                <MyInput
+                                                                    type="number"
+                                                                    className="wr-border-l--hide"
+                                                                    placeholder="종납회차"
+                                                                    disabled={
+                                                                        !editable
+                                                                    }
+                                                                    {...lastWhoi}
+                                                                    unit="회"
+                                                                />
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
                             <div className="wr-pages-detail__block">
@@ -1058,17 +1197,30 @@ export const LongForm: FC<Props> = ({
                                                 </div>
                                             </WithLabel>
                                             <WithLabel
-                                                id="pay_sil"
+                                                id="pay_s"
                                                 label="실손보험료"
                                                 type={labelType}
                                             >
                                                 <MyInput
                                                     type="text"
-                                                    id="pay_sil"
+                                                    id="pay_s"
                                                     className="text-end"
                                                     placeholder="0"
                                                     disabled={!editable}
+                                                    {...payS}
                                                 />
+                                                <div
+                                                    className="wr-with__extension"
+                                                    style={{ width: 100 }}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        className="text-end wr-border-l--hide"
+                                                        disabled
+                                                        value={paySRate}
+                                                        unit="%"
+                                                    />
+                                                </div>
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
@@ -1409,12 +1561,7 @@ export const LongForm: FC<Props> = ({
                     </div>
                 </MyFooter>
             </MyLayout>
-            {comp.value && (
-                <ProductSearchModal
-                    wname={comp.value.label}
-                    wcode={comp.value.value}
-                />
-            )}
+            <ProductSearchModal />
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
             )}

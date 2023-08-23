@@ -105,7 +105,10 @@ export interface HrState {
     /**
      * 보험사의 상품 목록
      */
-    products: Product[];
+    products: {
+        data: Product[];
+        wcode: string;
+    };
 }
 
 const initialState: HrState = {
@@ -129,7 +132,10 @@ const initialState: HrState = {
     removedCodes: [],
     commissions: [],
     removedCommissions: [],
-    products: [],
+    products: {
+        data: [],
+        wcode: '',
+    },
 };
 
 export const hrReducer: Reducer<HrState, any> = (
@@ -307,7 +313,9 @@ export const hrReducer: Reducer<HrState, any> = (
                 break;
             }
             case GetProductsActionTypes.SUCCESS: {
-                draft.products = action.payload;
+                draft.products.data = action.payload.data;
+
+                draft.products.wcode = action.payload.wcode;
 
                 break;
             }

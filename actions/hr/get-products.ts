@@ -16,7 +16,10 @@ export interface GetProductsRequestPayload extends CorePayload {
     type: string;
 }
 
-export type GetProductsSuccessPayload = Array<any>;
+export interface GetProductsSuccessPayload {
+    data: Array<any>;
+    wcode: string;
+}
 
 export interface GetProductsRequestAction extends Action<string> {
     payload: GetProductsRequestPayload;

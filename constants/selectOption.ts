@@ -84,30 +84,6 @@ export const DISTS: CoreSelectOption[] = [
     },
 ];
 
-// 보종 목록
-export const PRODUCT_TYPE: CoreSelectOption[] = [
-    {
-        label: '인보장',
-        value: '인보장',
-        isFixed: false,
-    },
-    {
-        label: '재물',
-        value: '재물',
-        isFixed: false,
-    },
-    {
-        label: '연저축',
-        value: '연저축',
-        isFixed: false,
-    },
-    // {
-    //     label: '결산',
-    //     value: '결산',
-    //     isFixed: false,
-    // },
-];
-
 // 부서 목록(임시)
 export const ORGA_RANK: CoreSelectOption[] = [
     {
