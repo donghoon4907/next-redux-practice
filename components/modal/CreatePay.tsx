@@ -20,12 +20,13 @@ import { createPay } from '@actions/long/set-pay.action';
 import longConstants from '@constants/options/long';
 import { findSelectOption } from '@utils/getter';
 import { setMonth } from 'date-fns';
+import { makeDistkind, calcTargetMonth } from '@utils/calculator';
 
 interface Props {
     /**
      * 계약일자
      */
-    contdate: Date | null;
+    contdate: Date;
     /**
      * 실적보험료
      */
@@ -128,20 +129,7 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
     };
 
     const createPayload = () => {
-        const nextMonth = contdate!.getMonth() + +whoi.value;
-
-        const diffMonth = nextMonth - (paydate.value!.getMonth() + 1);
-
-        let distkind;
-        if (diffMonth < -1) {
-            distkind = '부활';
-        } else if (diffMonth === -1) {
-            distkind = '유예';
-        } else if (diffMonth === 0) {
-            distkind = '응당';
-        } else {
-            distkind = '선납';
-        }
+        const distkind = makeDistkind(contdate, paydate.value!, +whoi.value);
 
         let isPay = true;
         if (
@@ -163,7 +151,12 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
             method: method.value?.value,
             cycle: +cycle.value!.value,
             gdate: isPay
-                ? dayjs(setMonth(contdate!, nextMonth - 1)).format('YYYY-MM-01')
+                ? dayjs(
+                      setMonth(
+                          contdate,
+                          calcTargetMonth(contdate, +whoi.value) - 1,
+                      ),
+                  ).format('YYYY-MM-01')
                 : undefined,
             distkind: isPay ? distkind : undefined,
         };

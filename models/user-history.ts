@@ -5,7 +5,7 @@ export type UserHistory = CoreCheckableModel & {
     // name?: string;
     username?: string;
     department?: string;
-    insert_userid: string;
+    insert_userid?: string;
     insert_date?: string;
     // 비고
     remark?: string;

@@ -16,6 +16,7 @@ export const UpdateCustomerActionTypes = {
 
 export interface UpdateCustomerRequestPayload
     extends Partial<CreateCustomerRequestPayload> {
+    idx: number;
     remove: {
         contacts?: Contact[];
         excontract?: Excontract[];

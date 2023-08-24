@@ -236,6 +236,8 @@ export const customerReducer: Reducer<CustomerState, any> = (
             case GetUserCustomersActionTypes.SUCCESS: {
                 if (Array.isArray(action.payload)) {
                     draft.userCustomers = action.payload;
+                } else {
+                    draft.userCustomers = [];
                 }
 
                 break;

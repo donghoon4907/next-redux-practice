@@ -19,6 +19,11 @@ import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 import { updateLoadedContractor } from '@actions/long/set-loaded-customer.action';
 import { createInsuredPerson } from '@actions/long/set-insured-person.action';
+import { createPay } from '@actions/long/set-pay.action';
+import { makeDistkind } from '@utils/calculator';
+import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { updateLongProduct } from '@actions/long/set-long-product.action';
+import { createContact } from '@actions/common/set-contact.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
     // console.log(long);
@@ -43,6 +48,19 @@ const Long: NextPage<LongState> = ({ long }) => {
         long.pay_status,
         longConstants.pStatus,
     );
+
+    const defaultCalType = findSelectOption(
+        long.cal_type,
+        longConstants.calType,
+    );
+
+    let defaultFamily;
+    if (long.hasOwnProperty('family')) {
+        defaultFamily = findSelectOption(
+            long.family ? 'Y' : 'N',
+            longConstants.family,
+        );
+    }
 
     // const log = long.log.map((v: any) => ({
     //     ...v,
@@ -79,6 +97,7 @@ const Long: NextPage<LongState> = ({ long }) => {
             </Head>
             <LongForm
                 mode="update"
+                idx={long.idx}
                 defaultUserid={long.userid}
                 defaultComp={defaultComp}
                 defaultCnum={long.cnum}
@@ -106,6 +125,10 @@ const Long: NextPage<LongState> = ({ long }) => {
                 defaultTpu={long.tpu ? long.tpu.toString() : ''}
                 defaultPayBo={long.pay_bo ? long.pay_bo.toString() : ''}
                 defaultPayJ={long.pay_j ? long.pay_j.toString() : ''}
+                defaultPayS={long.pay_s ? long.pay_s.toString() : ''}
+                defaultCalType={defaultCalType}
+                defaultCalDatefrom={long.cal_datefrom}
+                defaultFamily={defaultFamily}
             />
         </>
     );
@@ -116,6 +139,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const { query } = ctx;
 
         const cidx = query.cidx as string;
+
+        dispatch(
+            getOrgasRequest({
+                idx: '1',
+            }),
+        );
 
         dispatch(getCompaniesRequest('long-use'));
 
@@ -142,11 +171,24 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 dispatch(updateLoadedContractor(data.data));
             }
 
+            dispatch(
+                updateLongProduct({
+                    p_code: long.p_code,
+                    title: long.title,
+                    spec: long.spec,
+                    subcategory: long.subcategory ? long.subcategory : '',
+                    cal_spec: long.cal_spec ? long.cal_spec : '',
+                }),
+            );
+
             if (long.userid_his) {
                 for (let i = 0; i < long.userid_his.length; i++) {
                     dispatch(
                         createUserHistory({
-                            ...long.userid_his[i],
+                            index: i,
+                            checked: false,
+                            gdate: long.userid_his[i].gdate,
+                            userid: long.userid_his[i].userid,
                             username: long.userid_his[i].fcname,
                         }),
                     );
@@ -158,6 +200,48 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     dispatch(
                         createInsuredPerson({
                             ...long.p_persons[i],
+                            index: i,
+                            checked: false,
+                        }),
+                    );
+                }
+            }
+
+            if (long.pays) {
+                for (let i = 0; i < long.pays.length; i++) {
+                    dispatch(
+                        createPay({
+                            index: i,
+                            checked: false,
+                            idx: long.pays[i].idx,
+                            paydate: long.pays[i].paydate,
+                            gdate: long.pays[i].gdate,
+                            whoi: long.pays[i].whoi,
+                            dist: long.pays[i].dist,
+                            pay: long.pays[i].pay,
+                            method: long.pays[i].method,
+                            insert_datetime: long.pays[i].insert_datetime,
+                            cycle: long.pays[i].cycle
+                                ? findSelectOptionByLabel(
+                                      long.pays[i].cycle,
+                                      longConstants.payCycle,
+                                  ).value
+                                : undefined,
+                            distkind: makeDistkind(
+                                new Date(long.contdate),
+                                new Date(long.pays[i].paydate),
+                                long.pays[i].whoi,
+                            ),
+                        }),
+                    );
+                }
+            }
+
+            if (long.contacts) {
+                for (let i = 0; i < long.contacts.length; i++) {
+                    dispatch(
+                        createContact({
+                            ...long.contacts[i],
                             index: i,
                             checked: false,
                         }),

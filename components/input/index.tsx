@@ -32,8 +32,8 @@ export const MyInput = forwardRef<HTMLInputElement, MyInputProps>(
                     {...another}
                     ref={ref}
                 />
-                {btn}
                 {unitTxt}
+                {btn}
             </div>
         );
     },

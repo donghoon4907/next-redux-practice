@@ -50,7 +50,7 @@ export class CreateCustomerDTO extends CustomerDTO {
     }
 }
 
-export class updateCustomerDTO extends CustomerDTO {
+export class UpdateCustomerDTO extends CustomerDTO {
     constructor(payload: UpdateCustomerRequestPayload) {
         super(payload);
     }

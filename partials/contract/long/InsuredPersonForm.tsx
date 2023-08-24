@@ -1,7 +1,7 @@
-import type { FC, FormEvent } from 'react';
+import type { FC, FormEvent, ChangeEvent } from 'react';
 import type { AppState } from '@reducers/index';
 import type { LongState } from '@reducers/long';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { WithLabel } from '@components/WithLabel';
@@ -14,7 +14,6 @@ import { birthdayToAge } from '@utils/calculator';
 import { createInsuredPerson } from '@actions/long/set-insured-person.action';
 import { generateIndex } from '@utils/generate';
 import { MyCheckbox } from '@components/checkbox';
-import { useCheckbox } from '@hooks/use-checkbox';
 import { isEmpty } from '@utils/validator/common';
 import { useApi } from '@hooks/use-api';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
@@ -36,36 +35,94 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
     const getUserCustomers = useApi(getUserCustomersRequest);
 
     // 계약자와 동일
-    const [isContract, setIsContract] = useCheckbox(false);
+    const [checkContract, setCheckContract] = useState(false);
     // 태아
-    const [isFetus] = useCheckbox(false, {
-        callbackOnChange: (checked) => {
-            if (checked) {
-                setIname('태아');
-                setIsContract(false);
-            }
-        },
-    });
+    const [checkFetus, setCheckFetus] = useState(false);
     // 피보험자명
-    const [iname, setIname] = useInput('');
+    const [name, setName] = useInput('');
     // 연락처
-    const [itel, setItel] = usePhoneInput('');
+    const [tel, setTel] = usePhoneInput('');
     // 직업
-    const [ijob, setIjob] = useInput('');
+    const [job, setJob] = useInput('');
     // 생년월일
-    const [ibirthday, setIbirthday] = useDatepicker(null);
+    const [birthday, setBirthday] = useDatepicker(null);
     // 성별
-    const [igender, setIgender] = useInput('');
-
+    const [gender, setGender] = useInput('');
+    // 계약자와 동일 혹은 태아 체크 시 피보험자명 비활성
+    const isDisabledName = checkContract || checkFetus;
+    // 계약자와 동일 혹은 고객정보연결 시 비활성
+    const isDisabledAnother = checkContract || loadedInsuredPerson;
+    // 생년월일로 나이 계산
     let age = -1;
-    if (ibirthday.value) {
-        age = birthdayToAge(ibirthday.value);
+    if (birthday.value) {
+        age = birthdayToAge(birthday.value);
     }
 
+    const handleCheckContract = (evt: ChangeEvent<HTMLInputElement>) => {
+        if (evt.target.checked) {
+            // 계약자 설정 체크
+            if (!loadedContract) {
+                return alert('먼저 계약자를 설정하세요.');
+            }
+            // 고객정보연결한 경우 체크
+            let tf = true;
+            if (loadedInsuredPerson) {
+                tf = confirm(
+                    '고객정보가 연결된 상태입니다. 계약자 정보를 불러오시겠습니까?',
+                );
+            }
+
+            if (!tf) {
+                return;
+            }
+            // 계약자 설정 로드
+            setName(loadedContract.name || '');
+            setTel(
+                loadedContract.mobile
+                    ? convertPhoneNumber(loadedContract.mobile)
+                    : '',
+            );
+            setJob(loadedContract.job || '');
+            setBirthday(new Date(loadedContract.birthday || null));
+            // 고객정보연결 초기화
+            dispatch(updateLoadedInsuredPerson(null));
+            setCheckContract(true);
+
+            if (checkFetus) {
+                setCheckFetus(false);
+            }
+        } else {
+            setCheckContract(false);
+        }
+    };
+
+    const handleCheckFetus = (evt: ChangeEvent<HTMLInputElement>) => {
+        if (evt.target.checked) {
+            // 고객정보연결한 경우 체크
+            let tf = true;
+            if (loadedInsuredPerson) {
+                tf = confirm(
+                    '고객정보가 연결된 상태입니다. 태아로 설정하시겠습니까?',
+                );
+            }
+
+            if (!tf) {
+                return;
+            }
+            // 필드 초기화
+            handleClear();
+            // 계약자 설정 로드
+            setName('태아');
+
+            setCheckFetus(true);
+        } else {
+            setCheckFetus(false);
+        }
+    };
+
     const handleCreate = () => {
-        // 계약자와 동일 체크 시 계약자를 설정하지 않은 경우
-        if (isContract.checked && !loadedContract) {
-            return alert('계약자 설정을 해주세요.');
+        if (isEmpty(name.value)) {
+            return alert('피보험자명을 입력하세요');
         }
         // p_idx의 우선순위
         // 1. 계약자와 동일 체크
@@ -74,65 +131,69 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
             createInsuredPerson({
                 index: generateIndex(insuredPeople),
                 checked: false,
-                name: iname.value,
-                tel: isFetus.checked
-                    ? undefined
-                    : itel.value.replace(/\-/g, ''),
-                job: isFetus.checked ? undefined : ijob.value,
-                birthday: isFetus.checked
-                    ? undefined
-                    : dayjs(ibirthday.value).format('YYYY-MM-DD'),
-                sex: isFetus.checked ? undefined : igender.value,
-                p_idx: isContract.checked
-                    ? loadedInsuredPerson.idx
+                name: name.value,
+                tel: isEmpty(tel.value) ? '' : tel.value.replace(/\-/g, ''),
+                job: isEmpty(job.value) ? '' : job.value,
+                birthday: birthday.value
+                    ? dayjs(birthday.value).format('YYYY-MM-DD')
+                    : '',
+                sex: gender.value ? gender.value : '',
+                p_idx: checkContract
+                    ? loadedContract.idx
                     : loadedInsuredPerson
                     ? loadedInsuredPerson.idx
                     : undefined,
             }),
         );
 
-        dispatch(updateLoadedInsuredPerson(null));
+        handleClear();
+    };
 
-        setIname('');
-        setItel('');
-        setIjob('');
-        setIbirthday(null);
-        setIgender('');
+    const handleClear = () => {
+        setName('');
+        setTel('');
+        setJob('');
+        setBirthday(null);
+        setGender('');
+        dispatch(updateLoadedInsuredPerson(null));
+        setCheckContract(false);
+        setCheckFetus(false);
     };
 
     const handleSearchCustomer = (evt: FormEvent) => {
         evt.preventDefault();
 
-        if (isEmpty(iname.value)) {
+        if (isEmpty(name.value)) {
             return alert('피보험자명을 입력하세요.');
         }
 
-        getUserCustomers({ userid, username: iname.value }, () => {
+        getUserCustomers({ userid, username: name.value }, () => {
             dispatch(showInsuredPersonSearchModal());
         });
     };
-
+    // 고객정보연결 시 동작
     useEffect(() => {
         if (loadedInsuredPerson) {
-            setIname(loadedInsuredPerson.name || '');
-            setItel(
+            setName(loadedInsuredPerson.name || '');
+            setTel(
                 loadedInsuredPerson.mobile
                     ? convertPhoneNumber(loadedInsuredPerson.mobile)
                     : '',
             );
-            setIjob(loadedInsuredPerson.job || '');
-            setIbirthday(new Date(loadedInsuredPerson.birthday || null));
+            setJob(loadedInsuredPerson.job || '');
+            setBirthday(new Date(loadedInsuredPerson.birthday || null));
         }
     }, [loadedInsuredPerson]);
-
+    // 계약자 설정 변경 시 동작
     useEffect(() => {
-        if (isContract.checked && loadedContract) {
-            setIname(loadedContract.name || '');
-            setItel(loadedContract.mobile || '');
-            setIjob(loadedContract.job || '');
-            setIbirthday(new Date(loadedContract.birthday || null));
+        // 계약자와 동일 체크된 경우만 동작
+        if (checkContract && loadedContract) {
+            setName(loadedContract.name || '');
+            setTel(convertPhoneNumber(loadedContract.mobile) || '');
+            setJob(loadedContract.job || '');
+            setBirthday(new Date(loadedContract.birthday || null));
         }
-    }, [isContract.checked, loadedContract]);
+    }, [checkContract, loadedContract]);
 
     return (
         <>
@@ -143,13 +204,12 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                             <MyInput
                                 type="search"
                                 placeholder="피보험자명"
-                                disabled={isContract.checked}
-                                {...iname}
+                                disabled={isDisabledName}
+                                {...name}
                                 button={{
                                     type: 'submit',
                                     className: 'btn-primary btn-md',
-                                    disabled:
-                                        isContract.checked || isFetus.checked,
+                                    disabled: isDisabledName,
                                     children: (
                                         <>
                                             <span>고객정보연결</span>
@@ -161,7 +221,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                     </form>
                 </div>
             </div>
-            {!isFetus.checked && (
+            {!checkFetus && (
                 <>
                     <div className="row wr-mt">
                         <div className="col-6">
@@ -169,8 +229,8 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                                 <MyInput
                                     type="text"
                                     placeholder="연락처"
-                                    disabled={isContract.checked}
-                                    {...itel}
+                                    disabled={isDisabledAnother}
+                                    {...tel}
                                 />
                             </WithLabel>
                         </div>
@@ -180,8 +240,8 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                                     <MyInput
                                         type="text"
                                         placeholder="직업"
-                                        disabled={isContract.checked}
-                                        {...ijob}
+                                        disabled={isDisabledAnother}
+                                        {...job}
                                     />
                                 </WithLabel>
                             </div>
@@ -198,8 +258,8 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                                     id="ibirthday"
                                     size="md"
                                     placeholder="생년월일"
-                                    disabled={isContract.checked}
-                                    hooks={ibirthday}
+                                    disabled={isDisabledAnother}
+                                    hooks={birthday}
                                 />
                                 {age !== -1 && (
                                     <div className="wr-with__extension wr-form__unit wr-border-l--hide">
@@ -214,7 +274,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                                     <MyInput
                                         type="text"
                                         placeholder="성별"
-                                        {...igender}
+                                        {...gender}
                                     />
                                 </WithLabel>
                             </div>
@@ -227,9 +287,15 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                     <MyCheckbox
                         id="isContract"
                         label="계약자와 동일"
-                        {...isContract}
+                        onChange={handleCheckContract}
+                        checked={checkContract}
                     />
-                    <MyCheckbox id="isFetus" label="태아" {...isFetus} />
+                    <MyCheckbox
+                        id="isFetus"
+                        label="태아"
+                        onChange={handleCheckFetus}
+                        checked={checkFetus}
+                    />
                 </div>
                 <div>
                     <MyButton

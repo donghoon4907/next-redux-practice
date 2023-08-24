@@ -52,3 +52,31 @@ export function birthdayToAge(birthday: Date) {
 
     return today.getFullYear() - birthday.getFullYear() + 1;
 }
+
+// 입금구분 반환
+// contdate: 계약일
+// paydate: 영수일
+// whoi: 회차
+export function makeDistkind(contdate: Date, paydate: Date, whoi: number) {
+    const nextMonth = calcTargetMonth(contdate, whoi);
+
+    const diffMonth = nextMonth - (paydate.getMonth() + 1);
+
+    let distkind;
+    if (diffMonth < -1) {
+        distkind = '부활';
+    } else if (diffMonth === -1) {
+        distkind = '유예';
+    } else if (diffMonth === 0) {
+        distkind = '응당';
+    } else {
+        distkind = '선납';
+    }
+
+    return distkind;
+}
+
+// 대상년월 계산
+export function calcTargetMonth(contdate: Date, whoi: number) {
+    return contdate.getMonth() + whoi;
+}

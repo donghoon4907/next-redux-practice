@@ -46,7 +46,7 @@ import { createCustomerRequest } from '@actions/customer/create-customer.action'
 import { useApi } from '@hooks/use-api';
 import {
     CreateCustomerDTO,
-    updateCustomerDTO,
+    UpdateCustomerDTO,
 } from '@dto/customer/Customer.dto';
 import { WithSelectInput } from '@partials/common/input/WithSelect';
 import { UserHistoryModal } from '@components/modal/UserHistory';
@@ -76,7 +76,7 @@ interface Props {
     /**
      * PK
      */
-    idx?: string;
+    idx?: number;
     /**
      * 담당자 기본 ID
      */
@@ -517,10 +517,10 @@ export const CustomerForm: FC<Props> = ({
     const handleUpdate = () => {
         const payload = createPayload();
 
-        const updateUserDto = new updateCustomerDTO(payload);
+        const updateCustomerDto = new UpdateCustomerDTO(payload);
 
-        if (updateUserDto.requiredValidate()) {
-            updateCustomer(updateUserDto.getPayload(), ({ Message }) => {
+        if (updateCustomerDto.requiredValidate()) {
+            updateCustomer(updateCustomerDto.getPayload(), ({ Message }) => {
                 if (Message === 'Success') {
                     alert('수정되었습니다.');
                 }
@@ -1352,7 +1352,7 @@ export const CustomerForm: FC<Props> = ({
                     </div>
                 </MyFooter>
             </MyLayout>
-            <UserHistoryModal />
+            <UserHistoryModal type="customer" />
             <CreateExcontractLongModal />
             <CreateExcontractCarModal />
             <CreateExcontractGenModal />

@@ -1,4 +1,6 @@
 import type { FC } from 'react';
+import type { AppState } from '@reducers/index';
+import type { CommonState } from '@reducers/common';
 import type { CoreEditableComponent } from '@interfaces/core';
 import {
     UncontrolledAccordion,
@@ -7,35 +9,40 @@ import {
     AccordionBody,
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppState } from '@reducers/index';
-import { CommonState } from '@reducers/common';
 import { MyTableExtension } from '@components/table/Extension';
-import { MyRadio } from '@components/radio';
 import { showUserHistoryModal } from '@actions/modal/user-history.action';
-import { MyButton } from '@components/button';
 
 interface Props extends CoreEditableComponent {}
 
 export const LongManagerAccordion: FC<Props> = ({ editable }) => {
     const dispatch = useDispatch();
 
-    const { userHistories } = useSelector<AppState, CommonState>(
-        (state) => state.common,
-    );
+    const { userHistories, newUserHistory } = useSelector<
+        AppState,
+        CommonState
+    >((state) => state.common);
 
     const handleShowModal = () => {
         dispatch(showUserHistoryModal());
     };
 
+    let title = '';
+    if (newUserHistory) {
+        title += `${newUserHistory.department} ${newUserHistory.username}`;
+    } else {
+        const lastHistory = userHistories[userHistories.length - 1];
+        if (lastHistory.group) {
+            title += `${lastHistory.group} ${lastHistory.username}`;
+        } else {
+            title += lastHistory.username;
+        }
+    }
+
     return (
         <UncontrolledAccordion stayOpen>
             <AccordionItem>
                 <div className="wr-group wr-accordion__button--hide">
-                    <span className="wr-pages-detail__department">
-                        {`${userHistories[userHistories.length - 1].group} ${
-                            userHistories[userHistories.length - 1].username
-                        }`}
-                    </span>
+                    <span className="wr-pages-detail__department">{title}</span>
                     <AccordionHeader
                         targetId="user_his"
                         role="tab"
@@ -68,20 +75,15 @@ export const LongManagerAccordion: FC<Props> = ({ editable }) => {
                                     <th style={{ width: '100px' }}>
                                         <strong>사용인명</strong>
                                     </th>
-                                    <th>
+                                    <th style={{ width: '100px' }}>
                                         <strong>사용인코드</strong>
                                     </th>
-                                    {editable && (
-                                        <th style={{ width: '30px' }}></th>
-                                    )}
                                 </tr>
                             </thead>
                             <tbody>
                                 {userHistories.length === 0 && (
                                     <tr>
-                                        <td colSpan={editable ? 5 : 4}>
-                                            이력이 없습니다.
-                                        </td>
+                                        <td colSpan={4}>이력이 없습니다.</td>
                                     </tr>
                                 )}
                                 {userHistories.map((v, i) => (
@@ -109,13 +111,13 @@ export const LongManagerAccordion: FC<Props> = ({ editable }) => {
                                                 {v.fccode ? v.fccode : '-'}
                                             </span>
                                         </td>
-                                        {editable && (
-                                            <td>
+                                        {/* {editable && (
+                                            <td style={{ width: 30 }}>
                                                 <MyButton className="btn-primary btn-sm">
                                                     수정
                                                 </MyButton>
                                             </td>
-                                        )}
+                                        )} */}
                                     </tr>
                                 ))}
                             </tbody>

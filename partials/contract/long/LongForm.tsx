@@ -2,14 +2,14 @@ import type { FC } from 'react';
 import type { LongState } from '@reducers/long';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { CommonState } from '@reducers/common';
+import type { ModalState } from '@reducers/modal';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import differenceInMonths from 'date-fns/differenceInMonths';
-import differenceInYears from 'date-fns/differenceInYears';
 import addYears from 'date-fns/addYears';
-import addDays from 'date-fns/addDays';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -21,7 +21,7 @@ import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { PaysTabpanel } from '@partials/contract/long/tabpanels/Pays';
-import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
+// import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/contract/long/tabpanels/ChangeHistory';
 import { MyButton } from '@components/button';
 import { CreateEtcModal } from '@components/modal/CreateEtc';
@@ -33,7 +33,7 @@ import { EndorsementTabpanel } from '@partials/contract/long/tabpanels/Endorseme
 import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerform';
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
-import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
+// import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
 import longConstants from '@constants/options/long';
 import { showProductSearchModal } from '@actions/modal/product-search.action';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
@@ -44,17 +44,21 @@ import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { CommonState } from '@reducers/common';
-import { CreateLongDTO } from '@dto/long/Long.dto';
+import { CreateLongDTO, UpdateLongDTO } from '@dto/long/Long.dto';
 import { createLongRequest } from '@actions/long/create-long.action';
-import { ModalState } from '@reducers/modal';
 import { getProductsRequest } from '@actions/hr/get-products';
+import { UserHistoryModal } from '@components/modal/UserHistory';
+import { updateLongRequest } from '@actions/long/update-long.action';
 
 interface Props {
     /**
      * 모드: 등록 / 수정
      */
     mode: 'create' | 'update';
+    /**
+     * PK
+     */
+    idx?: number;
     /**
      * 담당자 기본 ID
      */
@@ -179,6 +183,7 @@ interface Props {
 
 export const LongForm: FC<Props> = ({
     mode,
+    idx = -1,
     defaultUserid,
     defaultOrga = null,
     defaultComp = null,
@@ -231,13 +236,20 @@ export const LongForm: FC<Props> = ({
         (state) => state.hr,
     );
 
-    const { selectedProduct, insuredPeople, loadedContract, pays } =
-        useSelector<AppState, LongState>((state) => state.long);
+    const {
+        selectedProduct,
+        insuredPeople,
+        loadedContract,
+        pays,
+        removedPays,
+    } = useSelector<AppState, LongState>((state) => state.long);
 
     const { isShowContractorSearchModal, isShowInsuredPersonSearchModal } =
         useSelector<AppState, ModalState>((state) => state.modal);
 
     const createLong = useApi(createLongRequest);
+
+    const updateLong = useApi(updateLongRequest);
 
     const getProducts = useApi(getProductsRequest);
 
@@ -329,10 +341,10 @@ export const LongForm: FC<Props> = ({
         defaultStatusDate ? new Date(defaultStatusDate) : null,
     );
     // 종납회차
-    const [lastMonth] = useDatepicker(
-        defaultLastMonth ? new Date(defaultLastMonth) : null,
-    );
-    const [lastWhoi] = useInput(defaultLastWhoi);
+    // const [lastMonth] = useDatepicker(
+    //     defaultLastMonth ? new Date(defaultLastMonth) : null,
+    // );
+    // const [lastWhoi] = useInput(defaultLastWhoi);
     // 실적보험료
     const [payment] = useNumbericInput(defaultPayment, { addComma: true });
     // 수정보험료
@@ -522,7 +534,19 @@ export const LongForm: FC<Props> = ({
         }
     };
 
-    const handleUpdate = () => {};
+    const handleUpdate = () => {
+        const payload = createPayload();
+
+        const updateLongDto = new UpdateLongDTO(payload);
+
+        if (updateLongDto.requiredValidate()) {
+            updateLong(updateLongDto.getPayload(), ({ Message }) => {
+                if (Message === 'Success') {
+                    alert('수정되었습니다.');
+                }
+            });
+        }
+    };
 
     const createPayload = () => {
         const payload: any = {
@@ -534,6 +558,10 @@ export const LongForm: FC<Props> = ({
             payment: -1,
             remove: {},
         };
+
+        if (idx !== -1) {
+            payload['idx'] = idx;
+        }
 
         if (comp.value) {
             payload.wcode = comp.value.value;
@@ -649,6 +677,10 @@ export const LongForm: FC<Props> = ({
                 payload['remove']['contacts'] = removedContacts.map(
                     (v) => v.idx,
                 );
+            }
+
+            if (removedPays.length > 0) {
+                payload['remove']['pays'] = removedPays.map((v) => v.idx);
             }
         }
 
@@ -829,11 +861,7 @@ export const LongForm: FC<Props> = ({
                                                                   }
                                                                 : undefined
                                                         }
-                                                        unit={
-                                                            editable
-                                                                ? ''
-                                                                : calSpec
-                                                        }
+                                                        unit={calSpec}
                                                     />
 
                                                     <div className="wr-with__badge--left wr-badge__wrap">
@@ -911,7 +939,7 @@ export const LongForm: FC<Props> = ({
                                             >
                                                 <MyInput
                                                     type="text"
-                                                    placeholder="보장만기"
+                                                    placeholder="보장만기일"
                                                     disabled={true}
                                                     className="wr-with__badge--inside-right-1"
                                                     {...boDateto}
@@ -1053,7 +1081,7 @@ export const LongForm: FC<Props> = ({
                                                             disabled={!editable}
                                                             hooks={statusDate}
                                                         />
-                                                        <div className="wr-with__extension">
+                                                        {/* <div className="wr-with__extension">
                                                             <MyButton
                                                                 className="btn-primary btn-md"
                                                                 disabled={
@@ -1062,26 +1090,21 @@ export const LongForm: FC<Props> = ({
                                                             >
                                                                 이력
                                                             </MyButton>
-                                                        </div>
+                                                        </div> */}
                                                     </WithLabel>
                                                 </div>
                                                 <div className="col-6">
                                                     <div className="wr-ml">
                                                         <WithLabel
-                                                            id="last_month"
                                                             label="종납회차"
                                                             type={labelType}
                                                         >
-                                                            <MyDatepicker
-                                                                id="last_month"
-                                                                size="md"
-                                                                format="yyyy-MM"
-                                                                placeholder=" "
-                                                                disabled={
-                                                                    !editable
-                                                                }
-                                                                hooks={
-                                                                    lastMonth
+                                                            <MyInput
+                                                                type="text"
+                                                                placeholder="종납일"
+                                                                disabled={true}
+                                                                value={
+                                                                    defaultLastMonth
                                                                 }
                                                             />
                                                             <div
@@ -1091,13 +1114,15 @@ export const LongForm: FC<Props> = ({
                                                                 }}
                                                             >
                                                                 <MyInput
-                                                                    type="number"
-                                                                    className="wr-border-l--hide"
-                                                                    placeholder="종납회차"
+                                                                    type="text"
+                                                                    className="text-end wr-border-l--hide"
+                                                                    placeholder="0"
                                                                     disabled={
-                                                                        !editable
+                                                                        true
                                                                     }
-                                                                    {...lastWhoi}
+                                                                    value={
+                                                                        defaultLastWhoi
+                                                                    }
                                                                     unit="회"
                                                                 />
                                                             </div>
@@ -1429,9 +1454,14 @@ export const LongForm: FC<Props> = ({
                                                     label="청약설계"
                                                     type={labelType}
                                                 >
+                                                    <div className="wr-pages-detail__lock">
+                                                        <span>
+                                                            준비중입니다.
+                                                        </span>
+                                                    </div>
                                                     <MySelect
                                                         inputId="sd"
-                                                        placeholder="본인"
+                                                        placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
@@ -1444,11 +1474,11 @@ export const LongForm: FC<Props> = ({
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-detail__block">
+                            {/* <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
                                     <CustomSettingAccordion data={[]} />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                     <div className={`${displayName}__right col`}>
@@ -1527,7 +1557,7 @@ export const LongForm: FC<Props> = ({
                     <div className="wr-footer__between">
                         <div></div>
                         <div className="wr-pages-detail__buttons">
-                            {editable && (
+                            {editable && mode === 'update' && (
                                 <MyButton
                                     className="btn-secondary btn-sm"
                                     onClick={handleClickCancel}
@@ -1568,9 +1598,13 @@ export const LongForm: FC<Props> = ({
             {isShowInsuredPersonSearchModal && (
                 <CustomerSearchModal type="insured-person" />
             )}
-            <CreatePayModal contdate={contdate.value} payment={payment.value} />
+            <CreatePayModal
+                contdate={contdate.value!}
+                payment={payment.value}
+            />
             <CreateEndorsementModal />
             <CreateEtcModal />
+            <UserHistoryModal type="long" />
         </>
     );
 };

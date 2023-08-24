@@ -172,10 +172,14 @@ export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                     <span>{v.confirm ? v.confirm : '-'}</span>
                                 </td>
                                 <td>
-                                    <span></span>
+                                    <span>{v.cals ? 'Y' : 'N'}</span>
                                 </td>
                                 <td>
-                                    <span>{v.insert ? v.insert : '-'}</span>
+                                    <span>
+                                        {v.insert_datetime
+                                            ? v.insert_datetime
+                                            : '-'}
+                                    </span>
                                 </td>
                             </tr>
                         ))}

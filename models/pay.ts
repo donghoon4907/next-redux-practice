@@ -41,9 +41,9 @@ export type Pay = CoreCheckableModel & {
     /**
      * 정산여부
      */
-    // cals: string;
+    cals?: boolean;
     /**
      * 입력
      */
-    insert?: string;
+    insert_datetime?: string;
 };

@@ -16,9 +16,11 @@ import { useInput } from '@hooks/use-input';
 import { insertUserHistory } from '@actions/common/set-user-history.action';
 import { generateIndex } from '@utils/generate';
 
-interface Props {}
+interface Props {
+    type: 'customer' | 'long';
+}
 
-export const UserHistoryModal: FC<Props> = () => {
+export const UserHistoryModal: FC<Props> = ({ type }) => {
     const dispatch = useDispatch();
 
     const { isShowUserHistoryModal } = useSelector<AppState, ModalState>(
@@ -38,6 +40,8 @@ export const UserHistoryModal: FC<Props> = () => {
     const [user] = useSelect(users, null);
     // 비고
     const [remark] = useInput('');
+    // 사용인 코드
+    // const [code] = useInput('');
 
     const handleClose = () => {
         dispatch(hideUserHistoryModal());
@@ -106,14 +110,29 @@ export const UserHistoryModal: FC<Props> = () => {
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel id="mRemark" label="비고" type="active">
-                            <MyInput
-                                id="mRemark"
-                                placeholder="비고"
-                                {...remark}
-                            />
-                        </WithLabel>
+                    <div className="col-6">
+                        {type === 'customer' && (
+                            <WithLabel id="mRemark" label="비고" type="active">
+                                <MyInput
+                                    id="mRemark"
+                                    placeholder="비고"
+                                    {...remark}
+                                />
+                            </WithLabel>
+                        )}
+                        {/* {type === 'long' && (
+                            <WithLabel
+                                id="mCode"
+                                label="사용인코드"
+                                type="active"
+                            >
+                                <MyInput
+                                    id="mCode"
+                                    placeholder="사용인코드"
+                                    {...code}
+                                />
+                            </WithLabel>
+                        )} */}
                     </div>
                 </div>
             </ModalBody>

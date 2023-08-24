@@ -1,8 +1,13 @@
 import type { CreateLongRequestPayload } from '@actions/long/create-long.action';
+import type { UpdateLongRequestPayload } from '@actions/long/update-long.action';
 import { isEmpty } from '@utils/validator/common';
 
 class LongDTO {
-    constructor(private readonly payload: CreateLongRequestPayload) {}
+    constructor(
+        private readonly payload:
+            | CreateLongRequestPayload
+            | UpdateLongRequestPayload,
+    ) {}
 
     getPayload = () => {
         return this.payload;
@@ -67,6 +72,12 @@ class LongDTO {
 
 export class CreateLongDTO extends LongDTO {
     constructor(payload: CreateLongRequestPayload) {
+        super(payload);
+    }
+}
+
+export class UpdateLongDTO extends LongDTO {
+    constructor(payload: UpdateLongRequestPayload) {
         super(payload);
     }
 }
