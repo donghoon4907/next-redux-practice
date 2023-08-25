@@ -29,7 +29,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
         evt.preventDefault();
 
         login({ userid: userid.value, password: password.value, ip }, () => {
-            router.push('/contract/long/list');
+            router.replace('/contract/long/list');
         });
     };
 

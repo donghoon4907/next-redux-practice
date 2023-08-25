@@ -29,10 +29,10 @@ export class TabModule {
         return this.tabs.find((item) => item.id === id);
     }
 
-    update(id: string, updatedItem: CoreLinkTabOption): void {
+    update(id: string, updatedItem: Partial<CoreLinkTabOption>): void {
         const index = this.tabs.findIndex((item) => item.id === id);
         if (index !== -1) {
-            this.tabs[index] = { ...updatedItem, id };
+            this.tabs[index] = { ...this.tabs[index], ...updatedItem };
             this.save();
         }
     }

@@ -3,6 +3,8 @@ import type { Pay } from '@models/pay';
 import type { AppState } from '@reducers/index';
 import type { LongState } from '@reducers/long';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
+import type { CoreEditableComponent } from '@interfaces/core';
+import type { Spe } from '@models/spe';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyButton } from '@components/button';
@@ -13,8 +15,8 @@ import { showCreatePayModal } from '@actions/modal/create-pay.action';
 import { findSelectOption } from '@utils/getter';
 import longConstants from '@constants/options/long';
 
-interface Props extends MyTabpanelProps {
-    editable: boolean;
+interface Props extends MyTabpanelProps, CoreEditableComponent {
+    spe: Spe;
 }
 
 export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {

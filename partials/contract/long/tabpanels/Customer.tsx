@@ -1,7 +1,7 @@
 import type { FC, FormEvent, ChangeEvent } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { AppState } from '@reducers/index';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import type { CoreEditableComponent } from '@interfaces/core';
 import type { InsuredPerson } from '@models/insured-person';
 import { useEffect } from 'react';
@@ -20,7 +20,7 @@ import { showContractorSearchModal } from '@actions/modal/customer-search.action
 import {
     deleteInsuredPerson,
     updateInsuredPerson,
-} from '@actions/long/set-insured-person.action';
+} from '@actions/contract/set-insured-person.action';
 
 import { InsuredPersonTemplate } from '../template/InsuredPerson';
 import { InsuredPersonForm } from '../InsuredPersonForm';
@@ -38,9 +38,10 @@ export const CustomerTabpanel: FC<Props> = ({
 }) => {
     const dispatch = useDispatch();
 
-    const { loadedContract, insuredPeople } = useSelector<AppState, LongState>(
-        (state) => state.long,
-    );
+    const { loadedContract, insuredPeople } = useSelector<
+        AppState,
+        ContractState
+    >((state) => state.contract);
 
     const getUserCustomers = useApi(getUserCustomersRequest);
 
@@ -197,64 +198,76 @@ export const CustomerTabpanel: FC<Props> = ({
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="row wr-mt">
-                                                <div className="col-6">
-                                                    <WithLabel
-                                                        label="우편번호"
-                                                        type="disable"
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="우편번호"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.postcode
-                                                            }
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                                <div className="col-6">
-                                                    <div className="wr-ml">
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="주소1"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.address1
-                                                            }
-                                                        />
+                                            {loadedContract.custtype === 0 && (
+                                                <>
+                                                    <div className="row wr-mt">
+                                                        <div className="col-6">
+                                                            <WithLabel
+                                                                label="우편번호"
+                                                                type="disable"
+                                                            >
+                                                                <MyInput
+                                                                    type="text"
+                                                                    placeholder="우편번호"
+                                                                    disabled={
+                                                                        true
+                                                                    }
+                                                                    value={
+                                                                        loadedContract.postcode
+                                                                    }
+                                                                />
+                                                            </WithLabel>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <div className="wr-ml">
+                                                                <MyInput
+                                                                    type="text"
+                                                                    placeholder="주소1"
+                                                                    disabled={
+                                                                        true
+                                                                    }
+                                                                    value={
+                                                                        loadedContract.address1
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div className="row wr-mt">
-                                                <div className="col-6">
-                                                    <WithLabel
-                                                        label="상세주소"
-                                                        type="disable"
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="우편번호"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.address3
-                                                            }
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                                <div className="col-6">
-                                                    <div className="wr-ml">
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="주소2"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.address2
-                                                            }
-                                                        />
+                                                    <div className="row wr-mt">
+                                                        <div className="col-6">
+                                                            <WithLabel
+                                                                label="상세주소"
+                                                                type="disable"
+                                                            >
+                                                                <MyInput
+                                                                    type="text"
+                                                                    placeholder="우편번호"
+                                                                    disabled={
+                                                                        true
+                                                                    }
+                                                                    value={
+                                                                        loadedContract.address3
+                                                                    }
+                                                                />
+                                                            </WithLabel>
+                                                        </div>
+                                                        <div className="col-6">
+                                                            <div className="wr-ml">
+                                                                <MyInput
+                                                                    type="text"
+                                                                    placeholder="주소2"
+                                                                    disabled={
+                                                                        true
+                                                                    }
+                                                                    value={
+                                                                        loadedContract.address2
+                                                                    }
+                                                                />
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                </>
+                                            )}
                                         </>
                                     )}
                                 </div>

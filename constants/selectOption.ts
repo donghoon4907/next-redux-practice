@@ -1,27 +1,5 @@
 import type { CoreSelectOption } from '@interfaces/core';
-// 리스트 보기 수
-export const SHOW_COUNTS: CoreSelectOption[] = [
-    {
-        label: '25줄보기',
-        value: '25',
-        isFixed: false,
-    },
-    {
-        label: '50줄보기',
-        value: '50',
-        isFixed: false,
-    },
-    {
-        label: '100줄보기',
-        value: '100',
-        isFixed: false,
-    },
-    {
-        label: '500줄보기',
-        value: '500',
-        isFixed: false,
-    },
-];
+
 // 회차
 export const ROUNDS: CoreSelectOption[] = [
     {

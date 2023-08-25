@@ -24,12 +24,16 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
     let className = '';
 
     // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
-    let isTextEnd =
-        isNumberic(getValue()) &&
-        checkSeparatorNeeded(column.id) &&
-        checkTextAlignRightNeeded(column.id);
+    // let isTextEnd =
+    //     isNumberic(getValue()) &&
+    //     checkSeparatorNeeded(column.id) &&
+    //     checkTextAlignRightNeeded(column.id);
 
-    if (isTextEnd) {
+    // if (isTextEnd) {
+    //     className += 'text-end';
+    // }
+
+    if (Number.isInteger(getValue()) && checkSeparatorNeeded(column.id)) {
         className += 'text-end';
     }
 

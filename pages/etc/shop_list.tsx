@@ -267,8 +267,8 @@ const ShopList: NextPage = () => {
                     </div>
                     <MyFooter>
                         <MyPagination
-                            requestAction={getPostsRequest}
-                            successAction={getPostsSuccess}
+                            // requestAction={getPostsRequest}
+                            // successAction={getPostsSuccess}
                             payload={boards.lastPayload}
                             total={boards.total.count}
                         >

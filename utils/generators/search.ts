@@ -79,7 +79,7 @@ export function searchMiddleware(saga: any): Saga {
                     );
                     if (pTitleIndex !== -1) {
                         successPayload['ptitles'] = search[pTitleIndex].row.map(
-                            (v: any) => ({ label: v.ptitle, value: v.pcode }),
+                            (v: any) => ({ label: v.title, value: v.p_code }),
                         );
                     }
                 }

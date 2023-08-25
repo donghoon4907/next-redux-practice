@@ -262,11 +262,11 @@ export const ASIDE_MENU: any = {
                 label: '장기계약등록',
                 to: '/contract/long/create',
             },
-            sch: {
-                id: 'contract-long_sch',
-                label: '상태변경내역',
-                to: '/contract/long/sch',
-            },
+            // sch: {
+            //     id: 'contract-long_sch',
+            //     label: '상태변경내역',
+            //     to: '/contract/long/sch',
+            // },
         },
         car: {
             id: 'contract-car',
@@ -308,25 +308,35 @@ export const ASIDE_MENU: any = {
                 to: '/contract/car/sch',
             },
         },
-        normal: {
-            id: 'contract-normal',
+        general: {
+            id: 'contract-general',
             label: '일반',
             to: '',
-            hc: {
-                id: 'contract-normal_hc',
-                label: '보유계약',
-                to: '/contract/normal/hc',
+            // list: {
+            //     id: 'contract-long_list',
+            //     label: '장기계약목록',
+            //     to: '/contract/long/list',
+            // },
+            create: {
+                id: 'contract-general_create',
+                label: '일반계약등록',
+                to: '/contract/general/create',
             },
-            mc: {
-                id: 'contract-normal_mc',
-                label: '만기계약',
-                to: '/contract/normal/mc',
-            },
-            sch: {
-                id: 'contract-normal_sch',
-                label: '상태변경내역',
-                to: '/contract/normal/sch',
-            },
+            // hc: {
+            //     id: 'contract-general_hc',
+            //     label: '보유계약',
+            //     to: '/contract/normal/hc',
+            // },
+            // mc: {
+            //     id: 'contract-normal_mc',
+            //     label: '만기계약',
+            //     to: '/contract/normal/mc',
+            // },
+            // sch: {
+            //     id: 'contract-normal_sch',
+            //     label: '상태변경내역',
+            //     to: '/contract/normal/sch',
+            // },
         },
         monitoring: {
             id: 'contract-monitoring',

@@ -4,9 +4,10 @@ import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
+import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import addYears from 'date-fns/addYears';
@@ -35,7 +36,6 @@ import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerfo
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
 // import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
 import longConstants from '@constants/options/long';
-import { showProductSearchModal } from '@actions/modal/product-search.action';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
@@ -46,9 +46,9 @@ import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { CreateLongDTO, UpdateLongDTO } from '@dto/long/Long.dto';
 import { createLongRequest } from '@actions/long/create-long.action';
-import { getProductsRequest } from '@actions/hr/get-products';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { updateLongRequest } from '@actions/long/update-long.action';
+import { SearchProductInput } from '../SearchProductInput';
 
 interface Props {
     /**
@@ -225,8 +225,6 @@ export const LongForm: FC<Props> = ({
         value: `${i + 1}`,
     }));
 
-    const dispatch = useDispatch();
-
     const { contacts, removedContacts, newUserHistory } = useSelector<
         AppState,
         CommonState
@@ -236,13 +234,14 @@ export const LongForm: FC<Props> = ({
         (state) => state.hr,
     );
 
-    const {
-        selectedProduct,
-        insuredPeople,
-        loadedContract,
-        pays,
-        removedPays,
-    } = useSelector<AppState, LongState>((state) => state.long);
+    const { selectedProduct, insuredPeople, loadedContract } = useSelector<
+        AppState,
+        ContractState
+    >((state) => state.contract);
+
+    const { pays, removedPays } = useSelector<AppState, LongState>(
+        (state) => state.long,
+    );
 
     const { isShowContractorSearchModal, isShowInsuredPersonSearchModal } =
         useSelector<AppState, ModalState>((state) => state.modal);
@@ -250,8 +249,6 @@ export const LongForm: FC<Props> = ({
     const createLong = useApi(createLongRequest);
 
     const updateLong = useApi(updateLongRequest);
-
-    const getProducts = useApi(getProductsRequest);
 
     const getUsers = useApi(getUsersRequest);
     // 탭 관리
@@ -383,39 +380,7 @@ export const LongForm: FC<Props> = ({
             location.reload();
         }
     };
-    // 상품명 찾기 클릭 핸들러
-    const handleClickSearchtitle = () => {
-        if (comp.value) {
-            getProducts(
-                {
-                    wcode: comp.value.value,
-                    spe: 'long',
-                    type: 'all',
-                },
-                () => {
-                    dispatch(showProductSearchModal());
-                },
-            );
-        } else {
-            alert('보험사를 선택하세요.');
-        }
-    };
-    // 상품명 badge 관련
-    const spec = selectedProduct ? selectedProduct.spec : defaultSpec;
-    const subCategory = selectedProduct
-        ? selectedProduct.subcategory
-        : defaultSubCategory;
-    const calSpec = selectedProduct ? selectedProduct.cal_spec : defaultCalSpec;
-    const title = selectedProduct ? selectedProduct.title : defaultTitle;
 
-    let pTitlePaddingRate = 0;
-    if (spec) {
-        pTitlePaddingRate += 1;
-    }
-
-    if (subCategory) {
-        pTitlePaddingRate += 1;
-    }
     // 월납기준
     let payM = -1;
     // 보장보험료 비율
@@ -827,67 +792,15 @@ export const LongForm: FC<Props> = ({
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="row wr-mt">
-                                        <div className="col">
-                                            <WithLabel
-                                                id="title"
-                                                label="상품명"
-                                                type={labelType}
-                                                isRequired={editable}
-                                            >
-                                                <div className="wr-with__badge">
-                                                    <MyInput
-                                                        type="text"
-                                                        id="title"
-                                                        className={`wr-with__badge--inside-left-${pTitlePaddingRate}`}
-                                                        placeholder=""
-                                                        disabled={true}
-                                                        value={title}
-                                                        button={
-                                                            editable
-                                                                ? {
-                                                                      className:
-                                                                          'btn-md btn-primary',
-                                                                      onClick:
-                                                                          handleClickSearchtitle,
-                                                                      children:
-                                                                          (
-                                                                              <>
-                                                                                  <span>
-                                                                                      찾기
-                                                                                  </span>
-                                                                              </>
-                                                                          ),
-                                                                  }
-                                                                : undefined
-                                                        }
-                                                        unit={calSpec}
-                                                    />
-
-                                                    <div className="wr-with__badge--left wr-badge__wrap">
-                                                        {spec && (
-                                                            <span className="badge rounded-pill bg-primary wr-badge">
-                                                                {spec}
-                                                                <span className="visually-hidden">
-                                                                    {spec}
-                                                                </span>
-                                                            </span>
-                                                        )}
-                                                        {subCategory && (
-                                                            <span className="badge rounded-pill bg-warning wr-badge">
-                                                                {subCategory}
-                                                                <span className="visually-hidden">
-                                                                    {
-                                                                        subCategory
-                                                                    }
-                                                                </span>
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </WithLabel>
-                                        </div>
-                                    </div>
+                                    <SearchProductInput
+                                        editable={editable}
+                                        wcode={comp.value?.value}
+                                        title={defaultTitle}
+                                        spec={defaultSpec}
+                                        subcategory={defaultSubCategory}
+                                        calSpec={defaultCalSpec}
+                                        spe="long"
+                                    />
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
@@ -1483,22 +1396,14 @@ export const LongForm: FC<Props> = ({
                     </div>
                     <div className={`${displayName}__right col`}>
                         <ul className="wr-tab__wrap" role="tablist">
-                            {LONG_DETAIL_TABS.map((v) => {
-                                // if (v.label === '납입실적') {
-                                //     if (!contdate.value) {
-                                //         return null;
-                                //     }
-                                // }
-
-                                return (
-                                    <MyTab
-                                        key={v.id}
-                                        onClick={setTab}
-                                        isActive={v.id === tab.id}
-                                        {...v}
-                                    />
-                                );
-                            })}
+                            {LONG_DETAIL_TABS.map((v) => (
+                                <MyTab
+                                    key={v.id}
+                                    onClick={setTab}
+                                    isActive={v.id === tab.id}
+                                    {...v}
+                                />
+                            ))}
                             <li className="wr-tab__line"></li>
                         </ul>
                         <div
@@ -1516,6 +1421,7 @@ export const LongForm: FC<Props> = ({
                                 tabId="tabPays"
                                 hidden={tab.id !== 'tabPays'}
                                 editable={editable}
+                                spe="long"
                             />
                             <EndorsementTabpanel
                                 id="tabpanelEndorsement"

@@ -1,6 +1,6 @@
 import type { FC, FormEvent, ChangeEvent } from 'react';
 import type { AppState } from '@reducers/index';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -11,7 +11,7 @@ import { MyDatepicker } from '@components/datepicker';
 import { useInput, usePhoneInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { birthdayToAge } from '@utils/calculator';
-import { createInsuredPerson } from '@actions/long/set-insured-person.action';
+import { createInsuredPerson } from '@actions/contract/set-insured-person.action';
 import { generateIndex } from '@utils/generate';
 import { MyCheckbox } from '@components/checkbox';
 import { isEmpty } from '@utils/validator/common';
@@ -19,7 +19,7 @@ import { useApi } from '@hooks/use-api';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
 import { showInsuredPersonSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber } from '@utils/converter';
-import { updateLoadedInsuredPerson } from '@actions/long/set-loaded-customer.action';
+import { updateLoadedInsuredPerson } from '@actions/contract/set-contractor.action';
 
 interface Props {
     userid: string;
@@ -30,8 +30,8 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
 
     const { insuredPeople, loadedInsuredPerson, loadedContract } = useSelector<
         AppState,
-        LongState
-    >((state) => state.long);
+        ContractState
+    >((state) => state.contract);
     const getUserCustomers = useApi(getUserCustomersRequest);
 
     // 계약자와 동일

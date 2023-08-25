@@ -27,7 +27,7 @@ import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const { events, asPath, route } = useRouter();
+    const { events, asPath, route, pathname } = useRouter();
 
     const dispatch = useDispatch();
 
@@ -43,7 +43,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
             // 로그인 페이지 추가 제한
             if (gnb !== 'login') {
-                initializeTab(asPath);
+                initializeTab(pathname);
                 // 게시판 페이지 추가 제한
                 if (gnb !== 'board') {
                     dispatch(updateGnb(ASIDE_MENU[gnb]));

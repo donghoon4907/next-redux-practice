@@ -47,7 +47,7 @@ export const LinkTab: FC<Props> = ({
 
         onClick?.(id);
 
-        router.push(to);
+        router.replace(to);
     };
 
     const handleClose = (evt: MouseEvent<HTMLButtonElement>) => {

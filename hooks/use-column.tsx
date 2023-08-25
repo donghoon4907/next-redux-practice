@@ -39,11 +39,15 @@ export const useColumn = (fields: CoreColumnOption) => {
                         let cellValue = info.getValue();
                         let output = null;
 
-                        if (
-                            isNumberic(cellValue) &&
-                            checkSeparatorNeeded(info.column.id)
-                        ) {
-                            cellValue = Number(cellValue).toLocaleString();
+                        // if (
+                        //     isNumberic(cellValue) &&
+                        //     checkSeparatorNeeded(info.column.id)
+                        // ) {
+                        //     cellValue = Number(cellValue).toLocaleString();
+                        // }
+
+                        if (Number.isInteger(cellValue)) {
+                            cellValue = cellValue.toLocaleString();
                         }
 
                         // 말줄임표가 필요한 경우

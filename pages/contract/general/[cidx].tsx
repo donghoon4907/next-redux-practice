@@ -17,13 +17,13 @@ import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
 import { LongForm } from '@partials/contract/long/LongForm';
 import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { updateLoadedContractor } from '@actions/contract/set-contractor.action';
 import { createInsuredPerson } from '@actions/contract/set-insured-person.action';
 import { createPay } from '@actions/long/set-pay.action';
 import { makeDistkind } from '@utils/calculator';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
-import { updateProduct } from '@actions/contract/set-product.action';
 import { createContact } from '@actions/common/set-contact.action';
+import { updateProduct } from '@actions/contract/set-product.action';
+import { updateLoadedContractor } from '@actions/contract/set-contractor.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
     // console.log(long);

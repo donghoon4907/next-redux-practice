@@ -14,7 +14,7 @@ import { useInput } from '@hooks/use-input';
 import { hideProductSearchModal } from '@actions/modal/product-search.action';
 import longConstants from '@constants/options/long';
 import { MyRadio } from '@components/radio';
-import { updateLongProduct } from '@actions/long/set-long-product.action';
+import { updateProduct } from '@actions/contract/set-product.action';
 
 interface Props {}
 
@@ -51,7 +51,7 @@ export const ProductSearchModal: FC<Props> = () => {
 
     const handleSubmit = () => {
         if (checkedProduct) {
-            dispatch(updateLongProduct(checkedProduct));
+            dispatch(updateProduct(checkedProduct));
 
             handleClose();
         } else {

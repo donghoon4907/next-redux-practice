@@ -28,6 +28,20 @@ export const LONG_DETAIL_TABS: CoreTabOption[] = [
     { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
 ];
 /**
+ * 일반 계약 상세 페이지 탭 목록
+ */
+export const GEN_DETAIL_TABS: CoreTabOption[] = [
+    {
+        id: 'tabCustomer',
+        label: '고객상세및동의현황',
+        panelId: 'tabpanelCustomer',
+    },
+    { id: 'tabPays', label: '납입실적', panelId: 'tabpanelPays' },
+    { id: 'tabCalcPerform', label: '정산실적', panelId: 'tabpanelCalcPerform' },
+    { id: 'tabContactHis', label: '접촉이력', panelId: 'tabpanelContactHis' },
+    { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
+];
+/**
  * 고객 상세 페이지 탭 목록
  */
 export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [

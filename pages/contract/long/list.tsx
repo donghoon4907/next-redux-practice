@@ -3,7 +3,8 @@ import type { AppState } from '@reducers/index';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { LongState } from '@reducers/long';
 import Head from 'next/head';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import dayjs from 'dayjs';
@@ -26,19 +27,22 @@ import { HrState } from '@reducers/hr';
 import { useSelect } from '@hooks/use-select';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { useInput, useNumbericInput } from '@hooks/use-input';
-import coreConstants from '@constants/core';
 import { MyInput } from '@components/input';
 import { useDateRangepicker } from '@hooks/use-datepicker';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import {
+    GetLongsRequestPayload,
     getLongsRequest,
     getLongsSuccess,
 } from '@actions/long/get-longs.action';
 import { DISTS } from '@constants/selectOption';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import longConstants from '@constants/options/long';
+import { TabModule } from '@utils/storage';
 
 const Longs: NextPage = () => {
+    const router = useRouter();
+
     const dispatch = useDispatch();
 
     const { orgas, users, longViewCompanies } = useSelector<AppState, HrState>(
@@ -59,7 +63,7 @@ const Longs: NextPage = () => {
     const [beforeRound] = useNumbericInput('1', { addComma: true });
     const [afterRound] = useNumbericInput('1', { addComma: true });
     // 검색필터 - 계약일자
-    const contdate = useDateRangepicker([startOfMonth(new Date()), new Date()]);
+    const [contdate, setContdate] = useDateRangepicker(null);
     // 검색필터 - 보험사
     const [company] = useSelect(longViewCompanies, null);
     // 검색필터 - 보종
@@ -86,23 +90,42 @@ const Longs: NextPage = () => {
     };
 
     const handleSearch = () => {
-        const condition: any = {};
+        let url = `/contract/long/list?page=1&nums=${longs.lastPayload!.nums}`;
 
-        if (contdate.value) {
-            condition['paydate'] = contdate.value.map((d) =>
-                dayjs(d).format(coreConstants.defaultDateFormat),
-            );
+        if (contdate.value !== null) {
+            url += `&paydate=${contdate.value
+                .map((v) => dayjs(v).format('YYYY-MM-DD'))
+                .join(',')}`;
+        }
+        // 동일한 요청 시 reject
+        if (url === router.asPath) {
+            return;
         }
 
-        dispatch(
-            getLongsRequest({
-                condition,
-                page: 1,
-                nums: longs.lastPayload!.nums,
-                successAction: getLongsSuccess,
-            }),
-        );
+        const tab = new TabModule();
+
+        tab.update('/contract/long/list', {
+            to: url,
+        });
+
+        router.replace(url);
     };
+
+    useEffect(() => {
+        if (longs.lastPayload) {
+            if (longs.lastPayload.condition) {
+                if (longs.lastPayload.condition.paydate) {
+                    setContdate(
+                        longs.lastPayload.condition.paydate.map(
+                            (v) => new Date(v),
+                        ) as [Date, Date],
+                    );
+                } else {
+                    setContdate(null);
+                }
+            }
+        }
+    }, [longs.lastPayload]);
 
     return (
         <>
@@ -377,8 +400,8 @@ const Longs: NextPage = () => {
 
                     <MyFooter>
                         <MyPagination
-                            requestAction={getLongsRequest}
-                            successAction={getLongsSuccess}
+                            // requestAction={getLongsRequest}
+                            // successAction={getLongsSuccess}
                             payload={longs.lastPayload}
                             total={longs.total.count}
                         >
@@ -400,19 +423,29 @@ const Longs: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }) => {
-        dispatch(getCompaniesRequest('long-view'));
+    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+        const { page, nums, paydate } = ctx.query;
 
-        dispatch(
-            getLongsRequest({
-                condition: {
-                    paydate: ['2023-06-01', '2023-06-30'],
-                },
-                page: 1,
-                nums: 25,
-                successAction: getLongsSuccess,
-            }),
-        );
+        const params: GetLongsRequestPayload = {
+            page: 1,
+            nums: 25,
+            condition: {},
+            successAction: getLongsSuccess,
+        };
+
+        if (page) {
+            params.page = +(page as string);
+        }
+        if (nums) {
+            params.nums = +(nums as string);
+        }
+        if (paydate) {
+            params.condition!['paydate'] = (paydate as string).split(',');
+        }
+
+        dispatch(getLongsRequest(params));
+
+        dispatch(getCompaniesRequest('long-view'));
 
         dispatch(
             getOrgasRequest({
