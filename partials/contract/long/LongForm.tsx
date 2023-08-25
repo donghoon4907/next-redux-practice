@@ -1510,7 +1510,7 @@ export const LongForm: FC<Props> = ({
             />
             <CreateEndorsementModal />
             <CreateEtcModal />
-            <UserHistoryModal type="long" />
+            {mode === 'update' && <UserHistoryModal type="long" />}
         </>
     );
 };
