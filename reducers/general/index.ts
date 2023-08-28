@@ -1,6 +1,6 @@
 import type { Reducer } from 'redux';
 import type { Pay } from '@models/pay';
-import type { InsuredPerson } from '@models/insured-person';
+import type { Insured } from '@models/insured';
 import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
 import produce from 'immer';
 import { PayActionTypes } from '@actions/long/set-pay.action';
@@ -25,11 +25,11 @@ export interface GeneralState {
     /**
      * 피보험자 목록
      */
-    insuredPeople: InsuredPerson[];
+    insureds: Insured[];
     /**
      * 삭제한 피보험자 목록
      */
-    removedInsuredPeople: InsuredPerson[];
+    removedInsureds: Insured[];
 }
 
 const initialState: GeneralState = {
@@ -43,8 +43,8 @@ const initialState: GeneralState = {
     general: null,
     pays: [],
     removedPays: [],
-    insuredPeople: [],
-    removedInsuredPeople: [],
+    insureds: [],
+    removedInsureds: [],
 };
 
 export const generalReducer: Reducer<GeneralState, any> = (

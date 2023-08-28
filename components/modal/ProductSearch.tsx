@@ -3,6 +3,7 @@ import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import type { HrState } from '@reducers/hr';
 import type { Product } from '@models/product';
+import type { Spe } from '@models/spe';
 import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -16,9 +17,11 @@ import longConstants from '@constants/options/long';
 import { MyRadio } from '@components/radio';
 import { updateProduct } from '@actions/contract/set-product.action';
 
-interface Props {}
+interface Props {
+    spe: Spe;
+}
 
-export const ProductSearchModal: FC<Props> = () => {
+export const ProductSearchModal: FC<Props> = ({ spe }) => {
     const dispatch = useDispatch();
 
     const { isShowProductSearchModal } = useSelector<AppState, ModalState>(
@@ -51,7 +54,17 @@ export const ProductSearchModal: FC<Props> = () => {
 
     const handleSubmit = () => {
         if (checkedProduct) {
-            dispatch(updateProduct(checkedProduct));
+            if (spe === 'long') {
+                dispatch(updateProduct(checkedProduct));
+            } else if (spe === 'gen') {
+                dispatch(
+                    updateProduct({
+                        ...checkedProduct,
+                        subcategory: null,
+                        cal_spec: null,
+                    }),
+                );
+            }
 
             handleClose();
         } else {

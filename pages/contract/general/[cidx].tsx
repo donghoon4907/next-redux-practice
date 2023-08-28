@@ -17,7 +17,7 @@ import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
 import { LongForm } from '@partials/contract/long/LongForm';
 import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createInsuredPerson } from '@actions/contract/set-insured-person.action';
+import { createInsured } from '@actions/contract/set-insured.action';
 import { createPay } from '@actions/long/set-pay.action';
 import { makeDistkind } from '@utils/calculator';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
@@ -198,7 +198,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             if (long.p_persons) {
                 for (let i = 0; i < long.p_persons.length; i++) {
                     dispatch(
-                        createInsuredPerson({
+                        createInsured({
                             ...long.p_persons[i],
                             index: i,
                             checked: false,

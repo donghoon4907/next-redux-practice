@@ -1,13 +1,15 @@
 import type { Reducer } from 'redux';
 import type { Product } from '@models/product';
-import type { InsuredPerson } from '@models/insured-person';
+import type { Insured } from '@models/insured';
+import type { Pay } from '@models/pay';
 import produce from 'immer';
 import { ProductActionTypes } from '@actions/contract/set-product.action';
 import {
     LoadedContractorActionTypes,
-    LoadedInsuredPersonActionTypes,
+    LoadedInsuredActionTypes,
 } from '@actions/contract/set-contractor.action';
-import { InsuredPersonActionTypes } from '@actions/contract/set-insured-person.action';
+import { InsuredActionTypes } from '@actions/contract/set-insured.action';
+import { PayActionTypes } from '@actions/contract/set-pay.action';
 
 export interface ContractState {
     /**
@@ -21,23 +23,33 @@ export interface ContractState {
     /**
      * 불러온 피보험자
      */
-    loadedInsuredPerson: any;
+    loadedInsured: any;
     /**
      * 피보험자 목록
      */
-    insuredPeople: InsuredPerson[];
+    insureds: Insured[];
     /**
      * 삭제한 피보험자 목록
      */
-    removedInsuredPeople: InsuredPerson[];
+    removedInsureds: Insured[];
+    /**
+     * 납입실적 목록
+     */
+    pays: Pay[];
+    /**
+     * 삭제한 납입실적 목록
+     */
+    removedPays: Pay[];
 }
 
 const initialState: ContractState = {
     selectedProduct: null,
     loadedContract: null,
-    loadedInsuredPerson: null,
-    insuredPeople: [],
-    removedInsuredPeople: [],
+    loadedInsured: null,
+    insureds: [],
+    removedInsureds: [],
+    pays: [],
+    removedPays: [],
 };
 
 export const contractReducer: Reducer<ContractState, any> = (
@@ -56,24 +68,22 @@ export const contractReducer: Reducer<ContractState, any> = (
 
                 break;
             }
-            case LoadedInsuredPersonActionTypes.UPDATE: {
-                draft.loadedInsuredPerson = action.payload;
+            case LoadedInsuredActionTypes.UPDATE: {
+                draft.loadedInsured = action.payload;
 
                 break;
             }
-            case InsuredPersonActionTypes.CREATE: {
-                draft.insuredPeople = draft.insuredPeople.concat(
-                    action.payload,
-                );
+            case InsuredActionTypes.CREATE: {
+                draft.insureds = draft.insureds.concat(action.payload);
                 break;
             }
-            case InsuredPersonActionTypes.UPDATE: {
+            case InsuredActionTypes.UPDATE: {
                 const { index, ...rest } = action.payload;
 
-                for (let i = 0; i < draft.insuredPeople.length; i++) {
-                    if (draft.insuredPeople[i].index === index) {
-                        draft.insuredPeople[i] = {
-                            ...draft.insuredPeople[i],
+                for (let i = 0; i < draft.insureds.length; i++) {
+                    if (draft.insureds[i].index === index) {
+                        draft.insureds[i] = {
+                            ...draft.insureds[i],
                             ...rest,
                         };
 
@@ -83,17 +93,52 @@ export const contractReducer: Reducer<ContractState, any> = (
 
                 break;
             }
-            case InsuredPersonActionTypes.DELETE: {
-                const findIndex = draft.insuredPeople.findIndex(
+            case InsuredActionTypes.DELETE: {
+                const findIndex = draft.insureds.findIndex(
                     (v) => v.index === action.payload.index,
                 );
 
                 if (findIndex !== -1) {
-                    const [deleted] = draft.insuredPeople.splice(findIndex, 1);
+                    const [deleted] = draft.insureds.splice(findIndex, 1);
 
                     if (deleted.p_idx) {
-                        draft.removedInsuredPeople =
-                            draft.removedInsuredPeople.concat(deleted);
+                        draft.removedInsureds =
+                            draft.removedInsureds.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case PayActionTypes.CREATE: {
+                draft.pays = draft.pays.concat(action.payload);
+                break;
+            }
+            case PayActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.pays.length; i++) {
+                    if (draft.pays[i].index === index) {
+                        draft.pays[i] = {
+                            ...draft.pays[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case PayActionTypes.DELETE: {
+                const findIndex = draft.pays.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.pays.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedPays = draft.removedPays.concat(deleted);
                     }
                 }
 

@@ -3,7 +3,7 @@ import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { AppState } from '@reducers/index';
 import type { ContractState } from '@reducers/contract';
 import type { CoreEditableComponent } from '@interfaces/core';
-import type { InsuredPerson } from '@models/insured-person';
+import type { Insured } from '@models/insured';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
@@ -18,15 +18,18 @@ import { isEmpty } from '@utils/validator/common';
 import { convertPhoneNumber } from '@utils/converter';
 import { showContractorSearchModal } from '@actions/modal/customer-search.action';
 import {
-    deleteInsuredPerson,
-    updateInsuredPerson,
-} from '@actions/contract/set-insured-person.action';
+    deleteInsured,
+    updateInsured,
+} from '@actions/contract/set-insured.action';
 
-import { InsuredPersonTemplate } from '../template/InsuredPerson';
-import { InsuredPersonForm } from '../InsuredPersonForm';
+import { InsuredTemplate } from '../template/Insured';
+// import { InsuredForm } from '../InsuredForm';
+import { Spe } from '@models/spe';
+import { InsuredForm } from '../InsuredForm';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {
     userid: string;
+    spe: Spe;
 }
 
 export const CustomerTabpanel: FC<Props> = ({
@@ -35,13 +38,13 @@ export const CustomerTabpanel: FC<Props> = ({
     hidden,
     editable,
     userid,
+    spe,
 }) => {
     const dispatch = useDispatch();
 
-    const { loadedContract, insuredPeople } = useSelector<
-        AppState,
-        ContractState
-    >((state) => state.contract);
+    const { loadedContract, insureds } = useSelector<AppState, ContractState>(
+        (state) => state.contract,
+    );
 
     const getUserCustomers = useApi(getUserCustomersRequest);
 
@@ -62,22 +65,19 @@ export const CustomerTabpanel: FC<Props> = ({
         });
     };
 
-    const handleCheck = (
-        evt: ChangeEvent<HTMLInputElement>,
-        v: InsuredPerson,
-    ) => {
-        dispatch(updateInsuredPerson({ ...v, checked: evt.target.checked }));
+    const handleCheck = (evt: ChangeEvent<HTMLInputElement>, v: Insured) => {
+        dispatch(updateInsured({ ...v, checked: evt.target.checked }));
     };
 
     const handleDelete = () => {
-        if (insuredPeople.findIndex((v) => v.checked) === -1) {
+        if (insureds.findIndex((v) => v.checked) === -1) {
             return alert('삭제할 피보험자를 선택해주세요.');
         }
 
-        insuredPeople
+        insureds
             .filter((v) => v.checked)
             .forEach((v) => {
-                dispatch(deleteInsuredPerson({ index: v.index }));
+                dispatch(deleteInsured({ index: v.index }));
             });
     };
 
@@ -277,19 +277,25 @@ export const CustomerTabpanel: FC<Props> = ({
                     {editable && (
                         <div className="wr-pages-detail__block wr-mt">
                             <div className="wr-pages-detail__title">
-                                <strong>피보험자 등록</strong>
+                                <strong>
+                                    {spe === 'long' && '피보험자 등록'}
+                                    {spe === 'gen' && '피보험물(자) 등록'}
+                                </strong>
                                 <div></div>
                             </div>
                             <div className="wr-pages-detail__content">
-                                <InsuredPersonForm userid={userid} />
+                                <InsuredForm userid={userid} spe={spe} />
                             </div>
                         </div>
                     )}
 
-                    {insuredPeople.length > 0 && (
+                    {insureds.length > 0 && (
                         <div className="wr-pages-detail__block wr-mt">
                             <div className="wr-pages-detail__title">
-                                <strong>피보험자 목록</strong>
+                                <strong>
+                                    {spe === 'long' && '피보험자 목록'}
+                                    {spe === 'gen' && '피보험물(자) 목록'}
+                                </strong>
                                 {editable && (
                                     <div>
                                         <MyButton
@@ -301,10 +307,10 @@ export const CustomerTabpanel: FC<Props> = ({
                                     </div>
                                 )}
                             </div>
-                            {insuredPeople.map((v, index) => (
+                            {insureds.map((v, index) => (
                                 <div
                                     className="wr-pages-detail__content"
-                                    key={`iPerson${index}`}
+                                    key={`i${index}`}
                                 >
                                     <div className="row">
                                         {editable && (
@@ -325,12 +331,10 @@ export const CustomerTabpanel: FC<Props> = ({
                                         <div className="col">
                                             {editable ? (
                                                 <div className="wr-ml">
-                                                    <InsuredPersonTemplate
-                                                        {...v}
-                                                    />
+                                                    <InsuredTemplate {...v} />
                                                 </div>
                                             ) : (
-                                                <InsuredPersonTemplate {...v} />
+                                                <InsuredTemplate {...v} />
                                             )}
                                         </div>
                                     </div>

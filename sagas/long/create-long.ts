@@ -10,7 +10,13 @@ import {
 function* createLongSaga({ payload }: CreateLongRequestAction) {
     const { data } = yield call(longsService.createLong, payload);
 
-    alert('등록되었습니다.');
+    const { Message } = data;
+
+    if (Message === 'Success') {
+        alert('등록되었습니다.');
+    } else {
+        alert(Message);
+    }
 
     yield put(createLongSuccess());
 

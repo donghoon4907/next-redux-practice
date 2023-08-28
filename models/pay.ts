@@ -9,7 +9,7 @@ export type Pay = CoreCheckableModel & {
     /**
      * 회차
      */
-    whoi: number;
+    whoi?: number;
     /**
      * 납입구분
      */
@@ -33,11 +33,11 @@ export type Pay = CoreCheckableModel & {
     /**
      * 납입주기
      */
-    cycle: number;
+    cycle?: number;
     /**
      * 실적확인
      */
-    confirm?: 'Y' | 'N';
+    confirm?: 'Y' | 'N' | boolean;
     /**
      * 정산여부
      */
@@ -45,5 +45,6 @@ export type Pay = CoreCheckableModel & {
     /**
      * 입력
      */
+    insert_userid?: string;
     insert_datetime?: string;
 };

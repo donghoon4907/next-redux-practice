@@ -1,8 +1,8 @@
 import type { Action } from 'redux';
 import type { Pay } from '@models/pay';
+import type { Insured } from '@models/insured';
+import type { Contact } from '@models/contact';
 import type { CorePayload } from '@interfaces/core';
-import { InsuredPerson } from '@models/insured-person';
-import { Contact } from '@models/contact';
 
 export const CREATE_LONG_KEY = 'CREATE_LONG';
 
@@ -76,7 +76,7 @@ export interface CreateLongRequestPayload extends CorePayload {
     // 계약자 이름
     c_name?: string;
     // 피보험자 목록
-    p_persions?: InsuredPerson[];
+    p_persions?: Insured[];
     // 납입실적 목록
     pays?: Pay[];
     // 접촉이력

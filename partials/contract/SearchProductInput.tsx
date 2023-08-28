@@ -47,7 +47,7 @@ export const SearchProductInput: FC<Props> = ({
     const _calSpec = selectedProduct ? selectedProduct.cal_spec : calSpec;
 
     let pTitlePaddingRate = 0;
-    if (spec) {
+    if (_spec) {
         pTitlePaddingRate += 1;
     }
 

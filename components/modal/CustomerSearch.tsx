@@ -8,14 +8,14 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { MyRadio } from '@components/radio';
 import {
     hideContractorSearchModal,
-    hideInsuredPersonSearchModal,
+    hideInsuredSearchModal,
 } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
 import { useApi } from '@hooks/use-api';
 import { getCustomerRequest } from '@actions/customer/get-customer';
 import {
     updateLoadedContractor,
-    updateLoadedInsuredPerson,
+    updateLoadedInsured,
 } from '@actions/contract/set-contractor.action';
 
 interface Props {
@@ -40,7 +40,7 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
         if (type === 'contractor') {
             dispatch(hideContractorSearchModal());
         } else if (type === 'insured-person') {
-            dispatch(hideInsuredPersonSearchModal());
+            dispatch(hideInsuredSearchModal());
         }
     };
 
@@ -50,7 +50,7 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
                 if (type === 'contractor') {
                     dispatch(updateLoadedContractor(data));
                 } else if (type === 'insured-person') {
-                    dispatch(updateLoadedInsuredPerson(data));
+                    dispatch(updateLoadedInsured(data));
                 }
                 handleClose();
             });

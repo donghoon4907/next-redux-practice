@@ -15,10 +15,13 @@ import { CreateEventModalActionTypes } from '@actions/modal/create-event.action'
 import { ProductSearchModalActionTypes } from '@actions/modal/product-search.action';
 import {
     ContractorSearchModalActionTypes,
-    InsuredPersonSearchModalActionTypes,
+    InsuredSearchModalActionTypes,
 } from '@actions/modal/customer-search.action';
-import { CreatePayModalActionTypes } from '@actions/modal/create-pay.action';
 import { CreateEndorsementModalActionTypes } from '@actions/modal/create-endorsement.action';
+import {
+    CreateGeneralPayModalActionTypes,
+    CreateLongPayModalActionTypes,
+} from '@actions/modal/create-pay.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -38,8 +41,9 @@ export interface ModalState {
     isShowCreateEventModal: boolean;
     isShowProductSearchModal: boolean;
     isShowContractorSearchModal: boolean;
-    isShowInsuredPersonSearchModal: boolean;
-    isShowCreatePayModal: boolean;
+    isShowInsuredSearchModal: boolean;
+    isShowCreateLongPayModal: boolean;
+    isShowCreateGeneralPayModal: boolean;
     isShowCreateEndorsementModal: boolean;
 }
 
@@ -61,8 +65,9 @@ const initialState: ModalState = {
     isShowCreateEventModal: false,
     isShowProductSearchModal: false,
     isShowContractorSearchModal: false,
-    isShowInsuredPersonSearchModal: false,
-    isShowCreatePayModal: false,
+    isShowInsuredSearchModal: false,
+    isShowCreateLongPayModal: false,
+    isShowCreateGeneralPayModal: false,
     isShowCreateEndorsementModal: false,
 };
 
@@ -204,20 +209,28 @@ export const modalReducer: Reducer<ModalState, any> = (
                 draft.isShowContractorSearchModal = false;
                 break;
             }
-            case InsuredPersonSearchModalActionTypes.SHOW: {
-                draft.isShowInsuredPersonSearchModal = true;
+            case InsuredSearchModalActionTypes.SHOW: {
+                draft.isShowInsuredSearchModal = true;
                 break;
             }
-            case InsuredPersonSearchModalActionTypes.HIDE: {
-                draft.isShowInsuredPersonSearchModal = false;
+            case InsuredSearchModalActionTypes.HIDE: {
+                draft.isShowInsuredSearchModal = false;
                 break;
             }
-            case CreatePayModalActionTypes.SHOW: {
-                draft.isShowCreatePayModal = true;
+            case CreateLongPayModalActionTypes.SHOW: {
+                draft.isShowCreateLongPayModal = true;
                 break;
             }
-            case CreatePayModalActionTypes.HIDE: {
-                draft.isShowCreatePayModal = false;
+            case CreateLongPayModalActionTypes.HIDE: {
+                draft.isShowCreateLongPayModal = false;
+                break;
+            }
+            case CreateGeneralPayModalActionTypes.SHOW: {
+                draft.isShowCreateGeneralPayModal = true;
+                break;
+            }
+            case CreateGeneralPayModalActionTypes.HIDE: {
+                draft.isShowCreateGeneralPayModal = false;
                 break;
             }
             case CreateEndorsementModalActionTypes.SHOW: {

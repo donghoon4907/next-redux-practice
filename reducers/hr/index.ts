@@ -30,9 +30,6 @@ export interface HrState {
      * 장기 계약 관련 보험사목록
      */
     longViewCompanies: CoreSelectOption[];
-    /**
-     * 장기 계약 관련 보험사목록
-     */
     longUseCompanies: CoreSelectOption[];
     /**
      * 자동차 계약 관련 보험사목록
@@ -42,6 +39,7 @@ export interface HrState {
      * 일반 계약 관련 보험사목록
      */
     genCompanies: CoreSelectOption[];
+    genUseCompanies: CoreSelectOption[];
     /**
      * 은행목록
      */
@@ -117,6 +115,7 @@ const initialState: HrState = {
     longUseCompanies: [],
     carCompanies: [],
     genCompanies: [],
+    genUseCompanies: [],
     banks: [],
     agencies: [],
     orgas: [],
@@ -160,6 +159,7 @@ export const hrReducer: Reducer<HrState, any> = (
                     draft.longUseCompanies = action.payload.companies;
                 } else if (action.payload.type === 'car-use') {
                 } else if (action.payload.type === 'gen-use') {
+                    draft.genUseCompanies = action.payload.companies;
                 } else if (action.payload.type === 'board') {
                 }
 

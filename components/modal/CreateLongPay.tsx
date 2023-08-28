@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import type { CreatePayPayload } from '@actions/long/set-pay.action';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -15,7 +15,7 @@ import { generateIndex } from '@utils/generate';
 import { useSelect } from '@hooks/use-select';
 import { MySelect } from '@components/select';
 import { MyDatepicker } from '@components/datepicker';
-import { hideCreatePayModal } from '@actions/modal/create-pay.action';
+import { hideCreateLongPayModal } from '@actions/modal/create-pay.action';
 import { createPay } from '@actions/long/set-pay.action';
 import longConstants from '@constants/options/long';
 import { findSelectOption } from '@utils/getter';
@@ -33,14 +33,16 @@ interface Props {
     payment: string;
 }
 
-export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
+export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
     const dispatch = useDispatch();
 
-    const { isShowCreatePayModal } = useSelector<AppState, ModalState>(
+    const { isShowCreateLongPayModal } = useSelector<AppState, ModalState>(
         (state) => state.modal,
     );
 
-    const { pays } = useSelector<AppState, LongState>((state) => state.long);
+    const { pays } = useSelector<AppState, ContractState>(
+        (state) => state.contract,
+    );
 
     // 영수일
     const [paydate, setPaydate] = useDatepicker(null);
@@ -94,7 +96,7 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
         dist.value?.value === '철회' || dist.value?.value === '취소';
 
     const handleClose = () => {
-        dispatch(hideCreatePayModal());
+        dispatch(hideCreateLongPayModal());
     };
 
     const handleSubmit = () => {
@@ -175,7 +177,7 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
             } else {
                 setPaydate(new Date());
 
-                setWhoi((+pays[pays.length - 1].whoi + 1).toString());
+                setWhoi((+pays[pays.length - 1].whoi! + 1).toString());
 
                 setDist(findSelectOption('계속', longConstants.pDist));
             }
@@ -196,7 +198,7 @@ export const CreatePayModal: FC<Props> = ({ contdate, payment }) => {
 
     return (
         <Modal
-            isOpen={isShowCreatePayModal}
+            isOpen={isShowCreateLongPayModal}
             toggle={handleClose}
             size="lg"
             onOpened={handleOpen}

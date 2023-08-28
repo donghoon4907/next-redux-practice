@@ -1,12 +1,10 @@
 import type { Reducer } from 'redux';
-import type { Pay } from '@models/pay';
 import type { Endorsement } from '@models/endorsement';
 import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
 import produce from 'immer';
 import { GetLongsActionTypes } from '@actions/long/get-longs.action';
 import { GetLongActionTypes } from '@actions/long/get-long.action';
 // import { LongEtcUpdateActionTypes } from '@actions/long/set-long-etc.action';
-import { PayActionTypes } from '@actions/long/set-pay.action';
 import { EndorsementActionTypes } from '@actions/long/set-endorsement.action';
 
 export interface LongState {
@@ -18,14 +16,6 @@ export interface LongState {
      * 장기계약 상세
      */
     long: any;
-    /**
-     * 납입실적 목록
-     */
-    pays: Pay[];
-    /**
-     * 삭제한 납입실적 목록
-     */
-    removedPays: Pay[];
     /**
      * 배서 목록
      */
@@ -46,8 +36,6 @@ const initialState: LongState = {
     },
     long: null,
     // etcs: [],
-    pays: [],
-    removedPays: [],
     endorsements: [
         {
             index: 0,
@@ -90,41 +78,6 @@ export const longReducer: Reducer<LongState, any> = (
 
             //     break;
             // }
-            case PayActionTypes.CREATE: {
-                draft.pays = draft.pays.concat(action.payload);
-                break;
-            }
-            case PayActionTypes.UPDATE: {
-                const { index, ...rest } = action.payload;
-
-                for (let i = 0; i < draft.pays.length; i++) {
-                    if (draft.pays[i].index === index) {
-                        draft.pays[i] = {
-                            ...draft.pays[i],
-                            ...rest,
-                        };
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-            case PayActionTypes.DELETE: {
-                const findIndex = draft.pays.findIndex(
-                    (v) => v.index === action.payload.index,
-                );
-
-                if (findIndex !== -1) {
-                    const [deleted] = draft.pays.splice(findIndex, 1);
-
-                    if (deleted.idx) {
-                        draft.removedPays = draft.removedPays.concat(deleted);
-                    }
-                }
-
-                break;
-            }
             case EndorsementActionTypes.CREATE: {
                 draft.endorsements = draft.endorsements.concat(action.payload);
                 break;

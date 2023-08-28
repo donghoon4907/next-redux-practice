@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import type { LongState } from '@reducers/long';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CommonState } from '@reducers/common';
@@ -9,7 +8,6 @@ import type { CoreSelectOption } from '@interfaces/core';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import addYears from 'date-fns/addYears';
 import { MySelect } from '@components/select';
 import { GEN_DETAIL_TABS, LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -20,7 +18,7 @@ import { MyLayout } from '@components/Layout';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
-import { PaysTabpanel } from '@partials/contract/long/tabpanels/Pays';
+import { GeneralPaysTabpanel } from '@partials/contract/long/tabpanels/GeneralPays';
 // import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/contract/long/tabpanels/ChangeHistory';
 import { MyButton } from '@components/button';
@@ -37,16 +35,16 @@ import longConstants from '@constants/options/long';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
-import { CreatePayModal } from '@components/modal/CreatePay';
+import { CreateGeneralPayModal } from '@components/modal/CreateGeneralPay';
 import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { CreateLongDTO, UpdateLongDTO } from '@dto/long/Long.dto';
-import { createLongRequest } from '@actions/long/create-long.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { updateLongRequest } from '@actions/long/update-long.action';
 import { SearchProductInput } from '../SearchProductInput';
+import { CreateGeneralDTO } from '@dto/contractor/General.dto';
+import { createGeneralRequest } from '@actions/general/create-general.action';
 
 interface Props {
     /**
@@ -82,15 +80,13 @@ interface Props {
      */
     defaultContdate?: string;
     /**
+     * 보장시기 기본 값
+     */
+    defaultBodatefrom?: string;
+    /**
      * 보장만기 기본 값
      */
     defaultBodateto?: string;
-    defaultBoDu?: number;
-    /**
-     * 납입기간 기본 값
-     */
-    defaultPayDateto?: string;
-    defaultPayDu?: number;
     /**
      * 계약상태 기본 값
      */
@@ -100,17 +96,9 @@ interface Props {
      */
     defaultSpec?: string;
     /**
-     * 상품보종 기본 값
-     */
-    defaultSubCategory?: string;
-    /**
      * 검증 여부 기본 값
      */
     defaultIsConfirm?: string;
-    /**
-     * 정산보종 기본 값
-     */
-    defaultCalSpec?: string;
     /**
      * 실적보험료 기본 값
      */
@@ -125,47 +113,32 @@ export const GeneralForm: FC<Props> = ({
     defaultComp = null,
     defaultCnum = '',
     defaultTitle = '',
+    defaultBodatefrom = null,
     defaultContdate = null,
     defaultBodateto = '',
-    defaultBoDu = -1,
-    defaultPayDateto = '',
-    defaultPayDu = -1,
     defaultStatus = null,
     defaultSpec = '',
-    defaultSubCategory = '',
     defaultIsConfirm = 'N',
-    defaultCalSpec = '',
     defaultPayment = '',
 }) => {
     const displayName = 'wr-pages-general-detail';
-
-    const duSelectOptions = Array.from({ length: 50 }).map((_, i) => ({
-        label: `${i + 1}년`,
-        value: `${i + 1}`,
-    }));
 
     const { contacts, removedContacts, newUserHistory } = useSelector<
         AppState,
         CommonState
     >((state) => state.common);
 
-    const { longUseCompanies, orgas, users } = useSelector<AppState, HrState>(
+    const { genUseCompanies, orgas, users } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
-    const { selectedProduct, insuredPeople, loadedContract } = useSelector<
-        AppState,
-        ContractState
-    >((state) => state.contract);
+    const { selectedProduct, insureds, loadedContract, pays, removedPays } =
+        useSelector<AppState, ContractState>((state) => state.contract);
 
-    const { pays, removedPays } = useSelector<AppState, LongState>(
-        (state) => state.long,
-    );
-
-    const { isShowContractorSearchModal, isShowInsuredPersonSearchModal } =
+    const { isShowContractorSearchModal, isShowInsuredSearchModal } =
         useSelector<AppState, ModalState>((state) => state.modal);
 
-    const createLong = useApi(createLongRequest);
+    const createGeneral = useApi(createGeneralRequest);
 
     const updateLong = useApi(updateLongRequest);
 
@@ -180,67 +153,20 @@ export const GeneralForm: FC<Props> = ({
     // 담당자
     const [manager, setManager] = useSelect(users);
     // 보험사
-    const [comp] = useSelect(longUseCompanies, defaultComp);
+    const [comp] = useSelect(genUseCompanies, defaultComp);
     // 계약번호
     const [cnum] = useInput(defaultCnum);
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : new Date(),
-        {
-            callbackOnChange: (next) => {
-                if (next) {
-                    if (payDu.value) {
-                        const date = addYears(next, +payDu.value.value);
-
-                        setPayDateto(dayjs(date).format('YYYY-MM-DD'));
-                    }
-
-                    if (boDu.value) {
-                        const date = addYears(next, +boDu.value.value);
-
-                        setBoDateto(dayjs(date).format('YYYY-MM-DD'));
-                    }
-                }
-            },
-        },
+    );
+    // 보장시기
+    const [boDatefrom] = useDatepicker(
+        defaultBodatefrom ? new Date(defaultBodatefrom) : null,
     );
     // 보장만기
-    const [boDateto, setBoDateto] = useInput(defaultBodateto);
-    const [boDu] = useSelect(
-        duSelectOptions,
-        findSelectOption(defaultBoDu.toString(), duSelectOptions),
-        {
-            callbackOnChange: (next) => {
-                if (next) {
-                    if (contdate.value) {
-                        const date = addYears(contdate.value, +next.value);
-
-                        setBoDateto(dayjs(date).format('YYYY-MM-DD'));
-                    } else {
-                        alert('계약일을 입력해주세요');
-                    }
-                }
-            },
-        },
-    );
-    // 납입기간
-    const [payDateto, setPayDateto] = useInput(defaultPayDateto);
-    const [payDu] = useSelect(
-        duSelectOptions,
-        findSelectOption(defaultPayDu.toString(), duSelectOptions),
-        {
-            callbackOnChange: (next) => {
-                if (next) {
-                    if (contdate.value) {
-                        const date = addYears(contdate.value, +next.value);
-
-                        setPayDateto(dayjs(date).format('YYYY-MM-DD'));
-                    } else {
-                        alert('계약일을 입력해주세요');
-                    }
-                }
-            },
-        },
+    const [boDateto] = useDatepicker(
+        defaultBodateto ? new Date(defaultBodateto) : null,
     );
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
@@ -262,25 +188,25 @@ export const GeneralForm: FC<Props> = ({
     const handleCreate = () => {
         const payload = createPayload();
 
-        const createLongDto = new CreateLongDTO(payload);
+        const createGeneralDto = new CreateGeneralDTO(payload);
 
-        if (createLongDto.requiredValidate()) {
-            createLong(createLongDto.getPayload());
+        if (createGeneralDto.requiredValidate()) {
+            createGeneral(createGeneralDto.getPayload());
         }
     };
 
     const handleUpdate = () => {
         const payload = createPayload();
 
-        const updateLongDto = new UpdateLongDTO(payload);
+        // const updateLongDto = new UpdateLongDTO(payload);
 
-        if (updateLongDto.requiredValidate()) {
-            updateLong(updateLongDto.getPayload(), ({ Message }) => {
-                if (Message === 'Success') {
-                    alert('수정되었습니다.');
-                }
-            });
-        }
+        // if (updateLongDto.requiredValidate()) {
+        //     updateLong(updateLongDto.getPayload(), ({ Message }) => {
+        //         if (Message === 'Success') {
+        //             alert('수정되었습니다.');
+        //         }
+        //     });
+        // }
     };
 
     const createPayload = () => {
@@ -288,8 +214,6 @@ export const GeneralForm: FC<Props> = ({
             wcode: -1,
             cnum: cnum.value,
             contdate: dayjs(contdate.value).format('YYYY-MM-DD'),
-            pay_cycle: -1,
-            pay_dateto: null,
             payment: -1,
             remove: {},
         };
@@ -302,11 +226,6 @@ export const GeneralForm: FC<Props> = ({
             payload.wcode = comp.value.value;
         }
 
-        if (!isEmpty(payDateto.value)) {
-            payload.pay_dateto = payDateto.value;
-            payload['pay_du'] = payDu.value!.value;
-        }
-
         if (!isEmpty(payment.value)) {
             payload.payment = +payment.value.replace(/,/g, '');
         }
@@ -315,26 +234,19 @@ export const GeneralForm: FC<Props> = ({
             payload['p_code'] = selectedProduct.p_code;
             payload['title'] = selectedProduct.title;
             payload['spec'] = selectedProduct.spec;
-            payload['subcategory'] = selectedProduct.subcategory;
-            payload['cal_spec'] = selectedProduct.cal_spec;
+            // payload['subcategory'] = selectedProduct.subcategory;
+            // payload['cal_spec'] = selectedProduct.cal_spec;
+        }
+
+        if (!isEmpty(boDatefrom.value)) {
+            payload['bo_datefrom'] = dayjs(boDatefrom.value).format(
+                'YYYY-MM-DD',
+            );
         }
 
         if (!isEmpty(boDateto.value)) {
-            payload['bo_dateto'] = boDateto.value;
-            payload['bo_du'] = boDu.value!.value;
+            payload['bo_dateto'] = dayjs(boDateto.value).format('YYYY-MM-DD');
         }
-
-        // if (status.value) {
-        //     payload['status'] = status.value.value;
-        // }
-
-        // if (payStatus.value) {
-        //     payload['pay_status'] = payStatus.value.value;
-        // }
-
-        // if (statusDate.value) {
-        //     payload['status_date'] = statusDate.value;
-        // }
 
         if (loadedContract) {
             payload['c_idx'] = loadedContract.idx;
@@ -346,12 +258,6 @@ export const GeneralForm: FC<Props> = ({
         } else if (mode === 'update') {
             if (newUserHistory) {
                 payload['userid'] = newUserHistory.userid;
-                // payload['userid_his'] = [
-                //     ...userHistories,
-                //     {
-                //         ...newUserHistory,
-                //     },
-                // ];
             }
 
             if (removedContacts.length > 0) {
@@ -369,8 +275,8 @@ export const GeneralForm: FC<Props> = ({
             payload['contacts'] = contacts;
         }
 
-        if (insuredPeople.length > 0) {
-            payload['p_persons'] = insuredPeople;
+        if (insureds.length > 0) {
+            payload['p_persons'] = insureds;
         }
 
         if (pays.length > 0) {
@@ -502,9 +408,9 @@ export const GeneralForm: FC<Props> = ({
                                         wcode={comp.value?.value}
                                         title={defaultTitle}
                                         spec={defaultSpec}
-                                        subcategory={defaultSubCategory}
-                                        calSpec={defaultCalSpec}
-                                        spe="gen"
+                                        subcategory={null}
+                                        calSpec={null}
+                                        spe="long"
                                     />
                                     <div className="row wr-mt">
                                         <div className="col-6">
@@ -523,29 +429,33 @@ export const GeneralForm: FC<Props> = ({
                                                 />
                                             </WithLabel>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    label="계약상태"
-                                                    type={labelType}
-                                                >
-                                                    <MyDatepicker
-                                                        id=""
-                                                        size="md"
-                                                        placeholder="계약상태"
-                                                        disabled={!editable}
-                                                    />
-                                                    <div className="wr-with__extension">
-                                                        <MyButton
-                                                            className="btn-primary btn-md"
+                                        {mode === 'update' && (
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
+                                                        label="계약상태"
+                                                        type={labelType}
+                                                    >
+                                                        <MyDatepicker
+                                                            id=""
+                                                            size="md"
+                                                            placeholder="계약상태"
                                                             disabled={!editable}
-                                                        >
-                                                            이력
-                                                        </MyButton>
-                                                    </div>
-                                                </WithLabel>
+                                                        />
+                                                        <div className="wr-with__extension">
+                                                            <MyButton
+                                                                className="btn-primary btn-md"
+                                                                disabled={
+                                                                    !editable
+                                                                }
+                                                            >
+                                                                이력
+                                                            </MyButton>
+                                                        </div>
+                                                    </WithLabel>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -554,66 +464,34 @@ export const GeneralForm: FC<Props> = ({
                                     <div className="row">
                                         <div className="col-6">
                                             <WithLabel
-                                                label="보장만기"
+                                                id="bo_datefrom"
+                                                label="보장시기"
                                                 type={labelType}
                                             >
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="보장만기일"
-                                                    disabled={true}
-                                                    className="wr-with__badge--inside-right-1"
-                                                    {...boDateto}
+                                                <MyDatepicker
+                                                    id="bo_datefrom"
+                                                    size="md"
+                                                    placeholder="보장시기"
+                                                    disabled={!editable}
+                                                    hooks={boDatefrom}
                                                 />
-                                                <div
-                                                    className="wr-with__extension"
-                                                    style={{ width: 100 }}
-                                                >
-                                                    <MySelect
-                                                        placeholder="선택"
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        placement="right"
-                                                        {...boDu}
-                                                    />
-                                                </div>
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    label="납입만기"
+                                                    id="bo_dateto"
+                                                    label="보장만기"
                                                     type={labelType}
                                                     isRequired={editable}
                                                 >
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="납입만기"
-                                                        disabled={true}
-                                                        className="wr-with__badge--inside-right-1"
-                                                        {...payDateto}
+                                                    <MyDatepicker
+                                                        id="bo_dateto"
+                                                        size="md"
+                                                        placeholder="보장만기"
+                                                        disabled={!editable}
+                                                        hooks={boDateto}
                                                     />
-                                                    <div
-                                                        className="wr-with__extension"
-                                                        style={{ width: 100 }}
-                                                    >
-                                                        <MySelect
-                                                            placeholder="선택"
-                                                            placeHolderFontSize={
-                                                                16
-                                                            }
-                                                            height={
-                                                                variables.detailFilterHeight
-                                                            }
-                                                            isDisabled={
-                                                                !editable
-                                                            }
-                                                            placement="right"
-                                                            {...payDu}
-                                                        />
-                                                    </div>
                                                 </WithLabel>
                                             </div>
                                         </div>
@@ -667,13 +545,13 @@ export const GeneralForm: FC<Props> = ({
                                 hidden={tab.id !== 'tabCustomer'}
                                 editable={editable}
                                 userid={defaultUserid}
+                                spe="gen"
                             />
-                            <PaysTabpanel
+                            <GeneralPaysTabpanel
                                 id="tabpanelPays"
                                 tabId="tabPays"
                                 hidden={tab.id !== 'tabPays'}
                                 editable={editable}
-                                spe="gen"
                             />
                             <EndorsementTabpanel
                                 id="tabpanelEndorsement"
@@ -692,7 +570,7 @@ export const GeneralForm: FC<Props> = ({
                                 tabId="tabContactHis"
                                 hidden={tab.id !== 'tabContactHis'}
                                 editable={editable}
-                                spe="long"
+                                spe="gen"
                             />
 
                             <ChangeHistoryTabpanel
@@ -701,13 +579,6 @@ export const GeneralForm: FC<Props> = ({
                                 hidden={tab.id !== 'tabChangeHis'}
                                 editable={editable}
                             />
-                            {/* <EtcsTabpanel
-                                    id="tabpanelEtcs"
-                                    tabId="tabEtcs"
-                                    hidden={tab.id !== 'tabEtcs'}
-                                    editable={editable}
-                                    etcs={long.etcs}
-                                /> */}
                         </div>
                     </div>
                 </div>
@@ -749,14 +620,14 @@ export const GeneralForm: FC<Props> = ({
                     </div>
                 </MyFooter>
             </MyLayout>
-            <ProductSearchModal />
+            <ProductSearchModal spe="gen" />
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
             )}
-            {isShowInsuredPersonSearchModal && (
+            {isShowInsuredSearchModal && (
                 <CustomerSearchModal type="insured-person" />
             )}
-            <CreatePayModal
+            <CreateGeneralPayModal
                 contdate={contdate.value!}
                 payment={payment.value}
             />

@@ -2,26 +2,26 @@ import type { Action } from 'redux';
 
 export const LOADED_CONTRACTOR_KEY = 'WR-LOADED-CONTRACTOR';
 
-export const LOADED_INSURED_PERSON_KEY = 'WR-LOADED-INSURED-PERSON';
+export const LOADED_INSURED_KEY = 'WR-LOADED-INSURED';
 
 export const LoadedContractorActionTypes = {
     UPDATE: `UPDATE_${LOADED_CONTRACTOR_KEY}`,
 } as const;
 
-export const LoadedInsuredPersonActionTypes = {
-    UPDATE: `UPDATE_${LOADED_INSURED_PERSON_KEY}`,
+export const LoadedInsuredActionTypes = {
+    UPDATE: `UPDATE_${LOADED_INSURED_KEY}`,
 } as const;
 
 export type LoadedContractorUpdatePayload = any;
 
-export type LoadedInsuredPersonUpdatePayload = any;
+export type LoadedInsuredUpdatePayload = any;
 
 export interface LoadedContractUpdateAction extends Action<string> {
     payload: LoadedContractorUpdatePayload;
 }
 
-export interface LoadedInsuredPersonUpdateAction extends Action<string> {
-    payload: LoadedInsuredPersonUpdatePayload;
+export interface LoadedInsuredUpdateAction extends Action<string> {
+    payload: LoadedInsuredUpdatePayload;
 }
 
 export function updateLoadedContractor(
@@ -33,11 +33,11 @@ export function updateLoadedContractor(
     };
 }
 
-export function updateLoadedInsuredPerson(
-    payload: LoadedInsuredPersonUpdatePayload,
-): LoadedInsuredPersonUpdateAction {
+export function updateLoadedInsured(
+    payload: LoadedInsuredUpdatePayload,
+): LoadedInsuredUpdateAction {
     return {
-        type: LoadedInsuredPersonActionTypes.UPDATE,
+        type: LoadedInsuredActionTypes.UPDATE,
         payload,
     };
 }

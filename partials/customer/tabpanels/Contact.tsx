@@ -31,6 +31,7 @@ import { findSelectOption } from '@utils/getter';
 interface Props extends MyTabpanelProps {
     editable: boolean;
     spe: Spe;
+    // cnum: string;
 }
 
 export const ContactTabpanel: FC<Props> = ({

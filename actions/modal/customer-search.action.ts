@@ -9,18 +9,18 @@ export const ContractorSearchModalActionTypes = {
     HIDE: `HIDE_${CONTRACTOR_SEARCH_MODAL_KEY}`,
 } as const;
 
-export const InsuredPersonSearchModalActionTypes = {
+export const InsuredSearchModalActionTypes = {
     SHOW: `SHOW_${INSURED_PERSON_SEARCH_MODAL_KEY}`,
     HIDE: `HIDE_${INSURED_PERSON_SEARCH_MODAL_KEY}`,
 } as const;
 
 export interface ContractorSearchModalShowAction extends Action<string> {}
 
-export interface InsuredPersonSearchModalShowAction extends Action<string> {}
+export interface InsuredSearchModalShowAction extends Action<string> {}
 
 export interface ContractorSearchModalHideAction extends Action<string> {}
 
-export interface InsuredPersonSearchModalHideAction extends Action<string> {}
+export interface InsuredSearchModalHideAction extends Action<string> {}
 
 export function showContractorSearchModal(): ContractorSearchModalShowAction {
     return {
@@ -34,14 +34,14 @@ export function hideContractorSearchModal(): ContractorSearchModalHideAction {
     };
 }
 
-export function showInsuredPersonSearchModal(): InsuredPersonSearchModalShowAction {
+export function showInsuredSearchModal(): InsuredSearchModalShowAction {
     return {
-        type: InsuredPersonSearchModalActionTypes.SHOW,
+        type: InsuredSearchModalActionTypes.SHOW,
     };
 }
 
-export function hideInsuredPersonSearchModal(): InsuredPersonSearchModalHideAction {
+export function hideInsuredSearchModal(): InsuredSearchModalHideAction {
     return {
-        type: InsuredPersonSearchModalActionTypes.HIDE,
+        type: InsuredSearchModalActionTypes.HIDE,
     };
 }

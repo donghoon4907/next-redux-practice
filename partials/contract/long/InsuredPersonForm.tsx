@@ -11,24 +11,24 @@ import { MyDatepicker } from '@components/datepicker';
 import { useInput, usePhoneInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { birthdayToAge } from '@utils/calculator';
-import { createInsuredPerson } from '@actions/contract/set-insured-person.action';
+import { createInsured } from '@actions/contract/set-insured.action';
 import { generateIndex } from '@utils/generate';
 import { MyCheckbox } from '@components/checkbox';
 import { isEmpty } from '@utils/validator/common';
 import { useApi } from '@hooks/use-api';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
-import { showInsuredPersonSearchModal } from '@actions/modal/customer-search.action';
+import { showInsuredSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber } from '@utils/converter';
-import { updateLoadedInsuredPerson } from '@actions/contract/set-contractor.action';
+import { updateLoadedInsured } from '@actions/contract/set-contractor.action';
 
 interface Props {
     userid: string;
 }
 
-export const InsuredPersonForm: FC<Props> = ({ userid }) => {
+export const InsuredForm: FC<Props> = ({ userid }) => {
     const dispatch = useDispatch();
 
-    const { insuredPeople, loadedInsuredPerson, loadedContract } = useSelector<
+    const { insureds, loadedInsured, loadedContract } = useSelector<
         AppState,
         ContractState
     >((state) => state.contract);
@@ -51,7 +51,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
     // 계약자와 동일 혹은 태아 체크 시 피보험자명 비활성
     const isDisabledName = checkContract || checkFetus;
     // 계약자와 동일 혹은 고객정보연결 시 비활성
-    const isDisabledAnother = checkContract || loadedInsuredPerson;
+    const isDisabledAnother = checkContract || loadedInsured;
     // 생년월일로 나이 계산
     let age = -1;
     if (birthday.value) {
@@ -66,7 +66,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
             }
             // 고객정보연결한 경우 체크
             let tf = true;
-            if (loadedInsuredPerson) {
+            if (loadedInsured) {
                 tf = confirm(
                     '고객정보가 연결된 상태입니다. 계약자 정보를 불러오시겠습니까?',
                 );
@@ -85,7 +85,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
             setJob(loadedContract.job || '');
             setBirthday(new Date(loadedContract.birthday || null));
             // 고객정보연결 초기화
-            dispatch(updateLoadedInsuredPerson(null));
+            dispatch(updateLoadedInsured(null));
             setCheckContract(true);
 
             if (checkFetus) {
@@ -100,7 +100,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
         if (evt.target.checked) {
             // 고객정보연결한 경우 체크
             let tf = true;
-            if (loadedInsuredPerson) {
+            if (loadedInsured) {
                 tf = confirm(
                     '고객정보가 연결된 상태입니다. 태아로 설정하시겠습니까?',
                 );
@@ -128,8 +128,8 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
         // 1. 계약자와 동일 체크
         // 2. 고객정보연결
         dispatch(
-            createInsuredPerson({
-                index: generateIndex(insuredPeople),
+            createInsured({
+                index: generateIndex(insureds),
                 checked: false,
                 name: name.value,
                 tel: isEmpty(tel.value) ? '' : tel.value.replace(/\-/g, ''),
@@ -140,8 +140,8 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
                 sex: gender.value ? gender.value : '',
                 p_idx: checkContract
                     ? loadedContract.idx
-                    : loadedInsuredPerson
-                    ? loadedInsuredPerson.idx
+                    : loadedInsured
+                    ? loadedInsured.idx
                     : undefined,
             }),
         );
@@ -155,7 +155,7 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
         setJob('');
         setBirthday(null);
         setGender('');
-        dispatch(updateLoadedInsuredPerson(null));
+        dispatch(updateLoadedInsured(null));
         setCheckContract(false);
         setCheckFetus(false);
     };
@@ -168,22 +168,22 @@ export const InsuredPersonForm: FC<Props> = ({ userid }) => {
         }
 
         getUserCustomers({ userid, username: name.value }, () => {
-            dispatch(showInsuredPersonSearchModal());
+            dispatch(showInsuredSearchModal());
         });
     };
     // 고객정보연결 시 동작
     useEffect(() => {
-        if (loadedInsuredPerson) {
-            setName(loadedInsuredPerson.name || '');
+        if (loadedInsured) {
+            setName(loadedInsured.name || '');
             setTel(
-                loadedInsuredPerson.mobile
-                    ? convertPhoneNumber(loadedInsuredPerson.mobile)
+                loadedInsured.mobile
+                    ? convertPhoneNumber(loadedInsured.mobile)
                     : '',
             );
-            setJob(loadedInsuredPerson.job || '');
-            setBirthday(new Date(loadedInsuredPerson.birthday || null));
+            setJob(loadedInsured.job || '');
+            setBirthday(new Date(loadedInsured.birthday || null));
         }
-    }, [loadedInsuredPerson]);
+    }, [loadedInsured]);
     // 계약자 설정 변경 시 동작
     useEffect(() => {
         // 계약자와 동일 체크된 경우만 동작

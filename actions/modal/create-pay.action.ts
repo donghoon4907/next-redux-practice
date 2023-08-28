@@ -1,24 +1,47 @@
 import type { Action } from 'redux';
 
-export const CREATE_PAY_MODAL_KEY = 'CREATE-PAY-MODAL';
+export const CREATE_LONG_PAY_MODAL_KEY = 'CREATE-LONG-PAY-MODAL';
 
-export const CreatePayModalActionTypes = {
-    SHOW: `SHOW_${CREATE_PAY_MODAL_KEY}`,
-    HIDE: `HIDE_${CREATE_PAY_MODAL_KEY}`,
+export const CREATE_GENERAL_PAY_MODAL_KEY = 'CREATE-GENERAL-PAY-MODAL';
+
+export const CreateLongPayModalActionTypes = {
+    SHOW: `SHOW_${CREATE_LONG_PAY_MODAL_KEY}`,
+    HIDE: `HIDE_${CREATE_LONG_PAY_MODAL_KEY}`,
 } as const;
 
-export interface CreatePayModalShowAction extends Action<string> {}
+export const CreateGeneralPayModalActionTypes = {
+    SHOW: `SHOW_${CREATE_GENERAL_PAY_MODAL_KEY}`,
+    HIDE: `HIDE_${CREATE_GENERAL_PAY_MODAL_KEY}`,
+} as const;
 
-export interface CreatePayModalHideAction extends Action<string> {}
+export interface CreateLongPayModalShowAction extends Action<string> {}
 
-export function showCreatePayModal(): CreatePayModalShowAction {
+export interface CreateGeneralPayModalShowAction extends Action<string> {}
+
+export interface CreateLongPayModalHideAction extends Action<string> {}
+
+export interface CreateGeneralPayModalHideAction extends Action<string> {}
+
+export function showCreateLongPayModal(): CreateGeneralPayModalShowAction {
     return {
-        type: CreatePayModalActionTypes.SHOW,
+        type: CreateLongPayModalActionTypes.SHOW,
     };
 }
 
-export function hideCreatePayModal(): CreatePayModalHideAction {
+export function hideCreateLongPayModal(): CreateLongPayModalShowAction {
     return {
-        type: CreatePayModalActionTypes.HIDE,
+        type: CreateLongPayModalActionTypes.HIDE,
+    };
+}
+
+export function showCreateGeneralPayModal(): CreateGeneralPayModalShowAction {
+    return {
+        type: CreateGeneralPayModalActionTypes.SHOW,
+    };
+}
+
+export function hideCreateGeneralPayModal(): CreateGeneralPayModalHideAction {
+    return {
+        type: CreateGeneralPayModalActionTypes.HIDE,
     };
 }

@@ -1,10 +1,10 @@
 import { CoreCheckableModel } from './core';
 
-export type InsuredPerson = CoreCheckableModel & {
+export type Insured = CoreCheckableModel & {
     // id
     idx?: number;
-    // 미사용
-    dist?: string;
+    // 피보험자 / 피보험물
+    dist: string;
     // 고객 id
     p_idx?: number;
     name?: string;
@@ -12,4 +12,5 @@ export type InsuredPerson = CoreCheckableModel & {
     job?: string;
     birthday?: string;
     sex?: string;
+    p_address?: string;
 };

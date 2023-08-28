@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-import type { LongState } from '@reducers/long';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CommonState } from '@reducers/common';
@@ -21,7 +20,7 @@ import { MyLayout } from '@components/Layout';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
-import { PaysTabpanel } from '@partials/contract/long/tabpanels/Pays';
+import { LongPaysTabpanel } from '@partials/contract/long/tabpanels/LongPays';
 // import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/contract/long/tabpanels/ChangeHistory';
 import { MyButton } from '@components/button';
@@ -39,12 +38,12 @@ import longConstants from '@constants/options/long';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
-import { CreatePayModal } from '@components/modal/CreatePay';
+import { CreateLongPayModal } from '@components/modal/CreateLongPay';
 import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { CreateLongDTO, UpdateLongDTO } from '@dto/long/Long.dto';
+import { CreateLongDTO, UpdateLongDTO } from '@dto/contractor/Long.dto';
 import { createLongRequest } from '@actions/long/create-long.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { updateLongRequest } from '@actions/long/update-long.action';
@@ -234,16 +233,10 @@ export const LongForm: FC<Props> = ({
         (state) => state.hr,
     );
 
-    const { selectedProduct, insuredPeople, loadedContract } = useSelector<
-        AppState,
-        ContractState
-    >((state) => state.contract);
+    const { selectedProduct, insureds, loadedContract, pays, removedPays } =
+        useSelector<AppState, ContractState>((state) => state.contract);
 
-    const { pays, removedPays } = useSelector<AppState, LongState>(
-        (state) => state.long,
-    );
-
-    const { isShowContractorSearchModal, isShowInsuredPersonSearchModal } =
+    const { isShowContractorSearchModal, isShowInsuredSearchModal } =
         useSelector<AppState, ModalState>((state) => state.modal);
 
     const createLong = useApi(createLongRequest);
@@ -505,11 +498,7 @@ export const LongForm: FC<Props> = ({
         const updateLongDto = new UpdateLongDTO(payload);
 
         if (updateLongDto.requiredValidate()) {
-            updateLong(updateLongDto.getPayload(), ({ Message }) => {
-                if (Message === 'Success') {
-                    alert('수정되었습니다.');
-                }
-            });
+            updateLong(updateLongDto.getPayload());
         }
     };
 
@@ -653,8 +642,8 @@ export const LongForm: FC<Props> = ({
             payload['contacts'] = contacts;
         }
 
-        if (insuredPeople.length > 0) {
-            payload['p_persons'] = insuredPeople;
+        if (insureds.length > 0) {
+            payload['p_persons'] = insureds;
         }
 
         if (pays.length > 0) {
@@ -1415,13 +1404,13 @@ export const LongForm: FC<Props> = ({
                                 hidden={tab.id !== 'tabCustomer'}
                                 editable={editable}
                                 userid={defaultUserid}
+                                spe="long"
                             />
-                            <PaysTabpanel
+                            <LongPaysTabpanel
                                 id="tabpanelPays"
                                 tabId="tabPays"
                                 hidden={tab.id !== 'tabPays'}
                                 editable={editable}
-                                spe="long"
                             />
                             <EndorsementTabpanel
                                 id="tabpanelEndorsement"
@@ -1441,6 +1430,7 @@ export const LongForm: FC<Props> = ({
                                 hidden={tab.id !== 'tabContactHis'}
                                 editable={editable}
                                 spe="long"
+                                // cnum={cnum.value}
                             />
 
                             <ChangeHistoryTabpanel
@@ -1497,14 +1487,14 @@ export const LongForm: FC<Props> = ({
                     </div>
                 </MyFooter>
             </MyLayout>
-            <ProductSearchModal />
+            <ProductSearchModal spe="long" />
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
             )}
-            {isShowInsuredPersonSearchModal && (
+            {isShowInsuredSearchModal && (
                 <CustomerSearchModal type="insured-person" />
             )}
-            <CreatePayModal
+            <CreateLongPayModal
                 contdate={contdate.value!}
                 payment={payment.value}
             />

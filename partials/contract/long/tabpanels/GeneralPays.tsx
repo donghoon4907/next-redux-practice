@@ -1,31 +1,33 @@
 import type { FC, ChangeEvent } from 'react';
 import type { Pay } from '@models/pay';
 import type { AppState } from '@reducers/index';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { CoreEditableComponent } from '@interfaces/core';
-import type { Spe } from '@models/spe';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyButton } from '@components/button';
 import { deletePay, updatePay } from '@actions/long/set-pay.action';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableExtension } from '@components/table/Extension';
-import { showCreatePayModal } from '@actions/modal/create-pay.action';
-import { findSelectOption } from '@utils/getter';
-import longConstants from '@constants/options/long';
+import { showCreateGeneralPayModal } from '@actions/modal/create-pay.action';
 
-interface Props extends MyTabpanelProps, CoreEditableComponent {
-    spe: Spe;
-}
+interface Props extends MyTabpanelProps, CoreEditableComponent {}
 
-export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
+export const GeneralPaysTabpanel: FC<Props> = ({
+    id,
+    tabId,
+    hidden,
+    editable,
+}) => {
     const dispatch = useDispatch();
 
-    const { pays } = useSelector<AppState, LongState>((state) => state.long);
+    const { pays } = useSelector<AppState, ContractState>(
+        (state) => state.contract,
+    );
 
     const handleShowCreateModal = () => {
-        dispatch(showCreatePayModal());
+        dispatch(showCreateGeneralPayModal());
     };
 
     const handleAllCheck = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -80,31 +82,16 @@ export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 <strong>영수일</strong>
                             </th>
                             <th style={{ width: '100px' }}>
-                                <strong>회차</strong>
+                                <strong>구분</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>납입구분</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>대상년월</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>입금구분</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>수금실적</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>금종</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>납입주기</strong>
+                            <th style={{ width: '200px' }}>
+                                <strong>보험료</strong>
                             </th>
                             <th style={{ width: '100px' }}>
                                 <strong>실적확인</strong>
                             </th>
                             <th style={{ width: '100px' }}>
-                                <strong>정산여부</strong>
+                                <strong>계산여부</strong>
                             </th>
                             <th>
                                 <strong>입력</strong>
@@ -114,7 +101,7 @@ export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     <tbody>
                         {pays.length === 0 && (
                             <tr>
-                                <td colSpan={editable ? 12 : 11}>
+                                <td colSpan={editable ? 7 : 6}>
                                     실적 정보가 없습니다.
                                 </td>
                             </tr>
@@ -137,20 +124,7 @@ export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                     <span>{v.paydate ? v.paydate : '-'}</span>
                                 </td>
                                 <td>
-                                    <span>{v.whoi ? v.whoi : '-'}</span>
-                                </td>
-                                <td>
                                     <span>{v.dist ? v.dist : '-'}</span>
-                                </td>
-                                <td>
-                                    <span>
-                                        {v.gdate
-                                            ? v.gdate.substring(0, 7)
-                                            : '-'}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span>{v.distkind ? v.distkind : '-'}</span>
                                 </td>
                                 <td>
                                     <span>
@@ -158,20 +132,7 @@ export const PaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                     </span>
                                 </td>
                                 <td>
-                                    <span>{v.method ? v.method : '-'}</span>
-                                </td>
-                                <td>
-                                    <span>
-                                        {v.cycle
-                                            ? findSelectOption(
-                                                  v.cycle,
-                                                  longConstants.payCycle,
-                                              ).label
-                                            : '-'}
-                                    </span>
-                                </td>
-                                <td>
-                                    <span>{v.confirm ? v.confirm : '-'}</span>
+                                    <span>{v.confirm ? v.confirm : 'N'}</span>
                                 </td>
                                 <td>
                                     <span>{v.cals ? 'Y' : 'N'}</span>
