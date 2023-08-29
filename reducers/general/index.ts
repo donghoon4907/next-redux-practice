@@ -4,6 +4,7 @@ import type { Insured } from '@models/insured';
 import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
 import produce from 'immer';
 import { PayActionTypes } from '@actions/long/set-pay.action';
+import { GetGeneralActionTypes } from '@actions/general/get-general.action';
 
 export interface GeneralState {
     /**
@@ -53,6 +54,11 @@ export const generalReducer: Reducer<GeneralState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
+            case GetGeneralActionTypes.SUCCESS: {
+                draft.general = action.payload;
+
+                break;
+            }
             case PayActionTypes.CREATE: {
                 draft.pays = draft.pays.concat(action.payload);
                 break;

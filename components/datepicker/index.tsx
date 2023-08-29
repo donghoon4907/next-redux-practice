@@ -45,6 +45,7 @@ export const MyDatepicker: FC<Props> = ({
             placement={placement}
             readOnly={readOnly}
             disabled={disabled}
+            onBlur={() => alert('test')}
             {...hooks}
         />
     );

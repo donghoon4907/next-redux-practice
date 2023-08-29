@@ -31,6 +31,7 @@ import { EndorsementTabpanel } from '@partials/contract/long/tabpanels/Endorseme
 import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerform';
 // import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
+import carConstants from '@constants/options/car';
 import longConstants from '@constants/options/long';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
@@ -40,7 +41,6 @@ import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { UserHistoryModal } from '@components/modal/UserHistory';
 import { SearchProductInput } from '../SearchProductInput';
 import {
     CreateGeneralDTO,
@@ -108,7 +108,7 @@ interface Props {
     defaultPayment?: string;
 }
 
-export const GeneralForm: FC<Props> = ({
+export const CarForm: FC<Props> = ({
     mode,
     idx = -1,
     defaultUserid,
@@ -124,12 +124,11 @@ export const GeneralForm: FC<Props> = ({
     defaultIsConfirm = 'N',
     defaultPayment = '',
 }) => {
-    const displayName = 'wr-pages-general-detail';
+    const displayName = 'wr-pages-car-detail';
 
-    const { contacts, removedContacts, newUserHistory } = useSelector<
-        AppState,
-        CommonState
-    >((state) => state.common);
+    const { contacts, removedContacts } = useSelector<AppState, CommonState>(
+        (state) => state.common,
+    );
 
     const { genUseCompanies, orgas, users } = useSelector<AppState, HrState>(
         (state) => state.hr,
@@ -173,6 +172,12 @@ export const GeneralForm: FC<Props> = ({
     );
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
+    // 인수구분
+    const [dist] = useSelect(carConstants.dist, null);
+    // 등급
+    const [grade] = useSelect(carConstants.grade, null);
+    // 납입방법
+    const [payMethod] = useSelect(carConstants.payMethod, null);
     // 실적보험료
     const [payment] = useNumbericInput(defaultPayment, { addComma: true });
     // 수정 버튼 클릭 핸들러
@@ -405,7 +410,7 @@ export const GeneralForm: FC<Props> = ({
                                         spec={defaultSpec}
                                         subcategory={null}
                                         calSpec={null}
-                                        spe="gen"
+                                        spe="car"
                                     />
                                     <div className="row wr-mt">
                                         <div className="col-6">
@@ -484,7 +489,7 @@ export const GeneralForm: FC<Props> = ({
                                                         id="bo_dateto"
                                                         size="md"
                                                         placeholder="보장만기"
-                                                        disabled={!editable}
+                                                        disabled={true}
                                                         hooks={boDateto}
                                                     />
                                                 </WithLabel>
@@ -494,8 +499,48 @@ export const GeneralForm: FC<Props> = ({
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
+                                                id="dist"
+                                                label="인수구분"
+                                                type={labelType}
+                                            >
+                                                <MySelect
+                                                    inputId="dist"
+                                                    placeholder="선택"
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...dist}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="grade"
+                                                    label="등급"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="grade"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...grade}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
+                                            <WithLabel
                                                 id="payment"
-                                                label="실적보험료"
+                                                label="보험료"
                                                 type={labelType}
                                                 isRequired={editable}
                                             >
@@ -508,6 +553,26 @@ export const GeneralForm: FC<Props> = ({
                                                     {...payment}
                                                 />
                                             </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="pay_method"
+                                                    label="납입방법"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="pay_method"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...payMethod}
+                                                    />
+                                                </WithLabel>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

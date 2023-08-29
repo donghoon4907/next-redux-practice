@@ -57,3 +57,9 @@ export class CreateGeneralDTO extends GeneralDTO {
         super(payload);
     }
 }
+
+export class UpdateGeneralDTO extends GeneralDTO {
+    constructor(payload: CreateGeneralRequestPayload) {
+        super(payload);
+    }
+}

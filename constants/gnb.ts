@@ -272,6 +272,11 @@ export const ASIDE_MENU: any = {
             id: 'contract-car',
             label: '자동차',
             to: '',
+            create: {
+                id: 'contract-car_create',
+                label: '자동차계약등록',
+                to: '/contract/car/create',
+            },
             comparison: {
                 id: 'contract-car-comparison',
                 label: '비교견적',
@@ -281,32 +286,32 @@ export const ASIDE_MENU: any = {
                     label: '비교견적(자동차)',
                     to: '/contract/car/comparison/car',
                 },
-                truck: {
-                    id: 'contract-car-comparison_truck',
-                    label: '비교견적(이륜차)',
-                    to: '/contract/car/comparison/truck',
-                },
+                // truck: {
+                //     id: 'contract-car-comparison_truck',
+                //     label: '비교견적(이륜차)',
+                //     to: '/contract/car/comparison/truck',
+                // },
             },
-            hc: {
-                id: 'contract-car_hc',
-                label: '보유계약',
-                to: '/contract/car/hc',
-            },
-            mc: {
-                id: 'contract-car_mc',
-                label: '만기계약',
-                to: '/contract/car/mc',
-            },
-            im: {
-                id: 'contract-car_im',
-                label: '분납관리',
-                to: '/contract/car/im',
-            },
-            sch: {
-                id: 'contract-car_sch',
-                label: '상태변경내역',
-                to: '/contract/car/sch',
-            },
+            // hc: {
+            //     id: 'contract-car_hc',
+            //     label: '보유계약',
+            //     to: '/contract/car/hc',
+            // },
+            // mc: {
+            //     id: 'contract-car_mc',
+            //     label: '만기계약',
+            //     to: '/contract/car/mc',
+            // },
+            // im: {
+            //     id: 'contract-car_im',
+            //     label: '분납관리',
+            //     to: '/contract/car/im',
+            // },
+            // sch: {
+            //     id: 'contract-car_sch',
+            //     label: '상태변경내역',
+            //     to: '/contract/car/sch',
+            // },
         },
         general: {
             id: 'contract-general',

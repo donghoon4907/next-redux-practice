@@ -34,15 +34,11 @@ export const ChangeHistoryTabpanel: FC<Props> = ({
                             </th>
                         </tr>
                     </thead>
-                    {/* <tbody>
-                        {endorsements.length === 0 && (
-                            <tr>
-                                <td colSpan={editable ? 14 : 13}>
-                                    배서 정보가 없습니다.
-                                </td>
-                            </tr>
-                        )}
-                        {endorsements.map((v, i) => (
+                    <tbody>
+                        <tr>
+                            <td colSpan={4}>정보가 없습니다.</td>
+                        </tr>
+                        {/* {endorsements.map((v, i) => (
                             <tr key={`endorsement${i}`}>
                                 {editable && (
                                     <td>
@@ -69,8 +65,8 @@ export const ChangeHistoryTabpanel: FC<Props> = ({
                                     <span>{v.gdate ? v.gdate : '-'}</span>
                                 </td>
                             </tr>
-                        ))}
-                    </tbody> */}
+                        ))} */}
+                    </tbody>
                 </table>
                 {editable && (
                     <MyTableExtension onClick={() => handleShowCreateModal()} />

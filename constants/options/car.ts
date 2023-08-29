@@ -1,5 +1,203 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
+// 인수구분
+export const CAR_DIST: CoreSelectOption[] = [
+    {
+        label: '일반',
+        value: '일반',
+        isFixed: false,
+    },
+    {
+        label: '공동',
+        value: '공동',
+        isFixed: false,
+    },
+];
+// 납입방법
+export const CAR_PAY_METHOD: CoreSelectOption[] = [
+    {
+        label: '일시납',
+        value: '일시납',
+        isFixed: false,
+    },
+    ...Array.from({ length: 5 }).map((_, i) => ({
+        label: `${i + 2}회`,
+        value: `${i + 2}회`,
+        isFixed: false,
+    })),
+];
+// 등급
+export const CAR_GRADE: CoreSelectOption[] = [
+    {
+        label: 'A',
+        value: 'A',
+        isFixed: false,
+    },
+    {
+        label: 'B',
+        value: 'B',
+        isFixed: false,
+    },
+    {
+        label: 'C',
+        value: 'C',
+        isFixed: false,
+    },
+    {
+        label: 'D',
+        value: 'D',
+        isFixed: false,
+    },
+    {
+        label: '집중',
+        value: '집중',
+        isFixed: false,
+    },
+];
+// 운전자 범위
+export const CAR_DRIVER_RANGE: CoreSelectOption[] = [
+    {
+        label: '1인(기명)',
+        value: '1인(기명)',
+        isFixed: false,
+    },
+    {
+        label: '1인(지정)',
+        value: '1인(지정)',
+        isFixed: false,
+    },
+    {
+        label: '부부',
+        value: '부부',
+        isFixed: false,
+    },
+    {
+        label: '부부+자녀',
+        value: '부부+자녀',
+        isFixed: false,
+    },
+    {
+        label: '가족(형제자매제외)',
+        value: '가족(형제자매제외)',
+        isFixed: false,
+    },
+    {
+        label: '가족+형제자매',
+        value: '가족+형제자매',
+        isFixed: false,
+    },
+    {
+        label: '1인+1인',
+        value: '1인+1인',
+        isFixed: false,
+    },
+    {
+        label: '1인+자녀',
+        value: '1인+자녀',
+        isFixed: false,
+    },
+    {
+        label: '1인+가족1인',
+        value: '1인+가족1인',
+        isFixed: false,
+    },
+    {
+        label: '임직원',
+        value: '임직원',
+        isFixed: false,
+    },
+    {
+        label: '누구나',
+        value: '누구나',
+        isFixed: false,
+    },
+];
+// 최저연령
+export const CAR_MIN_AGE: CoreSelectOption[] = [
+    {
+        label: '전 연령',
+        value: '전 연령',
+        isFixed: false,
+    },
+    {
+        label: '21세',
+        value: '21세',
+        isFixed: false,
+    },
+    {
+        label: '22세',
+        value: '22세',
+        isFixed: false,
+    },
+    {
+        label: '24세',
+        value: '24세',
+        isFixed: false,
+    },
+    {
+        label: '26세',
+        value: '26세',
+        isFixed: false,
+    },
+    {
+        label: '28세',
+        value: '28세',
+        isFixed: false,
+    },
+    {
+        label: '30세',
+        value: '30세',
+        isFixed: false,
+    },
+    {
+        label: '35세',
+        value: '35세',
+        isFixed: false,
+    },
+    {
+        label: '43세',
+        value: '43세',
+        isFixed: false,
+    },
+    {
+        label: '48세',
+        value: '48세',
+        isFixed: false,
+    },
+];
+// 관계
+export const CAR_RELATION: CoreSelectOption[] = [
+    {
+        label: '본인',
+        value: '본인',
+        isFixed: false,
+    },
+    {
+        label: '부부',
+        value: '부부',
+        isFixed: false,
+    },
+    {
+        label: '자녀',
+        value: '자녀',
+        isFixed: false,
+    },
+    {
+        label: '가족',
+        value: '가족',
+        isFixed: false,
+    },
+    {
+        label: '형제자매',
+        value: '형제자매',
+        isFixed: false,
+    },
+    {
+        label: '기타지정',
+        value: '기타지정',
+        isFixed: false,
+    },
+];
 // 차량 번호 - 지역
 export const CAR_LOCALE: CoreSelectOption[] = [
     {
@@ -88,7 +286,6 @@ export const CAR_LOCALE: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
-
 // 차량 번호 - 용도
 export const CAR_USAGE: CoreSelectOption[] = [
     {
@@ -392,3 +589,16 @@ export const CAR_USAGE: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+
+const rootSelectOptions = {
+    dist: CAR_DIST,
+    payMethod: CAR_PAY_METHOD,
+    grade: CAR_GRADE,
+    driverRange: CAR_DRIVER_RANGE,
+    minAge: CAR_MIN_AGE,
+    relation: CAR_RELATION,
+    locale: CAR_LOCALE,
+    usage: CAR_USAGE,
+};
+
+export default rootSelectOptions;
