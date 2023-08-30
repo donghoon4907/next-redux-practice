@@ -6,10 +6,12 @@ import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import addYears from 'date-fns/addYears';
+import differenceInYears from 'date-fns/differenceInYears';
 import { MySelect } from '@components/select';
-import { GEN_DETAIL_TABS, LONG_DETAIL_TABS } from '@constants/tab';
+import { CAR_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
@@ -18,36 +20,29 @@ import { MyLayout } from '@components/Layout';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
-import { GeneralPaysTabpanel } from '@partials/contract/long/tabpanels/GeneralPays';
-// import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
-import { ChangeHistoryTabpanel } from '@partials/contract/long/tabpanels/ChangeHistory';
 import { MyButton } from '@components/button';
-import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
-import { CustomerTabpanel } from '@partials/contract/long/tabpanels/Customer';
-import { EndorsementTabpanel } from '@partials/contract/long/tabpanels/Endorsement';
-import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
-import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerform';
+import { CustomerTabpanel } from '@partials/contract/common/tabpanels/Customer';
 // import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
 import carConstants from '@constants/options/car';
 import longConstants from '@constants/options/long';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
-import { CreateGeneralPayModal } from '@components/modal/CreateGeneralPay';
-import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { SearchProductInput } from '../SearchProductInput';
 import {
     CreateGeneralDTO,
     UpdateGeneralDTO,
 } from '@dto/contractor/General.dto';
 import { createGeneralRequest } from '@actions/general/create-general.action';
 import { updateGeneralRequest } from '@actions/general/update-general.action';
+import { showSetPeriodModal } from '@actions/modal/set-period.action';
+import { SearchProductInput } from '@partials/contract/SearchProductInput';
+import { CompareTabpanel } from '@partials/contract/car/tabpanels/Compare';
 
 interface Props {
     /**
@@ -126,6 +121,8 @@ export const CarForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-car-detail';
 
+    const dispatch = useDispatch();
+
     const { contacts, removedContacts } = useSelector<AppState, CommonState>(
         (state) => state.common,
     );
@@ -146,7 +143,7 @@ export const CarForm: FC<Props> = ({
 
     const getUsers = useApi(getUsersRequest);
     // 탭 관리
-    const [tab, setTab] = useTab(LONG_DETAIL_TABS[0]);
+    const [tab, setTab] = useTab(CAR_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
     const labelType = editable ? 'active' : 'disable';
@@ -164,12 +161,18 @@ export const CarForm: FC<Props> = ({
     );
     // 보장시기
     const [boDatefrom] = useDatepicker(
-        defaultBodatefrom ? new Date(defaultBodatefrom) : null,
+        defaultBodatefrom ? new Date(defaultBodatefrom) : new Date(),
     );
+    // 보험기간
+    // const [period, setPeriod] = useState('1년');
     // 보장만기
     const [boDateto] = useDatepicker(
-        defaultBodateto ? new Date(defaultBodateto) : null,
+        defaultBodateto ? new Date(defaultBodateto) : addYears(new Date(), 1),
     );
+    // 단기구분
+    const [sDist] = useSelect(carConstants.shortDist);
+    // 보험기간
+    const boPeriod = differenceInYears(boDateto.value!, boDatefrom.value!);
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
     // 인수구분
@@ -177,9 +180,14 @@ export const CarForm: FC<Props> = ({
     // 등급
     const [grade] = useSelect(carConstants.grade, null);
     // 납입방법
-    const [payMethod] = useSelect(carConstants.payMethod, null);
+    const [payMethod] = useSelect(carConstants.payMethod);
     // 실적보험료
     const [payment] = useNumbericInput(defaultPayment, { addComma: true });
+
+    // 보장시기 blur 핸들러
+    const handleBlurBoDatefrom = () => {
+        dispatch(showSetPeriodModal());
+    };
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
         setEditable(true);
@@ -285,9 +293,16 @@ export const CarForm: FC<Props> = ({
         return payload;
     };
 
+    // useEffect(() => {
+    //     if (boDatefrom.value) {
+    //         if (period === '1년') {
+    //             setBoDateto(addYears(boDatefrom.value, 1));
+    //         }
+    //     }
+    // }, [period, boDatefrom.value]);
+
     useEffect(() => {
         if (orga.value) {
-            console.log(orga.value);
             getUsers(
                 {
                     idx: orga.value.value,
@@ -489,9 +504,31 @@ export const CarForm: FC<Props> = ({
                                                         id="bo_dateto"
                                                         size="md"
                                                         placeholder="보장만기"
-                                                        disabled={true}
+                                                        disabled={!editable}
                                                         hooks={boDateto}
                                                     />
+                                                    {boPeriod > 0 && (
+                                                        <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                            {`${boPeriod}년`}
+                                                        </div>
+                                                    )}
+
+                                                    {boPeriod <= 0 && (
+                                                        <div className="wr-with__extension">
+                                                            <MySelect
+                                                                inputId="periodDist"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                placement="right"
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                {...sDist}
+                                                            />
+                                                        </div>
+                                                    )}
                                                 </WithLabel>
                                             </div>
                                         </div>
@@ -577,16 +614,11 @@ export const CarForm: FC<Props> = ({
                                     </div>
                                 </div>
                             </div>
-                            {/* <div className="wr-pages-detail__block">
-                                <div className="wr-pages-detail__content">
-                                    <CustomSettingAccordion data={[]} />
-                                </div>
-                            </div> */}
                         </div>
                     </div>
                     <div className={`${displayName}__right col`}>
                         <ul className="wr-tab__wrap" role="tablist">
-                            {GEN_DETAIL_TABS.map((v) => (
+                            {CAR_DETAIL_TABS.map((v) => (
                                 <MyTab
                                     key={v.id}
                                     onClick={setTab}
@@ -605,38 +637,12 @@ export const CarForm: FC<Props> = ({
                                 hidden={tab.id !== 'tabCustomer'}
                                 editable={editable}
                                 userid={defaultUserid}
-                                spe="gen"
+                                spe="car"
                             />
-                            <GeneralPaysTabpanel
-                                id="tabpanelPays"
-                                tabId="tabPays"
-                                hidden={tab.id !== 'tabPays'}
-                                editable={editable}
-                            />
-                            <EndorsementTabpanel
-                                id="tabpanelEndorsement"
-                                tabId="tabEndorsement"
-                                hidden={tab.id !== 'tabEndorsement'}
-                                editable={editable}
-                            />
-                            <CalcPerformTabpanel
-                                id="tabpanelCalcPerform"
-                                tabId="tabCalcPerform"
-                                hidden={tab.id !== 'tabCalcPerform'}
-                                editable={editable}
-                            />
-                            <ContactTabpanel
-                                id="tabpanelContactHis"
-                                tabId="tabContactHis"
-                                hidden={tab.id !== 'tabContactHis'}
-                                editable={editable}
-                                spe="gen"
-                            />
-
-                            <ChangeHistoryTabpanel
-                                id="tabpanelChangeHis"
-                                tabId="tabChangeHis"
-                                hidden={tab.id !== 'tabChangeHis'}
+                            <CompareTabpanel
+                                id="tabpanelCompare"
+                                tabId="tabCompare"
+                                hidden={tab.id !== 'tabCompare'}
                                 editable={editable}
                             />
                         </div>
@@ -680,19 +686,13 @@ export const CarForm: FC<Props> = ({
                     </div>
                 </MyFooter>
             </MyLayout>
-            <ProductSearchModal spe="gen" />
+            <ProductSearchModal spe="car" />
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
             )}
             {isShowInsuredSearchModal && (
                 <CustomerSearchModal type="insured-person" />
             )}
-            <CreateGeneralPayModal
-                contdate={contdate.value!}
-                payment={payment.value}
-            />
-            <CreateEndorsementModal />
-            <CreateEtcModal />
         </>
     );
 };

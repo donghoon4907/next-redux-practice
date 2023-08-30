@@ -10,7 +10,7 @@ export const GetLongActionTypes = {
 } as const;
 
 export interface GetLongRequestPayload extends CorePayload {
-    cidx: string;
+    idx: string;
 }
 
 export type GetLongSuccessPayload = Record<string, any>;

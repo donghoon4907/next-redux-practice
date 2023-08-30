@@ -1,9 +1,10 @@
 import type { FC, FormEvent, ChangeEvent } from 'react';
+import type { Insured } from '@models/insured';
+import type { Spe } from '@models/spe';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { AppState } from '@reducers/index';
 import type { ContractState } from '@reducers/contract';
 import type { CoreEditableComponent } from '@interfaces/core';
-import type { Insured } from '@models/insured';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
@@ -22,10 +23,18 @@ import {
     updateInsured,
 } from '@actions/contract/set-insured.action';
 
-import { InsuredTemplate } from '../template/Insured';
+// import { InsuredTemplate } from '../template/LongInsured';
 // import { InsuredForm } from '../InsuredForm';
-import { Spe } from '@models/spe';
-import { InsuredForm } from '../InsuredForm';
+import { MySelect } from '@components/select';
+import variables from '@styles/_variables.module.scss';
+import { useSelect } from '@hooks/use-select';
+import carConstants from '@constants/options/car';
+import { CarInsuredForm } from '@partials/contract/car/InsuredForm';
+import { GeneralInsuredForm } from '@partials/contract/general/InsuredForm';
+import { LongInsuredForm } from '@partials/contract/long/InsuredForm';
+import { LongInsuredTemplate } from '@partials/contract/long/template/Insured';
+import { GeneralInsuredTemplate } from '@partials/contract/general/template/Insured';
+import { CarInsuredTemplate } from '@partials/contract/car/template/Insured';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {
     userid: string;
@@ -50,6 +59,10 @@ export const CustomerTabpanel: FC<Props> = ({
 
     // 계약자명
     const [username, setUsername] = useInput('', { noSpace: true });
+    // 운전자범위
+    const [driverRange] = useSelect(carConstants.driverRange);
+    // 최저연령
+    const [minAge] = useSelect(carConstants.minAge);
 
     const labelType = editable ? 'active' : 'disable';
 
@@ -266,6 +279,60 @@ export const CustomerTabpanel: FC<Props> = ({
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    {spe === 'car' && (
+                                                        <div className="row wr-mt">
+                                                            <div className="col-6">
+                                                                <WithLabel
+                                                                    label="운전자범위"
+                                                                    id="dRange"
+                                                                    type={
+                                                                        labelType
+                                                                    }
+                                                                >
+                                                                    <MySelect
+                                                                        inputId="dRange"
+                                                                        placeholder="선택"
+                                                                        placeHolderFontSize={
+                                                                            16
+                                                                        }
+                                                                        height={
+                                                                            variables.detailFilterHeight
+                                                                        }
+                                                                        isDisabled={
+                                                                            !editable
+                                                                        }
+                                                                        {...driverRange}
+                                                                    />
+                                                                </WithLabel>
+                                                            </div>
+                                                            <div className="col-6">
+                                                                <div className="wr-ml">
+                                                                    <WithLabel
+                                                                        label="최저연령"
+                                                                        id="minAge"
+                                                                        type={
+                                                                            labelType
+                                                                        }
+                                                                    >
+                                                                        <MySelect
+                                                                            inputId="minAge"
+                                                                            placeholder="선택"
+                                                                            placeHolderFontSize={
+                                                                                16
+                                                                            }
+                                                                            height={
+                                                                                variables.detailFilterHeight
+                                                                            }
+                                                                            isDisabled={
+                                                                                !editable
+                                                                            }
+                                                                            {...minAge}
+                                                                        />
+                                                                    </WithLabel>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </>
                                             )}
                                         </>
@@ -275,26 +342,24 @@ export const CustomerTabpanel: FC<Props> = ({
                         </div>
                     </div>
                     {editable && (
-                        <div className="wr-pages-detail__block wr-mt">
-                            <div className="wr-pages-detail__title">
-                                <strong>
-                                    {spe === 'long' && '피보험자 등록'}
-                                    {spe === 'gen' && '피보험물(자) 등록'}
-                                </strong>
-                                <div></div>
-                            </div>
-                            <div className="wr-pages-detail__content">
-                                <InsuredForm userid={userid} spe={spe} />
-                            </div>
-                        </div>
+                        <>
+                            {spe === 'long' && (
+                                <LongInsuredForm userid={userid} />
+                            )}
+                            {spe === 'gen' && (
+                                <GeneralInsuredForm userid={userid} />
+                            )}
+                            {spe === 'car' && <CarInsuredForm />}
+                        </>
                     )}
 
                     {insureds.length > 0 && (
                         <div className="wr-pages-detail__block wr-mt">
                             <div className="wr-pages-detail__title">
                                 <strong>
-                                    {spe === 'long' && '피보험자 목록'}
-                                    {spe === 'gen' && '피보험물(자) 목록'}
+                                    {spe === 'gen'
+                                        ? '피보험물(자) 목록'
+                                        : '피보험자 목록'}
                                 </strong>
                                 {editable && (
                                     <div>
@@ -331,10 +396,40 @@ export const CustomerTabpanel: FC<Props> = ({
                                         <div className="col">
                                             {editable ? (
                                                 <div className="wr-ml">
-                                                    <InsuredTemplate {...v} />
+                                                    {spe === 'long' && (
+                                                        <LongInsuredTemplate
+                                                            {...v}
+                                                        />
+                                                    )}
+                                                    {spe === 'gen' && (
+                                                        <GeneralInsuredTemplate
+                                                            {...v}
+                                                        />
+                                                    )}
+                                                    {spe === 'car' && (
+                                                        <CarInsuredTemplate
+                                                            {...v}
+                                                        />
+                                                    )}
                                                 </div>
                                             ) : (
-                                                <InsuredTemplate {...v} />
+                                                <>
+                                                    {spe === 'long' && (
+                                                        <LongInsuredTemplate
+                                                            {...v}
+                                                        />
+                                                    )}
+                                                    {spe === 'gen' && (
+                                                        <GeneralInsuredTemplate
+                                                            {...v}
+                                                        />
+                                                    )}
+                                                    {spe === 'car' && (
+                                                        <CarInsuredTemplate
+                                                            {...v}
+                                                        />
+                                                    )}
+                                                </>
                                             )}
                                         </div>
                                     </div>

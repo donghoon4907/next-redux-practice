@@ -132,6 +132,7 @@ export const InsuredForm: FC<Props> = ({ userid }) => {
                 index: generateIndex(insureds),
                 checked: false,
                 name: name.value,
+                dist: '피보험자',
                 tel: isEmpty(tel.value) ? '' : tel.value.replace(/\-/g, ''),
                 job: isEmpty(job.value) ? '' : job.value,
                 birthday: birthday.value

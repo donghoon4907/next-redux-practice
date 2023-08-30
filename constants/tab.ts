@@ -42,6 +42,17 @@ export const GEN_DETAIL_TABS: CoreTabOption[] = [
     { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
 ];
 /**
+ * 자동차 계약 상세 페이지 탭 목록
+ */
+export const CAR_DETAIL_TABS: CoreTabOption[] = [
+    {
+        id: 'tabCustomer',
+        label: '고객상세및동의현황',
+        panelId: 'tabpanelCustomer',
+    },
+    { id: 'tabCompare', label: '비교견적정보', panelId: 'tabpanelCompare' },
+];
+/**
  * 고객 상세 페이지 탭 목록
  */
 export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [

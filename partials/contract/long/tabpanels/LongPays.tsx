@@ -183,7 +183,11 @@ export const LongPaysTabpanel: FC<Props> = ({
                                 <td>
                                     <span>
                                         {v.insert_datetime
-                                            ? `${v.insert_userid} ${v.insert_datetime}`
+                                            ? `${
+                                                  v.insert_userid
+                                                      ? v.insert_userid
+                                                      : ''
+                                              } ${v.insert_datetime}`
                                             : '-'}
                                     </span>
                                 </td>

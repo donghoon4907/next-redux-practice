@@ -8,8 +8,8 @@ export function getLongs({ page, nums, ...rest }: GetLongsRequestPayload) {
     return getBackendAxios().post(`/long/sil?page=${page}&nums=${nums}`, rest);
 }
 
-export function getLong({ cidx }: GetLongRequestPayload) {
-    return getBackendAxios().get(`/long/detail/${cidx}`);
+export function getLong({ idx }: GetLongRequestPayload) {
+    return getBackendAxios().get(`/long/detail/${idx}`);
 }
 
 export function createLong(payload: CreateLongRequestPayload) {

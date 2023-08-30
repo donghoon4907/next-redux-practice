@@ -19,6 +19,8 @@ interface Props {
     readOnly?: boolean;
     disabled?: boolean;
     width?: number;
+    onBlur?: () => void;
+    isBirthday?: boolean;
 }
 
 export const MyDatepicker: FC<Props> = ({
@@ -31,7 +33,14 @@ export const MyDatepicker: FC<Props> = ({
     readOnly,
     disabled,
     width,
+    onBlur,
+    isBirthday,
 }) => {
+    let shouldDisableDate;
+    if (isBirthday) {
+        shouldDisableDate = (date: Date) => date > new Date();
+    }
+
     return (
         <DatePicker
             id={id}
@@ -45,7 +54,8 @@ export const MyDatepicker: FC<Props> = ({
             placement={placement}
             readOnly={readOnly}
             disabled={disabled}
-            onBlur={() => alert('test')}
+            onBlur={onBlur}
+            shouldDisableDate={shouldDisableDate}
             {...hooks}
         />
     );

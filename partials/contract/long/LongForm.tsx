@@ -5,6 +5,7 @@ import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -28,7 +29,7 @@ import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
-import { CustomerTabpanel } from '@partials/contract/long/tabpanels/Customer';
+import { CustomerTabpanel } from '@partials/contract/common/tabpanels/Customer';
 import { EndorsementTabpanel } from '@partials/contract/long/tabpanels/Endorsement';
 import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerform';
@@ -47,7 +48,7 @@ import { CreateLongDTO, UpdateLongDTO } from '@dto/contractor/Long.dto';
 import { createLongRequest } from '@actions/long/create-long.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { updateLongRequest } from '@actions/long/update-long.action';
-import { SearchProductInput } from '../SearchProductInput';
+import { SearchProductInput } from '@partials/contract/SearchProductInput';
 
 interface Props {
     /**
@@ -224,6 +225,8 @@ export const LongForm: FC<Props> = ({
         value: `${i + 1}`,
     }));
 
+    const router = useRouter();
+
     const { contacts, removedContacts, newUserHistory } = useSelector<
         AppState,
         CommonState
@@ -282,7 +285,7 @@ export const LongForm: FC<Props> = ({
     const [boDateto, setBoDateto] = useInput(defaultBodateto);
     const [boDu] = useSelect(
         duSelectOptions,
-        findSelectOption(defaultBoDu.toString(), duSelectOptions),
+        findSelectOption(defaultBoDu, duSelectOptions),
         {
             callbackOnChange: (next) => {
                 if (next) {
@@ -498,7 +501,9 @@ export const LongForm: FC<Props> = ({
         const updateLongDto = new UpdateLongDTO(payload);
 
         if (updateLongDto.requiredValidate()) {
-            updateLong(updateLongDto.getPayload());
+            updateLong(updateLongDto.getPayload(), () => {
+                router.replace(location.href);
+            });
         }
     };
 

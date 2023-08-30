@@ -13,7 +13,7 @@ import customersService from '@services/customersService';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
-import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
+import { findSelectOption } from '@utils/getter';
 import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 import { createInsured } from '@actions/contract/set-insured.action';
@@ -25,20 +25,18 @@ import { updateLoadedContractor } from '@actions/contract/set-contractor.action'
 import { GeneralForm } from '@partials/contract/general/GeneralForm';
 
 const General: NextPage<GeneralState> = ({ general }) => {
-    // console.log(long);
     const dispatch = useDispatch();
 
-    const { loggedInUser, orgas, genUseCompanies } = useSelector<
-        AppState,
-        HrState
-    >((state) => state.hr);
+    const { genUseCompanies } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
     const defaultComp = findSelectOption(general.wcode, genUseCompanies);
 
-    const defaultOrga = findSelectOption(
-        loggedInUser.user_info.orga_idx,
-        orgas,
-    );
+    // const defaultOrga = findSelectOption(
+    //     loggedInUser.user_info.orga_idx,
+    //     orgas,
+    // );
 
     const defaultStatus = findSelectOption(
         general.status,
@@ -75,8 +73,7 @@ const General: NextPage<GeneralState> = ({ general }) => {
             <GeneralForm
                 mode="update"
                 idx={general.idx}
-                defaultUserid={loggedInUser.userid}
-                defaultOrga={defaultOrga}
+                defaultUserid={general.userid}
                 defaultComp={defaultComp}
                 defaultCnum={general.cnum}
                 defaultTitle={general.title}
@@ -146,6 +143,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                             index: i,
                             checked: false,
                             gdate: general.userid_his[i].gdate,
+                            group: general.userid_his[i].group,
                             userid: general.userid_his[i].userid,
                             username: general.userid_his[i].fcname,
                         }),

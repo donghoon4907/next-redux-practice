@@ -589,6 +589,24 @@ export const CAR_USAGE: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 단기구분
+export const CAR_SHORT_DIST: CoreSelectOption[] = [
+    {
+        label: '단기(출)',
+        value: '단기(출)',
+        isFixed: false,
+    },
+    {
+        label: '단기(상)',
+        value: '단기(상)',
+        isFixed: false,
+    },
+    {
+        label: '기타',
+        value: '기타',
+        isFixed: false,
+    },
+];
 
 const rootSelectOptions = {
     dist: CAR_DIST,
@@ -599,6 +617,7 @@ const rootSelectOptions = {
     relation: CAR_RELATION,
     locale: CAR_LOCALE,
     usage: CAR_USAGE,
+    shortDist: CAR_SHORT_DIST,
 };
 
 export default rootSelectOptions;

@@ -249,14 +249,17 @@ export const ContactTabpanel: FC<Props> = ({
                                     </div>
                                 </div>
                                 <div className="col-4">
-                                    <div className="wr-ml">
+                                    <div className="wr-ml position-relative">
+                                        <div className="wr-pages-detail__lock">
+                                            <p>준비 중입니다.</p>
+                                        </div>
                                         <WithLabel
-                                            id="cidx"
+                                            id="ccnum"
                                             label="계약번호"
                                             type={labelType}
                                         >
                                             <MySelect
-                                                inputId="cidx"
+                                                inputId="ccnum"
                                                 placeholder="선택"
                                                 height={
                                                     variables.detailFilterHeight

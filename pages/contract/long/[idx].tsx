@@ -26,7 +26,6 @@ import { updateProduct } from '@actions/contract/set-product.action';
 import { createContact } from '@actions/common/set-contact.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
-    // console.log(long);
     const dispatch = useDispatch();
 
     const { longUseCompanies } = useSelector<AppState, HrState>(
@@ -138,7 +137,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
         const { query } = ctx;
 
-        const cidx = query.cidx as string;
+        const idx = query.idx as string;
 
         dispatch(
             getOrgasRequest({
@@ -157,7 +156,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             await sagaTask?.toPromise();
 
-            const { data } = await longsService.getLong({ cidx });
+            const { data } = await longsService.getLong({ idx });
 
             const long = data.data;
 
@@ -188,6 +187,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                             index: i,
                             checked: false,
                             gdate: long.userid_his[i].gdate,
+                            group: long.userid_his[i].group,
                             userid: long.userid_his[i].userid,
                             username: long.userid_his[i].fcname,
                         }),

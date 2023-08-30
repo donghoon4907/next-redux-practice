@@ -5,11 +5,12 @@ import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { MySelect } from '@components/select';
-import { GEN_DETAIL_TABS, LONG_DETAIL_TABS } from '@constants/tab';
+import { GEN_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
@@ -26,7 +27,7 @@ import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
-import { CustomerTabpanel } from '@partials/contract/long/tabpanels/Customer';
+import { CustomerTabpanel } from '@partials/contract/common/tabpanels/Customer';
 import { EndorsementTabpanel } from '@partials/contract/long/tabpanels/Endorsement';
 import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerform';
@@ -40,7 +41,6 @@ import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { UserHistoryModal } from '@components/modal/UserHistory';
 import { SearchProductInput } from '../SearchProductInput';
 import {
     CreateGeneralDTO,
@@ -48,6 +48,8 @@ import {
 } from '@dto/contractor/General.dto';
 import { createGeneralRequest } from '@actions/general/create-general.action';
 import { updateGeneralRequest } from '@actions/general/update-general.action';
+import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
+import { UserHistoryModal } from '@components/modal/UserHistory';
 
 interface Props {
     /**
@@ -126,6 +128,8 @@ export const GeneralForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-general-detail';
 
+    const router = useRouter();
+
     const { contacts, removedContacts, newUserHistory } = useSelector<
         AppState,
         CommonState
@@ -147,7 +151,7 @@ export const GeneralForm: FC<Props> = ({
 
     const getUsers = useApi(getUsersRequest);
     // 탭 관리
-    const [tab, setTab] = useTab(LONG_DETAIL_TABS[0]);
+    const [tab, setTab] = useTab(GEN_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
     const labelType = editable ? 'active' : 'disable';
@@ -204,7 +208,9 @@ export const GeneralForm: FC<Props> = ({
         const updateLongDto = new UpdateGeneralDTO(payload);
 
         if (updateLongDto.requiredValidate()) {
-            updateGeneral(updateLongDto.getPayload());
+            updateGeneral(updateLongDto.getPayload(), () => {
+                router.replace(location.href);
+            });
         }
     };
 
@@ -282,7 +288,6 @@ export const GeneralForm: FC<Props> = ({
 
     useEffect(() => {
         if (orga.value) {
-            console.log(orga.value);
             getUsers(
                 {
                     idx: orga.value.value,
@@ -302,7 +307,59 @@ export const GeneralForm: FC<Props> = ({
                         <div className="wr-frame__section">
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
-                                    <div className="row">
+                                    {mode === 'create' ? (
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="orga"
+                                                    label="조직"
+                                                    type={labelType}
+                                                    // isRequired={editable}
+                                                >
+                                                    <MySelect
+                                                        inputId="orga"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...orga}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
+                                                        id="manager"
+                                                        label="담당자"
+                                                        type={labelType}
+                                                        isRequired={editable}
+                                                    >
+                                                        <MySelect
+                                                            inputId="manager"
+                                                            placeholder="선택"
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                            {...manager}
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <LongManagerAccordion
+                                            editable={editable}
+                                        />
+                                    )}
+                                    {/* <div className="row">
                                         <div className="col-6">
                                             <WithLabel
                                                 id="orga"
@@ -342,7 +399,7 @@ export const GeneralForm: FC<Props> = ({
                                                 </WithLabel>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                             <div className="wr-pages-detail__block">
@@ -622,12 +679,10 @@ export const GeneralForm: FC<Props> = ({
             {isShowInsuredSearchModal && (
                 <CustomerSearchModal type="insured-person" />
             )}
-            <CreateGeneralPayModal
-                contdate={contdate.value!}
-                payment={payment.value}
-            />
+            <CreateGeneralPayModal payment={payment.value} />
             <CreateEndorsementModal />
             <CreateEtcModal />
+            {mode === 'update' && <UserHistoryModal type="long" />}
         </>
     );
 };

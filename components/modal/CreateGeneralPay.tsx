@@ -17,21 +17,16 @@ import { MySelect } from '@components/select';
 import { MyDatepicker } from '@components/datepicker';
 import { hideCreateGeneralPayModal } from '@actions/modal/create-pay.action';
 import { createPay } from '@actions/long/set-pay.action';
-import longConstants from '@constants/options/long';
-import { findSelectOption } from '@utils/getter';
+import generalConstants from '@constants/options/general';
 
 interface Props {
-    /**
-     * 계약일자
-     */
-    contdate: Date;
     /**
      * 실적보험료
      */
     payment: string;
 }
 
-export const CreateGeneralPayModal: FC<Props> = ({ contdate, payment }) => {
+export const CreateGeneralPayModal: FC<Props> = ({ payment }) => {
     const dispatch = useDispatch();
 
     const { isShowCreateGeneralPayModal } = useSelector<AppState, ModalState>(
@@ -43,36 +38,11 @@ export const CreateGeneralPayModal: FC<Props> = ({ contdate, payment }) => {
     );
 
     // 영수일
-    const [paydate, setPaydate] = useDatepicker(null);
+    const [paydate] = useDatepicker(new Date());
     // 납입구분
-    const [dist, setDist] = useSelect(
-        longConstants.pDist.filter((v) => {
-            if (pays.length !== 0 && v.value === '신규') {
-                return null;
-            }
-
-            return v;
-        }),
-        null,
-        {
-            callbackOnChange: (next) => {
-                if (next) {
-                    if (next.value === '철회' || next.value === '취소') {
-                        if (!pay.value.includes('-')) {
-                            setPay((prev) => `-${prev}`);
-                        }
-                    } else {
-                        setPay((prev) => prev.replace(/\-/g, ''));
-                    }
-                }
-            },
-        },
-    );
+    const [dist] = useSelect(generalConstants.payDist);
     // 보험료
     const [pay, setPay] = useNumbericInput('', { addComma: true });
-
-    const isDisablePayment =
-        dist.value?.value === '철회' || dist.value?.value === '취소';
 
     const handleClose = () => {
         dispatch(hideCreateGeneralPayModal());
@@ -88,7 +58,7 @@ export const CreateGeneralPayModal: FC<Props> = ({ contdate, payment }) => {
         }
 
         if (isEmpty(pay.value)) {
-            return alert('수금실적을 입력하세요.');
+            return alert('보험료를 입력하세요.');
         }
 
         const tf = confirm('입력한 내용대로 설정하시겠습니까?');
@@ -115,26 +85,8 @@ export const CreateGeneralPayModal: FC<Props> = ({ contdate, payment }) => {
     };
 
     const handleOpen = () => {
-        if (contdate && !isEmpty(payment)) {
-            if (pays.length === 0) {
-                setPaydate(contdate);
-
-                setDist(findSelectOption('신규', longConstants.pDist));
-            } else {
-                setPaydate(new Date());
-
-                setDist(findSelectOption('계속', longConstants.pDist));
-            }
-
+        if (!isEmpty(payment)) {
             setPay(payment);
-        } else {
-            if (!contdate) {
-                alert('먼저 계약일자를 입력하세요.');
-            } else if (isEmpty(payment)) {
-                alert('먼저 실적보험료를 입력하세요.');
-            }
-
-            handleClose();
         }
     };
 
@@ -154,7 +106,6 @@ export const CreateGeneralPayModal: FC<Props> = ({ contdate, payment }) => {
                                 id="ppaydate"
                                 size="sm"
                                 placeholder="영수일"
-                                disabled={pays.length === 0}
                                 hooks={paydate}
                             />
                         </WithLabel>
@@ -166,7 +117,6 @@ export const CreateGeneralPayModal: FC<Props> = ({ contdate, payment }) => {
                                     inputId="pdist"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
-                                    isDisabled={pays.length === 0}
                                     {...dist}
                                 />
                             </WithLabel>
@@ -181,7 +131,6 @@ export const CreateGeneralPayModal: FC<Props> = ({ contdate, payment }) => {
                                 id="ppayment"
                                 placeholder="0"
                                 className="text-end"
-                                disabled={isDisablePayment}
                                 {...pay}
                             />
                         </WithLabel>

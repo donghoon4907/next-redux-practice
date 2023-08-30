@@ -33,23 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 
     // 라우팅 시 탭 및 GNB 갱신
     useEffect(() => {
-        // 404, 500 페이지 제한
-        if (['/404', '/500', '/test', '/etc/shop_list'].includes(route)) {
-            const tab = new TabModule();
-
-            dispatch(initTab(tab.getAll()));
-        } else {
-            const [_, gnb] = asPath.split('/');
-
-            // 로그인 페이지 추가 제한
-            if (gnb !== 'login') {
-                initializeTab(pathname);
-                // 게시판 페이지 추가 제한
-                if (gnb !== 'board') {
-                    dispatch(updateGnb(ASIDE_MENU[gnb]));
-                }
-            }
-        }
+        onRouteChange();
 
         // 탭 활성화
         function initializeTab(url: string) {
@@ -78,14 +62,30 @@ function MyApp({ Component, pageProps }: AppProps) {
             dispatch(initTab(tab.getAll()));
         }
 
-        // function onRouteChange(url: string) {
-        //     initializeTab(url);
-        // }
+        function onRouteChange(url?: string) {
+            // 404, 500 페이지 제한
+            if (['/404', '/500', '/test', '/etc/shop_list'].includes(route)) {
+                const tab = new TabModule();
 
-        // events.on('routeChangeComplete', onRouteChange);
+                dispatch(initTab(tab.getAll()));
+            } else {
+                const [_, gnb] = asPath.split('/');
+
+                // 로그인 페이지 추가 제한
+                if (gnb !== 'login') {
+                    initializeTab(pathname);
+                    // 게시판 페이지 추가 제한
+                    if (gnb !== 'board') {
+                        dispatch(updateGnb(ASIDE_MENU[gnb]));
+                    }
+                }
+            }
+        }
+
+        events.on('routeChangeComplete', onRouteChange);
 
         return () => {
-            // events.off('routeChangeComplete', onRouteChange);
+            events.off('routeChangeComplete', onRouteChange);
         };
     }, [route, asPath]);
 

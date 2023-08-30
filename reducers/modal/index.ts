@@ -22,6 +22,7 @@ import {
     CreateGeneralPayModalActionTypes,
     CreateLongPayModalActionTypes,
 } from '@actions/modal/create-pay.action';
+import { SetPeriodModalActionTypes } from '@actions/modal/set-period.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -45,6 +46,7 @@ export interface ModalState {
     isShowCreateLongPayModal: boolean;
     isShowCreateGeneralPayModal: boolean;
     isShowCreateEndorsementModal: boolean;
+    isShowSetPeriodModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -69,6 +71,7 @@ const initialState: ModalState = {
     isShowCreateLongPayModal: false,
     isShowCreateGeneralPayModal: false,
     isShowCreateEndorsementModal: false,
+    isShowSetPeriodModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -239,6 +242,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case CreateEndorsementModalActionTypes.HIDE: {
                 draft.isShowCreateEndorsementModal = false;
+                break;
+            }
+            case SetPeriodModalActionTypes.SHOW: {
+                draft.isShowSetPeriodModal = true;
+                break;
+            }
+            case SetPeriodModalActionTypes.HIDE: {
+                draft.isShowSetPeriodModal = false;
                 break;
             }
             default:
