@@ -51,6 +51,7 @@ export const CAR_DETAIL_TABS: CoreTabOption[] = [
         panelId: 'tabpanelCustomer',
     },
     { id: 'tabCompare', label: '비교견적정보', panelId: 'tabpanelCompare' },
+    { id: 'tabPays', label: '입금 및 정산내역', panelId: 'tabpanelPays' },
 ];
 /**
  * 고객 상세 페이지 탭 목록

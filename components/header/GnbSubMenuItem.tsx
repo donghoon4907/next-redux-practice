@@ -21,7 +21,7 @@ export const GnbSubMenuItem: FC<Props> = ({ to, tabOption, children }) => {
         if (tabOption) {
             // const { id, label } = tabOption;
 
-            tab.move(to);
+            tab.replace(to);
         }
     };
 

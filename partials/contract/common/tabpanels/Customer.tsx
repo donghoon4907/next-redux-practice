@@ -5,6 +5,7 @@ import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { AppState } from '@reducers/index';
 import type { ContractState } from '@reducers/contract';
 import type { CoreEditableComponent } from '@interfaces/core';
+import type { UseSelectOutput } from '@hooks/use-select';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
@@ -22,13 +23,8 @@ import {
     deleteInsured,
     updateInsured,
 } from '@actions/contract/set-insured.action';
-
-// import { InsuredTemplate } from '../template/LongInsured';
-// import { InsuredForm } from '../InsuredForm';
 import { MySelect } from '@components/select';
 import variables from '@styles/_variables.module.scss';
-import { useSelect } from '@hooks/use-select';
-import carConstants from '@constants/options/car';
 import { CarInsuredForm } from '@partials/contract/car/InsuredForm';
 import { GeneralInsuredForm } from '@partials/contract/general/InsuredForm';
 import { LongInsuredForm } from '@partials/contract/long/InsuredForm';
@@ -39,6 +35,8 @@ import { CarInsuredTemplate } from '@partials/contract/car/template/Insured';
 interface Props extends MyTabpanelProps, CoreEditableComponent {
     userid: string;
     spe: Spe;
+    carfamilyHooks?: UseSelectOutput;
+    carageHooks?: UseSelectOutput;
 }
 
 export const CustomerTabpanel: FC<Props> = ({
@@ -48,6 +46,8 @@ export const CustomerTabpanel: FC<Props> = ({
     editable,
     userid,
     spe,
+    carfamilyHooks,
+    carageHooks,
 }) => {
     const dispatch = useDispatch();
 
@@ -59,10 +59,6 @@ export const CustomerTabpanel: FC<Props> = ({
 
     // 계약자명
     const [username, setUsername] = useInput('', { noSpace: true });
-    // 운전자범위
-    const [driverRange] = useSelect(carConstants.driverRange);
-    // 최저연령
-    const [minAge] = useSelect(carConstants.minAge);
 
     const labelType = editable ? 'active' : 'disable';
 
@@ -124,19 +120,22 @@ export const CustomerTabpanel: FC<Props> = ({
                                                 placeholder="계약자명"
                                                 disabled={!editable}
                                                 {...username}
-                                                button={{
-                                                    type: 'submit',
-                                                    className:
-                                                        'btn-primary btn-md',
-                                                    disabled: !editable,
-                                                    children: (
-                                                        <>
-                                                            <span>
-                                                                고객정보연결
-                                                            </span>
-                                                        </>
-                                                    ),
-                                                }}
+                                                button={
+                                                    editable
+                                                        ? {
+                                                              type: 'submit',
+                                                              className:
+                                                                  'btn-primary btn-md',
+                                                              children: (
+                                                                  <>
+                                                                      <span>
+                                                                          고객정보연결
+                                                                      </span>
+                                                                  </>
+                                                              ),
+                                                          }
+                                                        : undefined
+                                                }
                                             />
                                         </WithLabel>
                                     </form>
@@ -279,60 +278,6 @@ export const CustomerTabpanel: FC<Props> = ({
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    {spe === 'car' && (
-                                                        <div className="row wr-mt">
-                                                            <div className="col-6">
-                                                                <WithLabel
-                                                                    label="운전자범위"
-                                                                    id="dRange"
-                                                                    type={
-                                                                        labelType
-                                                                    }
-                                                                >
-                                                                    <MySelect
-                                                                        inputId="dRange"
-                                                                        placeholder="선택"
-                                                                        placeHolderFontSize={
-                                                                            16
-                                                                        }
-                                                                        height={
-                                                                            variables.detailFilterHeight
-                                                                        }
-                                                                        isDisabled={
-                                                                            !editable
-                                                                        }
-                                                                        {...driverRange}
-                                                                    />
-                                                                </WithLabel>
-                                                            </div>
-                                                            <div className="col-6">
-                                                                <div className="wr-ml">
-                                                                    <WithLabel
-                                                                        label="최저연령"
-                                                                        id="minAge"
-                                                                        type={
-                                                                            labelType
-                                                                        }
-                                                                    >
-                                                                        <MySelect
-                                                                            inputId="minAge"
-                                                                            placeholder="선택"
-                                                                            placeHolderFontSize={
-                                                                                16
-                                                                            }
-                                                                            height={
-                                                                                variables.detailFilterHeight
-                                                                            }
-                                                                            isDisabled={
-                                                                                !editable
-                                                                            }
-                                                                            {...minAge}
-                                                                        />
-                                                                    </WithLabel>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )}
                                                 </>
                                             )}
                                         </>
@@ -341,6 +286,46 @@ export const CustomerTabpanel: FC<Props> = ({
                             </div>
                         </div>
                     </div>
+                    {spe === 'car' && (
+                        <div className="row wr-mt">
+                            <div className="col-6">
+                                <WithLabel
+                                    label="운전자범위"
+                                    id="carfamily"
+                                    type={labelType}
+                                >
+                                    <MySelect
+                                        inputId="carfamily"
+                                        placeholder="선택"
+                                        placeHolderFontSize={16}
+                                        height={variables.detailFilterHeight}
+                                        isDisabled={!editable}
+                                        {...carfamilyHooks}
+                                    />
+                                </WithLabel>
+                            </div>
+                            <div className="col-6">
+                                <div className="wr-ml">
+                                    <WithLabel
+                                        label="최저연령"
+                                        id="carage"
+                                        type={labelType}
+                                    >
+                                        <MySelect
+                                            inputId="carage"
+                                            placeholder="선택"
+                                            placeHolderFontSize={16}
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={!editable}
+                                            {...carageHooks}
+                                        />
+                                    </WithLabel>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {editable && (
                         <>
                             {spe === 'long' && (

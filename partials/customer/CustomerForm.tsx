@@ -5,6 +5,7 @@ import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CustomerState } from '@reducers/customer';
 import type { CommonState } from '@reducers/common';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -263,6 +264,8 @@ export const CustomerForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-customer-detail';
 
+    const router = useRouter();
+
     const { loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
@@ -520,10 +523,8 @@ export const CustomerForm: FC<Props> = ({
         const updateCustomerDto = new UpdateCustomerDTO(payload);
 
         if (updateCustomerDto.requiredValidate()) {
-            updateCustomer(updateCustomerDto.getPayload(), ({ Message }) => {
-                if (Message === 'Success') {
-                    alert('수정되었습니다.');
-                }
+            updateCustomer(updateCustomerDto.getPayload(), () => {
+                router.replace(location.href);
             });
         }
     };

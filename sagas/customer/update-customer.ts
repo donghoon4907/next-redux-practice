@@ -12,7 +12,9 @@ function* updateCustomerSaga({ payload }: UpdateCustomerRequestAction) {
 
     const { Message } = data;
 
-    if (Message !== 'Success') {
+    if (Message === 'Success') {
+        alert('수정되었습니다.');
+    } else {
         alert(Message);
     }
 

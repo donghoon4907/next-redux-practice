@@ -35,6 +35,7 @@ export interface HrState {
      * 자동차 계약 관련 보험사목록
      */
     carCompanies: CoreSelectOption[];
+    carUseCompanies: CoreSelectOption[];
     /**
      * 일반 계약 관련 보험사목록
      */
@@ -114,6 +115,7 @@ const initialState: HrState = {
     longViewCompanies: [],
     longUseCompanies: [],
     carCompanies: [],
+    carUseCompanies: [],
     genCompanies: [],
     genUseCompanies: [],
     banks: [],
@@ -158,6 +160,7 @@ export const hrReducer: Reducer<HrState, any> = (
                 } else if (action.payload.type === 'long-use') {
                     draft.longUseCompanies = action.payload.companies;
                 } else if (action.payload.type === 'car-use') {
+                    draft.carUseCompanies = action.payload.companies;
                 } else if (action.payload.type === 'gen-use') {
                     draft.genUseCompanies = action.payload.companies;
                 } else if (action.payload.type === 'board') {

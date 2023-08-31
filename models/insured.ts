@@ -3,7 +3,7 @@ import { CoreCheckableModel } from './core';
 export type Insured = CoreCheckableModel & {
     // id
     // idx?: number;
-    // 피보험자 / 피보험물
+    // 주피보험자 / 피보험자 / 피보험물
     dist: string;
     // 고객 id
     p_idx?: number;
@@ -13,8 +13,10 @@ export type Insured = CoreCheckableModel & {
     birthday?: string;
     sex?: string;
     p_address?: string;
-    // 주 피보험자 여부
-    isMain?: boolean;
     // 관계
     relation?: string;
+    // 주민번호
+    jumin?: string;
+    // 나이
+    age?: string;
 };

@@ -27,6 +27,14 @@ export type Pay = CoreCheckableModel & {
      */
     pay: number;
     /**
+     *
+     */
+    pay1?: number;
+    /**
+     *
+     */
+    pay2?: number;
+    /**
      * 금종
      */
     method?: string;

@@ -32,7 +32,7 @@ export const HeaderTab: FC<Props> = ({ to, isSingle, isFirst, ...props }) => {
         // 활성화된 탭인 경우
         if (router.asPath === to) {
             // 가장 마지막 탭을 활성화 시킴
-            router.push(tabs[tabs.length - 1].to);
+            router.replace(tabs[tabs.length - 1].to);
             // 상태만 변경
         } else {
             dispatch(removeTab(id));

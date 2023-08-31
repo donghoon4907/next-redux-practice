@@ -6,6 +6,7 @@ import { uploadSaga } from './upload';
 import { hrSaga } from './hr';
 import { customerSaga } from './customer';
 import { generalSaga } from './general';
+import { carSaga } from './car';
 
 export function* rootSaga() {
     yield all([
@@ -15,5 +16,6 @@ export function* rootSaga() {
         call(uploadSaga),
         call(hrSaga),
         call(customerSaga),
+        call(carSaga),
     ]);
 }

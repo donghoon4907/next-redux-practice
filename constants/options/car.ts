@@ -20,9 +20,14 @@ export const CAR_PAY_METHOD: CoreSelectOption[] = [
         value: '일시납',
         isFixed: false,
     },
-    ...Array.from({ length: 5 }).map((_, i) => ({
-        label: `${i + 2}회`,
-        value: `${i + 2}회`,
+    {
+        label: '비연속 2회',
+        value: '비연속 2회',
+        isFixed: false,
+    },
+    ...[2, 3, 4, 5, 6, 10, 11].map((v) => ({
+        label: `연속 ${v}회`,
+        value: `연속 ${v}회`,
         isFixed: false,
     })),
 ];

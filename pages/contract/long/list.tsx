@@ -86,7 +86,7 @@ const Longs: NextPage = () => {
     };
 
     const handleClickRow = ({ cidx, cname }: any) => {
-        tab.move(`/contract/long/${cidx}`);
+        tab.replace(`/contract/long/${cidx}`);
     };
 
     const handleSearch = () => {

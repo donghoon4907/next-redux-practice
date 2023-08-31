@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { WithLabel } from '@components/WithLabel';
-import { useInput } from '@hooks/use-input';
+import { useInput, useResidentNumberInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { createInsured } from '@actions/contract/set-insured.action';
 import { generateIndex } from '@utils/generate';
@@ -17,7 +17,8 @@ import variables from '@styles/_variables.module.scss';
 import { MyInput } from '@components/input';
 import { MyDatepicker } from '@components/datepicker';
 import { MyButton } from '@components/button';
-import { birthdayToAge } from '@utils/calculator';
+import { birthdayToAge, residentNumToAge } from '@utils/calculator';
+import { isNumberic } from '@utils/validation';
 
 interface Props {}
 
@@ -35,6 +36,31 @@ export const CarInsuredForm: FC<Props> = () => {
     const [birthday, setBirthday] = useDatepicker(null);
     // 성별
     const [gender, setGender] = useState(true);
+    // 주민번호
+    const [jumin, setJumin] = useResidentNumberInput('', {
+        callbackOnBlur: (val) => {
+            const [_, after] = val.split('-');
+
+            if (isNumberic(after)) {
+                setGender(+after[0] % 2 === 1 ? true : false);
+            }
+        },
+    });
+
+    const isMain = insureds.length === 0;
+
+    let age = '';
+    if (isMain) {
+        if (jumin.value.length > 7) {
+            age = (
+                residentNumToAge(jumin.value.replace(/-/g, '')) - 1
+            ).toString();
+        }
+    } else {
+        if (birthday.value) {
+            age = (birthdayToAge(birthday.value) - 1).toString();
+        }
+    }
 
     const handleClickGender = () => {
         setGender((prevState) => !prevState);
@@ -43,6 +69,13 @@ export const CarInsuredForm: FC<Props> = () => {
     const handleCreatePerson = () => {
         if (isEmpty(name.value)) {
             return alert('이름을 입력하세요');
+        }
+
+        if (isMain) {
+            // 주민번호 검증 - 포함
+            if (jumin.value.length !== 14) {
+                return alert('주민번호를 확인하세요');
+            }
         }
 
         dispatch(
@@ -55,8 +88,9 @@ export const CarInsuredForm: FC<Props> = () => {
                     ? dayjs(birthday.value).format('YYYY-MM-DD')
                     : '',
                 sex: gender ? '남' : '여',
-                dist: '피보험자',
-                isMain: insureds.length === 0,
+                dist: isMain ? '주피보험자' : '피보험자',
+                jumin: isMain ? jumin.value : undefined,
+                age,
             }),
         );
 
@@ -68,6 +102,7 @@ export const CarInsuredForm: FC<Props> = () => {
         setName('');
         setBirthday(null);
         setGender(true);
+        setJumin('');
     };
 
     return (
@@ -103,32 +138,62 @@ export const CarInsuredForm: FC<Props> = () => {
                 </div>
                 <div className="row wr-mt">
                     <div className="col-6">
-                        <WithLabel
-                            id="pbirthday"
-                            label="생년월일"
-                            type="active"
-                        >
-                            <MyDatepicker
-                                id="pbirthday"
-                                size="md"
-                                placeholder="생년월일"
-                                hooks={birthday}
-                            />
-                            <div
-                                className="wr-with__extension"
-                                style={{ width: 40 }}
+                        {insureds.length === 0 && (
+                            <WithLabel
+                                id="pjumin"
+                                label="주민번호"
+                                type="active"
                             >
-                                <MyButton
-                                    className={`btn-md btn-${
-                                        gender ? 'primary' : 'danger'
-                                    }`}
-                                    onClick={handleClickGender}
+                                <MyInput
+                                    type="text"
+                                    id="pjumin"
+                                    placeholder="주민번호"
+                                    {...jumin}
+                                />
+                                <div
+                                    className="wr-with__extension"
                                     style={{ width: 40 }}
                                 >
-                                    {gender ? '남' : '여'}
-                                </MyButton>
-                            </div>
-                        </WithLabel>
+                                    <MyButton
+                                        className={`btn-md btn-${
+                                            gender ? 'primary' : 'danger'
+                                        }`}
+                                        onClick={handleClickGender}
+                                        style={{ width: 40 }}
+                                    >
+                                        {gender ? '남' : '여'}
+                                    </MyButton>
+                                </div>
+                            </WithLabel>
+                        )}
+                        {insureds.length !== 0 && (
+                            <WithLabel
+                                id="pbirthday"
+                                label="생년월일"
+                                type="active"
+                            >
+                                <MyDatepicker
+                                    id="pbirthday"
+                                    size="md"
+                                    placeholder="생년월일"
+                                    hooks={birthday}
+                                />
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 40 }}
+                                >
+                                    <MyButton
+                                        className={`btn-md btn-${
+                                            gender ? 'primary' : 'danger'
+                                        }`}
+                                        onClick={handleClickGender}
+                                        style={{ width: 40 }}
+                                    >
+                                        {gender ? '남' : '여'}
+                                    </MyButton>
+                                </div>
+                            </WithLabel>
+                        )}
                     </div>
                     <div className="col-6">
                         <div className="wr-ml">
@@ -138,11 +203,7 @@ export const CarInsuredForm: FC<Props> = () => {
                                     placeholder="만 나이"
                                     className="text-end"
                                     disabled
-                                    value={
-                                        birthday.value
-                                            ? birthdayToAge(birthday.value) - 1
-                                            : ''
-                                    }
+                                    value={age}
                                     unit="세"
                                 />
                             </WithLabel>

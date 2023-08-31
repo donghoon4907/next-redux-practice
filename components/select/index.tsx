@@ -105,6 +105,7 @@ export const MySelect: FC<MySelectProps> = ({
                         : 'white',
                     boxShadow: 'none',
                     borderLeftWidth: placement === 'right' ? '0' : '1px',
+                    borderRightWidth: placement === 'left' ? '0' : '1px',
                     '&:hover': {
                         borderColor: variables.dividerColor,
                     },

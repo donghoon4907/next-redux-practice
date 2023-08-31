@@ -13,16 +13,15 @@ const Test: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div
-                    style={{
-                        backgroundColor: 'white',
-                        width: '100%',
-                        height: '100%',
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                    }}
-                ></div>
+                <div className="row">
+                    <div className="col">
+                        <iframe
+                            src="https://wportal.co.kr/app-web/03_car/estimate.asp"
+                            width="100%"
+                            height="100%"
+                        />
+                    </div>
+                </div>
             </MyLayout>
         </>
     );

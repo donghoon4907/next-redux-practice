@@ -3,20 +3,19 @@ import type { Insured } from '@models/insured';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import { birthdayToAge } from '@utils/calculator';
+import { MyButton } from '@components/button';
 
 interface Props extends Partial<Insured> {}
 
 export const CarInsuredTemplate: FC<Props> = ({
+    dist,
     relation,
     name = '',
     birthday = '',
     sex = '',
+    jumin = '',
+    age = '',
 }) => {
-    let age = -1;
-    if (birthday) {
-        age = birthdayToAge(new Date(birthday));
-    }
-
     return (
         <>
             <div className="row">
@@ -32,7 +31,7 @@ export const CarInsuredTemplate: FC<Props> = ({
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
-                        <WithLabel label="이름" type="active">
+                        <WithLabel label="이름" type="disable">
                             <MyInput
                                 type="text"
                                 placeholder="이름"
@@ -45,29 +44,70 @@ export const CarInsuredTemplate: FC<Props> = ({
             </div>
             <div className="row wr-mt">
                 <div className="col-6">
-                    <WithLabel label="생년월일" type="disable">
-                        <MyInput
-                            type="text"
-                            placeholder="생년월일"
-                            disabled
-                            value={birthday}
-                            unit={sex}
-                        />
-                    </WithLabel>
+                    {dist === '주피보험자' && (
+                        <WithLabel id="pjumin" label="주민번호" type="disable">
+                            <MyInput
+                                type="text"
+                                id="pjumin"
+                                placeholder="주민번호"
+                                disabled
+                                value={jumin}
+                            />
+                            <div
+                                className="wr-with__extension"
+                                style={{ width: 40 }}
+                            >
+                                <MyButton
+                                    className={`btn-md btn-${
+                                        sex === '남' ? 'primary' : 'danger'
+                                    }`}
+                                    style={{ width: 40 }}
+                                    disabled
+                                >
+                                    {sex}
+                                </MyButton>
+                            </div>
+                        </WithLabel>
+                    )}
+                    {dist === '피보험자' && (
+                        <WithLabel
+                            id="pbirthday"
+                            label="생년월일"
+                            type="disable"
+                        >
+                            <MyInput
+                                type="text"
+                                id="pbirthday"
+                                placeholder="생년월일"
+                                disabled
+                                value={birthday}
+                            />
+                            <div
+                                className="wr-with__extension"
+                                style={{ width: 40 }}
+                            >
+                                <MyButton
+                                    className={`btn-md btn-${
+                                        sex === '남' ? 'primary' : 'danger'
+                                    }`}
+                                    style={{ width: 40 }}
+                                    disabled
+                                >
+                                    {sex}
+                                </MyButton>
+                            </div>
+                        </WithLabel>
+                    )}
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
-                        <WithLabel label="만 나이" type="active">
+                        <WithLabel label="만 나이" type="disable">
                             <MyInput
                                 type="text"
                                 placeholder="만 나이"
                                 disabled
                                 className="text-end"
-                                value={
-                                    birthday
-                                        ? birthdayToAge(new Date(birthday)) - 1
-                                        : ''
-                                }
+                                value={age}
                                 unit="세"
                             />
                         </WithLabel>

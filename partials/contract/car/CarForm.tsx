@@ -5,6 +5,7 @@ import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
+import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -43,6 +44,7 @@ import { updateGeneralRequest } from '@actions/general/update-general.action';
 import { showSetPeriodModal } from '@actions/modal/set-period.action';
 import { SearchProductInput } from '@partials/contract/SearchProductInput';
 import { CompareTabpanel } from '@partials/contract/car/tabpanels/Compare';
+import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
 
 interface Props {
     /**
@@ -66,9 +68,17 @@ interface Props {
      */
     defaultComp?: CoreSelectOption;
     /**
+     * 전보험사 기본 값
+     */
+    defaultPreComp?: CoreSelectOption;
+    /**
      * 계약번호 기본 값
      */
     defaultCnum?: string;
+    /**
+     * 전계약번호 기본 값
+     */
+    defaultPreCnum?: string;
     /**
      * 상품명 기본 값
      */
@@ -98,9 +108,277 @@ interface Props {
      */
     defaultIsConfirm?: string;
     /**
-     * 실적보험료 기본 값
+     * 인수구분 기본 값
      */
-    defaultPayment?: string;
+    defaultInsu?: CoreSelectOption;
+    /**
+     * 등급 기본 값
+     */
+    defaultRate?: CoreSelectOption;
+    /**
+     * 납입방법 기본 값
+     */
+    defaultCycle?: CoreSelectOption;
+    /**
+     * 운전자범위 기본 값
+     */
+    defaultCarfamily?: CoreSelectOption;
+    /**
+     * 최저연령 기본 값
+     */
+    defaultCarage?: CoreSelectOption;
+    /**
+     * 차량번호 기본 값
+     */
+    defaultCarNum?: string;
+    /**
+     * 차량연식 기본 값
+     */
+    defaultCarYear?: CoreSelectOption;
+    /**
+     * 차명코드 기본 값
+     */
+    defaultCarCode?: string;
+    /**
+     * 차량등록일 기본 값
+     */
+    defaultCarDate?: string;
+    /**
+     * LPG 기본 값
+     */
+    defaultLpg?: boolean;
+    /**
+     * 탑차 기본 값
+     */
+    defaultTopcar?: boolean;
+    /**
+     * 스포츠카 기본 값
+     */
+    defaultSportcar?: boolean;
+    /**
+     * 차량명 기본 값
+     */
+    defaultCarName?: string;
+    /**
+     * 차량등급 기본 값
+     */
+    defaultCarGrade?: CoreSelectOption;
+    /**
+     * 배기량 기본 값
+     */
+    defaultBaegirang?: number;
+    /**
+     * 인원 기본 값
+     */
+    defaultPeopleNum?: number;
+    /**
+     * 오토 기본 값
+     */
+    defaultAuto?: boolean;
+    /**
+     * ABS 기본 값
+     */
+    defaultAbsHalin?: boolean;
+    /**
+     * 이모빌라이저 기본 값
+     */
+    defaultImo?: boolean;
+    /**
+     * 블랙박스 구입시기 기본 값
+     */
+    defaultBlackboxBuydate?: string;
+    /**
+     * 블랙박스 금액 기본 값
+     */
+    defaultBlackboxBuyPrice?: string;
+    /**
+     * 에어백 기본 값
+     */
+    defaultAircode?: number;
+    /**
+     * 전방출동 기본 값
+     */
+    defaultChung?: CoreSelectOption;
+    /**
+     * 커넥티드카 기본 값
+     */
+    defaultBluelink?: boolean;
+    /**
+     * 차선이탈 기본 값
+     */
+    defaultGps?: CoreSelectOption;
+    /**
+     * 지능형 안전장치 기본 값
+     */
+    defaultJobcodeNm?: boolean;
+    /**
+     * 차량구매형태 기본 값
+     */
+    defaultMembercode?: CoreSelectOption;
+    /**
+     * 기본차량가액 기본 값
+     */
+    defaultCarprice?: number;
+    /**
+     * 유상운송 기본 값
+     */
+    defaultUsang?: CoreSelectOption;
+    /**
+     * 기중기장치요율 기본 값
+     */
+    defaultUsang2?: number;
+    /**
+     * 대인배상I 기본 값
+     */
+    defaultDambo1?: string;
+    /**
+     * 대인배상II 기본 값
+     */
+    defaultDambo2?: CoreSelectOption;
+    /**
+     * 대물한도 기본 값
+     */
+    defaultDambo3?: CoreSelectOption;
+    /**
+     * 자손/자상 기본 값
+     */
+    defaultDambo4?: CoreSelectOption;
+    /**
+     * 무보험차 기본 값
+     */
+    defaultDambo5?: CoreSelectOption;
+    /**
+     * 자기차량 기본 값
+     */
+    defaultDambo6?: CoreSelectOption;
+    /**
+     * 긴급출동 기본 값
+     */
+    defaultGooutDist?: CoreSelectOption;
+    /**
+     * 긴급출동 상세 기본 값
+     */
+    defaultGooutDetail?: CoreSelectOption;
+    /**
+     * 물적사고할증 상세 기본 값
+     */
+    defaultMulSago?: CoreSelectOption;
+    /**
+     * 마일리지 기본 값
+     */
+    defaultMileDist?: CoreSelectOption;
+    /**
+     * 마일리지 상세 기본 값
+     */
+    defaultMileDetail?: CoreSelectOption;
+    /**
+     * 자녀특약 기본 값
+     */
+    defaultDrateDist?: CoreSelectOption;
+    /**
+     * 자녀특약 상세 기본 값
+     */
+    defaultDrateDetail?: string;
+    /**
+     * 안전운전습관 기본 값
+     */
+    defaultTmapDist?: CoreSelectOption;
+    /**
+     * 안전운전습관 상세 기본 값
+     */
+    defaultTmapDetail?: string;
+    /**
+     * 차량용도 기본 값
+     */
+    defaultCaeruse?: CoreSelectOption;
+    /**
+     * 일부담보 상세 기본 값
+     */
+    defaultIlPrice?: number;
+    /**
+     * 총차량대수 기본 값
+     */
+    defaultChilddrive?: CoreSelectOption;
+    /**
+     * 보험가입경력 - 피보험자 기본 값
+     */
+    defaultGuipcarrer?: CoreSelectOption;
+    /**
+     * 보험가입경력 - 차량 기본 값
+     */
+    defaultGuipcarrerCar?: CoreSelectOption;
+    /**
+     * 직전3년가입경력 - DB 기본 값
+     */
+    defaultLJobcode?: CoreSelectOption;
+    /**
+     * 직전3년가입경력 - KB 기본 값
+     */
+    defaultGuipCarrerKb?: CoreSelectOption;
+    /**
+     * 교통법규위반 기본 값
+     */
+    defaultTrafficDist?: CoreSelectOption;
+    /**
+     * 교통법규위반 건수 기본 값
+     */
+    defaultTrafficDetail?: CoreSelectOption;
+    /**
+     * 할인할증 기본값
+     */
+    defaultHalin?: CoreSelectOption;
+    /**
+     * 군/법인/해외경력인정 기본값
+     */
+    defaultRateU?: boolean;
+    /**
+     * 기본할증 기본값
+     */
+    defaultSpecialCode?: CoreSelectOption;
+    /**
+     * 추가할증 기본값
+     */
+    defaultSpecialCode2?: CoreSelectOption;
+    /**
+     * 3년간사고요율 기본값
+     */
+    defaultSsSago3?: CoreSelectOption;
+    /**
+     * 이전계약사고요율 기본값
+     */
+    defaultPreSago3?: CoreSelectOption;
+    /**
+     * 3년사고점수 기본값
+     */
+    defaultPSago?: CoreSelectOption;
+    /**
+     * 1년사고점수 기본값
+     */
+    defaultGoout2?: CoreSelectOption;
+    /**
+     * 피보기준 사고건수 - 3년간 기본값
+     */
+    defaultSago3?: CoreSelectOption;
+    /**
+     * 피보기준 사고건수 - 2년간 기본값
+     */
+    defaultCarNonum?: CoreSelectOption;
+    /**
+     * 피보기준 사고건수 - 1년간 기본값
+     */
+    defaultSago1?: CoreSelectOption;
+    /**
+     * 차량기준 사고건수 - 3년간 기본값
+     */
+    defaultCarSago3?: CoreSelectOption;
+    /**
+     * 차량기준 사고건수 - 2년간 기본값
+     */
+    defaultCarSago2?: CoreSelectOption;
+    /**
+     * 차량기준 사고건수 - 1년간 기본값
+     */
+    defaultCarSago1?: CoreSelectOption;
 }
 
 export const CarForm: FC<Props> = ({
@@ -109,7 +387,9 @@ export const CarForm: FC<Props> = ({
     defaultUserid,
     defaultOrga = null,
     defaultComp = null,
+    defaultPreComp = null,
     defaultCnum = '',
+    defaultPreCnum = '',
     defaultTitle = '',
     defaultBodatefrom = null,
     defaultContdate = null,
@@ -117,9 +397,19 @@ export const CarForm: FC<Props> = ({
     defaultStatus = null,
     defaultSpec = '',
     defaultIsConfirm = 'N',
-    defaultPayment = '',
+    defaultInsu = null,
+    defaultRate = null,
+    defaultCycle = carConstants.payMethod[0],
+    defaultCarfamily = null,
+    defaultCarage = null,
+    defaultCarNum = '',
+    defaultCarYear = null,
+    defaultCarCode = '',
+    defaultCarDate = null,
 }) => {
     const displayName = 'wr-pages-car-detail';
+
+    const router = useRouter();
 
     const dispatch = useDispatch();
 
@@ -127,7 +417,7 @@ export const CarForm: FC<Props> = ({
         (state) => state.common,
     );
 
-    const { genUseCompanies, orgas, users } = useSelector<AppState, HrState>(
+    const { carUseCompanies, orgas, users } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
@@ -152,9 +442,13 @@ export const CarForm: FC<Props> = ({
     // 담당자
     const [manager, setManager] = useSelect(users);
     // 보험사
-    const [comp] = useSelect(genUseCompanies, defaultComp);
+    const [comp] = useSelect(carUseCompanies, defaultComp);
+    // 전보험사
+    const [preComp] = useSelect(carUseCompanies, defaultPreComp);
     // 계약번호
     const [cnum] = useInput(defaultCnum);
+    // 전계약번호
+    const [preCnum] = useInput(defaultPreCnum);
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : new Date(),
@@ -176,18 +470,60 @@ export const CarForm: FC<Props> = ({
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
     // 인수구분
-    const [dist] = useSelect(carConstants.dist, null);
+    const [insu] = useSelect(carConstants.dist, defaultInsu);
     // 등급
-    const [grade] = useSelect(carConstants.grade, null);
+    const [rate] = useSelect(carConstants.grade, defaultRate);
     // 납입방법
-    const [payMethod] = useSelect(carConstants.payMethod);
-    // 실적보험료
-    const [payment] = useNumbericInput(defaultPayment, { addComma: true });
+    const [cycle] = useSelect(carConstants.payMethod, defaultCycle);
+    // 보험료
+    const payment = pays.reduce((acc, cur) => acc + cur.pay, 0);
+    // 운전자범위
+    const [carfamily] = useSelect(carConstants.driverRange, defaultCarfamily);
+    // 최저연령
+    const [carage] = useSelect(carConstants.minAge, defaultCarage);
+    // 차량번호
+    const [carNum] = useInput(defaultCarNum);
+    // 차량연식
+    const [caryear] = useSelect(
+        Array.from({ length: 31 }).reduce((acc: CoreSelectOption[], cur, i) => {
+            const targetYear = addYears(new Date(), i * -1)
+                .getFullYear()
+                .toString();
+
+            if (i === 0) {
+                return [
+                    {
+                        label: `${targetYear}A`,
+                        value: `${targetYear}A`,
+                    },
+                    {
+                        label: `${targetYear}B`,
+                        value: `${targetYear}B`,
+                    },
+                ];
+            } else {
+                return [
+                    ...acc,
+                    {
+                        label: targetYear,
+                        value: targetYear,
+                    },
+                ];
+            }
+        }, []),
+        defaultCarYear,
+    );
+    // 차명코드
+    const [carcode] = useInput(defaultCarCode);
+    // 차량등록일
+    const [cardate] = useDatepicker(
+        defaultCarDate ? new Date(defaultCarDate) : addYears(new Date(), 1),
+    );
 
     // 보장시기 blur 핸들러
-    const handleBlurBoDatefrom = () => {
-        dispatch(showSetPeriodModal());
-    };
+    // const handleBlurBoDatefrom = () => {
+    //     dispatch(showSetPeriodModal());
+    // };
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
         setEditable(true);
@@ -217,7 +553,9 @@ export const CarForm: FC<Props> = ({
         const updateLongDto = new UpdateGeneralDTO(payload);
 
         if (updateLongDto.requiredValidate()) {
-            updateGeneral(updateLongDto.getPayload());
+            updateGeneral(updateLongDto.getPayload(), () => {
+                router.replace(location.href);
+            });
         }
     };
 
@@ -226,7 +564,7 @@ export const CarForm: FC<Props> = ({
             wcode: -1,
             cnum: cnum.value,
             contdate: dayjs(contdate.value).format('YYYY-MM-DD'),
-            payment: -1,
+            payment,
             userid: manager.value!.value,
             remove: {},
         };
@@ -237,10 +575,6 @@ export const CarForm: FC<Props> = ({
 
         if (comp.value) {
             payload.wcode = comp.value.value;
-        }
-
-        if (!isEmpty(payment.value)) {
-            payload.payment = +payment.value.replace(/,/g, '');
         }
 
         if (selectedProduct) {
@@ -482,6 +816,7 @@ export const CarForm: FC<Props> = ({
                                                 id="bo_datefrom"
                                                 label="보장시기"
                                                 type={labelType}
+                                                isRequired={editable}
                                             >
                                                 <MyDatepicker
                                                     id="bo_datefrom"
@@ -536,38 +871,38 @@ export const CarForm: FC<Props> = ({
                                     <div className="row wr-mt">
                                         <div className="col-6">
                                             <WithLabel
-                                                id="dist"
+                                                id="insu"
                                                 label="인수구분"
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="dist"
+                                                    inputId="insu"
                                                     placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
                                                     isDisabled={!editable}
-                                                    {...dist}
+                                                    {...insu}
                                                 />
                                             </WithLabel>
                                         </div>
                                         <div className="col-6">
                                             <div className="wr-ml">
                                                 <WithLabel
-                                                    id="grade"
+                                                    id="rate"
                                                     label="등급"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="grade"
+                                                        inputId="rate"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
-                                                        {...grade}
+                                                        {...rate}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -586,8 +921,8 @@ export const CarForm: FC<Props> = ({
                                                     id="payment"
                                                     className="text-end"
                                                     placeholder="0"
-                                                    disabled={!editable}
-                                                    {...payment}
+                                                    disabled={true}
+                                                    value={payment}
                                                 />
                                             </WithLabel>
                                         </div>
@@ -606,7 +941,45 @@ export const CarForm: FC<Props> = ({
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
-                                                        {...payMethod}
+                                                        {...cycle}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="row wr-mt">
+                                        <div className="col-6">
+                                            <WithLabel
+                                                id="pre_wcode"
+                                                label="전보험사"
+                                                type={labelType}
+                                            >
+                                                <MySelect
+                                                    inputId="pre_wcode"
+                                                    placeholder="선택"
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...preComp}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                        <div className="col-6">
+                                            <div className="wr-ml">
+                                                <WithLabel
+                                                    id="pre_cnum"
+                                                    label="전계약번호"
+                                                    type={labelType}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="pre_cnum"
+                                                        placeholder="전계약번호"
+                                                        disabled={!editable}
+                                                        className="wr-with__badge--inside-right-1"
+                                                        {...preCnum}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -638,11 +1011,22 @@ export const CarForm: FC<Props> = ({
                                 editable={editable}
                                 userid={defaultUserid}
                                 spe="car"
+                                carfamilyHooks={carfamily}
+                                carageHooks={carage}
                             />
                             <CompareTabpanel
                                 id="tabpanelCompare"
                                 tabId="tabCompare"
                                 hidden={tab.id !== 'tabCompare'}
+                                editable={editable}
+                                carNumHooks={carNum}
+                                carYearHooks={caryear}
+                                carCodeHooks={carcode}
+                            />
+                            <CarPaysTabpanel
+                                id="tabpanelPays"
+                                tabId="tabPays"
+                                hidden={tab.id !== 'tabPays'}
                                 editable={editable}
                             />
                         </div>

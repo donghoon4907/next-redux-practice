@@ -1,80 +1,68 @@
-import type { FC, FormEvent, ChangeEvent } from 'react';
-import type { Insured } from '@models/insured';
+import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import type { AppState } from '@reducers/index';
-import type { ContractState } from '@reducers/contract';
 import type { CoreEditableComponent } from '@interfaces/core';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import { MyCheckbox } from '@components/checkbox';
-import { MyButton } from '@components/button';
-import { useInput } from '@hooks/use-input';
-import { useApi } from '@hooks/use-api';
-import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
-import { isEmpty } from '@utils/validator/common';
-import { convertPhoneNumber } from '@utils/converter';
-import { showContractorSearchModal } from '@actions/modal/customer-search.action';
-import {
-    deleteInsured,
-    updateInsured,
-} from '@actions/contract/set-insured.action';
-
-// import { InsuredTemplate } from '../template/LongInsured';
-// import { InsuredForm } from '../InsuredForm';
 import { MySelect } from '@components/select';
 import variables from '@styles/_variables.module.scss';
-import { useSelect } from '@hooks/use-select';
-import carConstants from '@constants/options/car';
-import { CarInsuredForm } from '@partials/contract/car/InsuredForm';
-import { GeneralInsuredForm } from '@partials/contract/general/InsuredForm';
-import { LongInsuredForm } from '@partials/contract/long/InsuredForm';
-import { LongInsuredTemplate } from '@partials/contract/long/template/Insured';
-import { GeneralInsuredTemplate } from '@partials/contract/general/template/Insured';
-import { CarInsuredTemplate } from '@partials/contract/car/template/Insured';
 import { MyDatepicker } from '@components/datepicker';
 import { MyTableExtension } from '@components/table/Extension';
+import { UseInputOutput } from '@hooks/use-input';
+import { UseSelectOutput } from '@hooks/use-select';
 
-interface Props extends MyTabpanelProps, CoreEditableComponent {}
+interface Props extends MyTabpanelProps, CoreEditableComponent {
+    carNumHooks: UseInputOutput;
+    carYearHooks: UseSelectOutput;
+    carCodeHooks: UseInputOutput;
+}
 
-export const CompareTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
+export const CompareTabpanel: FC<Props> = ({
+    id,
+    tabId,
+    hidden,
+    editable,
+    carNumHooks,
+    carYearHooks,
+    carCodeHooks,
+}) => {
     const dispatch = useDispatch();
 
     const labelType = editable ? 'active' : 'disable';
 
-    const handleSearch = () => {};
+    const handleSearch = () => {
+        alert('차명코드 조회 실행됨');
+    };
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
                 <div className="col-6">
-                    <WithLabel id="ccarNum" label="차량번호" type={labelType}>
+                    <WithLabel id="carnum" label="차량번호" type={labelType}>
                         <MyInput
                             type="search"
-                            id="ccarNum"
+                            id="carnum"
                             placeholder="차량번호"
-                            value="서울00러0000"
                             disabled={!editable}
-                            readOnly
+                            {...carNumHooks}
                         />
                     </WithLabel>
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
                         <WithLabel
-                            id="ccarNum"
+                            id="caryear"
                             label="차량연식"
                             type={labelType}
                         >
-                            <MyInput
-                                type="search"
-                                id="ccarNum"
-                                placeholder="차량연식"
-                                disabled={!editable}
-                                readOnly
-                                value="2024"
+                            <MySelect
+                                inputId="caryear"
+                                placeholder="선택"
+                                placeHolderFontSize={16}
+                                height={variables.detailFilterHeight}
+                                {...carYearHooks}
                             />
                         </WithLabel>
                     </div>
@@ -83,24 +71,31 @@ export const CompareTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
             <div className="row wr-mt">
                 <div className="col-6">
                     <form onSubmit={handleSearch}>
-                        <WithLabel id="ccode" label="차명코드" type={labelType}>
+                        <WithLabel
+                            id="carcode"
+                            label="차명코드"
+                            type={labelType}
+                        >
                             <MyInput
                                 type="search"
-                                id="ccode"
+                                id="carcode"
                                 placeholder="차명코드"
                                 disabled={!editable}
-                                readOnly
-                                value="21P05"
-                                button={{
-                                    type: 'submit',
-                                    className: 'btn-primary btn-md',
-                                    disabled: !editable,
-                                    children: (
-                                        <>
-                                            <span>조회</span>
-                                        </>
-                                    ),
-                                }}
+                                button={
+                                    editable
+                                        ? {
+                                              type: 'submit',
+                                              className: 'btn-primary btn-md',
+                                              disabled: !editable,
+                                              children: (
+                                                  <>
+                                                      <span>조회</span>
+                                                  </>
+                                              ),
+                                          }
+                                        : undefined
+                                }
+                                {...carCodeHooks}
                             />
                         </WithLabel>
                     </form>
@@ -369,43 +364,6 @@ export const CompareTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="wr-pages-detail__block wr-mt">
-                        <div className="wr-pages-detail__title">
-                            <strong>기타사항</strong>
-                            <div></div>
-                        </div>
-                        <div className="wr-pages-detail__content">
-                            <WithLabel
-                                id="ccarTransport"
-                                label="유상운송"
-                                type={labelType}
-                            >
-                                <MySelect
-                                    inputId="ccarTransport"
-                                    placeholder="선택"
-                                    placeHolderFontSize={16}
-                                    height={variables.detailFilterHeight}
-                                    isDisabled={!editable}
-                                />
-                            </WithLabel>
-                            <WithLabel
-                                id="ccarCER"
-                                label="기중기장치요율"
-                                type={labelType}
-                            >
-                                <MyInput
-                                    type="number"
-                                    id="ccarCER"
-                                    placeholder="기중기장치요율"
-                                    className="text-end"
-                                    disabled={!editable}
-                                    readOnly
-                                    value="0"
-                                    unit="%"
-                                />
-                            </WithLabel>
-                        </div>
-                    </div>
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
@@ -457,6 +415,790 @@ export const CompareTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         <div className="wr-pages-detail__toolbar wr-border-b">
                             <div>총 차량가액</div>
                             <div>700 만원</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="row wr-mt">
+                <div className="col-6">
+                    <div className="wr-pages-detail__block">
+                        <div className="wr-pages-detail__title">
+                            <strong>기타사항</strong>
+                            <div></div>
+                        </div>
+                        <div className="wr-pages-detail__content">
+                            <WithLabel
+                                id="ccarTransport"
+                                label="유상운송"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarTransport"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarCER"
+                                label="기중기장치요율"
+                                type={labelType}
+                            >
+                                <MyInput
+                                    type="number"
+                                    id="ccarCER"
+                                    placeholder="기중기장치요율"
+                                    className="text-end"
+                                    disabled={!editable}
+                                    readOnly
+                                    value="0"
+                                    unit="%"
+                                />
+                            </WithLabel>
+                        </div>
+                    </div>
+                    <div className="wr-pages-detail__block wr-mt">
+                        <div className="wr-pages-detail__title">
+                            <strong>세부담보설정</strong>
+                            <div></div>
+                        </div>
+                        <div className="wr-pages-detail__content">
+                            <WithLabel
+                                id="ccarCompensation"
+                                label="대인배상I"
+                                type={labelType}
+                            >
+                                <MyInput
+                                    type="text"
+                                    id="ccarCompensation"
+                                    placeholder="대인배상I"
+                                    disabled={!editable}
+                                    readOnly
+                                    value="의무가입"
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarCompensation"
+                                label="대인배상II"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarCompensation"
+                                    placeholder="무한"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarLimit"
+                                label="대물한도"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarLimit"
+                                    placeholder="10억원"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarDes"
+                                label="자손/자상"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarDes"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarNoInsu"
+                                label="무보험차"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarNoInsu"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarMine"
+                                label="자기차량"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarMine"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarDispatch"
+                                label="긴급출동"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarDispatch"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarPremium"
+                                label="물적사고할증"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarPremium"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                        </div>
+                    </div>
+                    <div className="wr-pages-detail__block wr-mt">
+                        <div className="wr-pages-detail__title">
+                            <strong>특약사항</strong>
+                            <div></div>
+                        </div>
+                        <div className="wr-pages-detail__content">
+                            <WithLabel
+                                id="ccarMileage"
+                                label="마일리지"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarMileage"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 190 }}
+                                >
+                                    <MySelect
+                                        placeholder="선택"
+                                        placeHolderFontSize={16}
+                                        height={variables.detailFilterHeight}
+                                        placement="right"
+                                        isDisabled={!editable}
+                                    />
+                                </div>
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarCSC"
+                                label="자녀특약"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarCSC"
+                                    placeholder="미가입"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                    placement="left"
+                                />
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 191 }}
+                                >
+                                    <MyDatepicker
+                                        id="ccarRegdate"
+                                        size="md"
+                                        placeholder="생년월일"
+                                    />
+                                </div>
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarLimit"
+                                label="안전운전습관"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarLimit"
+                                    placeholder="10억원"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    placement="left"
+                                    isDisabled={!editable}
+                                />
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 191 }}
+                                >
+                                    <MyInput
+                                        type="number"
+                                        placeholder="0"
+                                        className="text-end"
+                                        disabled={!editable}
+                                        readOnly
+                                        value="365"
+                                        unit="점"
+                                    />
+                                </div>
+                            </WithLabel>
+                        </div>
+                    </div>
+                    <div className="wr-pages-detail__block wr-mt">
+                        <div className="wr-pages-detail__title">
+                            <strong>기타</strong>
+                            <div></div>
+                        </div>
+                        <div className="wr-pages-detail__content">
+                            <WithLabel
+                                id="ccarUsage"
+                                label="차량용도"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarUsage"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                />
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarGuarantee"
+                                label="일부담보"
+                                type={labelType}
+                            >
+                                <MyInput
+                                    type="number"
+                                    id="ccarGuarantee"
+                                    placeholder="0"
+                                    className="text-end"
+                                    disabled={!editable}
+                                    readOnly
+                                    value="0"
+                                    unit="원"
+                                />
+                            </WithLabel>
+                        </div>
+                    </div>
+                </div>
+                <div className="col-6">
+                    <div className="wr-ml">
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__title">
+                                <strong>요율사항</strong>
+                                <div></div>
+                            </div>
+                            <div className="wr-pages-detail__content">
+                                <WithLabel
+                                    id="ccarAllCount"
+                                    label="총차량대수"
+                                    type={labelType}
+                                >
+                                    <MySelect
+                                        inputId="ccarAllCount"
+                                        placeholder="선택"
+                                        placeHolderFontSize={16}
+                                        height={variables.detailFilterHeight}
+                                        isDisabled={!editable}
+                                    />
+                                </WithLabel>
+                                <div className="wr-pages-detail__block wr-mt">
+                                    <div className="wr-pages-detail__title">
+                                        <strong>보험가입경력</strong>
+                                        <div></div>
+                                    </div>
+                                    <div className="wr-pages-detail__content">
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="ccarMEI"
+                                                    label="피보험자"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="ccarMEI"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
+                                                        id="ccarMEC"
+                                                        label="차량"
+                                                        type={labelType}
+                                                    >
+                                                        <MySelect
+                                                            inputId="ccarMEC"
+                                                            placeholder="선택"
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="wr-pages-detail__block wr-mt">
+                                    <div className="wr-pages-detail__title">
+                                        <strong>직전3년가입경력</strong>
+                                        <div></div>
+                                    </div>
+                                    <div className="wr-pages-detail__content">
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="ccarPMED"
+                                                    label="DB"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="ccarPMED"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
+                                                        id="ccarPMEK"
+                                                        label="KB"
+                                                        type={labelType}
+                                                    >
+                                                        <MySelect
+                                                            inputId="ccarPMEK"
+                                                            placeholder="선택"
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="wr-pages-detail__block wr-mt">
+                                    <div className="wr-pages-detail__title">
+                                        <strong>교통법규위반</strong>
+                                        <div></div>
+                                    </div>
+                                    <div className="wr-pages-detail__content">
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <MySelect
+                                                    placeholder="선택"
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                />
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <div className="d-flex">
+                                                        <div className="flex-fill">
+                                                            <MySelect
+                                                                inputId="ccarPMEK"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                placement="left"
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                        </div>
+
+                                                        <div className="wr-form__unit">
+                                                            건
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="wr-pages-detail__block wr-mt">
+                                    <div className="wr-pages-detail__title">
+                                        <strong>할증율</strong>
+                                        <div></div>
+                                    </div>
+                                    <div className="wr-pages-detail__content">
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="ccarDiscount"
+                                                    label="할인할증"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="ccarDiscount"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6 d-flex justify-content-start align-items-center">
+                                                <div className="wr-ml ">
+                                                    <MyCheckbox
+                                                        id="ccarCR"
+                                                        label="군/법인/해외경력인정"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row wr-mt">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="ccarDD"
+                                                    label="기본할증"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="ccarDD"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml ">
+                                                    <WithLabel
+                                                        id="ccarAD"
+                                                        label="추가할증"
+                                                        type={labelType}
+                                                    >
+                                                        <MySelect
+                                                            inputId="ccarAD"
+                                                            placeholder="선택"
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="wr-pages-detail__block wr-mt">
+                                    <div className="wr-pages-detail__title">
+                                        <strong>사고요율</strong>
+                                        <div></div>
+                                    </div>
+                                    <div className="wr-pages-detail__content">
+                                        <div className="row">
+                                            <div className="col">
+                                                <WithLabel
+                                                    id="ccarArateF3"
+                                                    label="3년간사고요율"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="ccarArateF3"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                    />
+                                                </WithLabel>
+                                                <WithLabel
+                                                    id="ccarArateBC"
+                                                    label="전계약사고요율"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="ccarArateBC"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                        </div>
+                                        <div className="row wr-mt">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="ccarAPF3"
+                                                    label="3년사고점수"
+                                                    type={labelType}
+                                                >
+                                                    <MySelect
+                                                        inputId="ccarAPF3"
+                                                        placeholder="선택"
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
+                                                        id="ccarAPF1"
+                                                        label="1년사고점수"
+                                                        type={labelType}
+                                                    >
+                                                        <MySelect
+                                                            inputId="ccarAPF1"
+                                                            placeholder="선택"
+                                                            placeHolderFontSize={
+                                                                16
+                                                            }
+                                                            height={
+                                                                variables.detailFilterHeight
+                                                            }
+                                                            isDisabled={
+                                                                !editable
+                                                            }
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="wr-pages-detail__block wr-mt">
+                                            <div className="wr-pages-detail__title">
+                                                <strong>
+                                                    피보기준 사고건수
+                                                </strong>
+                                                <div></div>
+                                            </div>
+                                            <div className="wr-pages-detail__content">
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <WithLabel
+                                                            id="ccarIACF3"
+                                                            label="3년간"
+                                                            type={labelType}
+                                                        >
+                                                            <MySelect
+                                                                inputId="ccarIACF3"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                                건
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                                <div className="row wr-mt">
+                                                    <div className="col">
+                                                        <WithLabel
+                                                            id="ccarIACF2"
+                                                            label="2년간"
+                                                            type={labelType}
+                                                        >
+                                                            <MySelect
+                                                                inputId="ccarIACF2"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                                건
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                                <div className="row wr-mt">
+                                                    <div className="col">
+                                                        <WithLabel
+                                                            id="ccarIACF1"
+                                                            label="1년간"
+                                                            type={labelType}
+                                                        >
+                                                            <MySelect
+                                                                inputId="ccarIACF1"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                                건
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="wr-pages-detail__block wr-mt">
+                                            <div className="wr-pages-detail__title">
+                                                <strong>
+                                                    차량기준 사고건수
+                                                </strong>
+                                                <div></div>
+                                            </div>
+                                            <div className="wr-pages-detail__content">
+                                                <div className="row">
+                                                    <div className="col">
+                                                        <WithLabel
+                                                            id="ccarCACF3"
+                                                            label="3년간"
+                                                            type={labelType}
+                                                        >
+                                                            <MySelect
+                                                                inputId="ccarCACF3"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                                건
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                                <div className="row wr-mt">
+                                                    <div className="col">
+                                                        <WithLabel
+                                                            id="ccarCACF2"
+                                                            label="2년간"
+                                                            type={labelType}
+                                                        >
+                                                            <MySelect
+                                                                inputId="ccarCACF2"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                                건
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                                <div className="row wr-mt">
+                                                    <div className="col">
+                                                        <WithLabel
+                                                            id="ccarCACF1"
+                                                            label="1년간"
+                                                            type={labelType}
+                                                        >
+                                                            <MySelect
+                                                                inputId="ccarCACF1"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                                건
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
