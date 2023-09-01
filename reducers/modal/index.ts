@@ -23,6 +23,7 @@ import {
     CreateLongPayModalActionTypes,
 } from '@actions/modal/create-pay.action';
 import { SetPeriodModalActionTypes } from '@actions/modal/set-period.action';
+import { CreateBupumModalActionTypes } from '@actions/modal/create-bupum.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -47,6 +48,7 @@ export interface ModalState {
     isShowCreateGeneralPayModal: boolean;
     isShowCreateEndorsementModal: boolean;
     isShowSetPeriodModal: boolean;
+    isShowCreateBupumModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -72,6 +74,7 @@ const initialState: ModalState = {
     isShowCreateGeneralPayModal: false,
     isShowCreateEndorsementModal: false,
     isShowSetPeriodModal: false,
+    isShowCreateBupumModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -250,6 +253,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case SetPeriodModalActionTypes.HIDE: {
                 draft.isShowSetPeriodModal = false;
+                break;
+            }
+            case CreateBupumModalActionTypes.SHOW: {
+                draft.isShowCreateBupumModal = true;
+                break;
+            }
+            case CreateBupumModalActionTypes.HIDE: {
+                draft.isShowCreateBupumModal = false;
                 break;
             }
             default:

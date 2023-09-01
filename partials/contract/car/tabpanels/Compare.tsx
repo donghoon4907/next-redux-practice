@@ -1,7 +1,14 @@
-import type { FC } from 'react';
+import type { FC, ChangeEvent } from 'react';
+import type { Bupum } from '@models/bupum';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { CoreEditableComponent } from '@interfaces/core';
-import { useDispatch } from 'react-redux';
+import type { UseInputOutput } from '@hooks/use-input';
+import type { UseSelectOutput } from '@hooks/use-select';
+import type { UseDatepickerOutput } from '@hooks/use-datepicker';
+import type { UseCheckboxOutput } from '@hooks/use-checkbox';
+import type { AppState } from '@reducers/index';
+import type { CarState } from '@reducers/car';
+import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
@@ -10,13 +17,75 @@ import { MySelect } from '@components/select';
 import variables from '@styles/_variables.module.scss';
 import { MyDatepicker } from '@components/datepicker';
 import { MyTableExtension } from '@components/table/Extension';
-import { UseInputOutput } from '@hooks/use-input';
-import { UseSelectOutput } from '@hooks/use-select';
+import { showCreateBupumModal } from '@actions/modal/create-bupum.action';
+import { deleteBupum, updateBupum } from '@actions/car/set-bupum.action';
+import { MyButton } from '@components/button';
+import { isEmpty } from '@utils/validator/common';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {
     carNumHooks: UseInputOutput;
     carYearHooks: UseSelectOutput;
     carCodeHooks: UseInputOutput;
+    cardateHooks: UseDatepickerOutput;
+    checkLpgHooks: UseCheckboxOutput;
+    checkTopcarHooks: UseCheckboxOutput;
+    checkSportcarHooks: UseCheckboxOutput;
+    carnameHooks: UseInputOutput;
+    carGradeHooks: UseSelectOutput;
+    baegirangHooks: UseInputOutput;
+    peopleNumHooks: UseInputOutput;
+    checkAutoHooks: UseCheckboxOutput;
+    checkAbsHalinHooks: UseCheckboxOutput;
+    checkImoHooks: UseCheckboxOutput;
+    hasBbHooks: UseSelectOutput;
+    bbBuydateHooks: UseDatepickerOutput;
+    bbBuyPriceHooks: UseInputOutput;
+    aircodeHooks: UseSelectOutput;
+    chungHooks: UseSelectOutput;
+    checkBluelinkHooks: UseCheckboxOutput;
+    gpsHooks: UseSelectOutput;
+    checkJobcodeNmHooks: UseCheckboxOutput;
+    membercodeHooks: UseSelectOutput;
+    carpriceHooks: UseInputOutput;
+    usangHooks: UseSelectOutput;
+    usang2Hooks: UseInputOutput;
+    dambo2Hooks: UseSelectOutput;
+    dambo3Hooks: UseSelectOutput;
+    dambo4Hooks: UseSelectOutput;
+    dambo5Hooks: UseSelectOutput;
+    dambo6Hooks: UseSelectOutput;
+    gooutDistHooks: UseSelectOutput;
+    gooutDetailHooks: UseSelectOutput;
+    mulSagoHooks: UseSelectOutput;
+    mileDistHooks: UseSelectOutput;
+    mileDetailHooks: UseSelectOutput;
+    drateDistHooks: UseSelectOutput;
+    drateDetailHooks: UseDatepickerOutput;
+    tmapDistHooks: UseSelectOutput;
+    tmapDetailHooks: UseInputOutput;
+    caruseHooks: UseSelectOutput;
+    ilPriceHooks: UseInputOutput;
+    childdriveHooks: UseSelectOutput;
+    guipcarrerHooks: UseSelectOutput;
+    guipcarrerCarHooks: UseSelectOutput;
+    lJobcodeHooks: UseSelectOutput;
+    guipCarrerKbHooks: UseSelectOutput;
+    trafficDistHooks: UseSelectOutput;
+    trafficDetailHooks: UseSelectOutput;
+    halinHooks: UseSelectOutput;
+    checkRateUHooks: UseCheckboxOutput;
+    specialCodeHooks: UseSelectOutput;
+    specialCode2Hooks: UseSelectOutput;
+    ssSago3Hooks: UseSelectOutput;
+    preSago3Hooks: UseSelectOutput;
+    pSagoHooks: UseSelectOutput;
+    goout2Hooks: UseSelectOutput;
+    sago3Hooks: UseSelectOutput;
+    carNonumHooks: UseSelectOutput;
+    sago1Hooks: UseSelectOutput;
+    carSago3Hooks: UseSelectOutput;
+    carSago2Hooks: UseSelectOutput;
+    carSago1Hooks: UseSelectOutput;
 }
 
 export const CompareTabpanel: FC<Props> = ({
@@ -27,13 +96,110 @@ export const CompareTabpanel: FC<Props> = ({
     carNumHooks,
     carYearHooks,
     carCodeHooks,
+    cardateHooks,
+    checkLpgHooks,
+    checkTopcarHooks,
+    checkSportcarHooks,
+    carnameHooks,
+    carGradeHooks,
+    baegirangHooks,
+    peopleNumHooks,
+    checkAutoHooks,
+    checkAbsHalinHooks,
+    checkImoHooks,
+    hasBbHooks,
+    bbBuydateHooks,
+    bbBuyPriceHooks,
+    aircodeHooks,
+    chungHooks,
+    checkBluelinkHooks,
+    gpsHooks,
+    checkJobcodeNmHooks,
+    membercodeHooks,
+    carpriceHooks,
+    usangHooks,
+    usang2Hooks,
+    dambo2Hooks,
+    dambo3Hooks,
+    dambo4Hooks,
+    dambo5Hooks,
+    dambo6Hooks,
+    gooutDistHooks,
+    gooutDetailHooks,
+    mulSagoHooks,
+    mileDistHooks,
+    mileDetailHooks,
+    drateDistHooks,
+    drateDetailHooks,
+    tmapDistHooks,
+    tmapDetailHooks,
+    caruseHooks,
+    ilPriceHooks,
+    childdriveHooks,
+    guipcarrerHooks,
+    guipcarrerCarHooks,
+    lJobcodeHooks,
+    guipCarrerKbHooks,
+    trafficDistHooks,
+    trafficDetailHooks,
+    halinHooks,
+    checkRateUHooks,
+    specialCodeHooks,
+    specialCode2Hooks,
+    ssSago3Hooks,
+    preSago3Hooks,
+    pSagoHooks,
+    goout2Hooks,
+    sago3Hooks,
+    carNonumHooks,
+    sago1Hooks,
+    carSago3Hooks,
+    carSago2Hooks,
+    carSago1Hooks,
 }) => {
     const dispatch = useDispatch();
+
+    const { bupums } = useSelector<AppState, CarState>((state) => state.car);
+
+    let price = 0;
+    if (!isEmpty(carpriceHooks.value)) {
+        price += +carpriceHooks.value.replace(/,/g, '');
+    }
+
+    const sumBupums = bupums.reduce((acc, cur) => acc + cur.price, 0);
+
+    const totalPrice = price + sumBupums;
 
     const labelType = editable ? 'active' : 'disable';
 
     const handleSearch = () => {
         alert('차명코드 조회 실행됨');
+    };
+
+    const handleShowCreateBupumModal = () => {
+        dispatch(showCreateBupumModal());
+    };
+
+    const handleAllCheckBupum = (evt: ChangeEvent<HTMLInputElement>) => {
+        bupums.forEach((v) => {
+            dispatch(updateBupum({ ...v, checked: evt.target.checked }));
+        });
+    };
+
+    const handleCheckBupum = (evt: ChangeEvent<HTMLInputElement>, v: Bupum) => {
+        dispatch(updateBupum({ ...v, checked: evt.target.checked }));
+    };
+
+    const handleDeleteBupum = () => {
+        if (bupums.findIndex((v) => v.checked) === -1) {
+            return alert('삭제할 추가부속을 선택해주세요.');
+        }
+
+        bupums
+            .filter((v) => v.checked)
+            .forEach((v) => {
+                dispatch(deleteBupum({ index: v.index }));
+            });
     };
 
     return (
@@ -56,6 +222,7 @@ export const CompareTabpanel: FC<Props> = ({
                             id="caryear"
                             label="차량연식"
                             type={labelType}
+                            isRequired={editable}
                         >
                             <MySelect
                                 inputId="caryear"
@@ -75,6 +242,7 @@ export const CompareTabpanel: FC<Props> = ({
                             id="carcode"
                             label="차명코드"
                             type={labelType}
+                            isRequired={editable}
                         >
                             <MyInput
                                 type="search"
@@ -103,14 +271,16 @@ export const CompareTabpanel: FC<Props> = ({
                 <div className="col-6">
                     <div className="wr-ml">
                         <WithLabel
-                            id="ccarRegdate"
+                            id="ccarDate"
                             label="차량등록일"
                             type={labelType}
+                            isRequired={editable}
                         >
                             <MyDatepicker
-                                id="ccarRegdate"
+                                id="ccarDate"
                                 size="md"
-                                placeholder="2023-08-30"
+                                placeholder="차량등록일"
+                                {...cardateHooks}
                             />
                         </WithLabel>
                     </div>
@@ -119,9 +289,21 @@ export const CompareTabpanel: FC<Props> = ({
             <div className="row wr-mt">
                 <div className="col">
                     <div className="wr-pages-detail__buttons">
-                        <MyCheckbox label="LPG" />
-                        <MyCheckbox label="탑차" />
-                        <MyCheckbox label="스포츠카" />
+                        <MyCheckbox
+                            id="ccarLpg"
+                            label="LPG"
+                            {...checkLpgHooks}
+                        />
+                        <MyCheckbox
+                            id="ccarTopcar"
+                            label="탑차"
+                            {...checkTopcarHooks}
+                        />
+                        <MyCheckbox
+                            id="ccarsportcar"
+                            label="스포츠카"
+                            {...checkSportcarHooks}
+                        />
                     </div>
                     <WithLabel id="ccarName" label="차량명" type={labelType}>
                         <MyInput
@@ -129,8 +311,7 @@ export const CompareTabpanel: FC<Props> = ({
                             id="ccarName"
                             placeholder="차량명"
                             disabled={!editable}
-                            readOnly
-                            value="티볼리 1.6 16년식 가솔린 LX 최고급"
+                            {...carnameHooks}
                         />
                     </WithLabel>
                 </div>
@@ -140,42 +321,40 @@ export const CompareTabpanel: FC<Props> = ({
                     <WithLabel id="ccarGrade" label="차량등급" type={labelType}>
                         <MySelect
                             inputId="ccarGrade"
-                            placeholder="11등급"
+                            placeholder="선택"
                             placeHolderFontSize={16}
                             height={variables.detailFilterHeight}
+                            {...carGradeHooks}
                         />
                     </WithLabel>
                 </div>
                 <div className="col-6">
                     <div className="wr-ml">
                         <WithLabel
-                            id="ccarExhust"
+                            id="ccarBaegirang"
                             label="배기량/인원"
                             type={labelType}
                         >
                             <MyInput
-                                type="text"
-                                id="ccarExhust"
-                                placeholder="배기량"
+                                type="number"
+                                id="ccarBaegirang"
+                                placeholder="0"
                                 className="text-end"
                                 disabled={!editable}
-                                readOnly
-                                value="1,598"
                                 unit="cc"
+                                {...baegirangHooks}
                             />
                             <div
                                 className="wr-with__extension"
-                                style={{ width: 100 }}
+                                style={{ width: 135 }}
                             >
                                 <MyInput
                                     type="number"
-                                    id="ccarExhust"
-                                    placeholder="배기량"
+                                    placeholder="0"
                                     className="wr-border-l--hide"
                                     disabled={!editable}
-                                    readOnly
-                                    value="11"
                                     unit="인승"
+                                    {...peopleNumHooks}
                                 />
                             </div>
                         </WithLabel>
@@ -192,9 +371,21 @@ export const CompareTabpanel: FC<Props> = ({
                             className="wr-with__checkbox wr-border"
                         >
                             <div className="wr-pages-detail__buttons">
-                                <MyCheckbox label="오토" />
-                                <MyCheckbox label="ABS" />
-                                <MyCheckbox label="이모빌라이저" />
+                                <MyCheckbox
+                                    id="ccarAuto"
+                                    label="오토"
+                                    {...checkAutoHooks}
+                                />
+                                <MyCheckbox
+                                    id="ccarAbs"
+                                    label="ABS"
+                                    {...checkAbsHalinHooks}
+                                />
+                                <MyCheckbox
+                                    id="ccarImo"
+                                    label="이모빌라이저"
+                                    {...checkImoHooks}
+                                />
                             </div>
                         </div>
                     </WithLabel>
@@ -202,16 +393,17 @@ export const CompareTabpanel: FC<Props> = ({
                 <div className="col-6">
                     <div className="wr-ml">
                         <WithLabel
-                            id="ccarBbox"
+                            id="ccarHasBb"
                             label="블랙박스"
                             type={labelType}
                         >
                             <MySelect
-                                inputId="ccarBbox"
-                                placeholder="장착"
+                                inputId="ccarHasBb"
+                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
+                                {...hasBbHooks}
                             />
                         </WithLabel>
                     </div>
@@ -219,98 +411,110 @@ export const CompareTabpanel: FC<Props> = ({
             </div>
             <div className="row wr-mt">
                 <div className="col-6">
-                    <WithLabel id="ccarAirback" label="에어백" type={labelType}>
+                    <WithLabel id="ccarAircode" label="에어백" type={labelType}>
                         <MySelect
-                            inputId="ccarAirback"
-                            placeholder="운전석+조수석"
+                            inputId="ccarAircode"
+                            placeholder="선택"
                             placeHolderFontSize={16}
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
+                            {...aircodeHooks}
                         />
                     </WithLabel>
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <div className="row">
-                            <div className="col-6">
-                                <WithLabel
-                                    id="ccarPdate"
-                                    label="구입시기"
-                                    type={labelType}
-                                >
-                                    <MyDatepicker
-                                        id="ccarPdate"
-                                        size="md"
-                                        placeholder="2023-08-30"
-                                    />
-                                </WithLabel>
-                            </div>
-                            <div className="col-6">
-                                <div className="wr-ml">
+                {hasBbHooks.value?.value === '장착' && (
+                    <div className="col-6">
+                        <div className="wr-ml">
+                            <div className="row">
+                                <div className="col-6">
                                     <WithLabel
-                                        id="ccarPrice"
-                                        label="금액"
+                                        id="ccarBbBuydate"
+                                        label="구입시기"
                                         type={labelType}
                                     >
-                                        <MyInput
-                                            type="text"
-                                            id="ccarExhust"
-                                            placeholder="배기량"
-                                            className="text-end"
-                                            disabled={!editable}
-                                            readOnly
-                                            value="2,400"
-                                            unit="만원"
+                                        <MyDatepicker
+                                            id="ccarBbBuydate"
+                                            size="md"
+                                            placeholder="구입시기"
+                                            hooks={bbBuydateHooks}
                                         />
                                     </WithLabel>
+                                </div>
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <WithLabel
+                                            id="ccarBbBuyPrice"
+                                            label="금액"
+                                            type={labelType}
+                                        >
+                                            <MyInput
+                                                type="text"
+                                                id="ccarBbBuyPrice"
+                                                placeholder="0"
+                                                className="text-end"
+                                                disabled={!editable}
+                                                unit="만원"
+                                                {...bbBuyPriceHooks}
+                                            />
+                                        </WithLabel>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                )}
             </div>
             <div className="wr-pages-detail__block wr-mt">
                 <div className="wr-pages-detail__title">
                     <strong>기본부속 2</strong>
-                    <div></div>
                 </div>
                 <div className="wr-pages-detail__content">
                     <div className="row">
                         <div className="col-6">
                             <WithLabel
-                                id="ccarDispatch"
+                                id="ccarChung"
                                 label="전방출동"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarDispatch"
-                                    placeholder="경고+비상제동"
+                                    inputId="ccarChung"
+                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...chungHooks}
                                 />
                             </WithLabel>
                             <div className="wr-pages-detail__buttons">
-                                <MyCheckbox label="커넥티드카 (블루링크 또는 UVO)" />
+                                <MyCheckbox
+                                    id="ccarBluelink"
+                                    label="커넥티드카 (블루링크 또는 UVO)"
+                                    {...checkBluelinkHooks}
+                                />
                             </div>
                         </div>
                         <div className="col-6">
                             <div className="wr-ml">
                                 <WithLabel
-                                    id="ccarLeave"
+                                    id="ccarGps"
                                     label="차선이탈"
                                     type={labelType}
                                 >
                                     <MySelect
-                                        inputId="ccarLeave"
-                                        placeholder="경고+유지"
+                                        inputId="ccarGps"
+                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
+                                        {...gpsHooks}
                                     />
                                 </WithLabel>
                                 <div className="wr-pages-detail__buttons">
-                                    <MyCheckbox label="지능형 안전장치" />
+                                    <MyCheckbox
+                                        id="ccarJobcodeNm"
+                                        label="지능형 안전장치"
+                                        {...checkJobcodeNmHooks}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -322,7 +526,16 @@ export const CompareTabpanel: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__title">
                             <strong>추가부속</strong>
-                            <div></div>
+                            {editable && (
+                                <div>
+                                    <MyButton
+                                        className="btn-danger btn-sm"
+                                        onClick={handleDeleteBupum}
+                                    >
+                                        선택삭제
+                                    </MyButton>
+                                </div>
+                            )}
                         </div>
                         <div className="wr-pages-detail__content">
                             <div className="wr-table--normal wr-mt">
@@ -333,9 +546,9 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <th style={{ width: '30px' }}>
                                                     <MyCheckbox
                                                         label=""
-                                                        // onChange={
-                                                        //     handleAllCheck
-                                                        // }
+                                                        onChange={
+                                                            handleAllCheckBupum
+                                                        }
                                                     />
                                                 </th>
                                             )}
@@ -349,16 +562,50 @@ export const CompareTabpanel: FC<Props> = ({
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td colSpan={editable ? 3 : 2}>
-                                                부속 정보가 없습니다.
-                                            </td>
-                                        </tr>
+                                        {bupums.length === 0 && (
+                                            <tr>
+                                                <td colSpan={editable ? 3 : 2}>
+                                                    부속 정보가 없습니다.
+                                                </td>
+                                            </tr>
+                                        )}
+
+                                        {bupums.map((v, i) => (
+                                            <tr key={`pay${i}`}>
+                                                {editable && (
+                                                    <td>
+                                                        <MyCheckbox
+                                                            label=""
+                                                            checked={v.checked}
+                                                            onChange={(evt) =>
+                                                                handleCheckBupum(
+                                                                    evt,
+                                                                    v,
+                                                                )
+                                                            }
+                                                        />
+                                                    </td>
+                                                )}
+
+                                                <td>
+                                                    <span>
+                                                        {v.name ? v.name : '-'}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <span>
+                                                        {v.price
+                                                            ? v.price.toLocaleString()
+                                                            : '-'}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                                 {editable && (
                                     <MyTableExtension
-                                    // onClick={handleShowSettingModal}
+                                        onClick={handleShowCreateBupumModal}
                                     />
                                 )}
                             </div>
@@ -368,53 +615,47 @@ export const CompareTabpanel: FC<Props> = ({
                 <div className="col-6">
                     <div className="wr-ml">
                         <WithLabel
-                            id="ccarPtype"
+                            id="ccarMembercode"
                             label="차량구매형태"
                             type={labelType}
                         >
                             <MySelect
-                                inputId="ccarPtype"
-                                placeholder="신차or중고차"
+                                inputId="ccarMembercode"
+                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
+                                {...membercodeHooks}
                             />
                         </WithLabel>
                         <WithLabel
-                            id="ccarVprice"
+                            id="ccarPrice"
                             label="기본차량가액"
                             type={labelType}
                         >
                             <MyInput
-                                type="number"
-                                id="ccarVprice"
-                                placeholder="기본차량가액"
+                                type="text"
+                                id="ccarPrice"
+                                placeholder="0"
                                 className="text-end"
                                 disabled={!editable}
-                                readOnly
-                                value="365"
                                 unit="만원"
+                                {...carpriceHooks}
                             />
                         </WithLabel>
-                        <WithLabel
-                            id="ccarVtotal"
-                            label="부속가액합계"
-                            type={labelType}
-                        >
+                        <WithLabel label="부속가액합계" type={labelType}>
                             <MyInput
-                                type="number"
-                                id="ccarVtotal"
-                                placeholder="부속가액합계"
+                                type="text"
+                                placeholder="0"
                                 className="text-end"
-                                disabled={!editable}
-                                readOnly
-                                value="335"
+                                disabled={true}
+                                value={sumBupums.toLocaleString()}
                                 unit="만원"
                             />
                         </WithLabel>
                         <div className="wr-pages-detail__toolbar wr-border-b">
                             <div>총 차량가액</div>
-                            <div>700 만원</div>
+                            <div>{totalPrice.toLocaleString()} 만원</div>
                         </div>
                     </div>
                 </div>
@@ -424,36 +665,35 @@ export const CompareTabpanel: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__title">
                             <strong>기타사항</strong>
-                            <div></div>
                         </div>
                         <div className="wr-pages-detail__content">
                             <WithLabel
-                                id="ccarTransport"
+                                id="ccarUsang"
                                 label="유상운송"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarTransport"
+                                    inputId="ccarUsang"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...usangHooks}
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarCER"
+                                id="ccarUsang2"
                                 label="기중기장치요율"
                                 type={labelType}
                             >
                                 <MyInput
                                     type="number"
-                                    id="ccarCER"
-                                    placeholder="기중기장치요율"
+                                    id="ccarUsang2"
+                                    placeholder="0"
                                     className="text-end"
                                     disabled={!editable}
-                                    readOnly
-                                    value="0"
                                     unit="%"
+                                    {...usang2Hooks}
                                 />
                             </WithLabel>
                         </div>
@@ -461,133 +701,98 @@ export const CompareTabpanel: FC<Props> = ({
                     <div className="wr-pages-detail__block wr-mt">
                         <div className="wr-pages-detail__title">
                             <strong>세부담보설정</strong>
-                            <div></div>
                         </div>
                         <div className="wr-pages-detail__content">
-                            <WithLabel
-                                id="ccarCompensation"
-                                label="대인배상I"
-                                type={labelType}
-                            >
+                            <WithLabel label="대인배상I" type={labelType}>
                                 <MyInput
                                     type="text"
-                                    id="ccarCompensation"
                                     placeholder="대인배상I"
-                                    disabled={!editable}
-                                    readOnly
+                                    disabled={true}
                                     value="의무가입"
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarCompensation"
+                                id="ccarDambo2"
                                 label="대인배상II"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarCompensation"
-                                    placeholder="무한"
+                                    inputId="ccarDambo2"
+                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...dambo2Hooks}
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarLimit"
+                                id="ccarDambo3"
                                 label="대물한도"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarLimit"
-                                    placeholder="10억원"
+                                    inputId="ccarDambo3"
+                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...dambo3Hooks}
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarDes"
+                                id="ccarDambo4"
                                 label="자손/자상"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarDes"
+                                    inputId="ccarDambo4"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...dambo4Hooks}
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarNoInsu"
+                                id="ccarDambo5"
                                 label="무보험차"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarNoInsu"
+                                    inputId="ccarDambo5"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...dambo5Hooks}
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarMine"
+                                id="ccarDambo6"
                                 label="자기차량"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarMine"
+                                    inputId="ccarDambo6"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...dambo6Hooks}
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarDispatch"
+                                id="ccarGooutDist"
                                 label="긴급출동"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarDispatch"
+                                    inputId="ccarGooutDist"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
-                                />
-                            </WithLabel>
-                            <WithLabel
-                                id="ccarPremium"
-                                label="물적사고할증"
-                                type={labelType}
-                            >
-                                <MySelect
-                                    inputId="ccarPremium"
-                                    placeholder="선택"
-                                    placeHolderFontSize={16}
-                                    height={variables.detailFilterHeight}
-                                    isDisabled={!editable}
-                                />
-                            </WithLabel>
-                        </div>
-                    </div>
-                    <div className="wr-pages-detail__block wr-mt">
-                        <div className="wr-pages-detail__title">
-                            <strong>특약사항</strong>
-                            <div></div>
-                        </div>
-                        <div className="wr-pages-detail__content">
-                            <WithLabel
-                                id="ccarMileage"
-                                label="마일리지"
-                                type={labelType}
-                            >
-                                <MySelect
-                                    inputId="ccarMileage"
-                                    placeholder="선택"
-                                    placeHolderFontSize={16}
-                                    height={variables.detailFilterHeight}
-                                    isDisabled={!editable}
+                                    {...gooutDistHooks}
                                 />
                                 <div
                                     className="wr-with__extension"
@@ -599,96 +804,158 @@ export const CompareTabpanel: FC<Props> = ({
                                         height={variables.detailFilterHeight}
                                         placement="right"
                                         isDisabled={!editable}
+                                        {...gooutDetailHooks}
                                     />
                                 </div>
                             </WithLabel>
                             <WithLabel
-                                id="ccarCSC"
+                                id="ccarMulSago"
+                                label="물적사고할증"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarMulSago"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                    {...mulSagoHooks}
+                                />
+                            </WithLabel>
+                        </div>
+                    </div>
+                    <div className="wr-pages-detail__block wr-mt">
+                        <div className="wr-pages-detail__title">
+                            <strong>특약사항</strong>
+                        </div>
+                        <div className="wr-pages-detail__content">
+                            <WithLabel
+                                id="ccarMileDist"
+                                label="마일리지"
+                                type={labelType}
+                            >
+                                <MySelect
+                                    inputId="ccarMileDist"
+                                    placeholder="선택"
+                                    placeHolderFontSize={16}
+                                    height={variables.detailFilterHeight}
+                                    isDisabled={!editable}
+                                    {...mileDistHooks}
+                                />
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 190 }}
+                                >
+                                    <MySelect
+                                        placeholder="선택"
+                                        placeHolderFontSize={16}
+                                        height={variables.detailFilterHeight}
+                                        placement="right"
+                                        isDisabled={!editable}
+                                        {...mileDetailHooks}
+                                    />
+                                </div>
+                            </WithLabel>
+                            <WithLabel
+                                id="ccarDrateDist"
                                 label="자녀특약"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarCSC"
+                                    inputId="ccarDrateDist"
                                     placeholder="미가입"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
-                                    placement="left"
+                                    placement={
+                                        drateDistHooks.value?.value === '자녀'
+                                            ? 'left'
+                                            : 'single'
+                                    }
+                                    {...drateDistHooks}
                                 />
-                                <div
-                                    className="wr-with__extension"
-                                    style={{ width: 191 }}
-                                >
-                                    <MyDatepicker
-                                        id="ccarRegdate"
-                                        size="md"
-                                        placeholder="생년월일"
-                                    />
-                                </div>
+                                {drateDistHooks.value?.value === '자녀' && (
+                                    <div
+                                        className="wr-with__extension"
+                                        style={{ width: 191 }}
+                                    >
+                                        <MyDatepicker
+                                            id=""
+                                            size="md"
+                                            placeholder="생년월일"
+                                            hooks={drateDetailHooks}
+                                        />
+                                    </div>
+                                )}
                             </WithLabel>
                             <WithLabel
-                                id="ccarLimit"
+                                id="ccarTmapDist"
                                 label="안전운전습관"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarLimit"
-                                    placeholder="10억원"
+                                    inputId="ccarTmapDist"
+                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
-                                    placement="left"
+                                    placement={
+                                        tmapDistHooks.value?.value === '미가입'
+                                            ? 'single'
+                                            : 'left'
+                                    }
                                     isDisabled={!editable}
+                                    {...tmapDistHooks}
                                 />
-                                <div
-                                    className="wr-with__extension"
-                                    style={{ width: 191 }}
-                                >
-                                    <MyInput
-                                        type="number"
-                                        placeholder="0"
-                                        className="text-end"
-                                        disabled={!editable}
-                                        readOnly
-                                        value="365"
-                                        unit="점"
-                                    />
-                                </div>
+                                {tmapDistHooks.value?.value !== '미가입' && (
+                                    <div
+                                        className="wr-with__extension"
+                                        style={{ width: 191 }}
+                                    >
+                                        <MyInput
+                                            type="number"
+                                            placeholder="0"
+                                            className="text-end"
+                                            disabled={!editable}
+                                            unit="점"
+                                            {...tmapDetailHooks}
+                                        />
+                                    </div>
+                                )}
                             </WithLabel>
                         </div>
                     </div>
                     <div className="wr-pages-detail__block wr-mt">
                         <div className="wr-pages-detail__title">
                             <strong>기타</strong>
-                            <div></div>
                         </div>
                         <div className="wr-pages-detail__content">
                             <WithLabel
-                                id="ccarUsage"
+                                id="ccarUse"
                                 label="차량용도"
                                 type={labelType}
                             >
                                 <MySelect
-                                    inputId="ccarUsage"
+                                    inputId="ccarUse"
                                     placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
+                                    {...caruseHooks}
                                 />
                             </WithLabel>
                             <WithLabel
-                                id="ccarGuarantee"
+                                id="ccarIlPrice"
                                 label="일부담보"
                                 type={labelType}
                             >
                                 <MyInput
-                                    type="number"
-                                    id="ccarGuarantee"
+                                    type="text"
+                                    id="ccarIlPrice"
                                     placeholder="0"
                                     className="text-end"
                                     disabled={!editable}
-                                    readOnly
-                                    value="0"
                                     unit="원"
+                                    {...ilPriceHooks}
                                 />
                             </WithLabel>
                         </div>
@@ -699,55 +966,55 @@ export const CompareTabpanel: FC<Props> = ({
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__title">
                                 <strong>요율사항</strong>
-                                <div></div>
                             </div>
                             <div className="wr-pages-detail__content">
                                 <WithLabel
-                                    id="ccarAllCount"
+                                    id="ccarChilddrive"
                                     label="총차량대수"
                                     type={labelType}
                                 >
                                     <MySelect
-                                        inputId="ccarAllCount"
+                                        inputId="ccarChilddrive"
                                         placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
+                                        {...childdriveHooks}
                                     />
                                 </WithLabel>
                                 <div className="wr-pages-detail__block wr-mt">
                                     <div className="wr-pages-detail__title">
                                         <strong>보험가입경력</strong>
-                                        <div></div>
                                     </div>
                                     <div className="wr-pages-detail__content">
                                         <div className="row">
                                             <div className="col-6">
                                                 <WithLabel
-                                                    id="ccarMEI"
+                                                    id="ccarGuipcarrer"
                                                     label="피보험자"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="ccarMEI"
+                                                        inputId="ccarGuipcarrer"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...guipcarrerHooks}
                                                     />
                                                 </WithLabel>
                                             </div>
                                             <div className="col-6">
                                                 <div className="wr-ml">
                                                     <WithLabel
-                                                        id="ccarMEC"
+                                                        id="ccarGuipcarrerCar"
                                                         label="차량"
                                                         type={labelType}
                                                     >
                                                         <MySelect
-                                                            inputId="ccarMEC"
+                                                            inputId="ccarGuipcarrerCar"
                                                             placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
@@ -758,6 +1025,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                             isDisabled={
                                                                 !editable
                                                             }
+                                                            {...guipcarrerCarHooks}
                                                         />
                                                     </WithLabel>
                                                 </div>
@@ -768,36 +1036,36 @@ export const CompareTabpanel: FC<Props> = ({
                                 <div className="wr-pages-detail__block wr-mt">
                                     <div className="wr-pages-detail__title">
                                         <strong>직전3년가입경력</strong>
-                                        <div></div>
                                     </div>
                                     <div className="wr-pages-detail__content">
                                         <div className="row">
                                             <div className="col-6">
                                                 <WithLabel
-                                                    id="ccarPMED"
+                                                    id="ccarLJobcode"
                                                     label="DB"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="ccarPMED"
+                                                        inputId="ccarLJobcode"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...lJobcodeHooks}
                                                     />
                                                 </WithLabel>
                                             </div>
                                             <div className="col-6">
                                                 <div className="wr-ml">
                                                     <WithLabel
-                                                        id="ccarPMEK"
+                                                        id="ccarGuipCarrerKb"
                                                         label="KB"
                                                         type={labelType}
                                                     >
                                                         <MySelect
-                                                            inputId="ccarPMEK"
+                                                            inputId="ccarGuipCarrerKb"
                                                             placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
@@ -808,6 +1076,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                             isDisabled={
                                                                 !editable
                                                             }
+                                                            {...guipCarrerKbHooks}
                                                         />
                                                     </WithLabel>
                                                 </div>
@@ -818,7 +1087,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 <div className="wr-pages-detail__block wr-mt">
                                     <div className="wr-pages-detail__title">
                                         <strong>교통법규위반</strong>
-                                        <div></div>
                                     </div>
                                     <div className="wr-pages-detail__content">
                                         <div className="row">
@@ -830,6 +1098,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                         variables.detailFilterHeight
                                                     }
                                                     isDisabled={!editable}
+                                                    {...trafficDistHooks}
                                                 />
                                             </div>
                                             <div className="col-6">
@@ -837,7 +1106,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     <div className="d-flex">
                                                         <div className="flex-fill">
                                                             <MySelect
-                                                                inputId="ccarPMEK"
                                                                 placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
@@ -849,6 +1117,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                                 isDisabled={
                                                                     !editable
                                                                 }
+                                                                {...trafficDetailHooks}
                                                             />
                                                         </div>
 
@@ -864,63 +1133,70 @@ export const CompareTabpanel: FC<Props> = ({
                                 <div className="wr-pages-detail__block wr-mt">
                                     <div className="wr-pages-detail__title">
                                         <strong>할증율</strong>
-                                        <div></div>
                                     </div>
                                     <div className="wr-pages-detail__content">
                                         <div className="row">
                                             <div className="col-6">
                                                 <WithLabel
-                                                    id="ccarDiscount"
+                                                    id="ccarHalin"
                                                     label="할인할증"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="ccarDiscount"
+                                                        inputId="ccarHalin"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...halinHooks}
                                                     />
                                                 </WithLabel>
                                             </div>
-                                            <div className="col-6 d-flex justify-content-start align-items-center">
-                                                <div className="wr-ml ">
-                                                    <MyCheckbox
-                                                        id="ccarCR"
-                                                        label="군/법인/해외경력인정"
-                                                    />
+                                            {(guipcarrerHooks.value?.value ===
+                                                'B2' ||
+                                                guipcarrerHooks.value?.value ===
+                                                    'B3') && (
+                                                <div className="col-6 d-flex justify-content-start align-items-center">
+                                                    <div className="wr-ml ">
+                                                        <MyCheckbox
+                                                            id="ccarRateU"
+                                                            label="군/법인/해외경력인정"
+                                                            {...checkRateUHooks}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            )}
                                         </div>
                                         <div className="row wr-mt">
                                             <div className="col-6">
                                                 <WithLabel
-                                                    id="ccarDD"
+                                                    id="ccarSpecialCode"
                                                     label="기본할증"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="ccarDD"
+                                                        inputId="ccarSpecialCode"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...specialCodeHooks}
                                                     />
                                                 </WithLabel>
                                             </div>
                                             <div className="col-6">
                                                 <div className="wr-ml ">
                                                     <WithLabel
-                                                        id="ccarAD"
+                                                        id="ccarSpecialCode2"
                                                         label="추가할증"
                                                         type={labelType}
                                                     >
                                                         <MySelect
-                                                            inputId="ccarAD"
+                                                            inputId="ccarSpecialCode2"
                                                             placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
@@ -931,6 +1207,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                             isDisabled={
                                                                 !editable
                                                             }
+                                                            {...specialCode2Hooks}
                                                         />
                                                     </WithLabel>
                                                 </div>
@@ -941,39 +1218,40 @@ export const CompareTabpanel: FC<Props> = ({
                                 <div className="wr-pages-detail__block wr-mt">
                                     <div className="wr-pages-detail__title">
                                         <strong>사고요율</strong>
-                                        <div></div>
                                     </div>
                                     <div className="wr-pages-detail__content">
                                         <div className="row">
                                             <div className="col">
                                                 <WithLabel
-                                                    id="ccarArateF3"
+                                                    id="ccarSsSago3"
                                                     label="3년간사고요율"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="ccarArateF3"
+                                                        inputId="ccarSsSago3"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...ssSago3Hooks}
                                                     />
                                                 </WithLabel>
                                                 <WithLabel
-                                                    id="ccarArateBC"
+                                                    id="ccarPreSago3"
                                                     label="전계약사고요율"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="ccarArateBC"
+                                                        inputId="ccarPreSago3"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...preSago3Hooks}
                                                     />
                                                 </WithLabel>
                                             </div>
@@ -981,30 +1259,31 @@ export const CompareTabpanel: FC<Props> = ({
                                         <div className="row wr-mt">
                                             <div className="col-6">
                                                 <WithLabel
-                                                    id="ccarAPF3"
+                                                    id="ccarPSago"
                                                     label="3년사고점수"
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="ccarAPF3"
+                                                        inputId="ccarPSago"
                                                         placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
                                                         isDisabled={!editable}
+                                                        {...pSagoHooks}
                                                     />
                                                 </WithLabel>
                                             </div>
                                             <div className="col-6">
                                                 <div className="wr-ml">
                                                     <WithLabel
-                                                        id="ccarAPF1"
+                                                        id="ccarGoout2"
                                                         label="1년사고점수"
                                                         type={labelType}
                                                     >
                                                         <MySelect
-                                                            inputId="ccarAPF1"
+                                                            inputId="ccarGoout2"
                                                             placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
@@ -1015,6 +1294,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                             isDisabled={
                                                                 !editable
                                                             }
+                                                            {...goout2Hooks}
                                                         />
                                                     </WithLabel>
                                                 </div>
@@ -1025,18 +1305,17 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <strong>
                                                     피보기준 사고건수
                                                 </strong>
-                                                <div></div>
                                             </div>
                                             <div className="wr-pages-detail__content">
                                                 <div className="row">
                                                     <div className="col">
                                                         <WithLabel
-                                                            id="ccarIACF3"
+                                                            id="ccarSago3"
                                                             label="3년간"
                                                             type={labelType}
                                                         >
                                                             <MySelect
-                                                                inputId="ccarIACF3"
+                                                                inputId="ccarSago3"
                                                                 placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
@@ -1047,6 +1326,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                                 isDisabled={
                                                                     !editable
                                                                 }
+                                                                {...sago3Hooks}
                                                             />
                                                             <div className="wr-with__extension wr-form__unit wr-border-l--hide">
                                                                 건
@@ -1057,12 +1337,12 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <div className="row wr-mt">
                                                     <div className="col">
                                                         <WithLabel
-                                                            id="ccarIACF2"
+                                                            id="ccarCarNonum"
                                                             label="2년간"
                                                             type={labelType}
                                                         >
                                                             <MySelect
-                                                                inputId="ccarIACF2"
+                                                                inputId="ccarCarNonum"
                                                                 placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
@@ -1073,6 +1353,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                                 isDisabled={
                                                                     !editable
                                                                 }
+                                                                {...carNonumHooks}
                                                             />
                                                             <div className="wr-with__extension wr-form__unit wr-border-l--hide">
                                                                 건
@@ -1083,12 +1364,12 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <div className="row wr-mt">
                                                     <div className="col">
                                                         <WithLabel
-                                                            id="ccarIACF1"
+                                                            id="ccarSago1"
                                                             label="1년간"
                                                             type={labelType}
                                                         >
                                                             <MySelect
-                                                                inputId="ccarIACF1"
+                                                                inputId="ccarSago1"
                                                                 placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
@@ -1099,6 +1380,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                                 isDisabled={
                                                                     !editable
                                                                 }
+                                                                {...sago1Hooks}
                                                             />
                                                             <div className="wr-with__extension wr-form__unit wr-border-l--hide">
                                                                 건
@@ -1113,18 +1395,17 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <strong>
                                                     차량기준 사고건수
                                                 </strong>
-                                                <div></div>
                                             </div>
                                             <div className="wr-pages-detail__content">
                                                 <div className="row">
                                                     <div className="col">
                                                         <WithLabel
-                                                            id="ccarCACF3"
+                                                            id="ccarCarSago3"
                                                             label="3년간"
                                                             type={labelType}
                                                         >
                                                             <MySelect
-                                                                inputId="ccarCACF3"
+                                                                inputId="ccarCarSago3"
                                                                 placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
@@ -1135,6 +1416,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                                 isDisabled={
                                                                     !editable
                                                                 }
+                                                                {...carSago3Hooks}
                                                             />
                                                             <div className="wr-with__extension wr-form__unit wr-border-l--hide">
                                                                 건
@@ -1145,12 +1427,12 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <div className="row wr-mt">
                                                     <div className="col">
                                                         <WithLabel
-                                                            id="ccarCACF2"
+                                                            id="ccarCarSago2"
                                                             label="2년간"
                                                             type={labelType}
                                                         >
                                                             <MySelect
-                                                                inputId="ccarCACF2"
+                                                                inputId="ccarCarSago2"
                                                                 placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
@@ -1161,6 +1443,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                                 isDisabled={
                                                                     !editable
                                                                 }
+                                                                {...carSago2Hooks}
                                                             />
                                                             <div className="wr-with__extension wr-form__unit wr-border-l--hide">
                                                                 건
@@ -1171,12 +1454,12 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <div className="row wr-mt">
                                                     <div className="col">
                                                         <WithLabel
-                                                            id="ccarCACF1"
+                                                            id="ccarCarSago1"
                                                             label="1년간"
                                                             type={labelType}
                                                         >
                                                             <MySelect
-                                                                inputId="ccarCACF1"
+                                                                inputId="ccarCarSago1"
                                                                 placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
@@ -1187,6 +1470,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                                 isDisabled={
                                                                     !editable
                                                                 }
+                                                                {...carSago1Hooks}
                                                             />
                                                             <div className="wr-with__extension wr-form__unit wr-border-l--hide">
                                                                 건

@@ -45,6 +45,8 @@ import { showSetPeriodModal } from '@actions/modal/set-period.action';
 import { SearchProductInput } from '@partials/contract/SearchProductInput';
 import { CompareTabpanel } from '@partials/contract/car/tabpanels/Compare';
 import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
+import { useCheckbox } from '@hooks/use-checkbox';
+import { CreateBupumModal } from '@components/modal/CreateBupum';
 
 interface Props {
     /**
@@ -166,11 +168,11 @@ interface Props {
     /**
      * 배기량 기본 값
      */
-    defaultBaegirang?: number;
+    defaultBaegirang?: string;
     /**
      * 인원 기본 값
      */
-    defaultPeopleNum?: number;
+    defaultPeopleNum?: string;
     /**
      * 오토 기본 값
      */
@@ -184,6 +186,10 @@ interface Props {
      */
     defaultImo?: boolean;
     /**
+     * 블랙박스 장착 여부
+     */
+    defaultHasBlackbox?: CoreSelectOption;
+    /**
      * 블랙박스 구입시기 기본 값
      */
     defaultBlackboxBuydate?: string;
@@ -194,7 +200,7 @@ interface Props {
     /**
      * 에어백 기본 값
      */
-    defaultAircode?: number;
+    defaultAircode?: CoreSelectOption;
     /**
      * 전방출동 기본 값
      */
@@ -218,7 +224,7 @@ interface Props {
     /**
      * 기본차량가액 기본 값
      */
-    defaultCarprice?: number;
+    defaultCarprice?: string;
     /**
      * 유상운송 기본 값
      */
@@ -226,11 +232,11 @@ interface Props {
     /**
      * 기중기장치요율 기본 값
      */
-    defaultUsang2?: number;
+    defaultUsang2?: string;
     /**
      * 대인배상I 기본 값
      */
-    defaultDambo1?: string;
+    // defaultDambo1?: string;
     /**
      * 대인배상II 기본 값
      */
@@ -276,7 +282,7 @@ interface Props {
      */
     defaultDrateDist?: CoreSelectOption;
     /**
-     * 자녀특약 상세 기본 값
+     * 자녀특약 상세(생년월일) 기본 값
      */
     defaultDrateDetail?: string;
     /**
@@ -290,11 +296,11 @@ interface Props {
     /**
      * 차량용도 기본 값
      */
-    defaultCaeruse?: CoreSelectOption;
+    defaultCaruse?: CoreSelectOption;
     /**
      * 일부담보 상세 기본 값
      */
-    defaultIlPrice?: number;
+    defaultIlPrice?: string;
     /**
      * 총차량대수 기본 값
      */
@@ -344,7 +350,7 @@ interface Props {
      */
     defaultSsSago3?: CoreSelectOption;
     /**
-     * 이전계약사고요율 기본값
+     * 전계약사고요율 기본값
      */
     defaultPreSago3?: CoreSelectOption;
     /**
@@ -406,6 +412,65 @@ export const CarForm: FC<Props> = ({
     defaultCarYear = null,
     defaultCarCode = '',
     defaultCarDate = null,
+    defaultLpg = false,
+    defaultTopcar = false,
+    defaultSportcar = false,
+    defaultCarName = '',
+    defaultCarGrade = carConstants.grade[10],
+    defaultBaegirang = '',
+    defaultPeopleNum = '',
+    defaultAuto = false,
+    defaultAbsHalin = false,
+    defaultImo = false,
+    defaultHasBlackbox = carConstants.hasBb[0],
+    defaultBlackboxBuydate = null,
+    defaultBlackboxBuyPrice = '',
+    defaultAircode = carConstants.airBack[2],
+    defaultChung = carConstants.chung[0],
+    defaultBluelink = false,
+    defaultGps = null,
+    defaultJobcodeNm = false,
+    defaultMembercode = carConstants.pType[0],
+    defaultCarprice = '',
+    defaultUsang = carConstants.usang[0],
+    defaultUsang2 = '',
+    defaultDambo2 = carConstants.dambo2[1],
+    defaultDambo3 = carConstants.dambo3[6],
+    defaultDambo4 = carConstants.dambo4[1],
+    defaultDambo5 = carConstants.dambo5[1],
+    defaultDambo6 = carConstants.dambo6[1],
+    defaultGooutDist = carConstants.gDist[0],
+    defaultGooutDetail = carConstants.gDetail[0],
+    defaultMulSago = carConstants.mSago[3],
+    defaultMileDist = carConstants.mDist[0],
+    defaultMileDetail = null,
+    defaultDrateDist = carConstants.dDist[0],
+    defaultDrateDetail = null,
+    defaultTmapDist = carConstants.tDist[0],
+    defaultTmapDetail = '',
+    defaultCaruse = carConstants.use[0],
+    defaultIlPrice = '',
+    defaultChilddrive = null,
+    defaultGuipcarrer = carConstants.exp[0],
+    defaultGuipcarrerCar = null,
+    defaultLJobcode = null,
+    defaultGuipCarrerKb = null,
+    defaultTrafficDist = carConstants.tVio[0],
+    defaultTrafficDetail = carConstants.numCase[0],
+    defaultHalin = carConstants.halin[20],
+    defaultRateU = false,
+    defaultSpecialCode = carConstants.sCode[0],
+    defaultSpecialCode2 = carConstants.sCode2[0],
+    defaultSsSago3 = carConstants.sago3[0],
+    defaultPreSago3 = carConstants.prevSago[0],
+    defaultPSago = null,
+    defaultGoout2 = null,
+    defaultSago3 = carConstants.numCase[0],
+    defaultCarNonum = carConstants.numCase[0],
+    defaultSago1 = carConstants.numCase[0],
+    defaultCarSago3 = carConstants.numCase[0],
+    defaultCarSago2 = carConstants.numCase[0],
+    defaultCarSago1 = carConstants.numCase[0],
 }) => {
     const displayName = 'wr-pages-car-detail';
 
@@ -472,7 +537,7 @@ export const CarForm: FC<Props> = ({
     // 인수구분
     const [insu] = useSelect(carConstants.dist, defaultInsu);
     // 등급
-    const [rate] = useSelect(carConstants.grade, defaultRate);
+    const [rate] = useSelect(carConstants.cGrade, defaultRate);
     // 납입방법
     const [cycle] = useSelect(carConstants.payMethod, defaultCycle);
     // 보험료
@@ -519,6 +584,137 @@ export const CarForm: FC<Props> = ({
     const [cardate] = useDatepicker(
         defaultCarDate ? new Date(defaultCarDate) : addYears(new Date(), 1),
     );
+    // LPG 여부
+    const [checkLpg] = useCheckbox(defaultLpg);
+    // 탑차 여부
+    const [checkTopcar] = useCheckbox(defaultTopcar);
+    // 스포츠카 여부
+    const [checkSportcar] = useCheckbox(defaultSportcar);
+    // 차량명
+    const [carname] = useInput(defaultCarName);
+    // 차량등급
+    const [carGrade] = useSelect(carConstants.grade, defaultCarGrade);
+    // 배기량
+    const [baegirang] = useNumbericInput(defaultBaegirang);
+    // 인원수
+    const [peopleNum] = useNumbericInput(defaultPeopleNum);
+    // 오토 여부
+    const [checkAuto] = useCheckbox(defaultAuto);
+    // ABS 여부
+    const [checkAbsHalin] = useCheckbox(defaultAbsHalin);
+    // 이모빌라이저 여부
+    const [checkImo] = useCheckbox(defaultImo);
+    // 블랙박스 장착 여부
+    const [hasBb] = useSelect(carConstants.hasBb, defaultHasBlackbox);
+    // 블랙박스 구입시기
+    const [bbBuydate] = useDatepicker(
+        defaultBlackboxBuydate ? new Date(defaultBlackboxBuydate) : null,
+    );
+    // 블랙박스 금액
+    const [bbBuyPrice] = useNumbericInput(defaultBlackboxBuyPrice, {
+        addComma: true,
+    });
+    // 에어백
+    const [aircode] = useSelect(carConstants.airBack, defaultAircode);
+    // 전방출동
+    const [chung] = useSelect(carConstants.chung, defaultChung);
+    // 커넥티드카 여부
+    const [checkBluelink] = useCheckbox(defaultBluelink);
+    // 차선이탈
+    const [gps] = useSelect(carConstants.gps, defaultGps);
+    // 지능형 안전장치 여부
+    const [checkJobcodeNm] = useCheckbox(defaultJobcodeNm);
+    // 차량구매형태
+    const [membercode] = useSelect(carConstants.pType, defaultMembercode);
+    // 기본차량가액
+    const [carprice] = useNumbericInput(defaultCarprice, {
+        addComma: true,
+    });
+    // 유상운송
+    const [usang] = useSelect(carConstants.usang, defaultUsang);
+    // 기중기장치요율
+    const [usang2] = useNumbericInput(defaultUsang2);
+    // 대인배상 2
+    const [dambo2] = useSelect(carConstants.dambo2, defaultDambo2);
+    // 대물한도
+    const [dambo3] = useSelect(carConstants.dambo3, defaultDambo3);
+    // 자손/자상
+    const [dambo4] = useSelect(carConstants.dambo4, defaultDambo4);
+    // 무보험차
+    const [dambo5] = useSelect(carConstants.dambo5, defaultDambo5);
+    // 자기차량
+    const [dambo6] = useSelect(carConstants.dambo6, defaultDambo6);
+    // 긴급출동
+    const [gooutDist] = useSelect(carConstants.gDist, defaultGooutDist);
+    // 긴급출동 상세
+    const [gooutDetail] = useSelect(carConstants.gDetail, defaultGooutDetail);
+    // 물적사고할증
+    const [mulSago] = useSelect(carConstants.mSago, defaultMulSago);
+    // 마일리지
+    const [mileDist] = useSelect(carConstants.mDist, defaultMileDist);
+    // 마일리지 상세
+    const [mileDetail] = useSelect(carConstants.mDetail, defaultMileDetail);
+    // 자녀특약
+    const [drateDist] = useSelect(carConstants.dDist, defaultDrateDist);
+    // 자녀특약 - 생년월일
+    const [drateDetail] = useDatepicker(
+        defaultDrateDetail ? new Date(defaultDrateDetail) : null,
+    );
+    // 안전운전습관
+    const [tmapDist] = useSelect(carConstants.tDist, defaultTmapDist);
+    // 안전운전습관 점수
+    const [tmapDetail] = useNumbericInput(defaultTmapDetail);
+    // 차량용도
+    const [caruse] = useSelect(carConstants.use, defaultCaruse);
+    // 일부담보
+    const [ilPrice] = useNumbericInput(defaultIlPrice, {
+        addComma: true,
+    });
+    // 총차량대수
+    const [childdrive] = useSelect(carConstants.cDrive, defaultChilddrive);
+    // 보험가입경력 - 피보험자
+    const [guipcarrer] = useSelect(carConstants.exp, defaultGuipcarrer);
+    // 보험가입경력 - 차량
+    const [guipcarrerCar] = useSelect(carConstants.exp2, defaultGuipcarrerCar);
+    // 직전3년가입경력 - DB
+    const [lJobcode] = useSelect(carConstants.exp, defaultLJobcode);
+    // 직전3년가입경력 - KB
+    const [guipCarrerKb] = useSelect(carConstants.exp, defaultGuipCarrerKb);
+    // 교통법규 위반
+    const [trafficDist] = useSelect(carConstants.tVio, defaultTrafficDist);
+    // 교통법규 위반 건수
+    const [trafficDetail] = useSelect(
+        carConstants.numCase.slice(0, 4),
+        defaultTrafficDetail,
+    );
+    // 할증율 - 할인할증
+    const [halin] = useSelect(carConstants.halin, defaultHalin);
+    // 할증율 - 군/법인/해외경력인정
+    const [checkRateU] = useCheckbox(defaultRateU);
+    // 할증율 - 기본할증
+    const [specialCode] = useSelect(carConstants.sCode, defaultSpecialCode);
+    // 할증율 - 추가할증
+    const [specialCode2] = useSelect(carConstants.sCode2, defaultSpecialCode2);
+    // 사고요율 - 3년간사고요율
+    const [ssSago3] = useSelect(carConstants.sago3, defaultSsSago3);
+    // 사고요율 - 전계약사고요율
+    const [preSago3] = useSelect(carConstants.prevSago, defaultPreSago3);
+    // 사고요율 - 3년사고점수
+    const [pSago] = useSelect(carConstants.sCode2, defaultPSago);
+    // 사고요율 - 1년사고점수
+    const [goout2] = useSelect(carConstants.sCode2, defaultGoout2);
+    // 피보기준 사고건수 - 3년간
+    const [sago3] = useSelect(carConstants.numCase, defaultSago3);
+    // 피보기준 사고건수 - 2년간
+    const [carNonum] = useSelect(carConstants.numCase, defaultCarNonum);
+    // 피보기준 사고건수 - 1년간
+    const [sago1] = useSelect(carConstants.numCase, defaultSago1);
+    // 차량기준 사고건수 - 3년간
+    const [carSago3] = useSelect(carConstants.numCase, defaultCarSago3);
+    // 차량기준 사고건수 - 2년간
+    const [carSago2] = useSelect(carConstants.numCase, defaultCarSago2);
+    // 차량기준 사고건수 - 1년간
+    const [carSago1] = useSelect(carConstants.numCase, defaultCarSago1);
 
     // 보장시기 blur 핸들러
     // const handleBlurBoDatefrom = () => {
@@ -1022,6 +1218,66 @@ export const CarForm: FC<Props> = ({
                                 carNumHooks={carNum}
                                 carYearHooks={caryear}
                                 carCodeHooks={carcode}
+                                cardateHooks={cardate}
+                                checkLpgHooks={checkLpg}
+                                checkTopcarHooks={checkTopcar}
+                                checkSportcarHooks={checkSportcar}
+                                carnameHooks={carname}
+                                carGradeHooks={carGrade}
+                                baegirangHooks={baegirang}
+                                peopleNumHooks={peopleNum}
+                                checkAutoHooks={checkAuto}
+                                checkAbsHalinHooks={checkAbsHalin}
+                                checkImoHooks={checkImo}
+                                hasBbHooks={hasBb}
+                                bbBuydateHooks={bbBuydate}
+                                bbBuyPriceHooks={bbBuyPrice}
+                                aircodeHooks={aircode}
+                                chungHooks={chung}
+                                checkBluelinkHooks={checkBluelink}
+                                gpsHooks={gps}
+                                checkJobcodeNmHooks={checkJobcodeNm}
+                                membercodeHooks={membercode}
+                                carpriceHooks={carprice}
+                                usangHooks={usang}
+                                usang2Hooks={usang2}
+                                dambo2Hooks={dambo2}
+                                dambo3Hooks={dambo3}
+                                dambo4Hooks={dambo4}
+                                dambo5Hooks={dambo5}
+                                dambo6Hooks={dambo6}
+                                gooutDistHooks={gooutDist}
+                                gooutDetailHooks={gooutDetail}
+                                mulSagoHooks={mulSago}
+                                mileDistHooks={mileDist}
+                                mileDetailHooks={mileDetail}
+                                drateDistHooks={drateDist}
+                                drateDetailHooks={drateDetail}
+                                tmapDistHooks={tmapDist}
+                                tmapDetailHooks={tmapDetail}
+                                caruseHooks={caruse}
+                                ilPriceHooks={ilPrice}
+                                childdriveHooks={childdrive}
+                                guipcarrerHooks={guipcarrer}
+                                guipcarrerCarHooks={guipcarrerCar}
+                                lJobcodeHooks={lJobcode}
+                                guipCarrerKbHooks={guipCarrerKb}
+                                trafficDistHooks={trafficDist}
+                                trafficDetailHooks={trafficDetail}
+                                halinHooks={halin}
+                                checkRateUHooks={checkRateU}
+                                specialCodeHooks={specialCode}
+                                specialCode2Hooks={specialCode2}
+                                ssSago3Hooks={ssSago3}
+                                preSago3Hooks={preSago3}
+                                pSagoHooks={pSago}
+                                goout2Hooks={goout2}
+                                sago3Hooks={sago3}
+                                carNonumHooks={carNonum}
+                                sago1Hooks={sago1}
+                                carSago3Hooks={carSago3}
+                                carSago2Hooks={carSago2}
+                                carSago1Hooks={carSago1}
                             />
                             <CarPaysTabpanel
                                 id="tabpanelPays"
@@ -1077,6 +1333,7 @@ export const CarForm: FC<Props> = ({
             {isShowInsuredSearchModal && (
                 <CustomerSearchModal type="insured-person" />
             )}
+            <CreateBupumModal />
         </>
     );
 };
