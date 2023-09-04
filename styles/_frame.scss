@@ -4,6 +4,10 @@
     }
 
     &__body {
+        height: calc(100vh - $wr-header-size - $wr-footer-size);
+    }
+
+    &__body--nofooter {
         height: calc(100vh - $wr-header-size);
     }
 
@@ -17,7 +21,8 @@
 
     &__tabbody {
         height: calc(
-            100vh - $wr-header-size - $wr-footer-size - $wr-tab-size - 30px
+            100vh - $wr-header-size - $wr-footer-size - $wr-tab-size -
+                $wr-gutter-size
         );
     }
 

@@ -20,7 +20,7 @@ interface Props {
     disabled?: boolean;
     width?: number;
     onBlur?: () => void;
-    isBirthday?: boolean;
+    shouldDisableDate?: (date: Date) => boolean;
 }
 
 export const MyDatepicker: FC<Props> = ({
@@ -34,13 +34,8 @@ export const MyDatepicker: FC<Props> = ({
     disabled,
     width,
     onBlur,
-    isBirthday,
+    shouldDisableDate,
 }) => {
-    let shouldDisableDate;
-    if (isBirthday) {
-        shouldDisableDate = (date: Date) => date > new Date();
-    }
-
     return (
         <DatePicker
             id={id}

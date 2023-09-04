@@ -1,6 +1,6 @@
-import type { CreateGeneralRequestPayload } from '@actions/general/create-general.action';
-import type { GetGeneralRequestPayload } from '@actions/general/get-general.action';
-import type { UpdateGeneralRequestPayload } from '@actions/general/update-general.action';
+import type { CreateGeneralRequestPayload } from '@actions/contract/general/create-general.action';
+import type { GetGeneralRequestPayload } from '@actions/contract/general/get-general.action';
+import type { UpdateGeneralRequestPayload } from '@actions/contract/general/update-general.action';
 import { getBackendAxios } from '@utils/axios/backend';
 
 // export function getLongs({ page, nums, ...rest }: GetLongsRequestPayload) {

@@ -7,7 +7,7 @@ import type { CoreEditableComponent } from '@interfaces/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyButton } from '@components/button';
-import { deletePay, updatePay } from '@actions/long/set-pay.action';
+import { deletePay, updatePay } from '@actions/contract/long/set-pay.action';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableExtension } from '@components/table/Extension';
 import { showCreateGeneralPayModal } from '@actions/modal/create-pay.action';

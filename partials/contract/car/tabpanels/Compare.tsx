@@ -18,7 +18,10 @@ import variables from '@styles/_variables.module.scss';
 import { MyDatepicker } from '@components/datepicker';
 import { MyTableExtension } from '@components/table/Extension';
 import { showCreateBupumModal } from '@actions/modal/create-bupum.action';
-import { deleteBupum, updateBupum } from '@actions/car/set-bupum.action';
+import {
+    deleteBupum,
+    updateBupum,
+} from '@actions/contract/car/set-bupum.action';
 import { MyButton } from '@components/button';
 import { isEmpty } from '@utils/validator/common';
 
@@ -86,6 +89,8 @@ interface Props extends MyTabpanelProps, CoreEditableComponent {
     carSago3Hooks: UseSelectOutput;
     carSago2Hooks: UseSelectOutput;
     carSago1Hooks: UseSelectOutput;
+    totalBupumPrice: number;
+    totalPrice: number;
 }
 
 export const CompareTabpanel: FC<Props> = ({
@@ -156,19 +161,12 @@ export const CompareTabpanel: FC<Props> = ({
     carSago3Hooks,
     carSago2Hooks,
     carSago1Hooks,
+    totalBupumPrice,
+    totalPrice,
 }) => {
     const dispatch = useDispatch();
 
     const { bupums } = useSelector<AppState, CarState>((state) => state.car);
-
-    let price = 0;
-    if (!isEmpty(carpriceHooks.value)) {
-        price += +carpriceHooks.value.replace(/,/g, '');
-    }
-
-    const sumBupums = bupums.reduce((acc, cur) => acc + cur.price, 0);
-
-    const totalPrice = price + sumBupums;
 
     const labelType = editable ? 'active' : 'disable';
 
@@ -222,7 +220,7 @@ export const CompareTabpanel: FC<Props> = ({
                             id="caryear"
                             label="차량연식"
                             type={labelType}
-                            isRequired={editable}
+                            // isRequired={editable}
                         >
                             <MySelect
                                 inputId="caryear"
@@ -242,7 +240,7 @@ export const CompareTabpanel: FC<Props> = ({
                             id="carcode"
                             label="차명코드"
                             type={labelType}
-                            isRequired={editable}
+                            // isRequired={editable}
                         >
                             <MyInput
                                 type="search"
@@ -274,7 +272,7 @@ export const CompareTabpanel: FC<Props> = ({
                             id="ccarDate"
                             label="차량등록일"
                             type={labelType}
-                            isRequired={editable}
+                            // isRequired={editable}
                         >
                             <MyDatepicker
                                 id="ccarDate"
@@ -538,7 +536,7 @@ export const CompareTabpanel: FC<Props> = ({
                             )}
                         </div>
                         <div className="wr-pages-detail__content">
-                            <div className="wr-table--normal wr-mt">
+                            <div className="wr-table--normal">
                                 <table className="wr-table table">
                                     <thead>
                                         <tr>
@@ -649,7 +647,7 @@ export const CompareTabpanel: FC<Props> = ({
                                 placeholder="0"
                                 className="text-end"
                                 disabled={true}
-                                value={sumBupums.toLocaleString()}
+                                value={totalBupumPrice.toLocaleString()}
                                 unit="만원"
                             />
                         </WithLabel>
@@ -842,19 +840,23 @@ export const CompareTabpanel: FC<Props> = ({
                                     isDisabled={!editable}
                                     {...mileDistHooks}
                                 />
-                                <div
-                                    className="wr-with__extension"
-                                    style={{ width: 190 }}
-                                >
-                                    <MySelect
-                                        placeholder="선택"
-                                        placeHolderFontSize={16}
-                                        height={variables.detailFilterHeight}
-                                        placement="right"
-                                        isDisabled={!editable}
-                                        {...mileDetailHooks}
-                                    />
-                                </div>
+                                {mileDistHooks.value?.value !== '미가입' && (
+                                    <div
+                                        className="wr-with__extension"
+                                        style={{ width: 190 }}
+                                    >
+                                        <MySelect
+                                            placeholder="선택"
+                                            placeHolderFontSize={16}
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            placement="right"
+                                            isDisabled={!editable}
+                                            {...mileDetailHooks}
+                                        />
+                                    </div>
+                                )}
                             </WithLabel>
                             <WithLabel
                                 id="ccarDrateDist"

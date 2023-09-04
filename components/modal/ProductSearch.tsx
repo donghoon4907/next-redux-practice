@@ -15,7 +15,7 @@ import { useInput } from '@hooks/use-input';
 import { hideProductSearchModal } from '@actions/modal/product-search.action';
 import longConstants from '@constants/options/long';
 import { MyRadio } from '@components/radio';
-import { updateProduct } from '@actions/contract/set-product.action';
+import { updateProduct } from '@actions/contract/common/set-product.action';
 
 interface Props {
     spe: Spe;
@@ -62,6 +62,13 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                         ...checkedProduct,
                         subcategory: null,
                         cal_spec: null,
+                    }),
+                );
+            } else if (spe === 'car') {
+                dispatch(
+                    updateProduct({
+                        ...checkedProduct,
+                        subcategory: null,
                     }),
                 );
             }

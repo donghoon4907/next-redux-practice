@@ -16,7 +16,7 @@ import { getCustomerRequest } from '@actions/customer/get-customer';
 import {
     updateLoadedContractor,
     updateLoadedInsured,
-} from '@actions/contract/set-contractor.action';
+} from '@actions/contract/common/set-contractor.action';
 
 interface Props {
     type: 'contractor' | 'insured-person';

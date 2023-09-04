@@ -10,7 +10,7 @@ import { showCreateEndorsementModal } from '@actions/modal/create-endorsement.ac
 import {
     deleteEndorsement,
     updateEndorsement,
-} from '@actions/long/set-endorsement.action';
+} from '@actions/contract/long/set-endorsement.action';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableExtension } from '@components/table/Extension';
 

@@ -1,10 +1,10 @@
-import type { GetGeneralRequestAction } from '@actions/general/get-general.action';
+import type { GetGeneralRequestAction } from '@actions/contract/general/get-general.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import generalsService from '@services/generalsService';
 import {
     GetGeneralActionTypes,
     getGeneralSuccess,
-} from '@actions/general/get-general.action';
+} from '@actions/contract/general/get-general.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* getGeneralSaga({ payload }: GetGeneralRequestAction) {

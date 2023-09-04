@@ -7,10 +7,10 @@ import type { CoreEditableComponent } from '@interfaces/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyButton } from '@components/button';
-import { deletePay, updatePay } from '@actions/long/set-pay.action';
+import { deletePay, updatePay } from '@actions/contract/long/set-pay.action';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableExtension } from '@components/table/Extension';
-import { showCreateGeneralPayModal } from '@actions/modal/create-pay.action';
+import { showCreateCarPayModal } from '@actions/modal/create-pay.action';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {}
 
@@ -22,7 +22,7 @@ export const CarPaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
     );
 
     const handleShowCreateModal = () => {
-        dispatch(showCreateGeneralPayModal());
+        dispatch(showCreateCarPayModal());
     };
 
     const handleAllCheck = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -176,7 +176,10 @@ export const CarPaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     </div>
                 )}
             </div>
-            <div className="wr-table--normal">
+            <div className="wr-table--normal position-relative">
+                <div className="wr-pages-detail__lock">
+                    <p>준비 중입니다.</p>
+                </div>
                 <table className="wr-table table">
                     <thead>
                         <tr>

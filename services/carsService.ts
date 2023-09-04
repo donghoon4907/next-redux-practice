@@ -1,4 +1,4 @@
-import type { CreateCarRequestPayload } from '@actions/car/create-car.action';
+import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.action';
 import { getBackendAxios } from '@utils/axios/backend';
 
 export function createCar(payload: CreateCarRequestPayload) {

@@ -19,6 +19,7 @@ import {
 } from '@actions/modal/customer-search.action';
 import { CreateEndorsementModalActionTypes } from '@actions/modal/create-endorsement.action';
 import {
+    CreateCarPayModalActionTypes,
     CreateGeneralPayModalActionTypes,
     CreateLongPayModalActionTypes,
 } from '@actions/modal/create-pay.action';
@@ -46,6 +47,7 @@ export interface ModalState {
     isShowInsuredSearchModal: boolean;
     isShowCreateLongPayModal: boolean;
     isShowCreateGeneralPayModal: boolean;
+    isShowCreateCarPayModal: boolean;
     isShowCreateEndorsementModal: boolean;
     isShowSetPeriodModal: boolean;
     isShowCreateBupumModal: boolean;
@@ -72,6 +74,7 @@ const initialState: ModalState = {
     isShowInsuredSearchModal: false,
     isShowCreateLongPayModal: false,
     isShowCreateGeneralPayModal: false,
+    isShowCreateCarPayModal: false,
     isShowCreateEndorsementModal: false,
     isShowSetPeriodModal: false,
     isShowCreateBupumModal: false,
@@ -237,6 +240,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case CreateGeneralPayModalActionTypes.HIDE: {
                 draft.isShowCreateGeneralPayModal = false;
+                break;
+            }
+            case CreateCarPayModalActionTypes.SHOW: {
+                draft.isShowCreateCarPayModal = true;
+                break;
+            }
+            case CreateCarPayModalActionTypes.HIDE: {
+                draft.isShowCreateCarPayModal = false;
                 break;
             }
             case CreateEndorsementModalActionTypes.SHOW: {

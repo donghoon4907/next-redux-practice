@@ -144,7 +144,7 @@ export const MyPagination: FC<Props> = ({
     }, [payload]);
 
     return (
-        <div className="wr-pagination">
+        <div className="wr-footer__between wr-pagination">
             <div className="wr-pagination__summary">{children}</div>
             {pageButtons.length > 0 && (
                 <nav

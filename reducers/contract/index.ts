@@ -3,13 +3,13 @@ import type { Product } from '@models/product';
 import type { Insured } from '@models/insured';
 import type { Pay } from '@models/pay';
 import produce from 'immer';
-import { ProductActionTypes } from '@actions/contract/set-product.action';
+import { ProductActionTypes } from '@actions/contract/common/set-product.action';
 import {
     LoadedContractorActionTypes,
     LoadedInsuredActionTypes,
-} from '@actions/contract/set-contractor.action';
-import { InsuredActionTypes } from '@actions/contract/set-insured.action';
-import { PayActionTypes } from '@actions/contract/set-pay.action';
+} from '@actions/contract/common/set-contractor.action';
+import { InsuredActionTypes } from '@actions/contract/common/set-insured.action';
+import { PayActionTypes } from '@actions/contract/common/set-pay.action';
 
 export interface ContractState {
     /**

@@ -46,8 +46,8 @@ import {
     CreateGeneralDTO,
     UpdateGeneralDTO,
 } from '@dto/contractor/General.dto';
-import { createGeneralRequest } from '@actions/general/create-general.action';
-import { updateGeneralRequest } from '@actions/general/update-general.action';
+import { createGeneralRequest } from '@actions/contract/general/create-general.action';
+import { updateGeneralRequest } from '@actions/contract/general/update-general.action';
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 
@@ -301,43 +301,24 @@ export const GeneralForm: FC<Props> = ({
 
     return (
         <>
-            <MyLayout>
-                <div className={`${displayName} wr-pages-detail row`}>
-                    <div className={`${displayName}__left col`}>
-                        <div className="wr-frame__section">
-                            <div className="wr-pages-detail__block">
-                                <div className="wr-pages-detail__content">
-                                    {mode === 'create' ? (
-                                        <div className="row">
-                                            <div className="col-6">
-                                                <WithLabel
-                                                    id="orga"
-                                                    label="조직"
-                                                    type={labelType}
-                                                    // isRequired={editable}
-                                                >
-                                                    <MySelect
-                                                        inputId="orga"
-                                                        placeholder="선택"
-                                                        placeHolderFontSize={16}
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...orga}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col-6">
-                                                <div className="wr-ml">
+            <main className="wr-layout__main wr-frame__body">
+                <div className="wr-layout__inner">
+                    <div className={`${displayName} wr-pages-detail row`}>
+                        <div className={`${displayName}__left col`}>
+                            <div className="wr-frame__section">
+                                <div className="wr-pages-detail__block">
+                                    <div className="wr-pages-detail__content">
+                                        {mode === 'create' ? (
+                                            <div className="row">
+                                                <div className="col-6">
                                                     <WithLabel
-                                                        id="manager"
-                                                        label="담당자"
+                                                        id="orga"
+                                                        label="조직"
                                                         type={labelType}
-                                                        isRequired={editable}
+                                                        // isRequired={editable}
                                                     >
                                                         <MySelect
-                                                            inputId="manager"
+                                                            inputId="orga"
                                                             placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
@@ -348,18 +329,44 @@ export const GeneralForm: FC<Props> = ({
                                                             isDisabled={
                                                                 !editable
                                                             }
-                                                            {...manager}
+                                                            {...orga}
                                                         />
                                                     </WithLabel>
                                                 </div>
+                                                <div className="col-6">
+                                                    <div className="wr-ml">
+                                                        <WithLabel
+                                                            id="manager"
+                                                            label="담당자"
+                                                            type={labelType}
+                                                            isRequired={
+                                                                editable
+                                                            }
+                                                        >
+                                                            <MySelect
+                                                                inputId="manager"
+                                                                placeholder="선택"
+                                                                placeHolderFontSize={
+                                                                    16
+                                                                }
+                                                                height={
+                                                                    variables.detailFilterHeight
+                                                                }
+                                                                isDisabled={
+                                                                    !editable
+                                                                }
+                                                                {...manager}
+                                                            />
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ) : (
-                                        <LongManagerAccordion
-                                            editable={editable}
-                                        />
-                                    )}
-                                    {/* <div className="row">
+                                        ) : (
+                                            <LongManagerAccordion
+                                                editable={editable}
+                                            />
+                                        )}
+                                        {/* <div className="row">
                                         <div className="col-6">
                                             <WithLabel
                                                 id="orga"
@@ -400,278 +407,283 @@ export const GeneralForm: FC<Props> = ({
                                             </div>
                                         </div>
                                     </div> */}
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="wr-pages-detail__block">
-                                <div className="wr-pages-detail__content">
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="company"
-                                                label="보험사"
-                                                type={labelType}
-                                                isRequired={editable}
-                                            >
-                                                <MySelect
-                                                    inputId="company"
-                                                    placeholder={'선택'}
-                                                    placeHolderFontSize={16}
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...comp}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
+                                <div className="wr-pages-detail__block">
+                                    <div className="wr-pages-detail__content">
+                                        <div className="row">
+                                            <div className="col-6">
                                                 <WithLabel
-                                                    id="cnum"
-                                                    label="계약번호"
+                                                    id="company"
+                                                    label="보험사"
                                                     type={labelType}
                                                     isRequired={editable}
                                                 >
-                                                    <div className="wr-with__badge">
-                                                        <MyInput
-                                                            type="text"
-                                                            id="cnum"
-                                                            placeholder="계약번호"
-                                                            disabled={!editable}
-                                                            className="wr-with__badge--inside-right-1"
-                                                            {...cnum}
-                                                        />
-                                                        {defaultIsConfirm ===
-                                                            'Y' && (
-                                                            <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
-                                                                검증
-                                                                <span className="visually-hidden">
-                                                                    검증
-                                                                </span>
-                                                            </div>
-                                                        )}
-                                                    </div>
+                                                    <MySelect
+                                                        inputId="company"
+                                                        placeholder={'선택'}
+                                                        placeHolderFontSize={16}
+                                                        height={
+                                                            variables.detailFilterHeight
+                                                        }
+                                                        isDisabled={!editable}
+                                                        {...comp}
+                                                    />
                                                 </WithLabel>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <SearchProductInput
-                                        editable={editable}
-                                        wcode={comp.value?.value}
-                                        title={defaultTitle}
-                                        spec={defaultSpec}
-                                        subcategory={null}
-                                        calSpec={null}
-                                        spe="gen"
-                                    />
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="contdate"
-                                                label="계약일자"
-                                                type={labelType}
-                                                isRequired={editable}
-                                            >
-                                                <MyDatepicker
-                                                    id="contdate"
-                                                    size="md"
-                                                    placeholder="계약일자"
-                                                    disabled={!editable}
-                                                    hooks={contdate}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                        {mode === 'update' && (
                                             <div className="col-6">
-                                                <div className="wr-ml position-relative">
+                                                <div className="wr-ml">
                                                     <WithLabel
-                                                        label="계약상태"
+                                                        id="cnum"
+                                                        label="계약번호"
                                                         type={labelType}
+                                                        isRequired={editable}
                                                     >
-                                                        <MyDatepicker
-                                                            id=""
-                                                            size="md"
-                                                            placeholder="계약상태"
-                                                            disabled={!editable}
-                                                        />
-                                                        <div className="wr-with__extension">
-                                                            <MyButton
-                                                                className="btn-primary btn-md"
+                                                        <div className="wr-with__badge">
+                                                            <MyInput
+                                                                type="text"
+                                                                id="cnum"
+                                                                placeholder="계약번호"
                                                                 disabled={
                                                                     !editable
                                                                 }
-                                                            >
-                                                                이력
-                                                            </MyButton>
+                                                                className="wr-with__badge--inside-right-1"
+                                                                {...cnum}
+                                                            />
+                                                            {defaultIsConfirm ===
+                                                                'Y' && (
+                                                                <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
+                                                                    검증
+                                                                    <span className="visually-hidden">
+                                                                        검증
+                                                                    </span>
+                                                                </div>
+                                                            )}
                                                         </div>
                                                     </WithLabel>
                                                 </div>
                                             </div>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="wr-pages-detail__block">
-                                <div className="wr-pages-detail__content">
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="bo_datefrom"
-                                                label="보장시기"
-                                                type={labelType}
-                                            >
-                                                <MyDatepicker
-                                                    id="bo_datefrom"
-                                                    size="md"
-                                                    placeholder="보장시기"
-                                                    disabled={!editable}
-                                                    hooks={boDatefrom}
-                                                />
-                                            </WithLabel>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
+                                        <SearchProductInput
+                                            editable={editable}
+                                            wcode={comp.value?.value}
+                                            title={defaultTitle}
+                                            spec={defaultSpec}
+                                            subcategory={null}
+                                            calSpec={null}
+                                            spe="gen"
+                                        />
+                                        <div className="row wr-mt">
+                                            <div className="col-6">
                                                 <WithLabel
-                                                    id="bo_dateto"
-                                                    label="보장만기"
+                                                    id="contdate"
+                                                    label="계약일자"
                                                     type={labelType}
                                                     isRequired={editable}
                                                 >
                                                     <MyDatepicker
-                                                        id="bo_dateto"
+                                                        id="contdate"
                                                         size="md"
-                                                        placeholder="보장만기"
+                                                        placeholder="계약일자"
                                                         disabled={!editable}
-                                                        hooks={boDateto}
+                                                        hooks={contdate}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            {mode === 'update' && (
+                                                <div className="col-6">
+                                                    <div className="wr-ml position-relative">
+                                                        <WithLabel
+                                                            label="계약상태"
+                                                            type={labelType}
+                                                        >
+                                                            <MyDatepicker
+                                                                id=""
+                                                                size="md"
+                                                                placeholder="계약상태"
+                                                                disabled={
+                                                                    !editable
+                                                                }
+                                                            />
+                                                            <div className="wr-with__extension">
+                                                                <MyButton
+                                                                    className="btn-primary btn-md"
+                                                                    disabled={
+                                                                        !editable
+                                                                    }
+                                                                >
+                                                                    이력
+                                                                </MyButton>
+                                                            </div>
+                                                        </WithLabel>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="wr-pages-detail__block">
+                                    <div className="wr-pages-detail__content">
+                                        <div className="row">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="bo_datefrom"
+                                                    label="보장시기"
+                                                    type={labelType}
+                                                >
+                                                    <MyDatepicker
+                                                        id="bo_datefrom"
+                                                        size="md"
+                                                        placeholder="보장시기"
+                                                        disabled={!editable}
+                                                        hooks={boDatefrom}
+                                                    />
+                                                </WithLabel>
+                                            </div>
+                                            <div className="col-6">
+                                                <div className="wr-ml">
+                                                    <WithLabel
+                                                        id="bo_dateto"
+                                                        label="보장만기"
+                                                        type={labelType}
+                                                        isRequired={editable}
+                                                    >
+                                                        <MyDatepicker
+                                                            id="bo_dateto"
+                                                            size="md"
+                                                            placeholder="보장만기"
+                                                            disabled={!editable}
+                                                            hooks={boDateto}
+                                                        />
+                                                    </WithLabel>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="row wr-mt">
+                                            <div className="col-6">
+                                                <WithLabel
+                                                    id="payment"
+                                                    label="실적보험료"
+                                                    type={labelType}
+                                                    isRequired={editable}
+                                                >
+                                                    <MyInput
+                                                        type="text"
+                                                        id="payment"
+                                                        className="text-end"
+                                                        placeholder="0"
+                                                        disabled={!editable}
+                                                        {...payment}
                                                     />
                                                 </WithLabel>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="row wr-mt">
-                                        <div className="col-6">
-                                            <WithLabel
-                                                id="payment"
-                                                label="실적보험료"
-                                                type={labelType}
-                                                isRequired={editable}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="payment"
-                                                    className="text-end"
-                                                    placeholder="0"
-                                                    disabled={!editable}
-                                                    {...payment}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
-                            {/* <div className="wr-pages-detail__block">
+                                {/* <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
                                     <CustomSettingAccordion data={[]} />
                                 </div>
                             </div> */}
+                            </div>
                         </div>
-                    </div>
-                    <div className={`${displayName}__right col`}>
-                        <ul className="wr-tab__wrap" role="tablist">
-                            {GEN_DETAIL_TABS.map((v) => (
-                                <MyTab
-                                    key={v.id}
-                                    onClick={setTab}
-                                    isActive={v.id === tab.id}
-                                    {...v}
+                        <div className={`${displayName}__right col`}>
+                            <ul className="wr-tab__wrap" role="tablist">
+                                {GEN_DETAIL_TABS.map((v) => (
+                                    <MyTab
+                                        key={v.id}
+                                        onClick={setTab}
+                                        isActive={v.id === tab.id}
+                                        {...v}
+                                    />
+                                ))}
+                                <li className="wr-tab__line"></li>
+                            </ul>
+                            <div
+                                className={`${displayName}__body wr-frame__tabbody`}
+                            >
+                                <CustomerTabpanel
+                                    id="tabpanelCustomer"
+                                    tabId="tabCustomer"
+                                    hidden={tab.id !== 'tabCustomer'}
+                                    editable={editable}
+                                    userid={defaultUserid}
+                                    spe="gen"
                                 />
-                            ))}
-                            <li className="wr-tab__line"></li>
-                        </ul>
-                        <div
-                            className={`${displayName}__body wr-frame__tabbody`}
-                        >
-                            <CustomerTabpanel
-                                id="tabpanelCustomer"
-                                tabId="tabCustomer"
-                                hidden={tab.id !== 'tabCustomer'}
-                                editable={editable}
-                                userid={defaultUserid}
-                                spe="gen"
-                            />
-                            <GeneralPaysTabpanel
-                                id="tabpanelPays"
-                                tabId="tabPays"
-                                hidden={tab.id !== 'tabPays'}
-                                editable={editable}
-                            />
-                            <EndorsementTabpanel
-                                id="tabpanelEndorsement"
-                                tabId="tabEndorsement"
-                                hidden={tab.id !== 'tabEndorsement'}
-                                editable={editable}
-                            />
-                            <CalcPerformTabpanel
-                                id="tabpanelCalcPerform"
-                                tabId="tabCalcPerform"
-                                hidden={tab.id !== 'tabCalcPerform'}
-                                editable={editable}
-                            />
-                            <ContactTabpanel
-                                id="tabpanelContactHis"
-                                tabId="tabContactHis"
-                                hidden={tab.id !== 'tabContactHis'}
-                                editable={editable}
-                                spe="gen"
-                            />
+                                <GeneralPaysTabpanel
+                                    id="tabpanelPays"
+                                    tabId="tabPays"
+                                    hidden={tab.id !== 'tabPays'}
+                                    editable={editable}
+                                />
+                                <EndorsementTabpanel
+                                    id="tabpanelEndorsement"
+                                    tabId="tabEndorsement"
+                                    hidden={tab.id !== 'tabEndorsement'}
+                                    editable={editable}
+                                />
+                                <CalcPerformTabpanel
+                                    id="tabpanelCalcPerform"
+                                    tabId="tabCalcPerform"
+                                    hidden={tab.id !== 'tabCalcPerform'}
+                                    editable={editable}
+                                />
+                                <ContactTabpanel
+                                    id="tabpanelContactHis"
+                                    tabId="tabContactHis"
+                                    hidden={tab.id !== 'tabContactHis'}
+                                    editable={editable}
+                                    spe="gen"
+                                />
 
-                            <ChangeHistoryTabpanel
-                                id="tabpanelChangeHis"
-                                tabId="tabChangeHis"
-                                hidden={tab.id !== 'tabChangeHis'}
-                                editable={editable}
-                            />
+                                <ChangeHistoryTabpanel
+                                    id="tabpanelChangeHis"
+                                    tabId="tabChangeHis"
+                                    hidden={tab.id !== 'tabChangeHis'}
+                                    editable={editable}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>
-                <MyFooter>
-                    <div className="wr-footer__between">
-                        <div></div>
-                        <div className="wr-pages-detail__buttons">
-                            {editable && mode === 'update' && (
-                                <MyButton
-                                    className="btn-secondary btn-sm"
-                                    onClick={handleClickCancel}
-                                >
-                                    취소
-                                </MyButton>
-                            )}
-                            {mode === 'create' && (
-                                <MyButton
-                                    type="button"
-                                    className="btn-primary btn-sm"
-                                    onClick={handleCreate}
-                                >
-                                    등록
-                                </MyButton>
-                            )}
-                            {mode === 'update' && (
-                                <MyButton
-                                    type="button"
-                                    className="btn-primary btn-sm"
-                                    onClick={
-                                        editable
-                                            ? handleUpdate
-                                            : handleClickModify
-                                    }
-                                >
-                                    {editable ? '변경 사항 적용' : '수정'}
-                                </MyButton>
-                            )}
-                        </div>
+            </main>
+
+            <MyFooter>
+                <div className="wr-footer__between">
+                    <div></div>
+                    <div className="wr-pages-detail__buttons">
+                        {editable && mode === 'update' && (
+                            <MyButton
+                                className="btn-secondary btn-sm"
+                                onClick={handleClickCancel}
+                            >
+                                취소
+                            </MyButton>
+                        )}
+                        {mode === 'create' && (
+                            <MyButton
+                                type="button"
+                                className="btn-primary btn-sm"
+                                onClick={handleCreate}
+                            >
+                                등록
+                            </MyButton>
+                        )}
+                        {mode === 'update' && (
+                            <MyButton
+                                type="button"
+                                className="btn-primary btn-sm"
+                                onClick={
+                                    editable ? handleUpdate : handleClickModify
+                                }
+                            >
+                                {editable ? '변경 사항 적용' : '수정'}
+                            </MyButton>
+                        )}
                     </div>
-                </MyFooter>
-            </MyLayout>
+                </div>
+            </MyFooter>
+
             <ProductSearchModal spe="gen" />
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />

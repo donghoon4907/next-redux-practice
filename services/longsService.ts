@@ -1,7 +1,7 @@
-import type { CreateLongRequestPayload } from '@actions/long/create-long.action';
-import type { GetLongRequestPayload } from '@actions/long/get-long.action';
-import type { GetLongsRequestPayload } from '@actions/long/get-longs.action';
-import type { UpdateLongRequestPayload } from '@actions/long/update-long.action';
+import type { CreateLongRequestPayload } from '@actions/contract/long/create-long.action';
+import type { GetLongRequestPayload } from '@actions/contract/long/get-long.action';
+import type { GetLongsRequestPayload } from '@actions/contract/long/get-longs.action';
+import type { UpdateLongRequestPayload } from '@actions/contract/long/update-long.action';
 import { getBackendAxios } from '@utils/axios/backend';
 
 export function getLongs({ page, nums, ...rest }: GetLongsRequestPayload) {

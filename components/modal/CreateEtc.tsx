@@ -7,7 +7,7 @@ import { hideCreateEtcModal } from '@actions/modal/create-etc.action';
 import { WithInput } from '@components/WithInput';
 import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
-import { updateLongEtcRequest } from '@actions/long/set-long-etc.action';
+import { updateLongEtcRequest } from '@actions/contract/long/set-long-etc.action';
 
 interface Props {}
 

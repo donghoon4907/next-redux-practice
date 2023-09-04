@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import { WithLabel } from '@components/WithLabel';
 import { useInput, useResidentNumberInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
-import { createInsured } from '@actions/contract/set-insured.action';
+import { createInsured } from '@actions/contract/common/set-insured.action';
 import { generateIndex } from '@utils/generate';
 import { isEmpty } from '@utils/validator/common';
 import { useSelect } from '@hooks/use-select';
@@ -89,7 +89,7 @@ export const CarInsuredForm: FC<Props> = () => {
                     : '',
                 sex: gender ? '남' : '여',
                 dist: isMain ? '주피보험자' : '피보험자',
-                jumin: isMain ? jumin.value : undefined,
+                jumin: isMain ? jumin.value.replace(/-/g, '') : undefined,
                 age,
             }),
         );

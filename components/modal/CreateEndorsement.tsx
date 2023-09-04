@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import { CreateEndorsementPayload } from '@actions/long/set-endorsement.action';
+import { CreateEndorsementPayload } from '@actions/contract/long/set-endorsement.action';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';

@@ -15,21 +15,16 @@ import { generateIndex } from '@utils/generate';
 import { useSelect } from '@hooks/use-select';
 import { MySelect } from '@components/select';
 import { MyDatepicker } from '@components/datepicker';
-import { hideCreateGeneralPayModal } from '@actions/modal/create-pay.action';
+import { hideCreateCarPayModal } from '@actions/modal/create-pay.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
-import generalConstants from '@constants/options/general';
+import carConstants from '@constants/options/car';
 
-interface Props {
-    /**
-     * 실적보험료
-     */
-    payment: string;
-}
+interface Props {}
 
-export const CreateGeneralPayModal: FC<Props> = ({ payment }) => {
+export const CreateCarPayModal: FC<Props> = () => {
     const dispatch = useDispatch();
 
-    const { isShowCreateGeneralPayModal } = useSelector<AppState, ModalState>(
+    const { isShowCreateCarPayModal } = useSelector<AppState, ModalState>(
         (state) => state.modal,
     );
 
@@ -40,12 +35,12 @@ export const CreateGeneralPayModal: FC<Props> = ({ payment }) => {
     // 영수일
     const [paydate] = useDatepicker(new Date());
     // 납입구분
-    const [dist] = useSelect(generalConstants.payDist);
+    const [dist] = useSelect(carConstants.payDist);
     // 보험료
-    const [pay, setPay] = useNumbericInput('', { addComma: true });
+    const [pay] = useNumbericInput('', { addComma: true });
 
     const handleClose = () => {
-        dispatch(hideCreateGeneralPayModal());
+        dispatch(hideCreateCarPayModal());
     };
 
     const handleSubmit = () => {
@@ -84,19 +79,8 @@ export const CreateGeneralPayModal: FC<Props> = ({ payment }) => {
         return payload;
     };
 
-    const handleOpen = () => {
-        if (!isEmpty(payment)) {
-            setPay(payment);
-        }
-    };
-
     return (
-        <Modal
-            isOpen={isShowCreateGeneralPayModal}
-            toggle={handleClose}
-            size="lg"
-            onOpened={handleOpen}
-        >
+        <Modal isOpen={isShowCreateCarPayModal} toggle={handleClose} size="lg">
             <ModalHeader toggle={handleClose}>납입실적 추가</ModalHeader>
             <ModalBody>
                 <div className="row">

@@ -1,21 +1,24 @@
-import type { CreateGeneralRequestPayload } from '@actions/contract/general/create-general.action';
-import type { UpdateGeneralRequestPayload } from '@actions/contract/general/update-general.action';
+import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.action';
 import { isEmpty } from '@utils/validator/common';
 
-class GeneralDTO {
-    constructor(
-        private readonly payload:
-            | CreateGeneralRequestPayload
-            | UpdateGeneralRequestPayload,
-    ) {}
+class CarDTO {
+    constructor(private readonly payload: CreateCarRequestPayload) {}
 
     getPayload = () => {
         return this.payload;
     };
 
     requiredValidate = () => {
-        const { wcode, cnum, p_code, contdate, bo_dateto, payment } =
-            this.payload;
+        const {
+            wcode,
+            cnum,
+            p_code,
+            contdate,
+            bo_datefrom,
+            bo_dateto,
+            payment,
+            // p_persons,
+        } = this.payload;
 
         if (wcode === -1) {
             alert('보험사를 선택해주세요.');
@@ -41,6 +44,12 @@ class GeneralDTO {
             return false;
         }
 
+        if (isEmpty(bo_datefrom)) {
+            alert('보장시기를 입력해주세요.');
+
+            return false;
+        }
+
         if (isEmpty(bo_dateto)) {
             alert('보장만기를 입력해주세요.');
 
@@ -48,7 +57,7 @@ class GeneralDTO {
         }
 
         if (payment === -1) {
-            alert('실적보험료를 입력해주세요.');
+            alert('보험료를 입력해주세요.');
 
             return false;
         }
@@ -57,14 +66,8 @@ class GeneralDTO {
     };
 }
 
-export class CreateGeneralDTO extends GeneralDTO {
-    constructor(payload: CreateGeneralRequestPayload) {
-        super(payload);
-    }
-}
-
-export class UpdateGeneralDTO extends GeneralDTO {
-    constructor(payload: UpdateGeneralRequestPayload) {
+export class CreateCarDTO extends CarDTO {
+    constructor(payload: CreateCarRequestPayload) {
         super(payload);
     }
 }

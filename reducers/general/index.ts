@@ -1,10 +1,10 @@
 import type { Reducer } from 'redux';
 import type { Pay } from '@models/pay';
 import type { Insured } from '@models/insured';
-import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
+import type { GetLongsSuccessPayload } from '@actions/contract/long/get-longs.action';
 import produce from 'immer';
-import { PayActionTypes } from '@actions/long/set-pay.action';
-import { GetGeneralActionTypes } from '@actions/general/get-general.action';
+import { PayActionTypes } from '@actions/contract/long/set-pay.action';
+import { GetGeneralActionTypes } from '@actions/contract/general/get-general.action';
 
 export interface GeneralState {
     /**

@@ -13,6 +13,29 @@ export const CAR_DIST: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 납입구분
+export const CAR_PAY_DIST: CoreSelectOption[] = [
+    {
+        label: '정상',
+        value: '정상',
+        isFixed: false,
+    },
+    {
+        label: '추징',
+        value: '추징',
+        isFixed: false,
+    },
+    {
+        label: '환급',
+        value: '환급',
+        isFixed: false,
+    },
+    {
+        label: '해지',
+        value: '해지',
+        isFixed: false,
+    },
+];
 // 납입방법
 export const CAR_PAY_METHOD: CoreSelectOption[] = [
     {
@@ -1505,8 +1528,10 @@ export const CAR_HAS_BB: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+
 const rootSelectOptions = {
     dist: CAR_DIST,
+    payDist: CAR_PAY_DIST,
     payMethod: CAR_PAY_METHOD,
     cGrade: CAR_C_GRADE,
     grade: CAR_GRADE,

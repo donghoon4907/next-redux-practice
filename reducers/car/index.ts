@@ -1,7 +1,7 @@
 import type { Reducer } from 'redux';
 import type { Bupum } from '@models/bupum';
 import produce from 'immer';
-import { BupumActionTypes } from '@actions/car/set-bupum.action';
+import { BupumActionTypes } from '@actions/contract/car/set-bupum.action';
 
 export interface CarState {
     /**

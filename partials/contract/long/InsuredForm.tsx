@@ -11,7 +11,7 @@ import { MyDatepicker } from '@components/datepicker';
 import { useInput, usePhoneInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { birthdayToAge } from '@utils/calculator';
-import { createInsured } from '@actions/contract/set-insured.action';
+import { createInsured } from '@actions/contract/common/set-insured.action';
 import { generateIndex } from '@utils/generate';
 import { MyCheckbox } from '@components/checkbox';
 import { isEmpty } from '@utils/validator/common';
@@ -19,7 +19,7 @@ import { useApi } from '@hooks/use-api';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
 import { showInsuredSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber } from '@utils/converter';
-import { updateLoadedInsured } from '@actions/contract/set-contractor.action';
+import { updateLoadedInsured } from '@actions/contract/common/set-contractor.action';
 
 interface Props {
     userid: string;

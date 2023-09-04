@@ -22,7 +22,7 @@ import { showContractorSearchModal } from '@actions/modal/customer-search.action
 import {
     deleteInsured,
     updateInsured,
-} from '@actions/contract/set-insured.action';
+} from '@actions/contract/common/set-insured.action';
 import { MySelect } from '@components/select';
 import variables from '@styles/_variables.module.scss';
 import { CarInsuredForm } from '@partials/contract/car/InsuredForm';
