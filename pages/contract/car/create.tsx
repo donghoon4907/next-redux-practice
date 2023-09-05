@@ -11,7 +11,6 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { findSelectOption } from '@utils/getter';
 import { CarForm } from '@partials/contract/car/CarForm';
 import { MyLayout } from '@components/Layout';
-import { MyHeader } from '@components/header';
 
 const CreateCar: NextPage = () => {
     const { loggedInUser, orgas } = useSelector<AppState, HrState>(
@@ -35,7 +34,6 @@ const CreateCar: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <MyHeader />
                 <CarForm
                     mode="create"
                     onSubmit={handleCreate}

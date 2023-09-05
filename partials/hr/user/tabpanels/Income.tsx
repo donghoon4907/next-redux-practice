@@ -194,7 +194,6 @@ export const IncomeTabpanel: FC<Props> = ({
                     </div>
                 </div>
             </div>
-            <hr />
             <div className="row">
                 <div className="col-6">
                     <div className="wr-pages-detail__subtitle">

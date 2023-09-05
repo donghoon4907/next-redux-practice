@@ -11,7 +11,6 @@ import { LongForm } from '@partials/contract/long/LongForm';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
-import { MyHeader } from '@components/header';
 
 const CreateLong: NextPage = () => {
     const { loggedInUser, orgas } = useSelector<AppState, HrState>(
@@ -33,7 +32,6 @@ const CreateLong: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <MyHeader />
                 <LongForm
                     mode="create"
                     defaultUserid={loggedInUser.userid}

@@ -5,6 +5,7 @@ import type { GnbState } from '@reducers/gnb';
 import { useSelector } from 'react-redux';
 
 import { MyNav } from './nav';
+import { MyHeader } from './header';
 
 interface Props extends CoreProps {}
 
@@ -18,14 +19,19 @@ export const MyLayout: FC<Props> = ({ children }) => {
             <nav
                 className="wr-layout__left"
                 style={{
-                    minWidth: hasGnb ? 150 : 0,
+                    // minWidth: hasGnb ? 150 : 0,
                     flexBasis: hasGnb ? 150 : 0,
                 }}
             >
                 <MyNav menu={activeGnb} />
             </nav>
 
-            <div className="wr-layout__right">{children}</div>
+            <div className="wr-layout__right">
+                <MyHeader />
+                <main className="wr-layout__main wr-frame__body--nofooter">
+                    <div className="wr-layout__inner">{children}</div>
+                </main>
+            </div>
         </div>
     );
 };

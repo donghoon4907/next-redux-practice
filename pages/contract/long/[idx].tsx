@@ -25,7 +25,6 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { createContact } from '@actions/common/set-contact.action';
 import { MyLayout } from '@components/Layout';
-import { MyHeader } from '@components/header';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const dispatch = useDispatch();
@@ -97,7 +96,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                 />
             </Head>
             <MyLayout>
-                <MyHeader />
                 <LongForm
                     mode="update"
                     idx={long.idx}

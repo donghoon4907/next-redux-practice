@@ -29,6 +29,7 @@ export const MyInput = forwardRef<HTMLInputElement, MyInputProps>(
             <div className="input-group">
                 <input
                     className={`form-control ${className}`}
+                    autoComplete="off"
                     {...another}
                     ref={ref}
                 />

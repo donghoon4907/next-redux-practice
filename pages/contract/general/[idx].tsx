@@ -24,7 +24,6 @@ import { updateProduct } from '@actions/contract/common/set-product.action';
 import { updateLoadedContractor } from '@actions/contract/common/set-contractor.action';
 import { GeneralForm } from '@partials/contract/general/GeneralForm';
 import { MyLayout } from '@components/Layout';
-import { MyHeader } from '@components/header';
 
 const General: NextPage<GeneralState> = ({ general }) => {
     const dispatch = useDispatch();
@@ -73,7 +72,6 @@ const General: NextPage<GeneralState> = ({ general }) => {
                 />
             </Head>
             <MyLayout>
-                <MyHeader />
                 <GeneralForm
                     mode="update"
                     idx={general.idx}

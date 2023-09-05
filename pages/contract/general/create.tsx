@@ -11,7 +11,6 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { findSelectOption } from '@utils/getter';
 import { GeneralForm } from '@partials/contract/general/GeneralForm';
 import { MyLayout } from '@components/Layout';
-import { MyHeader } from '@components/header';
 
 const CreateGeneral: NextPage = () => {
     const { loggedInUser, orgas } = useSelector<AppState, HrState>(
@@ -33,7 +32,6 @@ const CreateGeneral: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <MyHeader />
                 <GeneralForm
                     mode="create"
                     defaultUserid={loggedInUser.userid}
