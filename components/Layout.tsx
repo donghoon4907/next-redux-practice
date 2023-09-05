@@ -17,11 +17,9 @@ export const MyLayout: FC<Props> = ({ children }) => {
     return (
         <div className="wr-layout">
             <nav
-                className="wr-layout__left"
-                style={{
-                    // minWidth: hasGnb ? 150 : 0,
-                    flexBasis: hasGnb ? 150 : 0,
-                }}
+                className={`wr-layout__left wr-layout__left--${
+                    hasGnb ? 'show' : 'hide'
+                }`}
             >
                 <MyNav menu={activeGnb} />
             </nav>

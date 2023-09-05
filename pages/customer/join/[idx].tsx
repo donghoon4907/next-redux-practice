@@ -1,8 +1,6 @@
 import type { NextPage } from 'next';
 import type { CustomerState } from '@reducers/customer';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
 import { addMonths } from 'date-fns';
 import dayjs from 'dayjs';
@@ -12,6 +10,8 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
+import userConstants from '@constants/options/user';
+import customerConstants from '@constants/options/customer';
 import customersService from '@services/customersService';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 import { createContact } from '@actions/common/set-contact.action';
@@ -20,19 +20,17 @@ import { createCustcar } from '@actions/customer/set-custcar.action';
 import { createFamily } from '@actions/customer/set-family.action';
 import { createEvent } from '@actions/customer/set-event.action';
 import { findSelectOption } from '@utils/getter';
-import customerConstants from '@constants/options/customer';
+import { MyLayout } from '@components/Layout';
+import { useInitTab } from '@hooks/use-initialize';
 import {
     birthdayToAge,
     residentNumToAge,
     residentNumToBirthday,
 } from '@utils/calculator';
-import userConstants from '@constants/options/user';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
-import { MyLayout } from '@components/Layout';
 
 const Customer: NextPage<CustomerState> = ({ customer }) => {
-    const dispatch = useDispatch();
+    // 탭 설정
+    useInitTab(`/customer/join/${customer.idx}`, `고객상세 - ${customer.name}`);
 
     const defaultCusttype = findSelectOption(
         customer.custtype.toString(),
@@ -140,22 +138,6 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
         customer.customer_rate,
         customerConstants.grade,
     );
-
-    useEffect(() => {
-        // 탭 추가
-        const tab = new TabModule();
-
-        const to = `/customer/join/${customer.idx}`;
-        if (!tab.read(to)) {
-            tab.create({
-                id: to,
-                label: `고객상세 - ${customer.name}`,
-                to,
-            });
-        }
-
-        dispatch(initTab(tab.getAll()));
-    }, [customer]);
 
     return (
         <>

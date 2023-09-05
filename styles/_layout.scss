@@ -7,16 +7,22 @@
 
     &__left {
         height: 100%;
-        // min-width: 150px;
-        // flex-basis: 150px;
         flex-shrink: 0;
         flex-grow: 0;
         order: 1;
         // transition: all 0.5s ease-out;
+
+        &--show {
+            flex-basis: $wr-nav-width;
+        }
+
+        &--hide {
+            flex-basis: 0;
+        }
     }
 
     &__right {
-        min-width: calc(100vw - 150px);
+        min-width: calc(100vw - $wr-nav-width);
         flex: 1;
         height: 100%;
         order: 2;

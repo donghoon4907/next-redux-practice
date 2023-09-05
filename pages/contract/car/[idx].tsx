@@ -3,15 +3,11 @@ import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CarState } from '@reducers/car';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import carsService from '@services/carsService';
-import customersService from '@services/customersService';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption } from '@utils/getter';
 import longConstants from '@constants/options/long';
@@ -22,17 +18,23 @@ import { createPay } from '@actions/contract/long/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 // import { createContact } from '@actions/common/set-contact.action';
 import { updateProduct } from '@actions/contract/common/set-product.action';
-import { updateLoadedContractor } from '@actions/contract/common/set-contractor.action';
 import { MyLayout } from '@components/Layout';
 import { CarForm } from '@partials/contract/car/CarForm';
 import { birthdayToAge, residentNumToAge } from '@utils/calculator';
+import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 
 const Car: NextPage<CarState> = ({ car }) => {
-    const dispatch = useDispatch();
-
     const { carUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    // 탭 설정
+    useInitTab(
+        `/contract/car/${car.idx}`,
+        `자동차계약상세${car.c_name ? ` - ${car.c_name}` : ''}`,
+    );
+    // 계약자 설정
+    useInitCustomer(car.c_idx);
 
     const defaultComp = findSelectOption(car.wcode, carUseCompanies);
 
@@ -52,24 +54,6 @@ const Car: NextPage<CarState> = ({ car }) => {
     );
 
     const defaultCarage = findSelectOption(car.carage, carConstants.minAge);
-
-    useEffect(() => {
-        // 탭 추가
-        const tab = new TabModule();
-
-        const to = `/contract/car/${car.idx}`;
-        if (!tab.read(to)) {
-            if (car.c_name) {
-                tab.create({
-                    id: to,
-                    label: `자동차계약상세 - ${car.c_name}`,
-                    to,
-                });
-            }
-        }
-
-        dispatch(initTab(tab.getAll()));
-    }, [car]);
 
     return (
         <>
@@ -135,14 +119,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
             const car = data.data;
 
             output.props.car = car;
-
-            if (car.c_idx) {
-                const { data } = await customersService.getCustomer({
-                    idx: car.c_idx,
-                });
-
-                dispatch(updateLoadedContractor(data.data));
-            }
 
             dispatch(
                 updateProduct({

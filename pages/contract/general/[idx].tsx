@@ -3,15 +3,11 @@ import type { GeneralState } from '@reducers/general';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import generalsService from '@services/generalsService';
-import customersService from '@services/customersService';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption } from '@utils/getter';
 import longConstants from '@constants/options/long';
@@ -21,16 +17,21 @@ import { createPay } from '@actions/contract/long/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { createContact } from '@actions/common/set-contact.action';
 import { updateProduct } from '@actions/contract/common/set-product.action';
-import { updateLoadedContractor } from '@actions/contract/common/set-contractor.action';
 import { GeneralForm } from '@partials/contract/general/GeneralForm';
 import { MyLayout } from '@components/Layout';
+import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 
 const General: NextPage<GeneralState> = ({ general }) => {
-    const dispatch = useDispatch();
-
     const { genUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+    // 탭 설정
+    useInitTab(
+        `/contract/general/${general.idx}`,
+        `일반계약상세${general.c_name ? ` - ${general.c_name}` : ''}`,
+    );
+    // 계약자 설정
+    useInitCustomer(general.c_idx);
 
     const defaultComp = findSelectOption(general.wcode, genUseCompanies);
 
@@ -43,24 +44,6 @@ const General: NextPage<GeneralState> = ({ general }) => {
         general.status,
         longConstants.status,
     );
-
-    useEffect(() => {
-        // 탭 추가
-        const tab = new TabModule();
-
-        const to = `/contract/general/${general.idx}`;
-        if (!tab.read(to)) {
-            if (general.c_name) {
-                tab.create({
-                    id: to,
-                    label: `일반계약상세 - ${general.c_name}`,
-                    to,
-                });
-            }
-        }
-
-        dispatch(initTab(tab.getAll()));
-    }, [general]);
 
     return (
         <>
@@ -120,14 +103,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
             const general = data.data;
 
             output.props.general = general;
-
-            if (general.c_idx) {
-                const { data } = await customersService.getCustomer({
-                    idx: general.c_idx,
-                });
-
-                dispatch(updateLoadedContractor(data.data));
-            }
 
             dispatch(
                 updateProduct({

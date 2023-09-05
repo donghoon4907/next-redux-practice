@@ -3,21 +3,16 @@ import type { LongState } from '@reducers/long';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
+import longConstants from '@constants/options/long';
 import longsService from '@services/longsService';
-import customersService from '@services/customersService';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
 import { LongForm } from '@partials/contract/long/LongForm';
-import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { updateLoadedContractor } from '@actions/contract/common/set-contractor.action';
 import { createInsured } from '@actions/contract/common/set-insured.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
 import { makeDistkind } from '@utils/calculator';
@@ -25,13 +20,19 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { createContact } from '@actions/common/set-contact.action';
 import { MyLayout } from '@components/Layout';
+import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 
 const Long: NextPage<LongState> = ({ long }) => {
-    const dispatch = useDispatch();
-
     const { longUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+    // 탭 설정
+    useInitTab(
+        `/contract/long/${long.idx}`,
+        `장기계약상세${long.c_name ? ` - ${long.c_name}` : ''}`,
+    );
+    // 계약자 설정
+    useInitCustomer(long.c_idx);
 
     const defaultComp = findSelectOption(long.wcode, longUseCompanies);
 
@@ -61,30 +62,6 @@ const Long: NextPage<LongState> = ({ long }) => {
             longConstants.family,
         );
     }
-
-    // const log = long.log.map((v: any) => ({
-    //     ...v,
-    //     remark: v.content.remark,
-    //     body: ['button', '보기', () => handleShowHistory(v.content.body)],
-    // }));
-
-    useEffect(() => {
-        // 탭 추가
-        const tab = new TabModule();
-
-        const to = `/contract/long/${long.idx}`;
-        if (!tab.read(to)) {
-            if (long.c_name) {
-                tab.create({
-                    id: to,
-                    label: `장기계약상세 - ${long.c_name}`,
-                    to,
-                });
-            }
-        }
-
-        dispatch(initTab(tab.getAll()));
-    }, [long]);
 
     return (
         <>
@@ -164,14 +141,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
             const long = data.data;
 
             output.props.long = long;
-
-            if (long.c_idx) {
-                const { data } = await customersService.getCustomer({
-                    idx: long.c_idx,
-                });
-
-                dispatch(updateLoadedContractor(data.data));
-            }
 
             dispatch(
                 updateProduct({

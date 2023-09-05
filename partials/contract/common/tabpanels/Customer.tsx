@@ -98,8 +98,8 @@ export const CustomerTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="row">
-                <div className="col-6 wr-frame__tabbody overflow-auto">
+            <div className="d-flex">
+                <div className="flex-fill wr-frame__tabbody overflow-auto">
                     <div className="row">
                         <div className="col">
                             <div className="wr-pages-detail__block">
@@ -422,7 +422,7 @@ export const CustomerTabpanel: FC<Props> = ({
                         </div>
                     )}
                 </div>
-                <div className="col-6">
+                <div className="flex-fill">
                     <div className="wr-ml">
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__lock">

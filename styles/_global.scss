@@ -201,6 +201,9 @@ td {
 }
 
 /* Custom Bootstrap */
+.flex-fill {
+    flex: 1 !important;
+}
 // grid gutter 제거
 [class*='col'] {
     padding: 0 !important;

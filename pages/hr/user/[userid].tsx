@@ -1,7 +1,6 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
@@ -17,17 +16,17 @@ import { updateDepart } from '@actions/hr/set-depart.action';
 import { AppState } from '@reducers/index';
 import { createCode } from '@actions/hr/set-code.action';
 import { createGuarantee } from '@actions/hr/set-guarantee.action';
-import { TabModule } from '@utils/storage';
-import { initTab } from '@actions/tab/tab.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
+import { useInitTab } from '@hooks/use-initialize';
 
 const User: NextPage<HrState> = ({ user }) => {
-    const dispatch = useDispatch();
-
     const { banks, allCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    // 탭 설정
+    useInitTab(`/hr/user/${user.userid}`, `영업가족상세 - ${user.name}`);
 
     const defaultMobileCom = findSelectOption(
         user.mobile_com,
@@ -192,22 +191,6 @@ const User: NextPage<HrState> = ({ user }) => {
         }
     }
 
-    useEffect(() => {
-        // 탭 추가
-        const tab = new TabModule();
-
-        const to = `/hr/user/${user.userid}`;
-        if (!tab.read(to)) {
-            tab.create({
-                id: to,
-                label: `영업가족상세 - ${user.name}`,
-                to,
-            });
-        }
-
-        dispatch(initTab(tab.getAll()));
-    }, [user]);
-
     return (
         <>
             <Head>
@@ -287,12 +270,16 @@ const User: NextPage<HrState> = ({ user }) => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+    permissionMiddleware(async ({ dispatch, sagaTask, getState }, ctx) => {
         const { query } = ctx;
 
         const userid = query.userid as string;
 
-        // dispatch(getBanksRequest());
+        dispatch(
+            getOrgasRequest({
+                idx: '1',
+            }),
+        );
 
         dispatch(getAgenciesRequest());
 
@@ -305,6 +292,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
         };
 
         try {
+            dispatch(END);
+
+            await sagaTask?.toPromise();
+
             const { data } = await hrsService.getUser({ idx: userid });
 
             const user = data.data[0];
@@ -312,24 +303,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
             output.props.user = user;
 
             dispatch(
-                getOrgasRequest({
-                    idx: '1',
-                    callback: (res) => {
-                        const findIndex = res.findIndex(
-                            (v: any) => v.idx === user.orga_idx,
-                        );
-
-                        if (findIndex !== -1) {
-                            const selected = res[findIndex];
-
-                            dispatch(
-                                updateDepart({
-                                    label: selected.fulls,
-                                    value: selected.idx,
-                                }),
-                            );
-                        }
-                    },
+                updateDepart({
+                    label: user.fulls,
+                    value: user.orga_idx,
                 }),
             );
 
@@ -362,10 +338,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
             };
         }
-
-        dispatch(END);
-
-        await sagaTask?.toPromise();
 
         return output;
     }),

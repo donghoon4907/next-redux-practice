@@ -10,6 +10,8 @@
         padding-left: 0;
         display: flex;
         flex-wrap: nowrap;
+        max-width: $wr-layout-width;
+        overflow-x: auto;
     }
 
     &__line {

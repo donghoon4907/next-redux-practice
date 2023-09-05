@@ -12,7 +12,7 @@
     }
 
     &__tabbody {
-        height: calc(
+        max-height: calc(
             100vh - $wr-header-size - $wr-footer-size - $wr-tab-size -
                 $wr-gutter-size * 3
         );

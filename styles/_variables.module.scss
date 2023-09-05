@@ -15,6 +15,8 @@ $wr-border-radius: 0;
 $wr-header-size: 110px;
 $wr-footer-size: 70px;
 $wr-tab-size: 35px;
+$wr-nav-width: 150px;
+$wr-layout-width: calc(100vw - $wr-nav-width);
 // z-index
 $wr-gnb-index: 1049;
 $wr-lnb-index: 1048;
@@ -55,4 +57,6 @@ $wr-disable-input-color: #e9ecef;
     gutterSize: $wr-gutter-size;
     selectZindex: $wr-select-index;
     disabledInputColor: $wr-disable-input-color;
+    navWidth: $wr-nav-width;
+    layoutWidth: $wr-layout-width;
 }
