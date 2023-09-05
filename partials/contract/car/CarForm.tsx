@@ -4,6 +4,7 @@ import type { HrState } from '@reducers/hr';
 import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
+import type { CarState } from '@reducers/car';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
@@ -43,18 +44,14 @@ import { CreateBupumModal } from '@components/modal/CreateBupum';
 import { createCarRequest } from '@actions/contract/car/create-car.action';
 import { CreateCarDTO } from '@dto/contractor/Car.dto';
 import { CreateCarPayModal } from '@components/modal/CreateCarPay';
-import { CarState } from '@reducers/car';
 import { MyFooter } from '@components/footer';
+import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
 
 interface Props {
     /**
      * 모드: 등록 / 수정
      */
     mode: 'create' | 'update';
-    /**
-     * submit 핸들러
-     */
-    onSubmit: () => void;
     /**
      * PK
      */
@@ -1153,47 +1150,51 @@ export const CarForm: FC<Props> = ({
                 <div className={`${displayName}__left wr-pages-detail__left`}>
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="col-6">
-                                    <WithLabel
-                                        id="orga"
-                                        label="조직"
-                                        type={labelType}
-                                    >
-                                        <MySelect
-                                            inputId="orga"
-                                            placeholder="선택"
-                                            placeHolderFontSize={16}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
-                                            isDisabled={!editable}
-                                            {...orga}
-                                        />
-                                    </WithLabel>
-                                </div>
-                                <div className="col-6">
-                                    <div className="wr-ml">
+                            {mode === 'create' ? (
+                                <div className="row">
+                                    <div className="col-6">
                                         <WithLabel
-                                            id="manager"
-                                            label="담당자"
+                                            id="orga"
+                                            label="조직"
                                             type={labelType}
-                                            isRequired={editable}
                                         >
                                             <MySelect
-                                                inputId="manager"
+                                                inputId="orga"
                                                 placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
                                                 isDisabled={!editable}
-                                                {...manager}
+                                                {...orga}
                                             />
                                         </WithLabel>
                                     </div>
+                                    <div className="col-6">
+                                        <div className="wr-ml">
+                                            <WithLabel
+                                                id="manager"
+                                                label="담당자"
+                                                type={labelType}
+                                                isRequired={editable}
+                                            >
+                                                <MySelect
+                                                    inputId="manager"
+                                                    placeholder="선택"
+                                                    placeHolderFontSize={16}
+                                                    height={
+                                                        variables.detailFilterHeight
+                                                    }
+                                                    isDisabled={!editable}
+                                                    {...manager}
+                                                />
+                                            </WithLabel>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            ) : (
+                                <LongManagerAccordion editable={editable} />
+                            )}
                         </div>
                     </div>
                     <div className="wr-pages-detail__block">
@@ -1238,9 +1239,6 @@ export const CarForm: FC<Props> = ({
                                                 {defaultIsConfirm === 'Y' && (
                                                     <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
                                                         검증
-                                                        <span className="visually-hidden">
-                                                            검증
-                                                        </span>
                                                     </div>
                                                 )}
                                             </div>
@@ -1287,14 +1285,14 @@ export const CarForm: FC<Props> = ({
                                                     placeholder="계약상태"
                                                     disabled={!editable}
                                                 />
-                                                <div className="wr-with__extension">
+                                                {/* <div className="wr-with__extension">
                                                     <MyButton
                                                         className="btn-primary btn-md"
                                                         disabled={!editable}
                                                     >
                                                         이력
                                                     </MyButton>
-                                                </div>
+                                                </div> */}
                                             </WithLabel>
                                         </div>
                                     </div>

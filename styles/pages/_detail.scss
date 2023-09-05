@@ -51,6 +51,7 @@
         border: 1px solid $wr-divider-color-300;
         border-top: 0;
         background-color: $white;
+        overflow: hidden;
     }
 
     &__block {

@@ -2,8 +2,8 @@ import type { FC } from 'react';
 import type { Insured } from '@models/insured';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
-import { birthdayToAge } from '@utils/calculator';
 import { MyButton } from '@components/button';
+import { convertResidentNumber } from '@utils/converter';
 
 interface Props extends Partial<Insured> {}
 
@@ -51,7 +51,7 @@ export const CarInsuredTemplate: FC<Props> = ({
                                 id="pjumin"
                                 placeholder="주민번호"
                                 disabled
-                                value={jumin}
+                                value={convertResidentNumber(jumin)}
                             />
                             <div
                                 className="wr-with__extension"

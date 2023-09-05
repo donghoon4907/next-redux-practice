@@ -22,8 +22,6 @@ const CreateCar: NextPage = () => {
         orgas,
     );
 
-    const handleCreate = () => {};
-
     return (
         <>
             <Head>
@@ -36,7 +34,6 @@ const CreateCar: NextPage = () => {
             <MyLayout>
                 <CarForm
                     mode="create"
-                    onSubmit={handleCreate}
                     defaultUserid={loggedInUser.userid}
                     defaultOrga={defaultOrga}
                 />

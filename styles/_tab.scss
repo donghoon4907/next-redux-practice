@@ -6,7 +6,7 @@
     color: $white;
 
     &__wrap {
-        height: $wr-tab-size;
+        min-height: $wr-tab-size;
         padding-left: 0;
         display: flex;
         flex-wrap: nowrap;

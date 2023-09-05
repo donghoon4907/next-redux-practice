@@ -767,9 +767,6 @@ export const LongForm: FC<Props> = ({
                                                 {defaultIsConfirm === 'Y' && (
                                                     <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
                                                         검증
-                                                        <span className="visually-hidden">
-                                                            검증
-                                                        </span>
                                                     </div>
                                                 )}
                                             </div>
