@@ -15,6 +15,8 @@ export interface CoreSelectOption {
     // 모든 데이터
     origin?: any;
     isFixed?: boolean;
+    // 멀티사용시 선택 여부
+    isSelected?: boolean;
 }
 
 export interface CoreMenuOption {

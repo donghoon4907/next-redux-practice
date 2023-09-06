@@ -19,6 +19,7 @@ import { MyButton } from '@components/button';
 import { MyFooter } from '@components/footer';
 import { CoreSelectOption } from '@interfaces/core';
 import { MyLocalPagination } from '@components/pagination/local';
+import { findSelectOptionByLabel } from '@utils/getter';
 
 const LongSelectUpload: NextPage = () => {
     // const dispatch = useDispatch();
@@ -28,19 +29,16 @@ const LongSelectUpload: NextPage = () => {
     // const [file, setFile] = useState<string>('');
 
     const fileRef = useRef<HTMLInputElement>(null);
-
+    // 업로드 파일명
+    const [filename, setFilename] = useState('');
+    // 테이블의 컬럼 목록
     const [fields, setFields] = useState<CoreSelectOption[]>([]);
-
+    // 컬럼의 셀렉트 설정 목록
+    const [selects, setSelects] = useState<CoreSelectOption[]>([]);
+    // 불러온 데이터 원본
     const [originData, setOriginData] = useState<any[]>([]);
-
+    // 해당 페이지에 보여지는 데이터
     const [displayData, setDisplayData] = useState<any[]>([]);
-
-    const [selectedField] = useState<CoreSelectOption[]>([
-        {
-            label: '계약번호',
-            value: '7',
-        },
-    ]);
 
     const handleClickFile = () => {
         if (fileRef.current) {
@@ -54,14 +52,31 @@ const LongSelectUpload: NextPage = () => {
         loading.on();
 
         try {
-            const { fields, data } = await readAndConvert(
+            const converted = await readAndConvert(
                 file,
                 convertForSelectUpload,
             );
+            // empty 필드 제거
+            const filtedFields = converted.fields.filter((v) => v);
 
-            setFields(fields);
+            setFields(filtedFields);
 
-            setOriginData(data);
+            setSelects(
+                Array.from({ length: filtedFields.length }).map((v, i) => {
+                    if (i === 0) {
+                        return findSelectOptionByLabel(
+                            '계약번호',
+                            filtedFields,
+                        );
+                    } else {
+                        return null;
+                    }
+                }),
+            );
+
+            setOriginData(converted.data);
+
+            setFilename(file.name);
         } catch (error) {
             console.error(error);
         } finally {
@@ -92,8 +107,11 @@ const LongSelectUpload: NextPage = () => {
 
                         return (
                             <div>
-                                <MySelect
+                                <UploadSelect
                                     options={fields}
+                                    index={+cellValue - 1}
+                                    values={selects}
+                                    setValues={setSelects}
                                     placeHolderFontSize={16}
                                     height="30px"
                                 />
@@ -103,7 +121,7 @@ const LongSelectUpload: NextPage = () => {
                     accessorKey: value,
                 };
             }),
-        [fields],
+        [fields, selects],
     );
 
     return (
@@ -133,7 +151,7 @@ const LongSelectUpload: NextPage = () => {
 
                                     <MyInput
                                         type="text"
-                                        placeholder=""
+                                        placeholder={filename}
                                         readOnly
                                         className="wr-border-l--hide"
                                         onClick={handleClickFile}
