@@ -30,7 +30,7 @@ import {
 
 const Customer: NextPage<CustomerState> = ({ customer }) => {
     // 탭 설정
-    useInitTab(`/customer/join/${customer.idx}`, `고객상세 - ${customer.name}`);
+    useInitTab(`고객상세 - ${customer.name}`);
 
     const defaultCusttype = findSelectOption(
         customer.custtype.toString(),

@@ -26,7 +26,7 @@ const User: NextPage<HrState> = ({ user }) => {
     );
 
     // 탭 설정
-    useInitTab(`/hr/user/${user.userid}`, `영업가족상세 - ${user.name}`);
+    useInitTab(`영업가족상세 - ${user.name}`);
 
     const defaultMobileCom = findSelectOption(
         user.mobile_com,

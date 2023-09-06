@@ -26,10 +26,7 @@ const General: NextPage<GeneralState> = ({ general }) => {
         (state) => state.hr,
     );
     // 탭 설정
-    useInitTab(
-        `/contract/general/${general.idx}`,
-        `일반계약상세${general.c_name ? ` - ${general.c_name}` : ''}`,
-    );
+    useInitTab(`일반계약상세${general.c_name ? ` - ${general.c_name}` : ''}`);
     // 계약자 설정
     useInitCustomer(general.c_idx);
 

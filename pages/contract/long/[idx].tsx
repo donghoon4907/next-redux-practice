@@ -27,10 +27,7 @@ const Long: NextPage<LongState> = ({ long }) => {
         (state) => state.hr,
     );
     // 탭 설정
-    useInitTab(
-        `/contract/long/${long.idx}`,
-        `장기계약상세${long.c_name ? ` - ${long.c_name}` : ''}`,
-    );
+    useInitTab(`장기계약상세${long.c_name ? ` - ${long.c_name}` : ''}`);
     // 계약자 설정
     useInitCustomer(long.c_idx);
 

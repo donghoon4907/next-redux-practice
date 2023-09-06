@@ -29,10 +29,7 @@ const Car: NextPage<CarState> = ({ car }) => {
     );
 
     // 탭 설정
-    useInitTab(
-        `/contract/car/${car.idx}`,
-        `자동차계약상세${car.c_name ? ` - ${car.c_name}` : ''}`,
-    );
+    useInitTab(`자동차계약상세${car.c_name ? ` - ${car.c_name}` : ''}`);
     // 계약자 설정
     useInitCustomer(car.c_idx);
 

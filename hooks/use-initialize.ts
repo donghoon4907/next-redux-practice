@@ -7,23 +7,25 @@ import { getContractorRequest } from '@actions/contract/common/set-contractor.ac
 import { useApi } from './use-api';
 import { useRouter } from 'next/router';
 
-export const useInitTab = (to: string, label: string) => {
+export const useInitTab = (label: string) => {
+    const router = useRouter();
+
     const dispatch = useDispatch();
 
     useEffect(() => {
         // 탭 추가
         const tab = new TabModule();
 
-        if (!tab.read(to)) {
+        if (!tab.read(router.asPath)) {
             tab.create({
-                id: to,
+                id: router.asPath,
                 label,
-                to,
+                to: router.asPath,
             });
         }
 
         dispatch(initTab(tab.getAll()));
-    }, [to]);
+    }, [router]);
 
     return null;
 };
