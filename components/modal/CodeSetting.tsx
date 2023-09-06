@@ -89,7 +89,6 @@ export const CodeSettingModal: FC<Props> = () => {
                         <WithLabel id="iComp" label="보험사" type="active">
                             <MySelect
                                 inputId="iComp"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 {...comp}
                             />

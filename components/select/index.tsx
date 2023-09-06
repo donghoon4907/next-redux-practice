@@ -25,7 +25,7 @@ export interface MySelectProps {
      * 가이드 코멘트
      *
      */
-    placeholder: string;
+    placeholder?: string;
     /**
      * 셀렉트 너비
      *
@@ -68,7 +68,7 @@ export const MySelect: FC<MySelectProps> = ({
     options = [],
     value = null,
     onChange,
-    placeholder,
+    placeholder = '선택',
     // width,
     height = variables.filterHeight,
     placeHolderFontSize = variables.filterFontSize,

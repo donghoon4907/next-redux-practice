@@ -99,7 +99,6 @@ export const CreateCarPayModal: FC<Props> = () => {
                             <WithLabel id="pdist" label="구분" type="active">
                                 <MySelect
                                     inputId="pdist"
-                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     {...dist}
                                 />

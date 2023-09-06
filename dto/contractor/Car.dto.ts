@@ -1,8 +1,13 @@
 import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.action';
+import type { UpdateCarRequestPayload } from '@actions/contract/car/update-car.action';
 import { isEmpty } from '@utils/validator/common';
 
 class CarDTO {
-    constructor(private readonly payload: CreateCarRequestPayload) {}
+    constructor(
+        private readonly payload:
+            | CreateCarRequestPayload
+            | UpdateCarRequestPayload,
+    ) {}
 
     getPayload = () => {
         return this.payload;
@@ -10,6 +15,7 @@ class CarDTO {
 
     requiredValidate = () => {
         const {
+            userid,
             wcode,
             cnum,
             p_code,
@@ -19,6 +25,12 @@ class CarDTO {
             payment,
             // p_persons,
         } = this.payload;
+
+        if (!userid) {
+            alert('담당자를 선택해주세요.');
+
+            return false;
+        }
 
         if (wcode === -1) {
             alert('보험사를 선택해주세요.');
@@ -68,6 +80,12 @@ class CarDTO {
 
 export class CreateCarDTO extends CarDTO {
     constructor(payload: CreateCarRequestPayload) {
+        super(payload);
+    }
+}
+
+export class UpdateCarDTO extends CarDTO {
+    constructor(payload: UpdateCarRequestPayload) {
         super(payload);
     }
 }

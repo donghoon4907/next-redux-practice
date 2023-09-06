@@ -1,14 +1,12 @@
 import type { NextPage } from 'next';
 import type { ChangeEvent } from 'react';
-import { useColumn, type MyColumnDef } from '@hooks/use-column';
+import type { MyColumnDef } from '@hooks/use-column';
 import Head from 'next/head';
 import { useMemo, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
 import { UploadSelect } from '@components/select/Upload';
 import { MyTable } from '@components/table';
 import { readAndConvert } from '@utils/xlsx';
 import { convertForSelectUpload } from '@utils/converter';
-// import { MyPagination } from '@components/pagination';
 import { useLoading } from '@hooks/use-loading';
 import { MyLayout } from '@components/Layout';
 import { wrapper } from '@store/redux';
@@ -19,31 +17,10 @@ import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
 import { MyButton } from '@components/button';
 import { MyFooter } from '@components/footer';
-import { CoreColumnOption, CoreSelectOption } from '@interfaces/core';
+import { CoreSelectOption } from '@interfaces/core';
+import { MyLocalPagination } from '@components/pagination/local';
 
-const selectOptions = {
-    long: [
-        {
-            label: '계약번호',
-            value: 'cnum',
-            isFixed: false,
-            keys: true,
-        },
-        {
-            label: '실적보험료',
-            value: 'payment',
-            isFixed: false,
-            keys: [],
-        },
-        {
-            label: '납입기간',
-            value: 'du',
-            isFixed: false,
-        },
-    ],
-};
-
-const SelectUpload: NextPage = () => {
+const LongSelectUpload: NextPage = () => {
     // const dispatch = useDispatch();
 
     const loading = useLoading();
@@ -52,11 +29,18 @@ const SelectUpload: NextPage = () => {
 
     const fileRef = useRef<HTMLInputElement>(null);
 
-    const [excelFields, setExcelFields] = useState<CoreSelectOption[]>([]);
+    const [fields, setFields] = useState<CoreSelectOption[]>([]);
 
-    const [excelData, setExcelData] = useState<any[]>([]);
+    const [originData, setOriginData] = useState<any[]>([]);
 
-    console.log(excelFields);
+    const [displayData, setDisplayData] = useState<any[]>([]);
+
+    const [selectedField] = useState<CoreSelectOption[]>([
+        {
+            label: '계약번호',
+            value: '7',
+        },
+    ]);
 
     const handleClickFile = () => {
         if (fileRef.current) {
@@ -75,9 +59,9 @@ const SelectUpload: NextPage = () => {
                 convertForSelectUpload,
             );
 
-            setExcelFields(fields);
+            setFields(fields);
 
-            setExcelData(data);
+            setOriginData(data);
         } catch (error) {
             console.error(error);
         } finally {
@@ -85,11 +69,9 @@ const SelectUpload: NextPage = () => {
         }
     };
 
-    console.log(excelData);
-
     const columns = useMemo<MyColumnDef[]>(
         () =>
-            excelFields.map(({ label, value }) => {
+            fields.map(({ label, value }) => {
                 return {
                     columns: [
                         {
@@ -110,14 +92,9 @@ const SelectUpload: NextPage = () => {
 
                         return (
                             <div>
-                                <UploadSelect
-                                    options={excelFields}
+                                <MySelect
+                                    options={fields}
                                     placeHolderFontSize={16}
-                                    defaultValue={
-                                        value === cellValue
-                                            ? excelFields[+cellValue]
-                                            : null
-                                    }
                                     height="30px"
                                 />
                             </div>
@@ -126,7 +103,7 @@ const SelectUpload: NextPage = () => {
                     accessorKey: value,
                 };
             }),
-        [excelFields],
+        [fields],
     );
 
     return (
@@ -176,21 +153,23 @@ const SelectUpload: NextPage = () => {
                         </div>
                     </div>
                     <div className="wr-pages-long-list__body wr-mt">
-                        <div className="wr-table--scrollable wr-table--hover h-100">
-                            {/* <div className="h-100 d-flex justify-content-center align-items-center">
-                                먼저 파일을 업로드 하세요.
-                            </div> */}
+                        <div className="wr-table--scrollable h-100">
                             <MyTable
                                 columns={columns}
-                                data={excelData}
-                                pageSize={10}
+                                data={displayData}
+                                pageSize={displayData.length}
                             />
                         </div>
                     </div>
                     <MyFooter>
-                        <div className="wr-footer__between">
-                            <span>건수: 10,000</span>
-                        </div>
+                        <MyLocalPagination
+                            data={originData}
+                            setDisplayData={setDisplayData}
+                        >
+                            <span>
+                                건수: {originData.length.toLocaleString()}
+                            </span>
+                        </MyLocalPagination>
                         {/* <MyPagination
                             // requestAction={getLongsRequest}
                             // successAction={getLongsSuccess}
@@ -222,4 +201,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }),
 );
 
-export default SelectUpload;
+export default LongSelectUpload;

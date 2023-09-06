@@ -194,7 +194,6 @@ export const CreateEventModal: FC<Props> = () => {
                                 type="active"
                             >
                                 <MySelect
-                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     // height={variables.detailFilterHeight}
                                     isDisabled={false}

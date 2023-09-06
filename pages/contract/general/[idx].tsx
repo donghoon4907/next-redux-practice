@@ -35,11 +35,6 @@ const General: NextPage<GeneralState> = ({ general }) => {
 
     const defaultComp = findSelectOption(general.wcode, genUseCompanies);
 
-    // const defaultOrga = findSelectOption(
-    //     loggedInUser.user_info.orga_idx,
-    //     orgas,
-    // );
-
     const defaultStatus = findSelectOption(
         general.status,
         longConstants.status,

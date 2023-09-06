@@ -154,7 +154,6 @@ const Longs: NextPage = () => {
                                                 options={orgas}
                                                 value={orga}
                                                 onChange={handleChangeOrga}
-                                                placeholder="선택"
                                             />
                                         </WithLabel>
                                     </div>
@@ -167,7 +166,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="fc"
-                                                    placeholder="선택"
                                                     {...user}
                                                 />
                                             </WithLabel>
@@ -184,7 +182,6 @@ const Longs: NextPage = () => {
                                         >
                                             <MySelect
                                                 inputId="company"
-                                                placeholder="선택"
                                                 {...company}
                                             />
                                         </WithLabel>
@@ -198,7 +195,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="product_type"
-                                                    placeholder="선택"
                                                     {...productType}
                                                 />
                                             </WithLabel>
@@ -213,7 +209,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="ptitle"
-                                                    placeholder="선택"
                                                     {...ptitle}
                                                 />
                                             </WithLabel>
@@ -348,7 +343,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="cycle"
-                                                    placeholder="선택"
                                                     {...cycle}
                                                 />
                                             </WithLabel>
@@ -363,7 +357,6 @@ const Longs: NextPage = () => {
                                             >
                                                 <MySelect
                                                     inputId="dist"
-                                                    placeholder="선택"
                                                     {...dist}
                                                 />
                                             </WithLabel>

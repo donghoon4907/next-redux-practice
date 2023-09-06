@@ -17,7 +17,10 @@ import variables from '@styles/_variables.module.scss';
 import { MyInput } from '@components/input';
 import { MyDatepicker } from '@components/datepicker';
 import { MyButton } from '@components/button';
-import { birthdayToAge, residentNumToAge } from '@utils/calculator';
+import {
+    birthdayToInternationalAge,
+    residentNumToBirthday,
+} from '@utils/calculator';
 import { isNumberic } from '@utils/validation';
 
 interface Props {}
@@ -48,17 +51,19 @@ export const CarInsuredForm: FC<Props> = () => {
     });
 
     const isMain = insureds.length === 0;
-
+    // 만 나이 계산
     let age = '';
     if (isMain) {
         if (jumin.value.length > 7) {
-            age = (
-                residentNumToAge(jumin.value.replace(/-/g, '')) - 1
-            ).toString();
+            const birthday = new Date(
+                residentNumToBirthday(jumin.value.replace(/-/g, '')),
+            );
+
+            age = birthdayToInternationalAge(birthday).toString();
         }
     } else {
         if (birthday.value) {
-            age = (birthdayToAge(birthday.value) - 1).toString();
+            age = birthdayToInternationalAge(birthday.value).toString();
         }
     }
 
@@ -106,120 +111,113 @@ export const CarInsuredForm: FC<Props> = () => {
     };
 
     return (
-        <div className="wr-pages-detail__block wr-mt">
-            <div className="wr-pages-detail__title">
-                <strong>{insureds.length === 0 && '주'} 피보험자 등록</strong>
+        <div className="wr-pages-detail__content">
+            <div className="wr-pages-detail__subtitle">
+                <strong>{insureds.length === 0 && '주'}피보험자 추가</strong>
             </div>
-            <div className="wr-pages-detail__content">
-                <div className="row">
-                    <div className="col-6">
-                        <WithLabel id="prelation" label="관계" type="active">
-                            <MySelect
-                                inputId="prelation"
-                                placeholder="선택"
-                                placeHolderFontSize={16}
-                                height={variables.detailFilterHeight}
-                                {...relation}
+            <div className="row">
+                <div className="col-6">
+                    <WithLabel id="prelation" label="관계" type="active">
+                        <MySelect
+                            inputId="prelation"
+                            placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
+                            {...relation}
+                        />
+                    </WithLabel>
+                </div>
+                <div className="col-6">
+                    <div className="wr-ml">
+                        <WithLabel id="pname" label="이름" type="active">
+                            <MyInput
+                                type="text"
+                                id="pname"
+                                placeholder="이름"
+                                {...name}
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="pname" label="이름" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="pname"
-                                    placeholder="이름"
-                                    {...name}
-                                />
-                            </WithLabel>
-                        </div>
-                    </div>
                 </div>
-                <div className="row wr-mt">
-                    <div className="col-6">
-                        {insureds.length === 0 && (
-                            <WithLabel
+            </div>
+            <div className="row wr-mt">
+                <div className="col-6">
+                    {insureds.length === 0 && (
+                        <WithLabel id="pjumin" label="주민번호" type="active">
+                            <MyInput
+                                type="text"
                                 id="pjumin"
-                                label="주민번호"
-                                type="active"
+                                placeholder="주민번호"
+                                {...jumin}
+                            />
+                            <div
+                                className="wr-with__extension"
+                                style={{ width: 40 }}
                             >
-                                <MyInput
-                                    type="text"
-                                    id="pjumin"
-                                    placeholder="주민번호"
-                                    {...jumin}
-                                />
-                                <div
-                                    className="wr-with__extension"
+                                <MyButton
+                                    className={`btn-md btn-${
+                                        gender ? 'primary' : 'danger'
+                                    }`}
+                                    onClick={handleClickGender}
                                     style={{ width: 40 }}
                                 >
-                                    <MyButton
-                                        className={`btn-md btn-${
-                                            gender ? 'primary' : 'danger'
-                                        }`}
-                                        onClick={handleClickGender}
-                                        style={{ width: 40 }}
-                                    >
-                                        {gender ? '남' : '여'}
-                                    </MyButton>
-                                </div>
-                            </WithLabel>
-                        )}
-                        {insureds.length !== 0 && (
-                            <WithLabel
+                                    {gender ? '남' : '여'}
+                                </MyButton>
+                            </div>
+                        </WithLabel>
+                    )}
+                    {insureds.length !== 0 && (
+                        <WithLabel
+                            id="pbirthday"
+                            label="생년월일"
+                            type="active"
+                        >
+                            <MyDatepicker
                                 id="pbirthday"
-                                label="생년월일"
-                                type="active"
+                                size="md"
+                                placeholder="생년월일"
+                                hooks={birthday}
+                            />
+                            <div
+                                className="wr-with__extension"
+                                style={{ width: 40 }}
                             >
-                                <MyDatepicker
-                                    id="pbirthday"
-                                    size="md"
-                                    placeholder="생년월일"
-                                    hooks={birthday}
-                                />
-                                <div
-                                    className="wr-with__extension"
+                                <MyButton
+                                    className={`btn-md btn-${
+                                        gender ? 'primary' : 'danger'
+                                    }`}
+                                    onClick={handleClickGender}
                                     style={{ width: 40 }}
                                 >
-                                    <MyButton
-                                        className={`btn-md btn-${
-                                            gender ? 'primary' : 'danger'
-                                        }`}
-                                        onClick={handleClickGender}
-                                        style={{ width: 40 }}
-                                    >
-                                        {gender ? '남' : '여'}
-                                    </MyButton>
-                                </div>
-                            </WithLabel>
-                        )}
-                    </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel label="만 나이" type="active">
-                                <MyInput
-                                    type="text"
-                                    placeholder="만 나이"
-                                    className="text-end"
-                                    disabled
-                                    value={age}
-                                    unit="세"
-                                />
-                            </WithLabel>
-                        </div>
+                                    {gender ? '남' : '여'}
+                                </MyButton>
+                            </div>
+                        </WithLabel>
+                    )}
+                </div>
+                <div className="col-6">
+                    <div className="wr-ml">
+                        <WithLabel label="만 나이" type="active">
+                            <MyInput
+                                type="text"
+                                placeholder="만 나이"
+                                className="text-end"
+                                disabled
+                                value={age}
+                                unit="세"
+                            />
+                        </WithLabel>
                     </div>
                 </div>
-                <div className="wr-pages-detail__toolbar wr-mt">
-                    <div className="wr-pages-detail__buttons"></div>
-                    <div>
-                        <MyButton
-                            className="btn-primary btn-sm"
-                            onClick={handleCreatePerson}
-                        >
-                            추가
-                        </MyButton>
-                    </div>
+            </div>
+            <div className="wr-pages-detail__toolbar wr-mt">
+                <div className="wr-pages-detail__buttons"></div>
+                <div>
+                    <MyButton
+                        className="btn-primary btn-sm"
+                        onClick={handleCreatePerson}
+                    >
+                        추가
+                    </MyButton>
                 </div>
             </div>
         </div>

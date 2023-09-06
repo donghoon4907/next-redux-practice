@@ -14,8 +14,14 @@ class GeneralDTO {
     };
 
     requiredValidate = () => {
-        const { wcode, cnum, p_code, contdate, bo_dateto, payment } =
+        const { userid, wcode, cnum, p_code, contdate, bo_dateto, payment } =
             this.payload;
+
+        if (!userid) {
+            alert('담당자를 선택해주세요.');
+
+            return false;
+        }
 
         if (wcode === -1) {
             alert('보험사를 선택해주세요.');

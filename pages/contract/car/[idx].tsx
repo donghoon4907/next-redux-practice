@@ -42,6 +42,8 @@ const Car: NextPage<CarState> = ({ car }) => {
 
     const defaultStatus = findSelectOption(car.status, longConstants.status);
 
+    const defaultBodesc = findSelectOption(car.bo_desc, carConstants.shortDist);
+
     const defaultInsu = findSelectOption(car.insu, carConstants.dist);
 
     const defaultRate = findSelectOption(car.rate, carConstants.cGrade);
@@ -77,6 +79,7 @@ const Car: NextPage<CarState> = ({ car }) => {
                     defaultContdate={car.contdate}
                     defaultBodatefrom={car.bo_datefrom}
                     defaultBodateto={car.bo_dateto}
+                    defaultBodesc={defaultBodesc}
                     defaultStatus={defaultStatus}
                     defaultSpec={car.spec}
                     defaultIsConfirm={car.confirm ? 'Y' : 'N'}
@@ -126,7 +129,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     title: car.title,
                     spec: car.spec,
                     subcategory: null,
-                    cal_spec: null,
+                    cal_spec: car.cal_spec,
                 }),
             );
 
@@ -197,8 +200,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             //         );
             //     }
             // }
-        } catch (e) {
-            console.log(e);
+        } catch {
             output.redirect = {
                 destination: '/404',
                 permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션

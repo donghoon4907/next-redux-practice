@@ -60,7 +60,7 @@ import {
 } from '@hooks/use-input';
 import {
     birthdayToAge,
-    residentNumToAge,
+    birthdayToInternationalAge,
     residentNumToBirthday,
 } from '@utils/calculator';
 import { updateCustomerRequest } from '@actions/customer/update-customer.action';
@@ -311,19 +311,7 @@ export const CustomerForm: FC<Props> = ({
             if (isEmpty(idnum.value)) {
                 if (birthday.value) {
                     if (isEmpty(idnum.value)) {
-                        // 상령일
-                        const sday = addMonths(birthday.value, 6);
-
-                        setSday(dayjs(sday).format('YYYY-MM-DD'));
-                        // 일반나이
-                        const age = birthdayToAge(birthday.value);
-                        if (option!.value === '만나이') {
-                            setAge(`${age - 1}`);
-                        } else if (option!.value === '보험나이') {
-                            setAge(birthdayToAge(sday).toString());
-                        } else if (option!.value === '일반나이') {
-                            setAge(`${age}`);
-                        }
+                        setAgeAsOption(birthday.value, option!.value);
                     }
                 }
             } else {
@@ -331,22 +319,11 @@ export const CustomerForm: FC<Props> = ({
 
                 if (pureIdnum.length === 13) {
                     // 생년월일
-                    const strbirthday = residentNumToBirthday(pureIdnum);
-                    // 상령일
-                    const sday = addMonths(new Date(strbirthday), 6);
+                    const birthday = new Date(residentNumToBirthday(pureIdnum));
 
-                    setBirthday(new Date(strbirthday));
+                    setBirthday(birthday);
 
-                    setSday(dayjs(sday).format('YYYY-MM-DD'));
-                    // 일반나이
-                    const age = residentNumToAge(idnum.value!);
-                    if (option!.value === '만나이') {
-                        setAge(`${age - 1}`);
-                    } else if (option!.value === '보험나이') {
-                        setAge(birthdayToAge(sday).toString());
-                    } else if (option!.value === '일반나이') {
-                        setAge(`${age}`);
-                    }
+                    setAgeAsOption(birthday, option!.value);
                 }
             }
         },
@@ -358,19 +335,10 @@ export const CustomerForm: FC<Props> = ({
             callbackOnChange: (nextdate) => {
                 if (nextdate) {
                     if (isEmpty(idnum.value)) {
-                        // 상령일
-                        const sday = addMonths(new Date(nextdate), 6);
-
-                        setSday(dayjs(sday).format('YYYY-MM-DD'));
-                        // 일반나이
-                        const age = birthdayToAge(nextdate);
-                        if (ageType.value!.value === '만나이') {
-                            setAge(`${age - 1}`);
-                        } else if (ageType.value!.value === '보험나이') {
-                            setAge(birthdayToAge(sday).toString());
-                        } else if (ageType.value!.value === '일반나이') {
-                            setAge(`${age}`);
-                        }
+                        setAgeAsOption(
+                            new Date(nextdate),
+                            ageType.value!.value,
+                        );
                     }
                 }
             },
@@ -385,22 +353,11 @@ export const CustomerForm: FC<Props> = ({
             if (!isEmpty(nextval)) {
                 if (nextval!.length === 13) {
                     // 생년월일
-                    const strbirthday = residentNumToBirthday(nextval!);
-                    // 상령일
-                    const sday = addMonths(new Date(strbirthday), 6);
+                    const birthday = new Date(residentNumToBirthday(nextval!));
 
-                    setBirthday(new Date(strbirthday));
+                    setBirthday(birthday);
 
-                    setSday(dayjs(sday).format('YYYY-MM-DD'));
-                    // 일반나이
-                    const age = residentNumToAge(nextval!);
-                    if (ageType.value!.value === '만나이') {
-                        setAge(`${age - 1}`);
-                    } else if (ageType.value!.value === '보험나이') {
-                        setAge(birthdayToAge(sday).toString());
-                    } else if (ageType.value!.value === '일반나이') {
-                        setAge(`${age}`);
-                    }
+                    setAgeAsOption(birthday, ageType.value!.value);
                 }
             }
         },
@@ -698,6 +655,21 @@ export const CustomerForm: FC<Props> = ({
         return payload;
     };
 
+    const setAgeAsOption = (birthday: Date, option: string) => {
+        // 상령일
+        const sday = addMonths(birthday, 6);
+
+        setSday(dayjs(sday).format('YYYY-MM-DD'));
+
+        if (option === '만나이') {
+            setAge(birthdayToInternationalAge(birthday).toString());
+        } else if (option === '보험나이') {
+            setAge(birthdayToAge(sday).toString());
+        } else if (option === '일반나이') {
+            setAge(birthdayToAge(birthday).toString());
+        }
+    };
+
     return (
         <>
             <div className={`${displayName} wr-pages-detail`}>
@@ -760,7 +732,6 @@ export const CustomerForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="custtype"
-                                                placeholder="선택"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -857,7 +828,6 @@ export const CustomerForm: FC<Props> = ({
                                                 style={{ width: 140 }}
                                             >
                                                 <MySelect
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
@@ -993,7 +963,6 @@ export const CustomerForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="grade"
-                                                placeholder="선택"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1016,7 +985,6 @@ export const CustomerForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="pia"
-                                            placeholder="선택"
                                             height={
                                                 variables.detailFilterHeight
                                             }

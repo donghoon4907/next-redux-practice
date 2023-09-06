@@ -9,8 +9,8 @@ import {
 import { MyButton } from '@components/button';
 
 export type MyColumnDef = ColumnDef<any> & {
-    headerText: string;
-    headerKey: string;
+    headerText?: string;
+    headerKey?: string;
 };
 
 export const useColumn = (fields: CoreColumnOption) => {

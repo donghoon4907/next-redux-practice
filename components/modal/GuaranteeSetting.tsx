@@ -140,7 +140,6 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                         <WithLabel id="gKind" label="보증구분" type="active">
                             <MySelect
                                 inputId="gKind"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 {...kind}
                             />

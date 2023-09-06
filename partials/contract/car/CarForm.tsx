@@ -42,10 +42,12 @@ import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
 import { useCheckbox } from '@hooks/use-checkbox';
 import { CreateBupumModal } from '@components/modal/CreateBupum';
 import { createCarRequest } from '@actions/contract/car/create-car.action';
-import { CreateCarDTO } from '@dto/contractor/Car.dto';
+import { CreateCarDTO, UpdateCarDTO } from '@dto/contractor/Car.dto';
 import { CreateCarPayModal } from '@components/modal/CreateCarPay';
 import { MyFooter } from '@components/footer';
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
+import { updateCarRequest } from '@actions/contract/car/update-car.action';
+import { UserHistoryModal } from '@components/modal/UserHistory';
 
 interface Props {
     /**
@@ -96,6 +98,10 @@ interface Props {
      * 보장만기 기본 값
      */
     defaultBodateto?: string;
+    /**
+     * 보장만기 - 단기설정 기본 값
+     */
+    defaultBodesc?: CoreSelectOption;
     /**
      * 계약상태 기본 값
      */
@@ -399,6 +405,7 @@ export const CarForm: FC<Props> = ({
     defaultBodatefrom = null,
     defaultContdate = null,
     defaultBodateto = '',
+    defaultBodesc = carConstants.shortDist[0],
     defaultStatus = null,
     defaultSpec = '',
     defaultIsConfirm = 'N',
@@ -475,9 +482,7 @@ export const CarForm: FC<Props> = ({
 
     const router = useRouter();
 
-    const dispatch = useDispatch();
-
-    const { contacts, removedContacts } = useSelector<AppState, CommonState>(
+    const { newUserHistory } = useSelector<AppState, CommonState>(
         (state) => state.common,
     );
 
@@ -495,7 +500,7 @@ export const CarForm: FC<Props> = ({
 
     const createCar = useApi(createCarRequest);
 
-    // const updateGeneral = useApi(updateGeneralRequest);
+    const updateCar = useApi(updateCarRequest);
 
     const getUsers = useApi(getUsersRequest);
     // 탭 관리
@@ -518,19 +523,29 @@ export const CarForm: FC<Props> = ({
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : new Date(),
+        {
+            callbackOnChange: (nextDate) => {
+                // 계약일자 변경 시 보장 시기 및 보장 만기(1년)가 자동 계산됩니다.
+                if (nextDate) {
+                    setBoDatefrom(nextDate);
+
+                    setBoDateto(addYears(nextDate, 1));
+                }
+            },
+        },
     );
     // 보장시기
-    const [boDatefrom] = useDatepicker(
+    const [boDatefrom, setBoDatefrom] = useDatepicker(
         defaultBodatefrom ? new Date(defaultBodatefrom) : new Date(),
     );
     // 보험기간
     // const [period, setPeriod] = useState('1년');
     // 보장만기
-    const [boDateto] = useDatepicker(
+    const [boDateto, setBoDateto] = useDatepicker(
         defaultBodateto ? new Date(defaultBodateto) : addYears(new Date(), 1),
     );
     // 단기구분
-    const [sDist] = useSelect(carConstants.shortDist);
+    const [sDist] = useSelect(carConstants.shortDist, defaultBodesc);
     // 보험기간
     const boPeriod = differenceInYears(boDateto.value!, boDatefrom.value!);
     // 선택가능한 보장날짜
@@ -725,11 +740,6 @@ export const CarForm: FC<Props> = ({
     // 차량기준 사고건수 - 1년간
     const [carSago1] = useSelect(carConstants.numCase, defaultCarSago1);
 
-    // 보장시기 blur 핸들러
-    // const handleBlurBoDatefrom = () => {
-    //     dispatch(showSetPeriodModal());
-    // };
-
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
         setEditable(true);
@@ -756,24 +766,23 @@ export const CarForm: FC<Props> = ({
     const handleUpdate = () => {
         const payload = createPayload();
 
-        // const updateLongDto = new UpdateGeneralDTO(payload);
+        const updateLongDto = new UpdateCarDTO(payload);
 
-        // if (updateLongDto.requiredValidate()) {
-        //     updateGeneral(updateLongDto.getPayload(), () => {
-        //         router.replace(location.href);
-        //     });
-        // }
+        if (updateLongDto.requiredValidate()) {
+            updateCar(updateLongDto.getPayload(), () => {
+                router.replace(location.href);
+            });
+        }
     };
 
     const createPayload = () => {
         const payload: any = {
-            userid: manager.value!.value,
             wcode: -1,
             cnum: cnum.value,
             contdate: dayjs(contdate.value).format('YYYY-MM-DD'),
             bo_datefrom: dayjs(boDatefrom.value).format('YYYY-MM-DD'),
             bo_dateto: dayjs(boDateto.value).format('YYYY-MM-DD'),
-            bo_desc: boPeriod <= 0 ? sDist.value!.value : '1년',
+            bo_desc: boPeriod > 0 ? '1년' : sDist.value!.value,
             payment,
             p_persons: insureds,
             remove: {},
@@ -835,10 +844,6 @@ export const CarForm: FC<Props> = ({
 
         if (carage.value) {
             payload['carage'] = carage.value.value;
-        }
-
-        if (contacts.length > 0) {
-            payload['contacts'] = contacts;
         }
 
         if (pays.length > 0) {
@@ -1107,12 +1112,13 @@ export const CarForm: FC<Props> = ({
         // if (carSago1.value) {
         //     payload.insurate['car_sago1'] = +carSago1.value.value;
         // }
-
-        if (mode === 'update') {
-            if (removedContacts.length > 0) {
-                payload['remove']['contacts'] = removedContacts.map(
-                    (v) => v.idx,
-                );
+        if (mode === 'create') {
+            payload['userid'] = manager.value ? manager.value.value : null;
+        } else if (mode === 'update') {
+            if (newUserHistory) {
+                payload['userid'] = newUserHistory.userid;
+            } else {
+                payload['userid'] = defaultUserid;
             }
 
             if (removedPays.length > 0) {
@@ -1123,14 +1129,6 @@ export const CarForm: FC<Props> = ({
         return payload;
     };
 
-    // useEffect(() => {
-    //     if (boDatefrom.value) {
-    //         if (period === '1년') {
-    //             setBoDateto(addYears(boDatefrom.value, 1));
-    //         }
-    //     }
-    // }, [period, boDatefrom.value]);
-
     useEffect(() => {
         if (orga.value) {
             getUsers(
@@ -1138,6 +1136,7 @@ export const CarForm: FC<Props> = ({
                     idx: orga.value.value,
                 },
                 (users) => {
+                    console.log('test');
                     setManager(findSelectOption(defaultUserid, users));
                 },
             );
@@ -1160,7 +1159,6 @@ export const CarForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="orga"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -1180,7 +1178,6 @@ export const CarForm: FC<Props> = ({
                                             >
                                                 <MySelect
                                                     inputId="manager"
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
@@ -1350,12 +1347,12 @@ export const CarForm: FC<Props> = ({
                                                 <div className="wr-with__extension">
                                                     <MySelect
                                                         inputId="periodDist"
-                                                        placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         placement="right"
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
+                                                        isDisabled={!editable}
                                                         {...sDist}
                                                     />
                                                 </div>
@@ -1373,7 +1370,6 @@ export const CarForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="insu"
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -1392,7 +1388,6 @@ export const CarForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="rate"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -1431,7 +1426,6 @@ export const CarForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="pay_method"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -1452,7 +1446,6 @@ export const CarForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="pre_wcode"
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -1631,6 +1624,7 @@ export const CarForm: FC<Props> = ({
             )}
             <CreateCarPayModal />
             <CreateBupumModal />
+            {mode === 'update' && <UserHistoryModal type="contract" />}
         </>
     );
 };

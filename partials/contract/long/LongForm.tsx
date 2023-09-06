@@ -620,16 +620,12 @@ export const LongForm: FC<Props> = ({
         }
 
         if (mode === 'create') {
-            payload['userid'] = manager.value!.value;
+            payload['userid'] = manager.value ? manager.value.value : null;
         } else if (mode === 'update') {
             if (newUserHistory) {
                 payload['userid'] = newUserHistory.userid;
-                // payload['userid_his'] = [
-                //     ...userHistories,
-                //     {
-                //         ...newUserHistory,
-                //     },
-                // ];
+            } else {
+                payload['userid'] = defaultUserid;
             }
 
             if (removedContacts.length > 0) {
@@ -688,7 +684,6 @@ export const LongForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="orga"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -708,7 +703,6 @@ export const LongForm: FC<Props> = ({
                                             >
                                                 <MySelect
                                                     inputId="manager"
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
@@ -844,7 +838,6 @@ export const LongForm: FC<Props> = ({
                                             style={{ width: 100 }}
                                         >
                                             <MySelect
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -897,7 +890,6 @@ export const LongForm: FC<Props> = ({
                                                 }}
                                             >
                                                 <MySelect
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
@@ -921,7 +913,6 @@ export const LongForm: FC<Props> = ({
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
@@ -940,7 +931,6 @@ export const LongForm: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="pStatus"
-                                                        placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
@@ -1287,7 +1277,6 @@ export const LongForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="cal_type"
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -1327,7 +1316,6 @@ export const LongForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="family"
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -1350,7 +1338,6 @@ export const LongForm: FC<Props> = ({
                                             </div>
                                             <MySelect
                                                 inputId="sd"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -1481,7 +1468,7 @@ export const LongForm: FC<Props> = ({
             />
             <CreateEndorsementModal />
             <CreateEtcModal />
-            {mode === 'update' && <UserHistoryModal type="long" />}
+            {mode === 'update' && <UserHistoryModal type="contract" />}
         </>
     );
 };

@@ -17,7 +17,7 @@ import { insertUserHistory } from '@actions/common/set-user-history.action';
 import { generateIndex } from '@utils/generate';
 
 interface Props {
-    type: 'customer' | 'long';
+    type: 'customer' | 'contract';
 }
 
 export const UserHistoryModal: FC<Props> = ({ type }) => {
@@ -86,7 +86,6 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                         <WithLabel id="mDepartment" label="부서" type="active">
                             <MySelect
                                 inputId="mDepartment"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 {...depart}
                             />
@@ -101,7 +100,6 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                             >
                                 <MySelect
                                     inputId="mUser"
-                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     {...user}
                                 />
@@ -120,19 +118,6 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                                 />
                             </WithLabel>
                         )}
-                        {/* {type === 'long' && (
-                            <WithLabel
-                                id="mCode"
-                                label="사용인코드"
-                                type="active"
-                            >
-                                <MyInput
-                                    id="mCode"
-                                    placeholder="사용인코드"
-                                    {...code}
-                                />
-                            </WithLabel>
-                        )} */}
                     </div>
                 </div>
             </ModalBody>

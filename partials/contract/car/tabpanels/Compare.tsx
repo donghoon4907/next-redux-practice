@@ -228,7 +228,6 @@ export const CompareTabpanel: FC<Props> = ({
                             >
                                 <MySelect
                                     inputId="caryear"
-                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     {...carYearHooks}
@@ -332,7 +331,6 @@ export const CompareTabpanel: FC<Props> = ({
                         >
                             <MySelect
                                 inputId="ccarGrade"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
                                 {...carGradeHooks}
@@ -410,7 +408,6 @@ export const CompareTabpanel: FC<Props> = ({
                             >
                                 <MySelect
                                     inputId="ccarHasBb"
-                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
@@ -429,7 +426,6 @@ export const CompareTabpanel: FC<Props> = ({
                         >
                             <MySelect
                                 inputId="ccarAircode"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
@@ -493,7 +489,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarChung"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -517,7 +512,6 @@ export const CompareTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="ccarGps"
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -652,7 +646,6 @@ export const CompareTabpanel: FC<Props> = ({
                             >
                                 <MySelect
                                     inputId="ccarMembercode"
-                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     height={variables.detailFilterHeight}
                                     isDisabled={!editable}
@@ -705,7 +698,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarUsang"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -749,7 +741,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo2"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -763,7 +754,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo3"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -777,7 +767,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo4"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -791,7 +780,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo5"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -805,7 +793,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo6"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -819,7 +806,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarGooutDist"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -830,7 +816,6 @@ export const CompareTabpanel: FC<Props> = ({
                                         style={{ width: 190 }}
                                     >
                                         <MySelect
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -848,7 +833,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarMulSago"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -869,7 +853,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarMileDist"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -882,7 +865,6 @@ export const CompareTabpanel: FC<Props> = ({
                                             style={{ width: 190 }}
                                         >
                                             <MySelect
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -934,7 +916,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarTmapDist"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         placement={
@@ -977,7 +958,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarUse"
-                                        placeholder="선택"
                                         placeHolderFontSize={16}
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
@@ -1016,7 +996,6 @@ export const CompareTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="ccarChilddrive"
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -1039,7 +1018,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     >
                                                         <MySelect
                                                             inputId="ccarGuipcarrer"
-                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -1062,7 +1040,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarGuipcarrerCar"
-                                                                placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
                                                                 }
@@ -1094,7 +1071,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     >
                                                         <MySelect
                                                             inputId="ccarLJobcode"
-                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -1117,7 +1093,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarGuipCarrerKb"
-                                                                placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
                                                                 }
@@ -1143,7 +1118,6 @@ export const CompareTabpanel: FC<Props> = ({
                                             <div className="row">
                                                 <div className="col-6">
                                                     <MySelect
-                                                        placeholder="선택"
                                                         placeHolderFontSize={16}
                                                         height={
                                                             variables.detailFilterHeight
@@ -1157,7 +1131,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                         <div className="d-flex">
                                                             <div className="flex-fill">
                                                                 <MySelect
-                                                                    placeholder="선택"
                                                                     placeHolderFontSize={
                                                                         16
                                                                     }
@@ -1195,7 +1168,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     >
                                                         <MySelect
                                                             inputId="ccarHalin"
-                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -1233,7 +1205,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     >
                                                         <MySelect
                                                             inputId="ccarSpecialCode"
-                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -1256,7 +1227,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarSpecialCode2"
-                                                                placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
                                                                 }
@@ -1288,7 +1258,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     >
                                                         <MySelect
                                                             inputId="ccarSsSago3"
-                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -1308,7 +1277,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     >
                                                         <MySelect
                                                             inputId="ccarPreSago3"
-                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -1332,7 +1300,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                     >
                                                         <MySelect
                                                             inputId="ccarPSago"
-                                                            placeholder="선택"
                                                             placeHolderFontSize={
                                                                 16
                                                             }
@@ -1355,7 +1322,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarGoout2"
-                                                                placeholder="선택"
                                                                 placeHolderFontSize={
                                                                     16
                                                                 }
@@ -1387,7 +1353,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                             >
                                                                 <MySelect
                                                                     inputId="ccarSago3"
-                                                                    placeholder="선택"
                                                                     placeHolderFontSize={
                                                                         16
                                                                     }
@@ -1414,7 +1379,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                             >
                                                                 <MySelect
                                                                     inputId="ccarCarNonum"
-                                                                    placeholder="선택"
                                                                     placeHolderFontSize={
                                                                         16
                                                                     }
@@ -1441,7 +1405,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                             >
                                                                 <MySelect
                                                                     inputId="ccarSago1"
-                                                                    placeholder="선택"
                                                                     placeHolderFontSize={
                                                                         16
                                                                     }
@@ -1477,7 +1440,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                             >
                                                                 <MySelect
                                                                     inputId="ccarCarSago3"
-                                                                    placeholder="선택"
                                                                     placeHolderFontSize={
                                                                         16
                                                                     }
@@ -1504,7 +1466,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                             >
                                                                 <MySelect
                                                                     inputId="ccarCarSago2"
-                                                                    placeholder="선택"
                                                                     placeHolderFontSize={
                                                                         16
                                                                     }
@@ -1531,7 +1492,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                             >
                                                                 <MySelect
                                                                     inputId="ccarCarSago1"
-                                                                    placeholder="선택"
                                                                     placeHolderFontSize={
                                                                         16
                                                                     }

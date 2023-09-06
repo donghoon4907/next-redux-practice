@@ -10,6 +10,7 @@ import {
 } from '@actions/contract/common/set-contractor.action';
 import { InsuredActionTypes } from '@actions/contract/common/set-insured.action';
 import { PayActionTypes } from '@actions/contract/common/set-pay.action';
+import { GetCustomerActionTypes } from '@actions/customer/get-customer';
 
 export interface ContractState {
     /**
@@ -63,6 +64,13 @@ export const contractReducer: Reducer<ContractState, any> = (
 
                 break;
             }
+            // customer api 호출으로 얻어온 계약자 정보
+            case LoadedContractorActionTypes.SUCCESS: {
+                draft.loadedContract = action.payload;
+
+                break;
+            }
+            // 고객 검색결과로 얻어온 계약자 정보
             case LoadedContractorActionTypes.UPDATE: {
                 draft.loadedContract = action.payload;
 

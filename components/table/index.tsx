@@ -155,7 +155,7 @@ export const MyTable: FC<Props> = ({
     //             }
     //             return output;
     //         });
-    //         const d = document.querySelectorAll(".text-truncate")
+    //         const d = document.querySelectorAll('.text-truncate');
     //         Array.from(fields).forEach((v) => {
     //             if (v.classList.contains('text-truncate')) {
     //                 v.style.width = `${colSpanWidth + 150}px`;

@@ -52,6 +52,29 @@ export function birthdayToAge(birthday: Date) {
 
     return today.getFullYear() - birthday.getFullYear() + 1;
 }
+// 생년월일을 만나이로 변환하는함수
+export function birthdayToInternationalAge(birthday: Date) {
+    const currentDate = new Date();
+
+    // 생년월일에서 년, 월, 일을 분리합니다.
+    const birthYear = birthday.getFullYear();
+    const birthMonth = birthday.getMonth() + 1;
+    const birthDay = birthday.getDate();
+
+    // 현재 연도와 생년의 연도를 비교하여 초기 만 나이를 계산합니다.
+    let age = currentDate.getFullYear() - birthYear;
+
+    // 생일이 지나지 않았으면 1살을 뺍니다.
+    if (
+        currentDate.getMonth() < birthMonth ||
+        (currentDate.getMonth() === birthMonth &&
+            currentDate.getDate() < birthDay)
+    ) {
+        age--;
+    }
+
+    return age;
+}
 
 // 입금구분 반환
 // contdate: 계약일

@@ -262,6 +262,11 @@ export const ASIDE_MENU: any = {
                 label: '장기계약등록',
                 to: '/contract/long/create',
             },
+            upload: {
+                id: 'contract-long_upload',
+                label: '선택업로드',
+                to: '/contract/long/upload',
+            },
             // sch: {
             //     id: 'contract-long_sch',
             //     label: '상태변경내역',

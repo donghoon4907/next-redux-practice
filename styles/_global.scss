@@ -223,6 +223,11 @@ input[type='number'] {
     // 상위 컨테이너 이상의 너비를 갖지 않도록 조정
     margin: 0 auto;
 }
+
+.row > * {
+    padding: 0 !important;
+}
+
 // input 공통 스타일 재정의
 .form-control {
     border-radius: 0 !important;

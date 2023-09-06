@@ -64,7 +64,15 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         function onRouteChange(url?: string) {
             // 404, 500 페이지 제한
-            if (['/404', '/500', '/test', '/etc/shop_list'].includes(route)) {
+            if (
+                [
+                    '/404',
+                    '/500',
+                    '/test',
+                    '/select-upload',
+                    '/etc/shop_list',
+                ].includes(route)
+            ) {
                 const tab = new TabModule();
 
                 dispatch(initTab(tab.getAll()));

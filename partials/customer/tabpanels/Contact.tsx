@@ -165,7 +165,6 @@ export const ContactTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="counselingDivision"
-                                            placeholder="선택"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -184,7 +183,6 @@ export const ContactTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="counselingDivision"
-                                                placeholder="선택"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -203,7 +201,6 @@ export const ContactTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="counselingDivision"
-                                                placeholder="선택"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -260,7 +257,6 @@ export const ContactTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="ccnum"
-                                                placeholder="선택"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -297,7 +293,6 @@ export const ContactTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="status"
-                                                placeholder="선택"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }

@@ -37,7 +37,6 @@ export const EmailInput: FC<Props> = ({
                 }}
             >
                 <MySelect
-                    placeholder="선택"
                     placeHolderFontSize={16}
                     height={variables.detailFilterHeight}
                     isDisabled={disabled}

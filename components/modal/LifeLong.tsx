@@ -100,7 +100,6 @@ export const LifeLongModal: FC<Props> = () => {
                         <WithLabel id="llRuleNm" label="규정명" type="active">
                             <MySelect
                                 inputId="llRuleNm"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 // height={variables.detailFilterHeight}
                                 // isDisabled={!editable}

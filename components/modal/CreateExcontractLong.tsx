@@ -110,7 +110,6 @@ export const CreateExcontractLongModal: FC<Props> = () => {
                         <WithLabel id="lComp" label="보험사" type="active">
                             <MySelect
                                 inputId="lComp"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 {...comp}
                             />

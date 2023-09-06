@@ -220,7 +220,6 @@ export const GeneralForm: FC<Props> = ({
             cnum: cnum.value,
             contdate: dayjs(contdate.value).format('YYYY-MM-DD'),
             payment: -1,
-            userid: manager.value!.value,
             remove: {},
         };
 
@@ -259,7 +258,15 @@ export const GeneralForm: FC<Props> = ({
             payload['c_name'] = loadedContract.name;
         }
 
-        if (mode === 'update') {
+        if (mode === 'create') {
+            payload['userid'] = manager.value ? manager.value.value : null;
+        } else if (mode === 'update') {
+            if (newUserHistory) {
+                payload['userid'] = newUserHistory.userid;
+            } else {
+                payload['userid'] = defaultUserid;
+            }
+
             if (removedContacts.length > 0) {
                 payload['remove']['contacts'] = removedContacts.map(
                     (v) => v.idx,
@@ -316,7 +323,6 @@ export const GeneralForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="orga"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -336,7 +342,6 @@ export const GeneralForm: FC<Props> = ({
                                             >
                                                 <MySelect
                                                     inputId="manager"
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight
@@ -623,7 +628,7 @@ export const GeneralForm: FC<Props> = ({
             <CreateGeneralPayModal payment={payment.value} />
             <CreateEndorsementModal />
             <CreateEtcModal />
-            {mode === 'update' && <UserHistoryModal type="long" />}
+            {mode === 'update' && <UserHistoryModal type="contract" />}
         </>
     );
 };

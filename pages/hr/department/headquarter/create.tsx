@@ -289,7 +289,6 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                             >
                                                 <MySelect
                                                     inputId="pointStatus"
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight

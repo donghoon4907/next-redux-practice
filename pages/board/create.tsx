@@ -143,11 +143,7 @@ const CreateBoard: NextPage = () => {
                                         label="부서"
                                         type="active"
                                     >
-                                        <MySelect
-                                            inputId="orga"
-                                            placeholder="선택"
-                                            {...orga}
-                                        />
+                                        <MySelect inputId="orga" {...orga} />
                                     </WithLabel>
                                 </div>
                             </div>

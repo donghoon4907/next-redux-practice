@@ -110,7 +110,6 @@ export const CreateExcontractGenModal: FC<Props> = () => {
                         <WithLabel id="gComp" label="보험사" type="active">
                             <MySelect
                                 inputId="gComp"
-                                placeholder="선택"
                                 placeHolderFontSize={16}
                                 {...comp}
                             />

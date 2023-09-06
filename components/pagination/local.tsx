@@ -1,7 +1,6 @@
 import type { FC } from 'react';
-import type { CoreProps } from '@interfaces/core';
-import { useRouter } from 'next/router';
-import { useEffect, useMemo } from 'react';
+import type { CoreProps, CoreSetState } from '@interfaces/core';
+import { useEffect, useMemo, useState } from 'react';
 import {
     LuChevronFirst,
     LuChevronLeft,
@@ -10,111 +9,56 @@ import {
 } from 'react-icons/lu';
 import { MySelect } from '@components/select';
 import { AccessibleText } from '@components/AccessibleText';
-import { TabModule } from '@utils/storage';
 import { useSelect } from '@hooks/use-select';
-import { findSelectOption } from '@utils/getter';
 import commonContstants from '@constants/options/common';
 import { createPageButtons } from '@utils/paging';
 
 interface Props extends CoreProps {
-    /**
-     * 요청 action
-     */
-    // requestAction: (payload: any) => AnyAction;
-    /**
-     * 성공 action
-     */
-    // successAction: (payload: any) => AnyAction;
-    /**
-     * 마지막으로 요청한 payload 정보
-     */
-    payload: any;
-    /**
-     * 전체 레코드의 수
-     */
-    total: number;
+    data: any[];
+    setDisplayData: CoreSetState<any[]>;
 }
 
-export const MyPagination: FC<Props> = ({
+export const MyLocalPagination: FC<Props> = ({
     children,
-    // requestAction,
-    // successAction,
-    payload,
-    total,
+    data,
+    setDisplayData,
 }) => {
-    const router = useRouter();
-    // const fireApi = useApi(requestAction);
+    const [page, setPage] = useState(1);
 
-    const [listCount, setListCount] = useSelect(
-        commonContstants.listCounts,
-        undefined,
-        {
-            callbackOnChange: (nextOption) => {
-                if (nextOption) {
-                    callApi(+nextOption.value, 1);
-                }
-            },
-        },
-    );
+    const [listCount] = useSelect(commonContstants.listCounts);
+
+    const total = data.length;
 
     const pageSize = +listCount.value!.value;
 
     const lastPage = Math.ceil(total / pageSize);
 
-    const prevPage = payload.page === 1 ? 1 : payload.page - 1;
+    const prevPage = page === 1 ? 1 : page - 1;
 
-    const nextPage = payload.page === lastPage ? lastPage : payload.page + 1;
+    const nextPage = page === lastPage ? lastPage : page + 1;
 
     const pageButtons = useMemo(
-        () => createPageButtons(total, pageSize, payload.page),
-        [total, pageSize, payload],
+        () => createPageButtons(total, pageSize, page),
+        [total, pageSize, page],
     );
 
     const handlePaging = (pageNo: number) => {
         if (listCount.value) {
-            callApi(+listCount.value.value, pageNo);
+            setPage(pageNo);
+
+            setDisplayData(
+                data.slice((pageNo - 1) * pageSize, pageNo * pageSize),
+            );
         }
-    };
-
-    const callApi = (pageSize: number, pageNo: number) => {
-        const searchParams = new URLSearchParams(location.search);
-
-        searchParams.set('page', pageNo.toString());
-
-        searchParams.set('nums', pageSize.toString());
-
-        const nextUrl = `${router.pathname}?${searchParams.toString()}`;
-
-        // 현재 페이지 요청 거부
-        if (nextUrl === router.asPath) {
-            return;
-        }
-
-        const tab = new TabModule();
-
-        tab.update(router.pathname, {
-            to: nextUrl,
-        });
-
-        router.replace(`${router.pathname}?${searchParams.toString()}`);
     };
 
     useEffect(() => {
-        if (payload) {
-            if (payload.condition) {
-                if (payload.nums) {
-                    setListCount(
-                        findSelectOption(
-                            payload.nums,
-                            commonContstants.listCounts,
-                        ),
-                    );
-                } else {
-                    setListCount(null);
-                }
-            }
+        if (data.length > 0) {
+            setPage(1);
+
+            setDisplayData(data.slice(0, pageSize));
         }
-    }, [payload]);
+    }, [data, pageSize]);
 
     return (
         <div className="wr-footer__between wr-pagination">
@@ -153,7 +97,7 @@ export const MyPagination: FC<Props> = ({
                                 <button
                                     type="button"
                                     className={`page-link ${
-                                        p === payload.page ? 'active' : ''
+                                        p === page ? 'active' : ''
                                     }`}
                                     onClick={() => handlePaging(p)}
                                 >

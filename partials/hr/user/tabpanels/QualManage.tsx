@@ -147,7 +147,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="giaQualification"
-                                            placeholder="선택"
                                             placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
@@ -166,7 +165,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="giaComp"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -236,7 +234,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="liaQualification"
-                                                placeholder="선택"
                                                 placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
@@ -255,7 +252,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                             >
                                                 <MySelect
                                                     inputId="liaComp"
-                                                    placeholder="선택"
                                                     placeHolderFontSize={16}
                                                     height={
                                                         variables.detailFilterHeight

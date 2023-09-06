@@ -288,7 +288,6 @@ const ComparisonEstimate: NextPage = () => {
                                         options={[]}
                                         value={null}
                                         onChange={() => {}}
-                                        placeholder="선택"
                                     />
                                 </div>
                                 <div className="col-3">
@@ -299,7 +298,6 @@ const ComparisonEstimate: NextPage = () => {
                                             options={[]}
                                             value={null}
                                             onChange={() => {}}
-                                            placeholder="선택"
                                         />
                                     </div>
                                 </div>
@@ -311,7 +309,6 @@ const ComparisonEstimate: NextPage = () => {
                                             options={[]}
                                             value={null}
                                             onChange={() => {}}
-                                            placeholder="선택"
                                         />
                                     </div>
                                 </div>
@@ -327,7 +324,6 @@ const ComparisonEstimate: NextPage = () => {
                                         options={[]}
                                         value={null}
                                         onChange={() => {}}
-                                        placeholder="선택"
                                     />
                                 </div>
                                 <div className="col-3">
@@ -338,7 +334,6 @@ const ComparisonEstimate: NextPage = () => {
                                             options={[]}
                                             value={null}
                                             onChange={() => {}}
-                                            placeholder="선택"
                                         />
                                     </div>
                                 </div>
@@ -399,7 +394,6 @@ const ComparisonEstimate: NextPage = () => {
                                             <div style={{ width: 110 }}>
                                                 <MySelect
                                                     inputId="carnum"
-                                                    placeholder="선택"
                                                     {...carLocale}
                                                 />
                                             </div>
@@ -412,10 +406,7 @@ const ComparisonEstimate: NextPage = () => {
                                                 />
                                             </div>
                                             <div style={{ width: 70 }}>
-                                                <MySelect
-                                                    placeholder="선택"
-                                                    {...carUsage}
-                                                />
+                                                <MySelect {...carUsage} />
                                             </div>
                                             <div style={{ width: 70 }}>
                                                 <MyInput

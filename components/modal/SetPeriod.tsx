@@ -88,7 +88,6 @@ export const SetPeriodModal: FC<Props> = ({ setPeriod }) => {
                             >
                                 <MySelect
                                     inputId="periodDist"
-                                    placeholder="선택"
                                     placeHolderFontSize={16}
                                     {...sDist}
                                 />
