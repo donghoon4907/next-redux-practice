@@ -19,14 +19,15 @@ import { MyButton } from '@components/button';
 import { MyFooter } from '@components/footer';
 import { CoreSelectOption } from '@interfaces/core';
 import { MyLocalPagination } from '@components/pagination/local';
-import { findSelectOptionByLabel } from '@utils/getter';
+import { useApi } from '@hooks/use-api';
+import { uploadLongRequest } from '@actions/contract/long/upload-long.action';
+import longConstants from '@constants/options/long';
 
-const LongSelectUpload: NextPage = () => {
+const LongUpload: NextPage = () => {
     // const dispatch = useDispatch();
+    const uploadLong = useApi(uploadLongRequest);
 
     const loading = useLoading();
-
-    // const [file, setFile] = useState<string>('');
 
     const fileRef = useRef<HTMLInputElement>(null);
     // 업로드 파일명
@@ -34,11 +35,56 @@ const LongSelectUpload: NextPage = () => {
     // 테이블의 컬럼 목록
     const [fields, setFields] = useState<CoreSelectOption[]>([]);
     // 컬럼의 셀렉트 설정 목록
-    const [selects, setSelects] = useState<CoreSelectOption[]>([]);
+    const [selects, setSelects] = useState<Array<CoreSelectOption | null>>([]);
     // 불러온 데이터 원본
     const [originData, setOriginData] = useState<any[]>([]);
     // 해당 페이지에 보여지는 데이터
     const [displayData, setDisplayData] = useState<any[]>([]);
+
+    const handleUpload = () => {
+        const findIndex = selects.findIndex((v) => v && v.value === 'cnum');
+
+        if (findIndex === -1) {
+            return alert('계약번호가 지정되지 않았습니다.');
+        }
+
+        const selectsCount = selects.reduce((acc, cur) => {
+            if (cur) {
+                return (acc += 1);
+            }
+
+            return acc;
+        }, 0);
+        // 계약번호만 선택된 경우
+        if (selectsCount === 1) {
+            return alert('계약번호 외 다른 필드가 지정되어야 합니다.');
+        }
+
+        const cnumArr = originData.map((v) => v[findIndex + 1]);
+
+        const cnumSet = new Set(cnumArr);
+
+        // 중복요소가 있는지 확인
+        if (cnumArr.length !== cnumSet.size) {
+            return alert(
+                '계약번호는 동일한 값을 가진 필드로 지정할 수 없습니다.',
+            );
+        }
+
+        const data = [];
+        for (let i = 0; i < originData.length; i++) {
+            const obj: any = {};
+            for (let j = 0; j < selects.length; j++) {
+                if (selects[j]) {
+                    obj[selects[j]!.value] = originData[i][j + 1];
+                }
+            }
+
+            data.push(obj);
+        }
+
+        uploadLong({ data });
+    };
 
     const handleClickFile = () => {
         if (fileRef.current) {
@@ -62,16 +108,7 @@ const LongSelectUpload: NextPage = () => {
             setFields(filtedFields);
 
             setSelects(
-                Array.from({ length: filtedFields.length }).map((v, i) => {
-                    if (i === 0) {
-                        return findSelectOptionByLabel(
-                            '계약번호',
-                            filtedFields,
-                        );
-                    } else {
-                        return null;
-                    }
-                }),
+                Array.from({ length: filtedFields.length }).map(() => null),
             );
 
             setOriginData(converted.data);
@@ -108,7 +145,7 @@ const LongSelectUpload: NextPage = () => {
                         return (
                             <div>
                                 <UploadSelect
-                                    options={fields}
+                                    options={longConstants.fields}
                                     index={+cellValue - 1}
                                     values={selects}
                                     setValues={setSelects}
@@ -167,6 +204,16 @@ const LongSelectUpload: NextPage = () => {
                                         }}
                                     />
                                 </div>
+                                <div>
+                                    {originData.length > 0 && (
+                                        <MyButton
+                                            className="btn-primary"
+                                            onClick={handleUpload}
+                                        >
+                                            업로드
+                                        </MyButton>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -188,12 +235,6 @@ const LongSelectUpload: NextPage = () => {
                                 건수: {originData.length.toLocaleString()}
                             </span>
                         </MyLocalPagination>
-                        {/* <MyPagination
-                            // requestAction={getLongsRequest}
-                            // successAction={getLongsSuccess}
-                            payload={null}
-                            total={excelFields.length}
-                        ></MyPagination> */}
                     </MyFooter>
                 </div>
                 <input
@@ -211,6 +252,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
         dispatch(getCompaniesRequest('long-use'));
 
+        // dispatch(getLongFieldsRequest());
+
         dispatch(END);
 
         await sagaTask?.toPromise();
@@ -219,4 +262,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }),
 );
 
-export default LongSelectUpload;
+export default LongUpload;

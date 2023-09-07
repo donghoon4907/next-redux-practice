@@ -6,6 +6,7 @@ import { GetLongsActionTypes } from '@actions/contract/long/get-longs.action';
 import { GetLongActionTypes } from '@actions/contract/long/get-long.action';
 // import { LongEtcUpdateActionTypes } from '@actions/long/set-long-etc.action';
 import { EndorsementActionTypes } from '@actions/contract/long/set-endorsement.action';
+import { GetLongFieldsActionTypes } from '@actions/contract/long/get-long-fields.action';
 
 export interface LongState {
     /**
@@ -16,6 +17,10 @@ export interface LongState {
      * 장기계약 상세
      */
     long: any;
+    /**
+     * 장기테이블 필드 목록
+     */
+    fields: Array<any>;
     /**
      * 배서 목록
      */
@@ -35,6 +40,7 @@ const initialState: LongState = {
         lastPayload: null,
     },
     long: null,
+    fields: [],
     // etcs: [],
     endorsements: [
         {
@@ -70,6 +76,11 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetLongActionTypes.SUCCESS: {
                 draft.long = action.payload;
+
+                break;
+            }
+            case GetLongFieldsActionTypes.SUCCESS: {
+                draft.fields = action.payload;
 
                 break;
             }

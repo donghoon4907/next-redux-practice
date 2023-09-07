@@ -1,5 +1,58 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
+// 필드목록
+const L_FIELDS: CoreSelectOption[] = [
+    {
+        label: '계약번호',
+        value: 'cnum',
+        isFixed: false,
+    },
+    {
+        label: '피보험자',
+        value: 'p_name',
+        isFixed: false,
+    },
+    {
+        label: '계약자',
+        value: 'c_name',
+        isFixed: false,
+    },
+    {
+        label: '상품코드',
+        value: 'p_code',
+        isFixed: false,
+    },
+    {
+        label: '상품명',
+        value: 'title',
+        isFixed: false,
+    },
+    {
+        label: '납입종기',
+        value: 'pay_dateto',
+        isFixed: false,
+    },
+    {
+        label: '납입기간',
+        value: 'pay_du',
+        isFixed: false,
+    },
+    {
+        label: '실적보험료',
+        value: 'pay',
+        isFixed: false,
+    },
+    {
+        label: '수정보험료',
+        value: 'tp',
+        isFixed: false,
+    },
+    {
+        label: '사용인코드',
+        value: 'fccode',
+        isFixed: false,
+    },
+];
 // 납입주기
 const L_PAYCYCLE: CoreSelectOption[] = [
     {
@@ -327,6 +380,7 @@ const rootSelectOptions = {
     calType: L_CALTYPE,
     family: L_FAMILY,
     productType: L_PTYPE,
+    fields: L_FIELDS,
 };
 
 export default rootSelectOptions;

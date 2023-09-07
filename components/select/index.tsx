@@ -10,7 +10,7 @@ export interface MySelectProps {
      * 옵션 목록
      *
      */
-    options?: readonly CoreSelectOption[];
+    options?: CoreSelectOption[];
     /**
      * 외부 상태값
      *

@@ -5,16 +5,29 @@ import { MySelect } from '@components/select';
 
 interface Props extends Omit<MySelectProps, 'value' | 'onChange'> {
     index: number;
-    values: CoreSelectOption[];
-    setValues: CoreSetState<CoreSelectOption[]>;
+    values: Array<CoreSelectOption | null>;
+    setValues: CoreSetState<Array<CoreSelectOption | null>>;
 }
 
 export const UploadSelect: FC<Props> = ({
     index,
     values,
     setValues,
+    options,
     ...rest
 }) => {
+    let sortedOptions = [...options!];
+    if (values[index]) {
+        sortedOptions = sortedOptions.sort((v) => {
+            if (v.value === values[index]!.value) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+    }
+    sortedOptions.unshift({ label: '선택', value: '' });
+
     const handleChange = (option: CoreSelectOption | null) => {
         if (option) {
             const findIndex = values.findIndex(
@@ -24,7 +37,11 @@ export const UploadSelect: FC<Props> = ({
             if (findIndex === -1) {
                 const newValues = [...values];
 
-                newValues[index] = option;
+                if (option.value) {
+                    newValues[index] = option;
+                } else {
+                    newValues[index] = null;
+                }
 
                 setValues(newValues);
             } else {
@@ -37,12 +54,12 @@ export const UploadSelect: FC<Props> = ({
         <MySelect
             value={values[index]}
             onChange={handleChange}
-            options={values}
+            options={sortedOptions}
             {...rest}
             styles={{
                 option: (provided, state) => ({
                     ...provided,
-                    backgroundColor: state.isSelected ? 'red' : 'white',
+                    color: state.isSelected ? 'white' : 'black',
                 }),
             }}
         />

@@ -2,7 +2,9 @@ import type { CreateLongRequestPayload } from '@actions/contract/long/create-lon
 import type { GetLongRequestPayload } from '@actions/contract/long/get-long.action';
 import type { GetLongsRequestPayload } from '@actions/contract/long/get-longs.action';
 import type { UpdateLongRequestPayload } from '@actions/contract/long/update-long.action';
+import type { UploadLongRequestPayload } from '@actions/contract/long/upload-long.action';
 import { getBackendAxios } from '@utils/axios/backend';
+import { getNodeAxios } from '@utils/axios/node';
 
 export function getLongs({ page, nums, ...rest }: GetLongsRequestPayload) {
     return getBackendAxios().post(`/long/sil?page=${page}&nums=${nums}`, rest);
@@ -20,11 +22,21 @@ export function updateLong(payload: UpdateLongRequestPayload) {
     return getBackendAxios().post('/long/update', payload);
 }
 
+export function uploadLong(payload: UploadLongRequestPayload) {
+    return getNodeAxios().post('/long/upload', payload);
+}
+
+export function getLongFields() {
+    return getNodeAxios().get(`/long/fields`);
+}
+
 const rootServices = {
     getLongs,
     getLong,
     createLong,
     updateLong,
+    uploadLong,
+    getLongFields,
 };
 
 export default rootServices;
