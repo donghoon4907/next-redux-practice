@@ -47,7 +47,7 @@ export const IncomeTabpanel: FC<Props> = ({
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
-                <div className="col-4">
+                <div className="col">
                     <div className="wr-pages-detail__subtitle">
                         <strong>기본 설정</strong>
                     </div>
@@ -79,121 +79,105 @@ export const IncomeTabpanel: FC<Props> = ({
                         />
                     </WithLabel>
                 </div>
-                <div className="col-4">
-                    <div className="wr-ml">
-                        <div className="wr-pages-detail__subtitle">
-                            <strong>자동차 규정</strong>
-                        </div>
-                        <div className="wr-pages-detail__horizontal wr-mb">
-                            <MyRadio
-                                id="carTypeTable"
-                                label="테이블"
-                                value="테이블"
-                                disabled={!editable}
-                                checked={carType === '테이블'}
-                                onChange={onChangeCarType}
-                            />
-                            <MyRadio
-                                id="carTypeProportion"
-                                label="비례"
-                                value="비례"
-                                disabled={!editable}
-                                checked={carType === '비례'}
-                                onChange={onChangeCarType}
-                            />
-                        </div>
-                        <WithLabel
-                            id="carReg"
-                            label="자동차규정"
-                            type="disable"
-                        >
-                            <div className="wr-pages-detail__lock">
-                                <p>준비 중입니다.</p>
-                            </div>
-                            <MySelect
-                                inputId="carReg"
-                                placeholder={'선택'}
-                                placeHolderFontSize={16}
-                                height={variables.detailFilterHeight}
-                                isDisabled={true}
-                                options={[]}
-                                value={null}
-                                onChange={() => {}}
-                            />
-                        </WithLabel>
+                <div className="col">
+                    <div className="wr-pages-detail__subtitle">
+                        <strong>자동차 규정</strong>
                     </div>
+                    <div className="wr-pages-detail__horizontal wr-mb">
+                        <MyRadio
+                            id="carTypeTable"
+                            label="테이블"
+                            value="테이블"
+                            disabled={!editable}
+                            checked={carType === '테이블'}
+                            onChange={onChangeCarType}
+                        />
+                        <MyRadio
+                            id="carTypeProportion"
+                            label="비례"
+                            value="비례"
+                            disabled={!editable}
+                            checked={carType === '비례'}
+                            onChange={onChangeCarType}
+                        />
+                    </div>
+                    <WithLabel id="carReg" label="자동차규정" type="disable">
+                        <div className="wr-pages-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
+                        <MySelect
+                            inputId="carReg"
+                            placeholder={'선택'}
+                            placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
+                            isDisabled={true}
+                            options={[]}
+                            value={null}
+                            onChange={() => {}}
+                        />
+                    </WithLabel>
                 </div>
-                <div className="col-4">
-                    <div className="wr-ml">
-                        <div className="wr-pages-detail__subtitle">
-                            <strong>일반규정</strong>
-                        </div>
-                        <div className="wr-pages-detail__horizontal wr-mb">
-                            <MyRadio
-                                id="genTypeRate"
-                                label="지급율"
-                                value="지급율"
-                                disabled={!editable}
-                                checked={genType === '지급율'}
-                                onChange={onChangeGenType}
-                            />
-                            <MyRadio
-                                id="genTypeProportion"
-                                label="비례"
-                                value="비례"
-                                disabled={!editable}
-                                checked={genType === '비례'}
-                                onChange={onChangeGenType}
-                            />
-                        </div>
-                        <WithLabel
-                            id="genBase"
-                            label="산출기준"
-                            type={labelType}
-                        >
-                            <MySelect
-                                inputId="genBase"
-                                placeHolderFontSize={16}
-                                height={variables.detailFilterHeight}
-                                isDisabled={!editable}
-                                {...genBase}
-                            />
-                        </WithLabel>
-                        <WithLabel id="genRate" label="지급율" type={labelType}>
-                            <MyInput
-                                type="text"
-                                id="genRate"
-                                placeholder="지급율"
-                                className="text-end"
-                                disabled={!editable}
-                                unit="%"
-                                {...genRate}
-                            />
-                        </WithLabel>
-                        <WithLabel
-                            id="genReg"
-                            label="일반규정"
-                            type={'disable'}
-                        >
-                            <div className="wr-pages-detail__lock">
-                                <p>준비 중입니다.</p>
-                            </div>
-                            <MySelect
-                                inputId="genReg"
-                                placeholder={'선택'}
-                                placeHolderFontSize={16}
-                                height={variables.detailFilterHeight}
-                                isDisabled={true}
-                                options={[]}
-                                value={null}
-                                onChange={() => {}}
-                            />
-                        </WithLabel>
+                <div className="col">
+                    <div className="wr-pages-detail__subtitle">
+                        <strong>일반규정</strong>
                     </div>
+                    <div className="wr-pages-detail__horizontal wr-mb">
+                        <MyRadio
+                            id="genTypeRate"
+                            label="지급율"
+                            value="지급율"
+                            disabled={!editable}
+                            checked={genType === '지급율'}
+                            onChange={onChangeGenType}
+                        />
+                        <MyRadio
+                            id="genTypeProportion"
+                            label="비례"
+                            value="비례"
+                            disabled={!editable}
+                            checked={genType === '비례'}
+                            onChange={onChangeGenType}
+                        />
+                    </div>
+                    <WithLabel id="genBase" label="산출기준" type={labelType}>
+                        <MySelect
+                            inputId="genBase"
+                            placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
+                            isDisabled={!editable}
+                            {...genBase}
+                        />
+                    </WithLabel>
+                    <WithLabel id="genRate" label="지급율" type={labelType}>
+                        <MyInput
+                            type="text"
+                            id="genRate"
+                            placeholder="지급율"
+                            className="text-end"
+                            disabled={!editable}
+                            unit="%"
+                            {...genRate}
+                        />
+                    </WithLabel>
+                    <WithLabel id="genReg" label="일반규정" type={'disable'}>
+                        <div className="wr-pages-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
+                        <MySelect
+                            inputId="genReg"
+                            placeholder={'선택'}
+                            placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
+                            isDisabled={true}
+                            options={[]}
+                            value={null}
+                            onChange={() => {}}
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="row">
-                <div className="col-6">
+                <div className="col">
                     <div className="wr-pages-detail__subtitle">
                         <strong>장기 기본지급</strong>
                         <div>
@@ -279,66 +263,64 @@ export const IncomeTabpanel: FC<Props> = ({
                         </div>
                     )} */}
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <div className="wr-pages-detail__subtitle">
-                            <strong>오버라이딩</strong>
+                <div className="col">
+                    <div className="wr-pages-detail__subtitle">
+                        <strong>오버라이딩</strong>
+                    </div>
+                    <div className="wr-table--normal wr-mb position-relative">
+                        <div className="wr-pages-detail__lock">
+                            <p>준비 중입니다.</p>
                         </div>
-                        <div className="wr-table--normal wr-mb position-relative">
-                            <div className="wr-pages-detail__lock">
-                                <p>준비 중입니다.</p>
-                            </div>
-                            <table className="wr-table table">
-                                <thead>
-                                    <tr>
-                                        <th style={{ width: 30 }}>
-                                            <MyCheckbox
-                                                label=""
-                                                // onChange={handleAllCheckDamages}
-                                            />
-                                        </th>
-                                        <th style={{ width: '100px' }}>
-                                            <strong>규정구분</strong>
-                                        </th>
-                                        <th style={{ width: '100px' }}>
-                                            <strong>본인실적</strong>
-                                        </th>
-                                        <th>
-                                            <strong>산출기준</strong>
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <MyCheckbox label="" />
-                                        </td>
-                                        <td>
-                                            <span>시작월</span>
-                                        </td>
-                                        <td>
-                                            <span>제외</span>
-                                        </td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <MyCheckbox label="" />
-                                        </td>
-                                        <td>
-                                            <span>리크루팅</span>
-                                        </td>
-                                        <td>
-                                            <span>포함</span>
-                                        </td>
-                                        <td>-</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <MyTableExtension
-                                onClick={() => alert('준비 중입니다.')}
-                            />
-                        </div>
+                        <table className="wr-table table">
+                            <thead>
+                                <tr>
+                                    <th style={{ width: 30 }}>
+                                        <MyCheckbox
+                                            label=""
+                                            // onChange={handleAllCheckDamages}
+                                        />
+                                    </th>
+                                    <th style={{ width: '100px' }}>
+                                        <strong>규정구분</strong>
+                                    </th>
+                                    <th style={{ width: '100px' }}>
+                                        <strong>본인실적</strong>
+                                    </th>
+                                    <th>
+                                        <strong>산출기준</strong>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <MyCheckbox label="" />
+                                    </td>
+                                    <td>
+                                        <span>시작월</span>
+                                    </td>
+                                    <td>
+                                        <span>제외</span>
+                                    </td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <MyCheckbox label="" />
+                                    </td>
+                                    <td>
+                                        <span>리크루팅</span>
+                                    </td>
+                                    <td>
+                                        <span>포함</span>
+                                    </td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <MyTableExtension
+                            onClick={() => alert('준비 중입니다.')}
+                        />
                     </div>
                 </div>
             </div>

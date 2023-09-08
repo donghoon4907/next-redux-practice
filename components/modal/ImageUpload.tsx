@@ -95,7 +95,7 @@ export const ImageUploadModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>프로필 사진 설정</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <input type="file" onChange={handleChange} />
                         <br />
                         <br />
@@ -116,18 +116,16 @@ export const ImageUploadModal: FC<Props> = () => {
                         />
                     </div>
                     {preview && (
-                        <div className="col-6">
-                            <div className="wr-ml">
-                                <h3>Preview</h3>
-                                <div
-                                    className="img-preview"
-                                    style={{
-                                        width: '100%',
-                                        height: '250px',
-                                        overflow: 'hidden',
-                                    }}
-                                />
-                            </div>
+                        <div className="col">
+                            <h3>Preview</h3>
+                            <div
+                                className="img-preview"
+                                style={{
+                                    width: '100%',
+                                    height: '250px',
+                                    overflow: 'hidden',
+                                }}
+                            />
                         </div>
                     )}
                 </div>

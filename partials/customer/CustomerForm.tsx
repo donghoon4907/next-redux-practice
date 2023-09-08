@@ -689,7 +689,7 @@ export const CustomerForm: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="col-6">
+                                <div className="col">
                                     {isIndividual && (
                                         <WithLabel
                                             id="name"
@@ -723,27 +723,25 @@ export const CustomerForm: FC<Props> = ({
                                         </WithLabel>
                                     )}
                                 </div>
-                                <div className="col-6">
-                                    <div className="wr-ml">
-                                        <WithLabel
-                                            id="custtype"
-                                            label="고객구분"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="custtype"
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...custtype}
-                                            />
-                                        </WithLabel>
-                                    </div>
+                                <div className="col">
+                                    <WithLabel
+                                        id="custtype"
+                                        label="고객구분"
+                                        type={labelType}
+                                    >
+                                        <MySelect
+                                            inputId="custtype"
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={!editable}
+                                            {...custtype}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                             <div className="row wr-mt">
-                                <div className="col-6">
+                                <div className="col">
                                     {isIndividual && (
                                         <WithLabel
                                             id="idnum1"
@@ -778,41 +776,39 @@ export const CustomerForm: FC<Props> = ({
                                         </WithLabel>
                                     )}
                                 </div>
-                                <div className="col-6">
-                                    <div className="wr-ml">
-                                        {isIndividual && (
-                                            <DateAndSLInput
-                                                id="birthday"
-                                                label="생년월일"
-                                                disabled={!editable}
-                                                dateHooks={birthday}
-                                                type={bType}
-                                                setType={setBtype}
-                                                labelType={labelType}
-                                                size="md"
-                                            />
-                                        )}
-                                        {isCorporation && (
-                                            <WithLabel
+                                <div className="col">
+                                    {isIndividual && (
+                                        <DateAndSLInput
+                                            id="birthday"
+                                            label="생년월일"
+                                            disabled={!editable}
+                                            dateHooks={birthday}
+                                            type={bType}
+                                            setType={setBtype}
+                                            labelType={labelType}
+                                            size="md"
+                                        />
+                                    )}
+                                    {isCorporation && (
+                                        <WithLabel
+                                            id="iDate"
+                                            label="법인설립일"
+                                            type={labelType}
+                                        >
+                                            <MyDatepicker
                                                 id="iDate"
-                                                label="법인설립일"
-                                                type={labelType}
-                                            >
-                                                <MyDatepicker
-                                                    id="iDate"
-                                                    size="md"
-                                                    placeholder="법인설립일"
-                                                    disabled={!editable}
-                                                    hooks={iDate}
-                                                />
-                                            </WithLabel>
-                                        )}
-                                    </div>
+                                                size="md"
+                                                placeholder="법인설립일"
+                                                disabled={!editable}
+                                                hooks={iDate}
+                                            />
+                                        </WithLabel>
+                                    )}
                                 </div>
                             </div>
                             {isIndividual && (
                                 <div className="row wr-mt">
-                                    <div className="col-6">
+                                    <div className="col">
                                         <WithLabel
                                             label="나이"
                                             type={labelType}
@@ -825,7 +821,7 @@ export const CustomerForm: FC<Props> = ({
                                             />
                                             <div
                                                 className="wr-with__extension"
-                                                style={{ width: 140 }}
+                                                style={{ width: 120 }}
                                             >
                                                 <MySelect
                                                     placeHolderFontSize={16}
@@ -838,20 +834,18 @@ export const CustomerForm: FC<Props> = ({
                                             </div>
                                         </WithLabel>
                                     </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithLabel
-                                                label="상령일"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="상령일"
-                                                    disabled={true}
-                                                    value={sDay}
-                                                />
-                                            </WithLabel>
-                                        </div>
+                                    <div className="col">
+                                        <WithLabel
+                                            label="상령일"
+                                            type={labelType}
+                                        >
+                                            <MyInput
+                                                type="text"
+                                                placeholder="상령일"
+                                                disabled={true}
+                                                value={sDay}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 </div>
                             )}
@@ -860,12 +854,12 @@ export const CustomerForm: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="col-6">
+                                <div className="col">
                                     {isIndividual && (
                                         <WithSelectInput
                                             id="mobile"
                                             label="핸드폰"
-                                            selectWidth={140}
+                                            selectWidth={120}
                                             labelType={labelType}
                                             inputHooks={mobile}
                                             selectHooks={mobileCom}
@@ -888,35 +882,33 @@ export const CustomerForm: FC<Props> = ({
                                         </WithLabel>
                                     )}
                                 </div>
-                                <div className="col-6">
-                                    <div className="wr-ml">
-                                        {isIndividual && (
-                                            <WithSelectInput
-                                                id="email"
-                                                label="이메일"
-                                                selectWidth={140}
-                                                labelType={labelType}
-                                                inputHooks={email}
-                                                selectHooks={emailCom}
-                                                disabled={!editable}
-                                            />
-                                        )}
-                                        {isCorporation && (
-                                            <WithLabel
+                                <div className="col">
+                                    {isIndividual && (
+                                        <WithSelectInput
+                                            id="email"
+                                            label="이메일"
+                                            selectWidth={120}
+                                            labelType={labelType}
+                                            inputHooks={email}
+                                            selectHooks={emailCom}
+                                            disabled={!editable}
+                                        />
+                                    )}
+                                    {isCorporation && (
+                                        <WithLabel
+                                            id="homepage"
+                                            label="홈페이지"
+                                            type={labelType}
+                                        >
+                                            <MyInput
+                                                type="text"
                                                 id="homepage"
-                                                label="홈페이지"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="homepage"
-                                                    placeholder="홈페이지"
-                                                    disabled={!editable}
-                                                    {...homepage}
-                                                />
-                                            </WithLabel>
-                                        )}
-                                    </div>
+                                                placeholder="홈페이지"
+                                                disabled={!editable}
+                                                {...homepage}
+                                            />
+                                        </WithLabel>
+                                    )}
                                 </div>
                             </div>
                             {isIndividual && (
@@ -937,7 +929,7 @@ export const CustomerForm: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="col-6">
+                                <div className="col">
                                     <WithLabel
                                         id="inflowPath"
                                         label="유입경로"
@@ -954,27 +946,25 @@ export const CustomerForm: FC<Props> = ({
                                         />
                                     </WithLabel>
                                 </div>
-                                <div className="col-6">
-                                    <div className="wr-ml">
-                                        <WithLabel
-                                            id="grade"
-                                            label="고객등급"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="grade"
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...grade}
-                                            />
-                                        </WithLabel>
-                                    </div>
+                                <div className="col">
+                                    <WithLabel
+                                        id="grade"
+                                        label="고객등급"
+                                        type={labelType}
+                                    >
+                                        <MySelect
+                                            inputId="grade"
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={!editable}
+                                            {...grade}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                             <div className="row wr-mt">
-                                <div className="col-6 position-relative">
+                                <div className="col position-relative">
                                     <div className="wr-pages-detail__lock">
                                         <span>준비중입니다.</span>
                                     </div>
@@ -993,30 +983,28 @@ export const CustomerForm: FC<Props> = ({
                                         />
                                     </WithLabel>
                                 </div>
-                                <div className="col-6 position-relative">
+                                <div className="col position-relative">
                                     <div className="wr-pages-detail__lock">
                                         <span>준비중입니다.</span>
                                     </div>
-                                    <div className="wr-ml">
-                                        <WithLabel
+                                    <WithLabel
+                                        id="aDay"
+                                        label="동의일시"
+                                        type={labelType}
+                                    >
+                                        <MyDatepicker
                                             id="aDay"
-                                            label="동의일시"
-                                            type={labelType}
-                                        >
-                                            <MyDatepicker
-                                                id="aDay"
-                                                size="md"
-                                                placeholder="동의일시"
-                                                format="yyyy-MM-dd HH:mm"
-                                                disabled={!editable}
-                                                hooks={aDay}
-                                            />
-                                        </WithLabel>
-                                    </div>
+                                            size="md"
+                                            placeholder="동의일시"
+                                            format="yyyy-MM-dd HH:mm"
+                                            disabled={!editable}
+                                            hooks={aDay}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                             <div className="row wr-mt">
-                                <div className="col-6">
+                                <div className="col">
                                     <WithLabel
                                         id="createDay"
                                         label="고객생성일시"
@@ -1033,22 +1021,20 @@ export const CustomerForm: FC<Props> = ({
                                     </WithLabel>
                                 </div>
                                 {isIndividual && (
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithLabel
+                                    <div className="col">
+                                        <WithLabel
+                                            id="job"
+                                            label="직업"
+                                            type={labelType}
+                                        >
+                                            <MyInput
+                                                type="text"
                                                 id="job"
-                                                label="직업"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="job"
-                                                    placeholder="직업"
-                                                    disabled={!editable}
-                                                    {...job}
-                                                />
-                                            </WithLabel>
-                                        </div>
+                                                placeholder="직업"
+                                                disabled={!editable}
+                                                {...job}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 )}
                             </div>
@@ -1061,7 +1047,7 @@ export const CustomerForm: FC<Props> = ({
                             </div>
                             <div className="wr-pages-detail__content">
                                 <div className="row">
-                                    <div className="col-6">
+                                    <div className="col">
                                         <WithLabel
                                             id="company"
                                             label="회사명"
@@ -1076,26 +1062,24 @@ export const CustomerForm: FC<Props> = ({
                                             />
                                         </WithLabel>
                                     </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithLabel
+                                    <div className="col">
+                                        <WithLabel
+                                            id="title"
+                                            label="부서/직함"
+                                            type={labelType}
+                                        >
+                                            <MyInput
+                                                type="text"
                                                 id="title"
-                                                label="부서/직함"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="title"
-                                                    placeholder="부서/직함"
-                                                    disabled={!editable}
-                                                    {...title}
-                                                />
-                                            </WithLabel>
-                                        </div>
+                                                placeholder="부서/직함"
+                                                disabled={!editable}
+                                                {...title}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 </div>
                                 <div className="row wr-mt">
-                                    <div className="col-6">
+                                    <div className="col">
                                         <WithLabel
                                             id="comPhone"
                                             label="전화번호"
@@ -1110,22 +1094,20 @@ export const CustomerForm: FC<Props> = ({
                                             />
                                         </WithLabel>
                                     </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithLabel
+                                    <div className="col">
+                                        <WithLabel
+                                            id="cFax"
+                                            label="팩스"
+                                            type={labelType}
+                                        >
+                                            <MyInput
+                                                type="text"
                                                 id="cFax"
-                                                label="팩스"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="cFax"
-                                                    placeholder="팩스"
-                                                    disabled={!editable}
-                                                    {...cFax}
-                                                />
-                                            </WithLabel>
-                                        </div>
+                                                placeholder="팩스"
+                                                disabled={!editable}
+                                                {...cFax}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 </div>
                                 <PostcodeInput
@@ -1150,7 +1132,7 @@ export const CustomerForm: FC<Props> = ({
                             </div>
                             <div className="wr-pages-detail__content">
                                 <div className="row">
-                                    <div className="col-6">
+                                    <div className="col">
                                         <WithLabel
                                             id="mName"
                                             label="담당자명"
@@ -1165,26 +1147,24 @@ export const CustomerForm: FC<Props> = ({
                                             />
                                         </WithLabel>
                                     </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithLabel
+                                    <div className="col">
+                                        <WithLabel
+                                            id="mTitle"
+                                            label="부서/직함"
+                                            type={labelType}
+                                        >
+                                            <MyInput
+                                                type="text"
                                                 id="mTitle"
-                                                label="부서/직함"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    id="mTitle"
-                                                    placeholder="부서/직함"
-                                                    disabled={!editable}
-                                                    {...mTitle}
-                                                />
-                                            </WithLabel>
-                                        </div>
+                                                placeholder="부서/직함"
+                                                disabled={!editable}
+                                                {...mTitle}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 </div>
                                 <div className="row wr-mt">
-                                    <div className="col-6">
+                                    <div className="col">
                                         <WithLabel
                                             id="comPhone"
                                             label="전화번호"
@@ -1199,18 +1179,16 @@ export const CustomerForm: FC<Props> = ({
                                             />
                                         </WithLabel>
                                     </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithSelectInput
-                                                id="mEmail"
-                                                label="이메일"
-                                                selectWidth={140}
-                                                labelType={labelType}
-                                                inputHooks={mEmail}
-                                                selectHooks={mEmailCom}
-                                                disabled={!editable}
-                                            />
-                                        </div>
+                                    <div className="col">
+                                        <WithSelectInput
+                                            id="mEmail"
+                                            label="이메일"
+                                            selectWidth={140}
+                                            labelType={labelType}
+                                            inputHooks={mEmail}
+                                            selectHooks={mEmailCom}
+                                            disabled={!editable}
+                                        />
                                     </div>
                                 </div>
                             </div>

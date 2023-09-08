@@ -106,7 +106,7 @@ export const CreateExcontractGenModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>타사 일반보험 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="gComp" label="보험사" type="active">
                             <MySelect
                                 inputId="gComp"
@@ -115,21 +115,19 @@ export const CreateExcontractGenModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="gTitle" label="상품명" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="gTitle"
-                                    placeholder="상품명"
-                                    {...title}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="gTitle" label="상품명" type="active">
+                            <MyInput
+                                type="text"
+                                id="gTitle"
+                                placeholder="상품명"
+                                {...title}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="gPay" label="보험료" type="active">
                             <MyInput
                                 type="text"
@@ -139,25 +137,23 @@ export const CreateExcontractGenModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel
+                            id="gContdate"
+                            label="개시일자"
+                            type="active"
+                        >
+                            <MyDatepicker
                                 id="gContdate"
-                                label="개시일자"
-                                type="active"
-                            >
-                                <MyDatepicker
-                                    id="gContdate"
-                                    size="sm"
-                                    placeholder="개시일자"
-                                    hooks={contdate}
-                                />
-                            </WithLabel>
-                        </div>
+                                size="sm"
+                                placeholder="개시일자"
+                                hooks={contdate}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel
                             id="gBoDateto"
                             label="만기일자"
@@ -171,17 +167,15 @@ export const CreateExcontractGenModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="gRemark" label="비고" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="gRemark"
-                                    placeholder="비고"
-                                    {...remark}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="gRemark" label="비고" type="active">
+                            <MyInput
+                                type="text"
+                                id="gRemark"
+                                placeholder="비고"
+                                {...remark}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
             </ModalBody>

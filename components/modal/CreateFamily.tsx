@@ -102,7 +102,7 @@ export const CreateFamilyModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>가족 및 지인 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="fname" label="이름" type="active">
                             <MyInput
                                 type="text"
@@ -112,29 +112,27 @@ export const CreateFamilyModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel label="구분" type="active">
-                                <div className="wr-with__container">
-                                    <MyRadio
-                                        label="가족"
-                                        value="가족"
-                                        checked={type === '가족'}
-                                        onChange={handleChangeType}
-                                    />
-                                    <MyRadio
-                                        label="지인"
-                                        value="지인"
-                                        checked={type === '지인'}
-                                        onChange={handleChangeType}
-                                    />
-                                </div>
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel label="구분" type="active">
+                            <div className="wr-with__container">
+                                <MyRadio
+                                    label="가족"
+                                    value="가족"
+                                    checked={type === '가족'}
+                                    onChange={handleChangeType}
+                                />
+                                <MyRadio
+                                    label="지인"
+                                    value="지인"
+                                    checked={type === '지인'}
+                                    onChange={handleChangeType}
+                                />
+                            </div>
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="frelation" label="관계" type="active">
                             <MyInput
                                 type="text"
@@ -144,22 +142,20 @@ export const CreateFamilyModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <DateAndSLInput
-                                id="fbirthday"
-                                label="생년월일"
-                                dateHooks={birthday}
-                                type={bType}
-                                setType={setBtype}
-                                labelType="active"
-                                size="sm"
-                            />
-                        </div>
+                    <div className="col">
+                        <DateAndSLInput
+                            id="fbirthday"
+                            label="생년월일"
+                            dateHooks={birthday}
+                            type={bType}
+                            setType={setBtype}
+                            labelType="active"
+                            size="sm"
+                        />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel label="성별" type="active">
                             <div className="wr-with__container">
                                 <MyRadio
@@ -177,17 +173,15 @@ export const CreateFamilyModal: FC<Props> = () => {
                             </div>
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="fremark" label="비고" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="fremark"
-                                    placeholder="비고"
-                                    {...remark}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="fremark" label="비고" type="active">
+                            <MyInput
+                                type="text"
+                                id="fremark"
+                                placeholder="비고"
+                                {...remark}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
             </ModalBody>

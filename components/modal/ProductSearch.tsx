@@ -92,7 +92,7 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
             <ModalHeader toggle={handleClose}>상품 검색</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="mPtype" label="보종" type="active">
                             <MySelect
                                 inputId="mPtype"
@@ -101,21 +101,15 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel id="mPtitle" label="상품명" type="active">
+                            <MyInput
+                                type="text"
                                 id="mPtitle"
-                                label="상품명"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="mPtitle"
-                                    placeholder="상품명"
-                                    {...search}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="상품명"
+                                {...search}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div

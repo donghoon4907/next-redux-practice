@@ -136,7 +136,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>보증설정</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="gKind" label="보증구분" type="active">
                             <MySelect
                                 inputId="gKind"
@@ -145,23 +145,21 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="gMoney" label="보증금" type="active">
-                                <MyInput
-                                    id="gMoney"
-                                    placeholder="보증금"
-                                    className="text-end"
-                                    {...gMoney}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="gMoney" label="보증금" type="active">
+                            <MyInput
+                                id="gMoney"
+                                placeholder="보증금"
+                                className="text-end"
+                                {...gMoney}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 {kind.value?.label === '적립금' ? (
                     <>
                         <div className="row wr-mt">
-                            <div className="col-6">
+                            <div className="col">
                                 <WithLabel
                                     id="accGoal"
                                     label="적립목표"
@@ -175,25 +173,23 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     />
                                 </WithLabel>
                             </div>
-                            <div className="col-6">
-                                <div className="wr-ml">
-                                    <WithLabel
-                                        id="accStatus"
-                                        label="상태"
-                                        type="active"
-                                    >
-                                        <MySelect
-                                            inputId="accStatus"
-                                            placeholder="상태"
-                                            placeHolderFontSize={16}
-                                            {...accStatus}
-                                        />
-                                    </WithLabel>
-                                </div>
+                            <div className="col">
+                                <WithLabel
+                                    id="accStatus"
+                                    label="상태"
+                                    type="active"
+                                >
+                                    <MySelect
+                                        inputId="accStatus"
+                                        placeholder="상태"
+                                        placeHolderFontSize={16}
+                                        {...accStatus}
+                                    />
+                                </WithLabel>
                             </div>
                         </div>
                         <div className="row wr-mt">
-                            <div className="col-6">
+                            <div className="col">
                                 <WithLabel
                                     id="accType"
                                     label="산출기준"
@@ -207,22 +203,20 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     />
                                 </WithLabel>
                             </div>
-                            <div className="col-6">
-                                <div className="wr-ml">
-                                    <WithLabel
+                            <div className="col">
+                                <WithLabel
+                                    id="accRate"
+                                    label="적립율"
+                                    type="active"
+                                >
+                                    <MyInput
                                         id="accRate"
-                                        label="적립율"
-                                        type="active"
-                                    >
-                                        <MyInput
-                                            id="accRate"
-                                            placeholder="적립율"
-                                            className="text-end"
-                                            unit="%"
-                                            {...accRate}
-                                        />
-                                    </WithLabel>
-                                </div>
+                                        placeholder="적립율"
+                                        className="text-end"
+                                        unit="%"
+                                        {...accRate}
+                                    />
+                                </WithLabel>
                             </div>
                         </div>
                     </>
@@ -244,7 +238,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                             </div>
                         </div>
                         <div className="row wr-mt">
-                            <div className="col-6">
+                            <div className="col">
                                 <WithLabel
                                     id="sdate"
                                     label="보증시기"
@@ -258,25 +252,23 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     />
                                 </WithLabel>
                             </div>
-                            <div className="col-6">
-                                <div className="wr-ml">
-                                    <WithLabel
+                            <div className="col">
+                                <WithLabel
+                                    id="edate"
+                                    label="보증만기"
+                                    type="active"
+                                >
+                                    <MyDatepicker
                                         id="edate"
-                                        label="보증만기"
-                                        type="active"
-                                    >
-                                        <MyDatepicker
-                                            id="edate"
-                                            size="sm"
-                                            placeholder="보증만기"
-                                            hooks={edate}
-                                        />
-                                    </WithLabel>
-                                </div>
+                                        size="sm"
+                                        placeholder="보증만기"
+                                        hooks={edate}
+                                    />
+                                </WithLabel>
                             </div>
                         </div>
                         <div className="row wr-mt">
-                            <div className="col-6">
+                            <div className="col">
                                 <WithLabel
                                     id="redate"
                                     label="갱신만기"
@@ -290,21 +282,19 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     />
                                 </WithLabel>
                             </div>
-                            <div className="col-6">
-                                <div className="wr-ml">
-                                    <WithLabel
-                                        id="agencyCom"
-                                        label="금융기관"
-                                        type="active"
-                                    >
-                                        <MySelect
-                                            inputId="agencyCom"
-                                            placeholder="금융기관"
-                                            placeHolderFontSize={16}
-                                            {...agencyCom}
-                                        />
-                                    </WithLabel>
-                                </div>
+                            <div className="col">
+                                <WithLabel
+                                    id="agencyCom"
+                                    label="금융기관"
+                                    type="active"
+                                >
+                                    <MySelect
+                                        inputId="agencyCom"
+                                        placeholder="금융기관"
+                                        placeHolderFontSize={16}
+                                        {...agencyCom}
+                                    />
+                                </WithLabel>
                             </div>
                         </div>
                         {/* <div className="row wr-mt">

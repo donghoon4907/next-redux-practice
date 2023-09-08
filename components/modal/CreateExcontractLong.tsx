@@ -106,7 +106,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>타사 장기보험 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="lComp" label="보험사" type="active">
                             <MySelect
                                 inputId="lComp"
@@ -115,21 +115,19 @@ export const CreateExcontractLongModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="lTitle" label="상품명" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="lTitle"
-                                    placeholder="상품명"
-                                    {...title}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="lTitle" label="상품명" type="active">
+                            <MyInput
+                                type="text"
+                                id="lTitle"
+                                placeholder="상품명"
+                                {...title}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel
                             id="lSubcategory"
                             label="세부보종"
@@ -143,21 +141,19 @@ export const CreateExcontractLongModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="lPay" label="보험료" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="lPay"
-                                    placeholder="보험료"
-                                    {...pay}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="lPay" label="보험료" type="active">
+                            <MyInput
+                                type="text"
+                                id="lPay"
+                                placeholder="보험료"
+                                {...pay}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel
                             id="lContdate"
                             label="계약일자"
@@ -171,17 +167,15 @@ export const CreateExcontractLongModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="lRemark" label="비고" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="lRemark"
-                                    placeholder="비고"
-                                    {...remark}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="lRemark" label="비고" type="active">
+                            <MyInput
+                                type="text"
+                                id="lRemark"
+                                placeholder="비고"
+                                {...remark}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
             </ModalBody>

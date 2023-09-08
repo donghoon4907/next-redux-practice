@@ -979,7 +979,7 @@ export const UserForm: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="col-8">
+                                <div className="col">
                                     <WithLabel
                                         id="nick"
                                         label="영업명"
@@ -1058,7 +1058,10 @@ export const UserForm: FC<Props> = ({
                                             disabled={!editable}
                                             {...mobile}
                                         />
-                                        <div style={{ width: 200 }}>
+                                        <div
+                                            className="wr-with__extension"
+                                            style={{ width: 140 }}
+                                        >
                                             <MySelect
                                                 placeholder={'선택'}
                                                 placeHolderFontSize={16}
@@ -1083,7 +1086,10 @@ export const UserForm: FC<Props> = ({
                                             disabled={!editable}
                                             {...telephone}
                                         />
-                                        <div style={{ width: 200 }}>
+                                        <div
+                                            className="wr-with__extension"
+                                            style={{ width: 140 }}
+                                        >
                                             <MyInput
                                                 type="text"
                                                 className="wr-border-l--hide"
@@ -1104,68 +1110,61 @@ export const UserForm: FC<Props> = ({
                                     />
                                 </div>
                                 <div className="col-4">
-                                    <div className="wr-ml">
-                                        <div
-                                            className={`${displayName}__avatar wr-mb ${
-                                                editable
-                                                    ? 'wr-cursor--pointer'
-                                                    : ''
-                                            }`}
-                                        >
-                                            <img
-                                                src={
-                                                    lastSetPortraitImagePreview
-                                                        ? lastSetPortraitImagePreview
-                                                        : 'http://via.placeholder.com/200x220'
-                                                }
-                                                alt="Avatar"
-                                                onClick={handleClickImage}
-                                            />
-                                        </div>
-                                        <WithLabel
-                                            label="사원번호"
-                                            type="disable"
-                                        >
-                                            <MyInput
-                                                type="text"
-                                                placeholder="사원번호"
-                                                value={userid}
-                                                disabled
-                                            />
-                                        </WithLabel>
-                                        <WithLabel
-                                            id="user_type"
-                                            label="영업구분"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="user_type"
-                                                placeholder={'선택'}
-                                                placeHolderFontSize={16}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...userType}
-                                            />
-                                        </WithLabel>
-                                        <WithLabel
-                                            id="status"
-                                            label="재직현황"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="status"
-                                                placeholder={'선택'}
-                                                placeHolderFontSize={16}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...status}
-                                            />
-                                        </WithLabel>
+                                    <div
+                                        className={`${displayName}__avatar wr-mb ${
+                                            editable ? 'wr-cursor--pointer' : ''
+                                        }`}
+                                    >
+                                        <img
+                                            src={
+                                                lastSetPortraitImagePreview
+                                                    ? lastSetPortraitImagePreview
+                                                    : 'http://via.placeholder.com/200x220'
+                                            }
+                                            alt="Avatar"
+                                            onClick={handleClickImage}
+                                        />
                                     </div>
+                                    <WithLabel label="사원번호" type="disable">
+                                        <MyInput
+                                            type="text"
+                                            placeholder="사원번호"
+                                            value={userid}
+                                            disabled
+                                        />
+                                    </WithLabel>
+                                    <WithLabel
+                                        id="user_type"
+                                        label="영업구분"
+                                        type={labelType}
+                                    >
+                                        <MySelect
+                                            inputId="user_type"
+                                            placeholder={'선택'}
+                                            placeHolderFontSize={16}
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={!editable}
+                                            {...userType}
+                                        />
+                                    </WithLabel>
+                                    <WithLabel
+                                        id="status"
+                                        label="재직현황"
+                                        type={labelType}
+                                    >
+                                        <MySelect
+                                            inputId="status"
+                                            placeholder={'선택'}
+                                            placeHolderFontSize={16}
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={!editable}
+                                            {...status}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                         </div>
@@ -1183,7 +1182,7 @@ export const UserForm: FC<Props> = ({
                                 onClickPostcode={onClickPostcode}
                             />
                             <div className="row wr-mt">
-                                <div className="col-6">
+                                <div className="col">
                                     <WithLabel
                                         id="indate"
                                         label="입사일"
@@ -1198,22 +1197,20 @@ export const UserForm: FC<Props> = ({
                                         />
                                     </WithLabel>
                                 </div>
-                                <div className="col-6">
-                                    <div className="wr-ml">
-                                        <WithLabel
+                                <div className="col">
+                                    <WithLabel
+                                        id="outdate"
+                                        label="퇴사일"
+                                        type={labelType}
+                                    >
+                                        <MyDatepicker
                                             id="outdate"
-                                            label="퇴사일"
-                                            type={labelType}
-                                        >
-                                            <MyDatepicker
-                                                id="outdate"
-                                                size="md"
-                                                placeholder="퇴사일"
-                                                disabled={!editable}
-                                                hooks={outdate}
-                                            />
-                                        </WithLabel>
-                                    </div>
+                                            size="md"
+                                            placeholder="퇴사일"
+                                            disabled={!editable}
+                                            hooks={outdate}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                         </div>

@@ -142,7 +142,7 @@ export const AuthorityTabpanel: FC<Props> = ({
                 </div>
             </div>
             <div className="row wr-mt">
-                <div className="col-6">
+                <div className="col">
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
@@ -167,6 +167,7 @@ export const AuthorityTabpanel: FC<Props> = ({
                         </div>
                     </div>
                 </div>
+                <div className="col"></div>
             </div>
         </MyTabpanel>
     );

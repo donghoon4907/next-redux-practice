@@ -156,7 +156,7 @@ export const ContactTabpanel: FC<Props> = ({
                         </div>
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="col-4">
+                                <div className="col">
                                     <WithLabel
                                         id="counselingDivision"
                                         label="상담구분"
@@ -173,46 +173,42 @@ export const ContactTabpanel: FC<Props> = ({
                                         />
                                     </WithLabel>
                                 </div>
-                                <div className="col-4">
-                                    <div className="wr-ml">
-                                        <WithLabel
-                                            id="channel"
-                                            label="채널"
-                                            type={labelType}
-                                            isRequired={editable}
-                                        >
-                                            <MySelect
-                                                inputId="counselingDivision"
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...channel}
-                                            />
-                                        </WithLabel>
-                                    </div>
+                                <div className="col">
+                                    <WithLabel
+                                        id="channel"
+                                        label="채널"
+                                        type={labelType}
+                                        isRequired={editable}
+                                    >
+                                        <MySelect
+                                            inputId="counselingDivision"
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={!editable}
+                                            {...channel}
+                                        />
+                                    </WithLabel>
                                 </div>
-                                <div className="col-4">
-                                    <div className="wr-ml">
-                                        <WithLabel
-                                            id="category"
-                                            label="계약종목"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="counselingDivision"
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={true}
-                                                {..._spe}
-                                            />
-                                        </WithLabel>
-                                    </div>
+                                <div className="col">
+                                    <WithLabel
+                                        id="category"
+                                        label="계약종목"
+                                        type={labelType}
+                                    >
+                                        <MySelect
+                                            inputId="counselingDivision"
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={true}
+                                            {..._spe}
+                                        />
+                                    </WithLabel>
                                 </div>
                             </div>
                             <div className="row wr-mt">
-                                <div className="col-4">
+                                <div className="col">
                                     <WithLabel
                                         id="oDate"
                                         label="사유발생일"
@@ -227,26 +223,24 @@ export const ContactTabpanel: FC<Props> = ({
                                         />
                                     </WithLabel>
                                 </div>
-                                <div className="col-4">
-                                    <div className="wr-ml">
-                                        <WithLabel
+                                <div className="col">
+                                    <WithLabel
+                                        id="rDate"
+                                        label="응대예정일시"
+                                        type={labelType}
+                                    >
+                                        <MyDatepicker
                                             id="rDate"
-                                            label="응대예정일시"
-                                            type={labelType}
-                                        >
-                                            <MyDatepicker
-                                                id="rDate"
-                                                size="md"
-                                                placeholder="응대예정일시"
-                                                format="yyyy-MM-dd HH:mm"
-                                                disabled={!editable}
-                                                hooks={replydatetime}
-                                            />
-                                        </WithLabel>
-                                    </div>
+                                            size="md"
+                                            placeholder="응대예정일시"
+                                            format="yyyy-MM-dd HH:mm"
+                                            disabled={!editable}
+                                            hooks={replydatetime}
+                                        />
+                                    </WithLabel>
                                 </div>
-                                <div className="col-4">
-                                    <div className="wr-ml position-relative">
+                                <div className="col">
+                                    <div className="position-relative">
                                         <div className="wr-pages-detail__lock">
                                             <p>준비 중입니다.</p>
                                         </div>
@@ -284,52 +278,50 @@ export const ContactTabpanel: FC<Props> = ({
                                         </label>
                                     </div>
                                 </div>
-                                <div className="col-4">
-                                    <div className="wr-ml">
-                                        <WithLabel
-                                            id="status"
-                                            label="진행상태"
-                                            type={labelType}
-                                        >
-                                            <MySelect
-                                                inputId="status"
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...status}
-                                            />
-                                        </WithLabel>
-                                        <WithLabel
-                                            label="작성자"
-                                            type={labelType}
-                                            isRequired={editable}
-                                        >
-                                            <MyInput
-                                                type="text"
-                                                placeholder={`${loggedInUser.user_info.name} (${loggedInUser.userid})`}
-                                                disabled
-                                            />
-                                        </WithLabel>
-                                        {editable && (
-                                            <div className="wr-pages-detail__toolbar wr-mt">
-                                                <MyButton
-                                                    className="btn-outline-secondary btn-md"
-                                                    onClick={handleReset}
-                                                    disabled={!editable}
-                                                >
-                                                    원래대로
-                                                </MyButton>
-                                                <MyButton
-                                                    className="btn-primary btn-md"
-                                                    onClick={handleCreate}
-                                                    disabled={!editable}
-                                                >
-                                                    저장
-                                                </MyButton>
-                                            </div>
-                                        )}
-                                    </div>
+                                <div className="col">
+                                    <WithLabel
+                                        id="status"
+                                        label="진행상태"
+                                        type={labelType}
+                                    >
+                                        <MySelect
+                                            inputId="status"
+                                            height={
+                                                variables.detailFilterHeight
+                                            }
+                                            isDisabled={!editable}
+                                            {...status}
+                                        />
+                                    </WithLabel>
+                                    <WithLabel
+                                        label="작성자"
+                                        type={labelType}
+                                        isRequired={editable}
+                                    >
+                                        <MyInput
+                                            type="text"
+                                            placeholder={`${loggedInUser.user_info.name} (${loggedInUser.userid})`}
+                                            disabled
+                                        />
+                                    </WithLabel>
+                                    {editable && (
+                                        <div className="wr-pages-detail__toolbar wr-mt">
+                                            <MyButton
+                                                className="btn-outline-secondary btn-md"
+                                                onClick={handleReset}
+                                                disabled={!editable}
+                                            >
+                                                원래대로
+                                            </MyButton>
+                                            <MyButton
+                                                className="btn-primary btn-md"
+                                                onClick={handleCreate}
+                                                disabled={!editable}
+                                            >
+                                                저장
+                                            </MyButton>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

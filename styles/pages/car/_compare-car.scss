@@ -1,4 +1,4 @@
-.wr-pages-comparison-estimate {
+.wr-pages-compare-car {
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -181,17 +181,6 @@
     }
 
     &__left {
-        overflow: auto;
-        height: 100%;
-        min-width: 715px;
-        flex-basis: 715px;
-        flex-shrink: 0;
-        flex-grow: 0;
-    }
-
-    &__right {
-        position: relative;
-        height: 100%;
-        overflow: auto;
+        flex-basis: 700px;
     }
 }

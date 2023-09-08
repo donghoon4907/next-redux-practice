@@ -82,7 +82,7 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
             <ModalHeader toggle={handleClose}>담당자 변경</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="mDepartment" label="부서" type="active">
                             <MySelect
                                 inputId="mDepartment"
@@ -91,24 +91,18 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
-                                id="mUser"
-                                label="영업가족"
-                                type="active"
-                            >
-                                <MySelect
-                                    inputId="mUser"
-                                    placeHolderFontSize={16}
-                                    {...user}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="mUser" label="영업가족" type="active">
+                            <MySelect
+                                inputId="mUser"
+                                placeHolderFontSize={16}
+                                {...user}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         {type === 'customer' && (
                             <WithLabel id="mRemark" label="비고" type="active">
                                 <MyInput
@@ -119,6 +113,7 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                             </WithLabel>
                         )}
                     </div>
+                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

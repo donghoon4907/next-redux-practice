@@ -150,7 +150,7 @@ export const CustomerTabpanel: FC<Props> = ({
                             {loadedContract && (
                                 <>
                                     <div className="row wr-mt">
-                                        <div className="col-6">
+                                        <div className="col">
                                             <WithLabel
                                                 label="고객구분"
                                                 type="disable"
@@ -167,25 +167,23 @@ export const CustomerTabpanel: FC<Props> = ({
                                                 />
                                             </WithLabel>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    label="유입경로"
-                                                    type="disable"
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        disabled={true}
-                                                        value={
-                                                            loadedContract.sourceroot
-                                                        }
-                                                    />
-                                                </WithLabel>
-                                            </div>
+                                        <div className="col">
+                                            <WithLabel
+                                                label="유입경로"
+                                                type="disable"
+                                            >
+                                                <MyInput
+                                                    type="text"
+                                                    disabled={true}
+                                                    value={
+                                                        loadedContract.sourceroot
+                                                    }
+                                                />
+                                            </WithLabel>
                                         </div>
                                     </div>
                                     <div className="row wr-mt">
-                                        <div className="col-6">
+                                        <div className="col">
                                             <WithLabel
                                                 label="핸드폰"
                                                 type="disable"
@@ -200,28 +198,26 @@ export const CustomerTabpanel: FC<Props> = ({
                                                 />
                                             </WithLabel>
                                         </div>
-                                        <div className="col-6">
-                                            <div className="wr-ml">
-                                                <WithLabel
-                                                    label="이메일"
-                                                    type="disable"
-                                                >
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="이메일"
-                                                        disabled={true}
-                                                        value={
-                                                            loadedContract.emailhome
-                                                        }
-                                                    />
-                                                </WithLabel>
-                                            </div>
+                                        <div className="col">
+                                            <WithLabel
+                                                label="이메일"
+                                                type="disable"
+                                            >
+                                                <MyInput
+                                                    type="text"
+                                                    placeholder="이메일"
+                                                    disabled={true}
+                                                    value={
+                                                        loadedContract.emailhome
+                                                    }
+                                                />
+                                            </WithLabel>
                                         </div>
                                     </div>
                                     {loadedContract.custtype === 0 && (
                                         <>
                                             <div className="row wr-mt">
-                                                <div className="col-6">
+                                                <div className="col">
                                                     <WithLabel
                                                         label="우편번호"
                                                         type="disable"
@@ -236,21 +232,19 @@ export const CustomerTabpanel: FC<Props> = ({
                                                         />
                                                     </WithLabel>
                                                 </div>
-                                                <div className="col-6">
-                                                    <div className="wr-ml">
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="주소1"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.address1
-                                                            }
-                                                        />
-                                                    </div>
+                                                <div className="col">
+                                                    <MyInput
+                                                        type="text"
+                                                        placeholder="주소1"
+                                                        disabled={true}
+                                                        value={
+                                                            loadedContract.address1
+                                                        }
+                                                    />
                                                 </div>
                                             </div>
                                             <div className="row wr-mt">
-                                                <div className="col-6">
+                                                <div className="col">
                                                     <WithLabel
                                                         label="상세주소"
                                                         type="disable"
@@ -265,17 +259,15 @@ export const CustomerTabpanel: FC<Props> = ({
                                                         />
                                                     </WithLabel>
                                                 </div>
-                                                <div className="col-6">
-                                                    <div className="wr-ml">
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="주소2"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.address2
-                                                            }
-                                                        />
-                                                    </div>
+                                                <div className="col">
+                                                    <MyInput
+                                                        type="text"
+                                                        placeholder="주소2"
+                                                        disabled={true}
+                                                        value={
+                                                            loadedContract.address2
+                                                        }
+                                                    />
                                                 </div>
                                             </div>
                                         </>
@@ -286,7 +278,7 @@ export const CustomerTabpanel: FC<Props> = ({
                     </div>
                     {spe === 'car' && (
                         <div className="row wr-mt">
-                            <div className="col-6">
+                            <div className="col">
                                 <WithLabel
                                     label="운전자범위"
                                     id="carfamily"
@@ -301,24 +293,20 @@ export const CustomerTabpanel: FC<Props> = ({
                                     />
                                 </WithLabel>
                             </div>
-                            <div className="col-6">
-                                <div className="wr-ml">
-                                    <WithLabel
-                                        label="최저연령"
-                                        id="carage"
-                                        type={labelType}
-                                    >
-                                        <MySelect
-                                            inputId="carage"
-                                            placeHolderFontSize={16}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
-                                            isDisabled={!editable}
-                                            {...carageHooks}
-                                        />
-                                    </WithLabel>
-                                </div>
+                            <div className="col">
+                                <WithLabel
+                                    label="최저연령"
+                                    id="carage"
+                                    type={labelType}
+                                >
+                                    <MySelect
+                                        inputId="carage"
+                                        placeHolderFontSize={16}
+                                        height={variables.detailFilterHeight}
+                                        isDisabled={!editable}
+                                        {...carageHooks}
+                                    />
+                                </WithLabel>
                             </div>
                         </div>
                     )}
@@ -363,42 +351,14 @@ export const CustomerTabpanel: FC<Props> = ({
                                     )}
 
                                     <div className="col">
-                                        {editable ? (
-                                            <div className="wr-ml">
-                                                {spe === 'long' && (
-                                                    <LongInsuredTemplate
-                                                        {...v}
-                                                    />
-                                                )}
-                                                {spe === 'gen' && (
-                                                    <GeneralInsuredTemplate
-                                                        {...v}
-                                                    />
-                                                )}
-                                                {spe === 'car' && (
-                                                    <CarInsuredTemplate
-                                                        {...v}
-                                                    />
-                                                )}
-                                            </div>
-                                        ) : (
-                                            <>
-                                                {spe === 'long' && (
-                                                    <LongInsuredTemplate
-                                                        {...v}
-                                                    />
-                                                )}
-                                                {spe === 'gen' && (
-                                                    <GeneralInsuredTemplate
-                                                        {...v}
-                                                    />
-                                                )}
-                                                {spe === 'car' && (
-                                                    <CarInsuredTemplate
-                                                        {...v}
-                                                    />
-                                                )}
-                                            </>
+                                        {spe === 'long' && (
+                                            <LongInsuredTemplate {...v} />
+                                        )}
+                                        {spe === 'gen' && (
+                                            <GeneralInsuredTemplate {...v} />
+                                        )}
+                                        {spe === 'car' && (
+                                            <CarInsuredTemplate {...v} />
                                         )}
                                     </div>
                                 </div>
@@ -417,45 +377,44 @@ export const CustomerTabpanel: FC<Props> = ({
                         )}
                     </div>
                 </div>
-                <div className="col-5">
-                    <div className="wr-ml">
-                        <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__lock">
-                                <p>준비 중입니다.</p>
-                            </div>
-                            <div className="wr-pages-detail__title">
-                                <strong>개인정보활용동의</strong>
-                            </div>
-                            <div className="wr-pages-detail__content">
-                                <div className="wr-pages-detail__with">
-                                    <div style={{ flex: 1 }}>
-                                        <MyButton
-                                            className="btn-primary"
-                                            style={{ width: '100%' }}
-                                        >
-                                            NICE
-                                        </MyButton>
-                                    </div>
-                                    <div style={{ flex: 1 }}>
-                                        <MyButton
-                                            className="btn-primary"
-                                            style={{ width: '100%' }}
-                                        >
-                                            모바일
-                                        </MyButton>
-                                    </div>
-                                    <div style={{ flex: 1 }}>
-                                        <MyButton
-                                            className="btn-primary"
-                                            style={{ width: '100%' }}
-                                        >
-                                            업로드
-                                        </MyButton>
-                                    </div>
+                <div className="col">
+                    <div className="wr-pages-detail__block">
+                        <div className="wr-pages-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
+                        <div className="wr-pages-detail__title">
+                            <strong>개인정보활용동의</strong>
+                        </div>
+                        <div className="wr-pages-detail__content">
+                            <div className="wr-pages-detail__with">
+                                <div style={{ flex: 1 }}>
+                                    <MyButton
+                                        className="btn-primary"
+                                        style={{ width: '100%' }}
+                                    >
+                                        NICE
+                                    </MyButton>
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <MyButton
+                                        className="btn-primary"
+                                        style={{ width: '100%' }}
+                                    >
+                                        모바일
+                                    </MyButton>
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    <MyButton
+                                        className="btn-primary"
+                                        style={{ width: '100%' }}
+                                    >
+                                        업로드
+                                    </MyButton>
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="wr-pages-detail__block">
+                    </div>
+                    {/* <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__lock">
                                 <p>준비 중입니다.</p>
                             </div>
@@ -563,7 +522,6 @@ export const CustomerTabpanel: FC<Props> = ({
                                 </div>
                             </div>
                         </div> */}
-                    </div>
                 </div>
             </div>
         </MyTabpanel>

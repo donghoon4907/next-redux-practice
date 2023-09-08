@@ -79,61 +79,55 @@ export const GuaranteeTabpanel: FC<Props> = ({
                     </WithLabel>
                 </div>
                 <div className="col-3">
-                    <div className="wr-ml">
-                        <WithLabel
+                    <WithLabel
+                        id="guarTotal"
+                        label="보증누계(유효)"
+                        type={labelType}
+                    >
+                        <div className="wr-pages-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
+                        <MyInput
+                            type="text"
                             id="guarTotal"
-                            label="보증누계(유효)"
-                            type={labelType}
-                        >
-                            <div className="wr-pages-detail__lock">
-                                <p>준비 중입니다.</p>
-                            </div>
-                            <MyInput
-                                type="text"
-                                id="guarTotal"
-                                className="text-end"
-                                placeholder="5,465"
-                                readOnly
-                            />
-                        </WithLabel>
-                    </div>
+                            className="text-end"
+                            placeholder="5,465"
+                            readOnly
+                        />
+                    </WithLabel>
                 </div>
                 <div className="col-3">
-                    <div className="wr-ml">
-                        <WithLabel id="tmotl" label="과부족" type={labelType}>
-                            <div className="wr-pages-detail__lock">
-                                <p>준비 중입니다.</p>
-                            </div>
-                            <MyInput
-                                type="text"
-                                id="tmotl"
-                                className="text-end"
-                                placeholder="-4,655"
-                                readOnly
-                            />
-                        </WithLabel>
-                    </div>
+                    <WithLabel id="tmotl" label="과부족" type={labelType}>
+                        <div className="wr-pages-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
+                        <MyInput
+                            type="text"
+                            id="tmotl"
+                            className="text-end"
+                            placeholder="-4,655"
+                            readOnly
+                        />
+                    </WithLabel>
                 </div>
                 <div className="col-3">
-                    <div className="wr-ml">
-                        <WithLabel
+                    <WithLabel
+                        id="gAccount"
+                        label="유효보증율"
+                        type={labelType}
+                    >
+                        <div className="wr-pages-detail__lock">
+                            <p>준비 중입니다.</p>
+                        </div>
+                        <MyInput
+                            type="text"
                             id="gAccount"
-                            label="유효보증율"
-                            type={labelType}
-                        >
-                            <div className="wr-pages-detail__lock">
-                                <p>준비 중입니다.</p>
-                            </div>
-                            <MyInput
-                                type="text"
-                                id="gAccount"
-                                className="text-end"
-                                placeholder="54.7"
-                                readOnly
-                                unit="%"
-                            />
-                        </WithLabel>
-                    </div>
+                            className="text-end"
+                            placeholder="54.7"
+                            readOnly
+                            unit="%"
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="row wr-mt">

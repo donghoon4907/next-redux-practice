@@ -225,7 +225,7 @@ export const InsuredForm: FC<Props> = ({ userid }) => {
             {!checkFetus && (
                 <>
                     <div className="row wr-mt">
-                        <div className="col-6">
+                        <div className="col">
                             <WithLabel label="연락처" type="active">
                                 <MyInput
                                     type="text"
@@ -235,21 +235,19 @@ export const InsuredForm: FC<Props> = ({ userid }) => {
                                 />
                             </WithLabel>
                         </div>
-                        <div className="col-6">
-                            <div className="wr-ml">
-                                <WithLabel label="직업" type="active">
-                                    <MyInput
-                                        type="text"
-                                        placeholder="직업"
-                                        disabled={isDisabledAnother}
-                                        {...job}
-                                    />
-                                </WithLabel>
-                            </div>
+                        <div className="col">
+                            <WithLabel label="직업" type="active">
+                                <MyInput
+                                    type="text"
+                                    placeholder="직업"
+                                    disabled={isDisabledAnother}
+                                    {...job}
+                                />
+                            </WithLabel>
                         </div>
                     </div>
                     <div className="row wr-mt">
-                        <div className="col-6">
+                        <div className="col">
                             <WithLabel
                                 label="생년월일"
                                 type="active"
@@ -269,16 +267,14 @@ export const InsuredForm: FC<Props> = ({ userid }) => {
                                 )}
                             </WithLabel>
                         </div>
-                        <div className="col-6">
-                            <div className="wr-ml">
-                                <WithLabel label="성별" type="active">
-                                    <MyInput
-                                        type="text"
-                                        placeholder="성별"
-                                        {...gender}
-                                    />
-                                </WithLabel>
-                            </div>
+                        <div className="col">
+                            <WithLabel label="성별" type="active">
+                                <MyInput
+                                    type="text"
+                                    placeholder="성별"
+                                    {...gender}
+                                />
+                            </WithLabel>
                         </div>
                     </div>
                 </>

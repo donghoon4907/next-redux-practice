@@ -94,7 +94,7 @@ export const CreateCustcarCarModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>보유차량 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="carNum" label="차량번호" type="active">
                             <MyInput
                                 type="text"
@@ -104,25 +104,19 @@ export const CreateCustcarCarModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel id="carname" label="차량정보" type="active">
+                            <MyInput
+                                type="text"
                                 id="carname"
-                                label="차량정보"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="carname"
-                                    placeholder="차량정보"
-                                    {...carname}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="차량정보"
+                                {...carname}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="carcode" label="차명코드" type="active">
                             <MyInput
                                 type="text"
@@ -132,25 +126,23 @@ export const CreateCustcarCarModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel
+                            id="bo_dateto"
+                            label="보험만기일"
+                            type="active"
+                        >
+                            <MyDatepicker
                                 id="bo_dateto"
-                                label="보험만기일"
-                                type="active"
-                            >
-                                <MyDatepicker
-                                    id="bo_dateto"
-                                    size="sm"
-                                    placeholder="보험만기일"
-                                    hooks={bo_dateto}
-                                />
-                            </WithLabel>
-                        </div>
+                                size="sm"
+                                placeholder="보험만기일"
+                                hooks={bo_dateto}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="remark" label="비고" type="active">
                             <MyInput
                                 type="text"
@@ -160,6 +152,7 @@ export const CreateCustcarCarModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
+                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

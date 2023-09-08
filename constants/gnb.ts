@@ -282,14 +282,14 @@ export const ASIDE_MENU: any = {
                 label: '자동차계약등록',
                 to: '/contract/car/create',
             },
-            comparison: {
-                id: 'contract-car-comparison',
+            compare: {
+                id: 'contract-car-compare',
                 label: '비교견적',
                 to: '',
                 car: {
-                    id: 'contract-car-comparison_car',
+                    id: 'contract-car-compare-index',
                     label: '비교견적(자동차)',
-                    to: '/contract/car/comparison/car',
+                    to: '/contract/car/compare',
                 },
                 // truck: {
                 //     id: 'contract-car-comparison_truck',

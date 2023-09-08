@@ -70,7 +70,7 @@ export const CreateBupumModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>추가부속 설정</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="bupumName" label="부속명" type="active">
                             <MyInput
                                 type="text"
@@ -80,21 +80,19 @@ export const CreateBupumModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel
+                            id="bupumName"
+                            label="부속가액"
+                            type="active"
+                        >
+                            <MyInput
+                                type="text"
                                 id="bupumName"
-                                label="부속가액"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="bupumName"
-                                    placeholder="0"
-                                    {...price}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="0"
+                                {...price}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
             </ModalBody>

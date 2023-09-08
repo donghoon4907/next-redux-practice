@@ -115,7 +115,7 @@ export const CreateEventModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>기념일 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="ename" label="대상자" type="active">
                             <MyInput
                                 type="text"
@@ -125,29 +125,27 @@ export const CreateEventModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel label="대상자구분" type="active">
-                                <div className="wr-with__container">
-                                    <MyRadio
-                                        label="자녀"
-                                        value="자녀"
-                                        checked={typeWho === '자녀'}
-                                        onChange={handleChangeTypeWho}
-                                    />
-                                    <MyRadio
-                                        label="본인"
-                                        value="본인"
-                                        checked={typeWho === '본인'}
-                                        onChange={handleChangeTypeWho}
-                                    />
-                                </div>
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel label="대상자구분" type="active">
+                            <div className="wr-with__container">
+                                <MyRadio
+                                    label="자녀"
+                                    value="자녀"
+                                    checked={typeWho === '자녀'}
+                                    onChange={handleChangeTypeWho}
+                                />
+                                <MyRadio
+                                    label="본인"
+                                    value="본인"
+                                    checked={typeWho === '본인'}
+                                    onChange={handleChangeTypeWho}
+                                />
+                            </div>
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="etitle" label="기념일내용" type="active">
                             <MyInput
                                 type="text"
@@ -157,25 +155,23 @@ export const CreateEventModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel
+                            id="edescription"
+                            label="기념일상세"
+                            type="active"
+                        >
+                            <MyInput
+                                type="text"
                                 id="edescription"
-                                label="기념일상세"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="edescription"
-                                    placeholder="기념일상세"
-                                    {...description}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="기념일상세"
+                                {...description}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <DateAndSLInput
                             id="eventdate"
                             label="기념일"
@@ -186,25 +182,19 @@ export const CreateEventModal: FC<Props> = () => {
                             size="sm"
                         />
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
-                                id="enotice"
-                                label="관리여부"
-                                type="active"
-                            >
-                                <MySelect
-                                    placeHolderFontSize={16}
-                                    // height={variables.detailFilterHeight}
-                                    isDisabled={false}
-                                    {...notice}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="enotice" label="관리여부" type="active">
+                            <MySelect
+                                placeHolderFontSize={16}
+                                // height={variables.detailFilterHeight}
+                                isDisabled={false}
+                                {...notice}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="eremark" label="비고" type="active">
                             <MyInput
                                 type="text"
@@ -214,6 +204,7 @@ export const CreateEventModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
+                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

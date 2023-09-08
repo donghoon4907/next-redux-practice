@@ -102,7 +102,7 @@ export const CreateEndorsementModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>배서 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="edist" label="구분" type="active">
                             <MySelect
                                 inputId="edist"
@@ -111,22 +111,20 @@ export const CreateEndorsementModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="ewhoi" label="회차" type="active">
-                                <MyInput
-                                    type="number"
-                                    id="ewhoi"
-                                    className="text-end"
-                                    placeholder="0"
-                                    {...whoi}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="ewhoi" label="회차" type="active">
+                            <MyInput
+                                type="number"
+                                id="ewhoi"
+                                className="text-end"
+                                placeholder="0"
+                                {...whoi}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="epaydate" label="발생일" type="active">
                             <MyDatepicker
                                 id="epaydate"
@@ -136,18 +134,16 @@ export const CreateEndorsementModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="pay" label="수금실적" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="pay"
-                                    placeholder="0"
-                                    className="text-end"
-                                    {...pay}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="pay" label="수금실적" type="active">
+                            <MyInput
+                                type="text"
+                                id="pay"
+                                placeholder="0"
+                                className="text-end"
+                                {...pay}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
             </ModalBody>

@@ -106,7 +106,7 @@ export const CreateExcontractCarModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>타사 자동차보험 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="cComp" label="보험사" type="active">
                             <MySelect
                                 inputId="cComp"
@@ -115,25 +115,19 @@ export const CreateExcontractCarModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel id="cCarNum" label="차량번호" type="active">
+                            <MyInput
+                                type="text"
                                 id="cCarNum"
-                                label="차량번호"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="cCarNum"
-                                    placeholder="서울00가0000"
-                                    {...carnum}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="서울00가0000"
+                                {...carnum}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="cPay" label="보험료" type="active">
                             <MyInput
                                 type="text"
@@ -143,25 +137,23 @@ export const CreateExcontractCarModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel
+                            id="cContdate"
+                            label="개시일자"
+                            type="active"
+                        >
+                            <MyDatepicker
                                 id="cContdate"
-                                label="개시일자"
-                                type="active"
-                            >
-                                <MyDatepicker
-                                    id="cContdate"
-                                    size="sm"
-                                    placeholder="개시일자"
-                                    hooks={contdate}
-                                />
-                            </WithLabel>
-                        </div>
+                                size="sm"
+                                placeholder="개시일자"
+                                hooks={contdate}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel
                             id="cBoDateto"
                             label="만기일자"
@@ -175,17 +167,15 @@ export const CreateExcontractCarModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="cRemark" label="비고" type="active">
-                                <MyInput
-                                    type="text"
-                                    id="cRemark"
-                                    placeholder="비고"
-                                    {...remark}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="cRemark" label="비고" type="active">
+                            <MyInput
+                                type="text"
+                                id="cRemark"
+                                placeholder="비고"
+                                {...remark}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
             </ModalBody>

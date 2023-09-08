@@ -65,7 +65,7 @@ export const LifeLongModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>생보 / 장기 규정</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="llSdate" label="시작월" type="active">
                             <MyDatepicker
                                 id="llSdate"
@@ -76,27 +76,21 @@ export const LifeLongModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel id="llEdate" label="종료월" type="active">
+                            <MyDatepicker
                                 id="llEdate"
-                                label="종료월"
-                                type="active"
-                            >
-                                <MyDatepicker
-                                    id="llEdate"
-                                    size="sm"
-                                    format="YYYY-MM"
-                                    placeholder="종료월"
-                                    hooks={eMonth}
-                                />
-                            </WithLabel>
-                        </div>
+                                size="sm"
+                                format="YYYY-MM"
+                                placeholder="종료월"
+                                hooks={eMonth}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
 
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="llRuleNm" label="규정명" type="active">
                             <MySelect
                                 inputId="llRuleNm"
@@ -109,6 +103,7 @@ export const LifeLongModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
+                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

@@ -84,22 +84,20 @@ export const MemoTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     </WithLabel>
                 </div>
                 <div className="col-4">
-                    <div className="wr-ml">
-                        <WithLabel
+                    <WithLabel
+                        id="consultingDate"
+                        label="상담예정"
+                        type={labelType}
+                    >
+                        <MyDatepicker
                             id="consultingDate"
-                            label="상담예정"
-                            type={labelType}
-                        >
-                            <MyDatepicker
-                                id="consultingDate"
-                                size="md"
-                                placeholder="상담예정"
-                                format="yyyy-MM-dd HH:mm:ss"
-                                disabled={!editable}
-                                hooks={consultingDate}
-                            />
-                        </WithLabel>
-                    </div>
+                            size="md"
+                            placeholder="상담예정"
+                            format="yyyy-MM-dd HH:mm:ss"
+                            disabled={!editable}
+                            hooks={consultingDate}
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="row wr-mt">

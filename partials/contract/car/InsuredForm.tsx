@@ -116,7 +116,7 @@ export const CarInsuredForm: FC<Props> = () => {
                 <strong>{insureds.length === 0 && '주'}피보험자 추가</strong>
             </div>
             <div className="row">
-                <div className="col-6">
+                <div className="col">
                     <WithLabel id="prelation" label="관계" type="active">
                         <MySelect
                             inputId="prelation"
@@ -126,21 +126,19 @@ export const CarInsuredForm: FC<Props> = () => {
                         />
                     </WithLabel>
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <WithLabel id="pname" label="이름" type="active">
-                            <MyInput
-                                type="text"
-                                id="pname"
-                                placeholder="이름"
-                                {...name}
-                            />
-                        </WithLabel>
-                    </div>
+                <div className="col">
+                    <WithLabel id="pname" label="이름" type="active">
+                        <MyInput
+                            type="text"
+                            id="pname"
+                            placeholder="이름"
+                            {...name}
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="row wr-mt">
-                <div className="col-6">
+                <div className="col">
                     {insureds.length === 0 && (
                         <WithLabel id="pjumin" label="주민번호" type="active">
                             <MyInput
@@ -194,19 +192,17 @@ export const CarInsuredForm: FC<Props> = () => {
                         </WithLabel>
                     )}
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <WithLabel label="만 나이" type="active">
-                            <MyInput
-                                type="text"
-                                placeholder="만 나이"
-                                className="text-end"
-                                disabled
-                                value={age}
-                                unit="세"
-                            />
-                        </WithLabel>
-                    </div>
+                <div className="col">
+                    <WithLabel label="만 나이" type="active">
+                        <MyInput
+                            type="text"
+                            placeholder="만 나이"
+                            className="text-end"
+                            disabled
+                            value={age}
+                            unit="세"
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="wr-pages-detail__toolbar wr-mt">

@@ -78,32 +78,24 @@ export const PaymentTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     </WithLabel>
                 </div>
                 <div className="col-4">
-                    <div className="wr-ml">
-                        <WithLabel
+                    <WithLabel id="account" label="계좌번호" type={labelType}>
+                        <MyInput
+                            type="text"
                             id="account"
-                            label="계좌번호"
-                            type={labelType}
-                        >
-                            <MyInput
-                                type="text"
-                                id="account"
-                                placeholder="계좌번호"
-                                readOnly={!editable}
-                            />
-                        </WithLabel>
-                    </div>
+                            placeholder="계좌번호"
+                            readOnly={!editable}
+                        />
+                    </WithLabel>
                 </div>
                 <div className="col-4">
-                    <div className="wr-ml">
-                        <WithLabel id="holder" label="예금주" type={labelType}>
-                            <MyInput
-                                type="text"
-                                id="holder"
-                                placeholder="예금주"
-                                readOnly={!editable}
-                            />
-                        </WithLabel>
-                    </div>
+                    <WithLabel id="holder" label="예금주" type={labelType}>
+                        <MyInput
+                            type="text"
+                            id="holder"
+                            placeholder="예금주"
+                            readOnly={!editable}
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="row wr-mt">
@@ -126,20 +118,18 @@ export const PaymentTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     </WithLabel>
                 </div>
                 <div className="col-4">
-                    <div className="wr-ml">
-                        <WithLabel id="isTax" label="과세여부" type={labelType}>
-                            <MySelect
-                                inputId="isTax"
-                                placeHolderFontSize={16}
-                                height={variables.detailFilterHeight}
-                                isDisabled={!editable}
-                                options={[]}
-                                value={null}
-                                onChange={() => {}}
-                                // {...bank}
-                            />
-                        </WithLabel>
-                    </div>
+                    <WithLabel id="isTax" label="과세여부" type={labelType}>
+                        <MySelect
+                            inputId="isTax"
+                            placeHolderFontSize={16}
+                            height={variables.detailFilterHeight}
+                            isDisabled={!editable}
+                            options={[]}
+                            value={null}
+                            onChange={() => {}}
+                            // {...bank}
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="row wr-mt">

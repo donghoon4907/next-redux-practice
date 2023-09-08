@@ -222,6 +222,7 @@ input[type='number'] {
 .row {
     // 상위 컨테이너 이상의 너비를 갖지 않도록 조정
     margin: 0 auto;
+    gap: $wr-gutter-size;
 }
 
 .row > * {

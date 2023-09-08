@@ -233,7 +233,7 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
             {!checkFetus && (
                 <>
                     <div className="row wr-mt">
-                        <div className="col-6">
+                        <div className="col">
                             <WithLabel label="연락처" type="active">
                                 <MyInput
                                     type="text"
@@ -243,21 +243,19 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                                 />
                             </WithLabel>
                         </div>
-                        <div className="col-6">
-                            <div className="wr-ml">
-                                <WithLabel label="직업" type="active">
-                                    <MyInput
-                                        type="text"
-                                        placeholder="직업"
-                                        disabled={isDisabledAnother}
-                                        {...job}
-                                    />
-                                </WithLabel>
-                            </div>
+                        <div className="col">
+                            <WithLabel label="직업" type="active">
+                                <MyInput
+                                    type="text"
+                                    placeholder="직업"
+                                    disabled={isDisabledAnother}
+                                    {...job}
+                                />
+                            </WithLabel>
                         </div>
                     </div>
                     <div className="row wr-mt">
-                        <div className="col-6">
+                        <div className="col">
                             <WithLabel
                                 label="생년월일"
                                 type="active"
@@ -277,25 +275,23 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                                 )}
                             </WithLabel>
                         </div>
-                        <div className="col-6">
-                            <div className="wr-ml">
-                                <WithLabel label="성별" type="active">
-                                    <div className="wr-with__container">
-                                        <MyRadio
-                                            label="남"
-                                            value="남"
-                                            checked={gender === '남'}
-                                            onChange={handleChangeGender}
-                                        />
-                                        <MyRadio
-                                            label="여"
-                                            value="여"
-                                            checked={gender === '여'}
-                                            onChange={handleChangeGender}
-                                        />
-                                    </div>
-                                </WithLabel>
-                            </div>
+                        <div className="col">
+                            <WithLabel label="성별" type="active">
+                                <div className="wr-with__container">
+                                    <MyRadio
+                                        label="남"
+                                        value="남"
+                                        checked={gender === '남'}
+                                        onChange={handleChangeGender}
+                                    />
+                                    <MyRadio
+                                        label="여"
+                                        value="여"
+                                        checked={gender === '여'}
+                                        onChange={handleChangeGender}
+                                    />
+                                </div>
+                            </WithLabel>
                         </div>
                     </div>
                 </>

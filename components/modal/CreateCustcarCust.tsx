@@ -79,7 +79,7 @@ export const CreateCustcarCustModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>피담보물건 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="p_title" label="피담보물" type="active">
                             <MyInput
                                 type="text"
@@ -89,25 +89,23 @@ export const CreateCustcarCustModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel
+                            id="p_address"
+                            label="소재지번"
+                            type="active"
+                        >
+                            <MyInput
+                                type="text"
                                 id="p_address"
-                                label="소재지번"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="p_address"
-                                    placeholder="소재지번"
-                                    {...p_address}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="소재지번"
+                                {...p_address}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="remark" label="비고" type="active">
                             <MyInput
                                 type="text"
@@ -117,6 +115,7 @@ export const CreateCustcarCustModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
+                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

@@ -85,7 +85,7 @@ export const CodeSettingModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>보험사 코드 설정</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="iComp" label="보험사" type="active">
                             <MySelect
                                 inputId="iComp"
@@ -94,25 +94,19 @@ export const CodeSettingModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel id="iIndate" label="등록일" type="active">
+                            <MyDatepicker
                                 id="iIndate"
-                                label="등록일"
-                                type="active"
-                            >
-                                <MyDatepicker
-                                    id="iIndate"
-                                    size="sm"
-                                    placeholder="등록일"
-                                    hooks={indate}
-                                />
-                            </WithLabel>
-                        </div>
+                                size="sm"
+                                placeholder="등록일"
+                                hooks={indate}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="iCode" label="코드" type="active">
                             <MyInput
                                 type="text"
@@ -122,25 +116,23 @@ export const CodeSettingModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel
+                            id="iPassword"
+                            label="비밀번호"
+                            type="active"
+                        >
+                            <MyInput
+                                type="password"
                                 id="iPassword"
-                                label="비밀번호"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="password"
-                                    id="iPassword"
-                                    placeholder="비밀번호"
-                                    {...password}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="비밀번호"
+                                {...password}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="iAuth" label="인증번호" type="active">
                             <MyInput
                                 type="text"
@@ -150,6 +142,7 @@ export const CodeSettingModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
+                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

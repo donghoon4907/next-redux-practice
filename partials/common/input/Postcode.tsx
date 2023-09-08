@@ -34,7 +34,7 @@ export const PostcodeInput: FC<Props> = ({
     return (
         <>
             <div className={`row ${isMt ? 'wr-mt' : ''}`}>
-                <div className="col-6">
+                <div className="col">
                     <WithLabel label="주소" type={labelType}>
                         <MyInput
                             type="text"
@@ -56,19 +56,17 @@ export const PostcodeInput: FC<Props> = ({
                         />
                     </WithLabel>
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <MyInput
-                            type="text"
-                            placeholder="주소1"
-                            disabled
-                            {...address1Hooks}
-                        />
-                    </div>
+                <div className="col">
+                    <MyInput
+                        type="text"
+                        placeholder="주소1"
+                        disabled
+                        {...address1Hooks}
+                    />
                 </div>
             </div>
             <div className="row wr-mt">
-                <div className="col-6">
+                <div className="col">
                     <WithLabel id={id} label="상세주소" type={labelType}>
                         <MyInput
                             type="text"
@@ -79,15 +77,13 @@ export const PostcodeInput: FC<Props> = ({
                         />
                     </WithLabel>
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <MyInput
-                            type="text"
-                            placeholder="주소2"
-                            disabled
-                            {...address2Hooks}
-                        />
-                    </div>
+                <div className="col">
+                    <MyInput
+                        type="text"
+                        placeholder="주소2"
+                        disabled
+                        {...address2Hooks}
+                    />
                 </div>
             </div>
         </>

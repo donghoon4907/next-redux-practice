@@ -84,7 +84,7 @@ export const CreateCarPayModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>납입실적 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="ppaydate" label="영수일" type="active">
                             <MyDatepicker
                                 id="ppaydate"
@@ -94,20 +94,18 @@ export const CreateCarPayModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="pdist" label="구분" type="active">
-                                <MySelect
-                                    inputId="pdist"
-                                    placeHolderFontSize={16}
-                                    {...dist}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="pdist" label="구분" type="active">
+                            <MySelect
+                                inputId="pdist"
+                                placeHolderFontSize={16}
+                                {...dist}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="ppayment" label="보험료" type="active">
                             <MyInput
                                 type="text"
@@ -118,6 +116,7 @@ export const CreateCarPayModal: FC<Props> = () => {
                             />
                         </WithLabel>
                     </div>
+                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

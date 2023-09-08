@@ -206,7 +206,7 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
             <ModalHeader toggle={handleClose}>납입실적 추가</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="ppaydate" label="영수일" type="active">
                             <MyDatepicker
                                 id="ppaydate"
@@ -217,23 +217,21 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel id="pwhoi" label="회차" type="active">
-                                <MyInput
-                                    type="number"
-                                    id="pwhoi"
-                                    className="text-end"
-                                    placeholder="0"
-                                    disabled={isDisableWhoi}
-                                    {...whoi}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="pwhoi" label="회차" type="active">
+                            <MyInput
+                                type="number"
+                                id="pwhoi"
+                                className="text-end"
+                                placeholder="0"
+                                disabled={isDisableWhoi}
+                                {...whoi}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="pdist" label="납입구분" type="active">
                             <MySelect
                                 inputId="pdist"
@@ -243,27 +241,21 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
+                    <div className="col">
+                        <WithLabel id="ppayment" label="수금실적" type="active">
+                            <MyInput
+                                type="text"
                                 id="ppayment"
-                                label="수금실적"
-                                type="active"
-                            >
-                                <MyInput
-                                    type="text"
-                                    id="ppayment"
-                                    placeholder="0"
-                                    className="text-end"
-                                    disabled={isDisablePayment}
-                                    {...pay}
-                                />
-                            </WithLabel>
-                        </div>
+                                placeholder="0"
+                                className="text-end"
+                                disabled={isDisablePayment}
+                                {...pay}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col-6">
+                    <div className="col">
                         <WithLabel id="pmethod" label="금종" type="active">
                             <MySelect
                                 inputId="pmethod"
@@ -272,20 +264,14 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                             />
                         </WithLabel>
                     </div>
-                    <div className="col-6">
-                        <div className="wr-ml">
-                            <WithLabel
-                                id="pcycle"
-                                label="납입주기"
-                                type="active"
-                            >
-                                <MySelect
-                                    inputId="pcycle"
-                                    placeHolderFontSize={16}
-                                    {...cycle}
-                                />
-                            </WithLabel>
-                        </div>
+                    <div className="col">
+                        <WithLabel id="pcycle" label="납입주기" type="active">
+                            <MySelect
+                                inputId="pcycle"
+                                placeHolderFontSize={16}
+                                {...cycle}
+                            />
+                        </WithLabel>
                     </div>
                 </div>
             </ModalBody>

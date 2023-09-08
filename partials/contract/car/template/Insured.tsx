@@ -19,7 +19,7 @@ export const CarInsuredTemplate: FC<Props> = ({
     return (
         <>
             <div className="row">
-                <div className="col-6">
+                <div className="col">
                     <WithLabel label="관계" type="disable">
                         <MyInput
                             type="text"
@@ -29,21 +29,19 @@ export const CarInsuredTemplate: FC<Props> = ({
                         />
                     </WithLabel>
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <WithLabel label="이름" type="disable">
-                            <MyInput
-                                type="text"
-                                placeholder="이름"
-                                disabled
-                                value={name}
-                            />
-                        </WithLabel>
-                    </div>
+                <div className="col">
+                    <WithLabel label="이름" type="disable">
+                        <MyInput
+                            type="text"
+                            placeholder="이름"
+                            disabled
+                            value={name}
+                        />
+                    </WithLabel>
                 </div>
             </div>
             <div className="row wr-mt">
-                <div className="col-6">
+                <div className="col">
                     {dist === '주피보험자' && (
                         <WithLabel id="pjumin" label="주민번호" type="disable">
                             <MyInput
@@ -99,19 +97,17 @@ export const CarInsuredTemplate: FC<Props> = ({
                         </WithLabel>
                     )}
                 </div>
-                <div className="col-6">
-                    <div className="wr-ml">
-                        <WithLabel label="만 나이" type="disable">
-                            <MyInput
-                                type="text"
-                                placeholder="만 나이"
-                                disabled
-                                className="text-end"
-                                value={age}
-                                unit="세"
-                            />
-                        </WithLabel>
-                    </div>
+                <div className="col">
+                    <WithLabel label="만 나이" type="disable">
+                        <MyInput
+                            type="text"
+                            placeholder="만 나이"
+                            disabled
+                            className="text-end"
+                            value={age}
+                            unit="세"
+                        />
+                    </WithLabel>
                 </div>
             </div>
         </>
