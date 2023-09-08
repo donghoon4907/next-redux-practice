@@ -55,7 +55,7 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
     // 생년월일
     const [birthday, setBirthday] = useDatepicker(null);
     // 성별
-    const [gender, setGender] = useInput('');
+    const [gender, setGender] = useState('남');
     // 계약자와 동일 혹은 태아 체크 시 피보험자명 비활성
     const isDisabledName = checkContract || checkFetus;
     // 계약자와 동일 혹은 고객정보연결 시 비활성
@@ -68,6 +68,10 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
 
     const handleChangeDist = (evt: ChangeEvent<HTMLInputElement>) => {
         setDist(evt.target.value);
+    };
+
+    const handleChangeGender = (evt: ChangeEvent<HTMLInputElement>) => {
+        setGender(evt.target.value);
     };
 
     const handleCheckContract = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -149,7 +153,7 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                 birthday: birthday.value
                     ? dayjs(birthday.value).format('YYYY-MM-DD')
                     : '',
-                sex: gender.value ? gender.value : '',
+                sex: gender ? gender : '',
                 dist: '피보험자',
                 p_idx: checkContract
                     ? loadedContract.idx
@@ -230,186 +234,189 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
     }, [checkContract, loadedContract]);
 
     return (
-        <div className="wr-pages-detail__block wr-mt">
-            <div className="wr-pages-detail__title">
-                <strong>피보험물(자) 등록</strong>
+        <div className="wr-pages-detail__content">
+            <div className="wr-pages-detail__subtitle">
+                <strong>{dist} 추가</strong>
             </div>
-            <div className="wr-pages-detail__content">
-                <div className="wr-pages-detail__buttons">
-                    <MyRadio
-                        label="피보험자"
-                        value="피보험자"
-                        checked={dist === '피보험자'}
-                        onChange={handleChangeDist}
-                    />
-                    <MyRadio
-                        label="피보험물"
-                        value="피보험물"
-                        checked={dist === '피보험물'}
-                        onChange={handleChangeDist}
-                    />
-                </div>
-                {dist === '피보험자' && (
-                    <>
-                        <div className="row">
-                            <div className="col">
-                                <form onSubmit={handleSearchCustomer}>
-                                    <WithLabel label="피보험자명" type="active">
+            <div className="wr-pages-detail__buttons">
+                <MyRadio
+                    label="피보험자"
+                    value="피보험자"
+                    checked={dist === '피보험자'}
+                    onChange={handleChangeDist}
+                />
+                <MyRadio
+                    label="피보험물"
+                    value="피보험물"
+                    checked={dist === '피보험물'}
+                    onChange={handleChangeDist}
+                />
+            </div>
+            {dist === '피보험자' && (
+                <>
+                    <div className="row">
+                        <div className="col">
+                            <form onSubmit={handleSearchCustomer}>
+                                <WithLabel label="피보험자명" type="active">
+                                    <MyInput
+                                        type="search"
+                                        placeholder="피보험자명"
+                                        disabled={isDisabledName}
+                                        {...name}
+                                        button={{
+                                            type: 'submit',
+                                            className: 'btn-primary btn-md',
+                                            disabled: isDisabledName,
+                                            children: (
+                                                <>
+                                                    <span>고객정보연결</span>
+                                                </>
+                                            ),
+                                        }}
+                                    />
+                                </WithLabel>
+                            </form>
+                        </div>
+                    </div>
+                    {!checkFetus && (
+                        <>
+                            <div className="row wr-mt">
+                                <div className="col-6">
+                                    <WithLabel label="연락처" type="active">
                                         <MyInput
-                                            type="search"
-                                            placeholder="피보험자명"
-                                            disabled={isDisabledName}
-                                            {...name}
-                                            button={{
-                                                type: 'submit',
-                                                className: 'btn-primary btn-md',
-                                                disabled: isDisabledName,
-                                                children: (
-                                                    <>
-                                                        <span>
-                                                            고객정보연결
-                                                        </span>
-                                                    </>
-                                                ),
-                                            }}
+                                            type="text"
+                                            placeholder="연락처"
+                                            disabled={isDisabledAnother}
+                                            {...tel}
                                         />
                                     </WithLabel>
-                                </form>
-                            </div>
-                        </div>
-                        {!checkFetus && (
-                            <>
-                                <div className="row wr-mt">
-                                    <div className="col-6">
-                                        <WithLabel label="연락처" type="active">
+                                </div>
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <WithLabel label="직업" type="active">
                                             <MyInput
                                                 type="text"
-                                                placeholder="연락처"
+                                                placeholder="직업"
                                                 disabled={isDisabledAnother}
-                                                {...tel}
+                                                {...job}
                                             />
                                         </WithLabel>
                                     </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithLabel
-                                                label="직업"
-                                                type="active"
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="직업"
-                                                    disabled={isDisabledAnother}
-                                                    {...job}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div className="row wr-mt">
-                                    <div className="col-6">
-                                        <WithLabel
-                                            label="생년월일"
-                                            type="active"
+                            </div>
+                            <div className="row wr-mt">
+                                <div className="col-6">
+                                    <WithLabel
+                                        label="생년월일"
+                                        type="active"
+                                        id="ibirthday"
+                                    >
+                                        <MyDatepicker
                                             id="ibirthday"
-                                        >
-                                            <MyDatepicker
-                                                id="ibirthday"
-                                                size="md"
-                                                placeholder="생년월일"
-                                                disabled={isDisabledAnother}
-                                                hooks={birthday}
-                                            />
-                                            {age !== -1 && (
-                                                <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                    만 {age - 1}세
-                                                </div>
-                                            )}
+                                            size="md"
+                                            placeholder="생년월일"
+                                            disabled={isDisabledAnother}
+                                            hooks={birthday}
+                                        />
+                                        {age !== -1 && (
+                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
+                                                만 {age - 1}세
+                                            </div>
+                                        )}
+                                    </WithLabel>
+                                </div>
+                                <div className="col-6">
+                                    <div className="wr-ml">
+                                        <WithLabel label="성별" type="active">
+                                            <div className="wr-with__container">
+                                                <MyRadio
+                                                    label="남"
+                                                    value="남"
+                                                    checked={gender === '남'}
+                                                    onChange={
+                                                        handleChangeGender
+                                                    }
+                                                />
+                                                <MyRadio
+                                                    label="여"
+                                                    value="여"
+                                                    checked={gender === '여'}
+                                                    onChange={
+                                                        handleChangeGender
+                                                    }
+                                                />
+                                            </div>
                                         </WithLabel>
                                     </div>
-                                    <div className="col-6">
-                                        <div className="wr-ml">
-                                            <WithLabel
-                                                label="성별"
-                                                type="active"
-                                            >
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="성별"
-                                                    {...gender}
-                                                />
-                                            </WithLabel>
-                                        </div>
-                                    </div>
                                 </div>
-                            </>
-                        )}
-                        <div className="wr-pages-detail__toolbar wr-mt">
-                            <div className="wr-pages-detail__buttons">
-                                <MyCheckbox
-                                    id="isContract"
-                                    label="계약자와 동일"
-                                    onChange={handleCheckContract}
-                                    checked={checkContract}
+                            </div>
+                        </>
+                    )}
+                    <div className="wr-pages-detail__toolbar wr-mt">
+                        <div className="wr-pages-detail__buttons">
+                            <MyCheckbox
+                                id="isContract"
+                                label="계약자와 동일"
+                                onChange={handleCheckContract}
+                                checked={checkContract}
+                            />
+                            <MyCheckbox
+                                id="isFetus"
+                                label="태아"
+                                onChange={handleCheckFetus}
+                                checked={checkFetus}
+                            />
+                        </div>
+                        <div>
+                            <MyButton
+                                className="btn-primary btn-sm"
+                                onClick={handleCreatePerson}
+                            >
+                                추가
+                            </MyButton>
+                        </div>
+                    </div>
+                </>
+            )}
+            {dist === '피보험물' && (
+                <>
+                    <div className="row">
+                        <div className="col">
+                            <WithLabel label="피보험물" type="active">
+                                <MyInput
+                                    type="text"
+                                    placeholder="피보험물"
+                                    disabled={isDisabledAnother}
+                                    {...tname}
                                 />
-                                <MyCheckbox
-                                    id="isFetus"
-                                    label="태아"
-                                    onChange={handleCheckFetus}
-                                    checked={checkFetus}
+                            </WithLabel>
+                        </div>
+                    </div>
+                    <div className="row wr-mt">
+                        <div className="col">
+                            <WithLabel label="소재지" type="active">
+                                <MyInput
+                                    type="text"
+                                    placeholder="소재지"
+                                    disabled={isDisabledAnother}
+                                    {...taddr}
                                 />
-                            </div>
-                            <div>
-                                <MyButton
-                                    className="btn-primary btn-sm"
-                                    onClick={handleCreatePerson}
-                                >
-                                    추가
-                                </MyButton>
-                            </div>
+                            </WithLabel>
                         </div>
-                    </>
-                )}
-                {dist === '피보험물' && (
-                    <>
-                        <div className="row">
-                            <div className="col">
-                                <WithLabel label="피보험물" type="active">
-                                    <MyInput
-                                        type="text"
-                                        placeholder="피보험물"
-                                        disabled={isDisabledAnother}
-                                        {...tname}
-                                    />
-                                </WithLabel>
-                            </div>
+                    </div>
+                    <div className="wr-pages-detail__toolbar wr-mt">
+                        <div className="wr-pages-detail__buttons"></div>
+                        <div>
+                            <MyButton
+                                className="btn-primary btn-sm"
+                                onClick={handleCreateThing}
+                            >
+                                추가
+                            </MyButton>
                         </div>
-                        <div className="row wr-mt">
-                            <div className="col">
-                                <WithLabel label="소재지" type="active">
-                                    <MyInput
-                                        type="text"
-                                        placeholder="소재지"
-                                        disabled={isDisabledAnother}
-                                        {...taddr}
-                                    />
-                                </WithLabel>
-                            </div>
-                        </div>
-                        <div className="wr-pages-detail__toolbar wr-mt">
-                            <div className="wr-pages-detail__buttons"></div>
-                            <div>
-                                <MyButton
-                                    className="btn-primary btn-sm"
-                                    onClick={handleCreateThing}
-                                >
-                                    추가
-                                </MyButton>
-                            </div>
-                        </div>
-                    </>
-                )}
-            </div>
+                    </div>
+                </>
+            )}
         </div>
     );
 };

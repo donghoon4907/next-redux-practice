@@ -103,7 +103,7 @@ export const CustomerTabpanel: FC<Props> = ({
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
-                <div className="col-6 wr-frame__tabbody overflow-auto">
+                <div className="col-7 wr-frame__tabbody overflow-auto">
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__title">
                             <strong>계약자 설정</strong>
@@ -340,13 +340,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                 </div>
                             )}
                         </div>
-                        {insureds.length === 0 && (
-                            <div className="wr-pages-detail__content">
-                                <div className="wr-pages-detail__center">
-                                    피보험자가 없습니다
-                                </div>
-                            </div>
-                        )}
+
                         {insureds.map((v, index) => (
                             <div
                                 className="wr-pages-detail__content"
@@ -423,7 +417,7 @@ export const CustomerTabpanel: FC<Props> = ({
                         )}
                     </div>
                 </div>
-                <div className="col-6">
+                <div className="col-5">
                     <div className="wr-ml">
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__lock">

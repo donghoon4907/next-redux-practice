@@ -835,7 +835,7 @@ export const LongForm: FC<Props> = ({
                                         />
                                         <div
                                             className="wr-with__extension"
-                                            style={{ width: 100 }}
+                                            style={{ width: 86 }}
                                         >
                                             <MySelect
                                                 placeHolderFontSize={16}
@@ -848,26 +848,6 @@ export const LongForm: FC<Props> = ({
                                             />
                                         </div>
                                     </WithLabel>
-                                    {/* <WithLabel
-                                                id="gExpireDate"
-                                                label="보장만기"
-                                                type={labelType}
-                                            >
-                                                <MyDatepicker
-                                                    id="gExpireDate"
-                                                    size="md"
-                                                    placeholder="보장만기"
-                                                    disabled={!editable}
-                                                    hooks={boDateto}
-                                                />
-                                                {bo_desc !== -1 && (
-                                                    <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                        {bo_desc > 0
-                                                            ? `${bo_desc}년`
-                                                            : '1년 미만'}
-                                                    </div>
-                                                )}
-                                            </WithLabel> */}
                                 </div>
                                 <div className="col-6">
                                     <div className="wr-ml">
@@ -886,7 +866,7 @@ export const LongForm: FC<Props> = ({
                                             <div
                                                 className="wr-with__extension"
                                                 style={{
-                                                    width: 100,
+                                                    width: 86,
                                                 }}
                                             >
                                                 <MySelect
@@ -1055,7 +1035,7 @@ export const LongForm: FC<Props> = ({
                                         />
                                         <div
                                             className="wr-with__extension"
-                                            style={{ width: 100 }}
+                                            style={{ width: 86 }}
                                         >
                                             <MyInput
                                                 type="text"
@@ -1081,7 +1061,7 @@ export const LongForm: FC<Props> = ({
                                         />
                                         <div
                                             className="wr-with__extension"
-                                            style={{ width: 100 }}
+                                            style={{ width: 86 }}
                                         >
                                             <MyInput
                                                 type="text"
@@ -1107,7 +1087,7 @@ export const LongForm: FC<Props> = ({
                                         />
                                         <div
                                             className="wr-with__extension"
-                                            style={{ width: 100 }}
+                                            style={{ width: 86 }}
                                         >
                                             <MyInput
                                                 type="text"
@@ -1137,7 +1117,7 @@ export const LongForm: FC<Props> = ({
                                             <div
                                                 className="wr-with__extension"
                                                 style={{
-                                                    width: 100,
+                                                    width: 86,
                                                 }}
                                             >
                                                 <MyInput
@@ -1165,7 +1145,7 @@ export const LongForm: FC<Props> = ({
                                             <div
                                                 className="wr-with__extension"
                                                 style={{
-                                                    width: 100,
+                                                    width: 86,
                                                 }}
                                             >
                                                 <MyInput
@@ -1193,7 +1173,7 @@ export const LongForm: FC<Props> = ({
                                             <div
                                                 className="wr-with__extension"
                                                 style={{
-                                                    width: 100,
+                                                    width: 86,
                                                 }}
                                             >
                                                 <MyInput
@@ -1221,7 +1201,7 @@ export const LongForm: FC<Props> = ({
                                             <div
                                                 className="wr-with__extension"
                                                 style={{
-                                                    width: 100,
+                                                    width: 86,
                                                 }}
                                             >
                                                 <MyInput
@@ -1249,7 +1229,7 @@ export const LongForm: FC<Props> = ({
                                             <div
                                                 className="wr-with__extension"
                                                 style={{
-                                                    width: 100,
+                                                    width: 86,
                                                 }}
                                             >
                                                 <MyInput

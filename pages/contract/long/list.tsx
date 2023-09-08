@@ -426,7 +426,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const params: GetLongsRequestPayload = {
             page: 1,
             nums: 25,
-            condition: {},
+            condition: {
+                paydate: [
+                    dayjs(new Date()).format('YYYY-MM-01'),
+                    dayjs(new Date()).format('YYYY-MM-DD'),
+                ],
+            },
             successAction: getLongsSuccess,
         };
 
