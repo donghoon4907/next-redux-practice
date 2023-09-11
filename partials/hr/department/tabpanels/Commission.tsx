@@ -75,7 +75,7 @@ export const CommissionTabpanel: FC<Props> = ({
                         <div style={{ width: 185 }}>
                             <MySelect
                                 inputId="pointStatus"
-                                placeHolderFontSize={16}
+                                
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
                                 options={[]}

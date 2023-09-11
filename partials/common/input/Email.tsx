@@ -37,7 +37,7 @@ export const EmailInput: FC<Props> = ({
                 }}
             >
                 <MySelect
-                    placeHolderFontSize={16}
+                    
                     height={variables.detailFilterHeight}
                     isDisabled={disabled}
                     placement="right"

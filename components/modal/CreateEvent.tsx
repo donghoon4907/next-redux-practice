@@ -185,8 +185,6 @@ export const CreateEventModal: FC<Props> = () => {
                     <div className="col">
                         <WithLabel id="enotice" label="관리여부" type="active">
                             <MySelect
-                                placeHolderFontSize={16}
-                                // height={variables.detailFilterHeight}
                                 isDisabled={false}
                                 {...notice}
                             />

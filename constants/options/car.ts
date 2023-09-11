@@ -40,19 +40,57 @@ export const CAR_PAY_DIST: CoreSelectOption[] = [
 export const CAR_PAY_METHOD: CoreSelectOption[] = [
     {
         label: '일시납',
-        value: '일시납',
+        value: '0',
         isFixed: false,
     },
     {
         label: '비연속 2회',
-        value: '비연속 2회',
+        value: '1',
         isFixed: false,
     },
     ...[2, 3, 4, 5, 6, 10, 11].map((v) => ({
         label: `연속 ${v}회`,
-        value: `연속 ${v}회`,
+        value: `${v}`,
         isFixed: false,
     })),
+];
+// 스포츠카
+export const CAR_SPORTS: CoreSelectOption[] = [
+    {
+        label: '아니오',
+        value: '99',
+        isFixed: false,
+    },
+    {
+        label: '스쿠프',
+        value: '10',
+        isFixed: false,
+    },
+    {
+        label: '엘란',
+        value: '20',
+        isFixed: false,
+    },
+    {
+        label: '티뷰론',
+        value: '30',
+        isFixed: false,
+    },
+    {
+        label: '쿠스카니',
+        value: '40',
+        isFixed: false,
+    },
+    {
+        label: '기타스포츠카',
+        value: '50',
+        isFixed: false,
+    },
+    {
+        label: '4천cc초과스포츠카',
+        value: '45',
+        isFixed: false,
+    },
 ];
 // 자동차 계약 등급
 export const CAR_C_GRADE: CoreSelectOption[] = [
@@ -86,110 +124,195 @@ export const CAR_C_GRADE: CoreSelectOption[] = [
 export const CAR_DRIVER_RANGE: CoreSelectOption[] = [
     {
         label: '1인(기명)',
-        value: '1인(기명)',
+        value: 'D4',
         isFixed: false,
     },
     {
         label: '1인(지정)',
-        value: '1인(지정)',
+        value: 'DA',
         isFixed: false,
     },
     {
         label: '부부',
-        value: '부부',
+        value: 'D3',
         isFixed: false,
     },
     {
         label: '부부+자녀',
-        value: '부부+자녀',
+        value: 'DE',
         isFixed: false,
     },
     {
         label: '가족(형제자매제외)',
-        value: '가족(형제자매제외)',
+        value: 'D1',
         isFixed: false,
     },
     {
         label: '가족+형제자매',
-        value: '가족+형제자매',
+        value: 'D5',
         isFixed: false,
     },
     {
         label: '1인+1인',
-        value: '1인+1인',
+        value: 'D6',
         isFixed: false,
     },
     {
         label: '1인+자녀',
-        value: '1인+자녀',
+        value: 'DF',
         isFixed: false,
     },
     {
         label: '1인+가족1인',
-        value: '1인+가족1인',
+        value: 'D8',
         isFixed: false,
     },
     {
         label: '임직원',
-        value: '임직원',
+        value: 'DC',
         isFixed: false,
     },
     {
         label: '누구나',
-        value: '누구나',
+        value: 'D2',
         isFixed: false,
     },
 ];
+
+// 가족한정
+export const CAR_FAMILY: CoreSelectOption[] = [
+    {
+        label: '가족한정',
+        value: 'D1',
+        isFixed: false,
+    },
+    {
+        label: '가족+형제',
+        value: 'D5',
+        isFixed: false,
+    },
+    {
+        label: '가족+1인',
+        value: 'D8',
+        isFixed: false,
+    },
+    {
+        label: '부부한정',
+        value: 'D3',
+        isFixed: false,
+    },
+    {
+        label: '부부+자녀',
+        value: 'DE',
+        isFixed: false,
+    },
+    {
+        label: '부부+1인',
+        value: 'D9',
+        isFixed: false,
+    },
+    {
+        label: '1인한정(기명)',
+        value: 'D4',
+        isFixed: false,
+    },
+    {
+        label: '1인한정(지정)',
+        value: 'DA',
+        isFixed: false,
+    },
+    {
+        label: '1인+1인',
+        value: 'D6',
+        isFixed: false,
+    },
+    {
+        label: '기명1인+1인',
+        value: 'DB',
+        isFixed: false,
+    },
+    {
+        label: '1인+가족1인',
+        value: 'D7',
+        isFixed: false,
+    },
+    {
+        label: '누구나',
+        value: 'D2',
+        isFixed: false,
+    },
+    {
+        label: '임직원한정',
+        value: 'D2',
+        isFixed: false,
+    },
+];
+
 // 최저연령
 export const CAR_MIN_AGE: CoreSelectOption[] = [
     {
         label: '전 연령',
-        value: '전 연령',
+        value: 'E3',
         isFixed: false,
     },
     {
-        label: '21세',
-        value: '21세',
+        label: '19세한정',
+        value: 'EB',
         isFixed: false,
     },
     {
-        label: '22세',
-        value: '22세',
+        label: '20세이상',
+        value: 'EC',
         isFixed: false,
     },
     {
-        label: '24세',
-        value: '24세',
+        label: '21세이상',
+        value: 'E2',
         isFixed: false,
     },
     {
-        label: '26세',
-        value: '26세',
+        label: '22세이상',
+        value: 'EB',
         isFixed: false,
     },
     {
-        label: '28세',
-        value: '28세',
+        label: '24세이상',
+        value: 'E4',
         isFixed: false,
     },
     {
-        label: '30세',
-        value: '30세',
+        label: '26세이상',
+        value: 'E1',
         isFixed: false,
     },
     {
-        label: '35세',
-        value: '35세',
+        label: '28세이상',
+        value: 'EA',
         isFixed: false,
     },
     {
-        label: '43세',
-        value: '43세',
+        label: '30세이상',
+        value: 'E5',
         isFixed: false,
     },
     {
-        label: '48세',
-        value: '48세',
+        label: '35세이상',
+        value: 'E6',
+        isFixed: false,
+    },
+    {
+        label: '38세이상',
+        value: 'E9',
+        isFixed: false,
+    },
+    {
+        label: '43세이상',
+        value: 'E7',
+        isFixed: false,
+    },
+    {
+        label: '48세이상',
+        value: 'E8',
         isFixed: false,
     },
 ];
@@ -229,7 +352,7 @@ export const CAR_RELATION: CoreSelectOption[] = [
 // 차량 번호 - 지역
 export const CAR_LOCALE: CoreSelectOption[] = [
     {
-        label: '선택안함',
+        label: '미선택',
         value: '00',
         isFixed: false,
     },
@@ -669,22 +792,44 @@ export const CAR_AIR_BACK: CoreSelectOption[] = [
 export const CAR_CHUNG: CoreSelectOption[] = [
     {
         label: '없음',
-        value: '없음',
+        value: '0',
         isFixed: false,
     },
     {
         label: '경고',
-        value: '경고',
+        value: '1',
         isFixed: false,
     },
     {
         label: '비상제동',
-        value: '비상제동',
+        value: '2',
         isFixed: false,
     },
     {
         label: '경고+비상제동',
-        value: '경고+비상제동',
+        value: '3',
+        isFixed: false,
+    },
+];
+export const CAR_CHUNG2: CoreSelectOption[] = [
+    {
+        label: '충돌없음',
+        value: '0',
+        isFixed: false,
+    },
+    {
+        label: '충돌경고',
+        value: '1',
+        isFixed: false,
+    },
+    {
+        label: '비상제동',
+        value: '2',
+        isFixed: false,
+    },
+    {
+        label: '충돌+제동',
+        value: '3',
         isFixed: false,
     },
 ];
@@ -703,6 +848,28 @@ export const CAR_GPS: CoreSelectOption[] = [
     {
         label: '경고+유지',
         value: '경고+유지',
+        isFixed: false,
+    },
+];
+export const CAR_GPS2: CoreSelectOption[] = [
+    {
+        label: '차선없음',
+        value: '0',
+        isFixed: false,
+    },
+    {
+        label: '차선이탈',
+        value: '1',
+        isFixed: false,
+    },
+    {
+        label: '차선유지',
+        value: '2',
+        isFixed: false,
+    },
+    {
+        label: '이탈+유지',
+        value: '3',
         isFixed: false,
     },
 ];
@@ -949,6 +1116,11 @@ export const CAR_DAMBO5: CoreSelectOption[] = [
         isFixed: false,
     },
     {
+        label: '3억원',
+        value: '2',
+        isFixed: false,
+    },
+    {
         label: '5억원',
         value: '3',
         isFixed: false,
@@ -1077,21 +1249,71 @@ export const CAR_MILE_DETAIL: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
-// 자녀 특약
+// 자녀 특약(현대/KB/동부)
 export const CAR_DRATE_DIST: CoreSelectOption[] = [
     {
-        label: '미가입',
-        value: '미가입',
-        isFixed: false,
-    },
-    {
-        label: '자녀',
-        value: '자녀',
+        label: '해당없음',
+        value: '0',
         isFixed: false,
     },
     {
         label: '태아',
-        value: '태아',
+        value: '3',
+        isFixed: false,
+    },
+    {
+        label: '만0세',
+        value: '7',
+        isFixed: false,
+    },
+    {
+        label: '만1세',
+        value: '2',
+        isFixed: false,
+    },
+    {
+        label: '만2세~만3세',
+        value: '1',
+        isFixed: false,
+    },
+    {
+        label: '만4세~만5세',
+        value: '6',
+        isFixed: false,
+    },
+    {
+        label: '만6세',
+        value: '5',
+        isFixed: false,
+    },
+    {
+        label: '만7세',
+        value: '4',
+        isFixed: false,
+    },
+    {
+        label: '만8세',
+        value: '8',
+        isFixed: false,
+    },
+    {
+        label: '만9세',
+        value: '9',
+        isFixed: false,
+    },
+    {
+        label: '만10세',
+        value: 'A',
+        isFixed: false,
+    },
+    {
+        label: '만11세',
+        value: 'B',
+        isFixed: false,
+    },
+    {
+        label: '만12세',
+        value: 'C',
         isFixed: false,
     },
 ];
@@ -1536,6 +1758,7 @@ const rootSelectOptions = {
     cGrade: CAR_C_GRADE,
     grade: CAR_GRADE,
     driverRange: CAR_DRIVER_RANGE,
+    family: CAR_FAMILY,
     minAge: CAR_MIN_AGE,
     relation: CAR_RELATION,
     locale: CAR_LOCALE,
@@ -1543,7 +1766,9 @@ const rootSelectOptions = {
     shortDist: CAR_SHORT_DIST,
     airBack: CAR_AIR_BACK,
     chung: CAR_CHUNG,
+    chung2: CAR_CHUNG2,
     gps: CAR_GPS,
+    gps2: CAR_GPS2,
     pType: CAR_P_TYPE,
     usang: CAR_USANG,
     dambo2: CAR_DAMBO2,
@@ -1571,6 +1796,7 @@ const rootSelectOptions = {
     prevSago: CAR_PREV_SAGO,
     accCount: CAR_ACC_POINT,
     hasBb: CAR_HAS_BB,
+    sportcar: CAR_SPORTS,
 };
 
 export default rootSelectOptions;

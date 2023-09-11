@@ -147,7 +147,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="giaQualification"
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -164,7 +164,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="giaComp"
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -231,7 +231,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="liaQualification"
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -248,7 +248,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="liaComp"
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }

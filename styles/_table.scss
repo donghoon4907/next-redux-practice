@@ -70,14 +70,14 @@
     }
 
     & thead {
-        font-size: 14px;
+        // font-size: 14px;
         background-color: $gray-300 !important;
         border-bottom: 1px solid $wr-divider-color-300;
     }
 
-    & tbody {
-        font-size: 12px;
-    }
+    // & tbody {
+    //     font-size: 12px;
+    // }
 
     & .resizer {
         position: absolute;

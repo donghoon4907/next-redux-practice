@@ -114,7 +114,6 @@ export const CreateGeneralPayModal: FC<Props> = ({ payment }) => {
                         <WithLabel id="pdist" label="구분" type="active">
                             <MySelect
                                 inputId="pdist"
-                                placeHolderFontSize={16}
                                 {...dist}
                             />
                         </WithLabel>

@@ -286,7 +286,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="carfamily"
-                                        placeHolderFontSize={16}
+                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carfamilyHooks}
@@ -301,7 +301,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="carage"
-                                        placeHolderFontSize={16}
+                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carageHooks}
@@ -493,7 +493,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 "
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -511,7 +511,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                         >
                                             <MySelect
                                                 "
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }

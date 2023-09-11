@@ -106,7 +106,6 @@ export const CreateEndorsementModal: FC<Props> = () => {
                         <WithLabel id="edist" label="구분" type="active">
                             <MySelect
                                 inputId="edist"
-                                placeHolderFontSize={16}
                                 {...dist}
                             />
                         </WithLabel>

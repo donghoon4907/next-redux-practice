@@ -149,7 +149,7 @@ const LongUpload: NextPage = () => {
                                     index={+cellValue - 1}
                                     values={selects}
                                     setValues={setSelects}
-                                    placeHolderFontSize={16}
+                                    
                                     height="30px"
                                 />
                             </div>
@@ -182,7 +182,7 @@ const LongUpload: NextPage = () => {
                                     <div style={{ width: 150 }}>
                                         <MySelect
                                             inputId="orga"
-                                            placeHolderFontSize={16}
+                                            
                                         />
                                     </div>
 

@@ -88,7 +88,7 @@ export const SetPeriodModal: FC<Props> = ({ setPeriod }) => {
                             >
                                 <MySelect
                                     inputId="periodDist"
-                                    placeHolderFontSize={16}
+                                    
                                     {...sDist}
                                 />
                             </WithLabel>

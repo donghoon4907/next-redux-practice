@@ -1064,7 +1064,7 @@ export const UserForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 placeholder={'선택'}
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1141,7 +1141,7 @@ export const UserForm: FC<Props> = ({
                                         <MySelect
                                             inputId="user_type"
                                             placeholder={'선택'}
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1157,7 +1157,7 @@ export const UserForm: FC<Props> = ({
                                         <MySelect
                                             inputId="status"
                                             placeholder={'선택'}
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1230,7 +1230,7 @@ export const UserForm: FC<Props> = ({
                                         <div style={{ width: 200 }}>
                                             <MySelect
                                                 placeholder={'선택'}
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1265,7 +1265,7 @@ export const UserForm: FC<Props> = ({
                                         <div style={{ width: 200 }}>
                                             <MySelect
                                                 placeholder={'선택'}
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1300,7 +1300,7 @@ export const UserForm: FC<Props> = ({
                                         <div style={{ width: 200 }}>
                                             <MySelect
                                                 placeholder={'선택'}
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1334,7 +1334,7 @@ export const UserForm: FC<Props> = ({
                                         <div style={{ width: 200 }}>
                                             <MySelect
                                                 placeholder={'선택'}
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1369,7 +1369,7 @@ export const UserForm: FC<Props> = ({
                                         <div style={{ width: 200 }}>
                                             <MySelect
                                                 placeholder={'선택'}
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1404,7 +1404,7 @@ export const UserForm: FC<Props> = ({
                                         <div style={{ width: 200 }}>
                                             <MySelect
                                                 placeholder={'선택'}
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }

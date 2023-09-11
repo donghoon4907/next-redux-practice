@@ -123,7 +123,7 @@ export const MySelect: FC<MySelectProps> = ({
                 placeholder: (defaultStyles) => {
                     return {
                         ...defaultStyles,
-                        fontSize: `${placeHolderFontSize}px`,
+                        fontSize: `${placeHolderFontSize}`,
                         color: 'black',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',

@@ -1,10 +1,12 @@
 import type { NextPage } from 'next';
 import type { ChangeEvent } from 'react';
+import type { AppState } from '@reducers/index';
+import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
 import { useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { DatePicker } from 'rsuite';
-import addMonths from 'date-fns/addMonths';
+import { useDispatch, useSelector } from 'react-redux';
+import { END } from 'redux-saga';
+import addYears from 'date-fns/addYears';
 import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
 import { MyRadio } from '@components/radio';
@@ -22,6 +24,13 @@ import { MyLabel } from '@components/label';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { WithLabel } from '@components/WithLabel';
+import carConstants from '@constants/options/car';
+import { residentNumToAge } from '@utils/calculator';
+import { useCheckbox } from '@hooks/use-checkbox';
+import { MyDatepicker } from '@components/datepicker';
+import { carShouldDisableDate } from '@utils/datepicker';
+import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { getCompaniesRequest } from '@actions/hr/get-companies';
 
 function getGender(residentNumber: string) {
     var genderNumber = parseInt(residentNumber);
@@ -33,40 +42,14 @@ function getGender(residentNumber: string) {
     }
 }
 
-function getAge(residentNumber: string, genderNumber: string): number {
-    // 주민번호 앞 7자리를 추출합니다.
-    const birthDate = residentNumber.substring(0, 6);
-    // 2000년대생 여부
-    const isMbaby = Number(genderNumber) >= 3;
-
-    // 현재 날짜를 가져옵니다.
-    const currentDate = new Date();
-
-    // 생년월일을 추출합니다.
-    const birthYear = Number(birthDate.substring(0, 2));
-    const birthMonth = Number(birthDate.substring(2, 4));
-    const birthDay = Number(birthDate.substring(4, 6));
-
-    // 현재 날짜를 이용하여 만 나이를 계산합니다.
-    let age = currentDate.getFullYear() - ((isMbaby ? 2000 : 1900) + birthYear);
-
-    // 생일이 지났는지 체크합니다.
-    if (
-        birthMonth < currentDate.getMonth() + 1 ||
-        (birthMonth === currentDate.getMonth() + 1 &&
-            birthDay <= currentDate.getDate())
-    ) {
-        // 생일이 지났으면 나이를 1 증가시킵니다.
-        age++;
-    }
-
-    return age - 1;
-}
-
 const ComparisonCar: NextPage = () => {
     const displayName = 'wr-pages-compare-car';
 
     const dispatch = useDispatch();
+
+    const { carUseCompanies } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
     // 주민번호 앞자리
     const [startResidentNum, setStartResidentNum] = useState('');
     // 주민번호 뒷자리
@@ -75,22 +58,179 @@ const ComparisonCar: NextPage = () => {
     // 주민번호 피드백
     const [residentNumFeedback, setResidentNumFeedback] = useState('');
     // 차량 번호 - 지역
-    const [carLocale, setCarLocale] = useSelect(CAR_LOCALE);
+    const [carLocale, setCarLocale] = useSelect(carConstants.locale);
     // 차량 번호 - 차종
     const [carType, setCarType] = useNumbericInput('', { maxLength: 3 });
     // 차량 번호 - 용도
-    const [carUsage, setCarUsage] = useSelect(CAR_USAGE);
+    const [carUsage, setCarUsage] = useSelect(carConstants.usage);
     // 차량 번호 - 등록 번호
     const [carRegiNum, setCarRegiNum] = useNumbericInput('', { maxLength: 4 });
     // 차량 번호 - 직접입력
     const [directCarNum] = useInput('');
     // const directCarNumRef = useRef<HTMLInputElement>(null);
     // 가입예정일 - start
-    const [startJoinDate, setStartJoinDate] = useState<Date | null>(new Date());
-    // 가입예정일 - end
-    const [endJoinDate, setEndJoinDate] = useDatepicker(
-        addMonths(new Date(), 12),
+    const [idate, setIdate] = useDatepicker(new Date(), {
+        callbackOnChange: (nextDate) => {
+            if (nextDate) {
+                setTodt(addYears(new Date(), 1));
+            }
+        },
+    });
+    // 보험만기일
+    const [todt, setTodt] = useDatepicker(addYears(new Date(), 1));
+    // 차량용도
+    const [caruse, setCaruse] = useState('');
+    // 가족한정
+    const [carfamily] = useSelect(carConstants.family);
+    // 어린이 특약(현대 / KB / 동부)
+    const [drate] = useSelect(carConstants.dDist);
+    // 운전자연령
+    const [carage] = useSelect(carConstants.minAge);
+    // 납입방법
+    const [divideNum] = useSelect(carConstants.payMethod);
+    // 물적사고 할증
+    const [mulSago] = useSelect(carConstants.mSago, carConstants.mSago[3]);
+    // 전보험사
+    const [preComp] = useSelect(carUseCompanies, null);
+    // LPG 여부
+    const [checkLpg] = useCheckbox(false);
+    // 탑차 여부
+    const [checkTopcar] = useCheckbox(false);
+    // 스포츠카 여부
+    const [checkSportcar] = useCheckbox(false);
+    // 스포츠카
+    const [sportcar] = useSelect(carConstants.sportcar);
+    // 차량연식
+    const [caryear] = useSelect(
+        Array.from({ length: 31 }).reduce((acc: CoreSelectOption[], cur, i) => {
+            const targetYear = addYears(new Date(), i * -1)
+                .getFullYear()
+                .toString();
+
+            if (i === 0) {
+                return [
+                    {
+                        label: `${targetYear}A`,
+                        value: `${targetYear}A`,
+                    },
+                    {
+                        label: `${targetYear}B`,
+                        value: `${targetYear}B`,
+                    },
+                ];
+            } else {
+                return [
+                    ...acc,
+                    {
+                        label: targetYear,
+                        value: targetYear,
+                    },
+                ];
+            }
+        }, []),
     );
+    // 차량등록일
+    const [cardate] = useDatepicker(null);
+    // 차량명
+    const [carname] = useInput('');
+    // 차량등급
+    const [carGrade] = useSelect(carConstants.grade, carConstants.grade[10]);
+    // 배기량
+    const [baegirang] = useNumbericInput('');
+    // 차량구매형태
+    const [membercode] = useSelect(carConstants.pType);
+    // 오토 여부
+    const [checkAuto] = useCheckbox(false);
+    // ABS 여부
+    const [checkAbsHalin] = useCheckbox(false);
+    // 이모빌라이저 여부
+    const [checkImo] = useCheckbox(false);
+    // 에어백
+    const [aircode] = useSelect(carConstants.airBack, carConstants.airBack[2]);
+    // 전방출동
+    const [chung] = useSelect(carConstants.chung2);
+    // 차선이탈
+    const [gps] = useSelect(carConstants.gps2);
+    // 블랙박스 여부
+    const [checkBlackbox] = useCheckbox(false);
+    // 블루링크 여부
+    const [checkBluelink] = useCheckbox(false);
+    // 지능형 안전장치 여부
+    const [checkJobcodeNm] = useCheckbox(false);
+    // 차량가액
+    const [carprice] = useNumbericInput('', {
+        addComma: true,
+    });
+    // 일부담보
+    const [liPrice] = useNumbericInput('', {
+        addComma: true,
+    });
+    // 유상운송
+    const [usang] = useSelect(carConstants.usang);
+    // 기중기장치요율
+    const [usang2] = useNumbericInput('');
+    // 대인배상 2
+    const [dambo2] = useSelect(carConstants.dambo2, carConstants.dambo2[1]);
+    // 대물한도
+    const [dambo3] = useSelect(carConstants.dambo3, carConstants.dambo3[6]);
+    // 자손/자상
+    const [dambo4] = useSelect(carConstants.dambo4, carConstants.dambo4[1]);
+    // 무보험차
+    const [dambo5] = useSelect(carConstants.dambo5, carConstants.dambo5[1]);
+    // 자기차량
+    const [dambo6] = useSelect(carConstants.dambo6, carConstants.dambo6[1]);
+    // 긴급출동
+    const [gooutDist] = useSelect(carConstants.gDist);
+    // 긴급출동 상세
+    const [gooutDetail] = useSelect(carConstants.gDetail);
+    // 마일리지
+    const [mileDist] = useSelect(carConstants.mDist);
+    // 마일리지 상세
+    const [mileDetail] = useSelect(carConstants.mDetail, null);
+    // 메모
+    const [memo] = useInput('');
+    // 보험가입경력 - 피보험자
+    const [guipcarrer] = useSelect(carConstants.exp);
+    // 보험가입경력 - 차량
+    const [guipcarrerCar] = useSelect(carConstants.exp2, null);
+    // 직전3년가입경력 - DB
+    const [lJobcode] = useSelect(carConstants.exp, null);
+    // 직전3년가입경력 - KB
+    const [guipCarrerKb] = useSelect(carConstants.exp, null);
+    // 교통법규 위반
+    const [trafficDist] = useSelect(carConstants.tVio);
+    // 교통법규 위반 건수
+    const [trafficDetail] = useSelect(carConstants.numCase.slice(0, 4));
+    // 총차량대수
+    const [childdrive] = useSelect(carConstants.cDrive, null);
+    // 할증율 - 할인할증
+    const [halin] = useSelect(carConstants.halin, carConstants.halin[20]);
+    // 할증율 - 군/법인/해외경력인정
+    const [checkRateU] = useCheckbox(false);
+    // 할증율 - 기본할증
+    const [specialCode] = useSelect(carConstants.sCode);
+    // 할증율 - 추가할증
+    const [specialCode2] = useSelect(carConstants.sCode2);
+    // 사고요율 - 3년간사고요율
+    const [ssSago3] = useSelect(carConstants.sago3);
+    // 사고요율 - 전계약사고요율
+    const [preSago3] = useSelect(carConstants.prevSago);
+    // 사고요율 - 3년사고점수
+    const [pSago] = useSelect(carConstants.accCount, null);
+    // 사고요율 - 1년사고점수
+    const [goout2] = useSelect(carConstants.accCount, null);
+    // 피보기준 사고건수 - 3년간
+    const [sago3] = useSelect(carConstants.numCase);
+    // 피보기준 사고건수 - 2년간
+    const [sago2] = useSelect(carConstants.numCase);
+    // 피보기준 사고건수 - 1년간
+    const [sago1] = useSelect(carConstants.numCase);
+    // 차량기준 사고건수 - 3년간
+    const [carSago3] = useSelect(carConstants.numCase);
+    // 차량기준 사고건수 - 2년간
+    const [carNonum] = useSelect(carConstants.numCase);
+    // 차량기준 사고건수 - 1년간
+    const [carSago1] = useSelect(carConstants.numCase);
 
     const handleChangeStartResidentNum = (
         evt: ChangeEvent<HTMLInputElement>,
@@ -141,7 +281,7 @@ const ComparisonCar: NextPage = () => {
         if (startResidentNum.length === 6 && isNumberic(startResidentNum)) {
             // 주민번호 뒷자리가 1자리의 숫자인지 검증
             if (endResidentNum.length === 1 && isNumberic(endResidentNum)) {
-                age = getAge(startResidentNum, endResidentNum);
+                age = residentNumToAge(startResidentNum + endResidentNum);
 
                 gender = getGender(endResidentNum);
 
@@ -256,18 +396,16 @@ const ComparisonCar: NextPage = () => {
         }
     };
 
-    const handleChangeStartJoinDate = (value: Date | null) => {
-        if (value) {
-            setEndJoinDate(addMonths(value, 12));
-        }
+    const handleClickToday = () => {
+        const today = new Date();
 
-        setStartJoinDate(value);
+        setIdate(today);
+
+        setTodt(addYears(today, 1));
     };
 
-    const handleClickToday = () => {
-        setStartJoinDate(new Date());
-
-        setEndJoinDate(addMonths(new Date(), 12));
+    const handleChangeCaruse = (evt: ChangeEvent<HTMLInputElement>) => {
+        setCaruse(evt.target.value);
     };
 
     return (
@@ -339,2032 +477,1448 @@ const ComparisonCar: NextPage = () => {
                         <div
                             className={`${displayName}__left wr-pages-detail__left`}
                         >
-                            <div className={`${displayName}__block customer`}>
-                                <div
-                                    className={`${displayName}__title customer`}
-                                >
-                                    <h3>고객기본정보</h3>
-                                </div>
-                                <div className={`${displayName}__list`}>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label
-                                                htmlFor="residentNum"
-                                                className="wr-label--required"
-                                            >
-                                                주민번호
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MyInput
-                                                    id="residentNum"
-                                                    type="text"
-                                                    pattern="[0-9]{6}"
-                                                    onChange={
-                                                        handleChangeStartResidentNum
-                                                    }
-                                                    value={startResidentNum}
-                                                />
-                                            </div>
-                                            <div>-</div>
-                                            <div style={{ width: 35 }}>
-                                                <MyInput
-                                                    type="text"
-                                                    pattern="[0-9]{1}"
-                                                    ref={endResidentNumRef}
-                                                    onChange={
-                                                        handleChangeEndResidentNum
-                                                    }
-                                                    onBlur={
-                                                        handleBlurEndResidentNum
-                                                    }
-                                                    value={endResidentNum}
-                                                />
-                                            </div>
-                                            <div>******</div>
-                                            <div>{residentNumFeedback}</div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label htmlFor="carnum">
-                                                차량번호
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 110 }}>
-                                                <MySelect
-                                                    inputId="carnum"
-                                                    {...carLocale}
-                                                />
-                                            </div>
-                                            <div style={{ width: 60 }}>
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="999"
-                                                    pattern="[0-9]{2,3}"
-                                                    {...carType}
-                                                />
-                                            </div>
-                                            <div style={{ width: 70 }}>
-                                                <MySelect {...carUsage} />
-                                            </div>
-                                            <div style={{ width: 70 }}>
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="9999"
-                                                    pattern="[0-9]{4}"
-                                                    {...carRegiNum}
-                                                />
-                                            </div>
-                                            <div style={{ width: 150 }}>
-                                                <MyInput
-                                                    type="text"
-                                                    placeholder="직접입력"
-                                                    // ref={directCarNumRef}
-                                                    onBlur={
-                                                        handleBlurDirectCarNum
-                                                    }
-                                                    {...directCarNum}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                가입예정일
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <DatePicker
-                                                oneTap
-                                                format="yyyy-MM-dd"
-                                                style={{ width: 150 }}
-                                                size="sm"
-                                                placeholder="시작일 선택"
-                                                value={startJoinDate}
-                                                onChange={
-                                                    handleChangeStartJoinDate
-                                                }
-                                            />
-                                            <div style={{ width: 40 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
-                                                    onClick={handleClickToday}
+                            <div className="wr-table--normal">
+                                <table className="wr-table table">
+                                    <colgroup>
+                                        <col width="150px" />
+                                        <col width="550px" />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th colSpan={2}>
+                                                <span>고객기본정보</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    htmlFor="residentNum"
+                                                    className="wr-label--required"
                                                 >
-                                                    오늘
-                                                </MyButton>
-                                            </div>
-                                            <div>~</div>
-                                            <DatePicker
-                                                oneTap
-                                                format="yyyy-MM-dd"
-                                                style={{ width: 150 }}
-                                                size="sm"
-                                                placeholder="마감일 선택"
-                                                {...endJoinDate}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>개발원조회</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 50 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                                    주민번호
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    현대
-                                                </MyButton>
-                                            </div>
-                                            <div style={{ width: 70 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            id="residentNum"
+                                                            type="text"
+                                                            pattern="[0-9]{6}"
+                                                            onChange={
+                                                                handleChangeStartResidentNum
+                                                            }
+                                                            value={
+                                                                startResidentNum
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <div>-</div>
+                                                    <div
+                                                        style={{
+                                                            width: 35,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            type="text"
+                                                            pattern="[0-9]{1}"
+                                                            ref={
+                                                                endResidentNumRef
+                                                            }
+                                                            onChange={
+                                                                handleChangeEndResidentNum
+                                                            }
+                                                            onBlur={
+                                                                handleBlurEndResidentNum
+                                                            }
+                                                            value={
+                                                                endResidentNum
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <div>******</div>
+                                                    <div>
+                                                        {residentNumFeedback}
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="carnum">
+                                                    차량번호
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    DB(신규)
-                                                </MyButton>
-                                            </div>
-                                            <div style={{ width: 70 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                                    <div style={{ width: 100 }}>
+                                                        <MySelect
+                                                            inputId="carnum"
+                                                            {...carLocale}
+                                                        />
+                                                    </div>
+
+                                                    <div
+                                                        style={{
+                                                            width: 60,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            type="text"
+                                                            placeholder="999"
+                                                            pattern="[0-9]{2,3}"
+                                                            {...carType}
+                                                        />
+                                                    </div>
+                                                    <MySelect {...carUsage} />
+                                                    <div
+                                                        style={{
+                                                            width: 70,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            type="text"
+                                                            placeholder="9999"
+                                                            pattern="[0-9]{4}"
+                                                            {...carRegiNum}
+                                                        />
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            type="text"
+                                                            placeholder="직접입력"
+                                                            // ref={directCarNumRef}
+                                                            onBlur={
+                                                                handleBlurDirectCarNum
+                                                            }
+                                                            {...directCarNum}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label className="wr-label--required">
+                                                    가입예정일
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    DB(갱신)
-                                                </MyButton>
-                                            </div>
-                                            <div style={{ width: 70 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                                    <div
+                                                        style={{
+                                                            width: 130,
+                                                        }}
+                                                    >
+                                                        <MyDatepicker
+                                                            id="idate"
+                                                            size="sm"
+                                                            placeholder="가입예정일"
+                                                            hooks={idate}
+                                                            shouldDisableDate={
+                                                                carShouldDisableDate
+                                                            }
+                                                        />
+                                                    </div>
+                                                    <MyButton
+                                                        className="btn-warning btn-sm"
+                                                        onClick={
+                                                            handleClickToday
+                                                        }
+                                                    >
+                                                        오늘
+                                                    </MyButton>
+                                                    <div>~</div>
+                                                    <div
+                                                        style={{
+                                                            width: 130,
+                                                        }}
+                                                    >
+                                                        <MyDatepicker
+                                                            id="todt"
+                                                            size="md"
+                                                            placeholder="보험만기일"
+                                                            hooks={todt}
+                                                            shouldDisableDate={
+                                                                carShouldDisableDate
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>개발원조회</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    메리츠
-                                                </MyButton>
-                                            </div>
-                                            <div style={{ width: 70 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        현대
+                                                    </MyButton>
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        DB(신규)
+                                                    </MyButton>
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        DB(갱신)
+                                                    </MyButton>
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        메리츠
+                                                    </MyButton>
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        KB
+                                                    </MyButton>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="customerNm"
                                                 >
-                                                    KB
-                                                </MyButton>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>고객명</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 230 }}>
-                                                <MyInput placeholder="홍길동" />
-                                            </div>
-                                            <div style={{ width: 100 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                                    고객명
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    고객상세사항
-                                                </MyButton>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                차량용도
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <MyRadio
-                                                id="usage1"
-                                                name="usage"
-                                                label="출퇴근용(영리)"
-                                            />
-                                            <MyRadio
-                                                id="usage2"
-                                                name="usage"
-                                                label="사업용(비영리)"
-                                            />
-                                            <MyRadio
-                                                id="usage3"
-                                                name="usage"
-                                                label="종교단체"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                가족한정
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'가족+형제'}
-                                                />
-                                            </div>
-                                            <div>어린이특약</div>
-                                            <div style={{ width: 100 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'선택'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                운전자연령
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'만26세이상'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>납입방법</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'일시납'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>물적사고 할증</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'200만원'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item customer`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>전보험사</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description customer`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="메리츠"
-                                                />
-                                            </div>
-                                            <div>전계약 NO</div>
-                                            <div style={{ width: 100 }}>
-                                                <MyInput placeholder="" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            id="customerNm"
+                                                            placeholder="홍길동"
+                                                        />
+                                                    </div>
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        고객상세사항
+                                                    </MyButton>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="caruse1"
+                                                >
+                                                    차량용도
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <MyRadio
+                                                        id="caruse1"
+                                                        name="caruse"
+                                                        label="출퇴근용(영리)"
+                                                        value="1"
+                                                        onChange={
+                                                            handleChangeCaruse
+                                                        }
+                                                        checked={caruse === '1'}
+                                                    />
+                                                    <MyRadio
+                                                        id="caruse2"
+                                                        name="caruse"
+                                                        label="사업용(비영리)"
+                                                        value="2"
+                                                        onChange={
+                                                            handleChangeCaruse
+                                                        }
+                                                        checked={caruse === '2'}
+                                                    />
+                                                    <MyRadio
+                                                        id="caruse3"
+                                                        name="caruse"
+                                                        label="종교단체"
+                                                        value="3"
+                                                        onChange={
+                                                            handleChangeCaruse
+                                                        }
+                                                        checked={caruse === '3'}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="carfamily"
+                                                >
+                                                    가족한정
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="carfamily"
+                                                            {...carfamily}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="drate">
+                                                            <strong>
+                                                                어린이특약
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="drate"
+                                                            {...drate}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="carage"
+                                                >
+                                                    운전자연령
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="carage"
+                                                            {...carage}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="divide_num">
+                                                    납입방법
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="divide_num"
+                                                            {...divideNum}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="mul_sago">
+                                                    물적사고할증
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="mul_sago"
+                                                            {...mulSago}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="prev_comp">
+                                                    전보험사
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="prev_comp"
+                                                            {...preComp}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="prev_no">
+                                                            <strong>
+                                                                전계약 NO
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            id="prev_no"
+                                                            placeholder=""
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div
-                                className={`${displayName}__block vehicle wr-mt`}
-                            >
-                                <div
-                                    className={`${displayName}__title vehicle`}
-                                >
-                                    {' '}
-                                    <h3>차량사항</h3>
-                                </div>
-                                <div className={`${displayName}__list`}>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                차명코드
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MyInput placeholder="500202" />
-                                            </div>
-                                            <div style={{ width: 40 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+
+                            <div className="wr-table--normal">
+                                <table className="wr-table table wr-mt">
+                                    <colgroup>
+                                        <col width="150px" />
+                                        <col width="550px" />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th colSpan={2}>
+                                                <span>차량사항</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label className="wr-label--required">
+                                                    차명코드
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    조회
-                                                </MyButton>
-                                            </div>
-                                            <div style={{ width: 70 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MyInput disabled />
+                                                    </div>
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        조회
+                                                    </MyButton>
+                                                    <MyButton className="btn-warning btn-sm">
+                                                        안전옵션
+                                                    </MyButton>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="carnum">
+                                                    차량형태
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    안전옵션
-                                                </MyButton>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>차량형태</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <MyCheckbox
-                                                id="lpg"
-                                                label="LPG차량"
-                                            />
-                                            <MyCheckbox id="top" label="탑차" />
-                                            <MyCheckbox
-                                                id="sports"
-                                                label="스포츠카"
-                                            />
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="아니오"
+                                                    <MyCheckbox
+                                                        id="lpg"
+                                                        label="LPG차량"
+                                                        {...checkLpg}
+                                                    />
+                                                    <MyCheckbox
+                                                        id="top"
+                                                        label="탑차"
+                                                        {...checkTopcar}
+                                                    />
+                                                    <MyCheckbox
+                                                        id="sports"
+                                                        label="스포츠카"
+                                                        {...checkSportcar}
+                                                    />
+                                                    {checkSportcar.checked && (
+                                                        <div
+                                                            style={{
+                                                                width: 150,
+                                                            }}
+                                                        >
+                                                            <MySelect
+                                                                {...sportcar}
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="caryear"
+                                                >
+                                                    차량연식
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="caryear"
+                                                            {...caryear}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label
+                                                            className="wr-label--required"
+                                                            htmlFor="cardate"
+                                                        >
+                                                            <strong>
+                                                                차량등록일
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MyDatepicker
+                                                            id="cardate"
+                                                            size="sm"
+                                                            placeholder="차량등록일"
+                                                            hooks={cardate}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="carname"
+                                                >
+                                                    차량명
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <MyInput
+                                                    id="carname"
+                                                    placeholder="차량명"
+                                                    {...carname}
                                                 />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                차량연식
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div style={{ width: 150 }}>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="car_grade">
+                                                    차량등급
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="car_grade"
+                                                            {...carGrade}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="baegirang">
+                                                            <strong>
+                                                                배기량(승차정원)
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            id="baegirang"
+                                                            className="text-end"
+                                                            placeholder="0"
+                                                            unit="cc(명)"
+                                                            {...baegirang}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="baegicode">
+                                                    차량구분
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="baegicode"
+                                                            placeholder="==차종선택=="
+                                                            isDisabled
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="membercode">
+                                                            <strong>
+                                                                차량구매형태
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="membercode"
+                                                            {...membercode}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>기본부속1</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <MyCheckbox
+                                                        id="auto"
+                                                        label="오토"
+                                                        {...checkAuto}
+                                                    />
+                                                    <MyCheckbox
+                                                        id="abs"
+                                                        label="ABS"
+                                                        {...checkAbsHalin}
+                                                    />
+                                                    <MyCheckbox
+                                                        id="emobil"
+                                                        label="이모빌"
+                                                        {...checkImo}
+                                                    />
+                                                    <div>
+                                                        <label htmlFor="aircode">
+                                                            <strong>
+                                                                에어백
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <MySelect
+                                                        inputId="aircode"
+                                                        {...aircode}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>기본부속2</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 120 }}>
+                                                        <MySelect {...chung} />
+                                                    </div>
+                                                    <div style={{ width: 120 }}>
+                                                        <MySelect {...gps} />
+                                                    </div>
+
+                                                    <MyCheckbox
+                                                        id="bbox"
+                                                        label="블랙박스"
+                                                        {...checkBlackbox}
+                                                    />
+                                                    <MyCheckbox
+                                                        id="bluelink"
+                                                        label="블루링크"
+                                                        {...checkBluelink}
+                                                    />
+                                                    <MyCheckbox
+                                                        id="l_jobcode_nm"
+                                                        label="지능형안전"
+                                                        {...checkJobcodeNm}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="carprice">
+                                                    차량가액
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div
+                                                        style={{
+                                                            width: 100,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            id="carprice"
+                                                            placeholder="0"
+                                                            className="text-end"
+                                                            unit="만원"
+                                                            {...carprice}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <strong>
+                                                            부속가액
+                                                        </strong>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 100,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            placeholder="0"
+                                                            className="text-end"
+                                                            disabled
+                                                            unit="만원"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <label htmlFor="li_price">
+                                                            <strong>
+                                                                일부담보
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 100,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            id="li_price"
+                                                            placeholder="0"
+                                                            className="text-end"
+                                                            unit="만원"
+                                                            {...liPrice}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="carprice">
+                                                    기타사항
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div>
+                                                        <label htmlFor="usang">
+                                                            <strong>
+                                                                유상운송
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <MySelect
+                                                        inputId="usang"
+                                                        {...usang}
+                                                    />
+                                                    <div>
+                                                        <label htmlFor="usang2">
+                                                            <strong>
+                                                                기중기장치요율
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div
+                                                        style={{
+                                                            width: 100,
+                                                        }}
+                                                    >
+                                                        <MyInput
+                                                            placeholder="0"
+                                                            className="text-end"
+                                                            unit="%"
+                                                            {...usang2}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className="wr-table--normal">
+                                <table className="wr-table table wr-mt">
+                                    <colgroup>
+                                        <col width="150px" />
+                                        <col width="200px" />
+                                        <col width="150px" />
+                                        <col width="200px" />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th colSpan={4}>
+                                                <div className="wr-pages-detail__center">
+                                                    <span>세부 담보 설정</span>
+                                                    <MyButton className="btn-warning btn-sm wr-ml">
+                                                        책임보험
+                                                    </MyButton>
+                                                    <MyButton className="btn-warning btn-sm wr-ml">
+                                                        기본담보
+                                                    </MyButton>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span>대인배상I</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div>
+                                                        <strong>
+                                                            의무가입
+                                                        </strong>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="dambo2"
+                                                >
+                                                    대인배상II
+                                                </label>
+                                            </td>
+                                            <td>
                                                 <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="2022"
+                                                    inputId="dambo2"
+                                                    {...dambo2}
                                                 />
-                                            </div>
-                                            <div>년식</div>
-                                            <div className="position-relative">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="dambo3"
+                                                >
+                                                    대물한도
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <MySelect
+                                                    inputId="dambo3"
+                                                    {...dambo3}
+                                                />
+                                            </td>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="dambo4"
+                                                >
+                                                    자손/자상
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <MySelect
+                                                    inputId="dambo4"
+                                                    {...dambo4}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="dambo5"
+                                                >
+                                                    무보험차
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <MySelect
+                                                    inputId="dambo5"
+                                                    {...dambo5}
+                                                />
+                                            </td>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="dambo6"
+                                                >
+                                                    자기차량
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <MySelect
+                                                    inputId="dambo6"
+                                                    {...dambo6}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="goout1"
+                                                >
+                                                    긴급출동
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <MySelect
+                                                    inputId="goout1"
+                                                    {...gooutDist}
+                                                />
+                                            </td>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="goout_dist"
+                                                >
+                                                    긴급출동세부
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <MySelect
+                                                    inputId="goout_dist"
+                                                    {...gooutDetail}
+                                                />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="mile1">
+                                                    마일리지특약
+                                                </label>
+                                            </td>
+                                            <td colSpan={3}>
+                                                <div className="d-flex justify-content-start align-items-center">
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="mile1"
+                                                            {...mileDist}
+                                                        />
+                                                    </div>
+                                                    <div style={{ width: 300 }}>
+                                                        <div className="wr-ml">
+                                                            <MySelect
+                                                                inputId="mile2"
+                                                                {...mileDetail}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label htmlFor="memo">
+                                                    메모
+                                                </label>
+                                            </td>
+                                            <td colSpan={3}>
+                                                <textarea
+                                                    rows={4}
+                                                    style={{
+                                                        width: '100%',
+                                                    }}
+                                                    {...memo}
+                                                />
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div className="wr-table--normal">
+                                <table className="wr-table table wr-mt">
+                                    <colgroup>
+                                        <col width="150px" />
+                                        <col width="550px" />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th colSpan={2}>
+                                                <span>보험요율사항</span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
                                                 <span className="wr-label--required">
-                                                    차량등록일
+                                                    보험가입경력
                                                 </span>
-                                            </div>
-                                            <DatePicker
-                                                oneTap
-                                                format="yyyy-MM-dd"
-                                                style={{ width: 150 }}
-                                                size="sm"
-                                                placeholder="2022-01-01"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>차량명</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <MyInput placeholder="차량명" />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>차량등급</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="11등급"
-                                                />
-                                            </div>
-                                            <div>배기량(승차정원)</div>
-                                            <div style={{ width: 150 }}>
-                                                <MyInput
-                                                    placeholder="1200"
-                                                    unit="cc(명)"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>차량구분</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="==차종선택=="
-                                                    isDisabled
-                                                />
-                                            </div>
-                                            <div>차량구매형태</div>
-                                            <div style={{ width: 100 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="신차"
-                                                    isDisabled
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>기본부속1</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <MyCheckbox
-                                                id="auto"
-                                                label="오토"
-                                            />
-                                            <MyCheckbox id="abs" label="ABS" />
-                                            <MyCheckbox
-                                                id="emobil"
-                                                label="이모빌"
-                                            />
-                                            <div>에어백</div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="운전석 에어백"
-                                                    isDisabled
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>기본부속2</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'충돌없음'}
-                                                />
-                                            </div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'차선없음'}
-                                                />
-                                            </div>
-                                            <MyCheckbox
-                                                id="blackbox"
-                                                label="블랙박스"
-                                            />
-                                            <MyCheckbox
-                                                id="bluelink"
-                                                label="블루링크"
-                                            />
-                                            <MyCheckbox
-                                                id="intsafe"
-                                                label="지능형안전"
-                                            />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>추가부속</label>
-                                            <div style={{ width: 70 }}>
-                                                <MyButton
-                                                    className={`btn-warning ${displayName}__button`}
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
                                                 >
-                                                    선택옵션
-                                                </MyButton>
-                                            </div>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div style={{ width: '100%' }}>
-                                                <div className="row">
-                                                    <div
-                                                        className={`${displayName}__width col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
+                                                    <div>
+                                                        <label
+                                                            className="wr-label--required"
+                                                            htmlFor="guipcarrer"
                                                         >
-                                                            <MyInput />
-                                                        </div>
-                                                        <div
-                                                            style={{
-                                                                width: 150,
-                                                            }}
+                                                            <strong>
+                                                                피보험자
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="guipcarrer"
+                                                            {...guipcarrer}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label
+                                                            className="wr-label--required"
+                                                            htmlFor="guipcarrer_car"
                                                         >
-                                                            <MyInput
-                                                                placeholder="0"
-                                                                unit="만원"
-                                                            />
+                                                            <strong>
+                                                                차량
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 200 }}>
+                                                        <MySelect
+                                                            inputId="guipcarrer_car"
+                                                            {...guipcarrerCar}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>직전3년가입경력</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div>
+                                                        <label htmlFor="l_jobcode">
+                                                            <strong>DB</strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="l_jobcode"
+                                                            {...lJobcode}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="guipcarrer_kb">
+                                                            <strong>KB</strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="guipcarrer_kb"
+                                                            {...guipCarrerKb}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="traffic"
+                                                >
+                                                    교통법규위반
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 200 }}>
+                                                        <MySelect
+                                                            inputId="traffic"
+                                                            {...trafficDist}
+                                                        />
+                                                    </div>
+
+                                                    <div className="d-flex">
+                                                        <MySelect
+                                                            inputId="gr_area"
+                                                            {...trafficDetail}
+                                                        />
+                                                        <div className="wr-form__unit wr-border-l--hide">
+                                                            건
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        className={`${displayName}__width col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
+
+                                                    <div>
+                                                        <label htmlFor="childdrive">
+                                                            <strong>
+                                                                총차량대수
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 100 }}>
+                                                        <MySelect
+                                                            inputId="childdrive"
+                                                            {...childdrive}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="halin"
+                                                >
+                                                    할인할증률
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div style={{ width: 150 }}>
+                                                        <MySelect
+                                                            inputId="halin"
+                                                            {...halin}
+                                                        />
+                                                    </div>
+
+                                                    <MyCheckbox
+                                                        id="rate_u"
+                                                        label="군/법인/해외경력인정"
+                                                        {...checkRateU}
+                                                    />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span className="wr-label--required">
+                                                    특별할증율
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div>
+                                                        <label
+                                                            className="wr-label--required"
+                                                            htmlFor="special_code"
                                                         >
-                                                            <MyInput />
+                                                            <strong>
+                                                                기본할증
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 200 }}>
+                                                        <MySelect
+                                                            inputId="special_code"
+                                                            menuPlacement="top"
+                                                            {...specialCode}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label
+                                                            className="wr-label--required"
+                                                            htmlFor="special_code2"
+                                                        >
+                                                            <strong>
+                                                                추가할증
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 200 }}>
+                                                        <MySelect
+                                                            inputId="special_code2"
+                                                            menuPlacement="top"
+                                                            {...specialCode2}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>3년간사고요율</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div>
+                                                        <label
+                                                            className="wr-label--required"
+                                                            htmlFor="ss_sago3"
+                                                        >
+                                                            <strong>
+                                                                3년간요율
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 190 }}>
+                                                        <MySelect
+                                                            inputId="ss_sago3"
+                                                            {...ssSago3}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="pre_sago3">
+                                                            <strong>
+                                                                전계약요율
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 190 }}>
+                                                        <MySelect
+                                                            inputId="pre_sago3"
+                                                            {...preSago3}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    className={`${displayName}__description wr-mt`}
+                                                >
+                                                    <div>
+                                                        <label htmlFor="p_sago">
+                                                            <strong>
+                                                                1년사고점수
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 177 }}>
+                                                        <MySelect
+                                                            inputId="p_sago"
+                                                            menuPlacement="top"
+                                                            {...pSago}
+                                                        />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="goout2">
+                                                            <strong>
+                                                                3년사고점수
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div style={{ width: 182 }}>
+                                                        <MySelect
+                                                            inputId="goout2"
+                                                            menuPlacement="top"
+                                                            {...goout2}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>피보기준 사고건수</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div>
+                                                        <label htmlFor="sago3">
+                                                            <strong>
+                                                                3년간
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <MySelect
+                                                            inputId="sago3"
+                                                            {...sago3}
+                                                        />
+                                                        <div className="wr-form__unit wr-border-l--hide">
+                                                            건
                                                         </div>
-                                                        <div
-                                                            style={{
-                                                                width: 150,
-                                                            }}
-                                                        >
-                                                            <MyInput
-                                                                placeholder="0"
-                                                                unit="만원"
-                                                            />
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="sago2">
+                                                            <strong>
+                                                                2년간
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <MySelect
+                                                            inputId="sago2"
+                                                            {...sago2}
+                                                        />
+                                                        <div className="wr-form__unit wr-border-l--hide">
+                                                            건
+                                                        </div>
+                                                    </div>
+
+                                                    <div>
+                                                        <label htmlFor="sago1">
+                                                            <strong>
+                                                                1년간
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <MySelect
+                                                            inputId="sago1"
+                                                            {...sago1}
+                                                        />
+                                                        <div className="wr-form__unit wr-border-l--hide">
+                                                            건
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="row wr-mt">
-                                                    <div
-                                                        className={`${displayName}__width col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                        >
-                                                            <MyInput />
-                                                        </div>
-                                                        <div
-                                                            style={{
-                                                                width: 150,
-                                                            }}
-                                                        >
-                                                            <MyInput
-                                                                placeholder="0"
-                                                                unit="만원"
-                                                            />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>차량기준 사고건수</span>
+                                            </td>
+                                            <td>
+                                                <div
+                                                    className={`${displayName}__description`}
+                                                >
+                                                    <div>
+                                                        <label htmlFor="car_sago3">
+                                                            <strong>
+                                                                3년간
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <MySelect
+                                                            inputId="car_sago3"
+                                                            {...carSago3}
+                                                        />
+                                                        <div className="wr-form__unit wr-border-l--hide">
+                                                            건
                                                         </div>
                                                     </div>
-                                                    <div
-                                                        className={`${displayName}__width col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                        >
-                                                            <MyInput />
-                                                        </div>
-                                                        <div
-                                                            style={{
-                                                                width: 150,
-                                                            }}
-                                                        >
-                                                            <MyInput
-                                                                placeholder="0"
-                                                                unit="만원"
-                                                            />
+
+                                                    <div>
+                                                        <label htmlFor="car_nonum">
+                                                            <strong>
+                                                                2년간
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <MySelect
+                                                            inputId="car_nonum"
+                                                            {...carNonum}
+                                                        />
+                                                        <div className="wr-form__unit wr-border-l--hide">
+                                                            건
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div className="row wr-mt">
-                                                    <div
-                                                        className={`${displayName}__with col`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                        >
-                                                            <MyInput />
-                                                        </div>
-                                                        <div
-                                                            style={{
-                                                                width: 150,
-                                                            }}
-                                                        >
-                                                            <MyInput
-                                                                placeholder="0"
-                                                                unit="만원"
-                                                            />
+
+                                                    <div>
+                                                        <label htmlFor="car_sago1">
+                                                            <strong>
+                                                                1년간
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    <div className="d-flex">
+                                                        <MySelect
+                                                            inputId="car_sago1"
+                                                            {...carSago1}
+                                                        />
+                                                        <div className="wr-form__unit wr-border-l--hide">
+                                                            건
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>차량가액</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div style={{ width: 100 }}>
-                                                <MyInput
-                                                    placeholder=""
-                                                    unit="만원"
-                                                />
-                                            </div>
-                                            <div>부속가액</div>
-                                            <div style={{ width: 100 }}>
-                                                <MyInput
-                                                    placeholder=""
-                                                    unit="만원"
-                                                />
-                                            </div>
-                                            <div>일부담보</div>
-                                            <div style={{ width: 100 }}>
-                                                <MyInput
-                                                    placeholder=""
-                                                    unit="만원"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item vehicle`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>기타사항</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description vehicle`}
-                                        >
-                                            <div>유상운송</div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="없음"
-                                                />
-                                            </div>
-                                            <div>기중기장치요율</div>
-                                            <div style={{ width: 100 }}>
-                                                <MyInput
-                                                    placeholder=""
-                                                    unit="%"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
-                            <div
-                                className={`${displayName}__block guarantee wr-mt`}
-                            >
-                                <div
-                                    className={`${displayName}__title guarantee`}
-                                >
-                                    <div className={`${displayName}__with`}>
-                                        <h3>세부 담보 설정</h3>
-                                        <div style={{ width: 70 }}>
-                                            <MyButton
-                                                className={`btn-warning ${displayName}__button`}
-                                            >
-                                                책임보험
-                                            </MyButton>
-                                        </div>
-                                        <div style={{ width: 70 }}>
-                                            <MyButton
-                                                className={`btn-warning ${displayName}__button`}
-                                            >
-                                                기본담보
-                                            </MyButton>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={`${displayName}__list`}>
-                                    <div
-                                        className={`${displayName}__item guarantee`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>대인배상I</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee extension`}
-                                        >
-                                            <div>의무가입</div>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                대인배상II
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="가입안함"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item guarantee`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                대물한도
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee extension`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="2천만원"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                자손/자상
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="가입안함"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item guarantee`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                무보험차
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee extension`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="가입안함"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                자기차량
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="가입안함"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item guarantee`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                긴급출동
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee extension`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="아니요"
-                                                />
-                                            </div>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                긴급출동세부
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="전체가입"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item guarantee`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>마일리지특약</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee`}
-                                        >
-                                            <div style={{ width: 200 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="미가입"
-                                                />
-                                            </div>
-                                            <div style={{ width: 300 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder="==주행거리 선택=="
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item guarantee`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>메모</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description guarantee`}
-                                        >
-                                            <textarea
-                                                className="form-control"
-                                                id="exampleFormControlTextarea1"
-                                                rows={5}
-                                                defaultValue={''}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                className={`${displayName}__block insurancerate wr-mt`}
-                            >
-                                <div
-                                    className={`${displayName}__title insurancerate`}
-                                >
-                                    <h3>보험요율사항</h3>
-                                </div>
-                                <div className={`${displayName}__list`}>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                보험가입경력
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div>피보험자</div>
-                                            <div style={{ width: 120 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'1년미만'}
-                                                />
-                                            </div>
-                                            <div>차량</div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'9개월미만'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>직전3년가입경력</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div>DB</div>
-                                            <div style={{ width: 120 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'==선택=='}
-                                                />
-                                            </div>
-                                            <div>KB</div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'==선택=='}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                교통법규위반
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'할인(-0.3)'}
-                                                />
-                                            </div>
-                                            <div style={{ width: 60 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0'}
-                                                />
-                                            </div>
-                                            <div>건</div>
-                                            <div>총차량대수</div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'==선택=='}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                할인할증율
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'11Z'}
-                                                />
-                                            </div>
-                                            <MyCheckbox label="군/법인/해외경력인정" />
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label className="wr-label--required">
-                                                특별할증율
-                                            </label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div>기본할증</div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0%'}
-                                                />
-                                            </div>
-                                            <div>추가할증</div>
-                                            <div style={{ width: 150 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0%'}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>3년간사고요율</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div style={{ width: '100%' }}>
-                                                <div className="row">
-                                                    <div
-                                                        className={`${displayName}__width col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                width: 80,
-                                                            }}
-                                                        >
-                                                            3년간요율
-                                                        </div>
-                                                        <div
-                                                            className="wr-mr"
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                        >
-                                                            <MySelect
-                                                                options={[]}
-                                                                value={null}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    'ZZZ등급(기타)'
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        className={`${displayName}__width col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                width: 80,
-                                                            }}
-                                                        >
-                                                            전계약요율
-                                                        </div>
-                                                        <div
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                        >
-                                                            <MySelect
-                                                                options={[]}
-                                                                value={null}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    '3년간사고요율'
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="row wr-mt">
-                                                    <div
-                                                        className={`${displayName}__width col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                width: 80,
-                                                            }}
-                                                        >
-                                                            1년사고점수
-                                                        </div>
-                                                        <div
-                                                            className="wr-mr"
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                        >
-                                                            <MySelect
-                                                                options={[]}
-                                                                value={null}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    '=선택='
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    <div
-                                                        className={`${displayName}__with col-6`}
-                                                    >
-                                                        <div
-                                                            style={{
-                                                                width: 80,
-                                                            }}
-                                                        >
-                                                            3년사고점수
-                                                        </div>
-                                                        <div
-                                                            style={{
-                                                                flex: 1,
-                                                            }}
-                                                        >
-                                                            <MySelect
-                                                                options={[]}
-                                                                value={null}
-                                                                onChange={() => {}}
-                                                                placeholder={
-                                                                    '=선택='
-                                                                }
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>피보기준 사고건수</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div>3년간</div>
-                                            <div style={{ width: 70 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0'}
-                                                />
-                                            </div>
-                                            <div>건</div>
-                                            <div>2년간</div>
-                                            <div style={{ width: 70 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0'}
-                                                />
-                                            </div>
-                                            <div>건</div>
-                                            <div>1년간</div>
-                                            <div style={{ width: 70 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0'}
-                                                />
-                                            </div>
-                                            <div>건</div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        className={`${displayName}__item insurancerate`}
-                                    >
-                                        <div
-                                            className={`${displayName}__label`}
-                                        >
-                                            <label>차량기준 사고건수</label>
-                                        </div>
-                                        <div
-                                            className={`${displayName}__description insurancerate`}
-                                        >
-                                            <div>3년간</div>
-                                            <div style={{ width: 70 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0'}
-                                                />
-                                            </div>
-                                            <div>건</div>
-                                            <div>2년간</div>
-                                            <div style={{ width: 70 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0'}
-                                                />
-                                            </div>
-                                            <div>건</div>
-                                            <div>1년간</div>
-                                            <div style={{ width: 70 }}>
-                                                <MySelect
-                                                    options={[]}
-                                                    value={null}
-                                                    onChange={() => {}}
-                                                    placeholder={'0'}
-                                                />
-                                            </div>
-                                            <div>건</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={`${displayName}__footer`}>
-                                <div className={`${displayName}__toolbar`}>
+                        </div>
+                        <div className={`wr-pages-detail__right`}></div>
+                    </div>
+                    <MyFooter>
+                        <div className="wr-footer__between">
+                            <div>
+                                <div className="wr-pages-detail__buttons">
                                     <MyButton className="btn-dark">
                                         보험료계산
                                     </MyButton>
                                     <MyButton className="btn-secondary">
                                         초기화
                                     </MyButton>
-                                    <MyButton className="btn-info">
-                                        참고사항
-                                    </MyButton>
-                                </div>
-                                <div>
-                                    <a>
-                                        차가 2대이상인 경우 또는 신차인 경우
-                                        클릭하세요
-                                    </a>
                                 </div>
                             </div>
-                        </div>
-                        <div className={`wr-pages-detail__right`}>
-                            <div className="wr-table__wrap  wr-table--normal">
-                                <table className="wr-table table">
-                                    <thead>
-                                        <tr className="wr-table__title">
-                                            <th colSpan={2}>
-                                                <span>보험사</span>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>메리츠</strong>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>KB</strong>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>흥국</strong>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>현대</strong>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>DB</strong>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>롯데</strong>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>삼성</strong>
-                                            </th>
-                                            <th style={{ width: '100px' }}>
-                                                <strong>한화</strong>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr className="wr-table__subtitle">
-                                            <td colSpan={2}>
-                                                <span>총 보험료</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr className="wr-table__subtitle">
-                                            <td colSpan={2}>
-                                                <span>(차액)</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>대인 I</span>
-                                            </td>
-                                            <td>
-                                                <span>의무가입</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>대인 II</span>
-                                            </td>
-                                            <td>
-                                                <span>무한</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>대물</span>
-                                            </td>
-                                            <td>
-                                                <span>5억</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>자상</span>
-                                            </td>
-                                            <td>
-                                                <span>2억/5천</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>무보험</span>
-                                            </td>
-                                            <td>
-                                                <span>2억</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>자차</span>
-                                            </td>
-                                            <td>
-                                                <span>20%/20/50</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>긴급출동</span>
-                                            </td>
-                                            <td>
-                                                <span>가입</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td className="wr-table__subtitle">
-                                                <span>긴급출동</span>
-                                            </td>
-                                            <td>
-                                                <span>가입</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>485,410원</span>
-                                            </td>
-                                            <td>
-                                                <span>485,410원</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                colSpan={2}
-                                                className="wr-table__etc"
-                                            >
-                                                <span>운전범위</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>1인(기명)</span>
-                                            </td>
-                                            <td>
-                                                <span>1인(기명)</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>1인(기명)</span>
-                                            </td>
-                                            <td>
-                                                <span>1인(기명)</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>1인(기명)</span>
-                                            </td>
-                                            <td>
-                                                <span>1인(기명)</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>1인(기명)</span>
-                                            </td>
-                                            <td>
-                                                <span>1인(기명)</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                colSpan={2}
-                                                className="wr-table__etc"
-                                            >
-                                                <span>연령특약</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>48세이상</span>
-                                            </td>
-                                            <td>
-                                                <span>48세이상</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>48세이상</span>
-                                            </td>
-                                            <td>
-                                                <span>48세이상</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>48세이상</span>
-                                            </td>
-                                            <td>
-                                                <span>48세이상</span>
-                                            </td>
-                                            <td className="wr-table__title">
-                                                <span>48세이상</span>
-                                            </td>
-                                            <td>
-                                                <span>48세이상</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                colSpan={2}
-                                                className="wr-table__etc"
-                                            >
-                                                <span>연령변경</span>
-                                            </td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                colSpan={2}
-                                                className="wr-table__etc"
-                                            >
-                                                <span>비고</span>
-                                            </td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                            <td className="wr-table__title"></td>
-                                            <td></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div>
+                                <MyButton className="btn-primary">
+                                    계약정보저장
+                                </MyButton>
                             </div>
-
-                            <div className="wr-mt">
-                                <div className="wr-table__wrap wr-table--normal">
-                                    <table className="wr-table table">
-                                        <thead>
-                                            <tr className="wr-table__title">
-                                                <th colSpan={5}>
-                                                    <span>기타특약 적용시</span>
-                                                </th>
-                                            </tr>
-                                            <tr className="wr-table__title">
-                                                <th style={{ width: '100px' }}>
-                                                    <span>보험사</span>
-                                                </th>
-                                                <th style={{ width: '200px' }}>
-                                                    <strong>특약명</strong>
-                                                </th>
-                                                <th style={{ width: '200px' }}>
-                                                    <strong>조건</strong>
-                                                </th>
-                                                <th style={{ width: '200px' }}>
-                                                    <strong>할인율</strong>
-                                                </th>
-                                                <th style={{ width: '200px' }}>
-                                                    <strong>보험료</strong>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr className="wr-table__subtitle">
-                                                <td rowSpan={2}>
-                                                    <span>KB</span>
-                                                </td>
-                                                <td rowSpan={2}>
-                                                    <span>
-                                                        대중교통이용할인특약
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span>
-                                                        1000km이상/65~69점
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span>3%</span>
-                                                </td>
-                                                <td>
-                                                    <span className="text-danger">
-                                                        520,490원
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr className="wr-table__subtitle">
-                                                <td>
-                                                    <span>
-                                                        1000km이상/65~69점
-                                                    </span>
-                                                </td>
-                                                <td>
-                                                    <span>3%</span>
-                                                </td>
-                                                <td>
-                                                    <span className="text-danger text-end">
-                                                        520,490원
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <MyFooter>
-                        <div className="wr-footer__start">
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                안내서1
-                            </MyButton>
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                안내서2
-                            </MyButton>
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                안내서3
-                            </MyButton>
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                안내서4
-                            </MyButton>
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                메일발송
-                            </MyButton>
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                팩스전송
-                            </MyButton>
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                장문전송1
-                            </MyButton>
-                            <MyButton
-                                className={`btn-warning ${displayName}__button`}
-                            >
-                                장문(FC)
-                            </MyButton>
-                            <MyButton
-                                className={`btn-info ${displayName}__button`}
-                            >
-                                계약정보저장
-                            </MyButton>
                         </div>
                     </MyFooter>
                 </div>
@@ -2374,7 +1928,21 @@ const ComparisonCar: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(),
+    permissionMiddleware(async ({ dispatch, sagaTask }) => {
+        dispatch(
+            getOrgasRequest({
+                idx: '1',
+            }),
+        );
+
+        dispatch(getCompaniesRequest('car-use'));
+
+        dispatch(END);
+
+        await sagaTask?.toPromise();
+
+        return null;
+    }),
 );
 
 export default ComparisonCar;

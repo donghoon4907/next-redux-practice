@@ -235,7 +235,7 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                         <WithLabel id="pdist" label="납입구분" type="active">
                             <MySelect
                                 inputId="pdist"
-                                placeHolderFontSize={16}
+                                
                                 isDisabled={pays.length === 0}
                                 {...dist}
                             />
@@ -259,7 +259,7 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                         <WithLabel id="pmethod" label="금종" type="active">
                             <MySelect
                                 inputId="pmethod"
-                                placeHolderFontSize={16}
+                                
                                 {...method}
                             />
                         </WithLabel>
@@ -268,7 +268,7 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                         <WithLabel id="pcycle" label="납입주기" type="active">
                             <MySelect
                                 inputId="pcycle"
-                                placeHolderFontSize={16}
+                                
                                 {...cycle}
                             />
                         </WithLabel>

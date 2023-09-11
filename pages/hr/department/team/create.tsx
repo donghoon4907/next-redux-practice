@@ -119,7 +119,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
                                                 <MySelect
                                                     inputId="depart"
                                                     placeholder={'선택'}
-                                                    placeHolderFontSize={16}
+                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -138,7 +138,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
                                                     <MySelect
                                                         inputId="headquarter"
                                                         placeholder={'선택'}
-                                                        placeHolderFontSize={16}
+                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -161,7 +161,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
                                                 <MySelect
                                                     inputId="branch"
                                                     placeholder={'지점'}
-                                                    placeHolderFontSize={16}
+                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -201,7 +201,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
                                                 >
                                                     <MySelect
                                                         placeholder={'선택'}
-                                                        placeHolderFontSize={16}
+                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -325,7 +325,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
                                             >
                                                 <MySelect
                                                     inputId="pointStatus"
-                                                    placeHolderFontSize={16}
+                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }

@@ -323,7 +323,7 @@ export const GeneralForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="orga"
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -341,7 +341,7 @@ export const GeneralForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="manager"
-                                                placeHolderFontSize={16}
+                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -369,7 +369,7 @@ export const GeneralForm: FC<Props> = ({
                                         <MySelect
                                             inputId="company"
                                             placeholder={'선택'}
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }

@@ -824,7 +824,7 @@ export const CustomerForm: FC<Props> = ({
                                                 style={{ width: 120 }}
                                             >
                                                 <MySelect
-                                                    placeHolderFontSize={16}
+                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }

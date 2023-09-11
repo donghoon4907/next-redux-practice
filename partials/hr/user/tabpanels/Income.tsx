@@ -54,7 +54,7 @@ export const IncomeTabpanel: FC<Props> = ({
                     <WithLabel id="bank" label="은행명" type={labelType}>
                         <MySelect
                             inputId="bank"
-                            placeHolderFontSize={16}
+                            
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             {...bank}
@@ -108,7 +108,7 @@ export const IncomeTabpanel: FC<Props> = ({
                         <MySelect
                             inputId="carReg"
                             placeholder={'선택'}
-                            placeHolderFontSize={16}
+                            
                             height={variables.detailFilterHeight}
                             isDisabled={true}
                             options={[]}
@@ -142,7 +142,7 @@ export const IncomeTabpanel: FC<Props> = ({
                     <WithLabel id="genBase" label="산출기준" type={labelType}>
                         <MySelect
                             inputId="genBase"
-                            placeHolderFontSize={16}
+                            
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             {...genBase}
@@ -166,7 +166,7 @@ export const IncomeTabpanel: FC<Props> = ({
                         <MySelect
                             inputId="genReg"
                             placeholder={'선택'}
-                            placeHolderFontSize={16}
+                            
                             height={variables.detailFilterHeight}
                             isDisabled={true}
                             options={[]}

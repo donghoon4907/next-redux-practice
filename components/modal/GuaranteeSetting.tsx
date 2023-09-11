@@ -140,7 +140,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                         <WithLabel id="gKind" label="보증구분" type="active">
                             <MySelect
                                 inputId="gKind"
-                                placeHolderFontSize={16}
+                                
                                 {...kind}
                             />
                         </WithLabel>
@@ -182,7 +182,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     <MySelect
                                         inputId="accStatus"
                                         placeholder="상태"
-                                        placeHolderFontSize={16}
+                                        
                                         {...accStatus}
                                     />
                                 </WithLabel>
@@ -198,7 +198,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     <MySelect
                                         inputId="accType"
                                         placeholder="산출기준"
-                                        placeHolderFontSize={16}
+                                        
                                         {...accType}
                                     />
                                 </WithLabel>
@@ -291,7 +291,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     <MySelect
                                         inputId="agencyCom"
                                         placeholder="금융기관"
-                                        placeHolderFontSize={16}
+                                        
                                         {...agencyCom}
                                     />
                                 </WithLabel>

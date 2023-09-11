@@ -29,7 +29,7 @@ export const CalcPerformTabpanel: FC<Props> = ({
                         <MySelect
                             inputId="grade"
                             placeholder="지점"
-                            placeHolderFontSize={16}
+                            
                             height={variables.detailFilterHeight}
                             isDisabled={true}
                         />

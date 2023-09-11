@@ -120,7 +120,7 @@ export const CarInsuredForm: FC<Props> = () => {
                     <WithLabel id="prelation" label="관계" type="active">
                         <MySelect
                             inputId="prelation"
-                            placeHolderFontSize={16}
+                            
                             height={variables.detailFilterHeight}
                             {...relation}
                         />

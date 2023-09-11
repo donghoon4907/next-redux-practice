@@ -86,7 +86,7 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                         <WithLabel id="mDepartment" label="부서" type="active">
                             <MySelect
                                 inputId="mDepartment"
-                                placeHolderFontSize={16}
+                                
                                 {...depart}
                             />
                         </WithLabel>
@@ -95,7 +95,7 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                         <WithLabel id="mUser" label="영업가족" type="active">
                             <MySelect
                                 inputId="mUser"
-                                placeHolderFontSize={16}
+                                
                                 {...user}
                             />
                         </WithLabel>

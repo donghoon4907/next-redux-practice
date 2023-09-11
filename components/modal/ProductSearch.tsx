@@ -96,7 +96,7 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                         <WithLabel id="mPtype" label="보종" type="active">
                             <MySelect
                                 inputId="mPtype"
-                                placeHolderFontSize={16}
+                                
                                 {...pType}
                             />
                         </WithLabel>

@@ -162,7 +162,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="giaComp"
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -244,7 +244,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="liaComp"
-                                            placeHolderFontSize={16}
+                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }

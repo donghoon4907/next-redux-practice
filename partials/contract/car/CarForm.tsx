@@ -8,9 +8,8 @@ import type { CarState } from '@reducers/car';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import addDays from 'date-fns/addDays';
 import addYears from 'date-fns/addYears';
 import differenceInYears from 'date-fns/differenceInYears';
 import { MySelect } from '@components/select';
@@ -48,6 +47,7 @@ import { MyFooter } from '@components/footer';
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
 import { updateCarRequest } from '@actions/contract/car/update-car.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
+import { carShouldDisableDate } from '@utils/datepicker';
 
 interface Props {
     /**
@@ -548,10 +548,6 @@ export const CarForm: FC<Props> = ({
     const [sDist] = useSelect(carConstants.shortDist, defaultBodesc);
     // 보험기간
     const boPeriod = differenceInYears(boDateto.value!, boDatefrom.value!);
-    // 선택가능한 보장날짜
-    const boShouldDisableDate = (date: Date) =>
-        date > addYears(new Date(), 1) || date < addDays(new Date(), -1);
-
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
     // 인수구분
@@ -1158,7 +1154,6 @@ export const CarForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="orga"
-                                                placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1176,7 +1171,6 @@ export const CarForm: FC<Props> = ({
                                         >
                                             <MySelect
                                                 inputId="manager"
-                                                placeHolderFontSize={16}
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1204,7 +1198,6 @@ export const CarForm: FC<Props> = ({
                                         <MySelect
                                             inputId="company"
                                             placeholder={'선택'}
-                                            placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1307,7 +1300,7 @@ export const CarForm: FC<Props> = ({
                                             disabled={!editable}
                                             hooks={boDatefrom}
                                             shouldDisableDate={
-                                                boShouldDisableDate
+                                                carShouldDisableDate
                                             }
                                         />
                                     </WithLabel>
@@ -1326,7 +1319,7 @@ export const CarForm: FC<Props> = ({
                                             disabled={!editable}
                                             hooks={boDateto}
                                             shouldDisableDate={
-                                                boShouldDisableDate
+                                                carShouldDisableDate
                                             }
                                         />
                                         {boPeriod > 0 && (
@@ -1339,7 +1332,6 @@ export const CarForm: FC<Props> = ({
                                             <div className="wr-with__extension">
                                                 <MySelect
                                                     inputId="periodDist"
-                                                    placeHolderFontSize={16}
                                                     placement="right"
                                                     height={
                                                         variables.detailFilterHeight
@@ -1361,7 +1353,6 @@ export const CarForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="insu"
-                                            placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1378,7 +1369,6 @@ export const CarForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="rate"
-                                            placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1414,7 +1404,6 @@ export const CarForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="pay_method"
-                                            placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1433,7 +1422,6 @@ export const CarForm: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="pre_wcode"
-                                            placeHolderFontSize={16}
                                             height={
                                                 variables.detailFilterHeight
                                             }
