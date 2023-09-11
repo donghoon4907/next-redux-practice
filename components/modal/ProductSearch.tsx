@@ -94,11 +94,7 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="mPtype" label="보종" type="active">
-                            <MySelect
-                                inputId="mPtype"
-                                
-                                {...pType}
-                            />
+                            <MySelect inputId="mPtype" {...pType} />
                         </WithLabel>
                     </div>
                     <div className="col">

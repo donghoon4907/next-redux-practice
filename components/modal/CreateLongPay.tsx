@@ -235,7 +235,6 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                         <WithLabel id="pdist" label="납입구분" type="active">
                             <MySelect
                                 inputId="pdist"
-                                
                                 isDisabled={pays.length === 0}
                                 {...dist}
                             />
@@ -257,20 +256,12 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
                 <div className="row wr-mt">
                     <div className="col">
                         <WithLabel id="pmethod" label="금종" type="active">
-                            <MySelect
-                                inputId="pmethod"
-                                
-                                {...method}
-                            />
+                            <MySelect inputId="pmethod" {...method} />
                         </WithLabel>
                     </div>
                     <div className="col">
                         <WithLabel id="pcycle" label="납입주기" type="active">
-                            <MySelect
-                                inputId="pcycle"
-                                
-                                {...cycle}
-                            />
+                            <MySelect inputId="pcycle" {...cycle} />
                         </WithLabel>
                     </div>
                 </div>

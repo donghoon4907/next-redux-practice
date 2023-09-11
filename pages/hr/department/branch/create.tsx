@@ -122,7 +122,6 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                 <MySelect
                                                     inputId="depart"
                                                     placeholder={'선택'}
-                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -141,7 +140,6 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                     <MySelect
                                                         inputId="headquarter"
                                                         placeholder={'선택'}
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -182,7 +180,6 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                 >
                                                     <MySelect
                                                         placeholder={'선택'}
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -307,7 +304,6 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                 <MySelect
                                                     inputId="pointDivision"
                                                     placeholder={'선택'}
-                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -327,7 +323,6 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                 >
                                                     <MySelect
                                                         inputId="pointStatus"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }

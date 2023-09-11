@@ -184,10 +184,7 @@ export const CreateEventModal: FC<Props> = () => {
                     </div>
                     <div className="col">
                         <WithLabel id="enotice" label="관리여부" type="active">
-                            <MySelect
-                                isDisabled={false}
-                                {...notice}
-                            />
+                            <MySelect isDisabled={false} {...notice} />
                         </WithLabel>
                     </div>
                 </div>

@@ -57,7 +57,6 @@ export const SelectDepartModal: FC<Props> = () => {
                             <MySelect
                                 inputId="depart"
                                 placeholder={'선택'}
-                                
                                 {...depart}
                             />
                         </WithLabel>

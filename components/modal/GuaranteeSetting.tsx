@@ -138,11 +138,7 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="gKind" label="보증구분" type="active">
-                            <MySelect
-                                inputId="gKind"
-                                
-                                {...kind}
-                            />
+                            <MySelect inputId="gKind" {...kind} />
                         </WithLabel>
                     </div>
                     <div className="col">
@@ -182,7 +178,6 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     <MySelect
                                         inputId="accStatus"
                                         placeholder="상태"
-                                        
                                         {...accStatus}
                                     />
                                 </WithLabel>
@@ -198,7 +193,6 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     <MySelect
                                         inputId="accType"
                                         placeholder="산출기준"
-                                        
                                         {...accType}
                                     />
                                 </WithLabel>
@@ -291,7 +285,6 @@ export const GuaranteeSettingModal: FC<Props> = () => {
                                     <MySelect
                                         inputId="agencyCom"
                                         placeholder="금융기관"
-                                        
                                         {...agencyCom}
                                     />
                                 </WithLabel>

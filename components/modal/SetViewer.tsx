@@ -174,7 +174,6 @@ export const SetViewerModal: FC<Props> = () => {
                                 value={depart}
                                 onChange={handleChangeDepart}
                                 placeholder={'선택'}
-                                
                             />
                         </WithLabel>
                     </div>

@@ -86,11 +86,7 @@ export const SetPeriodModal: FC<Props> = ({ setPeriod }) => {
                                 label="단기구분"
                                 type="active"
                             >
-                                <MySelect
-                                    inputId="periodDist"
-                                    
-                                    {...sDist}
-                                />
+                                <MySelect inputId="periodDist" {...sDist} />
                             </WithLabel>
                         </div>
                     </div>

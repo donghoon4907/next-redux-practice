@@ -286,7 +286,6 @@ export const CustomerTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="carfamily"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carfamilyHooks}
@@ -301,7 +300,6 @@ export const CustomerTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="carage"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carageHooks}

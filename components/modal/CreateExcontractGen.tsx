@@ -108,10 +108,7 @@ export const CreateExcontractGenModal: FC<Props> = () => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="gComp" label="보험사" type="active">
-                            <MySelect
-                                inputId="gComp"
-                                {...comp}
-                            />
+                            <MySelect inputId="gComp" {...comp} />
                         </WithLabel>
                     </div>
                     <div className="col">

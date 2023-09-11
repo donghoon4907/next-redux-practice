@@ -87,10 +87,7 @@ export const CodeSettingModal: FC<Props> = () => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="iComp" label="보험사" type="active">
-                            <MySelect
-                                inputId="iComp"
-                                {...comp}
-                            />
+                            <MySelect inputId="iComp" {...comp} />
                         </WithLabel>
                     </div>
                     <div className="col">

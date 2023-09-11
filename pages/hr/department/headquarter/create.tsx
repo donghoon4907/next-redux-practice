@@ -165,7 +165,6 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                                 >
                                                     <MySelect
                                                         placeholder={'선택'}
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -289,7 +288,6 @@ const CreateHeadquarter: NextPage<HrState> = ({ users }) => {
                                             >
                                                 <MySelect
                                                     inputId="pointStatus"
-                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }

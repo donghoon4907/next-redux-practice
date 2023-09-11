@@ -84,20 +84,12 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="mDepartment" label="부서" type="active">
-                            <MySelect
-                                inputId="mDepartment"
-                                
-                                {...depart}
-                            />
+                            <MySelect inputId="mDepartment" {...depart} />
                         </WithLabel>
                     </div>
                     <div className="col">
                         <WithLabel id="mUser" label="영업가족" type="active">
-                            <MySelect
-                                inputId="mUser"
-                                
-                                {...user}
-                            />
+                            <MySelect inputId="mUser" {...user} />
                         </WithLabel>
                     </div>
                 </div>

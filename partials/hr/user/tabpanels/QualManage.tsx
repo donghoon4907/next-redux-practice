@@ -147,7 +147,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="giaQualification"
-                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -164,7 +163,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="giaComp"
-                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -231,7 +229,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="liaQualification"
-                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -248,7 +245,6 @@ export const QualManageTabpanel: FC<Props> = ({
                                     >
                                         <MySelect
                                             inputId="liaComp"
-                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }

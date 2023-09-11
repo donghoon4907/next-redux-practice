@@ -227,7 +227,6 @@ export const CompareTabpanel: FC<Props> = ({
                         >
                             <MySelect
                                 inputId="caryear"
-                                
                                 height={variables.detailFilterHeight}
                                 {...carYearHooks}
                             />
@@ -327,7 +326,6 @@ export const CompareTabpanel: FC<Props> = ({
                         >
                             <MySelect
                                 inputId="ccarGrade"
-                                
                                 height={variables.detailFilterHeight}
                                 {...carGradeHooks}
                             />
@@ -401,7 +399,6 @@ export const CompareTabpanel: FC<Props> = ({
                         >
                             <MySelect
                                 inputId="ccarHasBb"
-                                
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
                                 {...hasBbHooks}
@@ -418,7 +415,6 @@ export const CompareTabpanel: FC<Props> = ({
                         >
                             <MySelect
                                 inputId="ccarAircode"
-                                
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
                                 {...aircodeHooks}
@@ -477,7 +473,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarChung"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...chungHooks}
@@ -499,7 +494,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarGps"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...gpsHooks}
@@ -629,7 +623,6 @@ export const CompareTabpanel: FC<Props> = ({
                         >
                             <MySelect
                                 inputId="ccarMembercode"
-                                
                                 height={variables.detailFilterHeight}
                                 isDisabled={!editable}
                                 {...membercodeHooks}
@@ -680,7 +673,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarUsang"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...usangHooks}
@@ -723,7 +715,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo2"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...dambo2Hooks}
@@ -736,7 +727,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo3"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...dambo3Hooks}
@@ -749,7 +739,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo4"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...dambo4Hooks}
@@ -762,7 +751,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo5"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...dambo5Hooks}
@@ -775,7 +763,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarDambo6"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...dambo6Hooks}
@@ -788,7 +775,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarGooutDist"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...gooutDistHooks}
@@ -798,7 +784,6 @@ export const CompareTabpanel: FC<Props> = ({
                                         style={{ width: 190 }}
                                     >
                                         <MySelect
-                                            
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -815,7 +800,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarMulSago"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...mulSagoHooks}
@@ -835,7 +819,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarMileDist"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...mileDistHooks}
@@ -847,7 +830,6 @@ export const CompareTabpanel: FC<Props> = ({
                                             style={{ width: 190 }}
                                         >
                                             <MySelect
-                                                
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -866,7 +848,6 @@ export const CompareTabpanel: FC<Props> = ({
                                     <MySelect
                                         inputId="ccarDrateDist"
                                         placeholder="미가입"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         placement={
@@ -898,7 +879,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarTmapDist"
-                                        
                                         height={variables.detailFilterHeight}
                                         placement={
                                             tmapDistHooks.value?.value ===
@@ -940,7 +920,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarUse"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...caruseHooks}
@@ -977,7 +956,6 @@ export const CompareTabpanel: FC<Props> = ({
                                 >
                                     <MySelect
                                         inputId="ccarChilddrive"
-                                        
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...childdriveHooks}
@@ -997,7 +975,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarGuipcarrer"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1014,7 +991,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarGuipcarrerCar"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1040,7 +1016,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarLJobcode"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1057,7 +1032,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarGuipCarrerKb"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1077,7 +1051,6 @@ export const CompareTabpanel: FC<Props> = ({
                                         <div className="row">
                                             <div className="col">
                                                 <MySelect
-                                                    
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -1125,7 +1098,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarHalin"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1156,7 +1128,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarSpecialCode"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1173,7 +1144,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarSpecialCode2"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1199,7 +1169,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarSsSago3"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1214,7 +1183,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarPreSago3"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1233,7 +1201,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarPSago"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }
@@ -1250,7 +1217,6 @@ export const CompareTabpanel: FC<Props> = ({
                                                 >
                                                     <MySelect
                                                         inputId="ccarGoout2"
-                                                        
                                                         height={
                                                             variables.detailFilterHeight
                                                         }

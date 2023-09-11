@@ -41,7 +41,6 @@ export const WithSelectInput: FC<Props> = ({
                 }}
             >
                 <MySelect
-                    
                     height={variables.detailFilterHeight}
                     isDisabled={disabled}
                     placement="right"

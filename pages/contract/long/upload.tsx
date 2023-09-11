@@ -149,7 +149,6 @@ const LongUpload: NextPage = () => {
                                     index={+cellValue - 1}
                                     values={selects}
                                     setValues={setSelects}
-                                    
                                     height="30px"
                                 />
                             </div>
@@ -180,10 +179,7 @@ const LongUpload: NextPage = () => {
                             <div className="d-flex justify-content-between">
                                 <div className="d-flex">
                                     <div style={{ width: 150 }}>
-                                        <MySelect
-                                            inputId="orga"
-                                            
-                                        />
+                                        <MySelect inputId="orga" />
                                     </div>
 
                                     <MyInput
