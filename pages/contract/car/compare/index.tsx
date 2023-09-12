@@ -6,6 +6,7 @@ import Head from 'next/head';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
+import dayjs from 'dayjs';
 import addYears from 'date-fns/addYears';
 import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
@@ -13,61 +14,133 @@ import { MyRadio } from '@components/radio';
 import { MyLayout } from '@components/Layout';
 import { MyButton } from '@components/button';
 import { MyCheckbox } from '@components/checkbox';
-import { CAR_LOCALE, CAR_USAGE } from '@constants/options/car';
 import { useSelect } from '@hooks/use-select';
-import { useInput, useNumbericInput } from '@hooks/use-input';
+import {
+    useInput,
+    useNumbericInput,
+    useResidentNumberInput,
+} from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { isNumberic } from '@utils/validation';
 import { CoreSelectOption } from '@interfaces/core';
 import { MyFooter } from '@components/footer';
-import { MyLabel } from '@components/label';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { WithLabel } from '@components/WithLabel';
 import carConstants from '@constants/options/car';
-import { residentNumToAge } from '@utils/calculator';
+import {
+    birthdayToInternationalAge,
+    residentNumToBirthday,
+} from '@utils/calculator';
 import { useCheckbox } from '@hooks/use-checkbox';
 import { MyDatepicker } from '@components/datepicker';
 import { carShouldDisableDate } from '@utils/datepicker';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
-
-function getGender(residentNumber: string) {
-    var genderNumber = parseInt(residentNumber);
-
-    if (genderNumber % 2 === 0) {
-        return '여성';
-    } else {
-        return '남성';
-    }
-}
+import { useApi } from '@hooks/use-api';
+import { calculateCarRequest } from '@actions/contract/car/calculate-car.action';
+import { isEmpty } from '@utils/validator/common';
 
 const ComparisonCar: NextPage = () => {
     const displayName = 'wr-pages-compare-car';
 
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
+
+    // const calculate = useApi(calculateCarRequest);
+    const rightRef = useRef<HTMLDivElement>(null);
 
     const { carUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
-    // 주민번호 앞자리
-    const [startResidentNum, setStartResidentNum] = useState('');
-    // 주민번호 뒷자리
-    const [endResidentNum, setEndResidentNum] = useState('');
-    const endResidentNumRef = useRef<HTMLInputElement>(null);
+    // 주민번호
+    const [jumin] = useResidentNumberInput('9303141000001', {
+        callbackOnBlur: (convertedVal) => {
+            const _jumin = convertedVal.replace(/-/g, '');
+
+            let message = '';
+            if (_jumin.length === 13) {
+                // 주민번호 뒷자리가 1자리의 숫자인지 검증
+                const birthday = residentNumToBirthday(_jumin);
+
+                const age = birthdayToInternationalAge(new Date(birthday));
+
+                let gender;
+                if (parseInt(_jumin.charAt(6)) % 2 === 0) {
+                    gender = '여성';
+                } else {
+                    gender = '남성';
+                }
+
+                message = `(만 ${age}세 ${gender})`;
+            } else {
+                message = '주민번호 앞자리를 확인하세요';
+            }
+
+            setJuminFeedback(message);
+        },
+    });
     // 주민번호 피드백
-    const [residentNumFeedback, setResidentNumFeedback] = useState('');
+    const [juminFeedback, setJuminFeedback] = useState('');
     // 차량 번호 - 지역
-    const [carLocale, setCarLocale] = useSelect(carConstants.locale);
+    const [carLocale, setCarLocale] = useSelect(
+        carConstants.locale,
+        undefined,
+        {
+            callbackOnChange: (nextVal) => {
+                if (nextVal) {
+                    syncDirectCarNum(
+                        nextVal,
+                        carType.value,
+                        carUsage.value!,
+                        carRegiNum.value,
+                    );
+                }
+            },
+        },
+    );
     // 차량 번호 - 차종
-    const [carType, setCarType] = useNumbericInput('', { maxLength: 3 });
+    const [carType, setCarType] = useNumbericInput('', {
+        maxLength: 3,
+        callbackOnChange: (nextVal) => {
+            if (typeof nextVal === 'string') {
+                syncDirectCarNum(
+                    carLocale.value,
+                    nextVal,
+                    carUsage.value!,
+                    carRegiNum.value,
+                );
+            }
+        },
+    });
     // 차량 번호 - 용도
-    const [carUsage, setCarUsage] = useSelect(carConstants.usage);
+    const [carUsage, setCarUsage] = useSelect(carConstants.usage, undefined, {
+        callbackOnChange: (nextVal) => {
+            if (nextVal) {
+                syncDirectCarNum(
+                    carLocale.value,
+                    carType.value,
+                    nextVal,
+                    carRegiNum.value,
+                );
+            }
+        },
+    });
     // 차량 번호 - 등록 번호
-    const [carRegiNum, setCarRegiNum] = useNumbericInput('', { maxLength: 4 });
+    const [carRegiNum, setCarRegiNum] = useNumbericInput('', {
+        maxLength: 4,
+        callbackOnChange: (nextVal) => {
+            if (typeof nextVal === 'string') {
+                syncDirectCarNum(
+                    carLocale.value,
+                    carType.value,
+                    carUsage.value,
+                    nextVal,
+                );
+            }
+        },
+    });
     // 차량 번호 - 직접입력
-    const [directCarNum] = useInput('');
-    // const directCarNumRef = useRef<HTMLInputElement>(null);
+    const [directCarNum, setDirectCarNum] = useInput('');
     // 가입예정일 - start
     const [idate, setIdate] = useDatepicker(new Date(), {
         callbackOnChange: (nextDate) => {
@@ -92,12 +165,14 @@ const ComparisonCar: NextPage = () => {
     const [mulSago] = useSelect(carConstants.mSago, carConstants.mSago[3]);
     // 전보험사
     const [preComp] = useSelect(carUseCompanies, null);
+    // 차명코드
+    const [carcode] = useInput('27S11');
     // LPG 여부
     const [checkLpg] = useCheckbox(false);
     // 탑차 여부
     const [checkTopcar] = useCheckbox(false);
     // 스포츠카 여부
-    const [checkSportcar] = useCheckbox(false);
+    // const [checkSportcar] = useCheckbox(false);
     // 스포츠카
     const [sportcar] = useSelect(carConstants.sportcar);
     // 차량연식
@@ -130,9 +205,9 @@ const ComparisonCar: NextPage = () => {
         }, []),
     );
     // 차량등록일
-    const [cardate] = useDatepicker(null);
+    const [cardate] = useDatepicker(new Date());
     // 차량명
-    const [carname] = useInput('');
+    const [carname] = useInput('코란도 스포츠(4WD)');
     // 차량등급
     const [carGrade] = useSelect(carConstants.grade, carConstants.grade[10]);
     // 배기량
@@ -232,68 +307,33 @@ const ComparisonCar: NextPage = () => {
     // 차량기준 사고건수 - 1년간
     const [carSago1] = useSelect(carConstants.numCase);
 
-    const handleChangeStartResidentNum = (
-        evt: ChangeEvent<HTMLInputElement>,
+    const syncDirectCarNum = (
+        carLocale: CoreSelectOption | null,
+        carType: string,
+        carUsage: CoreSelectOption | null,
+        carRegiNum: string,
     ) => {
-        const { value } = evt.target;
-
-        // 공백인 경우 상태만 변화
-        if (value === '') {
-            setStartResidentNum(value);
-            return;
+        let localeTxt = '';
+        if (carLocale && carLocale.value !== '00') {
+            localeTxt = carLocale.label;
         }
 
-        // 최대 6자리 숫자가 입력되어야함
-        if (isNumberic(value) && value.length < 7) {
-            setStartResidentNum(value);
+        let carTypeTxt = '';
+        if (!isEmpty(carType)) {
+            carTypeTxt = carType;
         }
 
-        // 6자리 입력 시 주민번호 뒷자리 입력창으로 포커싱
-        if (value.length === 6) {
-            endResidentNumRef.current?.focus();
-        }
-    };
-
-    const handleChangeEndResidentNum = (evt: ChangeEvent<HTMLInputElement>) => {
-        const { value } = evt.target;
-        // 공백인 경우 상태만 변화
-        if (value === '') {
-            setEndResidentNum(value);
-            return;
+        let carUsageTxt = '';
+        if (carUsage && carUsage.value !== '00') {
+            carUsageTxt = carUsage.label;
         }
 
-        // 숫자만 입력 허용
-        if (!isNumberic(value)) {
-            return;
+        let carRegiNumTxt = '';
+        if (!isEmpty(carRegiNum)) {
+            carRegiNumTxt = carRegiNum;
         }
 
-        // 1자리 이상 입력되지 않게 수정
-        if (value.length < 2) {
-            setEndResidentNum(value);
-        }
-    };
-
-    const handleBlurEndResidentNum = () => {
-        let message;
-        let age;
-        let gender;
-        // 주민번호 앞자리가 6자리의 숫자인지 검증
-        if (startResidentNum.length === 6 && isNumberic(startResidentNum)) {
-            // 주민번호 뒷자리가 1자리의 숫자인지 검증
-            if (endResidentNum.length === 1 && isNumberic(endResidentNum)) {
-                age = residentNumToAge(startResidentNum + endResidentNum);
-
-                gender = getGender(endResidentNum);
-
-                message = `(만 ${age}세 ${gender})`;
-            } else {
-                message = '주민번호 뒷자리를 확인하세요';
-            }
-        } else {
-            message = '주민번호 앞자리를 확인하세요';
-        }
-
-        setResidentNumFeedback(message);
+        setDirectCarNum(localeTxt + carTypeTxt + carUsageTxt + carRegiNumTxt);
     };
 
     const handleBlurDirectCarNum = () => {
@@ -328,7 +368,7 @@ const ComparisonCar: NextPage = () => {
                     [, inputLocale, inputType, inputUsage, inputRegiNum] =
                         matches;
 
-                    const findIndex = CAR_LOCALE.findIndex(
+                    const findIndex = carConstants.locale.findIndex(
                         (v) => v.label === inputLocale,
                     );
 
@@ -337,7 +377,7 @@ const ComparisonCar: NextPage = () => {
 
                         break;
                     } else {
-                        nextLocale = CAR_LOCALE[findIndex];
+                        nextLocale = carConstants.locale[findIndex];
                     }
                 } else if (i === 1) {
                     [, inputType, inputUsage, inputRegiNum] = matches;
@@ -350,8 +390,7 @@ const ComparisonCar: NextPage = () => {
 
                     break;
                 }
-
-                const findIndex = CAR_USAGE.findIndex(
+                const findIndex = carConstants.usage.findIndex(
                     (v) => v.label === inputUsage,
                 );
                 if (findIndex === -1) {
@@ -359,7 +398,7 @@ const ComparisonCar: NextPage = () => {
 
                     break;
                 } else {
-                    nextUsage = CAR_USAGE[findIndex];
+                    nextUsage = carConstants.usage[findIndex];
                 }
 
                 if (isNumberic(inputRegiNum)) {
@@ -406,6 +445,169 @@ const ComparisonCar: NextPage = () => {
 
     const handleChangeCaruse = (evt: ChangeEvent<HTMLInputElement>) => {
         setCaruse(evt.target.value);
+    };
+
+    const handleCalculate = () => {
+        if (jumin.value.length !== 14) {
+            return alert('주민번호를 확인하세요.');
+        }
+
+        if (!idate.value) {
+            return alert('가입예정일을 확인하세요.');
+        }
+
+        // if (!todt.value) {
+        //     return alert('보험만기일을 확인하세요.');
+        // }
+
+        if (isEmpty(caruse)) {
+            return alert('차량용도를 확인하세요.');
+        }
+
+        if (!carfamily.value) {
+            return alert('가족한정을 확인하세요.');
+        }
+
+        if (!carage.value) {
+            return alert('운전자연령을 확인하세요.');
+        }
+
+        if (isEmpty(carcode.value)) {
+            return alert('차명코드를 확인하세요.');
+        }
+
+        if (!sportcar.value) {
+            return alert('스포츠카를 확인하세요.');
+        }
+
+        if (!caryear.value) {
+            return alert('차량연식을 확인하세요.');
+        }
+
+        if (!cardate.value) {
+            return alert('차량등록일을 확인하세요.');
+        }
+
+        if (!dambo2.value) {
+            return alert('대인배상II를 확인하세요.');
+        }
+
+        if (!dambo3.value) {
+            return alert('대물한도를 확인하세요.');
+        }
+
+        if (!dambo4.value) {
+            return alert('자손/자상을 확인하세요.');
+        }
+
+        if (!dambo5.value) {
+            return alert('무보험차를 확인하세요.');
+        }
+
+        if (!dambo6.value) {
+            return alert('자기차량을 확인하세요.');
+        }
+
+        if (!gooutDist.value) {
+            return alert('긴급출동을 확인하세요.');
+        }
+
+        if (!gooutDetail.value) {
+            return alert('긴급출동세부를 확인하세요.');
+        }
+
+        if (!guipcarrer.value) {
+            return alert('보험가입경력 - 피보험자를 확인하세요.');
+        }
+
+        if (!guipcarrerCar.value) {
+            return alert('보험가입경력 - 차량을 확인하세요.');
+        }
+
+        if (!trafficDist.value) {
+            return alert('교통법규위반을 확인하세요.');
+        }
+
+        if (!halin.value) {
+            return alert('할인할증률을 확인하세요.');
+        }
+
+        if (!specialCode.value) {
+            return alert('특별할증율 - 기본할증을 확인하세요.');
+        }
+
+        if (!specialCode2.value) {
+            return alert('특별할증율 - 추가할증을 확인하세요.');
+        }
+
+        if (!ssSago3.value) {
+            return alert('3년간사고요율 - 3년간요율을 확인하세요.');
+        }
+
+        if (rightRef.current) {
+            const form = new FormData();
+            form.append('jumin', jumin.value.replace(/-/g, ''));
+            form.append('idate', dayjs(idate.value).format('YYYY-MM-DD'));
+            form.append('caruse', caruse);
+            form.append('carfamily', carfamily.value.value);
+            form.append('carage', carage.value.value);
+            form.append('carcode', carcode.value);
+            form.append('sportcar', sportcar.value.value);
+            form.append('caryear', caryear.value.value);
+            form.append('cardate', dayjs(cardate.value).format('YYYY-MM-DD'));
+            form.append('dambo2', dambo2.value.value);
+            form.append('dambo3', dambo3.value.value);
+            form.append('dambo4', dambo4.value.value);
+            form.append('dambo5', dambo5.value.value);
+            form.append('dambo6', dambo6.value.value);
+            form.append('dambo7', '0');
+            form.append('goout1', gooutDist.value.value);
+            form.append('goout_dist', gooutDetail.value.value);
+            form.append('guipcarrer', guipcarrer.value.value);
+            form.append('guipcarrer_car', guipcarrerCar.value.value);
+            form.append('traffic', trafficDist.value.value);
+            form.append('halin', halin.value.value);
+            form.append('special_code', specialCode.value.value);
+            form.append('special_code2', specialCode2.value.value);
+            form.append('ss_sago3', ssSago3.value.value);
+            form.append(
+                'ret_url',
+                'http://127.0.0.1:3000/contract/car/compare',
+            );
+            // form.append('view_mode', '1');
+            // form.append('boan_code', '1');
+            // form.append('age_val1', '42');
+            // form.append('groups', 'test');
+
+            form.append('com_name', 'woori!@#$');
+
+            const iframe = document.createElement('iframe');
+            iframe.name = 'target_frame';
+            iframe.width = '1000px';
+            iframe.height = '500px';
+            rightRef.current.appendChild(iframe);
+
+            const hiddenForm = document.createElement('form');
+            hiddenForm.action =
+                'http://cal.insnara.co.kr/estimate/outer_test_woori.asp';
+            hiddenForm.method = 'post'; // 폼의 method를 설정
+            hiddenForm.target = 'target_frame'; // iframe의 name을 타겟으로 설정
+            hiddenForm.style.display = 'none';
+            hiddenForm.acceptCharset = 'euc-kr';
+
+            // FormData를 hidden 폼으로 전송
+            for (const [key, value] of form.entries()) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = value as string;
+                hiddenForm.appendChild(input);
+            }
+
+            rightRef.current.appendChild(hiddenForm);
+
+            hiddenForm.submit();
+        }
     };
 
     return (
@@ -480,8 +682,8 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table">
                                     <colgroup>
-                                        <col width="150px" />
-                                        <col width="550px" />
+                                        <col width="130px" />
+                                        <col width="570px" />
                                     </colgroup>
                                     <thead>
                                         <tr>
@@ -494,7 +696,7 @@ const ComparisonCar: NextPage = () => {
                                         <tr>
                                             <td>
                                                 <label
-                                                    htmlFor="residentNum"
+                                                    htmlFor="jumin"
                                                     className="wr-label--required"
                                                 >
                                                     주민번호
@@ -510,43 +712,15 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
-                                                            id="residentNum"
+                                                            id="jumin"
                                                             type="text"
-                                                            pattern="[0-9]{6}"
-                                                            onChange={
-                                                                handleChangeStartResidentNum
-                                                            }
-                                                            value={
-                                                                startResidentNum
-                                                            }
+                                                            {...jumin}
                                                         />
                                                     </div>
-                                                    <div>-</div>
-                                                    <div
-                                                        style={{
-                                                            width: 35,
-                                                        }}
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            pattern="[0-9]{1}"
-                                                            ref={
-                                                                endResidentNumRef
-                                                            }
-                                                            onChange={
-                                                                handleChangeEndResidentNum
-                                                            }
-                                                            onBlur={
-                                                                handleBlurEndResidentNum
-                                                            }
-                                                            value={
-                                                                endResidentNum
-                                                            }
-                                                        />
-                                                    </div>
-                                                    <div>******</div>
                                                     <div>
-                                                        {residentNumFeedback}
+                                                        <strong>
+                                                            {juminFeedback}
+                                                        </strong>
                                                     </div>
                                                 </div>
                                             </td>
@@ -561,7 +735,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 100 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 100,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="carnum"
                                                             {...carLocale}
@@ -691,10 +869,7 @@ const ComparisonCar: NextPage = () => {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label
-                                                    className="wr-label--required"
-                                                    htmlFor="customerNm"
-                                                >
+                                                <label htmlFor="customerNm">
                                                     고객명
                                                 </label>
                                             </td>
@@ -777,7 +952,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="carfamily"
                                                             {...carfamily}
@@ -791,7 +970,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="drate"
                                                             {...drate}
@@ -813,7 +996,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="carage"
                                                             {...carage}
@@ -832,7 +1019,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="divide_num"
                                                             {...divideNum}
@@ -851,7 +1042,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="mul_sago"
                                                             {...mulSago}
@@ -870,7 +1065,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="prev_comp"
                                                             {...preComp}
@@ -904,8 +1103,8 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table wr-mt">
                                     <colgroup>
-                                        <col width="150px" />
-                                        <col width="550px" />
+                                        <col width="130px" />
+                                        <col width="570px" />
                                     </colgroup>
                                     <thead>
                                         <tr>
@@ -930,7 +1129,10 @@ const ComparisonCar: NextPage = () => {
                                                             width: 150,
                                                         }}
                                                     >
-                                                        <MyInput disabled />
+                                                        <MyInput
+                                                            disabled
+                                                            {...carcode}
+                                                        />
                                                     </div>
                                                     <MyButton className="btn-warning btn-sm">
                                                         조회
@@ -961,22 +1163,28 @@ const ComparisonCar: NextPage = () => {
                                                         label="탑차"
                                                         {...checkTopcar}
                                                     />
-                                                    <MyCheckbox
+                                                    <div>
+                                                        <label className="wr-label--required">
+                                                            <strong>
+                                                                스포츠카
+                                                            </strong>
+                                                        </label>
+                                                    </div>
+                                                    {/* <MyCheckbox
                                                         id="sports"
                                                         label="스포츠카"
+                                                        isRequired
                                                         {...checkSportcar}
-                                                    />
-                                                    {checkSportcar.checked && (
-                                                        <div
-                                                            style={{
-                                                                width: 150,
-                                                            }}
-                                                        >
-                                                            <MySelect
-                                                                {...sportcar}
-                                                            />
-                                                        </div>
-                                                    )}
+                                                    /> */}
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
+                                                        <MySelect
+                                                            {...sportcar}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -993,7 +1201,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="caryear"
                                                             {...caryear}
@@ -1051,7 +1263,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="car_grade"
                                                             {...carGrade}
@@ -1091,7 +1307,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="baegicode"
                                                             placeholder="==차종선택=="
@@ -1106,7 +1326,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="membercode"
                                                             {...membercode}
@@ -1160,10 +1384,18 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 120 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 120,
+                                                        }}
+                                                    >
                                                         <MySelect {...chung} />
                                                     </div>
-                                                    <div style={{ width: 120 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 120,
+                                                        }}
+                                                    >
                                                         <MySelect {...gps} />
                                                     </div>
 
@@ -1298,10 +1530,10 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table wr-mt">
                                     <colgroup>
-                                        <col width="150px" />
-                                        <col width="200px" />
-                                        <col width="150px" />
-                                        <col width="200px" />
+                                        <col width="130px" />
+                                        <col width="220px" />
+                                        <col width="130px" />
+                                        <col width="220px" />
                                     </colgroup>
                                     <thead>
                                         <tr>
@@ -1447,13 +1679,21 @@ const ComparisonCar: NextPage = () => {
                                             </td>
                                             <td colSpan={3}>
                                                 <div className="d-flex justify-content-start align-items-center">
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="mile1"
                                                             {...mileDist}
                                                         />
                                                     </div>
-                                                    <div style={{ width: 300 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 300,
+                                                        }}
+                                                    >
                                                         <div className="wr-ml">
                                                             <MySelect
                                                                 inputId="mile2"
@@ -1487,8 +1727,8 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table wr-mt">
                                     <colgroup>
-                                        <col width="150px" />
-                                        <col width="550px" />
+                                        <col width="130px" />
+                                        <col width="570px" />
                                     </colgroup>
                                     <thead>
                                         <tr>
@@ -1518,7 +1758,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="guipcarrer"
                                                             {...guipcarrer}
@@ -1535,7 +1779,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 200 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 200,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="guipcarrer_car"
                                                             {...guipcarrerCar}
@@ -1557,7 +1805,11 @@ const ComparisonCar: NextPage = () => {
                                                             <strong>DB</strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="l_jobcode"
                                                             {...lJobcode}
@@ -1569,7 +1821,11 @@ const ComparisonCar: NextPage = () => {
                                                             <strong>KB</strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="guipcarrer_kb"
                                                             {...guipCarrerKb}
@@ -1591,7 +1847,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 200 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 200,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="traffic"
                                                             {...trafficDist}
@@ -1615,7 +1875,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 100 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 100,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="childdrive"
                                                             {...childdrive}
@@ -1637,7 +1901,11 @@ const ComparisonCar: NextPage = () => {
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
-                                                    <div style={{ width: 150 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 150,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="halin"
                                                             {...halin}
@@ -1672,7 +1940,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 200 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 200,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="special_code"
                                                             menuPlacement="top"
@@ -1690,7 +1962,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 200 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 200,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="special_code2"
                                                             menuPlacement="top"
@@ -1718,7 +1994,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 190 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 190,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="ss_sago3"
                                                             {...ssSago3}
@@ -1732,7 +2012,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 190 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 190,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="pre_sago3"
                                                             {...preSago3}
@@ -1749,7 +2033,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 177 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 177,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="p_sago"
                                                             menuPlacement="top"
@@ -1764,7 +2052,11 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <div style={{ width: 182 }}>
+                                                    <div
+                                                        style={{
+                                                            width: 182,
+                                                        }}
+                                                    >
                                                         <MySelect
                                                             inputId="goout2"
                                                             menuPlacement="top"
@@ -1900,13 +2192,19 @@ const ComparisonCar: NextPage = () => {
                                 </table>
                             </div>
                         </div>
-                        <div className={`wr-pages-detail__right`}></div>
+                        <div
+                            className="wr-pages-detail__right"
+                            ref={rightRef}
+                        ></div>
                     </div>
                     <MyFooter>
                         <div className="wr-footer__between">
                             <div>
                                 <div className="wr-pages-detail__buttons">
-                                    <MyButton className="btn-dark">
+                                    <MyButton
+                                        className="btn-dark"
+                                        onClick={handleCalculate}
+                                    >
                                         보험료계산
                                     </MyButton>
                                     <MyButton className="btn-secondary">

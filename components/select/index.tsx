@@ -163,6 +163,8 @@ export const MySelect: FC<MySelectProps> = ({
                 }),
                 option: (provided, state) => ({
                     ...provided,
+                    padding: '6px',
+                    fontSize: '16px',
                     // backgroundColor: state.isFocused ? 'blue' : 'white', // 포커스 상태에 따른 배경색 변경
                     // color: state.isFocused ? 'white' : 'black', // 포커스 상태에 따른 글자색 변경
                     // '&:hover': {

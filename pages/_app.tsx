@@ -133,7 +133,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                             dispatch(updatePermission(data));
                         }
                     } catch (err) {
-                        console.log(err);
+                        console.log('권한 조회 실패');
                     }
                 }
             }

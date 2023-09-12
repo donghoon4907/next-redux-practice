@@ -31,6 +31,7 @@
         background-color: $white;
         flex: 1;
         overflow: hidden;
+        display: flex;
 
         @include wr-card;
     }

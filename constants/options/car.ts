@@ -251,7 +251,7 @@ export const CAR_FAMILY: CoreSelectOption[] = [
 // 최저연령
 export const CAR_MIN_AGE: CoreSelectOption[] = [
     {
-        label: '전 연령',
+        label: '전연령',
         value: 'E3',
         isFixed: false,
     },
@@ -266,52 +266,52 @@ export const CAR_MIN_AGE: CoreSelectOption[] = [
         isFixed: false,
     },
     {
-        label: '21세이상',
+        label: '만21세이상',
         value: 'E2',
         isFixed: false,
     },
     {
-        label: '22세이상',
+        label: '만22세이상',
         value: 'EB',
         isFixed: false,
     },
     {
-        label: '24세이상',
+        label: '만24세이상',
         value: 'E4',
         isFixed: false,
     },
     {
-        label: '26세이상',
+        label: '만26세이상',
         value: 'E1',
         isFixed: false,
     },
     {
-        label: '28세이상',
+        label: '만28세이상',
         value: 'EA',
         isFixed: false,
     },
     {
-        label: '30세이상',
+        label: '만30세이상',
         value: 'E5',
         isFixed: false,
     },
     {
-        label: '35세이상',
+        label: '만35세이상',
         value: 'E6',
         isFixed: false,
     },
     {
-        label: '38세이상',
+        label: '만38세이상',
         value: 'E9',
         isFixed: false,
     },
     {
-        label: '43세이상',
+        label: '만43세이상',
         value: 'E7',
         isFixed: false,
     },
     {
-        label: '48세이상',
+        label: '만48세이상',
         value: 'E8',
         isFixed: false,
     },
@@ -439,6 +439,11 @@ export const CAR_LOCALE: CoreSelectOption[] = [
 ];
 // 차량 번호 - 용도
 export const CAR_USAGE: CoreSelectOption[] = [
+    {
+        label: '미선택',
+        value: '00',
+        isFixed: false,
+    },
     {
         label: '가',
         value: '01',
