@@ -25,6 +25,7 @@ import {
 } from '@actions/modal/create-pay.action';
 import { SetPeriodModalActionTypes } from '@actions/modal/set-period.action';
 import { CreateBupumModalActionTypes } from '@actions/modal/create-bupum.action';
+import { CarSearchModalActionTypes } from '@actions/modal/car-search.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -51,6 +52,7 @@ export interface ModalState {
     isShowCreateEndorsementModal: boolean;
     isShowSetPeriodModal: boolean;
     isShowCreateBupumModal: boolean;
+    isShowCarSearchModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -78,6 +80,7 @@ const initialState: ModalState = {
     isShowCreateEndorsementModal: false,
     isShowSetPeriodModal: false,
     isShowCreateBupumModal: false,
+    isShowCarSearchModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -272,6 +275,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case CreateBupumModalActionTypes.HIDE: {
                 draft.isShowCreateBupumModal = false;
+                break;
+            }
+            case CarSearchModalActionTypes.SHOW: {
+                draft.isShowCarSearchModal = true;
+                break;
+            }
+            case CarSearchModalActionTypes.HIDE: {
+                draft.isShowCarSearchModal = false;
                 break;
             }
             default:

@@ -40,11 +40,14 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { useApi } from '@hooks/use-api';
 import { calculateCarRequest } from '@actions/contract/car/calculate-car.action';
 import { isEmpty } from '@utils/validator/common';
+import { getCarCompaniesRequest } from '@actions/contract/car/get-car-companies.action';
+import { CarSearchModal } from '@components/modal/CarSearch';
+import { showCarSearchModal } from '@actions/modal/car-search.action';
 
 const ComparisonCar: NextPage = () => {
     const displayName = 'wr-pages-compare-car';
 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     // const calculate = useApi(calculateCarRequest);
     const rightRef = useRef<HTMLDivElement>(null);
@@ -445,6 +448,10 @@ const ComparisonCar: NextPage = () => {
 
     const handleChangeCaruse = (evt: ChangeEvent<HTMLInputElement>) => {
         setCaruse(evt.target.value);
+    };
+
+    const handleShowCarSearch = () => {
+        dispatch(showCarSearchModal());
     };
 
     const handleCalculate = () => {
@@ -1134,7 +1141,12 @@ const ComparisonCar: NextPage = () => {
                                                             {...carcode}
                                                         />
                                                     </div>
-                                                    <MyButton className="btn-warning btn-sm">
+                                                    <MyButton
+                                                        className="btn-warning btn-sm"
+                                                        onClick={
+                                                            handleShowCarSearch
+                                                        }
+                                                    >
                                                         조회
                                                     </MyButton>
                                                     <MyButton className="btn-warning btn-sm">
@@ -2221,6 +2233,7 @@ const ComparisonCar: NextPage = () => {
                     </MyFooter>
                 </div>
             </MyLayout>
+            {idate.value && <CarSearchModal idate={idate.value} />}
         </>
     );
 };

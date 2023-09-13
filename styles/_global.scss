@@ -205,7 +205,7 @@ td {
     flex: 1 !important;
 }
 // grid gutter 제거
-[class*='col'] {
+[class='col'] {
     padding: 0 !important;
 }
 

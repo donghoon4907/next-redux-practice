@@ -1,5 +1,5 @@
-import { CalculateCarRequestPayload } from '@actions/contract/car/calculate-car.action';
 import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.action';
+import type { GetCarCompaniesRequestPayload } from '@actions/contract/car/get-car-companies.action';
 import type { GetCarRequestPayload } from '@actions/contract/car/get-car.action';
 import type { UpdateCarRequestPayload } from '@actions/contract/car/update-car.action';
 import { getBackendAxios } from '@utils/axios/backend';
@@ -30,11 +30,24 @@ export function calculateCar(payload: FormData) {
     );
 }
 
+export function getCarCompanies({
+    year,
+    quater,
+    params = {},
+}: GetCarCompaniesRequestPayload) {
+    const qs = new URLSearchParams(params).toString();
+
+    return getBackendAxios().get(
+        `/estimate/carcode/${year}/${encodeURIComponent(quater)}?${qs}`,
+    );
+}
+
 const rootServices = {
     getCar,
     createCar,
     updateCar,
     calculateCar,
+    getCarCompanies,
 };
 
 export default rootServices;
