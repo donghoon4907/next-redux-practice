@@ -1462,7 +1462,7 @@ const ComparisonCar: NextPage = () => {
                                                         .slice(0, 2)
                                                         .map((v, i) => (
                                                             <Fragment
-                                                                key={`carAcc${i}`}
+                                                                key={`setCaraccFirst${i}`}
                                                             >
                                                                 <div
                                                                     style={{
@@ -1501,9 +1501,7 @@ const ComparisonCar: NextPage = () => {
                                                         .slice(2)
                                                         .map((v, i) => (
                                                             <Fragment
-                                                                key={`carAcc${
-                                                                    i + 2
-                                                                }`}
+                                                                key={`setCaraccSecond${i}`}
                                                             >
                                                                 <div
                                                                     style={{

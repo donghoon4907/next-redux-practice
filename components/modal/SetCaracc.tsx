@@ -2,7 +2,7 @@ import type { FC, ChangeEvent } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import type { CoreSetState } from '@interfaces/core';
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideSetCaraccModal } from '@actions/modal/set-caracc.action';
@@ -29,15 +29,19 @@ export const SetCarAccModal: FC<Props> = ({ setExternalAccs }) => {
         (state) => state.modal,
     );
 
-    const [accs, setAccs] = useState(
-        CAR_ACCS.map((accArr) =>
-            accArr.map((v) => ({
-                label: v,
-                checked: false,
-                price: '0',
-            })),
-        ),
+    const memoizingDefaultAccs = useMemo(
+        () =>
+            CAR_ACCS.map((accArr) =>
+                accArr.map((v) => ({
+                    label: v,
+                    checked: false,
+                    price: '0',
+                })),
+            ),
+        [],
     );
+
+    const [accs, setAccs] = useState(memoizingDefaultAccs);
 
     const handleCheck = (
         evt: ChangeEvent<HTMLInputElement>,
@@ -47,14 +51,16 @@ export const SetCarAccModal: FC<Props> = ({ setExternalAccs }) => {
         const { checked } = evt.target;
 
         const flattenAccs = accs.flat();
-        let checkedCount = 0;
-        for (let i = 0; i < flattenAccs.length; i++) {
-            if (flattenAccs[i].checked) {
-                checkedCount++;
-            }
+        if (checked) {
+            let checkedCount = 0;
+            for (let i = 0; i < flattenAccs.length; i++) {
+                if (flattenAccs[i].checked) {
+                    checkedCount++;
+                }
 
-            if (checkedCount === 4) {
-                return alert('부속품은 4개까지 선택할 수 있습니다.');
+                if (checkedCount === 4) {
+                    return alert('부속품은 4개까지 선택할 수 있습니다.');
+                }
             }
         }
 
@@ -106,6 +112,8 @@ export const SetCarAccModal: FC<Props> = ({ setExternalAccs }) => {
                     price: (+v.price).toLocaleString(),
                 }));
 
+            console.log(checkedAccs);
+
             let checkedCount = 0;
             for (let i = 0; i < checkedAccs.length; i++) {
                 next[checkedCount] = checkedAccs[i];
@@ -134,9 +142,9 @@ export const SetCarAccModal: FC<Props> = ({ setExternalAccs }) => {
                         </thead>
                         <tbody>
                             {accs.map((accArr, i) => (
-                                <tr key={`caracc${i}`}>
+                                <tr key={`caraccTr${i}`}>
                                     {accArr.map((v, idx) => (
-                                        <Fragment key={`caracc${v.label}`}>
+                                        <Fragment key={`caraccItem${v.label}`}>
                                             <td
                                                 style={{
                                                     background: '#e8edef',

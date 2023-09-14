@@ -362,7 +362,7 @@ const Longs: NextPage = () => {
                                 실적보험료계: {longs.total.pay.toLocaleString()}
                             </span>
                             <span>
-                                수정보험료계:
+                                수정보험료계:{' '}
                                 {longs.total.tp
                                     ? longs.total.tp.toLocaleString()
                                     : 0}

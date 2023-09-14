@@ -93,12 +93,20 @@ export const useNumbericInput: UseInputFunction = (
         // 공백 제거
         const noSpaceVal = value.replace(/(^\s*)|(\s*$)/g, '');
         // 콤마 제거
-        const nextVal = noSpaceVal.replace(/,/g, '');
+        let nextVal = noSpaceVal.replace(/,/g, '');
 
         // 빈 값 업데이트 허용
         if (value === '') {
             setValue(value);
         } else {
+            // 두자리 이상인 경우
+            if (nextVal.length > 1) {
+                // 첫 번째 0 제거
+                if (nextVal.charAt(0) === '0') {
+                    nextVal = nextVal.substring(1);
+                }
+            }
+
             if (isNumberic(nextVal)) {
                 // 글자 수 제한이 있는 경우
                 // if (where.limit && nextVal.length > where.limit) {
