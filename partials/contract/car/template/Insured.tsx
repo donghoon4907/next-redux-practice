@@ -9,7 +9,7 @@ interface Props extends Partial<Insured> {}
 
 export const CarInsuredTemplate: FC<Props> = ({
     dist,
-    relation,
+    relation = '미선택',
     name = '',
     birthday = '',
     sex = '',
@@ -40,76 +40,85 @@ export const CarInsuredTemplate: FC<Props> = ({
                     </WithLabel>
                 </div>
             </div>
-            <div className="row wr-mt">
-                <div className="col">
-                    {dist === '주피보험자' && (
-                        <WithLabel id="pjumin" label="주민번호" type="disable">
-                            <MyInput
-                                type="text"
+            {age && (
+                <div className="row wr-mt">
+                    {dist === '주피보험자' && jumin && (
+                        <div className="col">
+                            <WithLabel
                                 id="pjumin"
-                                placeholder="주민번호"
-                                disabled
-                                value={convertResidentNumber(jumin)}
-                            />
-                            <div
-                                className="wr-with__extension"
-                                style={{ width: 40 }}
+                                label="주민번호"
+                                type="disable"
                             >
-                                <MyButton
-                                    className={`btn-md btn-${
-                                        sex === '남' ? 'primary' : 'danger'
-                                    }`}
-                                    style={{ width: 40 }}
+                                <MyInput
+                                    type="text"
+                                    id="pjumin"
+                                    placeholder="주민번호"
                                     disabled
+                                    value={convertResidentNumber(jumin)}
+                                />
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 40 }}
                                 >
-                                    {sex}
-                                </MyButton>
-                            </div>
-                        </WithLabel>
+                                    <MyButton
+                                        className={`btn-md btn-${
+                                            sex === '남' ? 'primary' : 'danger'
+                                        }`}
+                                        style={{ width: 40 }}
+                                        disabled
+                                    >
+                                        {sex}
+                                    </MyButton>
+                                </div>
+                            </WithLabel>
+                        </div>
                     )}
                     {dist === '피보험자' && (
-                        <WithLabel
-                            id="pbirthday"
-                            label="생년월일"
-                            type="disable"
-                        >
+                        <div className="col">
+                            <WithLabel
+                                id="pbirthday"
+                                label="생년월일"
+                                type="disable"
+                            >
+                                <MyInput
+                                    type="text"
+                                    id="pbirthday"
+                                    placeholder="생년월일"
+                                    disabled
+                                    value={birthday}
+                                />
+                                <div
+                                    className="wr-with__extension"
+                                    style={{ width: 40 }}
+                                >
+                                    <MyButton
+                                        className={`btn-md btn-${
+                                            sex === '남' ? 'primary' : 'danger'
+                                        }`}
+                                        style={{ width: 40 }}
+                                        disabled
+                                    >
+                                        {sex}
+                                    </MyButton>
+                                </div>
+                            </WithLabel>
+                        </div>
+                    )}
+
+                    <div className="col">
+                        <WithLabel label="만 나이" type="disable">
                             <MyInput
                                 type="text"
-                                id="pbirthday"
-                                placeholder="생년월일"
+                                placeholder="만 나이"
                                 disabled
-                                value={birthday}
+                                className="text-end"
+                                value={age}
+                                unit="세"
                             />
-                            <div
-                                className="wr-with__extension"
-                                style={{ width: 40 }}
-                            >
-                                <MyButton
-                                    className={`btn-md btn-${
-                                        sex === '남' ? 'primary' : 'danger'
-                                    }`}
-                                    style={{ width: 40 }}
-                                    disabled
-                                >
-                                    {sex}
-                                </MyButton>
-                            </div>
                         </WithLabel>
-                    )}
+                    </div>
                 </div>
-                <div className="col">
-                    <WithLabel label="만 나이" type="disable">
-                        <MyInput
-                            type="text"
-                            placeholder="만 나이"
-                            disabled
-                            className="text-end"
-                            value={age}
-                            unit="세"
-                        />
-                    </WithLabel>
-                </div>
-            </div>
+            )}
         </>
     );
 };

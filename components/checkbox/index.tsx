@@ -14,7 +14,7 @@ interface Props extends CoreProps, InputHTMLAttributes<HTMLInputElement> {
 
 export const MyCheckbox: FC<Props> = ({ label, id, isRequired, ...rest }) => {
     return (
-        <div className="wr-checkbox form-check">
+        <div className="wr-checkbox">
             <input
                 type="checkbox"
                 className="form-check-input"

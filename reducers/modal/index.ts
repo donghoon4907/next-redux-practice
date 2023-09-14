@@ -25,7 +25,8 @@ import {
 } from '@actions/modal/create-pay.action';
 import { SetPeriodModalActionTypes } from '@actions/modal/set-period.action';
 import { CreateBupumModalActionTypes } from '@actions/modal/create-bupum.action';
-import { CarSearchModalActionTypes } from '@actions/modal/car-search.action';
+import { GetCarcodeModalActionTypes } from '@actions/modal/get-carcode.action';
+import { SetCaraccModalActionTypes } from '@actions/modal/set-caracc.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -53,6 +54,7 @@ export interface ModalState {
     isShowSetPeriodModal: boolean;
     isShowCreateBupumModal: boolean;
     isShowCarSearchModal: boolean;
+    isShowSetCaraccModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -81,6 +83,7 @@ const initialState: ModalState = {
     isShowSetPeriodModal: false,
     isShowCreateBupumModal: false,
     isShowCarSearchModal: false,
+    isShowSetCaraccModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -277,12 +280,20 @@ export const modalReducer: Reducer<ModalState, any> = (
                 draft.isShowCreateBupumModal = false;
                 break;
             }
-            case CarSearchModalActionTypes.SHOW: {
+            case GetCarcodeModalActionTypes.SHOW: {
                 draft.isShowCarSearchModal = true;
                 break;
             }
-            case CarSearchModalActionTypes.HIDE: {
+            case GetCarcodeModalActionTypes.HIDE: {
                 draft.isShowCarSearchModal = false;
+                break;
+            }
+            case SetCaraccModalActionTypes.SHOW: {
+                draft.isShowSetCaraccModal = true;
+                break;
+            }
+            case SetCaraccModalActionTypes.HIDE: {
+                draft.isShowSetCaraccModal = false;
                 break;
             }
             default:

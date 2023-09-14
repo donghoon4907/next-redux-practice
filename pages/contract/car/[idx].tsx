@@ -147,16 +147,22 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             if (car.p_persons) {
                 for (let i = 0; i < car.p_persons.length; i++) {
-                    let age;
-                    if (i === 0) {
-                        age = residentNumToAge(car.p_persons[i].jumin);
+                    let age = null;
+                    if (car.p_persons[i].dist === '주피보험자') {
+                        if (car.p_persons[i].jumin) {
+                            age = residentNumToAge(car.p_persons[i].jumin);
+                        }
                     } else {
-                        age = birthdayToAge(
-                            new Date(car.p_persons[i].birthday),
-                        );
+                        if (car.p_persons[i].birthday) {
+                            age = birthdayToAge(
+                                new Date(car.p_persons[i].birthday),
+                            );
+                        }
                     }
 
-                    age -= 1;
+                    if (age) {
+                        age -= 1;
+                    }
 
                     dispatch(
                         createInsured({
@@ -197,7 +203,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
             //         );
             //     }
             // }
-        } catch {
+        } catch (e) {
+            console.log(e);
             output.redirect = {
                 destination: '/404',
                 permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션

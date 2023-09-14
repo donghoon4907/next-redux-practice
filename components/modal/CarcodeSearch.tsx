@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { differenceInCalendarDays } from 'date-fns';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import dayjs from 'dayjs';
-import { hideCarSearchModal } from '@actions/modal/car-search.action';
+import { hideGetCarcodeModal } from '@actions/modal/get-carcode.action';
 import { MyRadio } from '@components/radio';
 import { useApi } from '@hooks/use-api';
 import {
@@ -206,7 +206,7 @@ export const CarcodeSearchModal: FC<Props> = ({
     };
 
     const handleClose = () => {
-        dispatch(hideCarSearchModal());
+        dispatch(hideGetCarcodeModal());
     };
 
     const handleSubmit = () => {
