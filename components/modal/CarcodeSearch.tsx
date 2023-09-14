@@ -2,21 +2,48 @@ import type { ChangeEvent, FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import type { CarState } from '@reducers/car';
-import { useEffect, useState } from 'react';
+import type { RequestCarcodeType } from '@models/car';
+import type { CoreSelectOption, CoreSetState } from '@interfaces/core';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getQuarter } from 'date-fns';
+import { differenceInCalendarDays } from 'date-fns';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import dayjs from 'dayjs';
 import { hideCarSearchModal } from '@actions/modal/car-search.action';
 import { MyRadio } from '@components/radio';
 import { useApi } from '@hooks/use-api';
-import { getCarCompaniesRequest } from '@actions/contract/car/get-car-companies.action';
+import {
+    clearCarcode,
+    getCarcodeRequest,
+} from '@actions/contract/car/get-carcode.action';
 import { MyMultipleAccordion } from '@components/accordion';
+import { isEmpty } from '@utils/validator/common';
+import { findSelectOption } from '@utils/getter';
+import carConstants from '@constants/options/car';
 
 interface Props {
-    idate: Date;
+    /** 보험개시일 */
+    date: Date | null;
+    /**
+     * 차명코드 변경 핸들러
+     */
+    setExternalCarcode: CoreSetState<string>;
+    /**
+     * 차량연식 변경 핸들러
+     */
+    setExternalCaryear: CoreSetState<CoreSelectOption | null>;
+    /**
+     * 차량명 변경 핸들러
+     */
+    setExternalCarname: CoreSetState<string>;
 }
 
-export const CarSearchModal: FC<Props> = ({ idate }) => {
+export const CarcodeSearchModal: FC<Props> = ({
+    date,
+    setExternalCarcode,
+    setExternalCaryear,
+    setExternalCarname,
+}) => {
     const dispatch = useDispatch();
 
     const { carCompanies, companyCars, carYears, carSeries, carOptions } =
@@ -26,7 +53,7 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
         (state) => state.modal,
     );
 
-    const getCarInfo = useApi(getCarCompaniesRequest);
+    const getCarcode = useApi(getCarcodeRequest);
     // 아코디언 comp, carname
     const [activeMenu, setActiveMenu] = useState('carbrand');
     // 제조사
@@ -41,10 +68,8 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
     const [carcode, setCarcode] = useState('');
     // 세부항목
     const [carpart, setCarpart] = useState('');
-    // 보험개시년도
-    const year = idate.getFullYear();
-    // 보험개시분기
-    const quater = getQuarter(idate) + '분기';
+
+    const idate = dayjs(date).format('YYYY-MM-DD');
 
     const handleClickMenu = (menu: string) => {
         if (menu !== activeMenu) {
@@ -52,21 +77,41 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
         }
     };
 
-    const handleChangeCarbrand = (evt: ChangeEvent<HTMLInputElement>) => {
-        const { checked, value } = evt.target;
-        if (checked) {
-            setCarbrand(value);
+    const handleClear = (type: RequestCarcodeType) => {
+        if (type === 'companies') {
             setCarname('');
             setCaryear('');
             setCarsub('');
             setCarcode('');
             setCarpart('');
+        } else if (type === 'company-cars') {
+            setCaryear('');
+            setCarsub('');
+            setCarcode('');
+            setCarpart('');
+        } else if (type === 'car-years') {
+            setCarsub('');
+            setCarcode('');
+            setCarpart('');
+        } else if (type === 'car-series') {
+            setCarcode('');
+            setCarpart('');
+        }
 
-            getCarInfo(
+        dispatch(clearCarcode({ type }));
+    };
+
+    const handleChangeCarbrand = (evt: ChangeEvent<HTMLInputElement>) => {
+        const { checked, value } = evt.target;
+        if (checked) {
+            setCarbrand(value);
+
+            handleClear('companies');
+
+            getCarcode(
                 {
                     type: 'company-cars',
-                    year,
-                    quater,
+                    idate,
                     params: {
                         carbrand: value,
                     },
@@ -82,16 +127,13 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
         const { checked, value } = evt.target;
         if (checked) {
             setCarname(value);
-            setCaryear('');
-            setCarsub('');
-            setCarcode('');
-            setCarpart('');
 
-            getCarInfo(
+            handleClear('company-cars');
+
+            getCarcode(
                 {
                     type: 'car-years',
-                    year,
-                    quater,
+                    idate,
                     params: {
                         carbrand,
                         carname: value,
@@ -108,15 +150,13 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
         const { checked, value } = evt.target;
         if (checked) {
             setCaryear(value);
-            setCarsub('');
-            setCarcode('');
-            setCarpart('');
 
-            getCarInfo(
+            handleClear('car-years');
+
+            getCarcode(
                 {
                     type: 'car-series',
-                    year,
-                    quater,
+                    idate,
                     params: {
                         carbrand,
                         carname,
@@ -134,14 +174,12 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
         const { checked, value } = evt.target;
         if (checked) {
             setCarsub(value);
-            setCarcode('');
-            setCarpart('');
+            handleClear('car-series');
 
-            getCarInfo(
+            getCarcode(
                 {
                     type: 'car-options',
-                    year,
-                    quater,
+                    idate,
                     params: {
                         carbrand,
                         carname,
@@ -171,43 +209,68 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
         dispatch(hideCarSearchModal());
     };
 
-    const handleSubmit = () => {};
+    const handleSubmit = () => {
+        if (isEmpty(carbrand)) {
+            return alert('제조사를 선택해주세요.');
+        }
 
-    const createPayload = () => {
-        // const payload: CreateCodePayload = {
-        //     index: generateIndex(codes),
-        //     wcode: +comp.value!.value,
-        //     fccode: code.value,
-        //     password: password.value,
-        //     cent_val: centVal.value,
-        //     indate: indate.value
-        //         ? dayjs(indate.value).format('YYYY-MM-DD')
-        //         : null,
-        //     dist: comp.value!.origin.dist,
-        //     company: comp.value!.label,
-        //     checked: false,
-        // };
-        // return payload;
+        if (isEmpty(carname)) {
+            return alert('자동차명을 선택해주세요.');
+        }
+
+        if (isEmpty(caryear)) {
+            return alert('자동차 등록년도를 선택해주세요.');
+        }
+
+        if (isEmpty(carsub)) {
+            return alert('세부차명을 선택해주세요.');
+        }
+
+        if (isEmpty(carcode)) {
+            return alert('세부항목을 선택해주세요.');
+        }
+
+        const tf = confirm('선택한 정보로 입력하시겠습니까?');
+
+        if (tf) {
+            setExternalCarcode(carcode);
+
+            setExternalCaryear(findSelectOption(caryear, carConstants.year));
+
+            setExternalCarname(carsub);
+
+            handleClose();
+        }
     };
 
-    useEffect(() => {
-        const _year = idate.getFullYear();
+    const handleOpened = () => {
+        if (!date) {
+            handleClose();
 
-        const _quarter = getQuarter(idate);
-
-        getCarInfo({
-            type: 'companies',
-            year: _year,
-            quater: `${_quarter}분기`,
-        });
-    }, [idate]);
+            return alert('가입예정일이 입력되어야 합니다.');
+        }
+        // 동일한 데이터를 요청하지 않는 경우만
+        if (
+            differenceInCalendarDays(date, new Date(carCompanies.idate)) !== 0
+        ) {
+            getCarcode({
+                type: 'companies',
+                idate,
+            });
+        }
+    };
 
     return (
-        <Modal isOpen={isShowCarSearchModal} toggle={handleClose} size="xl">
+        <Modal
+            isOpen={isShowCarSearchModal}
+            toggle={handleClose}
+            size="xl"
+            onOpened={handleOpened}
+        >
             <ModalHeader toggle={handleClose}>차량코드 조회</ModalHeader>
             <ModalBody>
                 <div className="row wr-pages-compare-car-search">
-                    <div className="col-8">
+                    <div className="col-6">
                         <MyMultipleAccordion
                             headerText={
                                 carbrand
@@ -218,7 +281,7 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
                             onClickHeader={() => handleClickMenu('carbrand')}
                         >
                             <ul className="wr-pages-compare-car-search-accordion__body">
-                                {carCompanies.map((v, i) => (
+                                {carCompanies.data.map((v, i) => (
                                     <li
                                         key={`carCompanies${i}`}
                                         className="wr-pages-compare-car-search-accordion__item"
@@ -243,6 +306,11 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
                             onClickHeader={() => handleClickMenu('carname')}
                         >
                             <ul className="wr-pages-compare-car-search-accordion__body">
+                                {companyCars.length === 0 && (
+                                    <li className="wr-pages-compare-car-search-accordion__item">
+                                        상위 옵션을 선택해주세요.
+                                    </li>
+                                )}
                                 {companyCars.map((v, i) => (
                                     <li
                                         key={`companyCars${i}`}
@@ -268,6 +336,11 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
                             onClickHeader={() => handleClickMenu('caryear')}
                         >
                             <ul className="wr-pages-compare-car-search-accordion__body">
+                                {carYears.length === 0 && (
+                                    <li className="wr-pages-compare-car-search-accordion__item">
+                                        상위 옵션을 선택해주세요.
+                                    </li>
+                                )}
                                 {carYears.map((v, i) => (
                                     <li
                                         key={`carYears${i}`}
@@ -293,6 +366,11 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
                             onClickHeader={() => handleClickMenu('carsub')}
                         >
                             <ul className="wr-pages-compare-car-search-accordion__body">
+                                {carSeries.length === 0 && (
+                                    <li className="wr-pages-compare-car-search-accordion__item">
+                                        상위 옵션을 선택해주세요.
+                                    </li>
+                                )}
                                 {carSeries.map((v, i) => (
                                     <li
                                         key={`carSeries${i}`}
@@ -318,6 +396,11 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
                             onClickHeader={() => handleClickMenu('carpart')}
                         >
                             <ul className="wr-pages-compare-car-search-accordion__body">
+                                {carOptions.length === 0 && (
+                                    <li className="wr-pages-compare-car-search-accordion__item">
+                                        상위 옵션을 선택해주세요.
+                                    </li>
+                                )}
                                 {carOptions.map((v, i) => (
                                     <li
                                         key={`carOptions${i}`}
@@ -341,25 +424,65 @@ export const CarSearchModal: FC<Props> = ({ idate }) => {
                     </div>
                     <div className="col">
                         <div className="wr-pages-compare-car-search-description">
-                            <div className="row">
-                                <div className="col-3">제조사</div>
-                                <div className="col">{carbrand}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3">자동차명</div>
-                                <div className="col">{carname}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3">등록년도</div>
-                                <div className="col">{caryear}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3">세부차명</div>
-                                <div className="col">{carsub}</div>
-                            </div>
-                            <div className="row">
-                                <div className="col-3">세부항목</div>
-                                <div className="col">{carpart}</div>
+                            <div className="wr-table--normal">
+                                <table className="wr-table table">
+                                    <colgroup>
+                                        <col width="100px" />
+                                        <col />
+                                    </colgroup>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong className="wr-label--required">
+                                                    제조사
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <span>{carbrand}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong className="wr-label--required">
+                                                    자동차명
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <span>{carname}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong className="wr-label--required">
+                                                    등록년도
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <span>{caryear}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong className="wr-label--required">
+                                                    세부차명
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <span>{carsub}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong className="wr-label--required">
+                                                    세부항목
+                                                </strong>
+                                            </td>
+                                            <td>
+                                                <span>{carpart}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

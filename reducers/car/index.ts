@@ -3,7 +3,7 @@ import type { Bupum } from '@models/bupum';
 import produce from 'immer';
 import { BupumActionTypes } from '@actions/contract/car/set-bupum.action';
 import { GetCarActionTypes } from '@actions/contract/car/get-car.action';
-import { GetCarCompaniesActionTypes } from '@actions/contract/car/get-car-companies.action';
+import { GetCarcodeActionTypes } from '@actions/contract/car/get-carcode.action';
 
 export interface CarState {
     /**
@@ -25,7 +25,10 @@ export interface CarState {
     /**
      * 제조사 목록
      */
-    carCompanies: any[];
+    carCompanies: {
+        idate: string;
+        data: any[];
+    };
     /**
      * 제조사의 제품 목록
      */
@@ -56,7 +59,10 @@ const initialState: CarState = {
     // etcs: [],
     bupums: [],
     removedBupums: [],
-    carCompanies: [],
+    carCompanies: {
+        idate: '',
+        data: [],
+    },
     companyCars: [],
     carYears: [],
     carSeries: [],
@@ -110,11 +116,12 @@ export const carReducer: Reducer<CarState, any> = (
 
                 break;
             }
-            case GetCarCompaniesActionTypes.SUCCESS: {
-                const { type, data } = action.payload;
+            case GetCarcodeActionTypes.SUCCESS: {
+                const { type, idate, data } = action.payload;
 
                 if (type === 'companies') {
-                    draft.carCompanies = data;
+                    draft.carCompanies.data = data;
+                    draft.carCompanies.idate = idate;
                 } else if (type === 'company-cars') {
                     draft.companyCars = data;
                 } else if (type === 'car-years') {
@@ -127,18 +134,22 @@ export const carReducer: Reducer<CarState, any> = (
 
                 break;
             }
-            case GetCarCompaniesActionTypes.CLEAR: {
+            case GetCarcodeActionTypes.CLEAR: {
                 const { type } = action.payload;
 
                 if (type === 'companies') {
-                    draft.carCompanies = [];
-                } else if (type === 'company-cars') {
                     draft.companyCars = [];
-                } else if (type === 'car-years') {
                     draft.carYears = [];
-                } else if (type === 'car-series') {
                     draft.carSeries = [];
-                } else if (type === 'car-options') {
+                    draft.carOptions = [];
+                } else if (type === 'company-cars') {
+                    draft.carYears = [];
+                    draft.carSeries = [];
+                    draft.carOptions = [];
+                } else if (type === 'car-years') {
+                    draft.carSeries = [];
+                    draft.carOptions = [];
+                } else if (type === 'car-series') {
                     draft.carOptions = [];
                 }
 

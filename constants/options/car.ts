@@ -1,5 +1,36 @@
 import type { CoreSelectOption } from '@interfaces/core';
+import { addYears } from 'date-fns';
 
+// 차량연식
+export const CAR_YEAR: CoreSelectOption[] = Array.from({ length: 31 }).reduce(
+    (acc: CoreSelectOption[], cur, i) => {
+        const targetYear = addYears(new Date(), i * -1)
+            .getFullYear()
+            .toString();
+
+        if (i === 0) {
+            return [
+                {
+                    label: `${targetYear}A`,
+                    value: `${targetYear}A`,
+                },
+                {
+                    label: `${targetYear}B`,
+                    value: `${targetYear}B`,
+                },
+            ];
+        } else {
+            return [
+                ...acc,
+                {
+                    label: targetYear,
+                    value: targetYear,
+                },
+            ];
+        }
+    },
+    [],
+);
 // 인수구분
 export const CAR_DIST: CoreSelectOption[] = [
     {
@@ -1802,6 +1833,7 @@ const rootSelectOptions = {
     accCount: CAR_ACC_POINT,
     hasBb: CAR_HAS_BB,
     sportcar: CAR_SPORTS,
+    year: CAR_YEAR,
 };
 
 export default rootSelectOptions;

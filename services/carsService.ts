@@ -1,7 +1,8 @@
 import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.action';
-import type { GetCarCompaniesRequestPayload } from '@actions/contract/car/get-car-companies.action';
+import type { GetCarcodeRequestPayload } from '@actions/contract/car/get-carcode.action';
 import type { GetCarRequestPayload } from '@actions/contract/car/get-car.action';
 import type { UpdateCarRequestPayload } from '@actions/contract/car/update-car.action';
+import { getQuarter } from 'date-fns';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getExternalAxios } from '@utils/axios/external';
 
@@ -30,15 +31,16 @@ export function calculateCar(payload: FormData) {
     );
 }
 
-export function getCarCompanies({
-    year,
-    quater,
-    params = {},
-}: GetCarCompaniesRequestPayload) {
+export function getCarcode({ idate, params = {} }: GetCarcodeRequestPayload) {
+    const _idate = new Date(idate);
+    // 보험개시년도
+    const _year = _idate.getFullYear();
+    // 보험개시분기
+    const _quarter = getQuarter(_idate) + '분기';
     const qs = new URLSearchParams(params).toString();
 
     return getBackendAxios().get(
-        `/estimate/carcode/${year}/${encodeURIComponent(quater)}?${qs}`,
+        `/estimate/carcode/${_year}/${encodeURIComponent(_quarter)}?${qs}`,
     );
 }
 
@@ -47,7 +49,7 @@ const rootServices = {
     createCar,
     updateCar,
     calculateCar,
-    getCarCompanies,
+    getCarcode,
 };
 
 export default rootServices;

@@ -7,7 +7,7 @@ import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import dayjs from 'dayjs';
-import addYears from 'date-fns/addYears';
+import { addYears, differenceInCalendarDays } from 'date-fns';
 import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
 import { MyRadio } from '@components/radio';
@@ -40,8 +40,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { useApi } from '@hooks/use-api';
 import { calculateCarRequest } from '@actions/contract/car/calculate-car.action';
 import { isEmpty } from '@utils/validator/common';
-import { getCarCompaniesRequest } from '@actions/contract/car/get-car-companies.action';
-import { CarSearchModal } from '@components/modal/CarSearch';
+import { CarcodeSearchModal } from '@components/modal/CarcodeSearch';
 import { showCarSearchModal } from '@actions/modal/car-search.action';
 
 const ComparisonCar: NextPage = () => {
@@ -169,7 +168,7 @@ const ComparisonCar: NextPage = () => {
     // 전보험사
     const [preComp] = useSelect(carUseCompanies, null);
     // 차명코드
-    const [carcode] = useInput('27S11');
+    const [carcode, setCarcode] = useInput('');
     // LPG 여부
     const [checkLpg] = useCheckbox(false);
     // 탑차 여부
@@ -179,38 +178,11 @@ const ComparisonCar: NextPage = () => {
     // 스포츠카
     const [sportcar] = useSelect(carConstants.sportcar);
     // 차량연식
-    const [caryear] = useSelect(
-        Array.from({ length: 31 }).reduce((acc: CoreSelectOption[], cur, i) => {
-            const targetYear = addYears(new Date(), i * -1)
-                .getFullYear()
-                .toString();
-
-            if (i === 0) {
-                return [
-                    {
-                        label: `${targetYear}A`,
-                        value: `${targetYear}A`,
-                    },
-                    {
-                        label: `${targetYear}B`,
-                        value: `${targetYear}B`,
-                    },
-                ];
-            } else {
-                return [
-                    ...acc,
-                    {
-                        label: targetYear,
-                        value: targetYear,
-                    },
-                ];
-            }
-        }, []),
-    );
+    const [caryear, setCaryear] = useSelect(carConstants.year);
     // 차량등록일
-    const [cardate] = useDatepicker(new Date());
+    const [cardate] = useDatepicker(null);
     // 차량명
-    const [carname] = useInput('코란도 스포츠(4WD)');
+    const [carname, setCarname] = useInput('');
     // 차량등급
     const [carGrade] = useSelect(carConstants.grade, carConstants.grade[10]);
     // 배기량
@@ -440,10 +412,19 @@ const ComparisonCar: NextPage = () => {
 
     const handleClickToday = () => {
         const today = new Date();
+        // 가입예정일이 입력되어 있는 경우
+        if (idate.value) {
+            // 오늘 날짜로 설정되지 않은 경우
+            if (differenceInCalendarDays(idate.value, today) !== 0) {
+                setIdate(today);
 
-        setIdate(today);
+                setTodt(addYears(today, 1));
+            }
+        } else {
+            setIdate(today);
 
-        setTodt(addYears(today, 1));
+            setTodt(addYears(today, 1));
+        }
     };
 
     const handleChangeCaruse = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -852,7 +833,10 @@ const ComparisonCar: NextPage = () => {
                                             <td>
                                                 <span>개발원조회</span>
                                             </td>
-                                            <td>
+                                            <td className="position-relative">
+                                                <div className="wr-pages-detail__lock">
+                                                    <p>준비 중입니다.</p>
+                                                </div>
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
@@ -894,9 +878,9 @@ const ComparisonCar: NextPage = () => {
                                                             placeholder="홍길동"
                                                         />
                                                     </div>
-                                                    <MyButton className="btn-warning btn-sm">
+                                                    {/* <MyButton className="btn-warning btn-sm">
                                                         고객상세사항
-                                                    </MyButton>
+                                                    </MyButton> */}
                                                 </div>
                                             </td>
                                         </tr>
@@ -1149,9 +1133,9 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         조회
                                                     </MyButton>
-                                                    <MyButton className="btn-warning btn-sm">
+                                                    {/* <MyButton className="btn-warning btn-sm">
                                                         안전옵션
-                                                    </MyButton>
+                                                    </MyButton> */}
                                                 </div>
                                             </td>
                                         </tr>
@@ -1552,12 +1536,12 @@ const ComparisonCar: NextPage = () => {
                                             <th colSpan={4}>
                                                 <div className="wr-pages-detail__center">
                                                     <span>세부 담보 설정</span>
-                                                    <MyButton className="btn-warning btn-sm wr-ml">
+                                                    {/* <MyButton className="btn-warning btn-sm wr-ml">
                                                         책임보험
                                                     </MyButton>
                                                     <MyButton className="btn-warning btn-sm wr-ml">
                                                         기본담보
-                                                    </MyButton>
+                                                    </MyButton> */}
                                                 </div>
                                             </th>
                                         </tr>
@@ -2233,7 +2217,12 @@ const ComparisonCar: NextPage = () => {
                     </MyFooter>
                 </div>
             </MyLayout>
-            {idate.value && <CarSearchModal idate={idate.value} />}
+            <CarcodeSearchModal
+                date={idate.value}
+                setExternalCarcode={setCarcode}
+                setExternalCaryear={setCaryear}
+                setExternalCarname={setCarname}
+            />
         </>
     );
 };
