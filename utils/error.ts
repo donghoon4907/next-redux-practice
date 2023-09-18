@@ -6,9 +6,14 @@ export function commonAxiosErrorHandler(err: any) {
     if (axios.isAxiosError(err)) {
         const axiosError = err as AxiosError;
 
-        message = axiosError.message;
+        if (axiosError.response) {
+            const data = axiosError.response.data as Record<string, string>;
+            if (data) {
+                message = data.message;
+            }
 
-        statusCode = axiosError.response?.status || -1;
+            statusCode = axiosError.response.status || -1;
+        }
     }
 
     return { message, statusCode };

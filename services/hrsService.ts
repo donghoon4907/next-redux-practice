@@ -9,9 +9,14 @@ import type { UpdateUserRequestPayload } from '@actions/hr/update-user.action';
 import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
 import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum';
 import type { GetProductsRequestPayload } from '@actions/hr/get-products';
+import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 
 export function login(payload: LoginRequestPayload) {
+    return axios.post('/api/login', payload);
+}
+
+export function verify(payload: LoginRequestPayload) {
     return getBackendAxios().post('/orga/login', payload);
 }
 
@@ -49,12 +54,30 @@ export function getOrga(payload: GetOrgaRequestPayload) {
     return getBackendAxios().get(`/orga/getsimpleorgainfo/${payload.idx}`);
 }
 
+export function beforeGetUsers(payload: GetUsersRequestPayload) {
+    return axios.get('/api/get-users', {
+        params: {
+            idx: payload.idx,
+        },
+    });
+}
+
 export function getUsers(payload: GetUsersRequestPayload) {
     return getBackendAxios().get(`/orga/simpleUsers/${payload.idx}`);
 }
 
 export function getUser(payload: GetUserRequestPayload) {
     return getBackendAxios().get(`/orga/userinfo/${payload.idx}`);
+}
+
+export function beforeGetProducts(payload: GetProductsRequestPayload) {
+    return axios.get('/api/get-products', {
+        params: {
+            spe: payload.spe,
+            wcode: payload.wcode,
+            type: payload.type,
+        },
+    });
 }
 
 export function getProducts(payload: GetProductsRequestPayload) {
@@ -67,6 +90,7 @@ export function getProducts(payload: GetProductsRequestPayload) {
 
 const rootServices = {
     login,
+    verify,
     getPermission,
     createUser,
     updateUser,
@@ -76,7 +100,9 @@ const rootServices = {
     getOrgas,
     getOrga,
     getUsers,
+    beforeGetUsers,
     getUser,
+    beforeGetProducts,
     getProducts,
 };
 

@@ -8,7 +8,10 @@ import {
 } from '@actions/customer/get-user-customers';
 
 function* getUserCustomersSaga({ payload }: GetUserCustomersRequestAction) {
-    const { data } = yield call(customersService.getUserCustomers, payload);
+    const { data } = yield call(
+        customersService.beforeGetUserCustomers,
+        payload,
+    );
 
     yield put(getUserCustomersSuccess(data));
 

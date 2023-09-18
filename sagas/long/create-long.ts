@@ -8,14 +8,14 @@ import {
 } from '@actions/contract/long/create-long.action';
 
 function* createLongSaga({ payload }: CreateLongRequestAction) {
-    const { data } = yield call(longsService.createLong, payload);
+    const { data } = yield call(longsService.beforeCreateLong, payload);
 
-    const { Message } = data;
+    const { message } = data;
 
-    if (Message === 'Success') {
+    if (message === 'Success') {
         alert('등록되었습니다.');
     } else {
-        alert(Message);
+        alert(message);
     }
 
     yield put(createLongSuccess());

@@ -292,19 +292,19 @@ const Longs: NextPage = () => {
                                 </div>
                                 <div className="row wr-mt">
                                     <div className="col">
-                                        <WithLabel
-                                            id="cycle"
-                                            label="납입주기"
-                                            type="active"
-                                        >
-                                            <MySelect
-                                                inputId="cycle"
-                                                {...cycle}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col">
                                         <div className="row">
+                                            <div className="col">
+                                                <WithLabel
+                                                    id="cycle"
+                                                    label="납입주기"
+                                                    type="active"
+                                                >
+                                                    <MySelect
+                                                        inputId="cycle"
+                                                        {...cycle}
+                                                    />
+                                                </WithLabel>
+                                            </div>
                                             <div className="col">
                                                 <WithLabel
                                                     id="dist"
@@ -317,22 +317,21 @@ const Longs: NextPage = () => {
                                                     />
                                                 </WithLabel>
                                             </div>
-
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="search"
-                                                    label="검색"
-                                                    type="active"
-                                                >
-                                                    <SearchInput
-                                                        id="search"
-                                                        placeholder="검색어를 입력하세요"
-                                                        {...search}
-                                                        onSearch={handleSearch}
-                                                    />
-                                                </WithLabel>
-                                            </div>
                                         </div>
+                                    </div>
+                                    <div className="col">
+                                        <WithLabel
+                                            id="search"
+                                            label="검색"
+                                            type="active"
+                                        >
+                                            <SearchInput
+                                                id="search"
+                                                placeholder="검색어를 입력하세요"
+                                                {...search}
+                                                onSearch={handleSearch}
+                                            />
+                                        </WithLabel>
                                     </div>
                                 </div>
                             </div>

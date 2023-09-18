@@ -71,6 +71,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     '/test',
                     '/select-upload',
                     '/etc/shop_list',
+                    // '/contract/general/create',
                 ].includes(route)
             ) {
                 const tab = new TabModule();

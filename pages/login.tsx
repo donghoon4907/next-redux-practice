@@ -3,12 +3,13 @@ import type { FormEvent } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FaUser, FaKey, FaPowerOff, FaHeadset } from 'react-icons/fa';
+import { setCookie } from 'cookies-next';
 import { MyCheckbox } from '@components/checkbox';
-import { useApi } from '@hooks/use-api';
-import { loginRequest } from '@actions/hr/login.action';
 import { useInput } from '@hooks/use-input';
 import { wrapper } from '@store/redux';
 import externalsService from '@services/externalsService';
+import hrsService from '@services/hrsService';
+import { commonAxiosErrorHandler } from '@utils/error';
 
 interface LoginPageProps {
     ip: string;
@@ -19,18 +20,34 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
 
     const router = useRouter();
 
-    const login = useApi(loginRequest);
-
     const [userid] = useInput('');
 
     const [password] = useInput('');
 
-    const handleSubmit = (evt: FormEvent) => {
+    const handleSubmit = async (evt: FormEvent) => {
         evt.preventDefault();
 
-        login({ userid: userid.value, password: password.value, ip }, () => {
-            router.replace('/contract/long/list');
-        });
+        try {
+            const { data } = await hrsService.login({
+                ip,
+                userid: userid.value,
+                password: password.value,
+            });
+
+            const { access_token } = data;
+
+            if (access_token) {
+                const cookieKey = process.env.COOKIE_TOKEN_KEY || '';
+
+                setCookie(cookieKey, access_token);
+
+                router.replace('/contract/long/list');
+            }
+        } catch (e) {
+            const { message } = commonAxiosErrorHandler(e);
+
+            alert(message);
+        }
     };
 
     return (
@@ -68,8 +85,8 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                                     type="text"
                                     className="wr-login-input"
                                     placeholder="사원번호"
-                                    {...userid}
                                     required
+                                    {...userid}
                                 />
                             </div>
                             <div className="wr-login-input__wrap">
@@ -80,8 +97,8 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                                     type="password"
                                     className="wr-login-input"
                                     placeholder="Password"
-                                    {...password}
                                     required
+                                    {...password}
                                 />
                             </div>
                             <div className="wr-login-btn__wrap">
@@ -133,6 +150,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
 export const getServerSideProps = wrapper.getServerSideProps(
     (_) => async (_) => {
         let ip = '';
+
         try {
             const { data } = await externalsService.getIp({ isIPv6: true });
 

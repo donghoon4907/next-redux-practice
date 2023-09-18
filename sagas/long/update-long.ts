@@ -8,14 +8,14 @@ import {
 } from '@actions/contract/long/update-long.action';
 
 function* updateLongSaga({ payload }: UpdateLongRequestAction) {
-    const { data } = yield call(longsService.updateLong, payload);
+    const { data } = yield call(longsService.beforeUpdateLong, payload);
 
-    const { Message } = data;
+    const { message } = data;
 
-    if (Message === 'Success') {
+    if (message === 'Success') {
         alert('수정되었습니다.');
     } else {
-        alert(Message);
+        alert(message);
     }
 
     yield put(updateLongSuccess());

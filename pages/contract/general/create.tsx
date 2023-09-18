@@ -34,6 +34,7 @@ const CreateGeneral: NextPage = () => {
             <MyLayout>
                 <GeneralForm
                     mode="create"
+                    // defaultUserid="test"
                     defaultUserid={loggedInUser.userid}
                     defaultOrga={defaultOrga}
                 />

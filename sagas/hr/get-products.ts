@@ -8,7 +8,7 @@ import {
 } from '@actions/hr/get-products';
 
 function* getProductsSaga({ payload }: GetProductsRequestAction) {
-    const { data } = yield call(hrsService.getProducts, payload);
+    const { data } = yield call(hrsService.beforeGetProducts, payload);
 
     yield put(
         getProductsSuccess({

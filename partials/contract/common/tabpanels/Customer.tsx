@@ -326,13 +326,19 @@ export const CustomerTabpanel: FC<Props> = ({
                                 </div>
                             )}
                         </div>
-
-                        {insureds.map((v, index) => (
-                            <div
-                                className="wr-pages-detail__content"
-                                key={`i${index}`}
-                            >
-                                <div className="row">
+                        <div className="wr-pages-detail__content">
+                            {insureds.length === 0 && (
+                                <div className="wr-pages-detail__center">
+                                    계약자가 설정되지 않았습니다.
+                                </div>
+                            )}
+                            {insureds.map((v, index) => (
+                                <div
+                                    className={`row ${
+                                        index > 0 ? 'wr-mt' : ''
+                                    }`}
+                                    key={`insureds${index}`}
+                                >
                                     {editable && (
                                         <div
                                             className="col-1"
@@ -360,8 +366,9 @@ export const CustomerTabpanel: FC<Props> = ({
                                         )}
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+
                         {editable && (
                             <>
                                 {spe === 'long' && (

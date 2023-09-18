@@ -8,9 +8,9 @@ import {
 } from '@actions/contract/common/set-contractor.action';
 
 function* getContractorSaga({ payload }: GetContractorRequestAction) {
-    const { data } = yield call(customersService.getCustomer, payload);
+    const { data } = yield call(customersService.lazyGetCustomer, payload);
 
-    yield put(getContractorSuccess(data.data));
+    yield put(getContractorSuccess(data));
 
     return data;
 }

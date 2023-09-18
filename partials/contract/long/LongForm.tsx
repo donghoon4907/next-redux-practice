@@ -7,7 +7,7 @@ import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import addYears from 'date-fns/addYears';
@@ -17,7 +17,6 @@ import { MyTab } from '@components/tab';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
-import { MyLayout } from '@components/Layout';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
@@ -220,10 +219,7 @@ export const LongForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-long-detail';
 
-    const duSelectOptions = Array.from({ length: 50 }).map((_, i) => ({
-        label: `${i + 1}년`,
-        value: `${i + 1}`,
-    }));
+    const dispatch = useDispatch();
 
     const router = useRouter();
 
@@ -284,8 +280,8 @@ export const LongForm: FC<Props> = ({
     // 보장만기
     const [boDateto, setBoDateto] = useInput(defaultBodateto);
     const [boDu] = useSelect(
-        duSelectOptions,
-        findSelectOption(defaultBoDu, duSelectOptions),
+        longConstants.duration,
+        findSelectOption(defaultBoDu, longConstants.duration),
         {
             callbackOnChange: (next) => {
                 if (next) {
@@ -300,17 +296,13 @@ export const LongForm: FC<Props> = ({
             },
         },
     );
-    // 보장만기 년수: 365일도 1년으로 간주하기 위해 addDays 사용
-    // const bo_desc = boDateto.value
-    //     ? differenceInYears(addDays(boDateto.value, 1), contdate.value!)
-    //     : -1;
     // 납입주기
     const [payCycle] = useSelect(longConstants.payCycle, defaultPayCycle);
     // 납입기간
     const [payDateto, setPayDateto] = useInput(defaultPayDateto);
     const [payDu] = useSelect(
-        duSelectOptions,
-        findSelectOption(defaultPayDu.toString(), duSelectOptions),
+        longConstants.duration,
+        findSelectOption(defaultPayDu.toString(), longConstants.duration),
         {
             callbackOnChange: (next) => {
                 if (next) {
@@ -333,11 +325,6 @@ export const LongForm: FC<Props> = ({
     const [statusDate] = useDatepicker(
         defaultStatusDate ? new Date(defaultStatusDate) : null,
     );
-    // 종납회차
-    // const [lastMonth] = useDatepicker(
-    //     defaultLastMonth ? new Date(defaultLastMonth) : null,
-    // );
-    // const [lastWhoi] = useInput(defaultLastWhoi);
     // 실적보험료
     const [payment] = useNumbericInput(defaultPayment, { addComma: true });
     // 수정보험료

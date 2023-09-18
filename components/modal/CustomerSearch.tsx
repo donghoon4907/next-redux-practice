@@ -11,12 +11,11 @@ import {
     hideInsuredSearchModal,
 } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
-import { useApi } from '@hooks/use-api';
-import { getCustomerRequest } from '@actions/customer/get-customer';
 import {
     updateLoadedContractor,
     updateLoadedInsured,
 } from '@actions/contract/common/set-contractor.action';
+import customersService from '@services/customersService';
 
 interface Props {
     type: 'contractor' | 'insured-person';
@@ -24,8 +23,6 @@ interface Props {
 
 export const CustomerSearchModal: FC<Props> = ({ type }) => {
     const dispatch = useDispatch();
-
-    const getCustomer = useApi(getCustomerRequest);
 
     const { userCustomers } = useSelector<AppState, CustomerState>(
         (state) => state.customer,
@@ -44,16 +41,19 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (checkedCustomer) {
-            getCustomer({ idx: checkedCustomer.idx }, ({ data }) => {
-                if (type === 'contractor') {
-                    dispatch(updateLoadedContractor(data));
-                } else if (type === 'insured-person') {
-                    dispatch(updateLoadedInsured(data));
-                }
-                handleClose();
+            const { data } = await customersService.lazyGetCustomer({
+                idx: checkedCustomer.idx.toString(),
             });
+
+            if (type === 'contractor') {
+                dispatch(updateLoadedContractor(data));
+            } else if (type === 'insured-person') {
+                dispatch(updateLoadedInsured(data));
+            }
+
+            handleClose();
         } else {
             alert('고객을 선택하세요');
         }

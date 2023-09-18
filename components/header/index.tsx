@@ -28,22 +28,32 @@ export const MyHeader: FC<Props> = () => {
             <div className="wr-meta">
                 <div className="wr-meta__inner">
                     <div className="wr-meta__right">
-                        <span className="wr-meta__department">
-                            {loggedInUser.user_info.fulls}
-                        </span>
-                        <div className="wr-meta__username">
-                            {loggedInUser.user_info.name}&nbsp;
-                            {loggedInUser.user_info.title}
-                        </div>
-                        <div className="wr-meta__log">
-                            <span>
-                                접속시간:&nbsp;
-                                {loggedInUser.connection_info.datetime} &nbsp;
-                            </span>
-                            <span>
-                                접속IP:&nbsp;{loggedInUser.connection_info.ip}
-                            </span>
-                        </div>
+                        {loggedInUser && (
+                            <>
+                                <span className="wr-meta__department">
+                                    {loggedInUser.user_info.fulls}
+                                </span>
+                                <div className="wr-meta__username">
+                                    {loggedInUser.user_info.name}&nbsp;
+                                    {loggedInUser.user_info.title}
+                                </div>
+                                <div className="wr-meta__log">
+                                    <span>
+                                        접속시간:&nbsp;
+                                        {
+                                            loggedInUser.connection_info
+                                                .datetime
+                                        }{' '}
+                                        &nbsp;
+                                    </span>
+                                    <span>
+                                        접속IP:&nbsp;
+                                        {loggedInUser.connection_info.ip}
+                                    </span>
+                                </div>
+                            </>
+                        )}
+
                         <div className="wr-meta__search">
                             <SearchInput
                                 id="search"

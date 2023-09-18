@@ -1,5 +1,12 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
+// 보장기간
+const L_DURATION: CoreSelectOption[] = Array.from({ length: 50 }).map(
+    (_, i) => ({
+        label: `${i + 1}년`,
+        value: `${i + 1}`,
+    }),
+);
 // 필드목록
 const L_FIELDS: CoreSelectOption[] = [
     {
@@ -381,6 +388,7 @@ const rootSelectOptions = {
     family: L_FAMILY,
     productType: L_PTYPE,
     fields: L_FIELDS,
+    duration: L_DURATION,
 };
 
 export default rootSelectOptions;

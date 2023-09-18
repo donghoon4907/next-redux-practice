@@ -6,7 +6,7 @@ import { commonMiddleware } from '@utils/generators/common';
 import { GetUsersActionTypes, getUsersSuccess } from '@actions/hr/get-users';
 
 function* getUsersSaga({ payload }: GetUsersRequestAction) {
-    const { data } = yield call(hrsService.getUsers, payload);
+    const { data } = yield call(hrsService.beforeGetUsers, payload);
 
     const users = data.map((v: User) => ({
         label: v.name,
