@@ -8,7 +8,9 @@ import {
 } from '@actions/contract/long/create-long.action';
 
 function* createLongSaga({ payload }: CreateLongRequestAction) {
-    const { data } = yield call(longsService.beforeCreateLong, payload);
+    const { callback, ...rest } = payload;
+
+    const { data } = yield call(longsService.beforeCreateLong, rest);
 
     const { message } = data;
 

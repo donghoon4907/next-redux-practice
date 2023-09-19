@@ -170,7 +170,7 @@ const LongUpload: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-long-list">
+                <div className="wr-pages-list">
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__title">
                             <strong>장기 선택업로드</strong>
@@ -213,7 +213,7 @@ const LongUpload: NextPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="wr-pages-long-list__body wr-mt">
+                    <div className="wr-pages-list__body wr-mt">
                         <div className="wr-table--scrollable h-100">
                             <MyTable
                                 columns={columns}

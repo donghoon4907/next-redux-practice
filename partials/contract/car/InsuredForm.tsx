@@ -172,6 +172,7 @@ export const CarInsuredForm: FC<Props> = () => {
                                 id="pbirthday"
                                 size="md"
                                 placeholder="생년월일"
+                                placement="topStart"
                                 hooks={birthday}
                             />
                             <div

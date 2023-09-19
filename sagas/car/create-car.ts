@@ -8,7 +8,9 @@ import {
 } from '@actions/contract/car/create-car.action';
 
 function* createCarSaga({ payload }: CreateCarRequestAction) {
-    const { data } = yield call(carsService.beforeCreateCar, payload);
+    const { callback, ...rest } = payload;
+
+    const { data } = yield call(carsService.beforeCreateCar, rest);
 
     const { message } = data;
 

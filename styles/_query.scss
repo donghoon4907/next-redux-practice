@@ -1,46 +1,52 @@
-// Extra small devices (portrait phones, less than 576px)
 @include media-breakpoint-down(xs) {
-    // Your styles for extra small devices here
-    .wr-pages-list__filter {
-        width: 100%;
-    }
 }
 
-// Small devices (landscape phones, 576px and up)
+@include media-breakpoint-up(xs) {
+}
+
+// 576px 이하
+@include media-breakpoint-down(sm) {
+}
+
+// 576px 이상
 @include media-breakpoint-up(sm) {
-    // Your styles for small devices here
+}
+
+// 768px 이하
+@include media-breakpoint-down(md) {
     .wr-pages-list__filter {
         width: 100%;
     }
 }
 
-// Medium devices (tablets, 768px and up)
+// 768px 이상
 @include media-breakpoint-up(md) {
-    // Your styles for medium devices here
     .wr-pages-list__filter {
         width: calc(50% - 5px);
     }
 }
 
-// Large devices (desktops, 992px and up)
+// 992px 이하
+@include media-breakpoint-down(lg) {
+    .wr-gnb__right {
+        display: none !important;
+    }
+    .wr-meta__log,
+    .wr-meta__search {
+        display: none !important;
+    }
+}
+
+// 992px 이상
 @include media-breakpoint-up(lg) {
-    // Your styles for large devices here
-    .wr-pages-list__filter {
-        width: calc(50% - 5px);
-    }
 }
 
-// Extra large devices (large desktops, 1200px and up)
+// 1200px 이상
 @include media-breakpoint-up(xl) {
-    // Your styles for extra large devices here
-    .wr-pages-list__filter {
-        width: calc(50% - 5px);
-    }
 }
 
-// Extra extra large devices (large desktops, 1400px and up)
+// 1400px 이상
 @include media-breakpoint-up(xxl) {
-    // Your styles for extra large devices here
     .wr-pages-list__filter {
         width: calc(25% - 8px);
     }

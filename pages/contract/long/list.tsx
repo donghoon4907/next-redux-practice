@@ -5,7 +5,7 @@ import type { LongState } from '@reducers/long';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import dayjs from 'dayjs';
 import { DateRangePicker } from 'rsuite';
@@ -39,13 +39,14 @@ import { DISTS } from '@constants/selectOption';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import longConstants from '@constants/options/long';
 import { TabModule } from '@utils/storage';
+import { useApi } from '@hooks/use-api';
+import { compareAsc, isSameMonth, lastDayOfMonth, setDate } from 'date-fns';
+import { WithArrow } from '@components/WithArrow';
 
 const Longs: NextPage = () => {
     const displayName = 'wr-pages-list';
 
     const router = useRouter();
-
-    const dispatch = useDispatch();
 
     const { orgas, users, longViewCompanies } = useSelector<AppState, HrState>(
         (props) => props.hr,
@@ -54,6 +55,8 @@ const Longs: NextPage = () => {
     const { longs } = useSelector<AppState, LongState>((props) => props.long);
 
     const tab = useLinkTab();
+
+    const getUsers = useApi(getUsersRequest);
 
     const columns = useColumn(longs.fields);
 
@@ -83,7 +86,42 @@ const Longs: NextPage = () => {
         setOrga(org);
 
         if (org !== null) {
-            dispatch(getUsersRequest({ idx: org.value }));
+            getUsers({ idx: org.value });
+        }
+    };
+
+    const handlePrevContdate = () => {
+        if (contdate.value) {
+            const startDate = setDate(addMonths(contdate.value[0], -1), 1);
+
+            let lastDate = lastDayOfMonth(startDate);
+            if (isSameMonth(new Date(), startDate)) {
+                lastDate = new Date();
+            }
+
+            setContdate([startDate, lastDate]);
+        } else {
+            alert('먼저 계약일자를 설정하세요.');
+        }
+    };
+
+    const handleNextContdate = () => {
+        if (contdate.value) {
+            const today = new Date();
+
+            const startDate = setDate(addMonths(contdate.value[0], 1), 1);
+            if (compareAsc(today, startDate) === -1) {
+                return alert('오늘 이후의 날짜로 설정할 수 없습니다.');
+            }
+
+            let lastDate = lastDayOfMonth(startDate);
+            if (isSameMonth(today, startDate)) {
+                lastDate = today;
+            }
+
+            setContdate([startDate, lastDate]);
+        } else {
+            alert('먼저 계약일자를 설정하세요.');
         }
     };
 
@@ -182,18 +220,17 @@ const Longs: NextPage = () => {
                             </WithLabel>
                         </div>
                         <div className={`${displayName}__filter`}>
-                            <WithLabel
-                                id="datepicker"
+                            <WithArrow
                                 label="계약일자"
                                 type="active"
+                                onPrev={handlePrevContdate}
+                                onNext={handleNextContdate}
                             >
                                 <DateRangePicker
-                                    id="datepicker"
                                     format="yyyy-MM-dd"
                                     placeholder="기간을 입력 혹은 선택하세요"
                                     size="sm"
                                     placement="autoVerticalEnd"
-                                    {...contdate}
                                     style={{
                                         width: '100%',
                                     }}
@@ -217,8 +254,12 @@ const Longs: NextPage = () => {
                                             ],
                                         },
                                     ]}
+                                    shouldDisableDate={(date) =>
+                                        date > new Date()
+                                    }
+                                    {...contdate}
                                 />
-                            </WithLabel>
+                            </WithArrow>
                         </div>
                         <div className={`${displayName}__filter`}>
                             <div>
@@ -291,8 +332,6 @@ const Longs: NextPage = () => {
                     </div>
                     <MyFooter>
                         <MyPagination
-                            // requestAction={getLongsRequest}
-                            // successAction={getLongsSuccess}
                             payload={longs.lastPayload}
                             total={longs.total.count}
                         >

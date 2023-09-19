@@ -8,7 +8,9 @@ import {
 } from '@actions/contract/long/update-long.action';
 
 function* updateLongSaga({ payload }: UpdateLongRequestAction) {
-    const { data } = yield call(longsService.beforeUpdateLong, payload);
+    const { callback, ...rest } = payload;
+
+    const { data } = yield call(longsService.beforeUpdateLong, rest);
 
     const { message } = data;
 

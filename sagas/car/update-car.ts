@@ -8,7 +8,9 @@ import {
 } from '@actions/contract/car/update-car.action';
 
 function* updateCarSaga({ payload }: UpdateCarRequestAction) {
-    const { data } = yield call(carsService.beforeUpdateCar, payload);
+    const { callback, ...rest } = payload;
+
+    const { data } = yield call(carsService.beforeUpdateCar, rest);
 
     const { message } = data;
 

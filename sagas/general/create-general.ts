@@ -8,7 +8,9 @@ import {
 } from '@actions/contract/general/create-general.action';
 
 function* createGeneralSaga({ payload }: CreateGeneralRequestAction) {
-    const { data } = yield call(generalsService.beforeCreateGeneral, payload);
+    const { callback, ...rest } = payload;
+
+    const { data } = yield call(generalsService.beforeCreateGeneral, rest);
 
     const { message } = data;
 

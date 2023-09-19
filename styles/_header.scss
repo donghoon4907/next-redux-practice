@@ -32,7 +32,6 @@
 
     &__username {
         text-align: right;
-        margin-right: 50px;
         font-weight: bold;
         font-size: 14px;
     }
@@ -41,6 +40,7 @@
         // margin-right: 20px;
         font-size: 10px;
         color: $wr-label-color;
+        margin-left: 50px;
     }
 
     &__search {
@@ -75,6 +75,7 @@
         position: relative;
         flex-grow: 1;
         flex-shrink: 1;
+        flex-basis: 250px;
         display: flex;
         justify-content: flex-start;
         align-items: center;
@@ -82,8 +83,6 @@
 
     &__right {
         position: relative;
-        flex-grow: 0;
-        flex-shrink: 1;
         text-align: right;
         display: flex;
         align-items: center;

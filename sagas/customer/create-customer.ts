@@ -8,7 +8,9 @@ import {
 } from '@actions/customer/create-customer.action';
 
 function* createCustomerSaga({ payload }: CreateCustomerRequestAction) {
-    const { data } = yield call(customersService.beforeCreateCustomer, payload);
+    const { callback, ...rest } = payload;
+
+    const { data } = yield call(customersService.beforeCreateCustomer, rest);
 
     alert('등록되었습니다.');
 
