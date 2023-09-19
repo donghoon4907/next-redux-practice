@@ -41,6 +41,8 @@ import longConstants from '@constants/options/long';
 import { TabModule } from '@utils/storage';
 
 const Longs: NextPage = () => {
+    const displayName = 'wr-pages-list';
+
     const router = useRouter();
 
     const dispatch = useDispatch();
@@ -137,207 +139,147 @@ const Longs: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <div className="wr-pages-long-list">
+                <div className={displayName}>
                     {/* <Breadcrumb /> */}
-                    <div className="wr-pages-long-list__header">
-                        <div className="row">
-                            <div className="col">
-                                <div className="row">
-                                    <div className="col">
-                                        <WithLabel
-                                            id="orga"
-                                            label="조직"
-                                            type="active"
-                                        >
-                                            <MySelect
-                                                inputId="orga"
-                                                options={orgas}
-                                                value={orga}
-                                                onChange={handleChangeOrga}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col">
-                                        <WithLabel
-                                            id="fc"
-                                            label="영업가족"
-                                            type="active"
-                                        >
-                                            <MySelect inputId="fc" {...user} />
-                                        </WithLabel>
-                                    </div>
+                    <div className={`${displayName}__header`}>
+                        <div className={`${displayName}__filter`}>
+                            <WithLabel id="orga" label="조직" type="active">
+                                <MySelect
+                                    inputId="orga"
+                                    options={orgas}
+                                    value={orga}
+                                    onChange={handleChangeOrga}
+                                />
+                            </WithLabel>
+                        </div>
+                        <div className={`${displayName}__filter`}>
+                            <WithLabel id="fc" label="영업가족" type="active">
+                                <MySelect inputId="fc" {...user} />
+                            </WithLabel>
+                        </div>
+                        <div className={`${displayName}__filter`}>
+                            <WithLabel id="round" label="회차" type="active">
+                                <MyInput
+                                    type="text"
+                                    id="round"
+                                    className="text-end"
+                                    placeholder="입력"
+                                    {...beforeRound}
+                                />
+                                <div
+                                    className="wr-with__extension wr-form__unit wr-border-l--hide"
+                                    style={{ height: 30 }}
+                                >
+                                    ~
                                 </div>
-
-                                <div className="row wr-mt">
-                                    <div className="col">
-                                        <div className="row">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="company"
-                                                    label="보험사"
-                                                    type="active"
-                                                >
-                                                    <MySelect
-                                                        inputId="company"
-                                                        {...company}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="product_type"
-                                                    label="보종"
-                                                    type="active"
-                                                >
-                                                    <MySelect
-                                                        inputId="product_type"
-                                                        {...productType}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="col">
-                                        <WithLabel
-                                            id="ptitle"
-                                            label="상품명"
-                                            type="active"
-                                        >
-                                            <MySelect
-                                                inputId="ptitle"
-                                                {...ptitle}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                </div>
+                                <MyInput
+                                    type="text"
+                                    id="round_after"
+                                    className="text-end wr-border-l--hide"
+                                    placeholder="입력"
+                                    {...afterRound}
+                                />
+                            </WithLabel>
+                        </div>
+                        <div className={`${displayName}__filter`}>
+                            <WithLabel
+                                id="datepicker"
+                                label="계약일자"
+                                type="active"
+                            >
+                                <DateRangePicker
+                                    id="datepicker"
+                                    format="yyyy-MM-dd"
+                                    placeholder="기간을 입력 혹은 선택하세요"
+                                    size="sm"
+                                    placement="autoVerticalEnd"
+                                    {...contdate}
+                                    style={{
+                                        width: '100%',
+                                    }}
+                                    ranges={[
+                                        {
+                                            label: '전월',
+                                            value: [
+                                                startOfMonth(
+                                                    addMonths(new Date(), -1),
+                                                ),
+                                                endOfMonth(
+                                                    addMonths(new Date(), -1),
+                                                ),
+                                            ],
+                                        },
+                                        {
+                                            label: '당월',
+                                            value: [
+                                                startOfMonth(new Date()),
+                                                new Date(),
+                                            ],
+                                        },
+                                    ]}
+                                />
+                            </WithLabel>
+                        </div>
+                        <div className={`${displayName}__filter`}>
+                            <div>
+                                <WithLabel
+                                    id="company"
+                                    label="보험사"
+                                    type="active"
+                                >
+                                    <MySelect inputId="company" {...company} />
+                                </WithLabel>
                             </div>
-                            <div className="col">
-                                <div className="row">
-                                    <div className="col">
-                                        <WithLabel
-                                            id="round"
-                                            label="회차"
-                                            type="active"
-                                        >
-                                            <MyInput
-                                                type="text"
-                                                id="round"
-                                                className="text-end"
-                                                placeholder="입력"
-                                                {...beforeRound}
-                                            />
-                                            <div
-                                                className="wr-with__extension wr-form__unit wr-border-l--hide"
-                                                style={{ height: 30 }}
-                                            >
-                                                ~
-                                            </div>
-                                            <MyInput
-                                                type="text"
-                                                id="round_after"
-                                                className="text-end wr-border-l--hide"
-                                                placeholder="입력"
-                                                {...afterRound}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col">
-                                        <WithLabel
-                                            id="datepicker"
-                                            label="계약일자"
-                                            type="active"
-                                        >
-                                            <DateRangePicker
-                                                id="datepicker"
-                                                format="yyyy-MM-dd"
-                                                placeholder="기간을 입력 혹은 선택하세요"
-                                                size="sm"
-                                                placement="autoVerticalEnd"
-                                                {...contdate}
-                                                style={{
-                                                    width: '100%',
-                                                }}
-                                                ranges={[
-                                                    {
-                                                        label: '전월',
-                                                        value: [
-                                                            startOfMonth(
-                                                                addMonths(
-                                                                    new Date(),
-                                                                    -1,
-                                                                ),
-                                                            ),
-                                                            endOfMonth(
-                                                                addMonths(
-                                                                    new Date(),
-                                                                    -1,
-                                                                ),
-                                                            ),
-                                                        ],
-                                                    },
-                                                    {
-                                                        label: '당월',
-                                                        value: [
-                                                            startOfMonth(
-                                                                new Date(),
-                                                            ),
-                                                            new Date(),
-                                                        ],
-                                                    },
-                                                ]}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="col">
-                                        <div className="row">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="cycle"
-                                                    label="납입주기"
-                                                    type="active"
-                                                >
-                                                    <MySelect
-                                                        inputId="cycle"
-                                                        {...cycle}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="dist"
-                                                    label="입금구분"
-                                                    type="active"
-                                                >
-                                                    <MySelect
-                                                        inputId="dist"
-                                                        {...dist}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col">
-                                        <WithLabel
-                                            id="search"
-                                            label="검색"
-                                            type="active"
-                                        >
-                                            <SearchInput
-                                                id="search"
-                                                placeholder="검색어를 입력하세요"
-                                                {...search}
-                                                onSearch={handleSearch}
-                                            />
-                                        </WithLabel>
-                                    </div>
-                                </div>
+                            <div>
+                                <WithLabel
+                                    id="product_type"
+                                    label="보종"
+                                    type="active"
+                                >
+                                    <MySelect
+                                        inputId="product_type"
+                                        {...productType}
+                                    />
+                                </WithLabel>
                             </div>
                         </div>
+                        <div className={`${displayName}__filter`}>
+                            <WithLabel id="ptitle" label="상품명" type="active">
+                                <MySelect inputId="ptitle" {...ptitle} />
+                            </WithLabel>
+                        </div>
+                        <div className={`${displayName}__filter`}>
+                            <div>
+                                <WithLabel
+                                    id="cycle"
+                                    label="납입주기"
+                                    type="active"
+                                >
+                                    <MySelect inputId="cycle" {...cycle} />
+                                </WithLabel>
+                            </div>
+                            <div>
+                                <WithLabel
+                                    id="dist"
+                                    label="입금구분"
+                                    type="active"
+                                >
+                                    <MySelect inputId="dist" {...dist} />
+                                </WithLabel>
+                            </div>
+                        </div>
+                        <div className={`${displayName}__filter`}>
+                            <WithLabel id="search" label="검색" type="active">
+                                <SearchInput
+                                    id="search"
+                                    placeholder="검색어를 입력하세요"
+                                    {...search}
+                                    onSearch={handleSearch}
+                                />
+                            </WithLabel>
+                        </div>
                     </div>
-                    <div className="wr-pages-long-list__body wr-mt">
+                    <div className={`${displayName}__body wr-mt`}>
                         <div className="wr-table--scrollable wr-table--hover">
                             <MyTable
                                 columns={columns}

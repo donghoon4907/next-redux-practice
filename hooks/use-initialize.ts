@@ -11,7 +11,7 @@ export const useInitTab = (label: string) => {
     const router = useRouter();
 
     const dispatch = useDispatch();
-
+    // 라우팅 시 재호출
     useEffect(() => {
         // 탭 추가
         const tab = new TabModule();
@@ -34,7 +34,7 @@ export const useInitCustomer = (c_idx: string) => {
     const router = useRouter();
 
     const getContractor = useApi(getContractorRequest);
-    // URL 변경 시 재호출
+    // 라우팅 시 재호출
     useEffect(() => {
         if (c_idx) {
             getContractor({ idx: c_idx });

@@ -15,7 +15,6 @@ import { MyTab } from '@components/tab';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
-import { MyLayout } from '@components/Layout';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
@@ -220,6 +219,7 @@ export const GeneralForm: FC<Props> = ({
             cnum: cnum.value,
             contdate: dayjs(contdate.value).format('YYYY-MM-DD'),
             payment: -1,
+            p_persons: insureds,
             remove: {},
         };
 
@@ -280,10 +280,6 @@ export const GeneralForm: FC<Props> = ({
 
         if (contacts.length > 0) {
             payload['contacts'] = contacts;
-        }
-
-        if (insureds.length > 0) {
-            payload['p_persons'] = insureds;
         }
 
         if (pays.length > 0) {

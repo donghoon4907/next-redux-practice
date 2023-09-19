@@ -161,7 +161,7 @@ export const ContactTabpanel: FC<Props> = ({
                                         id="counselingDivision"
                                         label="상담구분"
                                         type={labelType}
-                                        isRequired={editable}
+                                        // isRequired={editable}
                                     >
                                         <MySelect
                                             inputId="counselingDivision"
@@ -178,7 +178,7 @@ export const ContactTabpanel: FC<Props> = ({
                                         id="channel"
                                         label="채널"
                                         type={labelType}
-                                        isRequired={editable}
+                                        // isRequired={editable}
                                     >
                                         <MySelect
                                             inputId="counselingDivision"
@@ -296,7 +296,7 @@ export const ContactTabpanel: FC<Props> = ({
                                     <WithLabel
                                         label="작성자"
                                         type={labelType}
-                                        isRequired={editable}
+                                        // isRequired={editable}
                                     >
                                         <MyInput
                                             type="text"

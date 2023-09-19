@@ -8,14 +8,14 @@ import {
 } from '@actions/customer/update-customer.action';
 
 function* updateCustomerSaga({ payload }: UpdateCustomerRequestAction) {
-    const { data } = yield call(customersService.updateCustomer, payload);
+    const { data } = yield call(customersService.beforeUpdateCustomer, payload);
 
-    const { Message } = data;
+    const { message } = data;
 
-    if (Message === 'Success') {
+    if (message === 'Success') {
         alert('수정되었습니다.');
     } else {
-        alert(Message);
+        alert(message);
     }
 
     yield put(updateCustomerSuccess());

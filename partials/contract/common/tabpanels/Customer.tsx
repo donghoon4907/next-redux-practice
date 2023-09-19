@@ -61,8 +61,10 @@ export const CustomerTabpanel: FC<Props> = ({
     const [username, setUsername] = useInput('', { noSpace: true });
 
     const labelType = editable ? 'active' : 'disable';
-    // 수정불가 및 계약자 설정을 안한 경우
+    // 계약자 설정을 안했다는 알림 보이기 여부
     const isShowNoContractAlert = !editable && !loadedContract;
+    // 피보험자 설정을 안했다는 알림 보이기 여부
+    const isShowNoInsuredAlert = !editable && insureds.length === 0;
 
     const handleSearchCustomer = (evt: FormEvent) => {
         evt.preventDefault();
@@ -326,19 +328,20 @@ export const CustomerTabpanel: FC<Props> = ({
                                 </div>
                             )}
                         </div>
-                        <div className="wr-pages-detail__content">
-                            {insureds.length === 0 && (
+                        {isShowNoInsuredAlert && (
+                            <div className="wr-pages-detail__content">
                                 <div className="wr-pages-detail__center">
-                                    계약자가 설정되지 않았습니다.
+                                    데이터가 없습니다.
                                 </div>
-                            )}
-                            {insureds.map((v, index) => (
-                                <div
-                                    className={`row ${
-                                        index > 0 ? 'wr-mt' : ''
-                                    }`}
-                                    key={`insureds${index}`}
-                                >
+                            </div>
+                        )}
+
+                        {insureds.map((v, index) => (
+                            <div
+                                className="wr-pages-detail__content"
+                                key={`insureds${index}`}
+                            >
+                                <div className="row">
                                     {editable && (
                                         <div
                                             className="col-1"
@@ -366,8 +369,8 @@ export const CustomerTabpanel: FC<Props> = ({
                                         )}
                                     </div>
                                 </div>
-                            ))}
-                        </div>
+                            </div>
+                        ))}
 
                         {editable && (
                             <>

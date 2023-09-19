@@ -8,14 +8,14 @@ import {
 } from '@actions/contract/car/create-car.action';
 
 function* createCarSaga({ payload }: CreateCarRequestAction) {
-    const { data } = yield call(carsService.createCar, payload);
+    const { data } = yield call(carsService.beforeCreateCar, payload);
 
-    const { Message } = data;
+    const { message } = data;
 
-    if (Message === 'Success') {
+    if (message === 'Success') {
         alert('등록되었습니다.');
     } else {
-        alert(Message);
+        alert(message);
     }
 
     yield put(createCarSuccess());

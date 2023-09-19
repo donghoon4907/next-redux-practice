@@ -8,7 +8,7 @@ import {
 import { commonMiddleware } from '@utils/generators/common';
 
 function* createUserSaga({ payload }: CreateUserRequestAction) {
-    const { data } = yield call(hrsService.createUser, payload);
+    const { data } = yield call(hrsService.beforeCreateUser, payload);
 
     const { userid, Message } = data;
 

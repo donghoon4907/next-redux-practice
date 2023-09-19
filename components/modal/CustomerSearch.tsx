@@ -43,7 +43,7 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
 
     const handleSubmit = async () => {
         if (checkedCustomer) {
-            const { data } = await customersService.lazyGetCustomer({
+            const { data } = await customersService.beforeGetCustomer({
                 idx: checkedCustomer.idx.toString(),
             });
 

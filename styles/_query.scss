@@ -1,14 +1,47 @@
-@include m-query-max(wd) {
+// Extra small devices (portrait phones, less than 576px)
+@include media-breakpoint-down(xs) {
+    // Your styles for extra small devices here
+    .wr-pages-list__filter {
+        width: 100%;
+    }
 }
 
-@include m-query-max(lg) {
+// Small devices (landscape phones, 576px and up)
+@include media-breakpoint-up(sm) {
+    // Your styles for small devices here
+    .wr-pages-list__filter {
+        width: 100%;
+    }
 }
 
-@include m-query-max(md) {
+// Medium devices (tablets, 768px and up)
+@include media-breakpoint-up(md) {
+    // Your styles for medium devices here
+    .wr-pages-list__filter {
+        width: calc(50% - 5px);
+    }
 }
 
-@include m-query-max(sm) {
+// Large devices (desktops, 992px and up)
+@include media-breakpoint-up(lg) {
+    // Your styles for large devices here
+    .wr-pages-list__filter {
+        width: calc(50% - 5px);
+    }
 }
 
-@include m-query-max(xs) {
+// Extra large devices (large desktops, 1200px and up)
+@include media-breakpoint-up(xl) {
+    // Your styles for extra large devices here
+    .wr-pages-list__filter {
+        width: calc(50% - 5px);
+    }
+}
+
+// Extra extra large devices (large desktops, 1400px and up)
+@include media-breakpoint-up(xxl) {
+    // Your styles for extra large devices here
+    .wr-pages-list__filter {
+        width: calc(25% - 8px);
+    }
 }

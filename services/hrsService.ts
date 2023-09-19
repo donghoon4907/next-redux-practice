@@ -26,8 +26,16 @@ export function getPermission(payload: GetPermissionRequestPayload) {
     );
 }
 
+export function beforeCreateUser(payload: CreateUserRequestPayload) {
+    return axios.post('/api/create-user', payload);
+}
+
 export function createUser(payload: CreateUserRequestPayload) {
     return getBackendAxios().post('/orga/new_user', payload);
+}
+
+export function beforeUpdateUser(payload: UpdateUserRequestPayload) {
+    return axios.post('/api/update-user', payload);
 }
 
 export function updateUser(payload: UpdateUserRequestPayload) {
@@ -48,6 +56,14 @@ export function getAgencies() {
 
 export function getOrgas(payload: GetOrgasRequestPayload) {
     return getBackendAxios().get(`/orga/simpleOrgas/${payload.idx}`);
+}
+
+export function beforeGetOrga(payload: GetOrgaRequestPayload) {
+    return axios.get('/api/get-orga', {
+        params: {
+            idx: payload.idx,
+        },
+    });
 }
 
 export function getOrga(payload: GetOrgaRequestPayload) {
@@ -92,12 +108,15 @@ const rootServices = {
     login,
     verify,
     getPermission,
+    beforeCreateUser,
     createUser,
+    beforeUpdateUser,
     updateUser,
     getCompanies,
     getCompanyRegNum,
     getAgencies,
     getOrgas,
+    beforeGetOrga,
     getOrga,
     getUsers,
     beforeGetUsers,

@@ -8,7 +8,7 @@ import {
 import { commonMiddleware } from '@utils/generators/common';
 
 function* updateUserSaga({ payload }: UpdateUserRequestAction) {
-    const { data } = yield call(hrsService.updateUser, payload);
+    const { data } = yield call(hrsService.beforeUpdateUser, payload);
 
     const { Message } = data;
 

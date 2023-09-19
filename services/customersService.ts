@@ -5,8 +5,16 @@ import type { UpdateCustomerRequestPayload } from '@actions/customer/update-cust
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 
+export function beforeCreateCustomer(payload: CreateCustomerRequestPayload) {
+    return axios.post('/api/create-customer', payload);
+}
+
 export function createCustomer(payload: CreateCustomerRequestPayload) {
     return getBackendAxios().post('/customer/new', payload);
+}
+
+export function beforeUpdateCustomer(payload: UpdateCustomerRequestPayload) {
+    return axios.post('/api/update-customer', payload);
 }
 
 export function updateCustomer(payload: UpdateCustomerRequestPayload) {
@@ -17,7 +25,7 @@ export function getCustomer(payload: GetCustomerRequestPayload) {
     return getBackendAxios().get(`/customer/detail/${payload.idx}`);
 }
 
-export function lazyGetCustomer(payload: GetCustomerRequestPayload) {
+export function beforeGetCustomer(payload: GetCustomerRequestPayload) {
     return axios.get('/api/get-customer', {
         params: {
             idx: payload.idx,
@@ -43,10 +51,12 @@ export function getUserCustomers(payload: GetUserCustomersRequestPayload) {
 }
 
 const rootServices = {
+    beforeCreateCustomer,
     createCustomer,
-    getCustomer,
-    lazyGetCustomer,
+    beforeUpdateCustomer,
     updateCustomer,
+    beforeGetCustomer,
+    getCustomer,
     beforeGetUserCustomers,
     getUserCustomers,
 };

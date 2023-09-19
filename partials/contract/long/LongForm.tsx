@@ -7,7 +7,7 @@ import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import differenceInMonths from 'date-fns/differenceInMonths';
 import addYears from 'date-fns/addYears';
@@ -218,8 +218,6 @@ export const LongForm: FC<Props> = ({
     defaultFamily = null,
 }) => {
     const displayName = 'wr-pages-long-detail';
-
-    const dispatch = useDispatch();
 
     const router = useRouter();
 
@@ -538,18 +536,6 @@ export const LongForm: FC<Props> = ({
             payload['bo_dateto'] = boDateto.value;
             payload['bo_du'] = boDu.value!.value;
         }
-
-        // if (status.value) {
-        //     payload['status'] = status.value.value;
-        // }
-
-        // if (payStatus.value) {
-        //     payload['pay_status'] = payStatus.value.value;
-        // }
-
-        // if (statusDate.value) {
-        //     payload['status_date'] = statusDate.value;
-        // }
 
         if (payM !== -1) {
             payload['pay_month'] = payM;

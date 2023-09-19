@@ -8,14 +8,14 @@ import {
 } from '@actions/contract/car/update-car.action';
 
 function* updateCarSaga({ payload }: UpdateCarRequestAction) {
-    const { data } = yield call(carsService.updateCar, payload);
+    const { data } = yield call(carsService.beforeUpdateCar, payload);
 
-    const { Message } = data;
+    const { message } = data;
 
-    if (Message === 'Success') {
+    if (message === 'Success') {
         alert('수정되었습니다.');
     } else {
-        alert(Message);
+        alert(message);
     }
 
     yield put(updateCarSuccess());

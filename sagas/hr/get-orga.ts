@@ -5,7 +5,7 @@ import { GetOrgaActionTypes, getOrgaSuccess } from '@actions/hr/get-orga';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* getOrgaSaga({ payload }: GetOrgaRequestAction) {
-    const { data } = yield call(hrsService.getOrga, payload);
+    const { data } = yield call(hrsService.beforeGetOrga, payload);
 
     yield put(getOrgaSuccess(data));
 

@@ -136,26 +136,50 @@ export const useNumbericInput: UseInputFunction = (
  * 전화번호 입력 hooks
  */
 export const usePhoneInput: UseInputFunction = (defaultValue, where = {}) => {
-    const [phone, setPhone] = useNumbericInput(
+    const [value, setValue] = useState(
         defaultValue ? convertPhoneNumber(defaultValue) : '',
-        where,
     );
 
+    const onChange = (
+        evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        const { value } = evt.target;
+        // 공백 제거
+        const nextVal = value.replace(/(^\s*)|(\s*$)/g, '');
+
+        // 빈 값 업데이트 허용
+        if (value === '') {
+            setValue(value);
+        } else {
+            if (isNumberic(nextVal)) {
+                setValue(nextVal);
+            }
+        }
+
+        where.callbackOnChange?.(nextVal);
+    };
+
     const onFocus = () => {
-        setPhone((prev) => prev.replace(/\-/g, ''));
+        setValue((prev) => prev.replace(/\-/g, ''));
     };
 
     const onBlur = () => {
-        const converted = convertPhoneNumber(phone.value);
+        const converted = convertPhoneNumber(value);
 
-        setPhone(converted);
+        setValue(converted);
 
         where.callbackOnBlur?.(converted);
     };
 
-    let output: UseInputOutput = { ...phone, onFocus, onBlur, maxLength: 11 };
+    let output: UseInputOutput = {
+        value,
+        onChange,
+        onFocus,
+        onBlur,
+        maxLength: 11,
+    };
 
-    return [output, setPhone];
+    return [output, setValue];
 };
 /**
  * 주민번호 입력 hooks

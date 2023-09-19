@@ -8,14 +8,14 @@ import {
 } from '@actions/contract/general/create-general.action';
 
 function* createGeneralSaga({ payload }: CreateGeneralRequestAction) {
-    const { data } = yield call(generalsService.createGeneral, payload);
+    const { data } = yield call(generalsService.beforeCreateGeneral, payload);
 
-    const { Message } = data;
+    const { message } = data;
 
-    if (Message === 'Success') {
+    if (message === 'Success') {
         alert('등록되었습니다.');
     } else {
-        alert(Message);
+        alert(message);
     }
 
     yield put(createGeneralSuccess());

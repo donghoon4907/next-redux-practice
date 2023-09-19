@@ -1,11 +1,26 @@
-.wr-pages-long-list {
+.wr-pages-list {
     height: 100%;
     overflow: hidden;
     display: flex;
     flex-direction: column;
 
     &__header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
         @include wr-card;
+    }
+
+    &__filter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+        & > div {
+            flex: 1;
+        }
     }
 
     &__body {

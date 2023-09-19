@@ -8,14 +8,14 @@ import {
 } from '@actions/contract/general/update-general.action';
 
 function* updateGeneralSaga({ payload }: UpdateGeneralRequestAction) {
-    const { data } = yield call(generalsService.updateGeneral, payload);
+    const { data } = yield call(generalsService.beforeUpdateGeneral, payload);
 
-    const { Message } = data;
+    const { message } = data;
 
-    if (Message === 'Success') {
+    if (message === 'Success') {
         alert('수정되었습니다.');
     } else {
-        alert(Message);
+        alert(message);
     }
 
     yield put(updateGeneralSuccess());
