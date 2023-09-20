@@ -11,9 +11,10 @@ import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-reg
 import type { GetProductsRequestPayload } from '@actions/hr/get-products';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
+import { getInternalAxios } from '@utils/axios/internal';
 
 export function login(payload: LoginRequestPayload) {
-    return axios.post('/api/login', payload);
+    return getInternalAxios().post('/api/login', payload);
 }
 
 export function verify(payload: LoginRequestPayload) {

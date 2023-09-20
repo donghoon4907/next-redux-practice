@@ -5,6 +5,7 @@ import type { ContractState } from '@reducers/contract';
 import type { CreatePayPayload } from '@actions/contract/long/set-pay.action';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
+import { setMonth } from 'date-fns';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
@@ -19,7 +20,6 @@ import { hideCreateLongPayModal } from '@actions/modal/create-pay.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
 import longConstants from '@constants/options/long';
 import { findSelectOption } from '@utils/getter';
-import { setMonth } from 'date-fns';
 import { makeDistkind, calcTargetMonth } from '@utils/calculator';
 
 interface Props {

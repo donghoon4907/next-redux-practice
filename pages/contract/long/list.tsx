@@ -8,10 +8,16 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import dayjs from 'dayjs';
+import {
+    compareAsc,
+    isSameMonth,
+    lastDayOfMonth,
+    setDate,
+    startOfMonth,
+    endOfMonth,
+    addMonths,
+} from 'date-fns';
 import { DateRangePicker } from 'rsuite';
-import startOfMonth from 'date-fns/startOfMonth';
-import endOfMonth from 'date-fns/endOfMonth';
-import addMonths from 'date-fns/addMonths';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MySelect } from '@components/select';
@@ -21,7 +27,6 @@ import { SearchInput } from '@components/input/Search';
 import { MyLayout } from '@components/Layout';
 import { MyFooter } from '@components/footer';
 import { useColumn } from '@hooks/use-column';
-import { useLinkTab } from '@hooks/use-tab';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { HrState } from '@reducers/hr';
 import { useSelect } from '@hooks/use-select';
@@ -40,7 +45,6 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import longConstants from '@constants/options/long';
 import { TabModule } from '@utils/storage';
 import { useApi } from '@hooks/use-api';
-import { compareAsc, isSameMonth, lastDayOfMonth, setDate } from 'date-fns';
 import { WithArrow } from '@components/WithArrow';
 
 const Longs: NextPage = () => {
@@ -53,13 +57,10 @@ const Longs: NextPage = () => {
     );
 
     const { longs } = useSelector<AppState, LongState>((props) => props.long);
-
-    const tab = useLinkTab();
-
+    // 사용자 목록 요청
     const getUsers = useApi(getUsersRequest);
-
+    // 데이터 필드를 테이블에 필요한 컬럼으로 변경
     const columns = useColumn(longs.fields);
-
     // 검색필터 - 조직
     const [orga, setOrga] = useState<CoreSelectOption | null>(null);
     // 검색필터 - 영업가족
@@ -125,8 +126,8 @@ const Longs: NextPage = () => {
         }
     };
 
-    const handleClickRow = ({ cidx, cname }: any) => {
-        tab.replace(`/contract/long/${cidx}`);
+    const handleClickRow = ({ cidx }: any) => {
+        router.replace(`/contract/long/${cidx}`);
     };
 
     const handleSearch = () => {

@@ -6,7 +6,7 @@ import { initTab } from '@actions/tab/tab.action';
 import { getContractorRequest } from '@actions/contract/common/set-contractor.action';
 
 import { useApi } from './use-api';
-
+// 상세페이지에서 동적 메타데이터로 탭 구현시 사용
 export const useInitTab = (label: string) => {
     const router = useRouter();
 
@@ -29,7 +29,7 @@ export const useInitTab = (label: string) => {
 
     return null;
 };
-
+// 상세페이지에서 고객데이터가 필요한 경우 사용
 export const useInitCustomer = (c_idx: string) => {
     const router = useRouter();
 

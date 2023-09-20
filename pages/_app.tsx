@@ -4,9 +4,6 @@ import '@toast-ui/editor/dist/toastui-editor.css';
 import 'rsuite/dist/rsuite.css';
 import 'cropperjs/dist/cropper.css';
 
-// import '@uppy/core/dist/style.min.css';
-// import '@uppy/dashboard/dist/style.min.css';
-
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
@@ -15,8 +12,6 @@ import { getCookie } from 'cookies-next';
 import { wrapper } from '@store/redux';
 // import { MyDrawer } from '@components/drawer';
 import { MyProvider } from '@components/Provider';
-// import { TabModule } from '@utils/storage';
-// import { initTab } from '@actions/tab/tab.action';
 import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
@@ -44,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 target = target[lnbs[i]];
             }
 
-            // 상세페이지인 경우
+            // 상세페이지인 경우 제외
             if (!target) {
                 return;
             }

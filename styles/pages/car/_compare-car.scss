@@ -3,16 +3,20 @@
     flex-direction: column;
     overflow: hidden;
 
-    & tbody tr td:nth-child(even) {
-        text-align: left;
-    }
+    // & tbody tr td:nth-child(even) {
+    //     text-align: left;
+    // }
 
-    & tbody tr td:nth-child(odd) {
-        background-color: $gray-200;
-    }
+    // & tbody tr td:nth-child(odd) {
+    //     background-color: $gray-200;
+    // }
 
     & .form-control {
         height: $wr-list-filter-height;
+    }
+
+    &__label {
+        background-color: $gray-200 !important;
     }
 
     &__header {
@@ -46,6 +50,12 @@
 
     &__left {
         flex-basis: 700px;
+    }
+
+    &__right {
+        overflow: auto;
+        height: 100%;
+        border: 1px solid $wr-divider-color-300;
     }
 
     &-search {

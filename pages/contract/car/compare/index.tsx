@@ -156,7 +156,7 @@ const ComparisonCar: NextPage = () => {
     // 보험만기일
     const [todt, setTodt] = useDatepicker(addYears(new Date(), 1));
     // 차량용도
-    const [caruse, setCaruse] = useState('');
+    const [caruse, setCaruse] = useState('1');
     // 가족한정
     const [carfamily] = useSelect(carConstants.family);
     // 어린이 특약(현대 / KB / 동부)
@@ -182,7 +182,7 @@ const ComparisonCar: NextPage = () => {
     // 차량연식
     const [caryear, setCaryear] = useSelect(carConstants.year);
     // 차량등록일
-    const [cardate] = useDatepicker(null);
+    const [cardate] = useDatepicker(new Date());
     // 차량명
     const [carname, setCarname] = useInput('');
     // 차량등급
@@ -244,7 +244,7 @@ const ComparisonCar: NextPage = () => {
     // 보험가입경력 - 피보험자
     const [guipcarrer] = useSelect(carConstants.exp);
     // 보험가입경력 - 차량
-    const [guipcarrerCar] = useSelect(carConstants.exp2, null);
+    const [guipcarrerCar] = useSelect(carConstants.exp2);
     // 직전3년가입경력 - DB
     const [lJobcode] = useSelect(carConstants.exp, null);
     // 직전3년가입경력 - KB
@@ -584,10 +584,8 @@ const ComparisonCar: NextPage = () => {
             form.append('special_code', specialCode.value.value);
             form.append('special_code2', specialCode2.value.value);
             form.append('ss_sago3', ssSago3.value.value);
-            form.append(
-                'ret_url',
-                'http://127.0.0.1:3000/contract/car/compare',
-            );
+            form.append('ret_url', 'http://localhost:3000/api/calc');
+            // form.append('ret_url', 'http://www.wooriinsuman.cloud/test2');
             // form.append('view_mode', '1');
             // form.append('boan_code', '1');
             // form.append('age_val1', '42');
@@ -697,7 +695,10 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table">
                                     <colgroup>
-                                        <col width="130px" />
+                                        <col
+                                            width="130px"
+                                            className={`${displayName}__label`}
+                                        />
                                         <col width="570px" />
                                     </colgroup>
                                     <thead>
@@ -1121,7 +1122,10 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table wr-mt">
                                     <colgroup>
-                                        <col width="130px" />
+                                        <col
+                                            width="130px"
+                                            className={`${displayName}__label`}
+                                        />
                                         <col width="570px" />
                                     </colgroup>
                                     <thead>
@@ -1680,9 +1684,15 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table wr-mt">
                                     <colgroup>
-                                        <col width="130px" />
+                                        <col
+                                            width="130px"
+                                            className={`${displayName}__label`}
+                                        />
                                         <col width="220px" />
-                                        <col width="130px" />
+                                        <col
+                                            width="130px"
+                                            className={`${displayName}__label`}
+                                        />
                                         <col width="220px" />
                                     </colgroup>
                                     <thead>
@@ -1877,7 +1887,10 @@ const ComparisonCar: NextPage = () => {
                             <div className="wr-table--normal">
                                 <table className="wr-table table wr-mt">
                                     <colgroup>
-                                        <col width="130px" />
+                                        <col
+                                            width="130px"
+                                            className={`${displayName}__label`}
+                                        />
                                         <col width="570px" />
                                     </colgroup>
                                     <thead>
@@ -2348,7 +2361,7 @@ const ComparisonCar: NextPage = () => {
                             </div>
                         </div>
                         <div
-                            className="wr-pages-detail__right"
+                            className={`${displayName}__right wr-pages-detail__right`}
                             ref={rightRef}
                         ></div>
                     </div>

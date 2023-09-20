@@ -1,5 +1,4 @@
-import addDays from 'date-fns/addDays';
-import addYears from 'date-fns/addYears';
+import { addDays, addYears } from 'date-fns';
 
 // 자동차 날짜 선택 조건
 export function carShouldDisableDate(date: Date) {

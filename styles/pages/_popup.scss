@@ -1,0 +1,30 @@
+.wr-pages-popup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: $wr-gutter-size;
+    overflow: hidden;
+    --wr-tab-active-color: white;
+
+    &__header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $wr-gutter-size;
+    }
+
+    & .rs-picker-toggle-placeholder {
+        font-size: 16px;
+    }
+
+    & .wr-with__label,
+    & .wr-with__extension,
+    & .wr-with__container {
+        height: $wr-detail-filter-height;
+    }
+
+    // Custom Bootstrap
+    & .form-control {
+        font-size: 16px !important;
+        padding: 5px 6px;
+    }
+}
