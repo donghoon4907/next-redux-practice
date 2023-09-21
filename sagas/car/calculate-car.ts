@@ -16,8 +16,6 @@ function* calculateCarSaga({ payload }: CalculateCarRequestAction) {
 
     const { data } = yield call(carsService.calculateCar, formData);
 
-    console.log(data);
-
     yield put(calculateCarSuccess());
 
     return data;

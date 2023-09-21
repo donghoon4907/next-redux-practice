@@ -8,6 +8,7 @@ import { MyTab } from '@components/tab';
 import { MyButton } from '@components/button';
 import { MyTableExtension } from '@components/table/Extension';
 import { MySelect } from '@components/select';
+import { wrapper } from '@store/redux';
 
 const Test: NextPage = () => {
     return (

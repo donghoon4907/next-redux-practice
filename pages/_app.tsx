@@ -66,7 +66,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     '/test',
                     '/select-upload',
                     '/etc/shop_list',
-                    // '/contract/general/create',
+                    '/calculate',
                 ].includes(route)
             ) {
                 const tab = new TabModule();
@@ -116,7 +116,13 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                 // axios 초기화
                 initialzeBackendAxios(token);
                 // permission 제외 페이지
-                const excludePermissionPages = ['/', '/login'];
+                const excludePermissionPages = [
+                    '/',
+                    '/login',
+                    '/404',
+                    '/500',
+                    '/calculate',
+                ];
                 // permission
                 if (!excludePermissionPages.includes(router.route)) {
                     try {
@@ -128,7 +134,7 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
                         if (user_info) {
                             dispatch(updatePermission(data));
                         }
-                    } catch (err) {
+                    } catch {
                         console.log('권한 조회 실패');
                     }
                 }

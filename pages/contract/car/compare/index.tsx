@@ -57,7 +57,7 @@ const ComparisonCar: NextPage = () => {
         (state) => state.hr,
     );
     // 주민번호
-    const [jumin] = useResidentNumberInput('9303141000001', {
+    const [jumin] = useResidentNumberInput('', {
         callbackOnBlur: (convertedVal) => {
             const _jumin = convertedVal.replace(/-/g, '');
 
@@ -149,12 +149,15 @@ const ComparisonCar: NextPage = () => {
     const [idate, setIdate] = useDatepicker(new Date(), {
         callbackOnChange: (nextDate) => {
             if (nextDate) {
-                setTodt(addYears(new Date(), 1));
+                // 보험만기일 자동 변경
+                setTodt(addYears(nextDate, 1));
             }
         },
     });
     // 보험만기일
     const [todt, setTodt] = useDatepicker(addYears(new Date(), 1));
+    // 고객명
+    const [name] = useInput('', { noSpace: true });
     // 차량용도
     const [caruse, setCaruse] = useState('1');
     // 가족한정
@@ -162,13 +165,15 @@ const ComparisonCar: NextPage = () => {
     // 어린이 특약(현대 / KB / 동부)
     const [drate] = useSelect(carConstants.dDist);
     // 운전자연령
-    const [carage] = useSelect(carConstants.minAge);
+    const [carage] = useSelect(carConstants.minAge, carConstants.minAge[6]);
     // 납입방법
     const [divideNum] = useSelect(carConstants.payMethod);
     // 물적사고 할증
     const [mulSago] = useSelect(carConstants.mSago, carConstants.mSago[3]);
     // 전보험사
     const [preComp] = useSelect(carUseCompanies, null);
+    // 전계약 NO
+    const [preNum] = useInput('');
     // 차명코드
     const [carcode, setCarcode] = useInput('');
     // LPG 여부
@@ -188,7 +193,7 @@ const ComparisonCar: NextPage = () => {
     // 차량등급
     const [carGrade] = useSelect(carConstants.grade, carConstants.grade[10]);
     // 배기량
-    const [baegirang] = useNumbericInput('');
+    const [baegirang] = useNumbericInput('0');
     // 차량구매형태
     const [membercode] = useSelect(carConstants.pType);
     // 오토 여부
@@ -210,23 +215,23 @@ const ComparisonCar: NextPage = () => {
     // 지능형 안전장치 여부
     const [checkJobcodeNm] = useCheckbox(false);
     // 차량가액
-    const [carprice] = useNumbericInput('', {
+    const [carprice] = useNumbericInput('0', {
         addComma: true,
     });
     // 일부담보
-    const [liPrice] = useNumbericInput('', {
+    const [ilPrice] = useNumbericInput('0', {
         addComma: true,
     });
     // 유상운송
     const [usang] = useSelect(carConstants.usang);
     // 기중기장치요율
-    const [usang2] = useNumbericInput('');
+    const [usang2] = useNumbericInput('0');
     // 대인배상 2
     const [dambo2] = useSelect(carConstants.dambo2, carConstants.dambo2[1]);
     // 대물한도
     const [dambo3] = useSelect(carConstants.dambo3, carConstants.dambo3[6]);
     // 자손/자상
-    const [dambo4] = useSelect(carConstants.dambo4, carConstants.dambo4[1]);
+    const [dambo4] = useSelect(carConstants.dambo4, carConstants.dambo4[3]);
     // 무보험차
     const [dambo5] = useSelect(carConstants.dambo5, carConstants.dambo5[1]);
     // 자기차량
@@ -254,7 +259,7 @@ const ComparisonCar: NextPage = () => {
     // 교통법규 위반 건수
     const [trafficDetail] = useSelect(carConstants.numCase.slice(0, 4));
     // 총차량대수
-    const [childdrive] = useSelect(carConstants.cDrive, null);
+    const [childdrive] = useSelect(carConstants.cDrive);
     // 할증율 - 할인할증
     const [halin] = useSelect(carConstants.halin, carConstants.halin[20]);
     // 할증율 - 군/법인/해외경력인정
@@ -558,52 +563,124 @@ const ComparisonCar: NextPage = () => {
             return alert('3년간사고요율 - 3년간요율을 확인하세요.');
         }
 
+        if (!childdrive.value) {
+            return alert('총차량대수를 선택하세요.');
+        }
+
         if (rightRef.current) {
             const form = new FormData();
+
             form.append('jumin', jumin.value.replace(/-/g, ''));
-            form.append('idate', dayjs(idate.value).format('YYYY-MM-DD'));
+            form.append('idate', dayjs(idate.value).format('YYYYMMDD'));
+            if (todt.value) {
+                form.append('todt', dayjs(todt.value).format('YYYYMMDD'));
+            }
+            if (!isEmpty(name.value)) {
+                form.append('name', name.value);
+            }
             form.append('caruse', caruse);
             form.append('carfamily', carfamily.value.value);
+            if (drate.value) {
+                form.append('drate', drate.value.value);
+            }
             form.append('carage', carage.value.value);
+            form.append('divide_num', divideNum.value!.value);
+            form.append('mul_sago', mulSago.value!.value);
+            if (preComp.value) {
+                form.append('pre_com', preComp.value.value);
+            }
+            if (!isEmpty(preNum.value)) {
+                form.append('pre_num', preNum.value);
+            }
             form.append('carcode', carcode.value);
+            if (checkLpg.checked) {
+                form.append('lpg', '1');
+            }
+            if (checkTopcar.checked) {
+                form.append('topcar', '1');
+            }
             form.append('sportcar', sportcar.value.value);
             form.append('caryear', caryear.value.value);
-            form.append('cardate', dayjs(cardate.value).format('YYYY-MM-DD'));
+            form.append('cardate', dayjs(cardate.value).format('YYYYMMDD'));
+            form.append('carname', carname.value);
+            form.append('car_grade', carGrade.value!.value);
+            form.append('baegirang', baegirang.value);
+            form.append('membercode', membercode.value!.value);
+            if (checkAuto.checked) {
+                form.append('auto', '1');
+            }
+            if (checkAbsHalin.checked) {
+                form.append('abs_halin', '1');
+            }
+            if (checkImo.checked) {
+                form.append('imo', '1');
+            }
+            form.append('aircode', aircode.value!.value);
+            form.append('chung', chung.value!.value);
+            form.append('gps', gps.value!.value);
+            if (checkBlackbox.checked) {
+                form.append('bbox', '1');
+            }
+            if (checkBluelink.checked) {
+                form.append('blue_link', '1');
+            }
+            if (checkJobcodeNm.checked) {
+                form.append('l_jobcode_nm', '1');
+            } else {
+                form.append('l_jobcode_nm', '0');
+            }
+            form.append('carprice', carprice.value.replace(/,/g, ''));
+            form.append('bupum_price', totalCaraccPrice.toString());
+            form.append('il_price', ilPrice.value.replace(/,/g, ''));
+            form.append('usang', usang.value!.value);
+            form.append('usang2', usang2.value);
             form.append('dambo2', dambo2.value.value);
             form.append('dambo3', dambo3.value.value);
             form.append('dambo4', dambo4.value.value);
             form.append('dambo5', dambo5.value.value);
             form.append('dambo6', dambo6.value.value);
-            form.append('dambo7', '0');
             form.append('goout1', gooutDist.value.value);
             form.append('goout_dist', gooutDetail.value.value);
+            form.append('mile1', mileDist.value!.value);
+            if (mileDetail.value) {
+                form.append('mile2', mileDetail.value.value);
+            }
             form.append('guipcarrer', guipcarrer.value.value);
             form.append('guipcarrer_car', guipcarrerCar.value.value);
+            if (lJobcode.value) {
+                form.append('l_jobcode', lJobcode.value.value);
+            }
+            if (guipCarrerKb.value) {
+                form.append('guipcarrer_kb', guipCarrerKb.value.value);
+            }
             form.append('traffic', trafficDist.value.value);
+            form.append('gr_area', trafficDetail.value!.value);
+            form.append('childdrive', childdrive.value.value);
             form.append('halin', halin.value.value);
             form.append('special_code', specialCode.value.value);
             form.append('special_code2', specialCode2.value.value);
             form.append('ss_sago3', ssSago3.value.value);
-            form.append('ret_url', 'http://localhost:3000/api/calc');
-            // form.append('ret_url', 'http://www.wooriinsuman.cloud/test2');
-            // form.append('view_mode', '1');
-            // form.append('boan_code', '1');
-            // form.append('age_val1', '42');
-            // form.append('groups', 'test');
-
+            form.append('pre_sago3', preSago3.value!.value);
+            if (pSago.value) {
+                form.append('p_sago', pSago.value.value);
+            }
+            if (goout2.value) {
+                form.append('goout2', goout2.value.value);
+            }
+            form.append('sago3', sago3.value!.value);
+            form.append('sago2', sago2.value!.value);
+            form.append('sago1', sago1.value!.value);
+            form.append('car_sago3', carSago3.value!.value);
+            form.append('car_nonum', carNonum.value!.value);
+            form.append('car_sago1', carSago1.value!.value);
+            form.append('ret_url', process.env.FRONTEND_DOMAIN + '/calculate');
             form.append('com_name', 'woori!@#$');
-
-            const iframe = document.createElement('iframe');
-            iframe.name = 'target_frame';
-            iframe.width = '1000px';
-            iframe.height = '500px';
-            rightRef.current.appendChild(iframe);
 
             const hiddenForm = document.createElement('form');
             hiddenForm.action =
                 'http://cal.insnara.co.kr/estimate/outer_test_woori.asp';
-            hiddenForm.method = 'post'; // 폼의 method를 설정
-            hiddenForm.target = 'target_frame'; // iframe의 name을 타겟으로 설정
+            hiddenForm.method = 'post';
+            hiddenForm.target = 'target_frame';
             hiddenForm.style.display = 'none';
             hiddenForm.acceptCharset = 'euc-kr';
 
@@ -619,6 +696,8 @@ const ComparisonCar: NextPage = () => {
             rightRef.current.appendChild(hiddenForm);
 
             hiddenForm.submit();
+
+            rightRef.current.removeChild(hiddenForm);
         }
     };
 
@@ -730,6 +809,7 @@ const ComparisonCar: NextPage = () => {
                                                         <MyInput
                                                             id="jumin"
                                                             type="text"
+                                                            placeholder="주민번호"
                                                             {...jumin}
                                                         />
                                                     </div>
@@ -769,12 +849,17 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         <MyInput
                                                             type="text"
-                                                            placeholder="999"
+                                                            placeholder=""
                                                             pattern="[0-9]{2,3}"
                                                             {...carType}
                                                         />
                                                     </div>
-                                                    <MySelect {...carUsage} />
+                                                    <div style={{ width: 100 }}>
+                                                        <MySelect
+                                                            {...carUsage}
+                                                        />
+                                                    </div>
+
                                                     <div
                                                         style={{
                                                             width: 70,
@@ -782,7 +867,7 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         <MyInput
                                                             type="text"
-                                                            placeholder="9999"
+                                                            placeholder=""
                                                             pattern="[0-9]{4}"
                                                             {...carRegiNum}
                                                         />
@@ -888,7 +973,7 @@ const ComparisonCar: NextPage = () => {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label htmlFor="customerNm">
+                                                <label htmlFor="name">
                                                     고객명
                                                 </label>
                                             </td>
@@ -902,8 +987,9 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
-                                                            id="customerNm"
-                                                            placeholder="홍길동"
+                                                            id="name"
+                                                            placeholder="고객명"
+                                                            {...name}
                                                         />
                                                     </div>
                                                     {/* <MyButton className="btn-warning btn-sm">
@@ -1096,7 +1182,7 @@ const ComparisonCar: NextPage = () => {
                                                     </div>
 
                                                     <div>
-                                                        <label htmlFor="prev_no">
+                                                        <label htmlFor="pre_num">
                                                             <strong>
                                                                 전계약 NO
                                                             </strong>
@@ -1108,8 +1194,9 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
-                                                            id="prev_no"
-                                                            placeholder=""
+                                                            id="pre_num"
+                                                            placeholder="전계약번호"
+                                                            {...preNum}
                                                         />
                                                     </div>
                                                 </div>
@@ -1396,10 +1483,12 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <MySelect
-                                                        inputId="aircode"
-                                                        {...aircode}
-                                                    />
+                                                    <div style={{ width: 200 }}>
+                                                        <MySelect
+                                                            inputId="aircode"
+                                                            {...aircode}
+                                                        />
+                                                    </div>
                                                 </div>
                                             </td>
                                         </tr>
@@ -1552,6 +1641,7 @@ const ComparisonCar: NextPage = () => {
                                                     <div style={{ width: 410 }}>
                                                         <MyInput
                                                             id="directCaraccname"
+                                                            placeholder="추가부속입력"
                                                             {...directCaraccname}
                                                         />
                                                     </div>
@@ -1612,7 +1702,7 @@ const ComparisonCar: NextPage = () => {
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label htmlFor="li_price">
+                                                        <label htmlFor="il_price">
                                                             <strong>
                                                                 일부담보
                                                             </strong>
@@ -1624,11 +1714,11 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
-                                                            id="li_price"
+                                                            id="il_price"
                                                             placeholder="0"
                                                             className="text-end"
                                                             unit="만원"
-                                                            {...liPrice}
+                                                            {...ilPrice}
                                                         />
                                                     </div>
                                                 </div>
@@ -1651,10 +1741,13 @@ const ComparisonCar: NextPage = () => {
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    <MySelect
-                                                        inputId="usang"
-                                                        {...usang}
-                                                    />
+                                                    <div style={{ width: 220 }}>
+                                                        <MySelect
+                                                            inputId="usang"
+                                                            {...usang}
+                                                        />
+                                                    </div>
+
                                                     <div>
                                                         <label htmlFor="usang2">
                                                             <strong>
@@ -2363,7 +2456,12 @@ const ComparisonCar: NextPage = () => {
                         <div
                             className={`${displayName}__right wr-pages-detail__right`}
                             ref={rightRef}
-                        ></div>
+                        >
+                            <iframe
+                                name="target_frame"
+                                style={{ width: '100%', height: '100%' }}
+                            />
+                        </div>
                     </div>
                     <MyFooter>
                         <div className="wr-footer__between">

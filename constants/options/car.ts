@@ -913,12 +913,12 @@ export const CAR_GPS2: CoreSelectOption[] = [
 export const CAR_P_TYPE: CoreSelectOption[] = [
     {
         label: '신차',
-        value: '신차',
+        value: '0',
         isFixed: false,
     },
     {
         label: '중고차',
-        value: '중고차',
+        value: '1',
         isFixed: false,
     },
 ];
@@ -1243,27 +1243,27 @@ export const CAR_MUL_SAGO: CoreSelectOption[] = [
 export const CAR_MILE_DIST: CoreSelectOption[] = [
     {
         label: '미가입',
-        value: '미가입',
+        value: '0',
         isFixed: false,
     },
     {
         label: '선할인-실사',
-        value: '선할인-실사',
+        value: '1',
         isFixed: false,
     },
     {
         label: '선할인-ODB',
-        value: '선할인-ODB',
+        value: '2',
         isFixed: false,
     },
     {
         label: '후할인-실사',
-        value: '후할인-실사',
+        value: '3',
         isFixed: false,
     },
     {
         label: '후할인-ODB',
-        value: '후할인-ODB',
+        value: '4',
         isFixed: false,
     },
 ];
