@@ -26,7 +26,6 @@ import { CoreSelectOption } from '@interfaces/core';
 import { MyFooter } from '@components/footer';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { WithLabel } from '@components/WithLabel';
 import carConstants from '@constants/options/car';
 import {
     birthdayToInternationalAge,
@@ -37,8 +36,6 @@ import { MyDatepicker } from '@components/datepicker';
 import { carShouldDisableDate } from '@utils/datepicker';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
-// import { useApi } from '@hooks/use-api';
-// import { calculateCarRequest } from '@actions/contract/car/calculate-car.action';
 import { isEmpty } from '@utils/validator/common';
 import { CarcodeSearchModal } from '@components/modal/CarcodeSearch';
 import { showGetCarcodeModal } from '@actions/modal/get-carcode.action';
@@ -193,7 +190,7 @@ const ComparisonCar: NextPage = () => {
     // 차량등급
     const [carGrade] = useSelect(carConstants.grade, carConstants.grade[10]);
     // 배기량
-    const [baegirang] = useNumbericInput('0');
+    const [baegirang] = useNumbericInput('');
     // 차량구매형태
     const [membercode] = useSelect(carConstants.pType);
     // 오토 여부
@@ -219,7 +216,7 @@ const ComparisonCar: NextPage = () => {
         addComma: true,
     });
     // 일부담보
-    const [ilPrice] = useNumbericInput('0', {
+    const [ilPrice] = useNumbericInput('', {
         addComma: true,
     });
     // 유상운송
@@ -227,19 +224,37 @@ const ComparisonCar: NextPage = () => {
     // 기중기장치요율
     const [usang2] = useNumbericInput('0');
     // 대인배상 2
-    const [dambo2] = useSelect(carConstants.dambo2, carConstants.dambo2[1]);
+    const [dambo2, setDambo2] = useSelect(
+        carConstants.dambo2,
+        carConstants.dambo2[1],
+    );
     // 대물한도
-    const [dambo3] = useSelect(carConstants.dambo3, carConstants.dambo3[6]);
+    const [dambo3, setDambo3] = useSelect(
+        carConstants.dambo3,
+        carConstants.dambo3[6],
+    );
     // 자손/자상
-    const [dambo4] = useSelect(carConstants.dambo4, carConstants.dambo4[3]);
+    const [dambo4, setDambo4] = useSelect(
+        carConstants.dambo4,
+        carConstants.dambo4[3],
+    );
     // 무보험차
-    const [dambo5] = useSelect(carConstants.dambo5, carConstants.dambo5[1]);
+    const [dambo5, setDambo5] = useSelect(
+        carConstants.dambo5,
+        carConstants.dambo5[1],
+    );
     // 자기차량
-    const [dambo6] = useSelect(carConstants.dambo6, carConstants.dambo6[1]);
+    const [dambo6, setDambo6] = useSelect(
+        carConstants.dambo6,
+        carConstants.dambo6[1],
+    );
     // 긴급출동
-    const [gooutDist] = useSelect(carConstants.gDist);
-    // 긴급출동 상세
-    const [gooutDetail] = useSelect(carConstants.gDetail);
+    const [gooutDist, setGooutDist] = useSelect(carConstants.gDist);
+    // 긴급출동 세부
+    const [gooutDetail] = useSelect(
+        carConstants.gDetail,
+        carConstants.gDetail[1],
+    );
     // 마일리지
     const [mileDist] = useSelect(carConstants.mDist);
     // 마일리지 상세
@@ -247,9 +262,9 @@ const ComparisonCar: NextPage = () => {
     // 메모
     const [memo] = useInput('');
     // 보험가입경력 - 피보험자
-    const [guipcarrer] = useSelect(carConstants.exp);
+    const [guipcarrer] = useSelect(carConstants.exp, carConstants.exp[1]);
     // 보험가입경력 - 차량
-    const [guipcarrerCar] = useSelect(carConstants.exp2);
+    const [guipcarrerCar, setGuipcarrerCar] = useSelect(carConstants.exp2);
     // 직전3년가입경력 - DB
     const [lJobcode] = useSelect(carConstants.exp, null);
     // 직전3년가입경력 - KB
@@ -269,7 +284,7 @@ const ComparisonCar: NextPage = () => {
     // 할증율 - 추가할증
     const [specialCode2] = useSelect(carConstants.sCode2);
     // 사고요율 - 3년간사고요율
-    const [ssSago3] = useSelect(carConstants.sago3);
+    const [ssSago3, setSsSago3] = useSelect(carConstants.sago3);
     // 사고요율 - 전계약사고요율
     const [preSago3] = useSelect(carConstants.prevSago);
     // 사고요율 - 3년사고점수
@@ -457,15 +472,49 @@ const ComparisonCar: NextPage = () => {
     const handleChangeCaruse = (evt: ChangeEvent<HTMLInputElement>) => {
         setCaruse(evt.target.value);
     };
-
+    // 차명코드 조회
     const handleShowCarSearch = () => {
         dispatch(showGetCarcodeModal());
     };
-
+    // 추가부속 설정
     const handleShowSetCaracc = () => {
         dispatch(showSetCaraccModal());
     };
+    // 차가 2대이상 or 신차 preset
+    const handlePresetTwoOrNew = () => {
+        setGuipcarrerCar(carConstants.exp2[1]);
 
+        setSsSago3(carConstants.sago3[2]);
+    };
+    // 책임보험 preset
+    const handlePresetLi = () => {
+        setDambo2(carConstants.dambo2[0]);
+
+        setDambo3(carConstants.dambo3[2]);
+
+        setDambo4(carConstants.dambo4[0]);
+
+        setDambo5(carConstants.dambo5[0]);
+
+        setDambo6(carConstants.dambo6[0]);
+
+        setGooutDist(carConstants.gDist[2]);
+    };
+    // 기본담보 preset
+    const handlePresetBasicGuarantee = () => {
+        setDambo2(carConstants.dambo2[1]);
+
+        setDambo3(carConstants.dambo3[6]);
+
+        setDambo4(carConstants.dambo4[3]);
+
+        setDambo5(carConstants.dambo5[1]);
+
+        setDambo6(carConstants.dambo6[1]);
+
+        setGooutDist(carConstants.gDist[0]);
+    };
+    // 보험료 계산
     const handleCalculate = () => {
         if (jumin.value.length !== 14) {
             return alert('주민번호를 확인하세요.');
@@ -712,7 +761,7 @@ const ComparisonCar: NextPage = () => {
             </Head>
             <MyLayout>
                 <div className={displayName}>
-                    <div className={`${displayName}__header row`}>
+                    {/* <div className={`${displayName}__header row`}>
                         <div className="col-6">
                             <div className="row">
                                 <div className="col">
@@ -766,7 +815,7 @@ const ComparisonCar: NextPage = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <div className={`${displayName}__body row wr-mt`}>
                         <div
                             className={`${displayName}__left wr-pages-detail__left`}
@@ -848,6 +897,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
+                                                            id="carnum1"
                                                             type="text"
                                                             placeholder=""
                                                             pattern="[0-9]{2,3}"
@@ -856,6 +906,7 @@ const ComparisonCar: NextPage = () => {
                                                     </div>
                                                     <div style={{ width: 100 }}>
                                                         <MySelect
+                                                            inputId="carnum2"
                                                             {...carUsage}
                                                         />
                                                     </div>
@@ -866,6 +917,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
+                                                            id="carnum3"
                                                             type="text"
                                                             placeholder=""
                                                             pattern="[0-9]{4}"
@@ -878,6 +930,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
+                                                            id="carnum4"
                                                             type="text"
                                                             placeholder="직접입력"
                                                             // ref={directCarNumRef}
@@ -892,7 +945,10 @@ const ComparisonCar: NextPage = () => {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label className="wr-label--required">
+                                                <label
+                                                    className="wr-label--required"
+                                                    htmlFor="idate"
+                                                >
                                                     가입예정일
                                                 </label>
                                             </td>
@@ -992,20 +1048,14 @@ const ComparisonCar: NextPage = () => {
                                                             {...name}
                                                         />
                                                     </div>
-                                                    {/* <MyButton className="btn-warning btn-sm">
-                                                        고객상세사항
-                                                    </MyButton> */}
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label
-                                                    className="wr-label--required"
-                                                    htmlFor="caruse1"
-                                                >
+                                                <span className="wr-label--required">
                                                     차량용도
-                                                </label>
+                                                </span>
                                             </td>
                                             <td>
                                                 <div
@@ -1225,9 +1275,9 @@ const ComparisonCar: NextPage = () => {
                                     <tbody>
                                         <tr>
                                             <td>
-                                                <label className="wr-label--required">
+                                                <span className="wr-label--required">
                                                     차명코드
-                                                </label>
+                                                </span>
                                             </td>
                                             <td>
                                                 <div
@@ -1239,6 +1289,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
+                                                            id="carcode1"
                                                             disabled
                                                             {...carcode}
                                                         />
@@ -1251,51 +1302,44 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         조회
                                                     </MyButton>
-                                                    {/* <MyButton className="btn-warning btn-sm">
-                                                        안전옵션
-                                                    </MyButton> */}
                                                 </div>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label htmlFor="carnum">
-                                                    차량형태
-                                                </label>
+                                                <span>차량형태</span>
                                             </td>
                                             <td>
                                                 <div
                                                     className={`${displayName}__description`}
                                                 >
                                                     <MyCheckbox
-                                                        id="lpg"
+                                                        id="check_lpg"
                                                         label="LPG차량"
                                                         {...checkLpg}
                                                     />
                                                     <MyCheckbox
-                                                        id="top"
+                                                        id="check_top"
                                                         label="탑차"
                                                         {...checkTopcar}
                                                     />
                                                     <div>
-                                                        <label className="wr-label--required">
+                                                        <label
+                                                            className="wr-label--required"
+                                                            htmlFor="sportcar"
+                                                        >
                                                             <strong>
                                                                 스포츠카
                                                             </strong>
                                                         </label>
                                                     </div>
-                                                    {/* <MyCheckbox
-                                                        id="sports"
-                                                        label="스포츠카"
-                                                        isRequired
-                                                        {...checkSportcar}
-                                                    /> */}
                                                     <div
                                                         style={{
                                                             width: 150,
                                                         }}
                                                     >
                                                         <MySelect
+                                                            inputId="sportcar"
                                                             {...sportcar}
                                                         />
                                                     </div>
@@ -1413,9 +1457,7 @@ const ComparisonCar: NextPage = () => {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label htmlFor="baegicode">
-                                                    차량구분
-                                                </label>
+                                                <span>차량구분</span>
                                             </td>
                                             <td>
                                                 <div
@@ -1427,7 +1469,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MySelect
-                                                            inputId="baegicode"
+                                                            inputId="cartype"
                                                             placeholder="==차종선택=="
                                                             isDisabled
                                                         />
@@ -1462,17 +1504,17 @@ const ComparisonCar: NextPage = () => {
                                                     className={`${displayName}__description`}
                                                 >
                                                     <MyCheckbox
-                                                        id="auto"
+                                                        id="check_auto"
                                                         label="오토"
                                                         {...checkAuto}
                                                     />
                                                     <MyCheckbox
-                                                        id="abs"
+                                                        id="check_abs"
                                                         label="ABS"
                                                         {...checkAbsHalin}
                                                     />
                                                     <MyCheckbox
-                                                        id="emobil"
+                                                        id="check_imo"
                                                         label="이모빌"
                                                         {...checkImo}
                                                     />
@@ -1505,28 +1547,34 @@ const ComparisonCar: NextPage = () => {
                                                             width: 120,
                                                         }}
                                                     >
-                                                        <MySelect {...chung} />
+                                                        <MySelect
+                                                            inputId="chung"
+                                                            {...chung}
+                                                        />
                                                     </div>
                                                     <div
                                                         style={{
                                                             width: 120,
                                                         }}
                                                     >
-                                                        <MySelect {...gps} />
+                                                        <MySelect
+                                                            inputId="gps"
+                                                            {...gps}
+                                                        />
                                                     </div>
 
                                                     <MyCheckbox
-                                                        id="bbox"
+                                                        id="check_bbox"
                                                         label="블랙박스"
                                                         {...checkBlackbox}
                                                     />
                                                     <MyCheckbox
-                                                        id="bluelink"
-                                                        label="블루링크"
+                                                        id="check_bluelink"
+                                                        label="커넥티드"
                                                         {...checkBluelink}
                                                     />
                                                     <MyCheckbox
-                                                        id="l_jobcode_nm"
+                                                        id="check_l_jobcode_nm"
                                                         label="지능형안전"
                                                         {...checkJobcodeNm}
                                                     />
@@ -1563,6 +1611,7 @@ const ComparisonCar: NextPage = () => {
                                                                     }}
                                                                 >
                                                                     <MyInput
+                                                                        id={`caraccNameFirstRow${i}`}
                                                                         disabled
                                                                         defaultValue={
                                                                             v.name
@@ -1576,6 +1625,7 @@ const ComparisonCar: NextPage = () => {
                                                                     }}
                                                                 >
                                                                     <MyInput
+                                                                        id={`caraccPriceFirstRow${i}`}
                                                                         disabled
                                                                         className="text-end"
                                                                         defaultValue={
@@ -1602,6 +1652,7 @@ const ComparisonCar: NextPage = () => {
                                                                     }}
                                                                 >
                                                                     <MyInput
+                                                                        id={`caraccNameSecondRow${i}`}
                                                                         disabled
                                                                         defaultValue={
                                                                             v.name
@@ -1615,6 +1666,7 @@ const ComparisonCar: NextPage = () => {
                                                                     }}
                                                                 >
                                                                     <MyInput
+                                                                        id={`caraccPriceSecondRow${i}`}
                                                                         disabled
                                                                         className="text-end"
                                                                         defaultValue={
@@ -1630,7 +1682,7 @@ const ComparisonCar: NextPage = () => {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label htmlFor="directCaraccname">
+                                                <label htmlFor="directCaraccName">
                                                     추가부속 - 입력
                                                 </label>
                                             </td>
@@ -1640,7 +1692,7 @@ const ComparisonCar: NextPage = () => {
                                                 >
                                                     <div style={{ width: 410 }}>
                                                         <MyInput
-                                                            id="directCaraccname"
+                                                            id="directCaraccName"
                                                             placeholder="추가부속입력"
                                                             {...directCaraccname}
                                                         />
@@ -1652,6 +1704,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
+                                                            id="directCaraccPrice"
                                                             className="text-end"
                                                             {...directCaraccprice}
                                                             unit="만원"
@@ -1694,6 +1747,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
+                                                            id="bupumprice"
                                                             placeholder="0"
                                                             className="text-end"
                                                             disabled
@@ -1726,9 +1780,7 @@ const ComparisonCar: NextPage = () => {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label htmlFor="carprice">
-                                                    기타사항
-                                                </label>
+                                                <span>기타사항</span>
                                             </td>
                                             <td>
                                                 <div
@@ -1761,6 +1813,7 @@ const ComparisonCar: NextPage = () => {
                                                         }}
                                                     >
                                                         <MyInput
+                                                            id="usang2"
                                                             placeholder="0"
                                                             className="text-end"
                                                             unit="%"
@@ -1793,12 +1846,20 @@ const ComparisonCar: NextPage = () => {
                                             <th colSpan={4}>
                                                 <div className="wr-pages-detail__center">
                                                     <span>세부 담보 설정</span>
-                                                    {/* <MyButton className="btn-warning btn-sm wr-ml">
+                                                    <MyButton
+                                                        className="btn-warning btn-sm"
+                                                        onClick={handlePresetLi}
+                                                    >
                                                         책임보험
                                                     </MyButton>
-                                                    <MyButton className="btn-warning btn-sm wr-ml">
+                                                    <MyButton
+                                                        className="btn-warning btn-sm"
+                                                        onClick={
+                                                            handlePresetBasicGuarantee
+                                                        }
+                                                    >
                                                         기본담보
-                                                    </MyButton> */}
+                                                    </MyButton>
                                                 </div>
                                             </th>
                                         </tr>
@@ -1965,6 +2026,7 @@ const ComparisonCar: NextPage = () => {
                                             </td>
                                             <td colSpan={3}>
                                                 <textarea
+                                                    id="memo"
                                                     rows={4}
                                                     style={{
                                                         width: '100%',
@@ -2446,6 +2508,21 @@ const ComparisonCar: NextPage = () => {
                                                             건
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colSpan={2}>
+                                                <div className="wr-pages-detail__center">
+                                                    <MyButton
+                                                        className="text-danger"
+                                                        onClick={
+                                                            handlePresetTwoOrNew
+                                                        }
+                                                    >
+                                                        차가 2대이상인 경우 또는
+                                                        신차인 경우 클릭하세요
+                                                    </MyButton>
                                                 </div>
                                             </td>
                                         </tr>

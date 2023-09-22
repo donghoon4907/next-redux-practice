@@ -1196,6 +1196,11 @@ export const CAR_GOOUT_DIST: CoreSelectOption[] = [
 // 긴급출동 상세
 export const CAR_GOOUT_DETAIL: CoreSelectOption[] = [
     {
+        label: '자동선택',
+        value: '0',
+        isFixed: false,
+    },
+    {
         label: '전체가입',
         value: '1',
         isFixed: false,
@@ -1270,25 +1275,30 @@ export const CAR_MILE_DIST: CoreSelectOption[] = [
 // 마일리지 상세
 export const CAR_MILE_DETAIL: CoreSelectOption[] = [
     {
+        label: '미선택',
+        value: '0',
+        isFixed: false,
+    },
+    {
         label: '3천km이하(삼성4천/KB2천)',
-        value: '3천km이하(삼성4천/KB2천)',
+        value: '3',
         isFixed: false,
     },
     {
         label: '5천km이하(삼성/KB-4천)',
-        value: '5천km이하(삼성/KB-4천)',
+        value: '5',
         isFixed: false,
     },
     {
         label: '1만km이하(MG/현대-7천)',
-        value: '1만km이하(MG/현대-7천)',
+        value: '7',
         isFixed: false,
     },
 ];
 // 자녀 특약(현대/KB/동부)
 export const CAR_DRATE_DIST: CoreSelectOption[] = [
     {
-        label: '해당없음',
+        label: '미선택',
         value: '0',
         isFixed: false,
     },
@@ -1409,6 +1419,11 @@ export const CAR_CHILD_DRIVE: CoreSelectOption[] = [
 ];
 // 가입경력 - 피보험자
 export const CAR_EXP: CoreSelectOption[] = [
+    {
+        label: '미선택',
+        value: '',
+        isFixed: false,
+    },
     ...Array.from({ length: 7 }).map((_, i) => ({
         label: `${i + 1}년미만`,
         value: `B${i + 1}`,
@@ -1422,6 +1437,11 @@ export const CAR_EXP: CoreSelectOption[] = [
 ];
 // 가입경력 - 차량
 export const CAR_EXP2: CoreSelectOption[] = [
+    {
+        label: '미선택',
+        value: '',
+        isFixed: false,
+    },
     {
         label: '9개월미만',
         value: 'B1',

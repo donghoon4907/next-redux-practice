@@ -128,7 +128,12 @@ export const SetCarAccModal: FC<Props> = ({ setExternalAccs }) => {
     };
 
     return (
-        <Modal isOpen={isShowSetCaraccModal} toggle={handleClose} size="xl">
+        <Modal
+            isOpen={isShowSetCaraccModal}
+            toggle={handleClose}
+            size="xl"
+            style={{ minWidth: 1140 }}
+        >
             <ModalHeader toggle={handleClose}>부속품 코드</ModalHeader>
             <ModalBody>
                 <div className="wr-table--normal">

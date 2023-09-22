@@ -167,6 +167,9 @@ export const MySelect: FC<MySelectProps> = ({
                     padding: '6px',
                     fontSize: '16px',
                     textAlign: 'left',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
                     // backgroundColor: state.isFocused ? 'blue' : 'white', // 포커스 상태에 따른 배경색 변경
                     // color: state.isFocused ? 'white' : 'black', // 포커스 상태에 따른 글자색 변경
                     // '&:hover': {
