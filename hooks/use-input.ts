@@ -188,30 +188,49 @@ export const useResidentNumberInput: UseInputFunction = (
     defaultValue,
     where = {},
 ) => {
-    const [residentNum, setResidentNum] = useNumbericInput(
+    const [value, setValue] = useState(
         defaultValue ? convertResidentNumber(defaultValue) : '',
-        where,
     );
 
+    const onChange = (
+        evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    ) => {
+        const { value } = evt.target;
+        // 공백 제거
+        const nextVal = value.replace(/(^\s*)|(\s*$)/g, '');
+
+        // 빈 값 업데이트 허용
+        if (value === '') {
+            setValue(value);
+        } else {
+            if (isNumberic(nextVal)) {
+                setValue(nextVal);
+            }
+        }
+
+        where.callbackOnChange?.(nextVal);
+    };
+
     const onFocus = () => {
-        setResidentNum((prev) => prev.replace(/\-/g, ''));
+        setValue((prev) => prev.replace(/\-/g, ''));
     };
 
     const onBlur = () => {
         // 마지막 자리의 경우 자리수에 상관없이 -가 생기도록
-        const converted = convertResidentNumber(residentNum.value);
+        const converted = convertResidentNumber(value);
 
-        setResidentNum(converted);
+        setValue(converted);
 
         where.callbackOnBlur?.(converted);
     };
 
     let output: UseInputOutput = {
-        ...residentNum,
+        value,
+        onChange,
         onFocus,
         onBlur,
         maxLength: 13,
     };
 
-    return [output, setResidentNum];
+    return [output, setValue];
 };
