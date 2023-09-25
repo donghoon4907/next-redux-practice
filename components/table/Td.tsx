@@ -35,6 +35,8 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
 
     if (Number.isInteger(getValue()) && checkSeparatorNeeded(column.id)) {
         className += 'text-end';
+    } else {
+        className += 'text-start';
     }
 
     return (

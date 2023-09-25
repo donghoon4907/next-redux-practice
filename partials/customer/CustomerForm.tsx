@@ -697,7 +697,6 @@ export const CustomerForm: FC<Props> = ({
                                             isRequired={editable}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="name"
                                                 placeholder="고객명"
                                                 disabled={!editable}
@@ -713,7 +712,6 @@ export const CustomerForm: FC<Props> = ({
                                             isRequired={editable}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="cname"
                                                 placeholder="회사명"
                                                 disabled={!editable}
@@ -749,7 +747,6 @@ export const CustomerForm: FC<Props> = ({
                                             isRequired={editable}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="idnum1"
                                                 placeholder="주민번호"
                                                 disabled={!editable}
@@ -765,7 +762,6 @@ export const CustomerForm: FC<Props> = ({
                                             isRequired={editable}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="comRegNum"
                                                 placeholder="사업자등록번호"
                                                 disabled={!editable}
@@ -809,11 +805,12 @@ export const CustomerForm: FC<Props> = ({
                                 <div className="row wr-mt">
                                     <div className="col">
                                         <WithLabel
+                                            id="age"
                                             label="나이"
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="age"
                                                 placeholder="나이"
                                                 disabled={true}
                                                 value={age}
@@ -834,11 +831,12 @@ export const CustomerForm: FC<Props> = ({
                                     </div>
                                     <div className="col">
                                         <WithLabel
+                                            id="sday"
                                             label="상령일"
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="sday"
                                                 placeholder="상령일"
                                                 disabled={true}
                                                 value={sDay}
@@ -871,7 +869,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="phone"
                                                 placeholder="대표전화"
                                                 disabled={!editable}
@@ -899,7 +896,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="homepage"
                                                 placeholder="홈페이지"
                                                 disabled={!editable}
@@ -911,6 +907,7 @@ export const CustomerForm: FC<Props> = ({
                             </div>
                             {isIndividual && (
                                 <PostcodeInput
+                                    index={0}
                                     isMt={true}
                                     disabled={!editable}
                                     labelType={labelType}
@@ -1026,7 +1023,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="job"
                                                 placeholder="직업"
                                                 disabled={!editable}
@@ -1052,7 +1048,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="company"
                                                 placeholder="회사명"
                                                 disabled={!editable}
@@ -1067,7 +1062,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="title"
                                                 placeholder="부서/직함"
                                                 disabled={!editable}
@@ -1079,12 +1073,11 @@ export const CustomerForm: FC<Props> = ({
                                 <div className="row wr-mt">
                                     <div className="col">
                                         <WithLabel
-                                            id="comPhone"
+                                            id="cPhone"
                                             label="전화번호"
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="cPhone"
                                                 placeholder="전화번호"
                                                 disabled={!editable}
@@ -1099,7 +1092,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="cFax"
                                                 placeholder="팩스"
                                                 disabled={!editable}
@@ -1109,8 +1101,8 @@ export const CustomerForm: FC<Props> = ({
                                     </div>
                                 </div>
                                 <PostcodeInput
+                                    index={1}
                                     isMt={true}
-                                    idPrefix="c"
                                     disabled={!editable}
                                     labelType={labelType}
                                     size="md"
@@ -1137,7 +1129,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="mName"
                                                 placeholder="담당자명"
                                                 disabled={!editable}
@@ -1152,7 +1143,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="mTitle"
                                                 placeholder="부서/직함"
                                                 disabled={!editable}
@@ -1169,7 +1159,6 @@ export const CustomerForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MyInput
-                                                type="text"
                                                 id="cPhone"
                                                 placeholder="전화번호"
                                                 disabled={!editable}

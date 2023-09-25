@@ -1,5 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const autoprefixer = require('autoprefixer');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -7,6 +8,9 @@ const nextConfig = {
     swcMinify: true,
     sassOptions: {
         includePaths: [path.join(__dirname, 'styles')],
+        postcss: {
+            plugins: [autoprefixer],
+        },
     },
 };
 

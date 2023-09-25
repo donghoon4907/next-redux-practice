@@ -31,6 +31,7 @@ import { LongInsuredForm } from '@partials/contract/long/InsuredForm';
 import { LongInsuredTemplate } from '@partials/contract/long/template/Insured';
 import { GeneralInsuredTemplate } from '@partials/contract/general/template/Insured';
 import { CarInsuredTemplate } from '@partials/contract/car/template/Insured';
+import { PostcodeTemplate } from '@partials/common/template/Postcode';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {
     userid: string;
@@ -118,13 +119,13 @@ export const CustomerTabpanel: FC<Props> = ({
                             ) : (
                                 <form onSubmit={handleSearchCustomer}>
                                     <WithLabel
-                                        id="cname"
+                                        id="ct_name"
                                         label="계약자명"
                                         type={labelType}
                                     >
                                         <MyInput
                                             type="search"
-                                            id="cname"
+                                            id="ct_name"
                                             placeholder="계약자명"
                                             disabled={!editable}
                                             {...username}
@@ -154,11 +155,12 @@ export const CustomerTabpanel: FC<Props> = ({
                                     <div className="row wr-mt">
                                         <div className="col">
                                             <WithLabel
+                                                id="ct_custtype"
                                                 label="고객구분"
                                                 type="disable"
                                             >
                                                 <MyInput
-                                                    type="text"
+                                                    id="ct_custtype"
                                                     disabled={true}
                                                     value={
                                                         loadedContract.custtype ===
@@ -171,11 +173,12 @@ export const CustomerTabpanel: FC<Props> = ({
                                         </div>
                                         <div className="col">
                                             <WithLabel
+                                                id="ct_sourceroot"
                                                 label="유입경로"
                                                 type="disable"
                                             >
                                                 <MyInput
-                                                    type="text"
+                                                    id="ct_sourceroot"
                                                     disabled={true}
                                                     value={
                                                         loadedContract.sourceroot
@@ -187,11 +190,12 @@ export const CustomerTabpanel: FC<Props> = ({
                                     <div className="row wr-mt">
                                         <div className="col">
                                             <WithLabel
+                                                id="ct_mobile"
                                                 label="핸드폰"
                                                 type="disable"
                                             >
                                                 <MyInput
-                                                    type="text"
+                                                    id="ct_mobile"
                                                     placeholder="핸드폰"
                                                     disabled={true}
                                                     value={convertPhoneNumber(
@@ -202,11 +206,12 @@ export const CustomerTabpanel: FC<Props> = ({
                                         </div>
                                         <div className="col">
                                             <WithLabel
+                                                id="ct_email"
                                                 label="이메일"
                                                 type="disable"
                                             >
                                                 <MyInput
-                                                    type="text"
+                                                    id="ct_email"
                                                     placeholder="이메일"
                                                     disabled={true}
                                                     value={
@@ -217,62 +222,16 @@ export const CustomerTabpanel: FC<Props> = ({
                                         </div>
                                     </div>
                                     {loadedContract.custtype === 0 && (
-                                        <>
-                                            <div className="row wr-mt">
-                                                <div className="col">
-                                                    <WithLabel
-                                                        label="우편번호"
-                                                        type="disable"
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="우편번호"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.postcode
-                                                            }
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                                <div className="col">
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="주소1"
-                                                        disabled={true}
-                                                        value={
-                                                            loadedContract.address1
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="row wr-mt">
-                                                <div className="col">
-                                                    <WithLabel
-                                                        label="상세주소"
-                                                        type="disable"
-                                                    >
-                                                        <MyInput
-                                                            type="text"
-                                                            placeholder="우편번호"
-                                                            disabled={true}
-                                                            value={
-                                                                loadedContract.address3
-                                                            }
-                                                        />
-                                                    </WithLabel>
-                                                </div>
-                                                <div className="col">
-                                                    <MyInput
-                                                        type="text"
-                                                        placeholder="주소2"
-                                                        disabled={true}
-                                                        value={
-                                                            loadedContract.address2
-                                                        }
-                                                    />
-                                                </div>
-                                            </div>
-                                        </>
+                                        <PostcodeTemplate
+                                            index={0}
+                                            isMt={true}
+                                            labelType="disable"
+                                            disabled={true}
+                                            postcode={loadedContract.postcode}
+                                            address1={loadedContract.address1}
+                                            address2={loadedContract.address2}
+                                            address3={loadedContract.address3}
+                                        />
                                     )}
                                 </>
                             )}
@@ -283,11 +242,11 @@ export const CustomerTabpanel: FC<Props> = ({
                             <div className="col">
                                 <WithLabel
                                     label="운전자범위"
-                                    id="carfamily"
+                                    id="ct_carfamily"
                                     type={labelType}
                                 >
                                     <MySelect
-                                        inputId="carfamily"
+                                        inputId="ct_carfamily"
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carfamilyHooks}
@@ -297,11 +256,11 @@ export const CustomerTabpanel: FC<Props> = ({
                             <div className="col">
                                 <WithLabel
                                     label="최저연령"
-                                    id="carage"
+                                    id="ct_carage"
                                     type={labelType}
                                 >
                                     <MySelect
-                                        inputId="carage"
+                                        inputId="ct_carage"
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carageHooks}
@@ -348,6 +307,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                             style={{ width: 20 }}
                                         >
                                             <MyCheckbox
+                                                id="ct_all_check"
                                                 label=""
                                                 checked={v.checked}
                                                 onChange={(evt) =>

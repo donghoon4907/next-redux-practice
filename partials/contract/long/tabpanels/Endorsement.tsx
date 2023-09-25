@@ -84,6 +84,7 @@ export const EndorsementTabpanel: FC<Props> = ({
                             {editable && (
                                 <th rowSpan={2} style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="bt_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -149,6 +150,7 @@ export const EndorsementTabpanel: FC<Props> = ({
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`bt_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

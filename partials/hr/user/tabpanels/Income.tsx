@@ -51,27 +51,29 @@ export const IncomeTabpanel: FC<Props> = ({
                     <div className="wr-pages-detail__subtitle">
                         <strong>기본 설정</strong>
                     </div>
-                    <WithLabel id="bank" label="은행명" type={labelType}>
+                    <WithLabel id="it_bank" label="은행명" type={labelType}>
                         <MySelect
-                            inputId="bank"
+                            inputId="it_bank"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             {...bank}
                         />
                     </WithLabel>
-                    <WithLabel id="account" label="계좌번호" type={labelType}>
+                    <WithLabel
+                        id="it_account"
+                        label="계좌번호"
+                        type={labelType}
+                    >
                         <MyInput
-                            type="text"
-                            id="account"
+                            id="it_account"
                             placeholder="계좌번호"
                             disabled={!editable}
                             {...account}
                         />
                     </WithLabel>
-                    <WithLabel id="holder" label="예금주" type={labelType}>
+                    <WithLabel id="it_holder" label="예금주" type={labelType}>
                         <MyInput
-                            type="text"
-                            id="holder"
+                            id="it_holder"
                             placeholder="예금주"
                             disabled={!editable}
                             {...holder}
@@ -84,28 +86,34 @@ export const IncomeTabpanel: FC<Props> = ({
                     </div>
                     <div className="wr-pages-detail__horizontal wr-mb">
                         <MyRadio
-                            id="carTypeTable"
+                            id="it_is_cartable"
                             label="테이블"
                             value="테이블"
+                            name="it_car_rule"
                             disabled={!editable}
                             checked={carType === '테이블'}
                             onChange={onChangeCarType}
                         />
                         <MyRadio
-                            id="carTypeProportion"
+                            id="it_is_carrate"
                             label="비례"
                             value="비례"
+                            name="it_car_rule"
                             disabled={!editable}
                             checked={carType === '비례'}
                             onChange={onChangeCarType}
                         />
                     </div>
-                    <WithLabel id="carReg" label="자동차규정" type="disable">
+                    <WithLabel
+                        id="it_car_rules"
+                        label="자동차규정"
+                        type="disable"
+                    >
                         <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
                         <MySelect
-                            inputId="carReg"
+                            inputId="it_car_rules"
                             placeholder={'선택'}
                             height={variables.detailFilterHeight}
                             isDisabled={true}
@@ -121,34 +129,39 @@ export const IncomeTabpanel: FC<Props> = ({
                     </div>
                     <div className="wr-pages-detail__horizontal wr-mb">
                         <MyRadio
-                            id="genTypeRate"
+                            id="it_is_genpayrate"
                             label="지급율"
                             value="지급율"
+                            name="it_gen_rule"
                             disabled={!editable}
                             checked={genType === '지급율'}
                             onChange={onChangeGenType}
                         />
                         <MyRadio
-                            id="genTypeProportion"
+                            id="it_is_genrate"
                             label="비례"
                             value="비례"
+                            name="it_gen_rule"
                             disabled={!editable}
                             checked={genType === '비례'}
                             onChange={onChangeGenType}
                         />
                     </div>
-                    <WithLabel id="genBase" label="산출기준" type={labelType}>
+                    <WithLabel
+                        id="it_genbase"
+                        label="산출기준"
+                        type={labelType}
+                    >
                         <MySelect
-                            inputId="genBase"
+                            inputId="it_genbase"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             {...genBase}
                         />
                     </WithLabel>
-                    <WithLabel id="genRate" label="지급율" type={labelType}>
+                    <WithLabel id="it_genrate" label="지급율" type={labelType}>
                         <MyInput
-                            type="text"
-                            id="genRate"
+                            id="it_genrate"
                             placeholder="지급율"
                             className="text-end"
                             disabled={!editable}
@@ -156,12 +169,16 @@ export const IncomeTabpanel: FC<Props> = ({
                             {...genRate}
                         />
                     </WithLabel>
-                    <WithLabel id="genReg" label="일반규정" type={'disable'}>
+                    <WithLabel
+                        id="it_gen_rules"
+                        label="일반규정"
+                        type={'disable'}
+                    >
                         <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
                         <MySelect
-                            inputId="genReg"
+                            inputId="it_gen_rules"
                             placeholder={'선택'}
                             height={variables.detailFilterHeight}
                             isDisabled={true}
@@ -179,7 +196,7 @@ export const IncomeTabpanel: FC<Props> = ({
                         <div>
                             <MyCheckbox
                                 label="구간적용"
-                                id="longGrade"
+                                id="it_long_grade"
                                 disabled={!editable}
                                 {...longGrade}
                             />
@@ -194,6 +211,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                 <tr>
                                     <th style={{ width: 30 }}>
                                         <MyCheckbox
+                                            id="it_long_allcheck"
                                             label=""
                                             // onChange={handleAllCheckDamages}
                                         />
@@ -215,7 +233,10 @@ export const IncomeTabpanel: FC<Props> = ({
                             <tbody>
                                 <tr>
                                     <td>
-                                        <MyCheckbox label="" />
+                                        <MyCheckbox
+                                            id="it_long_check0"
+                                            label=""
+                                        />
                                     </td>
                                     <td rowSpan={2}>
                                         <span>2022-11</span>
@@ -230,7 +251,10 @@ export const IncomeTabpanel: FC<Props> = ({
                                 </tr>
                                 <tr>
                                     <td>
-                                        <MyCheckbox label="" />
+                                        <MyCheckbox
+                                            id="it_long_check1"
+                                            label=""
+                                        />
                                     </td>
                                     <td>
                                         <span>일반</span>
@@ -272,6 +296,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                 <tr>
                                     <th style={{ width: 30 }}>
                                         <MyCheckbox
+                                            id="it_override_allcheck"
                                             label=""
                                             // onChange={handleAllCheckDamages}
                                         />
@@ -290,7 +315,10 @@ export const IncomeTabpanel: FC<Props> = ({
                             <tbody>
                                 <tr>
                                     <td>
-                                        <MyCheckbox label="" />
+                                        <MyCheckbox
+                                            id="it_override_check0"
+                                            label=""
+                                        />
                                     </td>
                                     <td>
                                         <span>시작월</span>
@@ -302,7 +330,10 @@ export const IncomeTabpanel: FC<Props> = ({
                                 </tr>
                                 <tr>
                                     <td>
-                                        <MyCheckbox label="" />
+                                        <MyCheckbox
+                                            id="it_override_check1"
+                                            label=""
+                                        />
                                     </td>
                                     <td>
                                         <span>리크루팅</span>

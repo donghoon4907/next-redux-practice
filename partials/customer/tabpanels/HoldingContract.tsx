@@ -1,12 +1,7 @@
 import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import { MyTabpanel } from '@components/tab/Tabpanel';
-import { WithLabel } from '@components/WithLabel';
 import { MyCheckbox } from '@components/checkbox';
-import { MyInput } from '@components/input';
-import { MySelect } from '@components/select';
-import variables from '@styles/_variables.module.scss';
-import { MyDatepicker } from '@components/datepicker';
 import { MyButton } from '@components/button';
 import { MyTableExtension } from '@components/table/Extension';
 

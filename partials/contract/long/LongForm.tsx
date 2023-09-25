@@ -717,7 +717,6 @@ export const LongForm: FC<Props> = ({
                                     >
                                         <div className="wr-with__badge">
                                             <MyInput
-                                                type="text"
                                                 id="cnum"
                                                 placeholder="계약번호"
                                                 disabled={!editable}
@@ -785,11 +784,12 @@ export const LongForm: FC<Props> = ({
                             <div className="row">
                                 <div className="col">
                                     <WithLabel
+                                        id="bo_dateto"
                                         label="보장만기"
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
+                                            id="bo_dateto"
                                             placeholder="보장만기일"
                                             disabled={true}
                                             className="wr-with__badge--inside-right-1"
@@ -812,12 +812,13 @@ export const LongForm: FC<Props> = ({
                                 </div>
                                 <div className="col">
                                     <WithLabel
+                                        id="pay_dateto"
                                         label="납입만기"
                                         type={labelType}
                                         isRequired={editable}
                                     >
                                         <MyInput
-                                            type="text"
+                                            id="pay_dateto"
                                             placeholder="납입만기"
                                             disabled={true}
                                             className="wr-with__badge--inside-right-1"
@@ -851,6 +852,7 @@ export const LongForm: FC<Props> = ({
                                                 type={labelType}
                                             >
                                                 <MySelect
+                                                    inputId="status"
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -861,12 +863,12 @@ export const LongForm: FC<Props> = ({
                                         </div>
                                         <div className="col">
                                             <WithLabel
-                                                id="pStatus"
+                                                id="pay_status"
                                                 label="납입상태"
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="pStatus"
+                                                    inputId="pay_status"
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -879,12 +881,12 @@ export const LongForm: FC<Props> = ({
                                     <div className="row wr-mt">
                                         <div className="col">
                                             <WithLabel
-                                                id="statusDate"
+                                                id="status_date"
                                                 label="상태반영일"
                                                 type={labelType}
                                             >
                                                 <MyDatepicker
-                                                    id="statusDate"
+                                                    id="status_date"
                                                     size="md"
                                                     placeholder="상태반영일"
                                                     disabled={!editable}
@@ -904,11 +906,12 @@ export const LongForm: FC<Props> = ({
                                         </div>
                                         <div className="col">
                                             <WithLabel
+                                                id="last_whoi"
                                                 label="종납회차"
                                                 type={labelType}
                                             >
                                                 <MyInput
-                                                    type="text"
+                                                    id="last_whoi"
                                                     placeholder="종납일"
                                                     disabled={true}
                                                     value={defaultLastMonth}
@@ -920,7 +923,6 @@ export const LongForm: FC<Props> = ({
                                                     }}
                                                 >
                                                     <MyInput
-                                                        type="text"
                                                         className="text-end wr-border-l--hide"
                                                         placeholder="0"
                                                         disabled={true}
@@ -946,7 +948,6 @@ export const LongForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="payment"
                                             className="text-end"
                                             placeholder="0"
@@ -955,11 +956,12 @@ export const LongForm: FC<Props> = ({
                                         />
                                     </WithLabel>
                                     <WithLabel
+                                        id="payment_m"
                                         label="월납기준"
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
+                                            id="payment_m"
                                             className="text-end"
                                             placeholder="0"
                                             disabled
@@ -976,7 +978,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="pay_bo"
                                             className="text-end"
                                             placeholder="0"
@@ -988,7 +989,7 @@ export const LongForm: FC<Props> = ({
                                             style={{ width: 86 }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="pay_bo_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={payBoRate}
@@ -1002,7 +1003,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="pay_j"
                                             className="text-end"
                                             placeholder="0"
@@ -1014,7 +1014,7 @@ export const LongForm: FC<Props> = ({
                                             style={{ width: 86 }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="pay_j_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={payJRate}
@@ -1028,7 +1028,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="pay_s"
                                             className="text-end"
                                             placeholder="0"
@@ -1040,7 +1039,7 @@ export const LongForm: FC<Props> = ({
                                             style={{ width: 86 }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="pay_s_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={paySRate}
@@ -1056,7 +1055,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="tp"
                                             className="text-end"
                                             placeholder="0"
@@ -1070,7 +1068,7 @@ export const LongForm: FC<Props> = ({
                                             }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="tp_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={tpRate}
@@ -1084,7 +1082,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="tp1"
                                             className="text-end"
                                             placeholder="0"
@@ -1098,7 +1095,7 @@ export const LongForm: FC<Props> = ({
                                             }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="tp1_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={tp1Rate}
@@ -1112,7 +1109,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="tp2"
                                             className="text-end"
                                             placeholder="0"
@@ -1126,7 +1122,7 @@ export const LongForm: FC<Props> = ({
                                             }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="tp2_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={tp2Rate}
@@ -1140,7 +1136,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="tp3"
                                             className="text-end"
                                             placeholder="0"
@@ -1154,7 +1149,7 @@ export const LongForm: FC<Props> = ({
                                             }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="tp3_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={tp3Rate}
@@ -1168,7 +1163,6 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="tpu"
                                             className="text-end"
                                             placeholder="0"
@@ -1182,7 +1176,7 @@ export const LongForm: FC<Props> = ({
                                             }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="tpu_rate"
                                                 className="text-end wr-border-l--hide"
                                                 disabled
                                                 value={tpuRate}

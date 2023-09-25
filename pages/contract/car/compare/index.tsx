@@ -722,7 +722,7 @@ const ComparisonCar: NextPage = () => {
             form.append('car_sago3', carSago3.value!.value);
             form.append('car_nonum', carNonum.value!.value);
             form.append('car_sago1', carSago1.value!.value);
-            form.append('ret_url', process.env.FRONTEND_DOMAIN + '/calculate');
+            form.append('ret_url', '/calculate');
             form.append('com_name', 'woori!@#$');
 
             const hiddenForm = document.createElement('form');
@@ -857,7 +857,6 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         <MyInput
                                                             id="jumin"
-                                                            type="text"
                                                             placeholder="주민번호"
                                                             {...jumin}
                                                         />
@@ -898,7 +897,6 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         <MyInput
                                                             id="carnum1"
-                                                            type="text"
                                                             placeholder=""
                                                             pattern="[0-9]{2,3}"
                                                             {...carType}
@@ -918,7 +916,6 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         <MyInput
                                                             id="carnum3"
-                                                            type="text"
                                                             placeholder=""
                                                             pattern="[0-9]{4}"
                                                             {...carRegiNum}
@@ -931,7 +928,6 @@ const ComparisonCar: NextPage = () => {
                                                     >
                                                         <MyInput
                                                             id="carnum4"
-                                                            type="text"
                                                             placeholder="직접입력"
                                                             // ref={directCarNumRef}
                                                             onBlur={

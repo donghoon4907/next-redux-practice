@@ -74,6 +74,7 @@ export const LongPaysTabpanel: FC<Props> = ({
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="lpt_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -128,6 +129,7 @@ export const LongPaysTabpanel: FC<Props> = ({
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`lpt_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

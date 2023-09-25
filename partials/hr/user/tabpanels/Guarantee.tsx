@@ -65,13 +65,12 @@ export const GuaranteeTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row">
                 <div className="col-3">
-                    <WithLabel id="guarGoal" label="보증목표" type={labelType}>
+                    <WithLabel id="gt_goal" label="보증목표" type={labelType}>
                         <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
                         <MyInput
-                            type="text"
-                            id="guarGoal"
+                            id="gt_goal"
                             className="text-end"
                             placeholder="10,010"
                             readOnly
@@ -80,7 +79,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 </div>
                 <div className="col-3">
                     <WithLabel
-                        id="guarTotal"
+                        id="gt_total"
                         label="보증누계(유효)"
                         type={labelType}
                     >
@@ -88,8 +87,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             <p>준비 중입니다.</p>
                         </div>
                         <MyInput
-                            type="text"
-                            id="guarTotal"
+                            id="gt_total"
                             className="text-end"
                             placeholder="5,465"
                             readOnly
@@ -97,13 +95,12 @@ export const GuaranteeTabpanel: FC<Props> = ({
                     </WithLabel>
                 </div>
                 <div className="col-3">
-                    <WithLabel id="tmotl" label="과부족" type={labelType}>
+                    <WithLabel id="gt_lack" label="과부족" type={labelType}>
                         <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
                         <MyInput
-                            type="text"
-                            id="tmotl"
+                            id="gt_lack"
                             className="text-end"
                             placeholder="-4,655"
                             readOnly
@@ -112,7 +109,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                 </div>
                 <div className="col-3">
                     <WithLabel
-                        id="gAccount"
+                        id="gt_grate"
                         label="유효보증율"
                         type={labelType}
                     >
@@ -120,8 +117,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                             <p>준비 중입니다.</p>
                         </div>
                         <MyInput
-                            type="text"
-                            id="gAccount"
+                            id="gt_grate"
                             className="text-end"
                             placeholder="54.7"
                             readOnly
@@ -152,6 +148,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: 30 }}>
                                             <MyCheckbox
+                                                id="gt_allcheck"
                                                 label=""
                                                 onChange={
                                                     handleAllCheckGuarantee
@@ -194,7 +191,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                         </td>
                                     </tr>
                                 )}
-                                {guarantees.map((v, index) => {
+                                {guarantees.map((v, i) => {
                                     let g_money = '';
                                     let remark = '';
 
@@ -215,10 +212,11 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                     }
 
                                     return (
-                                        <tr key={`guarantee${index + 1}`}>
+                                        <tr key={`guarantee${i + 1}`}>
                                             {editable && (
                                                 <td>
                                                     <MyCheckbox
+                                                        id={`gt_check${i}`}
                                                         label=""
                                                         checked={v.checked}
                                                         onChange={(evt) =>

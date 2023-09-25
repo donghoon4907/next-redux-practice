@@ -8,7 +8,7 @@ import { convertPhoneNumber } from '@utils/converter';
 interface Props extends Partial<Insured> {}
 
 export const LongInsuredTemplate: FC<Props> = ({
-    // index = -1,
+    index,
     name = '',
     tel = '',
     job = '',
@@ -24,9 +24,13 @@ export const LongInsuredTemplate: FC<Props> = ({
         <>
             <div className="row">
                 <div className="col">
-                    <WithLabel label="피보험자명" type="disable">
+                    <WithLabel
+                        id={`lit_name${index}`}
+                        label="피보험자명"
+                        type="disable"
+                    >
                         <MyInput
-                            type="text"
+                            id={`lit_name${index}`}
                             placeholder="피보험자명"
                             disabled={true}
                             value={name}
@@ -38,9 +42,13 @@ export const LongInsuredTemplate: FC<Props> = ({
                 <>
                     <div className="row wr-mt">
                         <div className="col">
-                            <WithLabel label="연락처" type="disable">
+                            <WithLabel
+                                id={`lit_mobile${index}`}
+                                label="연락처"
+                                type="disable"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id={`lit_mobile${index}`}
                                     placeholder="연락처"
                                     disabled={true}
                                     value={convertPhoneNumber(tel)}
@@ -48,9 +56,13 @@ export const LongInsuredTemplate: FC<Props> = ({
                             </WithLabel>
                         </div>
                         <div className="col">
-                            <WithLabel label="직업" type="disable">
+                            <WithLabel
+                                id={`lit_job${index}`}
+                                label="직업"
+                                type="disable"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id={`lit_job${index}`}
                                     placeholder="직업"
                                     disabled={true}
                                     value={job}
@@ -60,9 +72,13 @@ export const LongInsuredTemplate: FC<Props> = ({
                     </div>
                     <div className="row wr-mt">
                         <div className="col">
-                            <WithLabel label="생년월일" type="disable">
+                            <WithLabel
+                                id={`lit_birthday${index}`}
+                                label="생년월일"
+                                type="disable"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id={`lit_birthday${index}`}
                                     placeholder="생년월일"
                                     disabled={true}
                                     value={birthday}
@@ -75,9 +91,13 @@ export const LongInsuredTemplate: FC<Props> = ({
                             </WithLabel>
                         </div>
                         <div className="col">
-                            <WithLabel label="성별" type="disable">
+                            <WithLabel
+                                id={`lit_gender${index}`}
+                                label="성별"
+                                type="disable"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id={`lit_gender${index}`}
                                     placeholder="성별"
                                     disabled={true}
                                     value={sex}

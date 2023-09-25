@@ -20,9 +20,9 @@ export const CarInsuredTemplate: FC<Props> = ({
         <>
             <div className="row">
                 <div className="col">
-                    <WithLabel label="관계" type="disable">
+                    <WithLabel id="cit_relation" label="관계" type="disable">
                         <MyInput
-                            type="text"
+                            id="cit_relation"
                             placeholder="관계"
                             disabled
                             value={relation}
@@ -30,9 +30,9 @@ export const CarInsuredTemplate: FC<Props> = ({
                     </WithLabel>
                 </div>
                 <div className="col">
-                    <WithLabel label="이름" type="disable">
+                    <WithLabel id="cit_name" label="이름" type="disable">
                         <MyInput
-                            type="text"
+                            id="cit_name"
                             placeholder="이름"
                             disabled
                             value={name}
@@ -45,13 +45,12 @@ export const CarInsuredTemplate: FC<Props> = ({
                     {dist === '주피보험자' && jumin && (
                         <div className="col">
                             <WithLabel
-                                id="pjumin"
+                                id="cit_jumin"
                                 label="주민번호"
                                 type="disable"
                             >
                                 <MyInput
-                                    type="text"
-                                    id="pjumin"
+                                    id="cit_jumin"
                                     placeholder="주민번호"
                                     disabled
                                     value={convertResidentNumber(jumin)}
@@ -76,13 +75,12 @@ export const CarInsuredTemplate: FC<Props> = ({
                     {dist === '피보험자' && (
                         <div className="col">
                             <WithLabel
-                                id="pbirthday"
+                                id="cit_birthday"
                                 label="생년월일"
                                 type="disable"
                             >
                                 <MyInput
-                                    type="text"
-                                    id="pbirthday"
+                                    id="cit_birthday"
                                     placeholder="생년월일"
                                     disabled
                                     value={birthday}
@@ -106,9 +104,9 @@ export const CarInsuredTemplate: FC<Props> = ({
                     )}
 
                     <div className="col">
-                        <WithLabel label="만 나이" type="disable">
+                        <WithLabel id="cit_age" label="만 나이" type="disable">
                             <MyInput
-                                type="text"
+                                id="cit_age"
                                 placeholder="만 나이"
                                 disabled
                                 className="text-end"

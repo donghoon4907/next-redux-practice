@@ -1,10 +1,11 @@
-import type { CookieValueTypes } from 'cookies-next';
 import type { AxiosInstance } from 'axios';
 import { createAxiosInstance } from '.';
 
 let instance: AxiosInstance | null = null;
 
-const baseURL = process.env.FRONTEND_DOMAIN || '';
+// const baseURL = process.env.FRONTEND_DOMAIN || '';
+
+const baseURL = '';
 
 // 싱글톤 객체를 가져오는 함수
 export const getInternalAxios = () => {

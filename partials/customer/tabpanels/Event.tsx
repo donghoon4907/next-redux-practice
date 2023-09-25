@@ -84,6 +84,7 @@ export const EventTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="et_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -129,6 +130,7 @@ export const EventTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`et_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

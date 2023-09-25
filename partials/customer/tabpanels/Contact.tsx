@@ -158,13 +158,13 @@ export const ContactTabpanel: FC<Props> = ({
                             <div className="row">
                                 <div className="col">
                                     <WithLabel
-                                        id="counselingDivision"
+                                        id="cot_kind"
                                         label="상담구분"
                                         type={labelType}
                                         // isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="counselingDivision"
+                                            inputId="cot_kind"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -175,13 +175,13 @@ export const ContactTabpanel: FC<Props> = ({
                                 </div>
                                 <div className="col">
                                     <WithLabel
-                                        id="channel"
+                                        id="cot_channel"
                                         label="채널"
                                         type={labelType}
                                         // isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="counselingDivision"
+                                            inputId="cot_channel"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -192,12 +192,12 @@ export const ContactTabpanel: FC<Props> = ({
                                 </div>
                                 <div className="col">
                                     <WithLabel
-                                        id="category"
+                                        id="cot_spe"
                                         label="계약종목"
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="counselingDivision"
+                                            inputId="cot_spe"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -210,12 +210,12 @@ export const ContactTabpanel: FC<Props> = ({
                             <div className="row wr-mt">
                                 <div className="col">
                                     <WithLabel
-                                        id="oDate"
+                                        id="cot_issuedate"
                                         label="사유발생일"
                                         type={labelType}
                                     >
                                         <MyDatepicker
-                                            id="oDate"
+                                            id="cot_issuedate"
                                             size="md"
                                             placeholder="사유발생일"
                                             disabled={!editable}
@@ -225,12 +225,12 @@ export const ContactTabpanel: FC<Props> = ({
                                 </div>
                                 <div className="col">
                                     <WithLabel
-                                        id="rDate"
+                                        id="cot_replydatetime"
                                         label="응대예정일시"
                                         type={labelType}
                                     >
                                         <MyDatepicker
-                                            id="rDate"
+                                            id="cot_replydatetime"
                                             size="md"
                                             placeholder="응대예정일시"
                                             format="yyyy-MM-dd HH:mm"
@@ -245,12 +245,12 @@ export const ContactTabpanel: FC<Props> = ({
                                             <p>준비 중입니다.</p>
                                         </div>
                                         <WithLabel
-                                            id="ccnum"
+                                            id="cot_cnum"
                                             label="계약번호"
                                             type={labelType}
                                         >
                                             <MySelect
-                                                inputId="ccnum"
+                                                inputId="cot_cnum"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -266,26 +266,24 @@ export const ContactTabpanel: FC<Props> = ({
                                         <textarea
                                             className="form-control"
                                             placeholder="내용"
-                                            id="floatingTextarea"
+                                            id="cot_memo"
                                             {...comment}
                                             style={{
                                                 height: editable ? 128 : 82,
                                             }}
                                             disabled={!editable}
                                         />
-                                        <label htmlFor="floatingTextarea">
-                                            내용
-                                        </label>
+                                        <label htmlFor="cot_memo">내용</label>
                                     </div>
                                 </div>
                                 <div className="col">
                                     <WithLabel
-                                        id="status"
+                                        id="cot_status"
                                         label="진행상태"
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="status"
+                                            inputId="cot_status"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -294,12 +292,13 @@ export const ContactTabpanel: FC<Props> = ({
                                         />
                                     </WithLabel>
                                     <WithLabel
+                                        id="cot_writer"
                                         label="작성자"
                                         type={labelType}
                                         // isRequired={editable}
                                     >
                                         <MyInput
-                                            type="text"
+                                            id="cot_writer"
                                             placeholder={`${loggedInUser.user_info.name} (${loggedInUser.userid})`}
                                             disabled
                                         />
@@ -349,6 +348,7 @@ export const ContactTabpanel: FC<Props> = ({
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="cot_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -400,6 +400,7 @@ export const ContactTabpanel: FC<Props> = ({
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`cot_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

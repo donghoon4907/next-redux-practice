@@ -22,6 +22,7 @@ import { showInsuredSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber } from '@utils/converter';
 import { updateLoadedInsured } from '@actions/contract/common/set-contractor.action';
 import { MyRadio } from '@components/radio';
+import { WithText } from '@components/WithText';
 
 interface Props {
     userid: string;
@@ -240,14 +241,18 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
             </div>
             <div className="wr-pages-detail__buttons">
                 <MyRadio
+                    id="gif_is_person"
                     label="피보험자"
                     value="피보험자"
+                    name="gif_dist"
                     checked={dist === '피보험자'}
                     onChange={handleChangeDist}
                 />
                 <MyRadio
+                    id="gif_is_thing"
                     label="피보험물"
                     value="피보험물"
+                    name="gif_dist"
                     checked={dist === '피보험물'}
                     onChange={handleChangeDist}
                 />
@@ -257,9 +262,14 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                     <div className="row">
                         <div className="col">
                             <form onSubmit={handleSearchCustomer}>
-                                <WithLabel label="피보험자명" type="active">
+                                <WithLabel
+                                    id="gif_name"
+                                    label="피보험자명"
+                                    type="active"
+                                >
                                     <MyInput
                                         type="search"
+                                        id="gif_name"
                                         placeholder="피보험자명"
                                         disabled={isDisabledName}
                                         {...name}
@@ -282,9 +292,13 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                         <>
                             <div className="row wr-mt">
                                 <div className="col">
-                                    <WithLabel label="연락처" type="active">
+                                    <WithLabel
+                                        id="gif_tel"
+                                        label="연락처"
+                                        type="active"
+                                    >
                                         <MyInput
-                                            type="text"
+                                            id="gif_tel"
                                             placeholder="연락처"
                                             disabled={isDisabledAnother}
                                             {...tel}
@@ -292,9 +306,13 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                                     </WithLabel>
                                 </div>
                                 <div className="col">
-                                    <WithLabel label="직업" type="active">
+                                    <WithLabel
+                                        id="gif_job"
+                                        label="직업"
+                                        type="active"
+                                    >
                                         <MyInput
-                                            type="text"
+                                            id="gif_job"
                                             placeholder="직업"
                                             disabled={isDisabledAnother}
                                             {...job}
@@ -305,12 +323,12 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                             <div className="row wr-mt">
                                 <div className="col">
                                     <WithLabel
+                                        id="gif_birthday"
                                         label="생년월일"
                                         type="active"
-                                        id="ibirthday"
                                     >
                                         <MyDatepicker
-                                            id="ibirthday"
+                                            id="gif_birthday"
                                             size="md"
                                             placeholder="생년월일"
                                             disabled={isDisabledAnother}
@@ -324,22 +342,26 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                                     </WithLabel>
                                 </div>
                                 <div className="col">
-                                    <WithLabel label="성별" type="active">
+                                    <WithText label="성별" type="active">
                                         <div className="wr-with__container">
                                             <MyRadio
+                                                id="gif_is_man"
                                                 label="남"
                                                 value="남"
+                                                name="gif_gender"
                                                 checked={gender === '남'}
                                                 onChange={handleChangeGender}
                                             />
                                             <MyRadio
+                                                id="gif_is_woman"
                                                 label="여"
                                                 value="여"
+                                                name="gif_gender"
                                                 checked={gender === '여'}
                                                 onChange={handleChangeGender}
                                             />
                                         </div>
-                                    </WithLabel>
+                                    </WithText>
                                 </div>
                             </div>
                         </>
@@ -347,13 +369,13 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                     <div className="wr-pages-detail__toolbar wr-mt">
                         <div className="wr-pages-detail__buttons">
                             <MyCheckbox
-                                id="isContract"
+                                id="gif_is_contract"
                                 label="계약자와 동일"
                                 onChange={handleCheckContract}
                                 checked={checkContract}
                             />
                             <MyCheckbox
-                                id="isFetus"
+                                id="gif_is_fetus"
                                 label="태아"
                                 onChange={handleCheckFetus}
                                 checked={checkFetus}
@@ -374,9 +396,13 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                 <>
                     <div className="row">
                         <div className="col">
-                            <WithLabel label="피보험물" type="active">
+                            <WithLabel
+                                id="gif_tname"
+                                label="피보험물"
+                                type="active"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id="gif_tname"
                                     placeholder="피보험물"
                                     disabled={isDisabledAnother}
                                     {...tname}
@@ -386,9 +412,13 @@ export const GeneralInsuredForm: FC<Props> = ({ userid }) => {
                     </div>
                     <div className="row wr-mt">
                         <div className="col">
-                            <WithLabel label="소재지" type="active">
+                            <WithLabel
+                                id="gif_adress"
+                                label="소재지"
+                                type="active"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id="gif_adress"
                                     placeholder="소재지"
                                     disabled={isDisabledAnother}
                                     {...taddr}

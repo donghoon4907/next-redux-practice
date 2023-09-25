@@ -8,7 +8,7 @@ import { convertPhoneNumber } from '@utils/converter';
 interface Props extends Partial<Insured> {}
 
 export const GeneralInsuredTemplate: FC<Props> = ({
-    // index = -1,
+    index,
     dist,
     name = '',
     tel = '',
@@ -28,9 +28,13 @@ export const GeneralInsuredTemplate: FC<Props> = ({
                 <>
                     <div className="row">
                         <div className="col">
-                            <WithLabel label="피보험물" type="disable">
+                            <WithLabel
+                                id={`git_pname${index}`}
+                                label="피보험물"
+                                type="disable"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id={`git_pname${index}`}
                                     placeholder="피보험물"
                                     disabled={true}
                                     value={name}
@@ -40,9 +44,13 @@ export const GeneralInsuredTemplate: FC<Props> = ({
                     </div>
                     <div className="row wr-mt">
                         <div className="col">
-                            <WithLabel label="소재지" type="disable">
+                            <WithLabel
+                                id={`git_address${index}`}
+                                label="소재지"
+                                type="disable"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id={`git_address${index}`}
                                     placeholder="소재지"
                                     disabled={true}
                                     value={p_address}
@@ -56,9 +64,13 @@ export const GeneralInsuredTemplate: FC<Props> = ({
                 <>
                     <div className="row">
                         <div className="col">
-                            <WithLabel label="피보험자명" type="disable">
+                            <WithLabel
+                                id={`git_name${index}`}
+                                label="피보험자명"
+                                type="disable"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id={`git_name${index}`}
                                     placeholder="피보험자명"
                                     disabled={true}
                                     value={name}
@@ -70,9 +82,13 @@ export const GeneralInsuredTemplate: FC<Props> = ({
                         <>
                             <div className="row wr-mt">
                                 <div className="col">
-                                    <WithLabel label="연락처" type="disable">
+                                    <WithLabel
+                                        id={`git_mobile${index}`}
+                                        label="연락처"
+                                        type="disable"
+                                    >
                                         <MyInput
-                                            type="text"
+                                            id={`git_mobile${index}`}
                                             placeholder="연락처"
                                             disabled={true}
                                             value={convertPhoneNumber(tel)}
@@ -80,9 +96,13 @@ export const GeneralInsuredTemplate: FC<Props> = ({
                                     </WithLabel>
                                 </div>
                                 <div className="col">
-                                    <WithLabel label="직업" type="disable">
+                                    <WithLabel
+                                        id={`git_job${index}`}
+                                        label="직업"
+                                        type="disable"
+                                    >
                                         <MyInput
-                                            type="text"
+                                            id={`git_job${index}`}
                                             placeholder="직업"
                                             disabled={true}
                                             value={job}
@@ -92,9 +112,13 @@ export const GeneralInsuredTemplate: FC<Props> = ({
                             </div>
                             <div className="row wr-mt">
                                 <div className="col">
-                                    <WithLabel label="생년월일" type="disable">
+                                    <WithLabel
+                                        id={`git_birthday${index}`}
+                                        label="생년월일"
+                                        type="disable"
+                                    >
                                         <MyInput
-                                            type="text"
+                                            id={`git_birthday${index}`}
                                             placeholder="생년월일"
                                             disabled={true}
                                             value={birthday}
@@ -107,9 +131,13 @@ export const GeneralInsuredTemplate: FC<Props> = ({
                                     </WithLabel>
                                 </div>
                                 <div className="col">
-                                    <WithLabel label="성별" type="disable">
+                                    <WithLabel
+                                        id={`git_gender${index}`}
+                                        label="성별"
+                                        type="disable"
+                                    >
                                         <MyInput
-                                            type="text"
+                                            id={`git_gender${index}`}
                                             placeholder="성별"
                                             disabled={true}
                                             value={sex}

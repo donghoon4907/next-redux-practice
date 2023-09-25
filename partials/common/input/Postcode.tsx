@@ -5,8 +5,8 @@ import { MyInput } from '@components/input';
 import { UseInputOutput } from '@hooks/use-input';
 
 interface Props {
+    index: number;
     isMt?: boolean;
-    idPrefix?: string;
     disabled?: boolean;
     labelType: 'active' | 'disable';
     size: TypeAttributes.Size;
@@ -18,8 +18,8 @@ interface Props {
 }
 
 export const PostcodeInput: FC<Props> = ({
+    index,
     isMt = false,
-    idPrefix = '',
     disabled = false,
     labelType,
     size,
@@ -29,15 +29,17 @@ export const PostcodeInput: FC<Props> = ({
     address3Hooks,
     onClickPostcode,
 }) => {
-    const id = idPrefix + 'addr3';
-
     return (
         <>
             <div className={`row ${isMt ? 'wr-mt' : ''}`}>
                 <div className="col">
-                    <WithLabel label="주소" type={labelType}>
+                    <WithLabel
+                        id={`postcode${index}`}
+                        label="주소"
+                        type={labelType}
+                    >
                         <MyInput
-                            type="text"
+                            id={`postcode${index}`}
                             placeholder="우편번호"
                             disabled
                             onClick={onClickPostcode}
@@ -58,7 +60,7 @@ export const PostcodeInput: FC<Props> = ({
                 </div>
                 <div className="col">
                     <MyInput
-                        type="text"
+                        id={`address1_${index}`}
                         placeholder="주소1"
                         disabled
                         {...address1Hooks}
@@ -67,10 +69,13 @@ export const PostcodeInput: FC<Props> = ({
             </div>
             <div className="row wr-mt">
                 <div className="col">
-                    <WithLabel id={id} label="상세주소" type={labelType}>
+                    <WithLabel
+                        id={`address3_${index}`}
+                        label="상세주소"
+                        type={labelType}
+                    >
                         <MyInput
-                            type="text"
-                            id={id}
+                            id={`address3_${index}`}
                             placeholder="상세주소"
                             disabled={disabled}
                             {...address3Hooks}
@@ -79,7 +84,7 @@ export const PostcodeInput: FC<Props> = ({
                 </div>
                 <div className="col">
                     <MyInput
-                        type="text"
+                        id={`address2_${index}`}
                         placeholder="주소2"
                         disabled
                         {...address2Hooks}

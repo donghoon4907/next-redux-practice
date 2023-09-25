@@ -72,6 +72,7 @@ export const GeneralPaysTabpanel: FC<Props> = ({
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="gpt_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -111,6 +112,7 @@ export const GeneralPaysTabpanel: FC<Props> = ({
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`gpt_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

@@ -87,6 +87,7 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="ft_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -126,6 +127,7 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`ft_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

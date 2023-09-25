@@ -28,7 +28,7 @@ export const MyMultipleAccordion: FC<Props> = ({
                         }`}
                         onClick={onClickHeader}
                     >
-                        <span>{headerText}</span>
+                        <span className="text-truncate">{headerText}</span>
                         <span className="d-flex justify-content-center align-items-center">
                             {collapse ? (
                                 <MdOutlineKeyboardArrowUp size={30} />

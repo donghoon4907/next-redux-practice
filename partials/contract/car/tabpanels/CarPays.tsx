@@ -67,6 +67,7 @@ export const CarPaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="cpt_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -112,6 +113,7 @@ export const CarPaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`cpt_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>
@@ -186,6 +188,7 @@ export const CarPaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="lpt_calc_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
@@ -231,6 +234,7 @@ export const CarPaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`cpt_calc_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

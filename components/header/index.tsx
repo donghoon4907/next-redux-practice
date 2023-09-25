@@ -56,7 +56,7 @@ export const MyHeader: FC<Props> = () => {
 
                         <div className="wr-meta__search">
                             <SearchInput
-                                id="search"
+                                id="menu_search"
                                 placeholder="메뉴 검색"
                                 style={{ fontSize: 14 }}
                             />

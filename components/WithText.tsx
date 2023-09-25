@@ -1,8 +1,6 @@
 import type { FC } from 'react';
 import type { CoreProps } from '@interfaces/core';
 import { Fragment } from 'react';
-import { MdPlayArrow } from 'react-icons/md';
-import { IconWrapper } from './IconWrapper';
 
 interface Props extends CoreProps {
     /**
@@ -25,24 +23,14 @@ interface Props extends CoreProps {
      *
      */
     isExpand?: boolean;
-    /**
-     * 이전 아이콘 핸들러
-     */
-    onPrev?: () => void;
-    /**
-     * 다음 아이콘 핸들러
-     */
-    onNext?: () => void;
 }
 
-export const WithArrow: FC<Props> = ({
+export const WithText: FC<Props> = ({
     children,
     label,
     type = 'active',
     isRequired = false,
     isExpand = false,
-    onPrev,
-    onNext,
 }) => {
     const displayName = 'wr-with';
 
@@ -53,16 +41,6 @@ export const WithArrow: FC<Props> = ({
                     isExpand ? `${displayName}__label--nowrap` : ''
                 }`}
             >
-                {onPrev && (
-                    <IconWrapper onClick={onPrev}>
-                        <MdPlayArrow
-                            size={20}
-                            style={{ transform: 'rotate(180deg)' }}
-                        />
-                        <span className="visually-hidden">이전</span>
-                    </IconWrapper>
-                )}
-
                 <div className={isRequired ? `wr-label--required` : ''}>
                     <span>
                         {Array.isArray(label)
@@ -81,12 +59,6 @@ export const WithArrow: FC<Props> = ({
                             : label}
                     </span>
                 </div>
-                {onNext && (
-                    <IconWrapper onClick={onNext}>
-                        <MdPlayArrow size={20} />
-                        <span className="visually-hidden">다음</span>
-                    </IconWrapper>
-                )}
             </div>
 
             {children}

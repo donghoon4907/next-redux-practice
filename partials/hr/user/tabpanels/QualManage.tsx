@@ -115,25 +115,24 @@ export const QualManageTabpanel: FC<Props> = ({
                             <div className="row">
                                 <div className="col">
                                     <WithLabel
-                                        id="giaNo"
+                                        id="qt_dno"
                                         label="등록번호"
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
-                                            id="giaNo"
+                                            id="qt_dno"
                                             placeholder="등록번호"
                                             disabled={!editable}
                                             {...giaNo}
                                         />
                                     </WithLabel>
                                     <WithLabel
-                                        id="giaIndate"
+                                        id="qt_dindate"
                                         label="등록일"
                                         type={labelType}
                                     >
                                         <MyDatepicker
-                                            id="giaIndate"
+                                            id="qt_dindate"
                                             size="md"
                                             placeholder="등록일"
                                             disabled={!editable}
@@ -141,12 +140,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                         />
                                     </WithLabel>
                                     <WithLabel
-                                        id="giaQualification"
+                                        id="qt_ddist"
                                         label="자격구분"
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="giaQualification"
+                                            inputId="qt_ddist"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -157,12 +156,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                 </div>
                                 <div className="col">
                                     <WithLabel
-                                        id="giaComp"
+                                        id="qt_dcom"
                                         label="등록보험사"
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="giaComp"
+                                            inputId="qt_dcom"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -171,12 +170,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                         />
                                     </WithLabel>
                                     <WithLabel
-                                        id="giaOutdate"
+                                        id="qt_doutdate"
                                         label="말소일"
                                         type={labelType}
                                     >
                                         <MyDatepicker
-                                            id="giaOutdate"
+                                            id="qt_doutdate"
                                             size="md"
                                             placeholder="말소일"
                                             disabled={!editable}
@@ -197,25 +196,24 @@ export const QualManageTabpanel: FC<Props> = ({
                             <div className="row">
                                 <div className="col">
                                     <WithLabel
-                                        id="liaNo"
+                                        id="qt_lno"
                                         label="등록번호"
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
-                                            id="liaNo"
+                                            id="qt_lno"
                                             placeholder="등록번호"
                                             disabled={!editable}
                                             {...liaNo}
                                         />
                                     </WithLabel>
                                     <WithLabel
-                                        id="liaIndate"
+                                        id="qt_lindate"
                                         label="등록일"
                                         type={labelType}
                                     >
                                         <MyDatepicker
-                                            id="liaIndate"
+                                            id="qt_lindate"
                                             size="md"
                                             placeholder="등록일"
                                             disabled={!editable}
@@ -223,12 +221,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                         />
                                     </WithLabel>
                                     <WithLabel
-                                        id="liaQualification"
+                                        id="qt_ldist"
                                         label="자격구분"
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="liaQualification"
+                                            inputId="qt_ldist"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -239,12 +237,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                 </div>
                                 <div className="col">
                                     <WithLabel
-                                        id="liaComp"
+                                        id="qt_lcom"
                                         label="등록보험사"
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="liaComp"
+                                            inputId="qt_lcom"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -253,12 +251,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                         />
                                     </WithLabel>
                                     <WithLabel
-                                        id="liaOutdate"
+                                        id="qt_loutdate"
                                         label="말소일"
                                         type={labelType}
                                     >
                                         <MyDatepicker
-                                            id="liaOutdate"
+                                            id="qt_loutdate"
                                             size="md"
                                             placeholder="말소일"
                                             disabled={!editable}
@@ -293,6 +291,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: 30 }}>
                                             <MyCheckbox
+                                                id="qt_d_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckDamages}
                                             />
@@ -324,11 +323,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                         </td>
                                     </tr>
                                 )}
-                                {filteredDamages.map((v, index) => (
-                                    <tr key={`damages${index}`}>
+                                {filteredDamages.map((v, i) => (
+                                    <tr key={`damages${i}`}>
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
+                                                    id={`qt_d_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>
@@ -385,6 +385,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: 30 }}>
                                             <MyCheckbox
+                                                id="qt_l_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckLifes}
                                             />
@@ -417,11 +418,12 @@ export const QualManageTabpanel: FC<Props> = ({
                                     </tr>
                                 )}
 
-                                {filteredLifes.map((v, index) => (
-                                    <tr key={`lifes${index}`}>
+                                {filteredLifes.map((v, i) => (
+                                    <tr key={`lifes${i}`}>
                                         {editable && (
                                             <td style={{ width: 30 }}>
                                                 <MyCheckbox
+                                                    id={`qt_l_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>

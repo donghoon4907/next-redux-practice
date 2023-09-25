@@ -100,6 +100,7 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="cut_car_allcheck"
                                         label=""
                                         onChange={handleAllCheckCars}
                                     />
@@ -139,6 +140,7 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`cut_car_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>
@@ -201,6 +203,7 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
+                                        id="cut_thing_allcheck"
                                         label=""
                                         onChange={handleAllCheckCusts}
                                     />
@@ -234,6 +237,7 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
+                                            id={`cut_thing_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

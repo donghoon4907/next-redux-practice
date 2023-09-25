@@ -130,6 +130,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: '30px' }}>
                                             <MyCheckbox
+                                                id="et_l_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckLongs}
                                             />
@@ -169,6 +170,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
+                                                    id={`et_l_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>
@@ -247,6 +249,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: '30px' }}>
                                             <MyCheckbox
+                                                id="et_c_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckCars}
                                             />
@@ -289,6 +292,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
+                                                    id={`et_c_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>
@@ -371,6 +375,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: '30px' }}>
                                             <MyCheckbox
+                                                id="et_g_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckGens}
                                             />
@@ -413,6 +418,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
+                                                    id={`et_g_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>

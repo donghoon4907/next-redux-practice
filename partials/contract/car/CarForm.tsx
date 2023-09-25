@@ -1215,7 +1215,6 @@ export const CarForm: FC<Props> = ({
                                     >
                                         <div className="wr-with__badge">
                                             <MyInput
-                                                type="text"
                                                 id="cnum"
                                                 placeholder="계약번호"
                                                 disabled={!editable}
@@ -1238,7 +1237,7 @@ export const CarForm: FC<Props> = ({
                                 spec={defaultSpec}
                                 subcategory={null}
                                 calSpec={null}
-                                spe="long"
+                                spe="car"
                             />
                             <div className="row wr-mt">
                                 <div className="col">
@@ -1260,11 +1259,12 @@ export const CarForm: FC<Props> = ({
                                 <div className="col">
                                     {mode === 'update' && (
                                         <WithLabel
+                                            id="status"
                                             label="계약상태"
                                             type={labelType}
                                         >
                                             <MyDatepicker
-                                                id=""
+                                                id="status"
                                                 size="md"
                                                 placeholder="계약상태"
                                                 disabled={!editable}
@@ -1387,7 +1387,6 @@ export const CarForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="payment"
                                             className="text-end"
                                             placeholder="0"
@@ -1437,7 +1436,6 @@ export const CarForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="pre_cnum"
                                             placeholder="전계약번호"
                                             disabled={!editable}

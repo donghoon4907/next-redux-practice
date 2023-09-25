@@ -79,26 +79,6 @@ td {
     table-layout: fixed;
 }
 
-/* 스크롤 설정 */
-::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
-}
-::-webkit-scrollbar-track {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.1);
-}
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.2);
-}
-::-webkit-scrollbar-thumb:hover {
-    background: rgba(0, 0, 0, 0.4);
-}
-::-webkit-scrollbar-thumb:active {
-    background: rgba(0, 0, 0, 0.9);
-}
-
 /* Common Class */
 // 접근성을 위한 텍스트 가리기
 .a11y-hidden {
@@ -226,7 +206,7 @@ input[type='number'] {
 }
 
 .row > * {
-    padding: 0 !important;
+    padding: 0;
 }
 
 // input 공통 스타일 재정의

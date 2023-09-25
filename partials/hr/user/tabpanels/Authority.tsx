@@ -4,6 +4,7 @@ import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyCheckbox } from '@components/checkbox';
 import { UseCheckboxOutput } from '@hooks/use-checkbox';
+import { WithText } from '@components/WithText';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -25,11 +26,15 @@ export const AuthorityTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="wr-pages-detail__toolbar">
                 <div className="wr-pages-detail__buttons">
-                    <MyCheckbox label="최소허용" disabled />
-                    <MyCheckbox label="전체허용" disabled />
+                    <MyCheckbox id="at_is_min" label="최소허용" disabled />
+                    <MyCheckbox id="at_is_all" label="전체허용" disabled />
                 </div>
                 <div>
-                    <MyCheckbox label="엑셀다운로드 일괄허용" disabled />
+                    <MyCheckbox
+                        id="at_is_excel"
+                        label="엑셀다운로드 일괄허용"
+                        disabled
+                    />
                 </div>
             </div>
             <hr />
@@ -42,16 +47,22 @@ export const AuthorityTabpanel: FC<Props> = ({
                         <div className="wr-pages-detail__content">
                             <div className="wr-pages-detail__with">
                                 <MyCheckbox
+                                    id="at_is_web"
                                     disabled={!editable}
                                     label="웹"
                                     {...useWeb}
                                 />
                                 <MyCheckbox
+                                    id="at_is_mobile"
                                     disabled={!editable}
                                     label="모바일"
                                     {...useMobile}
                                 />
-                                <MyCheckbox label="중복로그인" disabled />
+                                <MyCheckbox
+                                    id="at_is_login"
+                                    label="중복로그인"
+                                    disabled
+                                />
                             </div>
                         </div>
                     </div>
@@ -64,9 +75,9 @@ export const AuthorityTabpanel: FC<Props> = ({
                         </div>
                         <div className="wr-pages-detail__content">
                             <div className="wr-pages-detail__with">
-                                <MyCheckbox label="본인" />
-                                <MyCheckbox label="소속조직" />
-                                <MyCheckbox label="회사전체" />
+                                <MyCheckbox id="at_is_me" label="본인" />
+                                <MyCheckbox id="at_is_orga" label="소속조직" />
+                                <MyCheckbox id="at_is_com" label="회사전체" />
                             </div>
                         </div>
                     </div>
@@ -81,10 +92,10 @@ export const AuthorityTabpanel: FC<Props> = ({
                         </div>
                         <div className="wr-pages-detail__content">
                             <div className="wr-pages-detail__with">
-                                <MyCheckbox label="열람" />
-                                <MyCheckbox label="작성" />
-                                <MyCheckbox label="승인" />
-                                <MyCheckbox label="관리자" />
+                                <MyCheckbox id="at_is_bopen" label="열람" />
+                                <MyCheckbox id="at_is_bwrite" label="작성" />
+                                <MyCheckbox id="at_is_bapprove" label="승인" />
+                                <MyCheckbox id="at_is_badmin" label="관리자" />
                             </div>
                         </div>
                     </div>
@@ -97,9 +108,9 @@ export const AuthorityTabpanel: FC<Props> = ({
                         </div>
                         <div className="wr-pages-detail__content">
                             <div className="wr-pages-detail__with">
-                                <MyCheckbox label="열람" />
-                                <MyCheckbox label="설정" />
-                                <MyCheckbox label="관리" />
+                                <MyCheckbox id="at_is_gopen" label="열람" />
+                                <MyCheckbox id="at_is_gset" label="설정" />
+                                <MyCheckbox id="at_is_gmanage" label="관리" />
                             </div>
                         </div>
                     </div>
@@ -113,30 +124,63 @@ export const AuthorityTabpanel: FC<Props> = ({
                             <strong>장기</strong>
                         </div>
                         <div className="wr-pages-detail__content">
-                            <WithLabel label="계약" type={labelType}>
+                            <WithText label="계약" type={labelType}>
                                 <div className="wr-pages-detail__with wr-border wr-pl wr-pr">
-                                    <MyCheckbox label="열람" />
-                                    <MyCheckbox label="작성" />
-                                    <MyCheckbox label="승인" />
-                                    <MyCheckbox label="관리자" />
+                                    <MyCheckbox id="at_is_lopen" label="열람" />
+                                    <MyCheckbox
+                                        id="at_is_lwrite"
+                                        label="작성"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_lapprove"
+                                        label="승인"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_lmanage"
+                                        label="관리자"
+                                    />
                                 </div>
-                            </WithLabel>
-                            <WithLabel label="실적" type={labelType}>
+                            </WithText>
+                            <WithText label="실적" type={labelType}>
                                 <div className="wr-pages-detail__with wr-border wr-pl wr-pr">
-                                    <MyCheckbox label="수정" />
-                                    <MyCheckbox label="생성" />
-                                    <MyCheckbox label="검증" />
+                                    <MyCheckbox
+                                        id="at_is_perfmodify"
+                                        label="수정"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_perfcreate"
+                                        label="생성"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_perfverify"
+                                        label="검증"
+                                    />
                                 </div>
-                            </WithLabel>
-                            <WithLabel label="엑셀" type={labelType}>
+                            </WithText>
+                            <WithText label="엑셀" type={labelType}>
                                 <div className="wr-pages-detail__with wr-border wr-pl wr-pr">
-                                    <MyCheckbox label="보유계약" />
-                                    <MyCheckbox label="실적" />
-                                    <MyCheckbox label="정산" />
-                                    <MyCheckbox label="수금관리" />
-                                    <MyCheckbox label="미유지" />
+                                    <MyCheckbox
+                                        id="at_is_excelcont"
+                                        label="보유계약"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_excelperf"
+                                        label="실적"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_excelpay"
+                                        label="정산"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_excelmanage"
+                                        label="수금관리"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_excelkeep"
+                                        label="미유지"
+                                    />
                                 </div>
-                            </WithLabel>
+                            </WithText>
                         </div>
                     </div>
                 </div>
@@ -151,19 +195,31 @@ export const AuthorityTabpanel: FC<Props> = ({
                             <strong>인사/조직</strong>
                         </div>
                         <div className="wr-pages-detail__content">
-                            <WithLabel label="목록" type={labelType}>
+                            <WithText label="목록" type={labelType}>
                                 <div className="wr-pages-detail__with wr-border wr-pl wr-pr">
-                                    <MyCheckbox label="소속조직" />
-                                    <MyCheckbox label="회사전체" />
+                                    <MyCheckbox
+                                        id="at_is_lorga"
+                                        label="소속조직"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_lcom"
+                                        label="회사전체"
+                                    />
                                 </div>
-                            </WithLabel>
-                            <WithLabel label="상세페이지" type={labelType}>
+                            </WithText>
+                            <WithText label="상세페이지" type={labelType}>
                                 <div className="wr-pages-detail__with wr-border wr-pl wr-pr">
-                                    <MyCheckbox label="열람" />
-                                    <MyCheckbox label="기본수정" />
-                                    <MyCheckbox label="관리자" />
+                                    <MyCheckbox id="at_is_dopen" label="열람" />
+                                    <MyCheckbox
+                                        id="at_is_dmodify"
+                                        label="기본수정"
+                                    />
+                                    <MyCheckbox
+                                        id="at_is_dmanage"
+                                        label="관리자"
+                                    />
                                 </div>
-                            </WithLabel>
+                            </WithText>
                         </div>
                     </div>
                 </div>

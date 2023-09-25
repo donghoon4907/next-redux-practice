@@ -117,32 +117,30 @@ export const CarInsuredForm: FC<Props> = () => {
             </div>
             <div className="row">
                 <div className="col">
-                    <WithLabel id="prelation" label="관계" type="active">
+                    <WithLabel id="cif_relation" label="관계" type="active">
                         <MySelect
-                            inputId="prelation"
+                            inputId="cif_relation"
                             height={variables.detailFilterHeight}
                             {...relation}
                         />
                     </WithLabel>
                 </div>
                 <div className="col">
-                    <WithLabel id="pname" label="이름" type="active">
-                        <MyInput
-                            type="text"
-                            id="pname"
-                            placeholder="이름"
-                            {...name}
-                        />
+                    <WithLabel id="cif_name" label="이름" type="active">
+                        <MyInput id="cif_name" placeholder="이름" {...name} />
                     </WithLabel>
                 </div>
             </div>
             <div className="row wr-mt">
                 <div className="col">
                     {insureds.length === 0 && (
-                        <WithLabel id="pjumin" label="주민번호" type="active">
+                        <WithLabel
+                            id="cif_jumin"
+                            label="주민번호"
+                            type="active"
+                        >
                             <MyInput
-                                type="text"
-                                id="pjumin"
+                                id="cif_jumin"
                                 placeholder="주민번호"
                                 {...jumin}
                             />
@@ -164,12 +162,12 @@ export const CarInsuredForm: FC<Props> = () => {
                     )}
                     {insureds.length !== 0 && (
                         <WithLabel
-                            id="pbirthday"
+                            id="cif_birthday"
                             label="생년월일"
                             type="active"
                         >
                             <MyDatepicker
-                                id="pbirthday"
+                                id="cif_birthday"
                                 size="md"
                                 placeholder="생년월일"
                                 placement="topStart"
@@ -193,9 +191,9 @@ export const CarInsuredForm: FC<Props> = () => {
                     )}
                 </div>
                 <div className="col">
-                    <WithLabel label="만 나이" type="active">
+                    <WithLabel id="cif_age" label="만 나이" type="active">
                         <MyInput
-                            type="text"
+                            id="cif_age"
                             placeholder="만 나이"
                             className="text-end"
                             disabled

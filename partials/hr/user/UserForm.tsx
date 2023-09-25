@@ -986,7 +986,6 @@ export const UserForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="nick"
                                             placeholder="영업명"
                                             disabled={!editable}
@@ -1000,7 +999,6 @@ export const UserForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="name"
                                             placeholder="이름"
                                             onBlur={handleBlurName}
@@ -1014,7 +1012,6 @@ export const UserForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="title"
                                             placeholder="직함"
                                             disabled={!editable}
@@ -1028,7 +1025,6 @@ export const UserForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="sNum"
                                             placeholder="주민번호"
                                             disabled={!editable}
@@ -1052,7 +1048,6 @@ export const UserForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="mobile"
                                             placeholder="핸드폰"
                                             disabled={!editable}
@@ -1079,7 +1074,6 @@ export const UserForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MyInput
-                                            type="text"
                                             id="telephone"
                                             placeholder="내선번호"
                                             disabled={!editable}
@@ -1090,7 +1084,7 @@ export const UserForm: FC<Props> = ({
                                             style={{ width: 140 }}
                                         >
                                             <MyInput
-                                                type="text"
+                                                id="tel_direct"
                                                 className="wr-border-l--hide"
                                                 placeholder="직통번호"
                                                 disabled={!editable}
@@ -1124,9 +1118,13 @@ export const UserForm: FC<Props> = ({
                                             onClick={handleClickImage}
                                         />
                                     </div>
-                                    <WithLabel label="사원번호" type="disable">
+                                    <WithLabel
+                                        id="userid"
+                                        label="사원번호"
+                                        type="disable"
+                                    >
                                         <MyInput
-                                            type="text"
+                                            id="userid"
                                             placeholder="사원번호"
                                             value={userid}
                                             disabled
@@ -1169,6 +1167,7 @@ export const UserForm: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
                             <PostcodeInput
+                                index={0}
                                 disabled={!editable}
                                 labelType={labelType}
                                 size="md"
@@ -1236,7 +1235,6 @@ export const UserForm: FC<Props> = ({
                                         </div>
 
                                         <MyInput
-                                            type="text"
                                             className="wr-border-l--hide"
                                             id="estComNm"
                                             placeholder="회사명"
@@ -1270,7 +1268,6 @@ export const UserForm: FC<Props> = ({
                                         </div>
 
                                         <MyInput
-                                            type="text"
                                             className="wr-border-l--hide"
                                             id="estSalesNm"
                                             placeholder="견적영업명"
@@ -1303,7 +1300,6 @@ export const UserForm: FC<Props> = ({
                                             />
                                         </div>
                                         <MyInput
-                                            type="text"
                                             className="wr-border-l--hide"
                                             id="estPhone"
                                             placeholder="대표전화"
@@ -1337,7 +1333,6 @@ export const UserForm: FC<Props> = ({
                                         </div>
 
                                         <MyInput
-                                            type="text"
                                             className="wr-border-l--hide"
                                             id="estFax"
                                             placeholder="팩스번호"
@@ -1371,7 +1366,6 @@ export const UserForm: FC<Props> = ({
                                         </div>
 
                                         <MyInput
-                                            type="text"
                                             className="wr-border-l--hide"
                                             id="direct"
                                             placeholder="직통전화"
@@ -1405,7 +1399,6 @@ export const UserForm: FC<Props> = ({
                                         </div>
 
                                         <MyInput
-                                            type="text"
                                             className="wr-border-l--hide"
                                             id="estAddress"
                                             placeholder="표기주소"

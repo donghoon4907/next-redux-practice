@@ -21,6 +21,7 @@ import { showInsuredSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber } from '@utils/converter';
 import { updateLoadedInsured } from '@actions/contract/common/set-contractor.action';
 import { MyRadio } from '@components/radio';
+import { WithText } from '@components/WithText';
 
 interface Props {
     userid: string;
@@ -209,9 +210,14 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
             <div className="row">
                 <div className="col">
                     <form onSubmit={handleSearchCustomer}>
-                        <WithLabel label="피보험자명" type="active">
+                        <WithLabel
+                            id="lif_name"
+                            label="피보험자명"
+                            type="active"
+                        >
                             <MyInput
                                 type="search"
+                                id="lif_name"
                                 placeholder="피보험자명"
                                 disabled={isDisabledName}
                                 {...name}
@@ -234,9 +240,13 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                 <>
                     <div className="row wr-mt">
                         <div className="col">
-                            <WithLabel label="연락처" type="active">
+                            <WithLabel
+                                id="lif_mobile"
+                                label="연락처"
+                                type="active"
+                            >
                                 <MyInput
-                                    type="text"
+                                    id="lif_mobile"
                                     placeholder="연락처"
                                     disabled={isDisabledAnother}
                                     {...tel}
@@ -244,9 +254,9 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                             </WithLabel>
                         </div>
                         <div className="col">
-                            <WithLabel label="직업" type="active">
+                            <WithLabel id="lif_job" label="직업" type="active">
                                 <MyInput
-                                    type="text"
+                                    id="lif_job"
                                     placeholder="직업"
                                     disabled={isDisabledAnother}
                                     {...job}
@@ -257,12 +267,12 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                     <div className="row wr-mt">
                         <div className="col">
                             <WithLabel
+                                id="lif_birthday"
                                 label="생년월일"
                                 type="active"
-                                id="ibirthday"
                             >
                                 <MyDatepicker
-                                    id="ibirthday"
+                                    id="lif_birthday"
                                     size="md"
                                     placeholder="생년월일"
                                     disabled={isDisabledAnother}
@@ -276,22 +286,26 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                             </WithLabel>
                         </div>
                         <div className="col">
-                            <WithLabel label="성별" type="active">
+                            <WithText label="성별" type="active">
                                 <div className="wr-with__container">
                                     <MyRadio
+                                        id="lf_is_man"
                                         label="남"
                                         value="남"
+                                        name="lf_gender"
                                         checked={gender === '남'}
                                         onChange={handleChangeGender}
                                     />
                                     <MyRadio
+                                        id="lf_is_woman"
                                         label="여"
                                         value="여"
+                                        name="lf_gender"
                                         checked={gender === '여'}
                                         onChange={handleChangeGender}
                                     />
                                 </div>
-                            </WithLabel>
+                            </WithText>
                         </div>
                     </div>
                 </>
@@ -299,13 +313,13 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
             <div className="wr-pages-detail__toolbar wr-mt">
                 <div className="wr-pages-detail__buttons">
                     <MyCheckbox
-                        id="isContract"
+                        id="lf_is_contract"
                         label="계약자와 동일"
                         onChange={handleCheckContract}
                         checked={checkContract}
                     />
                     <MyCheckbox
-                        id="isFetus"
+                        id="lf_is_fetus"
                         label="태아"
                         onChange={handleCheckFetus}
                         checked={checkFetus}
