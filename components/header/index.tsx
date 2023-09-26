@@ -1,18 +1,23 @@
 import type { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { AiOutlineFolder } from 'react-icons/ai';
+import { MdLogout } from 'react-icons/md';
 // import { LuMenu } from 'react-icons/lu';
 import { GNBS } from '@constants/gnb';
 // import { useDrawer } from '@hooks/use-drawer';
 
+import { AppState } from '@reducers/index';
+import { HrState } from '@reducers/hr';
+import { WithLabel } from '@components/WithLabel';
+import { MySelect } from '@components/select';
+import commonConstants from '@constants/options/common';
+import { SearchInput } from '@components/input/Search';
+import { AccessibleText } from '@components/AccessibleText';
+
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
-import { SearchInput } from '@components/input/Search';
-import { MdLogout } from 'react-icons/md';
-import { AccessibleText } from '@components/AccessibleText';
-import { useSelector } from 'react-redux';
-import { AppState } from '@reducers/index';
-import { HrState } from '@reducers/hr';
+import { useSelect } from '@hooks/use-select';
 
 interface Props {}
 
@@ -23,10 +28,54 @@ export const MyHeader: FC<Props> = () => {
 
     // const { onToggle } = useDrawer();
 
+    const [dCompanies] = useSelect(commonConstants.dCompanies, null, {
+        callbackOnChange: (nextSelect) => {
+            if (nextSelect) {
+                // 새 창에서 URL 열기
+                window.open(nextSelect.value, '_blank');
+            }
+        },
+    });
+
+    const [lCompanies] = useSelect(commonConstants.lCompanies, null, {
+        callbackOnChange: (nextSelect) => {
+            if (nextSelect) {
+                // 새 창에서 URL 열기
+                window.open(nextSelect.value, '_blank');
+            }
+        },
+    });
+
     return (
         <header className="wr-header wr-frame__header">
             <div className="wr-meta">
                 <div className="wr-meta__inner">
+                    <div className="wr-meta__left">
+                        <div style={{ width: 250 }}>
+                            <WithLabel
+                                id="shortcut_d"
+                                label="손보바로가기"
+                                type="active"
+                            >
+                                <MySelect
+                                    inputId="shortcut_d"
+                                    {...dCompanies}
+                                />
+                            </WithLabel>
+                        </div>
+                        <div style={{ width: 250 }}>
+                            <WithLabel
+                                id="shortcut_l"
+                                label="생보바로가기"
+                                type="active"
+                            >
+                                <MySelect
+                                    inputId="shortcut_l"
+                                    {...lCompanies}
+                                />
+                            </WithLabel>
+                        </div>
+                    </div>
                     <div className="wr-meta__right">
                         {loggedInUser && (
                             <>

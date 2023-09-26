@@ -8,16 +8,12 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getCookie } from 'cookies-next';
 import { wrapper } from '@store/redux';
 // import { MyDrawer } from '@components/drawer';
 import { MyProvider } from '@components/Provider';
 import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
-import { initialzeBackendAxios } from '@utils/axios/backend';
-import hrsService from '@services/hrsService';
-import { updatePermission } from '@actions/hr/set-permission.action';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
 
@@ -102,51 +98,5 @@ function MyApp({ Component, pageProps }: AppProps) {
         </MyProvider>
     );
 }
-
-MyApp.getInitialProps = wrapper.getInitialAppProps(
-    ({ dispatch }) =>
-        async ({ Component, ctx, router }) => {
-            const { req, res } = ctx;
-            // 서버에서만 실행
-            if (req && res) {
-                const token = getCookie(process.env.COOKIE_TOKEN_KEY || '', {
-                    req,
-                    res,
-                });
-                // axios 초기화
-                initialzeBackendAxios(token);
-                // permission 제외 페이지
-                const excludePermissionPages = [
-                    '/',
-                    '/login',
-                    '/404',
-                    '/500',
-                    '/calculate',
-                ];
-                // permission
-                if (!excludePermissionPages.includes(router.route)) {
-                    try {
-                        const { data } = await hrsService.getPermission({
-                            division: 'system',
-                        });
-                        const { user_info } = data;
-                        // 특정 권한 정보가 있는 경우
-                        if (user_info) {
-                            dispatch(updatePermission(data));
-                        }
-                    } catch {
-                        console.log('권한 조회 실패');
-                    }
-                }
-            }
-
-            let pageProps = {};
-            if (Component.getInitialProps) {
-                pageProps = await Component.getInitialProps(ctx);
-            }
-
-            return { pageProps };
-        },
-);
 
 export default wrapper.withRedux(MyApp);

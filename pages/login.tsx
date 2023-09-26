@@ -10,6 +10,7 @@ import { wrapper } from '@store/redux';
 import externalsService from '@services/externalsService';
 import hrsService from '@services/hrsService';
 import { commonAxiosErrorHandler } from '@utils/error';
+import { MyButton } from '@components/button';
 
 interface LoginPageProps {
     ip: string;
@@ -82,7 +83,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                                     <FaUser size={30} />
                                 </div>
                                 <input
-                                    type="text"
+                                    id="userid"
                                     className="wr-login-input"
                                     placeholder="사원번호"
                                     required
@@ -95,17 +96,18 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                                 </div>
                                 <input
                                     type="password"
+                                    id="password"
                                     className="wr-login-input"
                                     placeholder="Password"
                                     required
                                     {...password}
                                 />
                             </div>
-                            <div className="wr-login-btn__wrap">
-                                <button type="submit" className="wr-login-btn">
+                            <div className={`${displayName}__button wr-mt`}>
+                                <button type="submit" className="wr-btn btn">
                                     로그인
                                 </button>
-                                <div className="wr-login-btn__icon">
+                                <div>
                                     <FaPowerOff size={25} />
                                 </div>
                             </div>
@@ -128,6 +130,16 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                                 <FaHeadset size={25} />
                             </div>
                             <div>Help Desk 070-4881-6003</div>
+                        </div>
+                        <div className={`${displayName}__services wr-mt`}>
+                            <a
+                                className="btn btn-success w-100 text-center"
+                                href="https://939.co.kr/7800"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                본사원격지원
+                            </a>
                         </div>
                         <div className={`${displayName}__footer`}>
                             <span>

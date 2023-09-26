@@ -5,9 +5,11 @@ export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
-    const { ip, userid, password } = req.body;
-
     try {
+        // await corsMiddleware(req, res);
+
+        const { ip, userid, password } = req.body;
+
         const { data } = await hrsService.verify({
             ip,
             userid,

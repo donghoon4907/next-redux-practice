@@ -35,6 +35,6 @@
             "@dto/*": ["./dto/*"]
         }
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "utils/test.js"],
     "exclude": ["node_modules"]
 }

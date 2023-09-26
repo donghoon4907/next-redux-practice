@@ -104,10 +104,7 @@ export const MyEditor: React.FC<Props> = ({
                                 formData,
                             },
                             (filename) => {
-                                callback(
-                                    `${process.env.STORAGE_PATH}/${filename}`,
-                                    '',
-                                );
+                                callback(`/upload/${filename}`, '');
                             },
                         );
 

@@ -14,28 +14,3 @@
         gap: 5px;
     }
 }
-
-.wr-login-btn {
-    color: $white;
-    font-size: 20px;
-    border: none;
-    width: 100%;
-    height: 100%;
-    background-color: inherit;
-
-    &__wrap {
-        background-color: #182a88;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: $wr-gutter-size;
-        height: 50px;
-        margin-top: 40px;
-    }
-
-    &__icon {
-        & > svg {
-            fill: $white;
-        }
-    }
-}

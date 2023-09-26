@@ -1,7 +1,6 @@
 .wr-header {
     width: 100%;
     background-color: $wr-header-color;
-    overflow: hidden;
 }
 
 .wr-meta {
@@ -16,6 +15,14 @@
         align-items: center;
         gap: 10px;
         color: $black;
+    }
+
+    &__left {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
     }
 
     &__right {
@@ -52,7 +59,7 @@
     // background-color: $wr-header-color;
     color: $white;
     position: relative;
-    z-index: $wr-gnb-index;
+    // z-index: $wr-gnb-index;
     font-size: 14px;
     line-height: 14px;
     // transform: translateZ(0);
@@ -183,7 +190,7 @@
 .wr-lnb {
     background: $gray-400;
     position: relative;
-    z-index: $wr-lnb-index;
+    // z-index: $wr-lnb-index;
     overflow: hidden;
 
     &__inner {

@@ -6,15 +6,13 @@ import { rootReducer } from '../reducers';
 import { rootSaga } from '../sagas';
 
 const bindMiddleware = (middleware: Middleware<any>[]) => {
-    // if (process.env.NODE_ENV !== 'production') {
-    //     const { composeWithDevTools } = require('redux-devtools-extension');
+    if (process.env.NODE_ENV !== 'production') {
+        const { composeWithDevTools } = require('redux-devtools-extension');
 
-    //     return composeWithDevTools(applyMiddleware(...middleware));
-    // }
+        return composeWithDevTools(applyMiddleware(...middleware));
+    }
 
-    const { composeWithDevTools } = require('redux-devtools-extension');
-
-    return composeWithDevTools(applyMiddleware(...middleware));
+    return applyMiddleware(...middleware);
 };
 
 export interface SagaStore extends Store {

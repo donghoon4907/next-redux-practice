@@ -50,7 +50,7 @@
     &__body {
         margin: 0 auto;
         width: 320px;
-        height: 300px;
+        height: 250px;
     }
 
     &__footer {
@@ -97,5 +97,23 @@
         font-size: 20px;
         font-weight: 600;
         margin-top: 10px;
+    }
+
+    &__button {
+        background-color: #182a88;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: $wr-gutter-size;
+        color: $white !important;
+
+        & > * {
+            color: $white !important;
+        }
+
+        & > button {
+            font-size: 20px;
+            flex: 1;
+        }
     }
 }
