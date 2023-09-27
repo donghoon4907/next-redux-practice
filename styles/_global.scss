@@ -79,17 +79,6 @@ td {
     table-layout: fixed;
 }
 
-/* Common Class */
-// 접근성을 위한 텍스트 가리기
-.a11y-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip-path: polygon(0 0, 0 0, 0 0);
-}
-
 /* Custom Drawer */
 .EZDrawer__overlay {
     z-index: $wr-overlay-index !important;

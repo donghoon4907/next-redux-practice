@@ -197,10 +197,10 @@ export const SetCarAccModal: FC<Props> = ({ setExternalAccs }) => {
                 </div>
             </ModalBody>
             <ModalFooter>
-                <Button color="secondary" onClick={handleClose}>
+                <Button type="button" color="secondary" onClick={handleClose}>
                     취소
                 </Button>
-                <Button color="primary" onClick={handleSubmit}>
+                <Button type="button" color="primary" onClick={handleSubmit}>
                     적용
                 </Button>
             </ModalFooter>

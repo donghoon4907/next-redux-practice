@@ -7,7 +7,7 @@ import { LuSearch } from 'react-icons/lu';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
-import { AccessibleText } from '@components/AccessibleText';
+
 import { showSetViewerModal } from '@actions/modal/set-viewer.action';
 
 interface Props extends Pick<MyTabpanelProps, 'hidden'> {}
@@ -43,7 +43,9 @@ export const SetViewTabpanel: FC<Props> = ({ hidden }) => {
                                 onClick: handleClickSearchViewer,
                                 children: (
                                     <>
-                                        <AccessibleText>검색</AccessibleText>
+                                        <span className="visually-hidden">
+                                            검색
+                                        </span>
                                         <LuSearch size={15} />
                                     </>
                                 ),

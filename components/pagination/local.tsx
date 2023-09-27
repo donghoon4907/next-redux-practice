@@ -8,7 +8,7 @@ import {
     LuChevronLast,
 } from 'react-icons/lu';
 import { MySelect } from '@components/select';
-import { AccessibleText } from '@components/AccessibleText';
+
 import { useSelect } from '@hooks/use-select';
 import commonContstants from '@constants/options/common';
 import { createPageButtons } from '@utils/paging';
@@ -78,7 +78,7 @@ export const MyLocalPagination: FC<Props> = ({
                                 className="page-link "
                                 onClick={() => handlePaging(1)}
                             >
-                                <AccessibleText>처음</AccessibleText>
+                                <span className="visually-hidden">처음</span>
                                 <LuChevronFirst size={17} />
                             </button>
                         </li>
@@ -88,7 +88,7 @@ export const MyLocalPagination: FC<Props> = ({
                                 className="page-link"
                                 onClick={() => handlePaging(prevPage)}
                             >
-                                <AccessibleText>이전</AccessibleText>
+                                <span className="visually-hidden">이전</span>
                                 <LuChevronLeft size={17} />
                             </button>
                         </li>
@@ -111,7 +111,7 @@ export const MyLocalPagination: FC<Props> = ({
                                 className="page-link"
                                 onClick={() => handlePaging(nextPage)}
                             >
-                                <AccessibleText>다음</AccessibleText>
+                                <span className="visually-hidden">다음</span>
                                 <LuChevronRight size={17} />
                             </button>
                         </li>
@@ -121,7 +121,7 @@ export const MyLocalPagination: FC<Props> = ({
                                 className="page-link"
                                 onClick={() => handlePaging(lastPage)}
                             >
-                                <AccessibleText>마지막</AccessibleText>
+                                <span className="visually-hidden">마지막</span>
                                 <LuChevronLast size={17} />
                             </button>
                         </li>

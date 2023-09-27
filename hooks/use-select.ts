@@ -1,7 +1,7 @@
 import type { CoreSelectOption, CoreSetState } from '@interfaces/core';
 import { useState } from 'react';
 
-interface UseSelectOption {
+export interface UseSelectOption {
     /**
      * callback
      */

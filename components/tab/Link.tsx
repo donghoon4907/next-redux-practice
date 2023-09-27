@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 import { MdClose } from 'react-icons/md';
 import { IconWrapper } from '@components/IconWrapper';
 import variables from '@styles/_variables.module.scss';
-import { AccessibleText } from '@components/AccessibleText';
 
 interface Props extends CoreLinkTabOption {
     /**
@@ -80,7 +79,7 @@ export const LinkTab: FC<Props> = ({
                         onClick={handleClose}
                         tabIndex={isActive ? 0 : -1}
                     >
-                        <AccessibleText>탭 닫기</AccessibleText>
+                        <span className="visually-hidden">탭 닫기</span>
                         <MdClose
                             size={13}
                             color={

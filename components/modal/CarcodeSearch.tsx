@@ -8,7 +8,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { differenceInCalendarDays } from 'date-fns';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import dayjs from 'dayjs';
 import { hideGetCarcodeModal } from '@actions/modal/get-carcode.action';
 import { MyRadio } from '@components/radio';
 import { useApi } from '@hooks/use-api';
@@ -22,8 +21,6 @@ import { findSelectOption } from '@utils/getter';
 import carConstants from '@constants/options/car';
 
 interface Props {
-    /** 보험개시일 */
-    date: Date | null;
     /**
      * 차명코드 변경 핸들러
      */
@@ -39,7 +36,6 @@ interface Props {
 }
 
 export const CarcodeSearchModal: FC<Props> = ({
-    date,
     setExternalCarcode,
     setExternalCaryear,
     setExternalCarname,
@@ -54,6 +50,8 @@ export const CarcodeSearchModal: FC<Props> = ({
     );
 
     const getCarcode = useApi(getCarcodeRequest);
+    // 가입예정일
+    const [idate, setIdate] = useState('');
     // 아코디언 comp, carname
     const [activeMenu, setActiveMenu] = useState('carbrand');
     // 제조사
@@ -68,8 +66,6 @@ export const CarcodeSearchModal: FC<Props> = ({
     const [carcode, setCarcode] = useState('');
     // 세부항목
     const [carpart, setCarpart] = useState('');
-
-    const idate = dayjs(date).format('YYYY-MM-DD');
 
     const handleClickMenu = (menu: string) => {
         if (menu !== activeMenu) {
@@ -244,18 +240,23 @@ export const CarcodeSearchModal: FC<Props> = ({
     };
 
     const handleOpened = () => {
-        if (!date) {
+        const { value } = document.querySelector('#idate') as HTMLInputElement;
+
+        if (isEmpty(value)) {
             handleClose();
 
             return alert('가입예정일이 입력되어야 합니다.');
         }
-        // 동일한 데이터를 요청하지 않는 경우만
-        if (
-            differenceInCalendarDays(date, new Date(carCompanies.idate)) !== 0
-        ) {
+
+        setIdate(value);
+
+        // 이전에 요청한 정보가 아닌 경우만 호출
+        const current = new Date(value);
+        const prev = new Date(carCompanies.idate);
+        if (differenceInCalendarDays(current, prev) !== 0) {
             getCarcode({
                 type: 'companies',
-                idate,
+                idate: value,
             });
         }
     };
@@ -489,10 +490,10 @@ export const CarcodeSearchModal: FC<Props> = ({
                 </div>
             </ModalBody>
             <ModalFooter>
-                <Button color="secondary" onClick={handleClose}>
+                <Button type="button" color="secondary" onClick={handleClose}>
                     취소
                 </Button>
-                <Button color="primary" onClick={handleSubmit}>
+                <Button type="button" color="primary" onClick={handleSubmit}>
                     적용
                 </Button>
             </ModalFooter>

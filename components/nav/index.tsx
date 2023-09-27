@@ -13,7 +13,7 @@ export const MyNav: FC<Props> = ({ menu }) => {
             <div className="wr-nav__logo wr-frame__header">
                 <Link href="/">
                     <a>
-                        <h1 className="a11y-hidden">Wooriinsumanlife</h1>
+                        <h1 className="visually-hidden">Wooriinsumanlife</h1>
                         <img
                             src="/static/images/logo.png"
                             alt="Wooriinsumanlife"

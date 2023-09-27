@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { isNumberic } from '@utils/validation';
 import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
 
-interface UseInputOption {
+export interface UseInputOption {
     /**
      * 스페이스 허용 여부
      */

@@ -61,6 +61,10 @@ export interface MySelectProps {
      * with another ui
      */
     menuPlacement?: MenuPlacement;
+    /**
+     * 필수 여부
+     */
+    required?: boolean;
 }
 
 export const MySelect: FC<MySelectProps> = ({
@@ -76,6 +80,7 @@ export const MySelect: FC<MySelectProps> = ({
     isDisabled = false,
     placement = 'single',
     menuPlacement = 'auto',
+    required = false,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange?.(option);
@@ -85,6 +90,7 @@ export const MySelect: FC<MySelectProps> = ({
         <Select
             className="select"
             inputId={inputId}
+            name={inputId}
             options={options}
             value={value}
             onChange={handleChange}
@@ -92,6 +98,7 @@ export const MySelect: FC<MySelectProps> = ({
             menuPlacement={menuPlacement}
             isDisabled={isDisabled}
             noOptionsMessage={() => '데이터가 없습니다.'}
+            required={required}
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,

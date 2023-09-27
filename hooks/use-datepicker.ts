@@ -1,7 +1,7 @@
 import type { CoreSetState } from '@interfaces/core';
 import { useState } from 'react';
 
-interface UseDatepickerOption {
+export interface UseDatepickerOption {
     /**
      * callback
      */

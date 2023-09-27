@@ -12,7 +12,6 @@ import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 import commonConstants from '@constants/options/common';
 import { SearchInput } from '@components/input/Search';
-import { AccessibleText } from '@components/AccessibleText';
 
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
@@ -122,7 +121,7 @@ export const MyHeader: FC<Props> = () => {
                                     <LuMenu size={30} color="white" />
                                 </IconWrapper>
                             </span> */}
-                            <h2 className="a11y-hidden">서비스메뉴</h2>
+                            <h2 className="visually-hidden">서비스메뉴</h2>
                             <ul className="wr-gnb__menu" role="menubar">
                                 {GNBS.map(({ id, ...gnb }) => (
                                     <GnbMenuItem key={id} {...gnb} />
@@ -130,7 +129,7 @@ export const MyHeader: FC<Props> = () => {
                             </ul>
                         </nav>
                         <div className="wr-gnb__right">
-                            <h2 className="a11y-hidden">사용자서비스</h2>
+                            <h2 className="visually-hidden">사용자서비스</h2>
                             <ul className="wr-gnb__services">
                                 <GnbSubMenuItem to="/404">
                                     통합검색
@@ -162,11 +161,15 @@ export const MyHeader: FC<Props> = () => {
                                     Mypage
                                 </GnbSubMenuItem>
                                 <GnbSubMenuItem to="/404">
-                                    <AccessibleText>폴더</AccessibleText>
+                                    <span className="visually-hidden">
+                                        폴더
+                                    </span>
                                     <AiOutlineFolder size={20} />
                                 </GnbSubMenuItem>
                                 <GnbSubMenuItem to="/404">
-                                    <AccessibleText>로그아웃</AccessibleText>
+                                    <span className="visually-hidden">
+                                        로그아웃
+                                    </span>
                                     <MdLogout size={20} />
                                 </GnbSubMenuItem>
                             </ul>
@@ -176,7 +179,7 @@ export const MyHeader: FC<Props> = () => {
             </div>
             <div className="wr-lnb">
                 <div className="wr-lnb__inner">
-                    <strong className="a11y-hidden">탭 목록</strong>
+                    <strong className="visually-hidden">탭 목록</strong>
                     <HeaderNav />
                     <div className="wr-tab__line"></div>
                 </div>

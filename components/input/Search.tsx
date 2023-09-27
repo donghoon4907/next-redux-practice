@@ -1,6 +1,5 @@
 import type { FC, FormEvent, InputHTMLAttributes } from 'react';
 import { LuSearch } from 'react-icons/lu';
-import { AccessibleText } from '@components/AccessibleText';
 
 import { MyInput } from '.';
 
@@ -25,7 +24,7 @@ export const SearchInput: FC<Props> = ({ onSearch, ...rest }) => {
                     className: 'btn-primary',
                     children: (
                         <>
-                            <AccessibleText>검색</AccessibleText>
+                            <span className="visually-hidden">검색</span>
                             <LuSearch size={15} />
                         </>
                     ),
