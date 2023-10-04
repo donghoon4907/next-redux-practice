@@ -288,6 +288,7 @@ export const CarcodeSearchModal: FC<Props> = ({
                                         className="wr-pages-compare-car-search-accordion__item"
                                     >
                                         <MyRadio
+                                            id={`carCompanies${i}`}
                                             label={v.carbrand}
                                             name="carbrand"
                                             value={v.carbrand}
@@ -318,6 +319,7 @@ export const CarcodeSearchModal: FC<Props> = ({
                                         className="wr-pages-compare-car-search-accordion__item"
                                     >
                                         <MyRadio
+                                            id={`companyCars${i}`}
                                             label={v.carname}
                                             name="carname"
                                             value={v.carname}
@@ -348,6 +350,7 @@ export const CarcodeSearchModal: FC<Props> = ({
                                         className="wr-pages-compare-car-search-accordion__item"
                                     >
                                         <MyRadio
+                                            id={`carYears${i}`}
                                             label={v.caryear}
                                             name="caryear"
                                             value={v.caryear}
@@ -378,6 +381,7 @@ export const CarcodeSearchModal: FC<Props> = ({
                                         className="wr-pages-compare-car-search-accordion__item"
                                     >
                                         <MyRadio
+                                            id={`carSeries${i}`}
                                             label={v.carsub}
                                             name="carsub"
                                             value={v.carsub}
@@ -408,6 +412,7 @@ export const CarcodeSearchModal: FC<Props> = ({
                                         className="wr-pages-compare-car-search-accordion__item"
                                     >
                                         <MyRadio
+                                            id={`carOptions${i}`}
                                             label={v.carpart}
                                             name="carpart"
                                             value={v.carpart}

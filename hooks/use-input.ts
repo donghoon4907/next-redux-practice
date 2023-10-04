@@ -22,6 +22,10 @@ export interface UseInputOption {
      */
     maxLength?: number;
     /**
+     * 첫 번째 자리 0 허용
+     */
+    isFirstZero?: boolean;
+    /**
      * callback
      */
     callbackOnChange?: (nextVal?: string) => void;
@@ -101,9 +105,11 @@ export const useNumbericInput: UseInputFunction = (
         } else {
             // 두자리 이상인 경우
             if (nextVal.length > 1) {
-                // 첫 번째 0 제거
-                if (nextVal.charAt(0) === '0') {
-                    nextVal = nextVal.substring(1);
+                if (!where.isFirstZero) {
+                    // 첫 번째 0 제거
+                    if (nextVal.charAt(0) === '0') {
+                        nextVal = nextVal.substring(1);
+                    }
                 }
             }
 

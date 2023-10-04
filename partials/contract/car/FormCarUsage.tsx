@@ -21,7 +21,6 @@ export const FormCarUsage: FC<Props> = () => {
                     name="caruse"
                     label={v}
                     value={i + 1}
-                    required
                     onChange={handleChangeCaruse}
                     checked={caruse === `${i + 1}`}
                 />

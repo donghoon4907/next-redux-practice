@@ -26,13 +26,13 @@ export class CompareDTO {
             goout1,
             goout_dist,
             guipcarrer,
-            guipcarrer_car,
             traffic,
             childdrive,
             halin,
             special_code,
             special_code2,
             ss_sago3,
+            sago3,
         } = this.payload;
 
         if (isEmpty(jumin)) {
@@ -143,11 +143,11 @@ export class CompareDTO {
             return false;
         }
 
-        if (isEmpty(guipcarrer_car)) {
-            alert('보험가입경력 - 차량을 선택하세요.');
+        // if (isEmpty(guipcarrer_car)) {
+        //     alert('보험가입경력 - 차량을 선택하세요.');
 
-            return false;
-        }
+        //     return false;
+        // }
 
         if (isEmpty(traffic)) {
             alert('교통법규위반을 선택하세요.');
@@ -171,6 +171,16 @@ export class CompareDTO {
             alert('특별할증율 - 기본할증을 선택하세요.');
 
             return false;
+        } else {
+            if (special_code !== '0') {
+                if (sago3 === '0') {
+                    alert(
+                        '특별할증이 있는 경우 3년간 사고건수와 1년간 사고 건수를 정확히 입력하세요.',
+                    );
+
+                    return false;
+                }
+            }
         }
 
         if (isEmpty(special_code2)) {

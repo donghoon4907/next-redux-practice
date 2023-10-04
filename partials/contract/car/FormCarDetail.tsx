@@ -28,8 +28,6 @@ export const FormCarDetail: FC<Props> = () => {
     const [checkLpg] = useCheckbox(false);
     // 탑차 여부
     const [checkTopcar] = useCheckbox(false);
-    // 스포츠카 여부
-    // const [checkSportcar] = useCheckbox(false);
     // 스포츠카
     const [sportcar] = useSelect(carConstants.sportcar);
     // 차량연식
@@ -185,7 +183,6 @@ export const FormCarDetail: FC<Props> = () => {
                                     >
                                         <MySelect
                                             inputId="sportcar"
-                                            required
                                             {...sportcar}
                                         />
                                     </div>
@@ -210,7 +207,6 @@ export const FormCarDetail: FC<Props> = () => {
                                     >
                                         <MySelect
                                             inputId="caryear"
-                                            required
                                             {...caryear}
                                         />
                                     </div>
@@ -347,8 +343,8 @@ export const FormCarDetail: FC<Props> = () => {
                                         {...checkAbsHalin}
                                     />
                                     <MyCheckbox
-                                        id="imo"
-                                        name="abs_halin"
+                                        id="check_imo"
+                                        name="imo"
                                         label="이모빌"
                                         value="1"
                                         {...checkImo}

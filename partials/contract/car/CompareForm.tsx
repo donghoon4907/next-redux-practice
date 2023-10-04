@@ -4,10 +4,12 @@ import { MyButton } from '@components/button';
 import { MyFooter } from '@components/footer';
 import { CompareDTO } from '@dto/contractor/Compare.dto';
 
-import { FormCarGuarantee } from './CarGuarantee';
-import { FormCarDetail } from './CarDetail';
-import { FormCarRate } from './CarRate';
-import { FormCarCustomer } from './CarCustomer';
+import { FormCarGuarantee } from './FormCarGuarantee';
+import { FormCarDetail } from './FormCarDetail';
+import { FormCarRate } from './FormCarRate';
+import { FormCarCustomer } from './FormCarCustomer';
+import { WithLabel } from '@components/WithLabel';
+import { MySelect } from '@components/select';
 
 export const CarCompareForm: FC = () => {
     const displayName = 'wr-pages-compare-car';
@@ -16,14 +18,16 @@ export const CarCompareForm: FC = () => {
 
     const formRef = useRef<HTMLFormElement>(null);
 
+    const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+        evt.preventDefault();
+    };
+
     // 보험료 계산
     const handleCalculate = () => {
         if (formRef.current) {
             const formData = new FormData(formRef.current);
 
             const payload = Object.fromEntries(formData.entries());
-
-            console.log(payload);
 
             const compareDto = new CompareDTO(payload);
 
@@ -81,54 +85,46 @@ export const CarCompareForm: FC = () => {
 
     return (
         <>
-            {/* <div className={`${displayName}__header row`}>
-                    <div className="col-6">
-                        <div className="row">
-                            <div className="col">
-                                <WithLabel id="orga" label="지점" type="active">
-                                    <MySelect inputId="orga" />
-                                </WithLabel>
-                            </div>
-                            <div className="col">
-                                <WithLabel id="team" label="팀" type="active">
-                                    <MySelect inputId="orga" />
-                                </WithLabel>
-                            </div>
-                            <div className="col">
-                                <WithLabel
-                                    id="member"
-                                    label="구성원"
-                                    type="active"
-                                >
-                                    <MySelect inputId="orga" />
-                                </WithLabel>
-                            </div>
+            <div className={`${displayName}__header row`}>
+                <div className="col-6">
+                    <div className="row">
+                        <div className="col">
+                            <WithLabel id="orga" label="지점" type="active">
+                                <MySelect inputId="orga" />
+                            </WithLabel>
+                        </div>
+                        <div className="col">
+                            <WithLabel id="team" label="팀" type="active">
+                                <MySelect inputId="team" />
+                            </WithLabel>
+                        </div>
+                        <div className="col">
+                            <WithLabel id="member" label="구성원" type="active">
+                                <MySelect inputId="member" />
+                            </WithLabel>
                         </div>
                     </div>
-                    <div className="col-3">
-                        <div className="row">
-                            <div className="col">
-                                <WithLabel
-                                    id="manager"
-                                    label="담당"
-                                    type="active"
-                                >
-                                    <MySelect inputId="orga" />
-                                </WithLabel>
-                            </div>
-                            <div className="col">
-                                <WithLabel
-                                    id="status"
-                                    label="처리상태"
-                                    type="active"
-                                >
-                                    <MySelect inputId="orga" />
-                                </WithLabel>
-                            </div>
+                </div>
+                <div className="col-3">
+                    <div className="row">
+                        <div className="col">
+                            <WithLabel id="manager" label="담당" type="active">
+                                <MySelect inputId="manager" />
+                            </WithLabel>
+                        </div>
+                        <div className="col">
+                            <WithLabel
+                                id="status"
+                                label="처리상태"
+                                type="active"
+                            >
+                                <MySelect inputId="status" />
+                            </WithLabel>
                         </div>
                     </div>
-                </div> */}
-            <form className={displayName} ref={formRef}>
+                </div>
+            </div>
+            <form className={displayName} ref={formRef} onSubmit={handleSubmit}>
                 <div className={`${displayName}__body row wr-mt`}>
                     <div
                         className={`${displayName}__left wr-pages-detail__left`}

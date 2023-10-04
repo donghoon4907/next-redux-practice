@@ -189,11 +189,7 @@ export const FormCarGuarantee: FC<Props> = () => {
                             </label>
                         </td>
                         <td>
-                            <MySelect
-                                inputId="goout1"
-                                required
-                                {...gooutDist}
-                            />
+                            <MySelect inputId="goout1" {...gooutDist} />
                         </td>
                         <td>
                             <label
@@ -204,11 +200,7 @@ export const FormCarGuarantee: FC<Props> = () => {
                             </label>
                         </td>
                         <td>
-                            <MySelect
-                                inputId="goout_dist"
-                                required
-                                {...gooutDetail}
-                            />
+                            <MySelect inputId="goout_dist" {...gooutDetail} />
                         </td>
                     </tr>
                     <tr>

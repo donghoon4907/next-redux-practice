@@ -22,6 +22,7 @@ export const FormCarnums: FC<Props> = () => {
     // 차종
     const [type, setType] = useNumbericInput('', {
         maxLength: 3,
+        isFirstZero: true,
         callbackOnChange: (nextVal) => {
             if (typeof nextVal === 'string') {
                 syncDirect(locale.value, nextVal, usage.value!, num.value);
@@ -39,6 +40,7 @@ export const FormCarnums: FC<Props> = () => {
     // 등록 번호
     const [num, setNum] = useNumbericInput('', {
         maxLength: 4,
+        isFirstZero: true,
         callbackOnChange: (nextVal) => {
             if (typeof nextVal === 'string') {
                 syncDirect(locale.value, type.value, usage.value, nextVal);

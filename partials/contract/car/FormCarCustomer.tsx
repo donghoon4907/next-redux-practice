@@ -10,9 +10,9 @@ import {
     residentNumToBirthday,
 } from '@utils/calculator';
 import { FormInput, FormResidentNumberInput } from '@components/input/Form';
-import { FormCarnums } from './Carnums';
-import { FormCarDate } from './CarDate';
-import { FormCarUsage } from './CarUsage';
+import { FormCarnums } from './FormCarnums';
+import { FormCarDate } from './FormCarDate';
+import { FormCarUsage } from './FormCarUsage';
 import { FormSelect } from '@components/select/Form';
 
 interface Props {}
@@ -86,7 +86,6 @@ export const FormCarCustomer: FC<Props> = () => {
                                         id="jumin"
                                         name="jumin"
                                         placeholder="주민번호"
-                                        required
                                         where={{
                                             callbackOnBlur: handleBlurJumin,
                                         }}
@@ -169,7 +168,6 @@ export const FormCarCustomer: FC<Props> = () => {
                                     <FormInput
                                         id="name"
                                         name="name"
-                                        required
                                         placeholder="고객명"
                                     />
                                 </div>
@@ -204,7 +202,6 @@ export const FormCarCustomer: FC<Props> = () => {
                                 >
                                     <FormSelect
                                         inputId="carfamily"
-                                        required
                                         options={carConstants.family}
                                         defaultValue={carConstants.family[0]}
                                     />
@@ -247,7 +244,6 @@ export const FormCarCustomer: FC<Props> = () => {
                                 >
                                     <FormSelect
                                         inputId="carage"
-                                        required
                                         options={carConstants.minAge}
                                         defaultValue={carConstants.minAge[6]}
                                     />
@@ -269,7 +265,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     <FormSelect
                                         inputId="divide_num"
                                         options={carConstants.payMethod}
-                                        defaultValue={carConstants.payMethod[6]}
+                                        defaultValue={carConstants.payMethod[0]}
                                     />
                                 </div>
                             </div>
@@ -297,7 +293,7 @@ export const FormCarCustomer: FC<Props> = () => {
                     </tr>
                     <tr>
                         <td>
-                            <label htmlFor="prev_comp">전보험사</label>
+                            <label htmlFor="pre_com">전보험사</label>
                         </td>
                         <td>
                             <div className={`${displayName}__description`}>
@@ -307,7 +303,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     }}
                                 >
                                     <FormSelect
-                                        inputId="prev_comp"
+                                        inputId="pre_com"
                                         options={carUseCompanies}
                                     />
                                 </div>

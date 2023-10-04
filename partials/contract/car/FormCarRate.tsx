@@ -98,7 +98,6 @@ export const FormCarRate: FC<Props> = () => {
                                 >
                                     <MySelect
                                         inputId="guipcarrer"
-                                        required
                                         {...guipcarrer}
                                     />
                                 </div>
@@ -118,7 +117,6 @@ export const FormCarRate: FC<Props> = () => {
                                 >
                                     <MySelect
                                         inputId="guipcarrer_car"
-                                        required
                                         {...guipcarrerCar}
                                     />
                                 </div>
@@ -183,7 +181,6 @@ export const FormCarRate: FC<Props> = () => {
                                 >
                                     <MySelect
                                         inputId="traffic"
-                                        required
                                         {...trafficDist}
                                     />
                                 </div>
@@ -213,7 +210,6 @@ export const FormCarRate: FC<Props> = () => {
                                 >
                                     <MySelect
                                         inputId="childdrive"
-                                        required
                                         {...childdrive}
                                     />
                                 </div>
@@ -236,17 +232,15 @@ export const FormCarRate: FC<Props> = () => {
                                         width: 150,
                                     }}
                                 >
-                                    <MySelect
-                                        inputId="halin"
-                                        required
-                                        {...halin}
-                                    />
+                                    <MySelect inputId="halin" {...halin} />
                                 </div>
                                 {(guipcarrer.value?.value === 'B2' ||
                                     guipcarrer.value?.value === 'B3') && (
                                     <MyCheckbox
                                         id="rate_u"
+                                        name="rate_u"
                                         label="군/법인/해외경력인정"
+                                        value="1"
                                         {...checkRateU}
                                     />
                                 )}
@@ -276,7 +270,6 @@ export const FormCarRate: FC<Props> = () => {
                                 >
                                     <MySelect
                                         inputId="special_code"
-                                        required
                                         menuPlacement="top"
                                         {...specialCode}
                                     />
@@ -297,7 +290,6 @@ export const FormCarRate: FC<Props> = () => {
                                 >
                                     <MySelect
                                         inputId="special_code2"
-                                        required
                                         menuPlacement="top"
                                         {...specialCode2}
                                     />
@@ -324,11 +316,7 @@ export const FormCarRate: FC<Props> = () => {
                                         width: 190,
                                     }}
                                 >
-                                    <MySelect
-                                        inputId="ss_sago3"
-                                        required
-                                        {...ssSago3}
-                                    />
+                                    <MySelect inputId="ss_sago3" {...ssSago3} />
                                 </div>
 
                                 <div>
