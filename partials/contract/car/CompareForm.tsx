@@ -3,13 +3,13 @@ import { useRef } from 'react';
 import { MyButton } from '@components/button';
 import { MyFooter } from '@components/footer';
 import { CompareDTO } from '@dto/contractor/Compare.dto';
+import { WithLabel } from '@components/WithLabel';
+import { MySelect } from '@components/select';
 
 import { FormCarGuarantee } from './FormCarGuarantee';
 import { FormCarDetail } from './FormCarDetail';
 import { FormCarRate } from './FormCarRate';
 import { FormCarCustomer } from './FormCarCustomer';
-import { WithLabel } from '@components/WithLabel';
-import { MySelect } from '@components/select';
 
 export const CarCompareForm: FC = () => {
     const displayName = 'wr-pages-compare-car';

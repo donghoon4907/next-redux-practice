@@ -46,6 +46,7 @@ export const DateAndSLInput: FC<Props> = ({
                         type ? 'btn-primary' : 'btn-secondary'
                     } btn-${size}`}
                     onClick={handleClickButton}
+                    disabled={disabled}
                 >
                     {type ? '양력' : '음력'}
                 </MyButton>
