@@ -10,7 +10,7 @@ import { MyInput } from '@components/input';
 
 interface Props {}
 // 차량번호 입력
-export const FormCarnums: FC<Props> = () => {
+export const CarnumField: FC<Props> = () => {
     // 지역
     const [locale, setLocale] = useSelect(carConstants.locale, undefined, {
         callbackOnChange: (nextVal) => {

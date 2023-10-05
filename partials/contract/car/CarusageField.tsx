@@ -4,7 +4,7 @@ import { MyRadio } from '@components/radio';
 
 interface Props {}
 // 차량용도
-export const FormCarUsage: FC<Props> = () => {
+export const CarusageField: FC<Props> = () => {
     // 시작일
     const [caruse, setCaruse] = useState('1');
 

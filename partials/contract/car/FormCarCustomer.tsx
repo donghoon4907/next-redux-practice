@@ -10,10 +10,11 @@ import {
     residentNumToBirthday,
 } from '@utils/calculator';
 import { FormInput, FormResidentNumberInput } from '@components/input/Form';
-import { FormCarnums } from './FormCarnums';
-import { FormCarDate } from './FormCarDate';
-import { FormCarUsage } from './FormCarUsage';
 import { FormSelect } from '@components/select/Form';
+
+import { CardateField } from './CarDateField';
+import { CarnumField } from './CarnumField';
+import { CarusageField } from './CarusageField';
 
 interface Props {}
 // 고객기본정보
@@ -103,7 +104,7 @@ export const FormCarCustomer: FC<Props> = () => {
                         </td>
                         <td>
                             <div className={`${displayName}__description`}>
-                                <FormCarnums />
+                                <CarnumField />
                             </div>
                         </td>
                     </tr>
@@ -118,7 +119,7 @@ export const FormCarCustomer: FC<Props> = () => {
                         </td>
                         <td>
                             <div className={`${displayName}__description`}>
-                                <FormCarDate />
+                                <CardateField />
                             </div>
                         </td>
                     </tr>
@@ -180,7 +181,7 @@ export const FormCarCustomer: FC<Props> = () => {
                         </td>
                         <td>
                             <div className={`${displayName}__description`}>
-                                <FormCarUsage />
+                                <CarusageField />
                             </div>
                         </td>
                     </tr>

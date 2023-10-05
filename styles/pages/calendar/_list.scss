@@ -1,0 +1,32 @@
+.wr-pages-calendar {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+
+        @include wr-card;
+    }
+
+    &__body {
+        border: 1px solid $wr-divider-color-300;
+        flex: 1;
+        overflow: hidden;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        padding: $wr-gutter-size;
+        overflow: auto;
+
+        & > * {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+}

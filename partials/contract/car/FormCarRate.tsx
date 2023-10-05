@@ -1,5 +1,4 @@
 import type { FC } from 'react';
-
 import { MyButton } from '@components/button';
 import { MySelect } from '@components/select';
 import { useSelect } from '@hooks/use-select';

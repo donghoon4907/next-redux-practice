@@ -63,6 +63,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                     '/select-upload',
                     '/etc/shop_list',
                     '/calculate',
+                    '/calendar',
                 ].includes(route)
             ) {
                 const tab = new TabModule();

@@ -1,0 +1,40 @@
+.wr-calendar {
+    & table {
+        width: 100%;
+        table-layout: fixed; /* 테이블 레이아웃을 고정으로 설정 */
+    }
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        min-height: 160px;
+        height: 100%;
+    }
+
+    &__date {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+
+        &--sunday {
+            color: $red !important;
+        }
+
+        &--saturday {
+            color: $blue !important;
+        }
+    }
+
+    &__event {
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    &__content {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        line-height: 1.5;
+    }
+}

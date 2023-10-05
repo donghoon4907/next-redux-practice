@@ -31,6 +31,7 @@
         "react-redux": "^8.0.2",
         "react-select": "^5.7.3",
         "react-table": "^7.8.0",
+        "react-to-print": "^2.14.15",
         "reactstrap": "^9.1.10",
         "recharts": "^2.6.2",
         "redux": "4.0.5",

@@ -7,7 +7,7 @@ import { useDatepicker } from '@hooks/use-datepicker';
 
 interface Props {}
 // 가입예정일
-export const FormCarDate: FC<Props> = () => {
+export const CardateField: FC<Props> = () => {
     // 시작일
     const [idate, setIdate] = useDatepicker(new Date(), {
         callbackOnChange: (nextDate) => {
