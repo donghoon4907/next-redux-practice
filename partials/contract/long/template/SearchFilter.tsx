@@ -2,7 +2,6 @@ import type { FC } from 'react';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
 import {
     compareAsc,
     isSameMonth,
@@ -13,10 +12,11 @@ import {
     addMonths,
 } from 'date-fns';
 import { DateRangePicker } from 'rsuite';
+import { format } from 'date-fns';
+import { useSelector } from 'react-redux';
 import { HrState } from '@reducers/hr';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
-import { useSelector } from 'react-redux';
 import { AppState } from '@reducers/index';
 import { LongState } from '@reducers/long';
 import { useSelect } from '@hooks/use-select';
@@ -24,12 +24,12 @@ import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useDateRangepicker } from '@hooks/use-datepicker';
 import longConstants from '@constants/options/long';
 import { DISTS } from '@constants/selectOption';
-import { TabModule } from '@utils/storage';
 import { useApi } from '@hooks/use-api';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { MySelect } from '@components/select';
 import { WithArrow } from '@components/WithArrow';
 import { SearchInput } from '@components/input/Search';
+import { useSearch } from '@hooks/use-search';
 
 interface Props {}
 
@@ -45,6 +45,8 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
     const { longs } = useSelector<AppState, LongState>((props) => props.long);
 
     const getUsers = useApi(getUsersRequest);
+
+    const search = useSearch();
 
     // 검색필터 - 조직
     const [orga, setOrga] = useState<CoreSelectOption | null>(null);
@@ -66,28 +68,27 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
     // 검색필터 - 입금구분
     const [dist] = useSelect(DISTS, null);
     // 검색필터 - 검색어
-    const [search] = useInput('');
+    const [keyword] = useInput('');
 
     const handleSearch = () => {
-        let url = `/contract/long/list?page=1&nums=${longs.lastPayload!.nums}`;
+        const { nums } = router.query;
+
+        const searchParams = new URLSearchParams();
+
+        searchParams.append('page', '1');
+
+        if (nums) {
+            searchParams.append('nums', nums as string);
+        }
 
         if (contdate.value !== null) {
-            url += `&paydate=${contdate.value
-                .map((v) => dayjs(v).format('YYYY-MM-DD'))
-                .join(',')}`;
-        }
-        // 동일한 요청 시 reject
-        if (url === router.asPath) {
-            return;
+            searchParams.append(
+                'paydate',
+                contdate.value.map((v) => format(v, 'yyyy-MM-dd')).join(','),
+            );
         }
 
-        const tab = new TabModule();
-
-        tab.update('/contract/long/list', {
-            to: url,
-        });
-
-        router.replace(url);
+        search(searchParams.toString());
     };
 
     const handleChangeOrga = (org: CoreSelectOption | null) => {
@@ -134,20 +135,18 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
     };
 
     useEffect(() => {
-        if (longs.lastPayload) {
-            if (longs.lastPayload.condition) {
-                if (longs.lastPayload.condition.paydate) {
-                    setContdate(
-                        longs.lastPayload.condition.paydate.map(
-                            (v) => new Date(v),
-                        ) as [Date, Date],
-                    );
-                } else {
-                    setContdate(null);
-                }
-            }
+        const { paydate } = router.query;
+
+        if (paydate) {
+            const nextContdate = new String(paydate)
+                .split(',')
+                .map((v) => new Date(v)) as [Date, Date];
+
+            setContdate(nextContdate);
+        } else {
+            setContdate(null);
         }
-    }, [longs.lastPayload]);
+    }, [router]);
 
     return (
         <>
@@ -254,12 +253,12 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                 </div>
             </div>
             <div className={`${displayName}__filter`}>
-                <WithLabel id="search" label="검색" type="active">
+                <WithLabel id="searchKeyword" label="검색" type="active">
                     <SearchInput
-                        id="search"
+                        id="searchKeyword"
                         placeholder="검색어를 입력하세요"
-                        {...search}
                         onSearch={handleSearch}
+                        {...keyword}
                     />
                 </WithLabel>
             </div>

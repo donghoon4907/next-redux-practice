@@ -62,10 +62,7 @@ const Longs: NextPage = () => {
                         </div>
                     </div>
                     <MyFooter>
-                        <MyPagination
-                            payload={longs.lastPayload}
-                            total={longs.total.count}
-                        >
+                        <MyPagination total={longs.total.count}>
                             <span>
                                 건수: {longs.total.count.toLocaleString()}
                             </span>

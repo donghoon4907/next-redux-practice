@@ -112,8 +112,6 @@ export const SetCarAccModal: FC<Props> = ({ setExternalAccs }) => {
                     price: (+v.price).toLocaleString(),
                 }));
 
-            console.log(checkedAccs);
-
             let checkedCount = 0;
             for (let i = 0; i < checkedAccs.length; i++) {
                 next[checkedCount] = checkedAccs[i];

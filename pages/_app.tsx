@@ -18,7 +18,7 @@ import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const { events, asPath, route, pathname } = useRouter();
+    const router = useRouter();
 
     const dispatch = useDispatch();
 
@@ -64,17 +64,17 @@ function MyApp({ Component, pageProps }: AppProps) {
                     '/etc/shop_list',
                     '/calculate',
                     '/calendar',
-                ].includes(route)
+                ].includes(router.route)
             ) {
                 const tab = new TabModule();
 
                 dispatch(initTab(tab.getAll()));
             } else {
-                const [_, gnb] = asPath.split('/');
+                const [_, gnb] = router.asPath.split('/');
 
                 // 로그인 페이지 추가 제한
                 if (gnb !== 'login') {
-                    initializeTab(pathname);
+                    initializeTab(router.pathname);
                     // 게시판 페이지 추가 제한
                     if (gnb !== 'board') {
                         dispatch(updateGnb(ASIDE_MENU[gnb]));
@@ -83,12 +83,12 @@ function MyApp({ Component, pageProps }: AppProps) {
             }
         }
 
-        events.on('routeChangeComplete', onRouteChange);
+        // events.on('routeChangeComplete', onRouteChange);
 
         return () => {
-            events.off('routeChangeComplete', onRouteChange);
+            // events.off('routeChangeComplete', onRouteChange);
         };
-    }, [route, asPath]);
+    }, [router]);
 
     return (
         <MyProvider>

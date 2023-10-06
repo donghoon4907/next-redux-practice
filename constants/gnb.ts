@@ -561,6 +561,11 @@ export const ASIDE_MENU: any = {
             id: 'hr-user',
             label: '영업가족',
             to: '',
+            list: {
+                id: 'hr-user_list',
+                label: '영업가족목록',
+                to: '/hr/user/list',
+            },
             create: {
                 id: 'hr-user_create',
                 label: '영업가족등록',

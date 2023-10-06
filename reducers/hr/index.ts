@@ -5,6 +5,7 @@ import type { Code } from '@models/code';
 import type { OrgaDetail } from '@models/orga';
 import type { Commission } from '@models/commission';
 import type { Product } from '@models/product';
+import type { SearchUsersSuccessPayload } from '@actions/hr/search-users.action';
 import produce from 'immer';
 import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
@@ -20,6 +21,7 @@ import { GetOrgaActionTypes } from '@actions/hr/get-orga';
 import { GetUserActionTypes } from '@actions/hr/get-user';
 import { CommissionActionTypes } from '@actions/hr/set-commission.action';
 import { GetProductsActionTypes } from '@actions/hr/get-products';
+import { SearchUsersActionTypes } from '@actions/hr/search-users.action';
 
 export interface HrState {
     /**
@@ -58,9 +60,13 @@ export interface HrState {
      */
     orga: OrgaDetail | null;
     /**
-     * 영업가족 목록
+     * 영업가족 목록 - 간소화
      */
     users: CoreSelectOption[];
+    /**
+     * 영업가족 목록 - 검색
+     */
+    searchUsers: SearchUsersSuccessPayload;
     /**
      * 영업가족 상세
      */
@@ -123,6 +129,12 @@ const initialState: HrState = {
     orgas: [],
     orga: null,
     users: [],
+    searchUsers: {
+        fields: [],
+        rows: [],
+        total: null,
+        lastPayload: null,
+    },
     user: null,
     selectedOrga: null,
     loggedInUser: null,
@@ -186,6 +198,10 @@ export const hrReducer: Reducer<HrState, any> = (
             }
             case GetUsersActionTypes.SUCCESS: {
                 draft.users = action.payload;
+                break;
+            }
+            case SearchUsersActionTypes.SUCCESS: {
+                draft.searchUsers = action.payload;
                 break;
             }
             case GetUserActionTypes.SUCCESS: {

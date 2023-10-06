@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { RowSelectionState } from '@tanstack/react-table';
 import type { MyColumnDef } from '@hooks/use-column';
 import type { CoreSetState } from '@interfaces/core';
+import { useRouter } from 'next/router';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import {
     useReactTable,
@@ -10,7 +11,7 @@ import {
     getPaginationRowModel,
 } from '@tanstack/react-table';
 
-import { AdditionalTd, EmptyTd, MyTd } from './Td';
+import { EmptyTd, MyTd } from './Td';
 import { MyTh } from './Th';
 import { MyTableExtension } from './Extension';
 
@@ -61,11 +62,15 @@ export const MyTable: FC<Props> = ({
     // addCount = 0,
     onClickAddRow,
 }) => {
+    const router = useRouter();
+
     const tableRef = useRef<HTMLTableElement>(null);
 
     const tableWrapRef = useRef<HTMLDivElement>(null);
     // 키보드 이벤트 활성화 여부
     const [keyEnabled, setKeyEnabled] = useState<boolean>(false);
+    // order header id
+    const [order, setOrder] = useState('');
 
     const table = useReactTable({
         data,
@@ -135,6 +140,14 @@ export const MyTable: FC<Props> = ({
         };
     }, [handleKeyDown]);
 
+    useEffect(() => {
+        if (router.query.order) {
+            setOrder(router.query.order as string);
+        } else {
+            setOrder('');
+        }
+    }, [router]);
+
     // useEffect(() => {
     //     if (tableRef.current) {
     //         // 말 줄임표 처리 관련
@@ -177,7 +190,12 @@ export const MyTable: FC<Props> = ({
                         return (
                             <tr key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
-                                    <MyTh key={header.id} {...header} />
+                                    <MyTh
+                                        key={header.id}
+                                        order={order}
+                                        setOrder={setOrder}
+                                        {...header}
+                                    />
                                 ))}
                             </tr>
                         );

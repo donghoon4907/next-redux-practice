@@ -1,14 +1,12 @@
 import type { FC } from 'react';
 import type { Cell } from '@tanstack/react-table';
 import { memo } from 'react';
-import { flexRender } from '@tanstack/react-table';
+// import { flexRender } from '@tanstack/react-table';
 import { MyColumnDef } from '@hooks/use-column';
 import { InternalInput } from '@components/input/Internal';
-import {
-    checkSeparatorNeeded,
-    checkTextAlignRightNeeded,
-    isNumberic,
-} from '@utils/validation';
+import { checkSeparatorNeeded } from '@utils/validation';
+import { isValidOnlyNumPhone } from '@utils/validator/user';
+import { convertPhoneNumber } from '@utils/converter';
 
 interface EmptyTdProps {
     colSpan: number;
@@ -33,7 +31,13 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
     //     className += 'text-end';
     // }
 
-    if (Number.isInteger(getValue()) && checkSeparatorNeeded(column.id)) {
+    let value = getValue() as string;
+    // 휴대폰 번호의 경우
+    if (typeof value === 'string' && isValidOnlyNumPhone(value)) {
+        value = convertPhoneNumber(value);
+    }
+
+    if (Number.isInteger(value) && checkSeparatorNeeded(column.id)) {
         className += 'text-end';
     } else {
         className += 'text-start';
@@ -41,7 +45,8 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
 
     return (
         <td className={className}>
-            {flexRender(column.columnDef.cell, getContext())}
+            {value}
+            {/* {flexRender(column.columnDef.cell, getContext())} */}
         </td>
     );
 });

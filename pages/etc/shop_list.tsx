@@ -269,7 +269,7 @@ const ShopList: NextPage = () => {
                         <MyPagination
                             // requestAction={getPostsRequest}
                             // successAction={getPostsSuccess}
-                            payload={boards.lastPayload}
+                            // payload={boards.lastPayload}
                             total={boards.total.count}
                         >
                             <span>

@@ -12,9 +12,9 @@ import {
 import { FormInput, FormResidentNumberInput } from '@components/input/Form';
 import { FormSelect } from '@components/select/Form';
 
-import { CardateField } from './CarDateField';
 import { CarnumField } from './CarnumField';
 import { CarusageField } from './CarusageField';
+import { CardateField } from './CardateField';
 
 interface Props {}
 // 고객기본정보

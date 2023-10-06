@@ -9,6 +9,7 @@ import type { UpdateUserRequestPayload } from '@actions/hr/update-user.action';
 import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
 import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum';
 import type { GetProductsRequestPayload } from '@actions/hr/get-products';
+import type { SearchUsersRequestPayload } from '@actions/hr/search-users.action';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getInternalAxios } from '@utils/axios/internal';
@@ -83,6 +84,17 @@ export function getUsers(payload: GetUsersRequestPayload) {
     return getBackendAxios().get(`/orga/simpleUsers/${payload.idx}`);
 }
 
+export function searchUsers({
+    page,
+    nums,
+    ...rest
+}: SearchUsersRequestPayload) {
+    return getBackendAxios().post(
+        `/orga/list/user?page=${page}&nums=${nums}`,
+        rest,
+    );
+}
+
 export function getUser(payload: GetUserRequestPayload) {
     return getBackendAxios().get(`/orga/userinfo/${payload.idx}`);
 }
@@ -121,6 +133,7 @@ const rootServices = {
     getOrga,
     getUsers,
     beforeGetUsers,
+    searchUsers,
     getUser,
     beforeGetProducts,
     getProducts,
