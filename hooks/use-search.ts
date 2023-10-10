@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { TabModule } from '@utils/storage';
+
 import { useLoading } from './use-loading';
 
 export const useSearch = () => {
@@ -7,7 +8,7 @@ export const useSearch = () => {
 
     const loading = useLoading();
 
-    const fire = (search: string) => {
+    const handleSearch = (search: string) => {
         const url = `${router.pathname}?${search}`;
 
         // 동일한 요청 시 reject
@@ -25,5 +26,5 @@ export const useSearch = () => {
         router.replace(url);
     };
 
-    return fire;
+    return handleSearch;
 };

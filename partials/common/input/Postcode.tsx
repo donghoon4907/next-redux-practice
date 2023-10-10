@@ -44,17 +44,21 @@ export const PostcodeInput: FC<Props> = ({
                             disabled
                             onClick={onClickPostcode}
                             {...postcodeHooks}
-                            button={{
-                                type: 'button',
-                                className: `btn-primary btn-${size}`,
-                                disabled,
-                                onClick: onClickPostcode,
-                                children: (
-                                    <>
-                                        <span>찾기</span>
-                                    </>
-                                ),
-                            }}
+                            button={
+                                disabled
+                                    ? undefined
+                                    : {
+                                          type: 'button',
+                                          className: `btn-primary btn-${size}`,
+                                          disabled,
+                                          onClick: onClickPostcode,
+                                          children: (
+                                              <>
+                                                  <span>찾기</span>
+                                              </>
+                                          ),
+                                      }
+                            }
                         />
                     </WithLabel>
                 </div>

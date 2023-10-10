@@ -41,10 +41,11 @@
         & table td:last-child {
             border-right: none;
         }
-        & table tbody tr:last-child td,
-        & table tfoot tr:last-child td {
-            border-bottom: none;
-        }
+
+        // & table tbody tr:last-child td,
+        // & table tfoot tr:last-child td {
+        //     border-bottom: none;
+        // }
 
         & table tfoot tr:first-child td {
             border-top: 1px solid $wr-divider-color-300;

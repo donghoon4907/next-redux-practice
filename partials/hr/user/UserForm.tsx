@@ -11,7 +11,6 @@ import { MyTab } from '@components/tab';
 import { WithLabel } from '@components/WithLabel';
 import { MyInput } from '@components/input';
 import variables from '@styles/_variables.module.scss';
-import { MyLayout } from '@components/Layout';
 import { useApi } from '@hooks/use-api';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { MyFooter } from '@components/footer';
@@ -647,6 +646,11 @@ export const UserForm: FC<Props> = ({
         userConstants.qDivision,
         defaultLiaQualification,
     );
+    // 썸네일
+    let thumbnail = 'http://via.placeholder.com/200x220';
+    if (userid) {
+        thumbnail = `${process.env.STORAGE_PATH}/user/${userid}.jpg`;
+    }
 
     // 소득 설정 - 자동차 규정 라디오 변경 핸들러
     const handleChangeCarType = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -1112,7 +1116,7 @@ export const UserForm: FC<Props> = ({
                                             src={
                                                 lastSetPortraitImagePreview
                                                     ? lastSetPortraitImagePreview
-                                                    : 'http://via.placeholder.com/200x220'
+                                                    : thumbnail
                                             }
                                             alt="Avatar"
                                             onClick={handleClickImage}

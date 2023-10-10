@@ -1,5 +1,6 @@
 import type { FC, FormEvent } from 'react';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { LuSearch } from 'react-icons/lu';
 import { WithLabel } from '@components/WithLabel';
 import { useInput } from '@hooks/use-input';
@@ -9,6 +10,7 @@ import { MyInput } from '@components/input';
 import { MySelect } from '@components/select';
 import searchConstants from '@constants/search';
 import { useSelect } from '@hooks/use-select';
+import { findSelectOption } from '@utils/getter';
 
 interface Props {}
 
@@ -20,9 +22,9 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
     const search = useSearch();
 
     // 검색필터 - 검색어
-    const [keyword] = useInput('');
+    const [keyword, setKeyword] = useInput('');
     // 검색필터 - 검색종류
-    const [type] = useSelect(searchConstants.userSearchTypes);
+    const [type, setType] = useSelect(searchConstants.userSearchTypes);
 
     const handleSearch = (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
@@ -47,6 +49,21 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
         search(searchParams.toString());
     };
 
+    useEffect(() => {
+        const searchKeyword = router.query.search as string;
+        const searchType = router.query.type as string;
+
+        if (!isEmpty(searchKeyword)) {
+            setKeyword(searchKeyword);
+        }
+
+        if (!isEmpty(searchType)) {
+            setType(
+                findSelectOption(searchType, searchConstants.userSearchTypes),
+            );
+        }
+    }, [router]);
+
     return (
         <>
             <div className={`${displayName}__filter`}></div>
@@ -57,7 +74,7 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
                     <div
                         className="wr-with__extension"
                         style={{
-                            width: 120,
+                            width: 130,
                         }}
                     >
                         <MySelect placeholder="선택" {...type} />

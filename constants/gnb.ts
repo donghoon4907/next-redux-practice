@@ -29,66 +29,66 @@ export const ASIDE_MENU: any = {
                 to: '/customer/join/create',
             },
         },
-        nojoin: {
-            id: 'customer-nojoin',
-            label: '미가입고객',
-            to: '',
-            nojoin: {
-                id: 'customer-nojoin_nojoin',
-                label: '미가입고객',
-                to: '/customer/nojoin/nojoin',
-            },
-        },
-        incoming: {
-            id: 'customer-incoming',
-            label: '유입고객',
-            to: '',
-            incoming: {
-                id: 'customer-incoming_incoming',
-                label: '유입고객',
-                to: '/customer/incoming/incoming',
-            },
-        },
-        history: {
-            id: 'customer-history',
-            label: '고객접촉이력',
-            to: '',
-            spec: {
-                id: 'customer-history_spec',
-                label: '고객접촉명세',
-                to: '/customer/history/spec',
-            },
-            ftfm: {
-                id: 'customer-history_ftfm',
-                label: '고객대면관리',
-                to: '/customer/history/ftfm',
-            },
-            transcript: {
-                id: 'customer-history_transcript',
-                label: '녹취내역',
-                to: '/customer/history/transcript',
-            },
-            send: {
-                id: 'customer-history_send',
-                label: '메시징/발송',
-                to: '/customer/history/send',
-            },
-        },
-        status: {
-            id: 'customer-status',
-            label: '고객현황',
-            to: '',
-            region: {
-                id: 'customer-status_region',
-                label: '지역별 고객현황',
-                to: '/customer/status/region',
-            },
-            contract: {
-                id: 'customer-status_contract',
-                label: '고객별 계약현황',
-                to: '/customer/status/contract',
-            },
-        },
+        // nojoin: {
+        //     id: 'customer-nojoin',
+        //     label: '미가입고객',
+        //     to: '',
+        //     nojoin: {
+        //         id: 'customer-nojoin_nojoin',
+        //         label: '미가입고객',
+        //         to: '/customer/nojoin/nojoin',
+        //     },
+        // },
+        // incoming: {
+        //     id: 'customer-incoming',
+        //     label: '유입고객',
+        //     to: '',
+        //     incoming: {
+        //         id: 'customer-incoming_incoming',
+        //         label: '유입고객',
+        //         to: '/customer/incoming/incoming',
+        //     },
+        // },
+        // history: {
+        //     id: 'customer-history',
+        //     label: '고객접촉이력',
+        //     to: '',
+        //     spec: {
+        //         id: 'customer-history_spec',
+        //         label: '고객접촉명세',
+        //         to: '/customer/history/spec',
+        //     },
+        //     ftfm: {
+        //         id: 'customer-history_ftfm',
+        //         label: '고객대면관리',
+        //         to: '/customer/history/ftfm',
+        //     },
+        //     transcript: {
+        //         id: 'customer-history_transcript',
+        //         label: '녹취내역',
+        //         to: '/customer/history/transcript',
+        //     },
+        //     send: {
+        //         id: 'customer-history_send',
+        //         label: '메시징/발송',
+        //         to: '/customer/history/send',
+        //     },
+        // },
+        // status: {
+        //     id: 'customer-status',
+        //     label: '고객현황',
+        //     to: '',
+        //     region: {
+        //         id: 'customer-status_region',
+        //         label: '지역별 고객현황',
+        //         to: '/customer/status/region',
+        //     },
+        //     contract: {
+        //         id: 'customer-status_contract',
+        //         label: '고객별 계약현황',
+        //         to: '/customer/status/contract',
+        //     },
+        // },
     },
     sales: {
         spec: {
@@ -338,76 +338,76 @@ export const ASIDE_MENU: any = {
             //     to: '/contract/normal/sch',
             // },
         },
-        monitoring: {
-            id: 'contract-monitoring',
-            label: '판매모니터링',
-            to: '',
-            monitoring: {
-                id: 'contract-monitoring_monitoring',
-                label: '판매모니터링',
-                to: '/contract/monitoring/monitoring',
-            },
-        },
-        mcp: {
-            id: 'contract-mcp',
-            label: '월마감실적',
-            to: '',
-            long: {
-                id: 'contract-mcp-long',
-                label: '장기',
-                to: '',
-                dw: {
-                    id: 'contract-mcp-long_dw',
-                    label: '장기입출금명세',
-                    to: '/contract/mcp/long/dw',
-                },
-                te: {
-                    id: 'contract-mcp-long_te',
-                    label: '장기배서명세',
-                    to: '/contract/mcp/long/te',
-                },
-                ti: {
-                    id: 'contract-mcp-long_ti',
-                    label: '장기보험상품',
-                    to: '/contract/mcp/long/ti',
-                },
-                cm: {
-                    id: 'contract-mcp-long_cm',
-                    label: '수금관리',
-                    to: '/contract/mcp/long/cm',
-                },
-            },
-            car: {
-                id: 'contract-mcp_car',
-                label: '자동차',
-                to: '/contract/mcp/car',
-            },
-            normal: {
-                id: 'contract-mcp_normal',
-                label: '일반',
-                to: '/contract/mcp/normal',
-            },
-        },
-        upload: {
-            id: 'contract-upload',
-            label: '자동업로드관리',
-            to: '',
-            upload: {
-                id: 'contract-upload_upload',
-                label: '자동업로드관리',
-                to: '/contract/upload/upload',
-            },
-        },
-        escalation: {
-            id: 'contract-escalation',
-            label: '이관',
-            to: '',
-            upload: {
-                id: 'contract-escalation_escalation',
-                label: '이관',
-                to: '/contract/escalation/escalation',
-            },
-        },
+        // monitoring: {
+        //     id: 'contract-monitoring',
+        //     label: '판매모니터링',
+        //     to: '',
+        //     monitoring: {
+        //         id: 'contract-monitoring_monitoring',
+        //         label: '판매모니터링',
+        //         to: '/contract/monitoring/monitoring',
+        //     },
+        // },
+        // mcp: {
+        //     id: 'contract-mcp',
+        //     label: '월마감실적',
+        //     to: '',
+        //     long: {
+        //         id: 'contract-mcp-long',
+        //         label: '장기',
+        //         to: '',
+        //         dw: {
+        //             id: 'contract-mcp-long_dw',
+        //             label: '장기입출금명세',
+        //             to: '/contract/mcp/long/dw',
+        //         },
+        //         te: {
+        //             id: 'contract-mcp-long_te',
+        //             label: '장기배서명세',
+        //             to: '/contract/mcp/long/te',
+        //         },
+        //         ti: {
+        //             id: 'contract-mcp-long_ti',
+        //             label: '장기보험상품',
+        //             to: '/contract/mcp/long/ti',
+        //         },
+        //         cm: {
+        //             id: 'contract-mcp-long_cm',
+        //             label: '수금관리',
+        //             to: '/contract/mcp/long/cm',
+        //         },
+        //     },
+        //     car: {
+        //         id: 'contract-mcp_car',
+        //         label: '자동차',
+        //         to: '/contract/mcp/car',
+        //     },
+        //     normal: {
+        //         id: 'contract-mcp_normal',
+        //         label: '일반',
+        //         to: '/contract/mcp/normal',
+        //     },
+        // },
+        // upload: {
+        //     id: 'contract-upload',
+        //     label: '자동업로드관리',
+        //     to: '',
+        //     upload: {
+        //         id: 'contract-upload_upload',
+        //         label: '자동업로드관리',
+        //         to: '/contract/upload/upload',
+        //     },
+        // },
+        // escalation: {
+        //     id: 'contract-escalation',
+        //     label: '이관',
+        //     to: '',
+        //     upload: {
+        //         id: 'contract-escalation_escalation',
+        //         label: '이관',
+        //         to: '/contract/escalation/escalation',
+        //     },
+        // },
     },
     income: {
         ps: {
@@ -512,51 +512,51 @@ export const ASIDE_MENU: any = {
         },
     },
     hr: {
-        department: {
-            id: 'hr-department',
-            label: '조직관리',
-            to: '',
-            business: {
-                id: 'hr-department-business',
-                label: '사업부',
-                to: '',
-                create: {
-                    id: 'hr-department-business_create',
-                    label: '사업부등록',
-                    to: '/hr/department/business/create',
-                },
-            },
-            headquarter: {
-                id: 'hr-department-headquarter',
-                label: '본부',
-                to: '',
-                create: {
-                    id: 'hr-department-headquarter_create',
-                    label: '본부등록',
-                    to: '/hr/department/headquarter/create',
-                },
-            },
-            branch: {
-                id: 'hr-department-branch',
-                label: '지점',
-                to: '',
-                create: {
-                    id: 'hr-department-branch_create',
-                    label: '지점등록',
-                    to: '/hr/department/branch/create',
-                },
-            },
-            team: {
-                id: 'hr-department-team',
-                label: '팀',
-                to: '',
-                create: {
-                    id: 'hr-department-team_create',
-                    label: '팀등록',
-                    to: '/hr/department/team/create',
-                },
-            },
-        },
+        // department: {
+        //     id: 'hr-department',
+        //     label: '조직관리',
+        //     to: '',
+        //     business: {
+        //         id: 'hr-department-business',
+        //         label: '사업부',
+        //         to: '',
+        //         create: {
+        //             id: 'hr-department-business_create',
+        //             label: '사업부등록',
+        //             to: '/hr/department/business/create',
+        //         },
+        //     },
+        //     headquarter: {
+        //         id: 'hr-department-headquarter',
+        //         label: '본부',
+        //         to: '',
+        //         create: {
+        //             id: 'hr-department-headquarter_create',
+        //             label: '본부등록',
+        //             to: '/hr/department/headquarter/create',
+        //         },
+        //     },
+        //     branch: {
+        //         id: 'hr-department-branch',
+        //         label: '지점',
+        //         to: '',
+        //         create: {
+        //             id: 'hr-department-branch_create',
+        //             label: '지점등록',
+        //             to: '/hr/department/branch/create',
+        //         },
+        //     },
+        //     team: {
+        //         id: 'hr-department-team',
+        //         label: '팀',
+        //         to: '',
+        //         create: {
+        //             id: 'hr-department-team_create',
+        //             label: '팀등록',
+        //             to: '/hr/department/team/create',
+        //         },
+        //     },
+        // },
         user: {
             id: 'hr-user',
             label: '영업가족',
@@ -572,46 +572,46 @@ export const ASIDE_MENU: any = {
                 to: '/hr/user/create',
             },
         },
-        manage: {
-            id: 'hr-manage',
-            label: '사용인관리',
-            to: '',
-            ars: {
-                id: 'hr-manage_ars',
-                label: '협회등록현황',
-                to: '/hr/manage/ars',
-            },
-            code: {
-                id: 'hr-manage_code',
-                label: '보험사별코드',
-                to: '/hr/manage/code',
-            },
-            iaei: {
-                id: 'hr-manage_iaei',
-                label: '산재고용보험',
-                to: '/hr/manage/iaei',
-            },
-        },
-        oa: {
-            id: 'hr-oa',
-            label: '조직위촉',
-            to: '',
-            tam: {
-                id: 'hr-oa_tam',
-                label: '시험신청 및 관리',
-                to: '/hr/oa/tam',
-            },
-        },
-        ioc: {
-            id: 'hr-ioc',
-            label: '제증명서발급',
-            to: '',
-            ioc: {
-                id: 'hr-ioc_ioc',
-                label: '제증명서발급',
-                to: '/hr/ioc/ioc',
-            },
-        },
+        // manage: {
+        //     id: 'hr-manage',
+        //     label: '사용인관리',
+        //     to: '',
+        //     ars: {
+        //         id: 'hr-manage_ars',
+        //         label: '협회등록현황',
+        //         to: '/hr/manage/ars',
+        //     },
+        //     code: {
+        //         id: 'hr-manage_code',
+        //         label: '보험사별코드',
+        //         to: '/hr/manage/code',
+        //     },
+        //     iaei: {
+        //         id: 'hr-manage_iaei',
+        //         label: '산재고용보험',
+        //         to: '/hr/manage/iaei',
+        //     },
+        // },
+        // oa: {
+        //     id: 'hr-oa',
+        //     label: '조직위촉',
+        //     to: '',
+        //     tam: {
+        //         id: 'hr-oa_tam',
+        //         label: '시험신청 및 관리',
+        //         to: '/hr/oa/tam',
+        //     },
+        // },
+        // ioc: {
+        //     id: 'hr-ioc',
+        //     label: '제증명서발급',
+        //     to: '',
+        //     ioc: {
+        //         id: 'hr-ioc_ioc',
+        //         label: '제증명서발급',
+        //         to: '/hr/ioc/ioc',
+        //     },
+        // },
     },
     board: {
         list: {

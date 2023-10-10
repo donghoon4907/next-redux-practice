@@ -211,6 +211,7 @@ export const MyTable: FC<Props> = ({
                         return (
                             <tr
                                 key={row.id}
+                                className="wr-border-b"
                                 onClick={() => handleClickRow(row.original)}
                             >
                                 {row.getVisibleCells().map((cell) => (

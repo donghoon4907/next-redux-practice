@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { wrapper } from '@store/redux';
@@ -26,7 +26,7 @@ const User: NextPage<HrState> = ({ user }) => {
     );
 
     // 탭 설정
-    useInitTab(`영업가족상세 - ${user.name}`);
+    useInitTab(`영업가족상세 - ${user.fc}`);
 
     const defaultMobileCom = findSelectOption(
         user.mobile_com,
@@ -206,7 +206,7 @@ const User: NextPage<HrState> = ({ user }) => {
                     idx={user.idx}
                     userid={user.userid}
                     defaultNick={user.nickname}
-                    defaultName={user.name}
+                    defaultName={user.fc}
                     defaultTitle={user.title}
                     defaultIdNum1={user.idnum1}
                     defaultBirthday={user.birthday}
@@ -304,7 +304,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             dispatch(
                 updateDepart({
-                    label: user.fulls,
+                    label: `${user.orga} ${user.fc}`,
                     value: user.orga_idx,
                 }),
             );
