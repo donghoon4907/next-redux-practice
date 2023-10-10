@@ -56,7 +56,11 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
     const [beforeRound] = useNumbericInput('1', { addComma: true });
     const [afterRound] = useNumbericInput('1', { addComma: true });
     // 검색필터 - 계약일자
-    const [contdate, setContdate] = useDateRangepicker(null);
+    const [contdate, setContdate] = useDateRangepicker([
+        startOfMonth(new Date()),
+        new Date(),
+    ]);
+
     // 검색필터 - 보험사
     const [company] = useSelect(longViewCompanies, null);
     // 검색필터 - 보종
@@ -79,9 +83,13 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
 
         if (nums) {
             searchParams.append('nums', nums as string);
+        } else {
+            searchParams.append('nums', '25');
         }
 
-        if (contdate.value !== null) {
+        if (contdate.value === null) {
+            return alert('계약일자를 입력하세요.');
+        } else {
             searchParams.append(
                 'paydate',
                 contdate.value.map((v) => format(v, 'yyyy-MM-dd')).join(','),
@@ -143,8 +151,6 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                 .map((v) => new Date(v)) as [Date, Date];
 
             setContdate(nextContdate);
-        } else {
-            setContdate(null);
         }
     }, [router]);
 

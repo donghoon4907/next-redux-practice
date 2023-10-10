@@ -106,12 +106,20 @@
         align-items: center;
         padding: $wr-gutter-size;
         color: $white !important;
+        cursor: pointer;
+        width: 100%;
+        outline: none;
+
+        &:hover,
+        &:focus {
+            background-color: #12247c;
+        }
 
         & > * {
             color: $white !important;
         }
 
-        & > button {
+        & > span {
             font-size: 20px;
             flex: 1;
         }

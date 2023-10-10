@@ -1,16 +1,17 @@
 import type { NextPage } from 'next';
-import type { FormEvent } from 'react';
+import type { FormEvent, MouseEvent } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 import { FaUser, FaKey, FaPowerOff, FaHeadset } from 'react-icons/fa';
-import { setCookie } from 'cookies-next';
+import { setCookie, deleteCookie, getCookie } from 'cookies-next';
 import { MyCheckbox } from '@components/checkbox';
 import { useInput } from '@hooks/use-input';
 import { wrapper } from '@store/redux';
 import externalsService from '@services/externalsService';
 import hrsService from '@services/hrsService';
 import { commonAxiosErrorHandler } from '@utils/error';
-import { MyButton } from '@components/button';
+import { useCheckbox } from '@hooks/use-checkbox';
 
 interface LoginPageProps {
     ip: string;
@@ -21,9 +22,17 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
 
     const router = useRouter();
 
-    const [userid] = useInput('');
+    const [userid, setUserid] = useInput('');
 
     const [password] = useInput('');
+
+    const [checkSaveId, setCheckSaveId] = useCheckbox(false);
+
+    const handleResetPassword = (evt: MouseEvent<HTMLAnchorElement>) => {
+        evt.preventDefault();
+
+        alert('준비중입니다.');
+    };
 
     const handleSubmit = async (evt: FormEvent) => {
         evt.preventDefault();
@@ -38,9 +47,16 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
             const { access_token } = data;
 
             if (access_token) {
-                const cookieKey = process.env.COOKIE_TOKEN_KEY || '';
+                const tokenKey = process.env.COOKIE_TOKEN_KEY || '';
+                const idKey = process.env.COOKIE_RECENT_LOGIN_KEY || '';
 
-                setCookie(cookieKey, access_token);
+                setCookie(tokenKey, access_token);
+
+                if (checkSaveId.checked) {
+                    setCookie(idKey, userid.value);
+                } else {
+                    deleteCookie(idKey);
+                }
 
                 router.replace('/contract/long/list');
             }
@@ -50,6 +66,17 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
             alert(message);
         }
     };
+
+    useEffect(() => {
+        const idKey = process.env.COOKIE_RECENT_LOGIN_KEY || '';
+
+        const _userid = getCookie(idKey) as string;
+        if (_userid) {
+            setUserid(_userid);
+
+            setCheckSaveId(true);
+        }
+    }, []);
 
     return (
         <>
@@ -103,24 +130,29 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                                     {...password}
                                 />
                             </div>
-                            <div className={`${displayName}__button wr-mt`}>
-                                <button type="submit" className="wr-btn btn">
-                                    로그인
-                                </button>
+                            <button
+                                type="submit"
+                                className={`${displayName}__button wr-mt`}
+                            >
+                                <span className="wr-btn btn">로그인</span>
                                 <div>
                                     <FaPowerOff size={25} />
                                 </div>
-                            </div>
+                            </button>
                         </form>
                         <div className={`${displayName}__services`}>
                             <div>
                                 <MyCheckbox
-                                    id="saveId"
+                                    id="save_id"
                                     label="사원번호 또는 ID 저장"
+                                    {...checkSaveId}
                                 />
                             </div>
                             <div className={`${displayName}__expand`}>
-                                <a href="#" className={`${displayName}__reset`}>
+                                <a
+                                    onClick={handleResetPassword}
+                                    className={`${displayName}__reset`}
+                                >
                                     비밀번호 초기화
                                 </a>
                             </div>
