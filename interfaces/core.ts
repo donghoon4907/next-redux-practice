@@ -9,6 +9,12 @@ export interface CorePayload {
     successAction?: (props: any) => void;
 }
 
+export interface CorePaginateOption {
+    order?: any;
+    page: number;
+    nums: number;
+}
+
 export interface CoreSelectOption {
     label: string;
     value: string;

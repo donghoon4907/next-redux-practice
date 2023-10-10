@@ -137,13 +137,7 @@ export const MyHeader: FC<Props> = () => {
                                 <GnbSubMenuItem to="/404">
                                     주요연락처
                                 </GnbSubMenuItem>
-                                <GnbSubMenuItem
-                                    tabOption={{
-                                        id: 'board-list',
-                                        label: '게시판 목록',
-                                    }}
-                                    to="/board/list"
-                                >
+                                <GnbSubMenuItem to="/board/list">
                                     <div className="wr-badge__wrap">
                                         <span>게시판</span>
                                         <span className="badge bg-danger">
@@ -151,7 +145,7 @@ export const MyHeader: FC<Props> = () => {
                                         </span>
                                     </div>
                                 </GnbSubMenuItem>
-                                <GnbSubMenuItem to="/404">
+                                <GnbSubMenuItem to="/calendar">
                                     일정관리
                                 </GnbSubMenuItem>
                                 <GnbSubMenuItem to="/404">

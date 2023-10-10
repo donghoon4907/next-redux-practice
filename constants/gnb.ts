@@ -12,7 +12,7 @@ export const GNBS: CoreMenuOption[] = [
 export const SUBMENUS: CoreMenuOption[] = [
     { id: 'submenu1', label: '통합검색', to: '#' },
     { id: 'submenu2', label: '게시판', to: '#' },
-    { id: 'submenu3', label: '일정관리', to: '#' },
+    { id: 'submenu3', label: '일정관리', to: '/calendar' },
     { id: 'submenu3', label: 'SMS/Fax', to: '#' },
     { id: 'submenu3', label: 'Mypage', to: '#' },
 ];
@@ -615,9 +615,14 @@ export const ASIDE_MENU: any = {
     },
     board: {
         list: {
-            id: 'contract-long_list',
+            id: 'board_list',
             label: '게시판목록',
             to: '/board/list',
         },
+    },
+    calendar: {
+        id: 'calendar',
+        label: '일정관리',
+        to: '/calendar',
     },
 };

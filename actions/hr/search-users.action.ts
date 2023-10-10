@@ -1,5 +1,9 @@
 import type { Action } from 'redux';
-import type { CorePaginateSuccessPayload, CorePayload } from '@interfaces/core';
+import type {
+    CorePaginateOption,
+    CorePaginateSuccessPayload,
+    CorePayload,
+} from '@interfaces/core';
 
 export const SEARCH_USERS_KEY = 'SEARCH_USERS';
 
@@ -9,11 +13,10 @@ export const SearchUsersActionTypes = {
     FAILURE: `${SEARCH_USERS_KEY}_FAILURE`,
 } as const;
 
-export interface SearchUsersRequestPayload extends CorePayload {
+export interface SearchUsersRequestPayload
+    extends CorePayload,
+        CorePaginateOption {
     condition?: any;
-    order?: any;
-    page: number;
-    nums: number;
 }
 
 export interface SearchUsersSuccessPayload

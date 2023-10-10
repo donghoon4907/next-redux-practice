@@ -14,7 +14,7 @@ export const MyCalendar: FC<Props> = () => {
 
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const [today, setToday] = useState(addMonths(new Date(), -1));
+    const [today, setToday] = useState(new Date());
 
     const calendar = createCalendar(today.getFullYear(), today.getMonth() + 1);
 

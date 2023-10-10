@@ -1,16 +1,10 @@
 import type { FC, MouseEvent } from 'react';
-import type {
-    CoreMenuOption,
-    CoreProps,
-    CoreLinkTabOption,
-} from '@interfaces/core';
+import type { CoreMenuOption, CoreProps } from '@interfaces/core';
 import { useLinkTab } from '@hooks/use-tab';
 
-interface Props extends CoreProps, Pick<CoreMenuOption, 'to'> {
-    tabOption?: Omit<CoreLinkTabOption, 'to'>;
-}
+interface Props extends CoreProps, Pick<CoreMenuOption, 'to'> {}
 
-export const GnbSubMenuItem: FC<Props> = ({ to, tabOption, children }) => {
+export const GnbSubMenuItem: FC<Props> = ({ to, children }) => {
     const tab = useLinkTab();
 
     // const { onToggle } = useDrawer();
@@ -18,11 +12,11 @@ export const GnbSubMenuItem: FC<Props> = ({ to, tabOption, children }) => {
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();
 
-        if (tabOption) {
-            // const { id, label } = tabOption;
-
-            tab.replace(to);
+        if (to === '/404') {
+            return alert('준비 중입니다.');
         }
+
+        tab.replace(to);
     };
 
     return (

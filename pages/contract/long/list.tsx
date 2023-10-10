@@ -85,7 +85,7 @@ const Longs: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const { page, nums, paydate } = ctx.query;
+        const { page, nums, paydate, order } = ctx.query;
 
         const params: GetLongsRequestPayload = {
             page: 1,
@@ -96,6 +96,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     dayjs(new Date()).format('YYYY-MM-DD'),
                 ],
             },
+            order: {},
             successAction: getLongsSuccess,
         };
 
@@ -107,6 +108,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
         if (paydate) {
             params.condition!['paydate'] = (paydate as string).split(',');
+        }
+
+        if (order) {
+            const [type, sort] = (order as string).split(',');
+
+            params.order[type] = sort;
         }
 
         dispatch(getLongsRequest(params));

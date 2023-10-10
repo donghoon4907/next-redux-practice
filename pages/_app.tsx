@@ -63,7 +63,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                     '/select-upload',
                     '/etc/shop_list',
                     '/calculate',
-                    '/calendar',
                 ].includes(router.route)
             ) {
                 const tab = new TabModule();
@@ -72,11 +71,11 @@ function MyApp({ Component, pageProps }: AppProps) {
             } else {
                 const [_, gnb] = router.asPath.split('/');
 
-                // 로그인 페이지 추가 제한
+                // 탭 추가 제한 페이지
                 if (gnb !== 'login') {
                     initializeTab(router.pathname);
-                    // 게시판 페이지 추가 제한
-                    if (gnb !== 'board') {
+                    // gnb 추가 제한 페이지
+                    if (!['board', 'calendar'].includes(gnb)) {
                         dispatch(updateGnb(ASIDE_MENU[gnb]));
                     }
                 }
@@ -85,9 +84,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         // events.on('routeChangeComplete', onRouteChange);
 
-        return () => {
-            // events.off('routeChangeComplete', onRouteChange);
-        };
+        // return () => {
+        //     events.off('routeChangeComplete', onRouteChange);
+        // };
     }, [router]);
 
     return (

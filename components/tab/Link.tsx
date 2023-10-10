@@ -35,7 +35,8 @@ export const LinkTab: FC<Props> = ({
 }) => {
     const router = useRouter();
 
-    const isActive = router.asPath.toLowerCase() === to.toLowerCase();
+    // const isActive = router.asPath.toLowerCase() === to.toLowerCase();
+    const isActive = location.pathname === id;
 
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();

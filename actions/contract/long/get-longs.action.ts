@@ -1,5 +1,6 @@
 import type { Action } from 'redux';
 import type {
+    CorePaginateOption,
     CorePaginateSuccessPayload,
     CorePayload,
     CoreSelectOption,
@@ -13,12 +14,12 @@ export const GetLongsActionTypes = {
     FAILURE: `${GET_LONGS_KEY}_FAILURE`,
 } as const;
 
-export interface GetLongsRequestPayload extends CorePayload {
+export interface GetLongsRequestPayload
+    extends CorePayload,
+        CorePaginateOption {
     condition?: {
         paydate?: Array<string>;
     };
-    page: number;
-    nums: number;
 }
 
 export interface GetLongsSuccessPayload

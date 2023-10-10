@@ -33,10 +33,10 @@ const initialState: BoardState = {
         rows: Array.from({ length: 30 }).map((_, i) => ({
             idx: `${i + 1}`,
             type: 'notice',
-            title: 'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas',
+            title: '테스트 게시물',
             writer: '영업지원0813',
-            createdAt: '2023.06.22',
-            viewCount: '2,345,510',
+            createdAt: '2023-06-22',
+            viewCount: 2345510,
         })),
         total: {
             count: 100000,

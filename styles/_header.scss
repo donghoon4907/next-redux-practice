@@ -173,12 +173,8 @@
         height: 100%;
         font-size: 14px;
         position: relative;
-        color: $white;
+        color: $white !important;
         margin-left: $wr-gutter-size;
-
-        &:hover {
-            color: white;
-        }
     }
 
     &__group {
