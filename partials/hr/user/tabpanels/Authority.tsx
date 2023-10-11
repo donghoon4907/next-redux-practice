@@ -39,84 +39,118 @@ export const AuthorityTabpanel: FC<Props> = ({
             </div>
             <hr />
             <div className="row">
-                <div className="col-3">
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__title">
-                            <strong>시스템사용</strong>
-                        </div>
-                        <div className="wr-pages-detail__content">
-                            <div className="wr-pages-detail__with">
-                                <MyCheckbox
-                                    id="at_is_web"
-                                    disabled={!editable}
-                                    label="웹"
-                                    {...useWeb}
-                                />
-                                <MyCheckbox
-                                    id="at_is_mobile"
-                                    disabled={!editable}
-                                    label="모바일"
-                                    {...useMobile}
-                                />
-                                <MyCheckbox
-                                    id="at_is_login"
-                                    label="중복로그인"
-                                    disabled
-                                />
+                <div className="col">
+                    <div className="row">
+                        <div className="col">
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__title">
+                                    <strong>시스템사용</strong>
+                                </div>
+                                <div className="wr-pages-detail__content">
+                                    <div className="wr-pages-detail__with">
+                                        <MyCheckbox
+                                            id="at_is_web"
+                                            disabled={!editable}
+                                            label="웹"
+                                            {...useWeb}
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_mobile"
+                                            disabled={!editable}
+                                            label="모바일"
+                                            {...useMobile}
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_login"
+                                            label="중복로그인"
+                                            disabled
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__lock">
+                                    <p>준비 중입니다.</p>
+                                </div>
+                                <div className="wr-pages-detail__title">
+                                    <strong>통계</strong>
+                                </div>
+                                <div className="wr-pages-detail__content">
+                                    <div className="wr-pages-detail__with">
+                                        <MyCheckbox
+                                            id="at_is_me"
+                                            label="본인"
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_orga"
+                                            label="소속조직"
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_com"
+                                            label="회사전체"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__lock">
-                            <p>준비 중입니다.</p>
-                        </div>
-                        <div className="wr-pages-detail__title">
-                            <strong>통계</strong>
-                        </div>
-                        <div className="wr-pages-detail__content">
-                            <div className="wr-pages-detail__with">
-                                <MyCheckbox id="at_is_me" label="본인" />
-                                <MyCheckbox id="at_is_orga" label="소속조직" />
-                                <MyCheckbox id="at_is_com" label="회사전체" />
+                        <div className="col">
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__lock">
+                                    <p>준비 중입니다.</p>
+                                </div>
+                                <div className="wr-pages-detail__title">
+                                    <strong>모든게시판</strong>
+                                </div>
+                                <div className="wr-pages-detail__content">
+                                    <div className="wr-pages-detail__with">
+                                        <MyCheckbox
+                                            id="at_is_bopen"
+                                            label="열람"
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_bwrite"
+                                            label="작성"
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_bapprove"
+                                            label="승인"
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_badmin"
+                                            label="관리자"
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="col-3">
-                    <div className="wr-pages-detail__block wr-ml">
-                        <div className="wr-pages-detail__lock">
-                            <p>준비 중입니다.</p>
-                        </div>
-                        <div className="wr-pages-detail__title">
-                            <strong>모든게시판</strong>
-                        </div>
-                        <div className="wr-pages-detail__content">
-                            <div className="wr-pages-detail__with">
-                                <MyCheckbox id="at_is_bopen" label="열람" />
-                                <MyCheckbox id="at_is_bwrite" label="작성" />
-                                <MyCheckbox id="at_is_bapprove" label="승인" />
-                                <MyCheckbox id="at_is_badmin" label="관리자" />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="wr-pages-detail__block wr-ml">
-                        <div className="wr-pages-detail__lock">
-                            <p>준비 중입니다.</p>
-                        </div>
-                        <div className="wr-pages-detail__title">
-                            <strong>목표관리</strong>
-                        </div>
-                        <div className="wr-pages-detail__content">
-                            <div className="wr-pages-detail__with">
-                                <MyCheckbox id="at_is_gopen" label="열람" />
-                                <MyCheckbox id="at_is_gset" label="설정" />
-                                <MyCheckbox id="at_is_gmanage" label="관리" />
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__lock">
+                                    <p>준비 중입니다.</p>
+                                </div>
+                                <div className="wr-pages-detail__title">
+                                    <strong>목표관리</strong>
+                                </div>
+                                <div className="wr-pages-detail__content">
+                                    <div className="wr-pages-detail__with">
+                                        <MyCheckbox
+                                            id="at_is_gopen"
+                                            label="열람"
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_gset"
+                                            label="설정"
+                                        />
+                                        <MyCheckbox
+                                            id="at_is_gmanage"
+                                            label="관리"
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="col">
-                    <div className="wr-pages-detail__block wr-ml">
+                    <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
