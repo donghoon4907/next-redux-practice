@@ -221,16 +221,20 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                                 placeholder="피보험자명"
                                 disabled={isDisabledName}
                                 {...name}
-                                button={{
-                                    type: 'submit',
-                                    className: 'btn-primary btn-md',
-                                    disabled: isDisabledName,
-                                    children: (
-                                        <>
-                                            <span>고객정보연결</span>
-                                        </>
-                                    ),
-                                }}
+                                button={
+                                    isDisabledName
+                                        ? undefined
+                                        : {
+                                              type: 'submit',
+                                              className: 'btn-primary btn-md',
+                                              disabled: isDisabledName,
+                                              children: (
+                                                  <>
+                                                      <span>고객정보연결</span>
+                                                  </>
+                                              ),
+                                          }
+                                }
                             />
                         </WithLabel>
                     </form>
@@ -276,6 +280,7 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                                     size="md"
                                     placeholder="생년월일"
                                     disabled={isDisabledAnother}
+                                    placement="topStart"
                                     hooks={birthday}
                                 />
                                 {age !== -1 && (

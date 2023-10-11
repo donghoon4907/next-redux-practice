@@ -84,31 +84,31 @@ export const LongPaysTabpanel: FC<Props> = ({
                             <th style={{ width: '100px' }}>
                                 <strong>영수일</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '50px' }}>
                                 <strong>회차</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '70px' }}>
                                 <strong>납입구분</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '70px' }}>
                                 <strong>대상년월</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '70px' }}>
                                 <strong>입금구분</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '120px' }}>
                                 <strong>수금실적</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '50px' }}>
                                 <strong>금종</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '7px' }}>
                                 <strong>납입주기</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '70px' }}>
                                 <strong>실적확인</strong>
                             </th>
-                            <th style={{ width: '100px' }}>
+                            <th style={{ width: '70px' }}>
                                 <strong>정산여부</strong>
                             </th>
                             <th>
@@ -119,7 +119,7 @@ export const LongPaysTabpanel: FC<Props> = ({
                     <tbody>
                         {pays.length === 0 && (
                             <tr>
-                                <td colSpan={editable ? 12 : 11}>
+                                <td colSpan={editable ? 13 : 12}>
                                     실적 정보가 없습니다.
                                 </td>
                             </tr>

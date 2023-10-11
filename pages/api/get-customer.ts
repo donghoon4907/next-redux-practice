@@ -15,8 +15,6 @@ export default async function handler(
             idx,
         });
 
-        console.log(data);
-
         res.status(200).json(data.data);
     } catch {
         res.status(500).json({
