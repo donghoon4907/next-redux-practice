@@ -95,6 +95,17 @@ export function searchUsers({
     );
 }
 
+export function searchOrgas({
+    page,
+    nums,
+    ...rest
+}: SearchUsersRequestPayload) {
+    return getBackendAxios().post(
+        `/orga/list/orga?page=${page}&nums=${nums}`,
+        rest,
+    );
+}
+
 export function getUser(payload: GetUserRequestPayload) {
     return getBackendAxios().get(`/orga/userinfo/${payload.idx}`);
 }
@@ -134,6 +145,7 @@ const rootServices = {
     getUsers,
     beforeGetUsers,
     searchUsers,
+    searchOrgas,
     getUser,
     beforeGetProducts,
     getProducts,

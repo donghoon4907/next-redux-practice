@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
-import type { SearchUsersRequestPayload } from '@actions/hr/search-users.action';
+import type { SearchOrgasRequestPayload } from '@actions/hr/search-orgas.action';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -15,21 +15,22 @@ import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserSearchFilterTemplate } from '@partials/hr/user/template/SearchFilter';
 import {
-    searchUsersRequest,
-    searchUsersSuccess,
-} from '@actions/hr/search-users.action';
+    searchOrgasSuccess,
+    searchOrgasRequest,
+} from '@actions/hr/search-orgas.action';
 
 const Orgas: NextPage = () => {
     const displayName = 'wr-pages-list';
 
     const router = useRouter();
 
-    const { searchUsers } = useSelector<AppState, HrState>((props) => props.hr);
+    const { searchOrgas } = useSelector<AppState, HrState>((props) => props.hr);
 
-    const columns = useColumn(searchUsers.fields);
+    const columns = useColumn(searchOrgas.fields);
 
-    const handleClickRow = ({ userid }: any) => {
-        router.replace(`/hr/user/${userid}`);
+    const handleClickRow = () => {
+        alert('준비중입니다.');
+        // router.replace(`/hr/user/${userid}`);
     };
 
     return (
@@ -51,16 +52,16 @@ const Orgas: NextPage = () => {
                         <div className="wr-table--scrollable wr-table--hover">
                             <MyTable
                                 columns={columns}
-                                data={searchUsers.rows}
-                                pageSize={searchUsers.lastPayload?.nums}
+                                data={searchOrgas.rows}
+                                pageSize={searchOrgas.lastPayload?.nums}
                                 onClickRow={handleClickRow}
                             />
                         </div>
                     </div>
                     <MyFooter>
-                        <MyPagination total={searchUsers.total.count}>
+                        <MyPagination total={searchOrgas.total.count}>
                             <span>
-                                건수: {searchUsers.total.count.toLocaleString()}
+                                건수: {searchOrgas.total.count.toLocaleString()}
                             </span>
                         </MyPagination>
                     </MyFooter>
@@ -74,12 +75,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
         const { page, nums, search, order } = ctx.query;
 
-        const params: SearchUsersRequestPayload = {
+        const params: SearchOrgasRequestPayload = {
             page: 1,
             nums: 25,
             condition: {},
             order: {},
-            successAction: searchUsersSuccess,
+            successAction: searchOrgasSuccess,
         };
 
         if (page) {
@@ -104,7 +105,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             // }
         }
 
-        dispatch(searchUsersRequest(params));
+        dispatch(searchOrgasRequest(params));
 
         dispatch(END);
 

@@ -16,7 +16,9 @@ export const SearchUsersActionTypes = {
 export interface SearchUsersRequestPayload
     extends CorePayload,
         CorePaginateOption {
-    condition?: any;
+    condition?: {
+        search?: string;
+    };
 }
 
 export interface SearchUsersSuccessPayload

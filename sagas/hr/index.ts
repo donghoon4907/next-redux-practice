@@ -11,6 +11,7 @@ import { watchUpdateUser } from './update-user';
 import { watchGetCompanyRegNum } from './get-company-regnum';
 import { watchGetProducts } from './get-products';
 import { watchSearchUsers } from './search-users';
+import { watchSearchOrgas } from './search-orgas';
 // import { watchGetPermission } from './get-permission';
 // import { watchGetIp } from './get-ip';
 // import { watchGetUser } from './get-user';
@@ -29,6 +30,7 @@ export function* hrSaga() {
         fork(watchGetAgencies),
         fork(watchGetProducts),
         fork(watchSearchUsers),
+        fork(watchSearchOrgas),
         // fork(watchGetPermission),
         // fork(watchGetIp),
     ]);
