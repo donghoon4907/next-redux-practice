@@ -572,6 +572,16 @@ export const ASIDE_MENU: any = {
                 to: '/hr/user/create',
             },
         },
+        orga: {
+            id: 'hr-orga',
+            label: '영업조직',
+            to: '',
+            list: {
+                id: 'hr-orga_list',
+                label: '영업조직목록',
+                to: '/hr/orga/list',
+            },
+        },
         // manage: {
         //     id: 'hr-manage',
         //     label: '사용인관리',

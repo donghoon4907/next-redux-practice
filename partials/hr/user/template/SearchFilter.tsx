@@ -7,10 +7,6 @@ import { useInput } from '@hooks/use-input';
 import { isEmpty } from '@utils/validator/common';
 import { useSearch } from '@hooks/use-search';
 import { MyInput } from '@components/input';
-import { MySelect } from '@components/select';
-import searchConstants from '@constants/search';
-import { useSelect } from '@hooks/use-select';
-import { findSelectOption } from '@utils/getter';
 
 interface Props {}
 
@@ -24,7 +20,7 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
     // 검색필터 - 검색어
     const [keyword, setKeyword] = useInput('');
     // 검색필터 - 검색종류
-    const [type, setType] = useSelect(searchConstants.userSearchTypes);
+    // const [type, setType] = useSelect(searchConstants.userSearchTypes);
 
     const handleSearch = (evt: FormEvent<HTMLFormElement>) => {
         evt.preventDefault();
@@ -35,9 +31,9 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
 
         if (!isEmpty(keyword.value)) {
             searchParams.append('search', keyword.value);
-            if (type.value) {
-                searchParams.append('type', type.value.value);
-            }
+            // if (type.value) {
+            //     searchParams.append('type', type.value.value);
+            // }
         }
 
         searchParams.append('page', '1');
@@ -51,17 +47,17 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
 
     useEffect(() => {
         const searchKeyword = router.query.search as string;
-        const searchType = router.query.type as string;
+        // const searchType = router.query.type as string;
 
         if (!isEmpty(searchKeyword)) {
             setKeyword(searchKeyword);
         }
 
-        if (!isEmpty(searchType)) {
-            setType(
-                findSelectOption(searchType, searchConstants.userSearchTypes),
-            );
-        }
+        // if (!isEmpty(searchType)) {
+        //     setType(
+        //         findSelectOption(searchType, searchConstants.userSearchTypes),
+        //     );
+        // }
     }, [router]);
 
     return (
@@ -71,14 +67,14 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
             <div className={`${displayName}__filter`}></div>
             <div className={`${displayName}__filter`}>
                 <WithLabel id="searchKeyword" label="검색" type="active">
-                    <div
+                    {/* <div
                         className="wr-with__extension"
                         style={{
                             width: 130,
                         }}
                     >
                         <MySelect placeholder="선택" {...type} />
-                    </div>
+                    </div> */}
                     <form
                         role="search"
                         className="wr-search__form"
@@ -86,7 +82,7 @@ export const UserSearchFilterTemplate: FC<Props> = () => {
                     >
                         <MyInput
                             type="search"
-                            className="wr-border-l--hide"
+                            // className="wr-border-l--hide"
                             button={{
                                 type: 'submit',
                                 className: 'btn-primary',

@@ -72,7 +72,7 @@ const Users: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const { page, nums, search, order, type } = ctx.query;
+        const { page, nums, search, order } = ctx.query;
 
         const params: SearchUsersRequestPayload = {
             page: 1,
@@ -96,11 +96,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         if (search) {
-            if (type === 'userid') {
-                params.condition['userid'] = String(search).toUpperCase();
-            } else if (type === 'fc') {
-                params.condition['fc'] = search;
-            }
+            params.condition!['search'] = search as string;
+            // if (type === 'userid') {
+            //     params.condition['userid'] = String(search).toUpperCase();
+            // } else if (type === 'fc') {
+            //     params.condition['fc'] = search;
+            // }
         }
 
         dispatch(searchUsersRequest(params));

@@ -30,6 +30,7 @@ import { MySelect } from '@components/select';
 import { WithArrow } from '@components/WithArrow';
 import { SearchInput } from '@components/input/Search';
 import { useSearch } from '@hooks/use-search';
+import { isEmpty } from '@utils/validator/common';
 
 interface Props {}
 
@@ -94,6 +95,10 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                 'paydate',
                 contdate.value.map((v) => format(v, 'yyyy-MM-dd')).join(','),
             );
+        }
+
+        if (!isEmpty(keyword.value)) {
+            searchParams.append('search', keyword.value);
         }
 
         search(searchParams.toString());

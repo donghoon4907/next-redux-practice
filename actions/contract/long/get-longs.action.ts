@@ -19,6 +19,7 @@ export interface GetLongsRequestPayload
         CorePaginateOption {
     condition?: {
         paydate?: Array<string>;
+        search?: string;
     };
 }
 
