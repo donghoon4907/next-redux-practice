@@ -50,10 +50,12 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                 const tokenKey = process.env.COOKIE_TOKEN_KEY || '';
                 const idKey = process.env.COOKIE_RECENT_LOGIN_KEY || '';
 
-                setCookie(tokenKey, access_token);
+                setCookie(tokenKey, access_token, { maxAge: 60 * 30 });
 
                 if (checkSaveId.checked) {
-                    setCookie(idKey, userid.value);
+                    setCookie(idKey, userid.value, {
+                        maxAge: 60 * 60 * 24 * 365,
+                    });
                 } else {
                     deleteCookie(idKey);
                 }
