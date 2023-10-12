@@ -12,6 +12,7 @@ import externalsService from '@services/externalsService';
 import hrsService from '@services/hrsService';
 import { commonAxiosErrorHandler } from '@utils/error';
 import { useCheckbox } from '@hooks/use-checkbox';
+import { isEmpty } from '@utils/validator/common';
 
 interface LoginPageProps {
     ip: string;
@@ -47,17 +48,24 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
             const { access_token } = data;
 
             if (access_token) {
-                const tokenKey = process.env.COOKIE_TOKEN_KEY || '';
-                const idKey = process.env.COOKIE_RECENT_LOGIN_KEY || '';
-
-                setCookie(tokenKey, access_token, { maxAge: 60 * 30 });
-
-                if (checkSaveId.checked) {
-                    setCookie(idKey, userid.value, {
-                        maxAge: 60 * 60 * 24 * 365,
-                    });
+                const tokenKey = process.env.COOKIE_TOKEN_KEY;
+                if (isEmpty(tokenKey)) {
+                    return alert('인증키 발급 중 오류가 발생했습니다.');
                 } else {
-                    deleteCookie(idKey);
+                    setCookie(tokenKey!, access_token, { maxAge: 60 * 30 });
+                }
+
+                const idKey = process.env.COOKIE_RECENT_LOGIN_KEY;
+                if (isEmpty(idKey)) {
+                    console.log('error: COOKIE_RECENT_LOGIN_KEY is empty');
+                } else {
+                    if (checkSaveId.checked) {
+                        setCookie(idKey!, userid.value, {
+                            maxAge: 60 * 60 * 24 * 365,
+                        });
+                    } else {
+                        deleteCookie(idKey!);
+                    }
                 }
 
                 router.replace('/contract/long/list');
