@@ -105,7 +105,7 @@ export const MySelect: FC<MySelectProps> = ({
                     // width: `${width}px`,
                     minHeight: height,
                     height,
-                    borderColor: variables.dividerColor,
+                    borderColor: '#DCE2EB',
                     borderRadius: variables.filterBorderRadius,
                     backgroundColor: isDisabled
                         ? variables.disabledInputColor

@@ -16,7 +16,8 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: none;
-    --wr-tab-active-color: #e9ecef;
+    --wr-tab-active-color: #f5f9ff;
+    // --wr-tab-active-color: #e9ecef;
     --rs-input-disabled-bg: #e9ecef;
 }
 
@@ -99,7 +100,7 @@ td {
 
 .rs-picker-toggle {
     border-radius: 0 !important;
-    border: 1px solid $wr-divider-color-300 !important;
+    border: 1px solid #dce2eb !important;
     // display: flex !important;
     // justify-content: flex-start !important;
     // align-items: center;
@@ -203,7 +204,7 @@ input[type='number'] {
     border-radius: 0 !important;
     font-size: 16px;
     box-shadow: none !important;
-    border-color: $wr-divider-color-300 !important;
+    border-color: #dce2eb !important;
     // height: 30px;
     height: 100%;
 }
@@ -227,6 +228,7 @@ input[type='number'] {
 .table > :not(caption) > * > * {
     background-color: inherit;
     padding: 6px 10px !important;
+    // border: none;
 }
 // 모달내 입력창 높이 조절
 .modal-body .form-control {

@@ -5,12 +5,13 @@
 }
 ::-webkit-scrollbar-track {
     border-radius: 10px;
-    background: #f1f1f1;
+    background: rgba(220, 229, 252, 0.7);
     width: 5px;
 }
 ::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    background: #b8d4ff;
+    box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.1);
 }
 ::-webkit-scrollbar-thumb:hover,
 ::-webkit-scrollbar-thumb:active {

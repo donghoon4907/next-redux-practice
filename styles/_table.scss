@@ -1,7 +1,7 @@
 .wr-table {
     &__wrap {
         height: 100%;
-        background-color: $white;
+        // background-color: $white;
         overflow: auto;
     }
 
@@ -31,28 +31,32 @@
             // padding-bottom: 5px;
         }
 
-        & table td,
-        & table th {
-            border-right: 1px solid $wr-divider-color-300;
-            border-bottom: 1px solid $wr-divider-color-300;
-        }
+        // & table td,
+        // & table th {
+        //     border-right: 1px solid $wr-divider-color-300;
+        //     border-bottom: 1px solid $wr-divider-color-300;
+        // }
 
-        & table th:last-child,
-        & table td:last-child {
-            border-right: none;
-        }
+        // & table th:last-child,
+        // & table td:last-child {
+        //     border-right: none;
+        // }
 
         // & table tbody tr:last-child td,
         // & table tfoot tr:last-child td {
         //     border-bottom: none;
         // }
 
-        & table tfoot tr:first-child td {
-            border-top: 1px solid $wr-divider-color-300;
-        }
+        // & table tfoot tr:first-child td {
+        //     border-top: 1px solid $wr-divider-color-300;
+        // }
 
         & tbody {
             padding-bottom: 5px;
+        }
+
+        & td {
+            border: none;
         }
 
         & thead {
@@ -72,8 +76,8 @@
 
     & thead {
         // font-size: 14px;
-        background-color: $gray-300 !important;
-        border-bottom: 1px solid $wr-divider-color-300;
+        background-color: #deebff !important;
+        border: 1px solid $wr-divider-color-300;
     }
 
     // & tbody {

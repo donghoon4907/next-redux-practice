@@ -10,7 +10,6 @@ import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
 import { MyLayout } from '@components/Layout';
-import { MyFooter } from '@components/footer';
 import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import {
@@ -50,7 +49,7 @@ const Orgas: NextPage = () => {
                     </div>
                     <div className={`${displayName}__toolbar wr-mt`}>
                         <div className={`${displayName}__total`}>
-                            총합: 5,000
+                            조직관리 / 지점명세 (1-50) / 6,900
                         </div>
                         <div className={`${displayName}__tool`}></div>
                     </div>

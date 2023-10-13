@@ -1,14 +1,12 @@
 import type { FC, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { LuSearch } from 'react-icons/lu';
-import { WithLabel } from '@components/WithLabel';
 import { useInput } from '@hooks/use-input';
 import { isEmpty } from '@utils/validator/common';
 import { useSearch } from '@hooks/use-search';
 import { MyInput } from '@components/input';
-import { MyButton } from '@components/button';
 import { MySelect } from '@components/select';
+import { DateRangePicker } from 'rsuite';
 
 interface Props {}
 
@@ -68,7 +66,7 @@ export const OrgaSearchFilterTemplate: FC<Props> = () => {
                 <div className={`${displayName}__filter`}>
                     <div className={`${displayName}__field`}>
                         <label className={`${displayName}__label`}>
-                            필터명 1
+                            영업조직
                         </label>
                         <div style={{ width: 350 }}>
                             <MySelect
@@ -77,14 +75,28 @@ export const OrgaSearchFilterTemplate: FC<Props> = () => {
                             />
                         </div>
                     </div>
+                </div>
+                <div className={`${displayName}__divider`}></div>
+                <div className={`${displayName}__filter`}>
                     <div className={`${displayName}__field`}>
                         <label className={`${displayName}__label`}>
-                            필터명 2
+                            조직등급
                         </label>
                         <div style={{ width: 120 }}>
                             <MySelect
                                 placeHolderFontSize={13}
-                                placeholder="테스트이름"
+                                placeholder="선택"
+                            />
+                        </div>
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label className={`${displayName}__label`}>
+                            현상태
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                placeHolderFontSize={13}
+                                placeholder="선택"
                             />
                         </div>
                     </div>
@@ -92,24 +104,43 @@ export const OrgaSearchFilterTemplate: FC<Props> = () => {
                 <div className={`${displayName}__divider`}></div>
                 <div className={`${displayName}__filter`}>
                     <div className={`${displayName}__field`}>
-                        <label className={`${displayName}__label`}>
-                            필터명 3
-                        </label>
-                        <div style={{ width: 120 }}>
-                            <MySelect
-                                placeHolderFontSize={13}
-                                placeholder="테스트이름"
+                        <div className={`${displayName}__labels`}>
+                            <label
+                                className={`${displayName}__label ${displayName}__label--active`}
+                            >
+                                등록일
+                            </label>
+                            <div
+                                className={`${displayName}__labeldivider`}
+                            ></div>
+                            <label
+                                className={`${displayName}__label ${displayName}__label--disable`}
+                            >
+                                폐점일
+                            </label>
+                        </div>
+
+                        <div style={{ width: 250 }}>
+                            <DateRangePicker
+                                id="contdate"
+                                format="yyyy-MM-dd"
+                                placeholder="기간을 입력 혹은 선택하세요"
+                                size="sm"
+                                placement="autoVerticalEnd"
+                                style={{
+                                    width: '100%',
+                                }}
+                                shouldDisableDate={(date) => date > new Date()}
+                                defaultValue={[new Date(), new Date()]}
                             />
                         </div>
                     </div>
                     <div className={`${displayName}__field`}>
-                        <label className={`${displayName}__label`}>
-                            필터명 4
-                        </label>
-                        <div style={{ width: 120 }}>
-                            <MySelect
-                                placeHolderFontSize={13}
-                                placeholder="테스트이름"
+                        <label className={`${displayName}__label`}>검색</label>
+                        <div style={{ width: 250 }}>
+                            <MyInput
+                                type="search"
+                                placeholder="검색어를 입력하세요."
                             />
                         </div>
                     </div>

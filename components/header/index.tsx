@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { AiOutlineFolder } from 'react-icons/ai';
+import { AiOutlineFolder, AiOutlinePoweroff } from 'react-icons/ai';
 import { MdLogout } from 'react-icons/md';
 // import { LuMenu } from 'react-icons/lu';
 import { GNBS } from '@constants/gnb';
@@ -17,6 +17,9 @@ import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
 import { useSelect } from '@hooks/use-select';
+import { MyInput } from '@components/input';
+import { LuSearch } from 'react-icons/lu';
+import { FaPowerOff } from 'react-icons/fa';
 
 interface Props {}
 
@@ -48,7 +51,7 @@ export const MyHeader: FC<Props> = () => {
     return (
         <header className="wr-header wr-frame__header">
             <div className="wr-meta">
-                <div className="wr-meta__inner">
+                {/* <div className="wr-meta__inner">
                     <div className="wr-meta__left">
                         <div style={{ width: 250 }}>
                             <WithLabel
@@ -110,7 +113,7 @@ export const MyHeader: FC<Props> = () => {
                             />
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="wr-gnb">
                 <div className="wr-gnb__inner">
@@ -121,12 +124,12 @@ export const MyHeader: FC<Props> = () => {
                                     <LuMenu size={30} color="white" />
                                 </IconWrapper>
                             </span> */}
-                            <h2 className="visually-hidden">서비스메뉴</h2>
+                            {/* <h2 className="visually-hidden">서비스메뉴</h2>
                             <ul className="wr-gnb__menu" role="menubar">
                                 {GNBS.map(({ id, ...gnb }) => (
                                     <GnbMenuItem key={id} {...gnb} />
                                 ))}
-                            </ul>
+                            </ul> */}
                         </nav>
                         <div className="wr-gnb__right">
                             <h2 className="visually-hidden">사용자서비스</h2>
@@ -138,12 +141,13 @@ export const MyHeader: FC<Props> = () => {
                                     주요연락처
                                 </GnbSubMenuItem>
                                 <GnbSubMenuItem to="/board/list">
-                                    <div className="wr-badge__wrap">
+                                    게시판
+                                    {/* <div className="wr-badge__wrap">
                                         <span>게시판</span>
                                         <span className="badge bg-danger">
                                             23
                                         </span>
-                                    </div>
+                                    </div> */}
                                 </GnbSubMenuItem>
                                 <GnbSubMenuItem to="/calendar">
                                     일정관리
@@ -154,19 +158,29 @@ export const MyHeader: FC<Props> = () => {
                                 <GnbSubMenuItem to="/404">
                                     Mypage
                                 </GnbSubMenuItem>
-                                <GnbSubMenuItem to="/404">
-                                    <span className="visually-hidden">
-                                        폴더
-                                    </span>
-                                    <AiOutlineFolder size={20} />
-                                </GnbSubMenuItem>
-                                <GnbSubMenuItem to="/404">
-                                    <span className="visually-hidden">
-                                        로그아웃
-                                    </span>
-                                    <MdLogout size={20} />
-                                </GnbSubMenuItem>
                             </ul>
+                            <div className="wr-gnb__search">
+                                <div className="wr-gnb__input">
+                                    <input
+                                        type="text"
+                                        placeholder="메뉴 검색"
+                                    />
+                                </div>
+                                <div className="wr-gnb__button">
+                                    <button type="button">
+                                        <span className="visually-hidden">
+                                            검색
+                                        </span>
+                                        <LuSearch
+                                            size={15}
+                                            style={{ color: 'white' }}
+                                        />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="wr-gnb__logout">
+                                <FaPowerOff size={20} />
+                            </div>
                         </div>
                     </div>
                 </div>
