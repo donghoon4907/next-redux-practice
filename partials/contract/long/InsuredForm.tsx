@@ -280,7 +280,7 @@ export const LongInsuredForm: FC<Props> = ({ userid }) => {
                                     size="md"
                                     placeholder="생년월일"
                                     disabled={isDisabledAnother}
-                                    placement="topStart"
+                                    placement="autoVerticalStart"
                                     hooks={birthday}
                                 />
                                 {age !== -1 && (

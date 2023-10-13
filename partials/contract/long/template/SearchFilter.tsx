@@ -1,7 +1,6 @@
-import type { FC } from 'react';
-import type { CoreSelectOption } from '@interfaces/core';
+import type { FC, FormEvent } from 'react';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
     compareAsc,
     isSameMonth,
@@ -11,8 +10,6 @@ import {
     endOfMonth,
     addMonths,
 } from 'date-fns';
-import { DateRangePicker } from 'rsuite';
-import { format } from 'date-fns';
 import { useSelector } from 'react-redux';
 import { HrState } from '@reducers/hr';
 import { WithLabel } from '@components/WithLabel';
@@ -20,7 +17,7 @@ import { MyInput } from '@components/input';
 import { AppState } from '@reducers/index';
 import { LongState } from '@reducers/long';
 import { useSelect } from '@hooks/use-select';
-import { useInput, useNumbericInput } from '@hooks/use-input';
+import { useNumbericInput } from '@hooks/use-input';
 import { useDateRangepicker } from '@hooks/use-datepicker';
 import longConstants from '@constants/options/long';
 import { DISTS } from '@constants/selectOption';
@@ -28,9 +25,10 @@ import { useApi } from '@hooks/use-api';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { MySelect } from '@components/select';
 import { WithArrow } from '@components/WithArrow';
-import { SearchInput } from '@components/input/Search';
 import { useSearch } from '@hooks/use-search';
 import { isEmpty } from '@utils/validator/common';
+import { LuSearch } from 'react-icons/lu';
+import { MyDateRangepicker } from '@components/datepicker/Range';
 
 interface Props {}
 
@@ -50,7 +48,13 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
     const search = useSearch();
 
     // 검색필터 - 조직
-    const [orga, setOrga] = useState<CoreSelectOption | null>(null);
+    const [orga] = useSelect(orgas, null, {
+        callbackOnChange: (next) => {
+            if (next) {
+                getUsers({ idx: next.value });
+            }
+        },
+    });
     // 검색필터 - 영업가족
     const [user] = useSelect(users, null);
     // 검색필터 - 회차
@@ -73,10 +77,14 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
     // 검색필터 - 입금구분
     const [dist] = useSelect(DISTS, null);
     // 검색필터 - 검색어
-    const [keyword] = useInput('');
+    // const [keyword] = useInput('');
 
-    const handleSearch = () => {
+    const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
+        evt.preventDefault();
+
         const { nums } = router.query;
+
+        const formData = new FormData(evt.currentTarget);
 
         const searchParams = new URLSearchParams();
 
@@ -88,28 +96,13 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
             searchParams.append('nums', '25');
         }
 
-        if (contdate.value === null) {
-            return alert('계약일자를 입력하세요.');
-        } else {
-            searchParams.append(
-                'paydate',
-                contdate.value.map((v) => format(v, 'yyyy-MM-dd')).join(','),
-            );
-        }
-
-        if (!isEmpty(keyword.value)) {
-            searchParams.append('search', keyword.value);
+        for (const [key, value] of formData.entries()) {
+            if (!isEmpty(value)) {
+                searchParams.append(key, value as string);
+            }
         }
 
         search(searchParams.toString());
-    };
-
-    const handleChangeOrga = (org: CoreSelectOption | null) => {
-        setOrga(org);
-
-        if (org !== null) {
-            getUsers({ idx: org.value });
-        }
     };
 
     const handlePrevContdate = () => {
@@ -160,15 +153,10 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
     }, [router]);
 
     return (
-        <>
+        <form className={`${displayName}__header`} onSubmit={handleSubmit}>
             <div className={`${displayName}__filter`}>
-                <WithLabel id="orga" label="조직" type="active">
-                    <MySelect
-                        inputId="orga"
-                        options={orgas}
-                        value={orga}
-                        onChange={handleChangeOrga}
-                    />
+                <WithLabel id="orga" label="영업조직" type="active">
+                    <MySelect inputId="orga" {...orga} />
                 </WithLabel>
             </div>
             <div className={`${displayName}__filter`}>
@@ -177,10 +165,10 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                 </WithLabel>
             </div>
             <div className={`${displayName}__filter`}>
-                <WithLabel id="round" label="회차" type="active">
+                <WithLabel id="whoi" label="회차" type="active">
                     <MyInput
                         type="text"
-                        id="round"
+                        id="whoi"
                         className="text-end"
                         placeholder="입력"
                         {...beforeRound}
@@ -193,7 +181,7 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                     </div>
                     <MyInput
                         type="text"
-                        id="round_after"
+                        id="whoi2"
                         className="text-end wr-border-l--hide"
                         placeholder="입력"
                         {...afterRound}
@@ -207,15 +195,12 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                     onPrev={handlePrevContdate}
                     onNext={handleNextContdate}
                 >
-                    <DateRangePicker
-                        id="contdate"
+                    <MyDateRangepicker
+                        id="paydate"
                         format="yyyy-MM-dd"
                         placeholder="기간을 입력 혹은 선택하세요"
                         size="sm"
                         placement="autoVerticalEnd"
-                        style={{
-                            width: '100%',
-                        }}
                         ranges={[
                             {
                                 label: '전월',
@@ -230,7 +215,7 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                             },
                         ]}
                         shouldDisableDate={(date) => date > new Date()}
-                        {...contdate}
+                        hooks={contdate}
                     />
                 </WithArrow>
             </div>
@@ -241,14 +226,14 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                     </WithLabel>
                 </div>
                 <div>
-                    <WithLabel id="product_type" label="보종" type="active">
-                        <MySelect inputId="product_type" {...productType} />
+                    <WithLabel id="spec" label="보종" type="active">
+                        <MySelect inputId="spec" {...productType} />
                     </WithLabel>
                 </div>
             </div>
             <div className={`${displayName}__filter`}>
-                <WithLabel id="ptitle" label="상품명" type="active">
-                    <MySelect inputId="ptitle" {...ptitle} />
+                <WithLabel id="title" label="상품명" type="active">
+                    <MySelect inputId="title" {...ptitle} />
                 </WithLabel>
             </div>
             <div className={`${displayName}__filter`}>
@@ -264,15 +249,26 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
                 </div>
             </div>
             <div className={`${displayName}__filter`}>
-                <WithLabel id="searchKeyword" label="검색" type="active">
-                    <SearchInput
-                        id="searchKeyword"
+                <WithLabel id="search" label="검색" type="active">
+                    <MyInput
+                        type="search"
+                        name="search"
                         placeholder="검색어를 입력하세요"
-                        onSearch={handleSearch}
-                        {...keyword}
+                        button={{
+                            type: 'submit',
+                            className: 'btn-primary',
+                            children: (
+                                <>
+                                    <span className="visually-hidden">
+                                        검색
+                                    </span>
+                                    <LuSearch size={15} />
+                                </>
+                            ),
+                        }}
                     />
                 </WithLabel>
             </div>
-        </>
+        </form>
     );
 };
