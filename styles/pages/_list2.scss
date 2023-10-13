@@ -1,0 +1,93 @@
+.wr-pages-list2 {
+    height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        background-color: $white;
+        height: 95px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 4px 0px #0000001a;
+    }
+
+    &__filters {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 25px;
+    }
+
+    &__search {
+        width: 75px;
+        height: 100%;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        overflow: hidden;
+
+        & > button {
+            width: 100%;
+            height: 100%;
+            background-color: #4b74de;
+            color: $white;
+            font-size: 16px;
+            font-weight: 700;
+        }
+    }
+
+    &__filter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+
+        & > div {
+            flex: 1;
+        }
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        height: 50px;
+    }
+
+    &__label {
+        font-size: 11px;
+        line-height: 15px;
+    }
+
+    &__divider {
+        min-width: 1.5px;
+        background-color: $gray-300;
+        margin: 0 10px;
+        height: 50px;
+    }
+
+    &__toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 30px;
+    }
+
+    &__body {
+        border: 1px solid $wr-divider-color-300;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    &__footer {
+        height: 50px;
+    }
+
+    // 페이지 내 입력창의 높이 조절
+    & .form-control {
+        height: $wr-list-filter-height;
+    }
+}

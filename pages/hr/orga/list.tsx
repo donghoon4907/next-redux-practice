@@ -13,14 +13,14 @@ import { MyLayout } from '@components/Layout';
 import { MyFooter } from '@components/footer';
 import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { UserSearchFilterTemplate } from '@partials/hr/user/template/SearchFilter';
 import {
     searchOrgasSuccess,
     searchOrgasRequest,
 } from '@actions/hr/search-orgas.action';
+import { OrgaSearchFilterTemplate } from '@partials/hr/orga/template/SearchFilter';
 
 const Orgas: NextPage = () => {
-    const displayName = 'wr-pages-list';
+    const displayName = 'wr-pages-list2';
 
     const router = useRouter();
 
@@ -46,9 +46,15 @@ const Orgas: NextPage = () => {
                 <div className={displayName}>
                     {/* <Breadcrumb /> */}
                     <div className={`${displayName}__header`}>
-                        <UserSearchFilterTemplate />
+                        <OrgaSearchFilterTemplate />
                     </div>
-                    <div className={`${displayName}__body wr-mt`}>
+                    <div className={`${displayName}__toolbar wr-mt`}>
+                        <div className={`${displayName}__total`}>
+                            총합: 5,000
+                        </div>
+                        <div className={`${displayName}__tool`}></div>
+                    </div>
+                    <div className={`${displayName}__body`}>
                         <div className="wr-table--scrollable wr-table--hover">
                             <MyTable
                                 columns={columns}
@@ -58,13 +64,9 @@ const Orgas: NextPage = () => {
                             />
                         </div>
                     </div>
-                    <MyFooter>
-                        <MyPagination total={searchOrgas.total.count}>
-                            <span>
-                                건수: {searchOrgas.total.count.toLocaleString()}
-                            </span>
-                        </MyPagination>
-                    </MyFooter>
+                    <div className={`${displayName}__footer`}>
+                        <MyPagination total={100}></MyPagination>
+                    </div>
                 </div>
             </MyLayout>
         </>
