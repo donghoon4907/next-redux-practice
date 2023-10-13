@@ -52,8 +52,14 @@ export function convertPhoneNumber(phone: string) {
     let converted;
     if (phone.length === 8) {
         converted = phone.replace(/(\d{4})(\d{4})/, '$1-$2');
+    } else if (phone.length === 9) {
+        converted = phone.replace(/(\d{2})(\d{3})(\d{4})/, '$1-$2-$3');
     } else if (phone.length === 10) {
-        converted = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        if (phone.substring(0, 2) === '02') {
+            converted = phone.replace(/(\d{2})(\d{4})(\d{4})/, '$1-$2-$3');
+        } else {
+            converted = phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        }
     } else {
         converted = phone.replace(/(\d{3})(\d{4})(\d{1})/, '$1-$2-$3');
     }
