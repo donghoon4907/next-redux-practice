@@ -82,11 +82,25 @@ function MyApp({ Component, pageProps }: AppProps) {
             }
         }
 
-        // events.on('routeChangeComplete', onRouteChange);
+        // const handleKeyPress = (event: KeyboardEvent) => {
+        //     // 전역 키보드 이벤트 처리
+        //     if (event.ctrlKey && (event.key === 'f' || event.key === 'F')) {
+        //         // Ctrl + F를 눌렀을 때 기본 동작 중지
+        //         event.preventDefault();
 
-        // return () => {
-        //     events.off('routeChangeComplete', onRouteChange);
+        //         // 여기서 원하는 동작을 추가
+        //         alert(
+        //             'Ctrl + F가 눌렸습니다. 사용자 정의 동작을 수행할 수 있습니다.',
+        //         );
+        //     }
         // };
+
+        // window.addEventListener('keydown', handleKeyPress);
+        // events.on('routeChangeComplete', onRouteChange);
+        return () => {
+            // window.removeEventListener('keydown', handleKeyPress);
+            // events.off('routeChangeComplete', onRouteChange);
+        };
     }, [router]);
 
     return (

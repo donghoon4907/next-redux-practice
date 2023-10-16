@@ -1219,7 +1219,7 @@ export const LongForm: FC<Props> = ({
                                             size="md"
                                             format="yyyy-MM"
                                             placeholder="정산개시월"
-                                            placement="topStart"
+                                            placement="autoVerticalStart"
                                             disabled={!editable}
                                             hooks={calDatefrom}
                                         />

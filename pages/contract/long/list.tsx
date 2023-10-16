@@ -48,9 +48,7 @@ const Longs: NextPage = () => {
             <MyLayout>
                 <div className={displayName}>
                     {/* <Breadcrumb /> */}
-                    <div className={`${displayName}__header`}>
-                        <LongSearchFilterTemplate />
-                    </div>
+                    <LongSearchFilterTemplate />
                     <div className={`${displayName}__body wr-mt`}>
                         <div className="wr-table--scrollable wr-table--hover">
                             <MyTable
