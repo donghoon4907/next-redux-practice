@@ -1,86 +1,14 @@
 import type { FC } from 'react';
-import type { GroupBase, MenuPlacement, StylesConfig } from 'react-select';
 import type { CoreSelectOption } from '@interfaces/core';
 import Select from 'react-select';
 import variables from '@styles/_variables.module.scss';
 
-export interface MySelectProps {
-    inputId?: string;
-    /**
-     * 옵션 목록
-     *
-     */
-    options?: CoreSelectOption[];
-    /**
-     * 외부 상태값
-     *
-     */
-    value?: CoreSelectOption | null;
-    /**
-     * 외부 상태를 변경하는 핸들러
-     *
-     */
-    onChange?: (selectedOption: CoreSelectOption | null) => void;
-    /**
-     * 가이드 코멘트
-     *
-     */
-    placeholder?: string;
-    /**
-     * 셀렉트 너비
-     *
-     */
-    // width?: number;
-    /**
-     * 폰트 크기
-     *
-     */
-    fontSize?: number;
-    /**
-     * select height
-     *
-     */
-    height?: string;
-    /**
-     * select styles
-     *
-     */
-    styles?: StylesConfig<CoreSelectOption, false, GroupBase<CoreSelectOption>>;
+import { MySelectProps } from '.';
 
-    /**
-     * read only
-     *
-     */
-    isDisabled?: boolean;
-
-    /**
-     * with another ui
-     */
-    placement?: 'right' | 'left' | 'single';
-    /**
-     * with another ui
-     */
-    menuPlacement?: MenuPlacement;
-    /**
-     * 필수 여부
-     */
-    required?: boolean;
-}
-
-export const MySelect: FC<MySelectProps> = ({
-    inputId,
-    options = [],
-    value = null,
+export const ListCountSelect: FC<MySelectProps> = ({
+    options,
+    value,
     onChange,
-    placeholder = '선택',
-    // width,
-    height = variables.filterHeight,
-    fontSize = 16,
-    styles,
-    isDisabled = false,
-    placement = 'single',
-    menuPlacement = 'auto',
-    required = false,
 }) => {
     const handleChange = (option: CoreSelectOption | null) => {
         onChange?.(option);
@@ -89,50 +17,51 @@ export const MySelect: FC<MySelectProps> = ({
     return (
         <Select
             className="select"
-            inputId={inputId}
-            name={inputId}
+            inputId="nums"
             options={options}
             value={value}
             onChange={handleChange}
-            placeholder={placeholder}
-            menuPlacement={menuPlacement}
-            isDisabled={isDisabled}
-            noOptionsMessage={() => '데이터가 없습니다.'}
-            required={required}
+            placeholder="선택"
+            menuPlacement="auto"
             styles={{
                 control: (baseStyles, state) => ({
                     ...baseStyles,
                     // width: `${width}px`,
-                    minHeight: height,
-                    height,
-                    borderColor: variables.inputBorderColor,
-                    borderRadius: variables.filterBorderRadius,
-                    backgroundColor: isDisabled
-                        ? variables.disabledInputColor
-                        : 'white',
+                    minHeight: 30,
+                    height: 30,
+                    border: 'none',
+                    borderRadius: '5px',
+                    backgroundColor: variables.blue3,
                     boxShadow: 'none',
-                    borderLeftWidth: placement === 'right' ? '0' : '1px',
-                    borderRightWidth: placement === 'left' ? '0' : '1px',
+                    // borderLeftWidth: placement === 'right' ? '0' : '1px',
+                    // borderRightWidth: placement === 'left' ? '0' : '1px',
                     '&:hover': {
                         borderColor: variables.inputBorderColor,
                     },
                 }),
                 valueContainer: (provided, state) => ({
                     ...provided,
-                    height,
+                    height: 30,
                     padding: '0 6px',
                     textAlign: 'left',
+                    border: `1px solid #BCBCBC`,
+                    fontWeight: '500',
+                    color: variables.inputBorderColor,
+                    borderRightWidth: 0,
+                    borderTopLeftRadius: '5px',
+                    borderBottomLeftRadius: '5px',
                 }),
                 singleValue: (provided, state) => ({
                     ...provided,
-                    color: 'black',
-                    fontSize: `${fontSize}px`,
+                    color: variables.secondaryColor,
+                    fontSize: '14px',
                 }),
                 placeholder: (defaultStyles) => {
                     return {
                         ...defaultStyles,
-                        fontSize: `${fontSize}px`,
-                        color: 'black',
+                        fontSize: '14px',
+                        fontWeight: '500',
+                        color: '#BCBCBC',
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
@@ -147,18 +76,25 @@ export const MySelect: FC<MySelectProps> = ({
                 }),
                 indicatorsContainer: (provided, state) => ({
                     ...provided,
-                    height,
+                    width: 30,
+                    height: 30,
+                    border: `1px solid ${variables.blue1}`,
+                    backgroundColor: variables.blue2,
+                    borderTopRightRadius: '5px',
+                    borderBottomRightRadius: '5px',
                 }),
                 dropdownIndicator: (provided) => ({
                     ...provided,
-                    color: variables.dividerColor,
+                    color: variables.blue1,
+                    padding: 0,
+                    paddingLeft: 4,
                 }),
                 menu: (provided, state) => {
                     return {
                         ...provided,
                         borderRadius: variables.filterBorderRadius,
                         margin: 0,
-                        border: `1px solid ${variables.inputBorderColor}`,
+                        border: `1px solid #BCBCBC`,
                         borderTopWidth: state.placement === 'top' ? 1 : 0,
                         borderBottomWidth: state.placement === 'top' ? 0 : 1,
                         boxShadow: 'none',
@@ -172,7 +108,7 @@ export const MySelect: FC<MySelectProps> = ({
                 option: (provided, state) => ({
                     ...provided,
                     padding: '6px',
-                    fontSize: `${fontSize}px`,
+                    fontSize: '14px',
                     textAlign: 'left',
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
@@ -187,7 +123,6 @@ export const MySelect: FC<MySelectProps> = ({
                     ...provided,
                     zIndex: 100000,
                 }),
-                ...styles,
             }}
         />
     );

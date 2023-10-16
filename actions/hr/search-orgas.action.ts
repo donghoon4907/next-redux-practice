@@ -18,6 +18,11 @@ export interface SearchOrgasRequestPayload
         CorePaginateOption {
     condition?: {
         search?: string;
+        orga?: string;
+        orga_rate?: string;
+        status?: string;
+        indate?: [string, string];
+        outdate?: [string, string];
     };
 }
 

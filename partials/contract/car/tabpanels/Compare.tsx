@@ -1062,9 +1062,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                 <div className="d-flex">
                                                     <div className="flex-fill">
                                                         <MySelect
-                                                            placeHolderFontSize={
-                                                                16
-                                                            }
+                                                            fontSize={16}
                                                             height={
                                                                 variables.detailFilterHeight
                                                             }
@@ -1242,9 +1240,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarSago3"
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
+                                                                fontSize={16}
                                                                 height={
                                                                     variables.detailFilterHeight
                                                                 }
@@ -1268,9 +1264,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarCarNonum"
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
+                                                                fontSize={16}
                                                                 height={
                                                                     variables.detailFilterHeight
                                                                 }
@@ -1294,9 +1288,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarSago1"
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
+                                                                fontSize={16}
                                                                 height={
                                                                     variables.detailFilterHeight
                                                                 }
@@ -1329,9 +1321,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarCarSago3"
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
+                                                                fontSize={16}
                                                                 height={
                                                                     variables.detailFilterHeight
                                                                 }
@@ -1355,9 +1345,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarCarSago2"
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
+                                                                fontSize={16}
                                                                 height={
                                                                     variables.detailFilterHeight
                                                                 }
@@ -1381,9 +1369,7 @@ export const CompareTabpanel: FC<Props> = ({
                                                         >
                                                             <MySelect
                                                                 inputId="ccarCarSago1"
-                                                                placeHolderFontSize={
-                                                                    16
-                                                                }
+                                                                fontSize={16}
                                                                 height={
                                                                     variables.detailFilterHeight
                                                                 }

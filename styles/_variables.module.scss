@@ -7,7 +7,7 @@ $wr-divider-color-300: #8a91b1;
 // size
 $wr-gutter-size: 10px;
 $wr-label-size: 12px;
-$wr-filter-font-size: 16px;
+$wr-filter-font-size: 13px;
 $wr-filter-height: 30px;
 $wr-detail-filter-height: 36px;
 $wr-list-filter-height: 30px;
@@ -27,9 +27,17 @@ $wr-oninput-index: 500;
 $wr-select-index: 1046;
 $wr-datepicker-index: 1100;
 // colors
-$wr-primary-color: #4b74de;
-$wr-secondary-color: #5bc2e7;
-$wr-bg-color: #e9ecef;
+$wr-blue1: #4b74de;
+$wr-blue2: #b8d4ff;
+$wr-blue3: #f5f9ff;
+$wr-primary-color: $wr-blue1;
+$wr-secondary-color: #6d6d6d;
+$wr-bg-color: $wr-blue3;
+$wr-input-border-color: #dce2eb;
+$wr-table-border-color: #8a91b1;
+$wr-thead-bg-color: #deebff;
+$wr-active-color: #185bc3;
+
 // $wr-header-color: #1466a4;
 $wr-header-color: $wr-primary-color;
 $wr-label-color: #aaa;
@@ -59,4 +67,10 @@ $wr-disable-input-color: #e9ecef;
     disabledInputColor: $wr-disable-input-color;
     navWidth: $wr-nav-width;
     layoutWidth: $wr-layout-width;
+    inputBorderColor: $wr-input-border-color;
+    blue1: $wr-blue1;
+    blue2: $wr-blue2;
+    blue3: $wr-blue3;
+    primaryColor: $wr-primary-color;
+    secondaryColor: $wr-secondary-color;
 }

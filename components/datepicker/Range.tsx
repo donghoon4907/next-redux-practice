@@ -56,8 +56,8 @@ export const MyDateRangepicker: FC<MyDatepickerProps> = ({
                 disabled={disabled}
                 onBlur={onBlur}
                 shouldDisableDate={shouldDisableDate}
-                cleanable={cleanable}
                 ranges={ranges}
+                cleanable={cleanable}
                 {...hooks}
             />
             {hooks && (

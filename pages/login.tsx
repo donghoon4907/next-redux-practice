@@ -52,7 +52,9 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                 if (isEmpty(tokenKey)) {
                     return alert('인증키 발급 중 오류가 발생했습니다.');
                 } else {
-                    setCookie(tokenKey!, access_token, { maxAge: 60 * 30 });
+                    setCookie(tokenKey!, access_token, {
+                        maxAge: 60 * 60 * 24,
+                    });
                 }
 
                 const idKey = process.env.COOKIE_RECENT_LOGIN_KEY;

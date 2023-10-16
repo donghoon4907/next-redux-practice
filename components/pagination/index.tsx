@@ -8,12 +8,12 @@ import {
     LuChevronRight,
     LuChevronLast,
 } from 'react-icons/lu';
-import { MySelect } from '@components/select';
 import { useSelect } from '@hooks/use-select';
 import { findSelectOption } from '@utils/getter';
 import commonContstants from '@constants/options/common';
 import { createPageButtons } from '@utils/paging';
 import { useSearch } from '@hooks/use-search';
+import { ListCountSelect } from '@components/select/ListCount';
 
 interface Props extends CoreProps {
     /**
@@ -49,8 +49,13 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
 
     const nextPage = page === lastPage ? lastPage : page + 1;
 
+    // const pageButtons = useMemo(
+    //     () => createPageButtons(total, pageSize, page),
+    //     [total, pageSize, page],
+    // );
+
     const pageButtons = useMemo(
-        () => createPageButtons(total, pageSize, page),
+        () => createPageButtons(lastPage, page, 3),
         [total, pageSize, page],
     );
 
@@ -96,8 +101,9 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                     className="wr-pagination__body"
                     aria-label="Page navigation"
                 >
-                    <div>
-                        <MySelect {...listCount} />
+                    <div style={{ width: 120 }}>
+                        <ListCountSelect {...listCount} />
+                        {/* <MySelect {...listCount} /> */}
                     </div>
                     <ul className="pagination">
                         <li className="page-item">
@@ -120,6 +126,21 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                                 <LuChevronLeft size={17} />
                             </button>
                         </li>
+                        {pageButtons[0] !== 1 && (
+                            <>
+                                <li className="page-item">
+                                    <button
+                                        type="button"
+                                        className="page-link"
+                                        onClick={() => handlePaging(1)}
+                                    >
+                                        1
+                                    </button>
+                                </li>
+                                <li className="page-item">. . .</li>
+                            </>
+                        )}
+
                         {pageButtons.map((p) => (
                             <li className="page-item" key={`page${p}`}>
                                 <button
@@ -133,6 +154,21 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                                 </button>
                             </li>
                         ))}
+                        {pageButtons[pageButtons.length - 1] !== lastPage && (
+                            <>
+                                <li className="page-item">. . .&nbsp;</li>
+                                <li className="page-item">
+                                    <button
+                                        type="button"
+                                        className="page-link"
+                                        onClick={() => handlePaging(lastPage)}
+                                    >
+                                        {lastPage}
+                                    </button>
+                                </li>
+                            </>
+                        )}
+
                         <li className="page-item">
                             <button
                                 type="button"

@@ -4,7 +4,7 @@ export const phoneRegex = /^01[0-9]-\d{3,4}-\d{4}$/;
 
 export const onlyNumPhoneRegex = /^0[0-9]{1,2}\d{3,4}\d{4}$/;
 
-export const onlyNumPhoneRegex2 = /^15\d{6}$/;
+export const onlyNumPhoneRegex2 = /^1\d{7}$/;
 
 export function isValidEmail(email: string) {
     return emailRegex.test(email);

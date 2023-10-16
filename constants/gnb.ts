@@ -578,13 +578,8 @@ export const ASIDE_MENU: any = {
             to: '',
             list: {
                 id: 'hr-orga_list',
-                label: '영업조직목록',
-                to: '/hr/orga/list',
-            },
-            list2: {
-                id: 'hr-orga_list2',
                 label: '지점명세',
-                to: '/hr/orga/list2',
+                to: '/hr/orga/list',
             },
         },
         // manage: {

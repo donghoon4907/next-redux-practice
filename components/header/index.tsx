@@ -1,52 +1,53 @@
 import type { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { AiOutlineFolder, AiOutlinePoweroff } from 'react-icons/ai';
-import { MdLogout } from 'react-icons/md';
+// import { useSelector } from 'react-redux';
+// import { AiOutlineFolder, AiOutlinePoweroff } from 'react-icons/ai';
+// import { MdLogout } from 'react-icons/md';
 // import { LuMenu } from 'react-icons/lu';
 import { GNBS } from '@constants/gnb';
 // import { useDrawer } from '@hooks/use-drawer';
 
-import { AppState } from '@reducers/index';
-import { HrState } from '@reducers/hr';
-import { WithLabel } from '@components/WithLabel';
-import { MySelect } from '@components/select';
-import commonConstants from '@constants/options/common';
-import { SearchInput } from '@components/input/Search';
+// import { AppState } from '@reducers/index';
+// import { HrState } from '@reducers/hr';
+// import { WithLabel } from '@components/WithLabel';
+// import { MySelect } from '@components/select';
+// import commonConstants from '@constants/options/common';
+// import { SearchInput } from '@components/input/Search';
 
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
-import { useSelect } from '@hooks/use-select';
-import { MyInput } from '@components/input';
+// import { useSelect } from '@hooks/use-select';
+// import { MyInput } from '@components/input';
 import { LuSearch } from 'react-icons/lu';
 import { FaPowerOff } from 'react-icons/fa';
+import { IconWrapper } from '@components/IconWrapper';
 
 interface Props {}
 
 export const MyHeader: FC<Props> = () => {
-    const { loggedInUser } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
+    // const { loggedInUser } = useSelector<AppState, HrState>(
+    //     (state) => state.hr,
+    // );
 
     // const { onToggle } = useDrawer();
 
-    const [dCompanies] = useSelect(commonConstants.dCompanies, null, {
-        callbackOnChange: (nextSelect) => {
-            if (nextSelect) {
-                // 새 창에서 URL 열기
-                window.open(nextSelect.value, '_blank');
-            }
-        },
-    });
+    // const [dCompanies] = useSelect(commonConstants.dCompanies, null, {
+    //     callbackOnChange: (nextSelect) => {
+    //         if (nextSelect) {
+    //             // 새 창에서 URL 열기
+    //             window.open(nextSelect.value, '_blank');
+    //         }
+    //     },
+    // });
 
-    const [lCompanies] = useSelect(commonConstants.lCompanies, null, {
-        callbackOnChange: (nextSelect) => {
-            if (nextSelect) {
-                // 새 창에서 URL 열기
-                window.open(nextSelect.value, '_blank');
-            }
-        },
-    });
+    // const [lCompanies] = useSelect(commonConstants.lCompanies, null, {
+    //     callbackOnChange: (nextSelect) => {
+    //         if (nextSelect) {
+    //             // 새 창에서 URL 열기
+    //             window.open(nextSelect.value, '_blank');
+    //         }
+    //     },
+    // });
 
     return (
         <header className="wr-header wr-frame__header">
@@ -124,12 +125,12 @@ export const MyHeader: FC<Props> = () => {
                                     <LuMenu size={30} color="white" />
                                 </IconWrapper>
                             </span> */}
-                            {/* <h2 className="visually-hidden">서비스메뉴</h2>
+                            <h2 className="visually-hidden">서비스메뉴</h2>
                             <ul className="wr-gnb__menu" role="menubar">
                                 {GNBS.map(({ id, ...gnb }) => (
                                     <GnbMenuItem key={id} {...gnb} />
                                 ))}
-                            </ul> */}
+                            </ul>
                         </nav>
                         <div className="wr-gnb__right">
                             <h2 className="visually-hidden">사용자서비스</h2>
@@ -167,7 +168,10 @@ export const MyHeader: FC<Props> = () => {
                                     />
                                 </div>
                                 <div className="wr-gnb__button">
-                                    <button type="button">
+                                    <button
+                                        type="button"
+                                        onClick={() => alert('준비 중입니다.')}
+                                    >
                                         <span className="visually-hidden">
                                             검색
                                         </span>
@@ -179,7 +183,11 @@ export const MyHeader: FC<Props> = () => {
                                 </div>
                             </div>
                             <div className="wr-gnb__logout">
-                                <FaPowerOff size={20} />
+                                <IconWrapper
+                                    onClick={() => alert('준비 중입니다.')}
+                                >
+                                    <FaPowerOff size={20} />
+                                </IconWrapper>
                             </div>
                         </div>
                     </div>

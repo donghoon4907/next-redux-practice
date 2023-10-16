@@ -96,7 +96,7 @@
         margin-left: 62px;
         margin-right: 32px;
 
-        & > svg {
+        & svg {
             color: $wr-primary-color;
         }
     }
@@ -170,7 +170,7 @@
 
     &__search {
         width: 160px;
-        height: 30px;
+        // height: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;

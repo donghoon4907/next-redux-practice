@@ -11,3 +11,5 @@ export type OrgaDetail = {
     fax: string;
     address: string;
 };
+
+export type OrgaDate = 'indate' | 'outdate';
