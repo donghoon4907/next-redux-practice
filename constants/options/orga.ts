@@ -4,7 +4,7 @@ import type { CoreSelectOption } from '@interfaces/core';
 const O_RATE: CoreSelectOption[] = [
     {
         label: '전체',
-        value: '상근+비상근+기타',
+        value: '',
         isFixed: false,
     },
     {

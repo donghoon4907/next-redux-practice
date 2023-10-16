@@ -82,18 +82,16 @@ const Orgas: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const { page, nums, search, order, date, date_type, ...rest } =
-            ctx.query;
+        const { page, nums, order, date, idx, date_type, ...rest } = ctx.query;
 
         const params: any = {
             page: 1,
             nums: 25,
             condition: {
-                // 서버 미작업으로 인한 주석 처리
-                // indate: [
-                //     dayjs(new Date()).format('YYYY-MM-01'),
-                //     dayjs(new Date()).format('YYYY-MM-DD'),
-                // ],
+                indate: [
+                    dayjs(new Date()).format('YYYY-MM-01'),
+                    dayjs(new Date()).format('YYYY-MM-DD'),
+                ],
             },
             order: {},
             successAction: searchOrgasSuccess,
@@ -112,17 +110,18 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             params.order[type] = sort;
         }
-        // 페이지공통 - 검색어
-        if (search) {
-            params.condition['search'] = String(search);
+        // 영업조직
+        if (idx) {
+            params.idx = Number(idx);
         }
-        // 서버 미작업으로 인한 주석 처리
-        // if (date_type && date) {
-        //     params.condition[String(date_type)] = String(date).split(',');
-        // }
-        // for (const [key, value] of Object.entries(rest)) {
-        //     params.condition[key] = value;
-        // }
+
+        if (date_type && date) {
+            params.condition[String(date_type)] = String(date).split(',');
+        }
+
+        for (const [key, value] of Object.entries(rest)) {
+            params.condition[key] = value;
+        }
 
         dispatch(
             getOrgasRequest({

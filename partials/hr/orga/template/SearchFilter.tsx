@@ -97,13 +97,13 @@ export const OrgaSearchFilterTemplate: FC<Props> = () => {
                     <div className={`${displayName}__field`}>
                         <label
                             className={`${displayName}__label`}
-                            htmlFor="orga"
+                            htmlFor="idx"
                         >
                             영업조직
                         </label>
                         <div style={{ width: 320 }}>
                             <MySelect
-                                inputId="orga"
+                                inputId="idx"
                                 fontSize={13}
                                 placeholder="선택"
                                 {...orga}
@@ -116,13 +116,13 @@ export const OrgaSearchFilterTemplate: FC<Props> = () => {
                     <div className={`${displayName}__field`}>
                         <label
                             className={`${displayName}__label`}
-                            htmlFor="orga_rate"
+                            htmlFor="orga_rank"
                         >
                             조직등급
                         </label>
                         <div style={{ width: 160 }}>
                             <MySelect
-                                inputId="orga_rate"
+                                inputId="orga_rank"
                                 fontSize={13}
                                 placeholder="선택"
                                 {...rate}

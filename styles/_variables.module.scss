@@ -27,15 +27,25 @@ $wr-oninput-index: 500;
 $wr-select-index: 1046;
 $wr-datepicker-index: 1100;
 // colors
+// 블루 컬러1 - 버튼 및 아이콘
 $wr-blue1: #4b74de;
+// 블루 컬러2 - 블루 컬러1 보다 한단계 연한색
 $wr-blue2: #b8d4ff;
+// 블루 컬러3 - 배경색
 $wr-blue3: #f5f9ff;
+// 메인색
 $wr-primary-color: $wr-blue1;
+// 서브색
 $wr-secondary-color: #6d6d6d;
+// 배경색
 $wr-bg-color: $wr-blue3;
+// 입력창 테두리 색
 $wr-input-border-color: #dce2eb;
+// 테이블 테두리 색
 $wr-table-border-color: #8a91b1;
+// 테이블 헤더 배경색
 $wr-thead-bg-color: #deebff;
+// 활성화 색
 $wr-active-color: #185bc3;
 
 // $wr-header-color: #1466a4;
