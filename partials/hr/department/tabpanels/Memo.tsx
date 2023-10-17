@@ -72,7 +72,7 @@ export const MemoTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         type={labelType}
                     >
                         <MySelect
-                            inputId="consultingDivision"
+                            id="consultingDivision"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             options={[]}

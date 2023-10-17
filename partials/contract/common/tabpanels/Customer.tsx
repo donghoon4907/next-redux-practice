@@ -246,7 +246,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                     type={labelType}
                                 >
                                     <MySelect
-                                        inputId="ct_carfamily"
+                                        id="ct_carfamily"
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carfamilyHooks}
@@ -260,7 +260,7 @@ export const CustomerTabpanel: FC<Props> = ({
                                     type={labelType}
                                 >
                                     <MySelect
-                                        inputId="ct_carage"
+                                        id="ct_carage"
                                         height={variables.detailFilterHeight}
                                         isDisabled={!editable}
                                         {...carageHooks}

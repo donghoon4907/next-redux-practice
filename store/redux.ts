@@ -22,10 +22,10 @@ export interface SagaStore extends Store {
 export const makeStore = (context: Context) => {
     const sagaMiddleware = createSagaMiddleware({
         onError: (err) => {
-            console.log('in store');
+            // console.log('in store');
             // 에러 로그 로직 추가 예정...
-            console.error(err);
-            console.log(context);
+            // console.error(err);
+            // console.log(context);
         },
     });
 

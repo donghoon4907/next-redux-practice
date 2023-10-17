@@ -727,7 +727,7 @@ export const CustomerForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="custtype"
+                                            id="custtype"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -931,7 +931,7 @@ export const CustomerForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="inflowPath"
+                                            id="inflowPath"
                                             placeholder="유입경로"
                                             height={
                                                 variables.detailFilterHeight
@@ -948,7 +948,7 @@ export const CustomerForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="grade"
+                                            id="grade"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -969,7 +969,7 @@ export const CustomerForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="pia"
+                                            id="pia"
                                             height={
                                                 variables.detailFilterHeight
                                             }

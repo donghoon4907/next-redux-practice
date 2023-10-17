@@ -1153,7 +1153,7 @@ export const CarForm: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MySelect
-                                                inputId="orga"
+                                                id="orga"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1170,7 +1170,7 @@ export const CarForm: FC<Props> = ({
                                             isRequired={editable}
                                         >
                                             <MySelect
-                                                inputId="manager"
+                                                id="manager"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -1196,7 +1196,7 @@ export const CarForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="company"
+                                            id="company"
                                             placeholder={'선택'}
                                             height={
                                                 variables.detailFilterHeight
@@ -1331,7 +1331,7 @@ export const CarForm: FC<Props> = ({
                                         {boPeriod <= 0 && (
                                             <div className="wr-with__extension">
                                                 <MySelect
-                                                    inputId="periodDist"
+                                                    id="periodDist"
                                                     placement="right"
                                                     height={
                                                         variables.detailFilterHeight
@@ -1352,7 +1352,7 @@ export const CarForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="insu"
+                                            id="insu"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1368,7 +1368,7 @@ export const CarForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="rate"
+                                            id="rate"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1402,7 +1402,7 @@ export const CarForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="pay_method"
+                                            id="pay_method"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1420,7 +1420,7 @@ export const CarForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="pre_wcode"
+                                            id="pre_wcode"
                                             height={
                                                 variables.detailFilterHeight
                                             }

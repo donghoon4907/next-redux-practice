@@ -318,7 +318,7 @@ export const GeneralForm: FC<Props> = ({
                                             // isRequired={editable}
                                         >
                                             <MySelect
-                                                inputId="orga"
+                                                id="orga"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -335,7 +335,7 @@ export const GeneralForm: FC<Props> = ({
                                             isRequired={editable}
                                         >
                                             <MySelect
-                                                inputId="manager"
+                                                id="manager"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -361,7 +361,7 @@ export const GeneralForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="company"
+                                            id="company"
                                             placeholder={'선택'}
                                             height={
                                                 variables.detailFilterHeight

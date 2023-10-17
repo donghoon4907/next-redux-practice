@@ -655,7 +655,7 @@ export const LongForm: FC<Props> = ({
                                             // isRequired={editable}
                                         >
                                             <MySelect
-                                                inputId="orga"
+                                                id="orga"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -672,7 +672,7 @@ export const LongForm: FC<Props> = ({
                                             isRequired={editable}
                                         >
                                             <MySelect
-                                                inputId="manager"
+                                                id="manager"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -698,7 +698,7 @@ export const LongForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="company"
+                                            id="company"
                                             placeholder={'선택'}
                                             height={
                                                 variables.detailFilterHeight
@@ -766,7 +766,7 @@ export const LongForm: FC<Props> = ({
                                         isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="pay_cycle"
+                                            id="pay_cycle"
                                             placeholder={'선택'}
                                             height={
                                                 variables.detailFilterHeight
@@ -852,7 +852,7 @@ export const LongForm: FC<Props> = ({
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="status"
+                                                    id="status"
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -868,7 +868,7 @@ export const LongForm: FC<Props> = ({
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="pay_status"
+                                                    id="pay_status"
                                                     height={
                                                         variables.detailFilterHeight
                                                     }
@@ -1198,7 +1198,7 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="cal_type"
+                                            id="cal_type"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1234,7 +1234,7 @@ export const LongForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="family"
+                                            id="family"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -1254,7 +1254,7 @@ export const LongForm: FC<Props> = ({
                                             <span>준비중입니다.</span>
                                         </div>
                                         <MySelect
-                                            inputId="sd"
+                                            id="sd"
                                             height={
                                                 variables.detailFilterHeight
                                             }

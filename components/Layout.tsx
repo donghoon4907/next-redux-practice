@@ -23,7 +23,6 @@ export const MyLayout: FC<Props> = ({ children }) => {
             >
                 <MyNav menu={activeGnb} />
             </nav>
-
             <div className="wr-layout__right">
                 <MyHeader />
                 <main className="wr-layout__main wr-frame__body--nofooter">

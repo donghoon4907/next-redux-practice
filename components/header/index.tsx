@@ -61,7 +61,7 @@ export const MyHeader: FC<Props> = () => {
                                 type="active"
                             >
                                 <MySelect
-                                    inputId="shortcut_d"
+                                    id="shortcut_d"
                                     {...dCompanies}
                                 />
                             </WithLabel>
@@ -73,7 +73,7 @@ export const MyHeader: FC<Props> = () => {
                                 type="active"
                             >
                                 <MySelect
-                                    inputId="shortcut_l"
+                                    id="shortcut_l"
                                     {...lCompanies}
                                 />
                             </WithLabel>

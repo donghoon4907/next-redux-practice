@@ -90,17 +90,17 @@ export const CarCompareForm: FC = () => {
                     <div className="row">
                         <div className="col">
                             <WithLabel id="orga" label="지점" type="active">
-                                <MySelect inputId="orga" />
+                                <MySelect id="orga" />
                             </WithLabel>
                         </div>
                         <div className="col">
                             <WithLabel id="team" label="팀" type="active">
-                                <MySelect inputId="team" />
+                                <MySelect id="team" />
                             </WithLabel>
                         </div>
                         <div className="col">
                             <WithLabel id="member" label="구성원" type="active">
-                                <MySelect inputId="member" />
+                                <MySelect id="member" />
                             </WithLabel>
                         </div>
                     </div>
@@ -109,7 +109,7 @@ export const CarCompareForm: FC = () => {
                     <div className="row">
                         <div className="col">
                             <WithLabel id="manager" label="담당" type="active">
-                                <MySelect inputId="manager" />
+                                <MySelect id="manager" />
                             </WithLabel>
                         </div>
                         <div className="col">
@@ -118,7 +118,7 @@ export const CarCompareForm: FC = () => {
                                 label="처리상태"
                                 type="active"
                             >
-                                <MySelect inputId="status" />
+                                <MySelect id="status" />
                             </WithLabel>
                         </div>
                     </div>

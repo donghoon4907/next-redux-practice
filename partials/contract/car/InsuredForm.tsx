@@ -119,7 +119,7 @@ export const CarInsuredForm: FC<Props> = () => {
                 <div className="col">
                     <WithLabel id="cif_relation" label="관계" type="active">
                         <MySelect
-                            inputId="cif_relation"
+                            id="cif_relation"
                             height={variables.detailFilterHeight}
                             {...relation}
                         />

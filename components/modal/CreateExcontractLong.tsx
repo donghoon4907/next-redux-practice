@@ -108,7 +108,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="lComp" label="보험사" type="active">
-                            <MySelect inputId="lComp" {...comp} />
+                            <MySelect id="lComp" {...comp} />
                         </WithLabel>
                     </div>
                     <div className="col">

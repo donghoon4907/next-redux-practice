@@ -53,7 +53,7 @@ export const IncomeTabpanel: FC<Props> = ({
                     </div>
                     <WithLabel id="it_bank" label="은행명" type={labelType}>
                         <MySelect
-                            inputId="it_bank"
+                            id="it_bank"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             {...bank}
@@ -113,7 +113,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             <p>준비 중입니다.</p>
                         </div>
                         <MySelect
-                            inputId="it_car_rules"
+                            id="it_car_rules"
                             placeholder={'선택'}
                             height={variables.detailFilterHeight}
                             isDisabled={true}
@@ -153,7 +153,7 @@ export const IncomeTabpanel: FC<Props> = ({
                         type={labelType}
                     >
                         <MySelect
-                            inputId="it_genbase"
+                            id="it_genbase"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             {...genBase}
@@ -178,7 +178,7 @@ export const IncomeTabpanel: FC<Props> = ({
                             <p>준비 중입니다.</p>
                         </div>
                         <MySelect
-                            inputId="it_gen_rules"
+                            id="it_gen_rules"
                             placeholder={'선택'}
                             height={variables.detailFilterHeight}
                             isDisabled={true}

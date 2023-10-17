@@ -48,10 +48,7 @@ const User: NextPage<HrState> = ({ user }) => {
         userConstants.userType,
     );
 
-    const defaultStatus = findSelectOption(
-        user.status,
-        userConstants.empStatus,
-    );
+    const defaultStatus = findSelectOption(user.status, userConstants.status);
     let defaultEstComNm;
     let defaultEstComInputType;
     let defaultEstSalesNm;

@@ -120,7 +120,7 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="depart"
+                                                    id="depart"
                                                     placeholder={'선택'}
                                                     height={
                                                         variables.detailFilterHeight
@@ -138,7 +138,7 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="headquarter"
+                                                        id="headquarter"
                                                         placeholder={'선택'}
                                                         height={
                                                             variables.detailFilterHeight
@@ -302,7 +302,7 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="pointDivision"
+                                                    id="pointDivision"
                                                     placeholder={'선택'}
                                                     height={
                                                         variables.detailFilterHeight
@@ -322,7 +322,7 @@ const CreateBranch: NextPage<HrState> = ({ users }) => {
                                                     type={labelType}
                                                 >
                                                     <MySelect
-                                                        inputId="pointStatus"
+                                                        id="pointStatus"
                                                         height={
                                                             variables.detailFilterHeight
                                                         }

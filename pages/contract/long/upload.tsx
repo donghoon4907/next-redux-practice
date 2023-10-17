@@ -179,7 +179,7 @@ const LongUpload: NextPage = () => {
                             <div className="d-flex justify-content-between">
                                 <div className="d-flex">
                                     <div style={{ width: 150 }}>
-                                        <MySelect inputId="orga" />
+                                        <MySelect id="orga" />
                                     </div>
 
                                     <MyInput

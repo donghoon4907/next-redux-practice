@@ -250,7 +250,7 @@ const CreateBusiness: NextPage<HrState> = ({ users }) => {
                                                 type={labelType}
                                             >
                                                 <MySelect
-                                                    inputId="pointStatus"
+                                                    id="pointStatus"
                                                     height={
                                                         variables.detailFilterHeight
                                                     }

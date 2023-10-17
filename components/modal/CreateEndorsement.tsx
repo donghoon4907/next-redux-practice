@@ -104,7 +104,7 @@ export const CreateEndorsementModal: FC<Props> = () => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="edist" label="구분" type="active">
-                            <MySelect inputId="edist" {...dist} />
+                            <MySelect id="edist" {...dist} />
                         </WithLabel>
                     </div>
                     <div className="col">

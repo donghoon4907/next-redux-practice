@@ -9,7 +9,7 @@ import { MdPlayArrow } from 'react-icons/md';
 
 interface Props {}
 
-export const ListDateRangepicker: FC<Props> = () => {
+export const SearchFilterDatepicker: FC<Props> = () => {
     const displayName = 'wr-pages-list2';
 
     const router = useRouter();

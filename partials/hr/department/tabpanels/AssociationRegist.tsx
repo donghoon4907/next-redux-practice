@@ -161,7 +161,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="giaComp"
+                                            id="giaComp"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -242,7 +242,7 @@ export const AssociationRegistTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="liaComp"
+                                            id="liaComp"
                                             height={
                                                 variables.detailFilterHeight
                                             }

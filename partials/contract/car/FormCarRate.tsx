@@ -96,7 +96,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="guipcarrer"
+                                        id="guipcarrer"
                                         {...guipcarrer}
                                     />
                                 </div>
@@ -115,7 +115,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="guipcarrer_car"
+                                        id="guipcarrer_car"
                                         {...guipcarrerCar}
                                     />
                                 </div>
@@ -139,7 +139,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="l_jobcode"
+                                        id="l_jobcode"
                                         {...lJobcode}
                                     />
                                 </div>
@@ -155,7 +155,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="guipcarrer_kb"
+                                        id="guipcarrer_kb"
                                         {...guipCarrerKb}
                                     />
                                 </div>
@@ -179,14 +179,14 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="traffic"
+                                        id="traffic"
                                         {...trafficDist}
                                     />
                                 </div>
 
                                 <div className="d-flex">
                                     <MySelect
-                                        inputId="gr_area"
+                                        id="gr_area"
                                         {...trafficDetail}
                                     />
                                     <div className="wr-form__unit wr-border-l--hide">
@@ -208,7 +208,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="childdrive"
+                                        id="childdrive"
                                         {...childdrive}
                                     />
                                 </div>
@@ -231,7 +231,7 @@ export const FormCarRate: FC<Props> = () => {
                                         width: 150,
                                     }}
                                 >
-                                    <MySelect inputId="halin" {...halin} />
+                                    <MySelect id="halin" {...halin} />
                                 </div>
                                 {(guipcarrer.value?.value === 'B2' ||
                                     guipcarrer.value?.value === 'B3') && (
@@ -268,7 +268,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="special_code"
+                                        id="special_code"
                                         menuPlacement="top"
                                         {...specialCode}
                                     />
@@ -288,7 +288,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="special_code2"
+                                        id="special_code2"
                                         menuPlacement="top"
                                         {...specialCode2}
                                     />
@@ -315,7 +315,7 @@ export const FormCarRate: FC<Props> = () => {
                                         width: 190,
                                     }}
                                 >
-                                    <MySelect inputId="ss_sago3" {...ssSago3} />
+                                    <MySelect id="ss_sago3" {...ssSago3} />
                                 </div>
 
                                 <div>
@@ -329,7 +329,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="pre_sago3"
+                                        id="pre_sago3"
                                         {...preSago3}
                                     />
                                 </div>
@@ -348,7 +348,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="p_sago"
+                                        id="p_sago"
                                         menuPlacement="top"
                                         {...pSago}
                                     />
@@ -365,7 +365,7 @@ export const FormCarRate: FC<Props> = () => {
                                     }}
                                 >
                                     <MySelect
-                                        inputId="goout2"
+                                        id="goout2"
                                         menuPlacement="top"
                                         {...goout2}
                                     />
@@ -385,7 +385,7 @@ export const FormCarRate: FC<Props> = () => {
                                     </label>
                                 </div>
                                 <div className="d-flex">
-                                    <MySelect inputId="sago3" {...sago3} />
+                                    <MySelect id="sago3" {...sago3} />
                                     <div className="wr-form__unit wr-border-l--hide">
                                         건
                                     </div>
@@ -397,7 +397,7 @@ export const FormCarRate: FC<Props> = () => {
                                     </label>
                                 </div>
                                 <div className="d-flex">
-                                    <MySelect inputId="sago2" {...sago2} />
+                                    <MySelect id="sago2" {...sago2} />
                                     <div className="wr-form__unit wr-border-l--hide">
                                         건
                                     </div>
@@ -409,7 +409,7 @@ export const FormCarRate: FC<Props> = () => {
                                     </label>
                                 </div>
                                 <div className="d-flex">
-                                    <MySelect inputId="sago1" {...sago1} />
+                                    <MySelect id="sago1" {...sago1} />
                                     <div className="wr-form__unit wr-border-l--hide">
                                         건
                                     </div>
@@ -430,7 +430,7 @@ export const FormCarRate: FC<Props> = () => {
                                 </div>
                                 <div className="d-flex">
                                     <MySelect
-                                        inputId="car_sago3"
+                                        id="car_sago3"
                                         {...carSago3}
                                     />
                                     <div className="wr-form__unit wr-border-l--hide">
@@ -445,7 +445,7 @@ export const FormCarRate: FC<Props> = () => {
                                 </div>
                                 <div className="d-flex">
                                     <MySelect
-                                        inputId="car_nonum"
+                                        id="car_nonum"
                                         {...carNonum}
                                     />
                                     <div className="wr-form__unit wr-border-l--hide">
@@ -460,7 +460,7 @@ export const FormCarRate: FC<Props> = () => {
                                 </div>
                                 <div className="d-flex">
                                     <MySelect
-                                        inputId="car_sago1"
+                                        id="car_sago1"
                                         {...carSago1}
                                     />
                                     <div className="wr-form__unit wr-border-l--hide">

@@ -27,7 +27,7 @@ export const CalcPerformTabpanel: FC<Props> = ({
                 <div className="col-3">
                     <WithLabel id="grade" label="등급" type="disable">
                         <MySelect
-                            inputId="grade"
+                            id="grade"
                             placeholder="지점"
                             height={variables.detailFilterHeight}
                             isDisabled={true}

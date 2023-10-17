@@ -5,7 +5,7 @@ import Select from 'react-select';
 import variables from '@styles/_variables.module.scss';
 
 export interface MySelectProps {
-    inputId?: string;
+    id?: string;
     /**
      * 옵션 목록
      *
@@ -68,7 +68,7 @@ export interface MySelectProps {
 }
 
 export const MySelect: FC<MySelectProps> = ({
-    inputId,
+    id,
     options = [],
     value = null,
     onChange,
@@ -89,8 +89,8 @@ export const MySelect: FC<MySelectProps> = ({
     return (
         <Select
             className="select"
-            inputId={inputId}
-            name={inputId}
+            inputId={id}
+            name={id}
             options={options}
             value={value}
             onChange={handleChange}

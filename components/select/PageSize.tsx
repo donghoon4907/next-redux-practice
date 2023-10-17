@@ -5,7 +5,7 @@ import variables from '@styles/_variables.module.scss';
 
 import { MySelectProps } from '.';
 
-export const ListCountSelect: FC<MySelectProps> = ({
+export const PageSizeSelect: FC<MySelectProps> = ({
     options,
     value,
     onChange,

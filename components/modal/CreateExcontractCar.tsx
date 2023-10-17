@@ -108,7 +108,7 @@ export const CreateExcontractCarModal: FC<Props> = () => {
                 <div className="row">
                     <div className="col">
                         <WithLabel id="cComp" label="보험사" type="active">
-                            <MySelect inputId="cComp" {...comp} />
+                            <MySelect id="cComp" {...comp} />
                         </WithLabel>
                     </div>
                     <div className="col">

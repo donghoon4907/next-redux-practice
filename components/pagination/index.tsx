@@ -13,7 +13,7 @@ import { findSelectOption } from '@utils/getter';
 import commonContstants from '@constants/options/common';
 import { createPageButtons } from '@utils/paging';
 import { useSearch } from '@hooks/use-search';
-import { ListCountSelect } from '@components/select/ListCount';
+import { PageSizeSelect } from '@components/select/PageSize';
 
 interface Props extends CoreProps {
     /**
@@ -102,8 +102,7 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                     aria-label="Page navigation"
                 >
                     <div style={{ width: 120 }}>
-                        <ListCountSelect {...listCount} />
-                        {/* <MySelect {...listCount} /> */}
+                        <PageSizeSelect {...listCount} />
                     </div>
                     <ul className="pagination">
                         <li className="page-item">

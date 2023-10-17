@@ -164,7 +164,7 @@ export const ContactTabpanel: FC<Props> = ({
                                         // isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="cot_kind"
+                                            id="cot_kind"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -181,7 +181,7 @@ export const ContactTabpanel: FC<Props> = ({
                                         // isRequired={editable}
                                     >
                                         <MySelect
-                                            inputId="cot_channel"
+                                            id="cot_channel"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -197,7 +197,7 @@ export const ContactTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="cot_spe"
+                                            id="cot_spe"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -250,7 +250,7 @@ export const ContactTabpanel: FC<Props> = ({
                                             type={labelType}
                                         >
                                             <MySelect
-                                                inputId="cot_cnum"
+                                                id="cot_cnum"
                                                 height={
                                                     variables.detailFilterHeight
                                                 }
@@ -283,7 +283,7 @@ export const ContactTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="cot_status"
+                                            id="cot_status"
                                             height={
                                                 variables.detailFilterHeight
                                             }

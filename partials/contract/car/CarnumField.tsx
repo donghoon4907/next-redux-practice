@@ -129,7 +129,7 @@ export const CarnumField: FC<Props> = () => {
 
         if (!isMatch || feedback !== null) {
             alert('차량번호를 확인하세요.');
-            console.log(feedback);
+            // console.log(feedback);
         } else {
             if (nextLocale) {
                 setLocale(nextLocale);
@@ -185,7 +185,7 @@ export const CarnumField: FC<Props> = () => {
                     width: 100,
                 }}
             >
-                <MySelect inputId="carnum1" {...locale} />
+                <MySelect id="carnum1" {...locale} />
             </div>
 
             <div
@@ -201,7 +201,7 @@ export const CarnumField: FC<Props> = () => {
                 />
             </div>
             <div style={{ width: 100 }}>
-                <MySelect inputId="carnum3" {...usage} />
+                <MySelect id="carnum3" {...usage} />
             </div>
 
             <div

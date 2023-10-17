@@ -202,7 +202,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     }}
                                 >
                                     <FormSelect
-                                        inputId="carfamily"
+                                        id="carfamily"
                                         options={carConstants.family}
                                         defaultValue={carConstants.family[0]}
                                     />
@@ -219,7 +219,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     }}
                                 >
                                     <FormSelect
-                                        inputId="drate"
+                                        id="drate"
                                         options={carConstants.dDist}
                                         defaultValue={carConstants.dDist[0]}
                                     />
@@ -244,7 +244,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     }}
                                 >
                                     <FormSelect
-                                        inputId="carage"
+                                        id="carage"
                                         options={carConstants.minAge}
                                         defaultValue={carConstants.minAge[6]}
                                     />
@@ -264,7 +264,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     }}
                                 >
                                     <FormSelect
-                                        inputId="divide_num"
+                                        id="divide_num"
                                         options={carConstants.payMethod}
                                         defaultValue={carConstants.payMethod[0]}
                                     />
@@ -284,7 +284,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     }}
                                 >
                                     <FormSelect
-                                        inputId="mul_sago"
+                                        id="mul_sago"
                                         options={carConstants.mSago}
                                         defaultValue={carConstants.mSago[3]}
                                     />
@@ -304,7 +304,7 @@ export const FormCarCustomer: FC<Props> = () => {
                                     }}
                                 >
                                     <FormSelect
-                                        inputId="pre_com"
+                                        id="pre_com"
                                         options={carUseCompanies}
                                     />
                                 </div>

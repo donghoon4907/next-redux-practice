@@ -93,7 +93,7 @@ export const LifeLongModal: FC<Props> = () => {
                     <div className="col">
                         <WithLabel id="llRuleNm" label="규정명" type="active">
                             <MySelect
-                                inputId="llRuleNm"
+                                id="llRuleNm"
                                 // height={variables.detailFilterHeight}
                                 // isDisabled={!editable}
                                 options={[]}

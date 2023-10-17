@@ -66,7 +66,7 @@ export const PaymentTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                 <div className="col-4">
                     <WithLabel id="bank" label="은행명" type={labelType}>
                         <MySelect
-                            inputId="bank"
+                            id="bank"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             options={[]}
@@ -105,7 +105,7 @@ export const PaymentTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         type={labelType}
                     >
                         <MySelect
-                            inputId="aRelation"
+                            id="aRelation"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             options={[]}
@@ -118,7 +118,7 @@ export const PaymentTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                 <div className="col-4">
                     <WithLabel id="isTax" label="과세여부" type={labelType}>
                         <MySelect
-                            inputId="isTax"
+                            id="isTax"
                             height={variables.detailFilterHeight}
                             isDisabled={!editable}
                             options={[]}

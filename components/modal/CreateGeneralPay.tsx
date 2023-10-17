@@ -112,7 +112,7 @@ export const CreateGeneralPayModal: FC<Props> = ({ payment }) => {
                     </div>
                     <div className="col">
                         <WithLabel id="pdist" label="구분" type="active">
-                            <MySelect inputId="pdist" {...dist} />
+                            <MySelect id="pdist" {...dist} />
                         </WithLabel>
                     </div>
                 </div>

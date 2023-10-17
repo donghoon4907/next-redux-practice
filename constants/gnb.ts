@@ -512,74 +512,19 @@ export const ASIDE_MENU: any = {
         },
     },
     hr: {
-        // department: {
-        //     id: 'hr-department',
-        //     label: '조직관리',
-        //     to: '',
-        //     business: {
-        //         id: 'hr-department-business',
-        //         label: '사업부',
-        //         to: '',
-        //         create: {
-        //             id: 'hr-department-business_create',
-        //             label: '사업부등록',
-        //             to: '/hr/department/business/create',
-        //         },
-        //     },
-        //     headquarter: {
-        //         id: 'hr-department-headquarter',
-        //         label: '본부',
-        //         to: '',
-        //         create: {
-        //             id: 'hr-department-headquarter_create',
-        //             label: '본부등록',
-        //             to: '/hr/department/headquarter/create',
-        //         },
-        //     },
-        //     branch: {
-        //         id: 'hr-department-branch',
-        //         label: '지점',
-        //         to: '',
-        //         create: {
-        //             id: 'hr-department-branch_create',
-        //             label: '지점등록',
-        //             to: '/hr/department/branch/create',
-        //         },
-        //     },
-        //     team: {
-        //         id: 'hr-department-team',
-        //         label: '팀',
-        //         to: '',
-        //         create: {
-        //             id: 'hr-department-team_create',
-        //             label: '팀등록',
-        //             to: '/hr/department/team/create',
-        //         },
-        //     },
-        // },
-        user: {
-            id: 'hr-user',
-            label: '영업가족',
-            to: '',
-            list: {
-                id: 'hr-user_list',
-                label: '영업가족목록',
-                to: '/hr/user/list',
-            },
-            create: {
-                id: 'hr-user_create',
-                label: '영업가족등록',
-                to: '/hr/user/create',
-            },
-        },
-        orga: {
-            id: 'hr-orga',
+        group: {
+            id: 'hr-group',
             label: '조직관리',
             to: '',
-            list: {
-                id: 'hr-orga_list',
+            orga: {
+                id: 'hr-group_orga',
                 label: '지점명세',
-                to: '/hr/orga/list',
+                to: '/hr/group/orga',
+            },
+            user: {
+                id: 'hr-group_user',
+                label: '영업가족',
+                to: '/hr/group/user',
             },
         },
         // manage: {

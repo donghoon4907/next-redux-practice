@@ -55,7 +55,7 @@ export const SelectDepartModal: FC<Props> = () => {
                     <div className="col">
                         <WithLabel id="depart" label="부서" type="active">
                             <MySelect
-                                inputId="depart"
+                                id="depart"
                                 placeholder={'선택'}
                                 {...depart}
                             />

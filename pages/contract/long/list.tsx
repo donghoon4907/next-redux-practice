@@ -137,7 +137,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         try {
             await sagaTask?.toPromise();
         } catch (e) {
-            console.log(e);
+            console.error(e);
         }
 
         return null;

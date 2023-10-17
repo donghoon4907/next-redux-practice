@@ -318,7 +318,7 @@ export const UserForm: FC<Props> = ({
     defaultAddress2 = '',
     defaultAddress3 = '',
     defaultUserType = userConstants.userType[0],
-    defaultStatus = userConstants.empStatus[0],
+    defaultStatus = userConstants.status[0],
     defaultIndate = null,
     defaultOutdate = null,
     defaultCalIdx,
@@ -447,7 +447,7 @@ export const UserForm: FC<Props> = ({
     // 영업구분
     const [userType] = useSelect(userConstants.userType, defaultUserType);
     // 재직현황
-    const [status] = useSelect(userConstants.empStatus, defaultStatus);
+    const [status] = useSelect(userConstants.status.slice(1), defaultStatus);
     // 입사일
     const [indate] = useDatepicker(
         defaultIndate ? new Date(defaultIndate) : null,
@@ -1140,7 +1140,7 @@ export const UserForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="user_type"
+                                            id="user_type"
                                             placeholder={'선택'}
                                             height={
                                                 variables.detailFilterHeight
@@ -1155,7 +1155,7 @@ export const UserForm: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="status"
+                                            id="status"
                                             placeholder={'선택'}
                                             height={
                                                 variables.detailFilterHeight

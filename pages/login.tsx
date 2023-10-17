@@ -59,7 +59,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
 
                 const idKey = process.env.COOKIE_RECENT_LOGIN_KEY;
                 if (isEmpty(idKey)) {
-                    console.log('error: COOKIE_RECENT_LOGIN_KEY is empty');
+                    alert('error: COOKIE_RECENT_LOGIN_KEY is empty');
                 } else {
                     if (checkSaveId.checked) {
                         setCookie(idKey!, userid.value, {
@@ -212,7 +212,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             ip = data.ip;
         } catch {
-            console.log('[ERROR|LOGIN:getIp] - 해당 사용자는 IPv6환경이 아님');
+            console.error(
+                '[ERROR|LOGIN:getIp] - 해당 사용자는 IPv6환경이 아님',
+            );
         }
 
         return {

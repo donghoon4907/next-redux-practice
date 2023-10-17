@@ -22,7 +22,7 @@ const Calendar: NextPage = () => {
                     <div className="wr-pages-list__header">
                         <div className="wr-pages-list__filter">
                             <WithLabel id="orga" label="조직" type="active">
-                                <MySelect inputId="orga" />
+                                <MySelect id="orga" />
                             </WithLabel>
                         </div>
                     </div>

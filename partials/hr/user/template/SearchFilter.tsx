@@ -1,105 +1,119 @@
-import type { FC, FormEvent } from 'react';
+import type { FC } from 'react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { LuSearch } from 'react-icons/lu';
-import { WithLabel } from '@components/WithLabel';
-import { useInput } from '@hooks/use-input';
-import { isEmpty } from '@utils/validator/common';
-import { useSearch } from '@hooks/use-search';
-import { MyInput } from '@components/input';
+import { useSelect } from '@hooks/use-select';
+import { MySelect } from '@components/select';
+import userConstants from '@constants/options/user';
+import { SearchFilterDatepicker } from '@partials/common/datepicker/SearchFilter';
+import { SearchFilterOrgaSelect } from '@partials/common/select/SearchFilterOrga';
+import { SearchFilterUserSelect } from '@partials/common/select/SearchFilterUser';
+import { SearchFilterForm } from '@partials/common/form/SearchFilter';
+import { SearchFilterKeywordInput } from '@partials/common/input/SearchFilterKeyword';
+import { SearchFilterDateTypeLabel } from '@partials/common/label/SearchFilterDateType';
+import { findSelectOption } from '@utils/getter';
 
 interface Props {}
 
-export const UserSearchFilterTemplate: FC<Props> = () => {
-    const displayName = 'wr-pages-list';
+export const UserSearchFilter: FC<Props> = () => {
+    const displayName = 'wr-pages-list2';
 
     const router = useRouter();
 
-    const search = useSearch();
+    // 검색필터 - 영업구분
+    const [userType, setUserType] = useSelect(userConstants.userType);
 
-    // 검색필터 - 검색어
-    const [keyword, setKeyword] = useInput('');
-    // 검색필터 - 검색종류
-    // const [type, setType] = useSelect(searchConstants.userSearchTypes);
+    // 검색필터 - 협회등록
+    const [asso, setAsso] = useSelect(userConstants.asso);
 
-    const handleSearch = (evt: FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-
-        const { nums } = router.query;
-
-        const searchParams = new URLSearchParams();
-
-        if (!isEmpty(keyword.value)) {
-            searchParams.append('search', keyword.value);
-            // if (type.value) {
-            //     searchParams.append('type', type.value.value);
-            // }
-        }
-
-        searchParams.append('page', '1');
-
-        if (nums) {
-            searchParams.append('nums', nums as string);
-        }
-
-        search(searchParams.toString());
-    };
+    // 검색필터 - 재직현황
+    const [status, setStatus] = useSelect(userConstants.status2);
 
     useEffect(() => {
-        const searchKeyword = router.query.search as string;
-        // const searchType = router.query.type as string;
+        const { user_type, asso, status } = router.query;
 
-        if (!isEmpty(searchKeyword)) {
-            setKeyword(searchKeyword);
+        if (user_type) {
+            setUserType(findSelectOption(user_type, userConstants.userType));
         }
 
-        // if (!isEmpty(searchType)) {
-        //     setType(
-        //         findSelectOption(searchType, searchConstants.userSearchTypes),
-        //     );
-        // }
+        if (asso) {
+            setAsso(findSelectOption(asso, userConstants.asso));
+        }
+
+        if (status) {
+            setStatus(findSelectOption(status, userConstants.status2));
+        }
     }, [router]);
 
     return (
-        <>
-            <div className={`${displayName}__filter`}></div>
-            <div className={`${displayName}__filter`}></div>
-            <div className={`${displayName}__filter`}></div>
-            <div className={`${displayName}__filter`}>
-                <WithLabel id="searchKeyword" label="검색" type="active">
-                    {/* <div
-                        className="wr-with__extension"
-                        style={{
-                            width: 130,
-                        }}
-                    >
-                        <MySelect placeholder="선택" {...type} />
-                    </div> */}
-                    <form
-                        role="search"
-                        className="wr-search__form"
-                        onSubmit={handleSearch}
-                    >
-                        <MyInput
-                            type="search"
-                            // className="wr-border-l--hide"
-                            button={{
-                                type: 'submit',
-                                className: 'btn-primary',
-                                children: (
-                                    <>
-                                        <span className="visually-hidden">
-                                            검색
-                                        </span>
-                                        <LuSearch size={15} />
-                                    </>
-                                ),
-                            }}
-                            {...keyword}
+        <SearchFilterForm>
+            <div className={`${displayName}__filters`}>
+                <div className={`${displayName}__filter`}>
+                    <SearchFilterOrgaSelect activeUser />
+                    <SearchFilterUserSelect />
+                </div>
+                <div className={`${displayName}__divider`}></div>
+                <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="user_type"
+                        >
+                            영업구분
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="user_type"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...userType}
+                            />
+                        </div>
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="asso"
+                        >
+                            협회등록
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="asso"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...asso}
+                            />
+                        </div>
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="status"
+                        >
+                            재직현황
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="status"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...status}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className={`${displayName}__divider`}></div>
+                <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <SearchFilterDateTypeLabel
+                            indateLabel="입사일"
+                            outdateLabel="퇴사일"
                         />
-                    </form>
-                </WithLabel>
+                        <SearchFilterDatepicker />
+                    </div>
+                    <SearchFilterKeywordInput />
+                </div>
             </div>
-        </>
+        </SearchFilterForm>
     );
 };

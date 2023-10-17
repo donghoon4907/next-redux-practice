@@ -11,9 +11,13 @@ import { getAgenciesRequest } from '@actions/hr/get-agencys';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { MyLayout } from '@components/Layout';
+import { useInitTab } from '@hooks/use-initialize';
 
 const CreateUser: NextPage = () => {
     const dispatch = useDispatch();
+
+    // 탭 설정
+    useInitTab('영업가족등록');
 
     useEffect(() => {
         // 부서 선택 모달 열기

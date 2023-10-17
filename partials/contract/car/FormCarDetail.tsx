@@ -181,10 +181,7 @@ export const FormCarDetail: FC<Props> = () => {
                                             width: 150,
                                         }}
                                     >
-                                        <MySelect
-                                            inputId="sportcar"
-                                            {...sportcar}
-                                        />
+                                        <MySelect id="sportcar" {...sportcar} />
                                     </div>
                                 </div>
                             </td>
@@ -205,10 +202,7 @@ export const FormCarDetail: FC<Props> = () => {
                                             width: 150,
                                         }}
                                     >
-                                        <MySelect
-                                            inputId="caryear"
-                                            {...caryear}
-                                        />
+                                        <MySelect id="caryear" {...caryear} />
                                     </div>
                                     <div>
                                         <label
@@ -259,7 +253,7 @@ export const FormCarDetail: FC<Props> = () => {
                                         }}
                                     >
                                         <MySelect
-                                            inputId="car_grade"
+                                            id="car_grade"
                                             {...carGrade}
                                         />
                                     </div>
@@ -298,7 +292,7 @@ export const FormCarDetail: FC<Props> = () => {
                                         }}
                                     >
                                         <MySelect
-                                            inputId="cartype"
+                                            id="cartype"
                                             placeholder="==차종선택=="
                                             isDisabled
                                         />
@@ -315,7 +309,7 @@ export const FormCarDetail: FC<Props> = () => {
                                         }}
                                     >
                                         <MySelect
-                                            inputId="membercode"
+                                            id="membercode"
                                             {...membercode}
                                         />
                                     </div>
@@ -355,10 +349,7 @@ export const FormCarDetail: FC<Props> = () => {
                                         </label>
                                     </div>
                                     <div style={{ width: 200 }}>
-                                        <MySelect
-                                            inputId="aircode"
-                                            {...aircode}
-                                        />
+                                        <MySelect id="aircode" {...aircode} />
                                     </div>
                                 </div>
                             </td>
@@ -374,14 +365,14 @@ export const FormCarDetail: FC<Props> = () => {
                                             width: 120,
                                         }}
                                     >
-                                        <MySelect inputId="chung" {...chung} />
+                                        <MySelect id="chung" {...chung} />
                                     </div>
                                     <div
                                         style={{
                                             width: 120,
                                         }}
                                     >
-                                        <MySelect inputId="gps" {...gps} />
+                                        <MySelect id="gps" {...gps} />
                                     </div>
 
                                     <MyCheckbox
@@ -590,7 +581,7 @@ export const FormCarDetail: FC<Props> = () => {
                                         </label>
                                     </div>
                                     <div style={{ width: 220 }}>
-                                        <MySelect inputId="usang" {...usang} />
+                                        <MySelect id="usang" {...usang} />
                                     </div>
 
                                     <div>

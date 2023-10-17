@@ -156,12 +156,12 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
         <form className={`${displayName}__header`} onSubmit={handleSubmit}>
             <div className={`${displayName}__filter`}>
                 <WithLabel id="orga" label="영업조직" type="active">
-                    <MySelect inputId="orga" {...orga} />
+                    <MySelect id="orga" {...orga} />
                 </WithLabel>
             </div>
             <div className={`${displayName}__filter`}>
                 <WithLabel id="fc" label="영업가족" type="active">
-                    <MySelect inputId="fc" {...user} />
+                    <MySelect id="fc" {...user} />
                 </WithLabel>
             </div>
             <div className={`${displayName}__filter`}>
@@ -222,29 +222,29 @@ export const LongSearchFilterTemplate: FC<Props> = () => {
             <div className={`${displayName}__filter`}>
                 <div>
                     <WithLabel id="company" label="보험사" type="active">
-                        <MySelect inputId="company" {...company} />
+                        <MySelect id="company" {...company} />
                     </WithLabel>
                 </div>
                 <div>
                     <WithLabel id="spec" label="보종" type="active">
-                        <MySelect inputId="spec" {...productType} />
+                        <MySelect id="spec" {...productType} />
                     </WithLabel>
                 </div>
             </div>
             <div className={`${displayName}__filter`}>
                 <WithLabel id="title" label="상품명" type="active">
-                    <MySelect inputId="title" {...ptitle} />
+                    <MySelect id="title" {...ptitle} />
                 </WithLabel>
             </div>
             <div className={`${displayName}__filter`}>
                 <div>
                     <WithLabel id="cycle" label="납입주기" type="active">
-                        <MySelect inputId="cycle" {...cycle} />
+                        <MySelect id="cycle" {...cycle} />
                     </WithLabel>
                 </div>
                 <div>
                     <WithLabel id="dist" label="입금구분" type="active">
-                        <MySelect inputId="dist" {...dist} />
+                        <MySelect id="dist" {...dist} />
                     </WithLabel>
                 </div>
             </div>

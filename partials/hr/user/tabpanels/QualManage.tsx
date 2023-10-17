@@ -145,7 +145,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="qt_ddist"
+                                            id="qt_ddist"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -161,7 +161,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="qt_dcom"
+                                            id="qt_dcom"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -226,7 +226,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="qt_ldist"
+                                            id="qt_ldist"
                                             height={
                                                 variables.detailFilterHeight
                                             }
@@ -242,7 +242,7 @@ export const QualManageTabpanel: FC<Props> = ({
                                         type={labelType}
                                     >
                                         <MySelect
-                                            inputId="qt_lcom"
+                                            id="qt_lcom"
                                             height={
                                                 variables.detailFilterHeight
                                             }

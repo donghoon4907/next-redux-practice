@@ -1,11 +1,19 @@
 import type { SearchOrgasRequestAction } from '@actions/hr/search-orgas.action';
-import { call, takeEvery } from 'redux-saga/effects';
-import { searchMiddleware } from '@utils/generators/search';
+import { call, put, takeEvery } from 'redux-saga/effects';
 import hrsService from '@services/hrsService';
-import { SearchOrgasActionTypes } from '@actions/hr/search-orgas.action';
+import {
+    SearchOrgasActionTypes,
+    searchOrgasSuccess,
+} from '@actions/hr/search-orgas.action';
+import { commonMiddleware } from '@utils/generators/common';
+import { generateListSuccessPayload } from '@utils/generate';
 
 function* searchOrgasSaga({ payload }: SearchOrgasRequestAction) {
     const { data } = yield call(hrsService.searchOrgas, payload);
+
+    const successPayload = generateListSuccessPayload(data, payload);
+
+    yield put(searchOrgasSuccess(successPayload));
 
     return data;
 }
@@ -13,6 +21,6 @@ function* searchOrgasSaga({ payload }: SearchOrgasRequestAction) {
 export function* watchSearchOrgas() {
     yield takeEvery(
         SearchOrgasActionTypes.REQUEST,
-        searchMiddleware(searchOrgasSaga),
+        commonMiddleware(searchOrgasSaga),
     );
 }
