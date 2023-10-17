@@ -68,72 +68,85 @@ const Users: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const { page, nums, order, date, user, date_type, status, ...rest } =
-            ctx.query;
+    permissionMiddleware(
+        async ({ dispatch, sagaTask }, ctx, { userid, user_info }) => {
+            const {
+                page,
+                nums,
+                order,
+                date,
+                user,
+                date_type,
+                status,
+                orga,
+                ...rest
+            } = ctx.query;
 
-        const params: any = {
-            page: 1,
-            nums: 25,
-            condition: {
-                indate: [
-                    dayjs(new Date()).format('YYYY-MM-01'),
-                    dayjs(new Date()).format('YYYY-MM-DD'),
-                ],
-                status: ['상근', '비상근', '기타'],
-            },
-            order: {},
-        };
-        // 페이지공통 - 페이지 번호
-        if (page) {
-            params.page = Number(page);
-        }
-        // 페이지공통 - 페이지 크기
-        if (nums) {
-            params.nums = Number(nums);
-        }
-        // 페이지공통 - 정렬
-        if (order) {
-            const [type, sort] = String(order).split(',');
+            const params: any = {
+                page: 1,
+                nums: 25,
+                condition: {
+                    orga: user_info.orga_idx,
+                    userid,
+                    indate: [
+                        dayjs(new Date()).format('YYYY-MM-01'),
+                        dayjs(new Date()).format('YYYY-MM-DD'),
+                    ],
+                    status: ['상근', '비상근', '기타'],
+                },
+                order: {},
+            };
+            // 페이지공통 - 페이지 번호
+            if (page) {
+                params.page = Number(page);
+            }
+            // 페이지공통 - 페이지 크기
+            if (nums) {
+                params.nums = Number(nums);
+            }
+            // 페이지공통 - 정렬
+            if (order) {
+                const [type, sort] = String(order).split(',');
 
-            params.order[type] = sort;
-        }
-        // 영업가족
-        if (user) {
-            params.idx = String(user);
-        }
-        // 재직현황
-        if (status) {
-            params.status = String(status).split(',');
-        }
-        // 입사일 및 퇴사일
-        if (date_type && date) {
-            params.condition[String(date_type)] = String(date).split(',');
-        }
+                params.order[type] = sort;
+            }
+            // 영업조직
+            if (orga) {
+                params.condition['orga'] = Number(orga);
+            }
+            // 재직현황
+            if (status) {
+                params.condition['status'] = String(status).split(',');
+            }
+            // 입사일 및 퇴사일
+            if (date_type && date) {
+                params.condition[String(date_type)] = String(date).split(',');
+            }
 
-        // 영업조직, 영업구분, 협회등록, 검색...
-        for (const [key, value] of Object.entries(rest)) {
-            params.condition[key] = value;
-        }
+            // 영업가족, 영업구분, 협회등록, 검색...
+            for (const [key, value] of Object.entries(rest)) {
+                params.condition[key] = value;
+            }
 
-        dispatch(
-            getOrgasRequest({
-                idx: '1',
-            }),
-        );
+            dispatch(
+                getOrgasRequest({
+                    idx: '1',
+                }),
+            );
 
-        dispatch(searchUsersRequest(params));
+            dispatch(searchUsersRequest(params));
 
-        dispatch(END);
+            dispatch(END);
 
-        try {
-            await sagaTask?.toPromise();
-        } catch (e) {
-            // console.log(e);
-        }
+            try {
+                await sagaTask?.toPromise();
+            } catch (e) {
+                // console.log(e);
+            }
 
-        return null;
-    }),
+            return null;
+        },
+    ),
 );
 
 export default Users;

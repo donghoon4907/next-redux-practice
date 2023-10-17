@@ -36,7 +36,7 @@ const initialState: LongState = {
         fields: [],
         rows: [],
         total: null,
-        ptitles: [],
+        products: [],
         lastPayload: null,
     },
     long: null,

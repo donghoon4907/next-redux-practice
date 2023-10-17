@@ -11,10 +11,7 @@ import { MyPagination } from '@components/pagination';
 import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import {
-    searchOrgasSuccess,
-    searchOrgasRequest,
-} from '@actions/hr/search-orgas.action';
+import { searchOrgasRequest } from '@actions/hr/search-orgas.action';
 import { OrgaSearchFilter } from '@partials/hr/orga/template/SearchFilter';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
@@ -69,13 +66,14 @@ const Orgas: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+    permissionMiddleware(async ({ dispatch, sagaTask }, ctx, { user_info }) => {
         const { page, nums, order, date, orga, date_type, ...rest } = ctx.query;
 
         const params: any = {
             page: 1,
             nums: 25,
             condition: {
+                idx: user_info.orga_idx,
                 indate: [
                     dayjs(new Date()).format('YYYY-MM-01'),
                     dayjs(new Date()).format('YYYY-MM-DD'),

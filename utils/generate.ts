@@ -19,18 +19,20 @@ export function generateListSuccessPayload(data: any, payload: any) {
         lastPayload: payload,
     };
 
-    const { rows, fields, total } = data;
+    if (data.hasOwnProperty('data')) {
+        const target = data.data;
 
-    if (rows) {
-        output.rows = rows;
-    }
+        if (target.hasOwnProperty('rows')) {
+            output.rows = target['rows'];
+        }
 
-    if (fields) {
-        output.fields = fields;
-    }
+        if (target.hasOwnProperty('fields')) {
+            output.fields = target['fields'];
+        }
 
-    if (total) {
-        output.total = total;
+        if (target.hasOwnProperty('total')) {
+            output.total = target['total'];
+        }
     }
 
     return output;

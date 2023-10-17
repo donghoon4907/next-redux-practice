@@ -11,11 +11,15 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { findSelectOption } from '@utils/getter';
 import { CarForm } from '@partials/contract/car/CarForm';
 import { MyLayout } from '@components/Layout';
+import { useInitTab } from '@hooks/use-initialize';
 
 const CreateCar: NextPage = () => {
     const { loggedInUser, orgas } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    // 탭 설정
+    // useInitTab('자동차계약등록');
 
     const defaultOrga = findSelectOption(
         loggedInUser.user_info.orga_idx,

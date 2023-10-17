@@ -23,7 +23,6 @@ export const useInitTab = (label: string) => {
                 to: router.asPath,
             });
         }
-        console.log('attach');
         dispatch(initTab(tab.getAll()));
     }, [router]);
 

@@ -11,11 +11,15 @@ import { LongForm } from '@partials/contract/long/LongForm';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
+import { useInitTab } from '@hooks/use-initialize';
 
 const CreateLong: NextPage = () => {
     const { loggedInUser, orgas } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    // 탭 설정
+    useInitTab('장기계약등록');
 
     const defaultOrga = findSelectOption(
         loggedInUser.user_info.orga_idx,

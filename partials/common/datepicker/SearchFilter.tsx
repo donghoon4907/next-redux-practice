@@ -49,7 +49,7 @@ export const SearchFilterDatepicker: FC<Props> = () => {
                     id="date"
                     format="yyyy-MM-dd"
                     placeholder="기간을 입력 혹은 선택하세요"
-                    size="sm"
+                    size="xs"
                     placement="autoVerticalStart"
                     cleanable={false}
                     ranges={[

@@ -38,12 +38,12 @@ export const SearchFilterUserSelect: FC<Props> = () => {
 
     return (
         <div className={`${displayName}__field`}>
-            <label className={`${displayName}__label`} htmlFor="user">
+            <label className={`${displayName}__label`} htmlFor="userid">
                 영업가족
             </label>
             <div style={{ width: 160 }}>
                 <MySelect
-                    id="user"
+                    id="userid"
                     fontSize={13}
                     placeholder="선택"
                     {...user}

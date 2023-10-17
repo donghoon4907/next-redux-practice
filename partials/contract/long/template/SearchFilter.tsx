@@ -1,274 +1,163 @@
-import type { FC, FormEvent } from 'react';
+import type { FC } from 'react';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import {
-    compareAsc,
-    isSameMonth,
-    lastDayOfMonth,
-    setDate,
-    startOfMonth,
-    endOfMonth,
-    addMonths,
-} from 'date-fns';
 import { useSelector } from 'react-redux';
 import { HrState } from '@reducers/hr';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
 import { AppState } from '@reducers/index';
 import { LongState } from '@reducers/long';
 import { useSelect } from '@hooks/use-select';
 import { useNumbericInput } from '@hooks/use-input';
-import { useDateRangepicker } from '@hooks/use-datepicker';
 import longConstants from '@constants/options/long';
 import { DISTS } from '@constants/selectOption';
-import { useApi } from '@hooks/use-api';
-import { getUsersRequest } from '@actions/hr/get-users';
 import { MySelect } from '@components/select';
-import { WithArrow } from '@components/WithArrow';
-import { useSearch } from '@hooks/use-search';
-import { isEmpty } from '@utils/validator/common';
-import { LuSearch } from 'react-icons/lu';
-import { MyDateRangepicker } from '@components/datepicker/Range';
+import { SearchFilterForm } from '@partials/common/form/SearchFilter';
+import { SearchFilterOrgaSelect } from '@partials/common/select/SearchFilterOrga';
+import { SearchFilterUserSelect } from '@partials/common/select/SearchFilterUser';
+import { SearchFilterDatepicker } from '@partials/common/datepicker/SearchFilter';
+import { SearchFilterKeywordInput } from '@partials/common/input/SearchFilterKeyword';
+import { findSelectOption } from '@utils/getter';
 
 interface Props {}
 
-export const LongSearchFilterTemplate: FC<Props> = () => {
-    const displayName = 'wr-pages-list';
+export const LongSearchFilter: FC<Props> = () => {
+    const displayName = 'wr-pages-list2';
 
     const router = useRouter();
 
-    const { orgas, users, longViewCompanies } = useSelector<AppState, HrState>(
+    const { longViewCompanies } = useSelector<AppState, HrState>(
         (props) => props.hr,
     );
 
     const { longs } = useSelector<AppState, LongState>((props) => props.long);
 
-    const getUsers = useApi(getUsersRequest);
-
-    const search = useSearch();
-
-    // 검색필터 - 조직
-    const [orga] = useSelect(orgas, null, {
-        callbackOnChange: (next) => {
-            if (next) {
-                getUsers({ idx: next.value });
-            }
-        },
-    });
-    // 검색필터 - 영업가족
-    const [user] = useSelect(users, null);
     // 검색필터 - 회차
     const [beforeRound] = useNumbericInput('1', { addComma: true });
     const [afterRound] = useNumbericInput('1', { addComma: true });
-    // 검색필터 - 계약일자
-    const [contdate, setContdate] = useDateRangepicker([
-        startOfMonth(new Date()),
-        new Date(),
-    ]);
-
     // 검색필터 - 보험사
-    const [company] = useSelect(longViewCompanies, null);
+    const [company, setCompany] = useSelect(longViewCompanies, null);
     // 검색필터 - 보종
     const [productType] = useSelect(longConstants.productType, null);
     // 검색필터 - 상품명
-    const [ptitle] = useSelect(longs.ptitles, null);
+    const [product, setProduct] = useSelect(longs.products, null);
     // 검색필터 - 납입주기
     const [cycle] = useSelect(longConstants.payCycle, null);
     // 검색필터 - 입금구분
     const [dist] = useSelect(DISTS, null);
-    // 검색필터 - 검색어
-    // const [keyword] = useInput('');
-
-    const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
-
-        const { nums } = router.query;
-
-        const formData = new FormData(evt.currentTarget);
-
-        const searchParams = new URLSearchParams();
-
-        searchParams.append('page', '1');
-
-        if (nums) {
-            searchParams.append('nums', nums as string);
-        } else {
-            searchParams.append('nums', '25');
-        }
-
-        for (const [key, value] of formData.entries()) {
-            if (!isEmpty(value)) {
-                searchParams.append(key, value as string);
-            }
-        }
-
-        search(searchParams.toString());
-    };
-
-    const handlePrevContdate = () => {
-        if (contdate.value) {
-            const startDate = setDate(addMonths(contdate.value[0], -1), 1);
-
-            let lastDate = lastDayOfMonth(startDate);
-            if (isSameMonth(new Date(), startDate)) {
-                lastDate = new Date();
-            }
-
-            setContdate([startDate, lastDate]);
-        } else {
-            alert('먼저 계약일자를 설정하세요.');
-        }
-    };
-
-    const handleNextContdate = () => {
-        if (contdate.value) {
-            const today = new Date();
-
-            const startDate = setDate(addMonths(contdate.value[0], 1), 1);
-            if (compareAsc(today, startDate) === -1) {
-                return alert('오늘 이후의 날짜로 설정할 수 없습니다.');
-            }
-
-            let lastDate = lastDayOfMonth(startDate);
-            if (isSameMonth(today, startDate)) {
-                lastDate = today;
-            }
-
-            setContdate([startDate, lastDate]);
-        } else {
-            alert('먼저 계약일자를 설정하세요.');
-        }
-    };
 
     useEffect(() => {
-        const { paydate } = router.query;
+        const { company, product } = router.query;
 
-        if (paydate) {
-            const nextContdate = new String(paydate)
-                .split(',')
-                .map((v) => new Date(v)) as [Date, Date];
+        if (company) {
+            setCompany(findSelectOption(company, longViewCompanies));
+        }
 
-            setContdate(nextContdate);
+        if (product) {
+            setProduct(findSelectOption(product, longs.products));
         }
     }, [router]);
 
     return (
-        <form className={`${displayName}__header`} onSubmit={handleSubmit}>
-            <div className={`${displayName}__filter`}>
-                <WithLabel id="orga" label="영업조직" type="active">
-                    <MySelect id="orga" {...orga} />
-                </WithLabel>
-            </div>
-            <div className={`${displayName}__filter`}>
-                <WithLabel id="fc" label="영업가족" type="active">
-                    <MySelect id="fc" {...user} />
-                </WithLabel>
-            </div>
-            <div className={`${displayName}__filter`}>
-                <WithLabel id="whoi" label="회차" type="active">
-                    <MyInput
-                        type="text"
-                        id="whoi"
-                        className="text-end"
-                        placeholder="입력"
-                        {...beforeRound}
-                    />
-                    <div
-                        className="wr-with__extension wr-form__unit wr-border-l--hide"
-                        style={{ height: 30 }}
-                    >
-                        ~
+        <SearchFilterForm>
+            <div className={`${displayName}__filters`}>
+                <div className={`${displayName}__filter`}>
+                    <SearchFilterOrgaSelect activeUser />
+                    <SearchFilterUserSelect />
+                </div>
+                <div className={`${displayName}__divider`}></div>
+                <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="company"
+                        >
+                            보험사
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="company"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...company}
+                            />
+                        </div>
                     </div>
-                    <MyInput
-                        type="text"
-                        id="whoi2"
-                        className="text-end wr-border-l--hide"
-                        placeholder="입력"
-                        {...afterRound}
-                    />
-                </WithLabel>
-            </div>
-            <div className={`${displayName}__filter`}>
-                <WithArrow
-                    label="계약일자"
-                    type="active"
-                    onPrev={handlePrevContdate}
-                    onNext={handleNextContdate}
-                >
-                    <MyDateRangepicker
-                        id="paydate"
-                        format="yyyy-MM-dd"
-                        placeholder="기간을 입력 혹은 선택하세요"
-                        size="sm"
-                        placement="autoVerticalEnd"
-                        ranges={[
-                            {
-                                label: '전월',
-                                value: [
-                                    startOfMonth(addMonths(new Date(), -1)),
-                                    endOfMonth(addMonths(new Date(), -1)),
-                                ],
-                            },
-                            {
-                                label: '당월',
-                                value: [startOfMonth(new Date()), new Date()],
-                            },
-                        ]}
-                        shouldDisableDate={(date) => date > new Date()}
-                        hooks={contdate}
-                    />
-                </WithArrow>
-            </div>
-            <div className={`${displayName}__filter`}>
-                <div>
-                    <WithLabel id="company" label="보험사" type="active">
-                        <MySelect id="company" {...company} />
-                    </WithLabel>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="product"
+                        >
+                            상품명
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="product"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...product}
+                            />
+                        </div>
+                    </div>
                 </div>
-                <div>
-                    <WithLabel id="spec" label="보종" type="active">
-                        <MySelect id="spec" {...productType} />
-                    </WithLabel>
+                <div className={`${displayName}__divider`}></div>
+                {/* <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="spec"
+                        >
+                            보종
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="spec"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...productType}
+                            />
+                        </div>
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="cycle"
+                        >
+                            납입주기
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="cycle"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...cycle}
+                            />
+                        </div>
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="dist"
+                        >
+                            입금구분
+                        </label>
+                        <div style={{ width: 120 }}>
+                            <MySelect
+                                id="dist"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...dist}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className={`${displayName}__divider`}></div> */}
+                <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <span className={`${displayName}__label`}>계약일</span>
+                        <SearchFilterDatepicker />
+                    </div>
+                    <SearchFilterKeywordInput />
                 </div>
             </div>
-            <div className={`${displayName}__filter`}>
-                <WithLabel id="title" label="상품명" type="active">
-                    <MySelect id="title" {...ptitle} />
-                </WithLabel>
-            </div>
-            <div className={`${displayName}__filter`}>
-                <div>
-                    <WithLabel id="cycle" label="납입주기" type="active">
-                        <MySelect id="cycle" {...cycle} />
-                    </WithLabel>
-                </div>
-                <div>
-                    <WithLabel id="dist" label="입금구분" type="active">
-                        <MySelect id="dist" {...dist} />
-                    </WithLabel>
-                </div>
-            </div>
-            <div className={`${displayName}__filter`}>
-                <WithLabel id="search" label="검색" type="active">
-                    <MyInput
-                        type="search"
-                        name="search"
-                        placeholder="검색어를 입력하세요"
-                        button={{
-                            type: 'submit',
-                            className: 'btn-primary',
-                            children: (
-                                <>
-                                    <span className="visually-hidden">
-                                        검색
-                                    </span>
-                                    <LuSearch size={15} />
-                                </>
-                            ),
-                        }}
-                    />
-                </WithLabel>
-            </div>
-        </form>
+        </SearchFilterForm>
     );
 };

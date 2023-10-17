@@ -257,11 +257,6 @@ export const ASIDE_MENU: any = {
                 label: '장기계약목록',
                 to: '/contract/long/list',
             },
-            create: {
-                id: 'contract-long_create',
-                label: '장기계약등록',
-                to: '/contract/long/create',
-            },
             upload: {
                 id: 'contract-long_upload',
                 label: '선택업로드',

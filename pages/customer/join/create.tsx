@@ -11,11 +11,15 @@ import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { MyLayout } from '@components/Layout';
+import { useInitTab } from '@hooks/use-initialize';
 
 const CreateCustomer: NextPage = () => {
     const { loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    // 탭 설정
+    // useInitTab('고객등록');
 
     return (
         <>

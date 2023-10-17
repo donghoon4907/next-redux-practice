@@ -25,7 +25,7 @@ export interface GetLongsRequestPayload
 
 export interface GetLongsSuccessPayload
     extends CorePaginateSuccessPayload<GetLongsRequestPayload> {
-    ptitles: CoreSelectOption[];
+    products: CoreSelectOption[];
 }
 
 export interface GetLongsRequestAction extends Action<string> {
