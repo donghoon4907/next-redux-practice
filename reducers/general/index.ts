@@ -1,7 +1,7 @@
 import type { Reducer } from 'redux';
 import type { Pay } from '@models/pay';
 import type { Insured } from '@models/insured';
-import type { GetLongsSuccessPayload } from '@actions/contract/long/get-longs.action';
+import type { GetGeneralSuccessPayload } from '@actions/contract/general/get-general.action';
 import produce from 'immer';
 import { PayActionTypes } from '@actions/contract/long/set-pay.action';
 import { GetGeneralActionTypes } from '@actions/contract/general/get-general.action';
@@ -10,7 +10,7 @@ export interface GeneralState {
     /**
      * 일반계약 목록
      */
-    generals: GetLongsSuccessPayload;
+    generals: GetGeneralSuccessPayload;
     /**
      * 일반계약 상세
      */
@@ -38,7 +38,6 @@ const initialState: GeneralState = {
         fields: [],
         rows: [],
         total: null,
-        ptitles: [],
         lastPayload: null,
     },
     general: null,

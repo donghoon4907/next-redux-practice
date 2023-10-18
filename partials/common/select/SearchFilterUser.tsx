@@ -15,26 +15,17 @@ export const SearchFilterUserSelect: FC<Props> = () => {
 
     const router = useRouter();
 
-    const { users, loggedInUser } = useSelector<AppState, HrState>(
-        (props) => props.hr,
-    );
+    const { users } = useSelector<AppState, HrState>((props) => props.hr);
 
     const [user, setUser] = useSelect(users, null);
 
     useEffect(() => {
-        const { user } = router.query;
-        if (users.length > 0) {
-            // 검색한 경우
-            if (user) {
-                setUser(findSelectOption(user, users));
-            } else {
-                // 로그인 환경에서 기본 값을 사용자 정보로 변경
-                if (users && loggedInUser) {
-                    setUser(findSelectOption(loggedInUser.userid, users));
-                }
-            }
+        const { userid } = router.query;
+
+        if (userid && users.length > 0) {
+            setUser(findSelectOption(userid, users));
         }
-    }, [router, users, loggedInUser]);
+    }, [router, users]);
 
     return (
         <div className={`${displayName}__field`}>

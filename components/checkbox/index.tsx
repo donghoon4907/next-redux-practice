@@ -1,5 +1,6 @@
-import type { FC, ChangeEvent, InputHTMLAttributes } from 'react';
+import type { FC, InputHTMLAttributes } from 'react';
 import type { CoreProps } from '@interfaces/core';
+// import variables from '@styles/_variables.module.scss';
 
 interface Props extends CoreProps, InputHTMLAttributes<HTMLInputElement> {
     /**
@@ -10,9 +11,19 @@ interface Props extends CoreProps, InputHTMLAttributes<HTMLInputElement> {
      * 필수 이펙트 추가 여부
      */
     isRequired?: boolean;
+    /**
+     * 레이블 폰트 크기
+     */
+    // labelFontSize: number;
 }
 
-export const MyCheckbox: FC<Props> = ({ label, id, isRequired, ...rest }) => {
+export const MyCheckbox: FC<Props> = ({
+    label,
+    id,
+    isRequired,
+    // labelFontSize = variables.defaultFontSize,
+    ...rest
+}) => {
     return (
         <div className="wr-checkbox">
             <input
@@ -21,6 +32,7 @@ export const MyCheckbox: FC<Props> = ({ label, id, isRequired, ...rest }) => {
                 // checked={checked}
                 // onChange={handleChange}
                 id={id}
+                name={id}
                 {...rest}
             />
             <label

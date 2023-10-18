@@ -5,7 +5,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
-import dayjs from 'dayjs';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
@@ -17,6 +16,7 @@ import { getLongsRequest } from '@actions/contract/long/get-longs.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { LongSearchFilter } from '@partials/contract/long/template/SearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
+import { generateListParams } from '@utils/generate';
 
 const Longs: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -28,7 +28,7 @@ const Longs: NextPage = () => {
     const columns = useColumn(longs.fields);
 
     const handleClickRow = ({ cidx }: any) => {
-        router.push(`${router.pathname}/${cidx}`);
+        router.push(`/contract/long/${cidx}`);
     };
 
     return (
@@ -42,7 +42,6 @@ const Longs: NextPage = () => {
             </Head>
             <MyLayout>
                 <div className={displayName}>
-                    {/* <Breadcrumb /> */}
                     <LongSearchFilter />
                     <SearchResultTemplate
                         total={longs.total.count}
@@ -56,7 +55,7 @@ const Longs: NextPage = () => {
                         }`}
                         customUrl="/contract/long/create"
                     />
-                    <div className={`${displayName}__body wr-mt`}>
+                    <div className={`${displayName}__body`}>
                         <div className="wr-table--scrollable wr-table--hover">
                             <MyTable
                                 columns={columns}
@@ -76,72 +75,41 @@ const Longs: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(
-        async ({ dispatch, sagaTask }, ctx, { userid, user_info }) => {
-            const { page, nums, order, date, orga, ...rest } = ctx.query;
+    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+        const { date, date_type, check_user, userid, ...rest } = ctx.query;
 
-            const params: any = {
-                page: 1,
-                nums: 25,
-                condition: {
-                    orga: user_info.orga_idx,
-                    userid: userid,
-                    paydate: [
-                        dayjs(new Date()).format('YYYY-MM-01'),
-                        dayjs(new Date()).format('YYYY-MM-DD'),
-                    ],
-                },
-                order: {},
-            };
-            // 페이지공통 - 페이지 번호
-            if (page) {
-                params.page = Number(page);
+        const condition = {};
+
+        const params = generateListParams(condition, rest);
+
+        // 영업가족
+        if (userid) {
+            // 담당미지정 시 처리
+            if (check_user !== 'Y') {
+                params.condition['userid'] = String(userid);
             }
-            // 페이지공통 - 페이지 크기
-            if (nums) {
-                params.nums = Number(nums);
+        }
+        // 계약일자 / 상태반영일
+        if (date_type && date) {
+            if (date_type === 'indate') {
+                params.condition!['contdate'] = String(date).split(',');
+            } else if (date_type === 'outdate') {
+                params.condition!['status_date'] = String(date).split(',');
             }
-            // 페이지공통 - 정렬
-            if (order) {
-                const [type, sort] = String(order).split(',');
+        }
 
-                params.order[type] = sort;
-            }
-            // 영업조직
-            if (orga) {
-                params.condition['orga'] = Number(orga);
-            }
-            // 계약일
-            if (date) {
-                params.condition!['paydate'] = String(date).split(',');
-            }
+        dispatch(getLongsRequest(params));
 
-            // 영업가족, 영업구분, 협회등록, 검색...
-            for (const [key, value] of Object.entries(rest)) {
-                params.condition[key] = value;
-            }
+        dispatch(getCompaniesRequest('long-view'));
 
-            dispatch(getLongsRequest(params));
+        dispatch(getOrgasRequest());
 
-            dispatch(getCompaniesRequest('long-view'));
+        dispatch(END);
 
-            dispatch(
-                getOrgasRequest({
-                    idx: '1',
-                }),
-            );
+        await sagaTask?.toPromise();
 
-            dispatch(END);
-
-            try {
-                await sagaTask?.toPromise();
-            } catch (e) {
-                console.error(e);
-            }
-
-            return null;
-        },
-    ),
+        return null;
+    }),
 );
 
 export default Longs;

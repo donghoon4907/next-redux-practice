@@ -20,7 +20,7 @@ export const UserSearchFilter: FC<Props> = () => {
     const router = useRouter();
 
     // 검색필터 - 영업구분
-    const [userType, setUserType] = useSelect(userConstants.userType);
+    const [userType, setUserType] = useSelect(userConstants.type2);
 
     // 검색필터 - 협회등록
     const [asso, setAsso] = useSelect(userConstants.asso);
@@ -32,7 +32,7 @@ export const UserSearchFilter: FC<Props> = () => {
         const { user_type, asso, status } = router.query;
 
         if (user_type) {
-            setUserType(findSelectOption(user_type, userConstants.userType));
+            setUserType(findSelectOption(user_type, userConstants.type2));
         }
 
         if (asso) {
@@ -46,72 +46,74 @@ export const UserSearchFilter: FC<Props> = () => {
 
     return (
         <SearchFilterForm>
-            <div className={`${displayName}__filters`}>
-                <div className={`${displayName}__filter`}>
-                    <SearchFilterOrgaSelect activeUser />
-                    <SearchFilterUserSelect />
-                </div>
-                <div className={`${displayName}__divider`}></div>
-                <div className={`${displayName}__filter`}>
-                    <div className={`${displayName}__field`}>
-                        <label
-                            className={`${displayName}__label`}
-                            htmlFor="user_type"
-                        >
-                            영업구분
-                        </label>
-                        <div style={{ width: 120 }}>
-                            <MySelect
-                                id="user_type"
-                                fontSize={13}
-                                placeholder="선택"
-                                {...userType}
-                            />
+            <div className={`${displayName}__left`}>
+                <div className={`${displayName}__filters`}>
+                    <div className={`${displayName}__filter`}>
+                        <SearchFilterOrgaSelect activeUser />
+                        <SearchFilterUserSelect />
+                    </div>
+                    <div className={`${displayName}__divider`}></div>
+                    <div className={`${displayName}__filter`}>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="user_type"
+                            >
+                                영업구분
+                            </label>
+                            <div style={{ width: 120 }}>
+                                <MySelect
+                                    id="user_type"
+                                    fontSize={13}
+                                    placeholder="선택"
+                                    {...userType}
+                                />
+                            </div>
+                        </div>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="asso"
+                            >
+                                협회등록
+                            </label>
+                            <div style={{ width: 120 }}>
+                                <MySelect
+                                    id="asso"
+                                    fontSize={13}
+                                    placeholder="선택"
+                                    {...asso}
+                                />
+                            </div>
+                        </div>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="status"
+                            >
+                                재직현황
+                            </label>
+                            <div style={{ width: 120 }}>
+                                <MySelect
+                                    id="status"
+                                    fontSize={13}
+                                    placeholder="선택"
+                                    {...status}
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className={`${displayName}__field`}>
-                        <label
-                            className={`${displayName}__label`}
-                            htmlFor="asso"
-                        >
-                            협회등록
-                        </label>
-                        <div style={{ width: 120 }}>
-                            <MySelect
-                                id="asso"
-                                fontSize={13}
-                                placeholder="선택"
-                                {...asso}
+                    <div className={`${displayName}__divider`}></div>
+                    <div className={`${displayName}__filter`}>
+                        <div className={`${displayName}__field`}>
+                            <SearchFilterDateTypeLabel
+                                indateLabel="입사일"
+                                outdateLabel="퇴사일"
                             />
+                            <SearchFilterDatepicker />
                         </div>
+                        <SearchFilterKeywordInput />
                     </div>
-                    <div className={`${displayName}__field`}>
-                        <label
-                            className={`${displayName}__label`}
-                            htmlFor="status"
-                        >
-                            재직현황
-                        </label>
-                        <div style={{ width: 120 }}>
-                            <MySelect
-                                id="status"
-                                fontSize={13}
-                                placeholder="선택"
-                                {...status}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className={`${displayName}__divider`}></div>
-                <div className={`${displayName}__filter`}>
-                    <div className={`${displayName}__field`}>
-                        <SearchFilterDateTypeLabel
-                            indateLabel="입사일"
-                            outdateLabel="퇴사일"
-                        />
-                        <SearchFilterDatepicker />
-                    </div>
-                    <SearchFilterKeywordInput />
                 </div>
             </div>
         </SearchFilterForm>

@@ -1,7 +1,7 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
 // 조직등급
-const O_RATE: CoreSelectOption[] = [
+const GRADE: CoreSelectOption[] = [
     {
         label: '전체',
         value: '',
@@ -30,7 +30,7 @@ const O_RATE: CoreSelectOption[] = [
 ];
 
 // 현상태
-const O_STATUS: CoreSelectOption[] = [
+const STATUS: CoreSelectOption[] = [
     {
         label: '전체',
         value: '',
@@ -49,8 +49,8 @@ const O_STATUS: CoreSelectOption[] = [
 ];
 
 const rootSelectOptions = {
-    rate: O_RATE,
-    status: O_STATUS,
+    rate: GRADE,
+    status: STATUS,
 };
 
 export default rootSelectOptions;

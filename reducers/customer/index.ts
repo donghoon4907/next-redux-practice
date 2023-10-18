@@ -4,6 +4,7 @@ import type { Custcar } from '@models/custcar';
 import type { Family } from '@models/family';
 import type { Event } from '@models/event';
 import type { UserCustomer } from '@models/customer';
+import type { GetCustomerSuccessPayload } from '@actions/customer/get-customer';
 import produce from 'immer';
 import { ExcontractActionTypes } from '@actions/customer/set-excontract.action';
 import { CustcarActionTypes } from '@actions/customer/set-custcar.action';
@@ -16,7 +17,7 @@ export interface CustomerState {
     /**
      * 고객 검색 목록
      */
-    customers: any;
+    customers: GetCustomerSuccessPayload;
     /**
      * 고객 상세 정보
      */
@@ -64,7 +65,6 @@ const initialState: CustomerState = {
         fields: [],
         rows: [],
         total: null,
-        ptitles: [],
         lastPayload: null,
     },
     customer: null,

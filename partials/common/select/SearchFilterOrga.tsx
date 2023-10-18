@@ -9,6 +9,7 @@ import { useApi } from '@hooks/use-api';
 import { getUsersRequest } from '@actions/hr/get-users';
 import { findSelectOption } from '@utils/getter';
 import { MySelect } from '@components/select';
+import { generateAllOption } from '@utils/generate';
 
 interface Props {
     activeUser?: boolean;
@@ -19,14 +20,12 @@ export const SearchFilterOrgaSelect: FC<Props> = ({ activeUser }) => {
 
     const router = useRouter();
 
-    const { orgas, loggedInUser } = useSelector<AppState, HrState>(
-        (props) => props.hr,
-    );
+    const { orgas } = useSelector<AppState, HrState>((props) => props.hr);
 
     const getUsers = useApi(getUsersRequest);
 
     // 검색필터 - 조직
-    const [orga, setOrga] = useSelect(orgas, null, {
+    const [orga, setOrga] = useSelect(generateAllOption(orgas), undefined, {
         callbackOnChange: (next) => {
             if (next && activeUser) {
                 getUsers({ idx: next.value });
@@ -35,36 +34,25 @@ export const SearchFilterOrgaSelect: FC<Props> = ({ activeUser }) => {
     });
 
     useEffect(() => {
-        const { orga } = router.query;
+        const { orga_idx } = router.query;
         // 검색한 경우
-        if (orga) {
-            setOrga(findSelectOption(orga, orgas));
+        if (orga_idx) {
+            setOrga(findSelectOption(orga_idx, orgas));
 
             if (activeUser) {
-                getUsers({ idx: orga });
-            }
-        } else {
-            // 로그인 환경에서 기본 값을 내 영업조직으로 변경
-            if (loggedInUser) {
-                const orga_idx = loggedInUser.user_info.orga_idx;
-
-                setOrga(findSelectOption(orga_idx, orgas));
-
-                if (activeUser) {
-                    getUsers({ idx: orga_idx });
-                }
+                getUsers({ idx: orga_idx });
             }
         }
-    }, [router, loggedInUser, activeUser]);
+    }, [router, activeUser]);
 
     return (
         <div className={`${displayName}__field`}>
-            <label className={`${displayName}__label`} htmlFor="orga">
+            <label className={`${displayName}__label`} htmlFor="orga_idx">
                 영업조직
             </label>
             <div style={{ width: 320 }}>
                 <MySelect
-                    id="orga"
+                    id="orga_idx"
                     fontSize={13}
                     placeholder="선택"
                     {...orga}

@@ -13,12 +13,24 @@
     }
 
     &__filters {
-        flex: 1;
+        width: 100%;
         height: 100%;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding: 19px 25px 15px 25px;
+        padding: $wr-gutter-size 0;
+
+        & + & {
+            border-top: 1px solid $wr-input-border-color;
+        }
+    }
+
+    &__left {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0 25px;
     }
 
     &__search {
@@ -56,6 +68,14 @@
         height: 50px;
     }
 
+    &__checkboxfield {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        height: 50px;
+        padding-bottom: 5px;
+    }
+
     &__total {
         color: #606060;
         font-size: 14px;
@@ -87,7 +107,7 @@
 
     &__divider {
         min-width: 2px;
-        background-color: #dce2eb;
+        background-color: $wr-input-border-color;
         margin: 0 10px;
         height: 50px;
     }

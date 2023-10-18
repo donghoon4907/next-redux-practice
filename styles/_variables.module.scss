@@ -5,6 +5,7 @@ $wr-divider-color-100: #e5e5e5;
 $wr-divider-color-200: rgba(0, 0, 0, 0.175);
 $wr-divider-color-300: #8a91b1;
 // size
+$wr-font-size: 14px;
 $wr-gutter-size: 10px;
 $wr-label-size: 12px;
 $wr-filter-font-size: 13px;
@@ -42,7 +43,7 @@ $wr-bg-color: $wr-blue3;
 // 입력창 테두리 색
 $wr-input-border-color: #dce2eb;
 // 테이블 테두리 색
-$wr-table-border-color: #8a91b1;
+$wr-table-border-color: #d9d9d9;
 // 테이블 헤더 배경색
 $wr-thead-bg-color: #deebff;
 // 활성화 색
@@ -64,6 +65,7 @@ $wr-disable-input-color: #e9ecef;
 // $accordion-icon-color: white;
 
 :export {
+    defaultFontSize: $wr-font-size;
     dividerColor: $wr-divider-color-300;
     filterHeight: $wr-filter-height;
     detailFilterHeight: $wr-detail-filter-height;

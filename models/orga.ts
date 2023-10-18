@@ -1,7 +1,7 @@
 export type Orga = {
     idx: number;
-    fulls: string;
-    orga_rank: number;
+    orga: string;
+    orga_rank?: number;
 };
 
 export type OrgaDetail = {

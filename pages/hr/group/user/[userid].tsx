@@ -45,7 +45,7 @@ const User: NextPage<HrState> = ({ user }) => {
 
     const defaultUserType = findSelectOption(
         user.user_type,
-        userConstants.userType,
+        userConstants.type,
     );
 
     const defaultStatus = findSelectOption(user.status, userConstants.status);
@@ -272,11 +272,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         const userid = query.userid as string;
 
-        dispatch(
-            getOrgasRequest({
-                idx: '1',
-            }),
-        );
+        dispatch(getOrgasRequest());
 
         dispatch(getAgenciesRequest());
 

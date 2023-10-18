@@ -36,56 +36,58 @@ export const OrgaSearchFilter: FC<Props> = () => {
 
     return (
         <SearchFilterForm>
-            <div className={`${displayName}__filters`}>
-                <div className={`${displayName}__filter`}>
-                    <SearchFilterOrgaSelect />
-                </div>
-                <div className={`${displayName}__divider`}></div>
-                <div className={`${displayName}__filter`}>
-                    <div className={`${displayName}__field`}>
-                        <label
-                            className={`${displayName}__label`}
-                            htmlFor="orga_rank"
-                        >
-                            조직등급
-                        </label>
-                        <div style={{ width: 160 }}>
-                            <MySelect
-                                id="orga_rank"
-                                fontSize={13}
-                                placeholder="선택"
-                                {...rate}
-                            />
+            <div className={`${displayName}__left`}>
+                <div className={`${displayName}__filters`}>
+                    <div className={`${displayName}__filter`}>
+                        <SearchFilterOrgaSelect />
+                    </div>
+                    <div className={`${displayName}__divider`}></div>
+                    <div className={`${displayName}__filter`}>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="orga_rank"
+                            >
+                                조직등급
+                            </label>
+                            <div style={{ width: 160 }}>
+                                <MySelect
+                                    id="orga_rank"
+                                    fontSize={13}
+                                    placeholder="선택"
+                                    {...rate}
+                                />
+                            </div>
+                        </div>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="status"
+                            >
+                                현상태
+                            </label>
+                            <div style={{ width: 160 }}>
+                                <MySelect
+                                    id="status"
+                                    fontSize={13}
+                                    placeholder="선택"
+                                    {...status}
+                                />
+                            </div>
                         </div>
                     </div>
-                    <div className={`${displayName}__field`}>
-                        <label
-                            className={`${displayName}__label`}
-                            htmlFor="status"
-                        >
-                            현상태
-                        </label>
-                        <div style={{ width: 160 }}>
-                            <MySelect
-                                id="status"
-                                fontSize={13}
-                                placeholder="선택"
-                                {...status}
+                    <div className={`${displayName}__divider`}></div>
+                    <div className={`${displayName}__filter`}>
+                        <div className={`${displayName}__field`}>
+                            <SearchFilterDateTypeLabel
+                                indateLabel="등록일"
+                                outdateLabel="폐점일"
                             />
-                        </div>
-                    </div>
-                </div>
-                <div className={`${displayName}__divider`}></div>
-                <div className={`${displayName}__filter`}>
-                    <div className={`${displayName}__field`}>
-                        <SearchFilterDateTypeLabel
-                            indateLabel="등록일"
-                            outdateLabel="폐점일"
-                        />
 
-                        <SearchFilterDatepicker />
+                            <SearchFilterDatepicker />
+                        </div>
+                        <SearchFilterKeywordInput />
                     </div>
-                    <SearchFilterKeywordInput />
                 </div>
             </div>
         </SearchFilterForm>

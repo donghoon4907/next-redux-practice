@@ -68,12 +68,7 @@ const EMAIL_COM: CoreSelectOption[] = [
 ];
 
 // 영업 가족 목록
-const USER_TYPE: CoreSelectOption[] = [
-    {
-        label: '전체',
-        value: '',
-        isFixed: false,
-    },
+const TYPE: CoreSelectOption[] = [
     {
         label: 'FRC',
         value: 'FRC',
@@ -91,8 +86,18 @@ const USER_TYPE: CoreSelectOption[] = [
     },
 ];
 
+// 영업 가족 목록 2
+const TYPE2: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    ...TYPE,
+];
+
 // 재직 현황 목록
-const EMP_STATUS: CoreSelectOption[] = [
+const STATUS: CoreSelectOption[] = [
     {
         label: '상근',
         value: '상근',
@@ -115,32 +120,13 @@ const EMP_STATUS: CoreSelectOption[] = [
     },
 ];
 // 재직 현황 목록 2
-const U_STATUS: CoreSelectOption[] = [
+const STATUS2: CoreSelectOption[] = [
     {
         label: '재직전체',
         value: '상근,비상근,기타',
         isFixed: false,
     },
-    {
-        label: '상근',
-        value: '상근',
-        isFixed: false,
-    },
-    {
-        label: '비상근',
-        value: '비상근',
-        isFixed: false,
-    },
-    {
-        label: '퇴사',
-        value: '퇴사',
-        isFixed: false,
-    },
-    {
-        label: '기타',
-        value: '기타',
-        isFixed: false,
-    },
+    ...STATUS,
     {
         label: '전체',
         value: '',
@@ -377,7 +363,7 @@ const QUALIFICATION_DIVISION: CoreSelectOption[] = [
     },
 ];
 
-// 사용자 목록 - 협회등록
+// 사용자 목록 - 협회등록여부
 const U_ASSO: CoreSelectOption[] = [
     {
         label: '전체',
@@ -400,9 +386,10 @@ const rootSelectOptions = {
     birthType: BIRTH_TYPE,
     mobileCom: MOBILE_COM,
     emailCom: EMAIL_COM,
-    userType: USER_TYPE,
-    status: EMP_STATUS,
-    status2: U_STATUS,
+    type: TYPE,
+    type2: TYPE2,
+    status: STATUS,
+    status2: STATUS2,
     estComInputType: ESTIMATE_COMP,
     estSalesNmInputType: ESTIMATE_SALES,
     estPhoneInputType: ESTIMATE_PHONE,

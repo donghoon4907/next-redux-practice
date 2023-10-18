@@ -12,7 +12,7 @@ export interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
     unit?: string;
 }
 
-export const MyInput: FC<MyInputProps> = ({ button, unit }) => {
+export const MyBadge: FC<MyInputProps> = ({ button, unit }) => {
     let btn = null;
     let unitTxt = null;
 

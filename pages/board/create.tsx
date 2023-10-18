@@ -231,11 +231,7 @@ const CreateBoard: NextPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
     ({ dispatch, sagaTask }) =>
         async (_) => {
-            dispatch(
-                getOrgasRequest({
-                    idx: '1',
-                }),
-            );
+            dispatch(getOrgasRequest());
 
             dispatch(
                 getUsersRequest({

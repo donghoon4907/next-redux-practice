@@ -317,7 +317,7 @@ export const UserForm: FC<Props> = ({
     defaultAddress1 = '',
     defaultAddress2 = '',
     defaultAddress3 = '',
-    defaultUserType = userConstants.userType[0],
+    defaultUserType = userConstants.type[0],
     defaultStatus = userConstants.status[0],
     defaultIndate = null,
     defaultOutdate = null,
@@ -445,7 +445,7 @@ export const UserForm: FC<Props> = ({
     // 상세 주소
     const [address3] = useInput(defaultAddress3);
     // 영업구분
-    const [userType] = useSelect(userConstants.userType, defaultUserType);
+    const [userType] = useSelect(userConstants.type, defaultUserType);
     // 재직현황
     const [status] = useSelect(userConstants.status.slice(1), defaultStatus);
     // 입사일

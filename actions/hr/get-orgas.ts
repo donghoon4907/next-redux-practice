@@ -10,26 +10,17 @@ export const GetOrgasActionTypes = {
     FAILURE: `${GET_ORGAS_KEY}_FAILURE`,
 } as const;
 
-export interface GetOrgasRequestPayload extends CorePayload {
-    idx: string;
-}
-
 export type GetOrgasSuccessPayload = Orga[];
 
-export interface GetOrgasRequestAction extends Action<string> {
-    payload: GetOrgasRequestPayload;
-}
+export interface GetOrgasRequestAction extends Action<string> {}
 
 export interface GetOrgasSuccessAction extends Action<string> {
     payload: GetOrgasSuccessPayload;
 }
 
-export function getOrgasRequest(
-    payload: GetOrgasRequestPayload,
-): GetOrgasRequestAction {
+export function getOrgasRequest(): GetOrgasRequestAction {
     return {
         type: GetOrgasActionTypes.REQUEST,
-        payload,
     };
 }
 

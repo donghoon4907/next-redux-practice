@@ -1,6 +1,5 @@
 import type { CreateUserRequestPayload } from '@actions/hr/create-user.action';
 import type { LoginRequestPayload } from '@actions/hr/login.action';
-import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas';
 import type { GetOrgaRequestPayload } from '@actions/hr/get-orga';
 import type { GetUsersRequestPayload } from '@actions/hr/get-users';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
@@ -56,8 +55,8 @@ export function getAgencies() {
     return getBackendAxios().get('/common/agencycom');
 }
 
-export function getOrgas(payload: GetOrgasRequestPayload) {
-    return getBackendAxios().get(`/orga/simpleOrgas/${payload.idx}`);
+export function getOrgas() {
+    return getBackendAxios().get(`/orga/simpleOrgas`);
 }
 
 export function beforeGetOrga(payload: GetOrgaRequestPayload) {

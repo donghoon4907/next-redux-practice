@@ -436,11 +436,7 @@ const CreateTeam: NextPage<HrState> = ({ users }) => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask, getState }, ctx) => {
-        dispatch(
-            getOrgasRequest({
-                idx: '1',
-            }),
-        );
+        dispatch(getOrgasRequest());
 
         dispatch(END);
 

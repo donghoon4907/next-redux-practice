@@ -61,7 +61,7 @@ const L_FIELDS: CoreSelectOption[] = [
     },
 ];
 // 납입주기
-const L_PAYCYCLE: CoreSelectOption[] = [
+const PAY_CYCLE: CoreSelectOption[] = [
     {
         label: '월납',
         value: '1',
@@ -88,8 +88,45 @@ const L_PAYCYCLE: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+const PAY_CYCLE2: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: '월납',
+        value: '1',
+        isFixed: false,
+    },
+    {
+        label: '비월납',
+        value: '<> 1',
+        isFixed: false,
+    },
+    {
+        label: '일시납',
+        value: '0',
+        isFixed: false,
+    },
+    {
+        label: '3월납',
+        value: '3',
+        isFixed: false,
+    },
+    {
+        label: '6월납',
+        value: '6',
+        isFixed: false,
+    },
+    {
+        label: '연납',
+        value: '12',
+        isFixed: false,
+    },
+];
 // 납입기간
-const L_PAYDU: CoreSelectOption[] = [
+const PAY_DURATION: CoreSelectOption[] = [
     {
         label: '1년',
         value: '1',
@@ -123,7 +160,7 @@ const L_PAYDU: CoreSelectOption[] = [
 ];
 
 // 계약 상태
-export const L_STATUS: CoreSelectOption[] = [
+const STATUS: CoreSelectOption[] = [
     {
         label: '정상유지',
         value: '정상유지',
@@ -169,6 +206,14 @@ export const L_STATUS: CoreSelectOption[] = [
         value: '타사이관',
         isFixed: false,
     },
+];
+const STATUS2: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    ...STATUS,
 ];
 
 // 수금 상태
@@ -231,7 +276,7 @@ export const L_PSTATUS: CoreSelectOption[] = [
 ];
 
 // 납입구분
-export const L_PDIST: CoreSelectOption[] = [
+const L_PDIST: CoreSelectOption[] = [
     {
         label: '신규',
         value: '신규',
@@ -270,7 +315,7 @@ export const L_PDIST: CoreSelectOption[] = [
 ];
 
 // 배서구분
-export const L_EDIST: CoreSelectOption[] = [
+const L_EDIST: CoreSelectOption[] = [
     {
         label: '실효',
         value: '실효',
@@ -294,7 +339,7 @@ export const L_EDIST: CoreSelectOption[] = [
 ];
 
 // 금종
-export const L_PAYKIND: CoreSelectOption[] = [
+const PAY_KIND: CoreSelectOption[] = [
     {
         label: '카드',
         value: '카드',
@@ -307,7 +352,7 @@ export const L_PAYKIND: CoreSelectOption[] = [
     },
 ];
 // 정산구분
-export const L_CALTYPE: CoreSelectOption[] = [
+const CAL_TYPE: CoreSelectOption[] = [
     {
         label: '기본정산',
         value: '기본정산',
@@ -335,7 +380,7 @@ export const L_CALTYPE: CoreSelectOption[] = [
     },
 ];
 // 본인계약여부
-export const L_FAMILY: CoreSelectOption[] = [
+const L_FAMILY: CoreSelectOption[] = [
     {
         label: '해당없음',
         value: '',
@@ -353,7 +398,7 @@ export const L_FAMILY: CoreSelectOption[] = [
     },
 ];
 // 보종 목록
-export const L_PTYPE: CoreSelectOption[] = [
+const P_TYPE: CoreSelectOption[] = [
     {
         label: '인보장',
         value: '인보장',
@@ -369,26 +414,107 @@ export const L_PTYPE: CoreSelectOption[] = [
         value: '연저축',
         isFixed: false,
     },
-    // {
-    //     label: '결산',
-    //     value: '결산',
-    //     isFixed: false,
-    // },
 ];
+// 보종 목록
+const P_TYPE2: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    ...P_TYPE,
+];
+// 고객경로
+const SOURCE_ROOT: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: '모집',
+        value: '모집',
+        isFixed: false,
+    },
+    {
+        label: 'DB전체',
+        value: '<> 모집',
+        isFixed: false,
+    },
+    {
+        label: '퇴직자',
+        value: '퇴직자',
+        isFixed: false,
+    },
+    {
+        label: '홈쇼핑',
+        value: '홈쇼핑',
+        isFixed: false,
+    },
+    {
+        label: '태아',
+        value: '태아',
+        isFixed: false,
+    },
+    {
+        label: '플랫폼',
+        value: '플랫폼',
+        isFixed: false,
+    },
+    {
+        label: '병원',
+        value: '병원',
+        isFixed: false,
+    },
+    {
+        label: '업셀링M',
+        value: '업셀링M',
+        isFixed: false,
+    },
+    {
+        label: '기타',
+        value: '기타',
+        isFixed: false,
+    },
+];
+// 금소법확인
+const MONITORING_CUST: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: 'Y',
+        value: 'Y',
+        isFixed: false,
+    },
+    {
+        label: 'N',
+        value: 'N',
+        isFixed: false,
+    },
+];
+// 완전판매모니터링
 
 const rootSelectOptions = {
-    payCycle: L_PAYCYCLE,
-    payDu: L_PAYDU,
-    status: L_STATUS,
+    payCycle: PAY_CYCLE,
+    payCycle2: PAY_CYCLE2,
+    payDu: PAY_DURATION,
+    status: STATUS,
+    status2: STATUS2,
     pStatus: L_PSTATUS,
     pDist: L_PDIST,
     eDist: L_EDIST,
-    payKind: L_PAYKIND,
-    calType: L_CALTYPE,
+    payKind: PAY_KIND,
+    calType: CAL_TYPE,
     family: L_FAMILY,
-    productType: L_PTYPE,
+    productType: P_TYPE,
+    productType2: P_TYPE2,
     fields: L_FIELDS,
     duration: L_DURATION,
+    sourceroot: SOURCE_ROOT,
+    mCust: MONITORING_CUST,
 };
 
 export default rootSelectOptions;

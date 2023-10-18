@@ -4,7 +4,6 @@ import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
-import dayjs from 'dayjs';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
@@ -15,6 +14,7 @@ import { searchOrgasRequest } from '@actions/hr/search-orgas.action';
 import { OrgaSearchFilter } from '@partials/hr/orga/template/SearchFilter';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
+import { generateListParams } from '@utils/generate';
 
 const Orgas: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -66,63 +66,30 @@ const Orgas: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx, { user_info }) => {
-        const { page, nums, order, date, orga, date_type, ...rest } = ctx.query;
+    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+        const { orga_idx, date, date_type, ...rest } = ctx.query;
 
-        const params: any = {
-            page: 1,
-            nums: 25,
-            condition: {
-                idx: user_info.orga_idx,
-                indate: [
-                    dayjs(new Date()).format('YYYY-MM-01'),
-                    dayjs(new Date()).format('YYYY-MM-DD'),
-                ],
-            },
-            order: {},
-        };
-        // 페이지공통 - 페이지 번호
-        if (page) {
-            params.page = Number(page);
-        }
-        // 페이지공통 - 페이지 크기
-        if (nums) {
-            params.nums = Number(nums);
-        }
-        // 페이지공통 - 정렬
-        if (order) {
-            const [type, sort] = String(order).split(',');
+        const condition = {};
 
-            params.order[type] = sort;
-        }
+        const params = generateListParams(condition, rest);
+
         // 영업조직
-        if (orga) {
-            params.idx = Number(orga);
+        if (orga_idx) {
+            params.condition['idx'] = orga_idx;
         }
         // 입사일 및 퇴사일
         if (date_type && date) {
             params.condition[String(date_type)] = String(date).split(',');
         }
-        // 조직등급, 현상태, 검색...
-        for (const [key, value] of Object.entries(rest)) {
-            params.condition[key] = value;
-        }
+
         // 영업조직 목록
-        dispatch(
-            getOrgasRequest({
-                idx: '1',
-            }),
-        );
+        dispatch(getOrgasRequest());
         // 조직 목록
         dispatch(searchOrgasRequest(params));
 
         dispatch(END);
 
-        try {
-            await sagaTask?.toPromise();
-        } catch (e) {
-            // console.log(e);
-        }
+        await sagaTask?.toPromise();
 
         return null;
     }),

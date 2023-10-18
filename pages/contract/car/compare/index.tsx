@@ -27,11 +27,7 @@ const ComparisonCar: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
-        dispatch(
-            getOrgasRequest({
-                idx: '1',
-            }),
-        );
+        dispatch(getOrgasRequest());
 
         dispatch(getCompaniesRequest('car-use'));
 

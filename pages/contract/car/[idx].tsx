@@ -97,11 +97,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         const idx = query.idx as string;
 
-        dispatch(
-            getOrgasRequest({
-                idx: '1',
-            }),
-        );
+        dispatch(getOrgasRequest());
 
         dispatch(getCompaniesRequest('car-use'));
 

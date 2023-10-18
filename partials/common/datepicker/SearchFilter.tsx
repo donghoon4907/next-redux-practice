@@ -14,10 +14,10 @@ export const SearchFilterDatepicker: FC<Props> = () => {
 
     const router = useRouter();
 
-    const [date, setDate, { onPrevMonth, onNextMonth }] = useDateRangepicker([
-        startOfMonth(new Date()),
-        new Date(),
-    ]);
+    const [date, setDate, { onPrevMonth, onNextMonth }] = useDateRangepicker(
+        null,
+        // [startOfMonth(new Date()),new Date()]
+    );
 
     useEffect(() => {
         const { date } = router.query;
@@ -44,14 +44,14 @@ export const SearchFilterDatepicker: FC<Props> = () => {
                     <span className="visually-hidden">이전</span>
                 </IconWrapper>
             </div>
-            <div style={{ width: 190 }}>
+            <div style={{ width: 195 }}>
                 <MyDateRangepicker
                     id="date"
                     format="yyyy-MM-dd"
                     placeholder="기간을 입력 혹은 선택하세요"
                     size="xs"
                     placement="autoVerticalStart"
-                    cleanable={false}
+                    cleanable={true}
                     ranges={[
                         {
                             label: '전월',
