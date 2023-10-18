@@ -79,6 +79,13 @@
         border-bottom: 1px solid $wr-table-border-color;
     }
 
+    & td {
+        border: none;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
     & tbody {
         font-size: 13px;
         background-color: $white !important;
@@ -118,6 +125,9 @@
         cursor: pointer;
         gap: 3px;
         user-select: none;
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
     &__extension {

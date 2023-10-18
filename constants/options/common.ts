@@ -20,6 +20,25 @@ const LIST_COUNTS: CoreSelectOption[] = [
     },
 ];
 
+// Y or N
+const YES_NO: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: 'Y',
+        value: 'Y',
+        isFixed: false,
+    },
+    {
+        label: 'N',
+        value: 'N',
+        isFixed: false,
+    },
+];
+
 // 손보 목록
 const D_COMPANIES = [
     {
@@ -152,6 +171,7 @@ const rootSelectOptions = {
     listCounts: LIST_COUNTS,
     dCompanies: D_COMPANIES,
     lCompanies: L_COMPANIES,
+    yn: YES_NO,
 };
 
 export default rootSelectOptions;

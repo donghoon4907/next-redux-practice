@@ -101,7 +101,7 @@ const PAY_CYCLE2: CoreSelectOption[] = [
     },
     {
         label: '비월납',
-        value: '<> 1',
+        value: '99',
         isFixed: false,
     },
     {
@@ -438,7 +438,7 @@ const SOURCE_ROOT: CoreSelectOption[] = [
     },
     {
         label: 'DB전체',
-        value: '<> 모집',
+        value: 'db',
         isFixed: false,
     },
     {
@@ -477,24 +477,7 @@ const SOURCE_ROOT: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
-// 금소법확인
-const MONITORING_CUST: CoreSelectOption[] = [
-    {
-        label: '전체',
-        value: '',
-        isFixed: false,
-    },
-    {
-        label: 'Y',
-        value: 'Y',
-        isFixed: false,
-    },
-    {
-        label: 'N',
-        value: 'N',
-        isFixed: false,
-    },
-];
+
 // 완전판매모니터링
 
 const rootSelectOptions = {
@@ -514,7 +497,6 @@ const rootSelectOptions = {
     fields: L_FIELDS,
     duration: L_DURATION,
     sourceroot: SOURCE_ROOT,
-    mCust: MONITORING_CUST,
 };
 
 export default rootSelectOptions;

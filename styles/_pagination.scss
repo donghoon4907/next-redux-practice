@@ -27,6 +27,8 @@
     & .page-item {
         color: #797979;
         font-size: 12px;
+        padding: 0 3px;
+        text-align: center;
 
         & + & {
             margin-left: 5px;
@@ -36,8 +38,6 @@
     // Custom Bootstrap
     & .page-link {
         background-color: inherit;
-        border-top-left-radius: none !important;
-        border-bottom-left-radius: none !important;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -45,7 +45,7 @@
         padding: 0 !important;
         color: #797979;
         font-size: 12px;
-        min-width: 20px;
+        // min-width: 20px;
         // border-radius: 50% !important;
 
         &:hover {

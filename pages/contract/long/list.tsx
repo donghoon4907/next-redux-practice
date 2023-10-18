@@ -46,12 +46,10 @@ const Longs: NextPage = () => {
                     <SearchResultTemplate
                         total={longs.total.count}
                         pageName="장기 / 장기계약"
-                        description={`/ 실적보험료계: ${
+                        description={`/ 보험료계: ${
                             longs.total.pay
                                 ? longs.total.pay.toLocaleString()
                                 : 0
-                        } / 실적보험료계: ${
-                            longs.total.tp ? longs.total.tp.toLocaleString() : 0
                         }`}
                         customUrl="/contract/long/create"
                     />

@@ -42,7 +42,7 @@ export function generateListSuccessPayload(data: any, payload: any) {
 
 // 목록 params 생성
 export function generateListParams(condition: any, query: any) {
-    const { page, nums, order, ...rest } = query;
+    const { page, nums, order, userid, ...rest } = query;
 
     const params: any = {
         page: 1,
@@ -64,12 +64,20 @@ export function generateListParams(condition: any, query: any) {
 
         params.order[type] = sort;
     }
+
+    if (userid) {
+        params.condition['userid'] = String(userid).toUpperCase();
+    }
     // 나머지
     for (const [key, value] of Object.entries(rest)) {
         const val = value as string;
         // 여러 개인 데이터 처리
         if (val.includes(',')) {
             params.condition[key] = val.split(',');
+        } else if (val === 'Y') {
+            params.condition[key] = true;
+        } else if (val === 'N') {
+            params.condition[key] = false;
         } else {
             params.condition[key] = val;
         }

@@ -155,7 +155,7 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                         ))}
                         {pageButtons[pageButtons.length - 1] !== lastPage && (
                             <>
-                                <li className="page-item">. . .&nbsp;</li>
+                                <li className="page-item">. . .</li>
                                 <li className="page-item">
                                     <button
                                         type="button"

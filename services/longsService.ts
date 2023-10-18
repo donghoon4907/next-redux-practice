@@ -8,7 +8,10 @@ import { getBackendAxios } from '@utils/axios/backend';
 import { getNodeAxios } from '@utils/axios/node';
 
 export function getLongs({ page, nums, ...rest }: GetLongsRequestPayload) {
-    return getBackendAxios().post(`/long/sil?page=${page}&nums=${nums}`, rest);
+    return getBackendAxios().post(
+        `/long/list/bo?page=${page}&nums=${nums}`,
+        rest,
+    );
 }
 
 export function getLong({ idx }: GetLongRequestPayload) {

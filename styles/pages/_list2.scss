@@ -78,7 +78,7 @@
 
     &__total {
         color: #606060;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 700;
         line-height: 1.5;
     }
@@ -148,6 +148,7 @@
         border: 1px solid $wr-table-border-color;
         flex: 1;
         overflow: hidden;
+        margin-top: 9.7px;
     }
 
     &__footer {
