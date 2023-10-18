@@ -19,16 +19,16 @@ export const SUBMENUS: CoreMenuOption[] = [
 
 export const ASIDE_MENU: any = {
     customer: {
-        join: {
-            id: 'customer-join',
-            label: '가입고객',
-            to: '',
-            create: {
-                id: 'customer-join_create',
-                label: '고객 등록',
-                to: '/customer/join/create',
-            },
-        },
+        // join: {
+        //     id: 'customer-join',
+        //     label: '가입고객',
+        //     to: '',
+        //     create: {
+        //         id: 'customer-join_create',
+        //         label: '고객 등록',
+        //         to: '/customer/join/create',
+        //     },
+        // },
         // nojoin: {
         //     id: 'customer-nojoin',
         //     label: '미가입고객',
@@ -91,161 +91,161 @@ export const ASIDE_MENU: any = {
         // },
     },
     sales: {
-        spec: {
-            id: 'sales-spec',
-            label: '영업명세총괄',
-            to: '',
-            spec: {
-                id: 'sales-spec_spec',
-                label: '영업명세총괄',
-                to: '/sales/spec/spec',
-            },
-        },
-        trend: {
-            id: 'sales-trend',
-            label: '영업추이',
-            to: '',
-            total: {
-                id: 'sales-trend_total',
-                label: '종합매출추이',
-                to: '/sales/trend/total',
-            },
-            long: {
-                id: 'sales-trend_long',
-                label: '장기',
-                to: '/sales/trend/long',
-            },
-            car: {
-                id: 'sales-trend_car',
-                label: '자동차',
-                to: '/sales/trend/car',
-            },
-            normal: {
-                id: 'sales-trend_normal',
-                label: '일반',
-                to: '/sales/trend/normal',
-            },
-        },
-        crate: {
-            id: 'sales-crate',
-            label: '수금율',
-            to: '',
-            crate: {
-                id: 'sales-crate_crate',
-                label: '수금율',
-                to: '/sales/crate/crate',
-            },
-        },
-        department: {
-            id: 'sales-department',
-            label: '영업조직',
-            to: '',
-            ostatus: {
-                id: 'sales-department_ostatus',
-                label: '가동현황',
-                to: '/sales/department/ostatus',
-            },
-            sstatus: {
-                id: 'sales-department_sstatus',
-                label: '정착율 현황',
-                to: '/sales/department/sstatus',
-            },
-        },
-        risk: {
-            id: 'sales-risk',
-            label: '리스크관리',
-            to: '',
-            cri: {
-                id: 'sales-risk-cri',
-                label: '계약모집지표',
-                to: '',
-                total: {
-                    id: 'sales-risk-cri_total',
-                    label: '종합모집지표',
-                    to: '/sales/risk/cri/total',
-                },
-                is: {
-                    id: 'sales-risk-cri_is',
-                    label: '불완전판매명세',
-                    to: '/sales/risk/cri/is',
-                },
-                rc: {
-                    id: 'sales-risk-cri_rc',
-                    label: '모집민원명세',
-                    to: '/sales/risk/cri/rc',
-                },
-                emem: {
-                    id: 'sales-risk-cri_emem',
-                    label: '월초월말계약집중 명세',
-                    to: '/sales/risk/cri/emem',
-                },
-                swr: {
-                    id: 'sales-risk-cri_swr',
-                    label: '청약철회율',
-                    to: '/sales/risk/cri/swr',
-                },
-                lc: {
-                    id: 'sales-risk-cri_lc',
-                    label: '고액계약명세',
-                    to: '/sales/risk/cri/lc',
-                },
-            },
-            cmi: {
-                id: 'sales-risk-cmi',
-                label: '계약관리지표',
-                to: '',
-                crr: {
-                    id: 'sales-risk-cmi_crr',
-                    label: '계약유지율지표',
-                    to: '/sales/risk/cmi/crr',
-                },
-                rcpr: {
-                    id: 'sales-risk-cmi_rcpr',
-                    label: '모집-수금설계사 상이율',
-                    to: '/sales/risk/cmi/rcpr',
-                },
-                rcpd: {
-                    id: 'sales-risk-cmi_rcpd',
-                    label: '모집-수금설계사 상이내역',
-                    to: '/sales/risk/cmi/rcpd',
-                },
-            },
-            doi: {
-                id: 'sales-risk-doi',
-                label: '대리점 운영지표',
-                to: '',
-                frr: {
-                    id: 'sales-risk-doi_frr',
-                    label: '수수료 환수율',
-                    to: '/sales/risk/doi/frr',
-                },
-            },
-            crmi: {
-                id: 'sales-risk-crmi',
-                label: '계약자관리지표',
-                to: '',
-                tom: {
-                    id: 'sales-risk-crmi_tom',
-                    label: '누계5건이상 계약자',
-                    to: '/sales/risk/crmi/tom',
-                },
-                tmp: {
-                    id: 'sales-risk-crmi_tmp',
-                    label: '누계월납 100만원 이상 계약자',
-                    to: '/sales/risk/crmi/tmp',
-                },
-            },
-            frc: {
-                id: 'sales-risk-frc',
-                label: 'FRC관리지표',
-                to: '',
-                sc: {
-                    id: 'sales-risk-frc_sc',
-                    label: '자기계약건수 3건 이상 FC',
-                    to: '/sales/risk/frc/sc',
-                },
-            },
-        },
+        // spec: {
+        //     id: 'sales-spec',
+        //     label: '영업명세총괄',
+        //     to: '',
+        //     spec: {
+        //         id: 'sales-spec_spec',
+        //         label: '영업명세총괄',
+        //         to: '/sales/spec/spec',
+        //     },
+        // },
+        // trend: {
+        //     id: 'sales-trend',
+        //     label: '영업추이',
+        //     to: '',
+        //     total: {
+        //         id: 'sales-trend_total',
+        //         label: '종합매출추이',
+        //         to: '/sales/trend/total',
+        //     },
+        //     long: {
+        //         id: 'sales-trend_long',
+        //         label: '장기',
+        //         to: '/sales/trend/long',
+        //     },
+        //     car: {
+        //         id: 'sales-trend_car',
+        //         label: '자동차',
+        //         to: '/sales/trend/car',
+        //     },
+        //     normal: {
+        //         id: 'sales-trend_normal',
+        //         label: '일반',
+        //         to: '/sales/trend/normal',
+        //     },
+        // },
+        // crate: {
+        //     id: 'sales-crate',
+        //     label: '수금율',
+        //     to: '',
+        //     crate: {
+        //         id: 'sales-crate_crate',
+        //         label: '수금율',
+        //         to: '/sales/crate/crate',
+        //     },
+        // },
+        // department: {
+        //     id: 'sales-department',
+        //     label: '영업조직',
+        //     to: '',
+        //     ostatus: {
+        //         id: 'sales-department_ostatus',
+        //         label: '가동현황',
+        //         to: '/sales/department/ostatus',
+        //     },
+        //     sstatus: {
+        //         id: 'sales-department_sstatus',
+        //         label: '정착율 현황',
+        //         to: '/sales/department/sstatus',
+        //     },
+        // },
+        // risk: {
+        //     id: 'sales-risk',
+        //     label: '리스크관리',
+        //     to: '',
+        //     cri: {
+        //         id: 'sales-risk-cri',
+        //         label: '계약모집지표',
+        //         to: '',
+        //         total: {
+        //             id: 'sales-risk-cri_total',
+        //             label: '종합모집지표',
+        //             to: '/sales/risk/cri/total',
+        //         },
+        //         is: {
+        //             id: 'sales-risk-cri_is',
+        //             label: '불완전판매명세',
+        //             to: '/sales/risk/cri/is',
+        //         },
+        //         rc: {
+        //             id: 'sales-risk-cri_rc',
+        //             label: '모집민원명세',
+        //             to: '/sales/risk/cri/rc',
+        //         },
+        //         emem: {
+        //             id: 'sales-risk-cri_emem',
+        //             label: '월초월말계약집중 명세',
+        //             to: '/sales/risk/cri/emem',
+        //         },
+        //         swr: {
+        //             id: 'sales-risk-cri_swr',
+        //             label: '청약철회율',
+        //             to: '/sales/risk/cri/swr',
+        //         },
+        //         lc: {
+        //             id: 'sales-risk-cri_lc',
+        //             label: '고액계약명세',
+        //             to: '/sales/risk/cri/lc',
+        //         },
+        //     },
+        //     cmi: {
+        //         id: 'sales-risk-cmi',
+        //         label: '계약관리지표',
+        //         to: '',
+        //         crr: {
+        //             id: 'sales-risk-cmi_crr',
+        //             label: '계약유지율지표',
+        //             to: '/sales/risk/cmi/crr',
+        //         },
+        //         rcpr: {
+        //             id: 'sales-risk-cmi_rcpr',
+        //             label: '모집-수금설계사 상이율',
+        //             to: '/sales/risk/cmi/rcpr',
+        //         },
+        //         rcpd: {
+        //             id: 'sales-risk-cmi_rcpd',
+        //             label: '모집-수금설계사 상이내역',
+        //             to: '/sales/risk/cmi/rcpd',
+        //         },
+        //     },
+        //     doi: {
+        //         id: 'sales-risk-doi',
+        //         label: '대리점 운영지표',
+        //         to: '',
+        //         frr: {
+        //             id: 'sales-risk-doi_frr',
+        //             label: '수수료 환수율',
+        //             to: '/sales/risk/doi/frr',
+        //         },
+        //     },
+        //     crmi: {
+        //         id: 'sales-risk-crmi',
+        //         label: '계약자관리지표',
+        //         to: '',
+        //         tom: {
+        //             id: 'sales-risk-crmi_tom',
+        //             label: '누계5건이상 계약자',
+        //             to: '/sales/risk/crmi/tom',
+        //         },
+        //         tmp: {
+        //             id: 'sales-risk-crmi_tmp',
+        //             label: '누계월납 100만원 이상 계약자',
+        //             to: '/sales/risk/crmi/tmp',
+        //         },
+        //     },
+        //     frc: {
+        //         id: 'sales-risk-frc',
+        //         label: 'FRC관리지표',
+        //         to: '',
+        //         sc: {
+        //             id: 'sales-risk-frc_sc',
+        //             label: '자기계약건수 3건 이상 FC',
+        //             to: '/sales/risk/frc/sc',
+        //         },
+        //     },
+        // },
     },
     contract: {
         long: {
@@ -254,85 +254,85 @@ export const ASIDE_MENU: any = {
             to: '',
             list: {
                 id: 'contract-long_list',
-                label: '장기계약목록',
+                label: '보유계약',
                 to: '/contract/long/list',
             },
-            upload: {
-                id: 'contract-long_upload',
-                label: '선택업로드',
-                to: '/contract/long/upload',
-            },
+            // upload: {
+            //     id: 'contract-long_upload',
+            //     label: '선택업로드',
+            //     to: '/contract/long/upload',
+            // },
             // sch: {
             //     id: 'contract-long_sch',
             //     label: '상태변경내역',
             //     to: '/contract/long/sch',
             // },
         },
-        car: {
-            id: 'contract-car',
-            label: '자동차',
-            to: '',
-            create: {
-                id: 'contract-car_create',
-                label: '자동차계약등록',
-                to: '/contract/car/create',
-            },
-            compare: {
-                id: 'contract-car-compare',
-                label: '비교견적',
-                to: '/contract/car/compare',
-            },
-            // hc: {
-            //     id: 'contract-car_hc',
-            //     label: '보유계약',
-            //     to: '/contract/car/hc',
-            // },
-            // mc: {
-            //     id: 'contract-car_mc',
-            //     label: '만기계약',
-            //     to: '/contract/car/mc',
-            // },
-            // im: {
-            //     id: 'contract-car_im',
-            //     label: '분납관리',
-            //     to: '/contract/car/im',
-            // },
-            // sch: {
-            //     id: 'contract-car_sch',
-            //     label: '상태변경내역',
-            //     to: '/contract/car/sch',
-            // },
-        },
-        general: {
-            id: 'contract-general',
-            label: '일반',
-            to: '',
-            // list: {
-            //     id: 'contract-long_list',
-            //     label: '장기계약목록',
-            //     to: '/contract/long/list',
-            // },
-            create: {
-                id: 'contract-general_create',
-                label: '일반계약등록',
-                to: '/contract/general/create',
-            },
-            // hc: {
-            //     id: 'contract-general_hc',
-            //     label: '보유계약',
-            //     to: '/contract/normal/hc',
-            // },
-            // mc: {
-            //     id: 'contract-normal_mc',
-            //     label: '만기계약',
-            //     to: '/contract/normal/mc',
-            // },
-            // sch: {
-            //     id: 'contract-normal_sch',
-            //     label: '상태변경내역',
-            //     to: '/contract/normal/sch',
-            // },
-        },
+        // car: {
+        //     id: 'contract-car',
+        //     label: '자동차',
+        //     to: '',
+        //     create: {
+        //         id: 'contract-car_create',
+        //         label: '자동차계약등록',
+        //         to: '/contract/car/create',
+        //     },
+        //     compare: {
+        //         id: 'contract-car-compare',
+        //         label: '비교견적',
+        //         to: '/contract/car/compare',
+        //     },
+        //     hc: {
+        //         id: 'contract-car_hc',
+        //         label: '보유계약',
+        //         to: '/contract/car/hc',
+        //     },
+        //     mc: {
+        //         id: 'contract-car_mc',
+        //         label: '만기계약',
+        //         to: '/contract/car/mc',
+        //     },
+        //     im: {
+        //         id: 'contract-car_im',
+        //         label: '분납관리',
+        //         to: '/contract/car/im',
+        //     },
+        //     sch: {
+        //         id: 'contract-car_sch',
+        //         label: '상태변경내역',
+        //         to: '/contract/car/sch',
+        //     },
+        // },
+        // general: {
+        //     id: 'contract-general',
+        //     label: '일반',
+        //     to: '',
+        //     list: {
+        //         id: 'contract-long_list',
+        //         label: '장기계약목록',
+        //         to: '/contract/long/list',
+        //     },
+        //     create: {
+        //         id: 'contract-general_create',
+        //         label: '일반계약등록',
+        //         to: '/contract/general/create',
+        //     },
+        //     hc: {
+        //         id: 'contract-general_hc',
+        //         label: '보유계약',
+        //         to: '/contract/normal/hc',
+        //     },
+        //     mc: {
+        //         id: 'contract-normal_mc',
+        //         label: '만기계약',
+        //         to: '/contract/normal/mc',
+        //     },
+        //     sch: {
+        //         id: 'contract-normal_sch',
+        //         label: '상태변경내역',
+        //         to: '/contract/normal/sch',
+        //     },
+        // },
         // monitoring: {
         //     id: 'contract-monitoring',
         //     label: '판매모니터링',
@@ -405,106 +405,106 @@ export const ASIDE_MENU: any = {
         // },
     },
     income: {
-        ps: {
-            id: 'income-ps',
-            label: '지급제도',
-            to: '',
-            hc: {
-                id: 'income-ps_hc',
-                label: '지급제도',
-                to: '/income/ps/hc',
-            },
-            sch: {
-                id: 'income-ps_sch',
-                label: '상태변경내역',
-                to: '/income/ps/sch',
-            },
-        },
-        sc: {
-            id: 'income-sc',
-            label: '정산건별명세',
-            to: '',
-            long: {
-                id: 'income-sc-long',
-                label: '장기',
-                to: '',
-                lp: {
-                    id: 'income-sc-long_lp',
-                    label: '장기성적',
-                    to: '/income/sc/long/lp',
-                },
-                lt: {
-                    id: 'income-sc-long_lt',
-                    label: '장기계속분',
-                    to: '/income/sc/long/lt',
-                },
-            },
-            car: {
-                id: 'income-sc_car',
-                label: '자동차',
-                to: '/income/sc/car',
-            },
-            normal: {
-                id: 'income-sc_normal',
-                label: '일반',
-                to: '/income/sc/normal',
-            },
-        },
-        sms: {
-            id: 'income-sms',
-            label: 'SMS/FAX',
-            to: '',
-            sh: {
-                id: 'income-sms_sh',
-                label: '발송내역',
-                to: '/income/sms/sh',
-            },
-        },
-        rm: {
-            id: 'income-rm',
-            label: '임대관리',
-            to: '',
-            se: {
-                id: 'income-rm_se',
-                label: '전산장비',
-                to: '/income/rm/se',
-            },
-            etc: {
-                id: 'income-rm_etc',
-                label: '기타임대',
-                to: '/income/rm/etc',
-            },
-        },
-        as: {
-            id: 'income-as',
-            label: '추가/공제',
-            to: '',
-            as: {
-                id: 'income-as_as',
-                label: '추가/공제',
-                to: '/income/as/as',
-            },
-        },
-        ip: {
-            id: 'income-ip',
-            label: '소득지급현황(명세)',
-            to: '',
-            ip: {
-                id: 'income-ip_ip',
-                label: '소득지급현황(명세)',
-                to: '/income/ip/ip',
-            },
-        },
-        cm: {
-            id: 'income-cm',
-            label: '이월관리',
-            to: '',
-            cm: {
-                id: 'income-cm_cm',
-                label: '이월관리',
-                to: '/income/cm/cm',
-            },
-        },
+        // ps: {
+        //     id: 'income-ps',
+        //     label: '지급제도',
+        //     to: '',
+        //     hc: {
+        //         id: 'income-ps_hc',
+        //         label: '지급제도',
+        //         to: '/income/ps/hc',
+        //     },
+        //     sch: {
+        //         id: 'income-ps_sch',
+        //         label: '상태변경내역',
+        //         to: '/income/ps/sch',
+        //     },
+        // },
+        // sc: {
+        //     id: 'income-sc',
+        //     label: '정산건별명세',
+        //     to: '',
+        //     long: {
+        //         id: 'income-sc-long',
+        //         label: '장기',
+        //         to: '',
+        //         lp: {
+        //             id: 'income-sc-long_lp',
+        //             label: '장기성적',
+        //             to: '/income/sc/long/lp',
+        //         },
+        //         lt: {
+        //             id: 'income-sc-long_lt',
+        //             label: '장기계속분',
+        //             to: '/income/sc/long/lt',
+        //         },
+        //     },
+        //     car: {
+        //         id: 'income-sc_car',
+        //         label: '자동차',
+        //         to: '/income/sc/car',
+        //     },
+        //     normal: {
+        //         id: 'income-sc_normal',
+        //         label: '일반',
+        //         to: '/income/sc/normal',
+        //     },
+        // },
+        // sms: {
+        //     id: 'income-sms',
+        //     label: 'SMS/FAX',
+        //     to: '',
+        //     sh: {
+        //         id: 'income-sms_sh',
+        //         label: '발송내역',
+        //         to: '/income/sms/sh',
+        //     },
+        // },
+        // rm: {
+        //     id: 'income-rm',
+        //     label: '임대관리',
+        //     to: '',
+        //     se: {
+        //         id: 'income-rm_se',
+        //         label: '전산장비',
+        //         to: '/income/rm/se',
+        //     },
+        //     etc: {
+        //         id: 'income-rm_etc',
+        //         label: '기타임대',
+        //         to: '/income/rm/etc',
+        //     },
+        // },
+        // as: {
+        //     id: 'income-as',
+        //     label: '추가/공제',
+        //     to: '',
+        //     as: {
+        //         id: 'income-as_as',
+        //         label: '추가/공제',
+        //         to: '/income/as/as',
+        //     },
+        // },
+        // ip: {
+        //     id: 'income-ip',
+        //     label: '소득지급현황(명세)',
+        //     to: '',
+        //     ip: {
+        //         id: 'income-ip_ip',
+        //         label: '소득지급현황(명세)',
+        //         to: '/income/ip/ip',
+        //     },
+        // },
+        // cm: {
+        //     id: 'income-cm',
+        //     label: '이월관리',
+        //     to: '',
+        //     cm: {
+        //         id: 'income-cm_cm',
+        //         label: '이월관리',
+        //         to: '/income/cm/cm',
+        //     },
+        // },
     },
     hr: {
         group: {

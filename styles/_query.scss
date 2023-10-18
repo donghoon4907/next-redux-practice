@@ -35,10 +35,16 @@
     .wr-meta__search {
         display: none !important;
     }
+    .wr-pages-list2__filter {
+        width: 100%;
+    }
 }
 
 // 992px 이상
 @include media-breakpoint-up(lg) {
+    .wr-pages-list2__filter {
+        width: calc(50% - 5px);
+    }
 }
 
 // 1200px 이상
@@ -49,5 +55,9 @@
 @include media-breakpoint-up(xxl) {
     .wr-pages-list__filter {
         width: calc(25% - 8px);
+    }
+
+    .wr-pages-list2__filter {
+        width: calc(33% - 8px);
     }
 }

@@ -74,6 +74,10 @@ export function generateListParams(condition: any, query: any) {
         // 여러 개인 데이터 처리
         if (val.includes(',')) {
             params.condition[key] = val.split(',');
+        } else if (val.includes(':')) {
+            const target = val.split(':');
+
+            params.condition[target[0]] = target[1];
         } else if (val === 'Y') {
             params.condition[key] = true;
         } else if (val === 'N') {
@@ -94,4 +98,40 @@ export function generateAllOption(options: CoreSelectOption[]) {
     };
 
     return [target, ...options];
+}
+
+// 보험사 별 전체 목록 추가
+export function generateAllOptionWcode(options: CoreSelectOption[]) {
+    const output = [];
+    let dFlag = false;
+    let iFlag = false;
+
+    for (let i = 0; i < options.length; i++) {
+        const { label, value, origin } = options[i];
+
+        if (!dFlag && origin.dist === '손보') {
+            dFlag = true;
+
+            output.push({
+                label: '손보전체',
+                value: 'dist:손보',
+            });
+        }
+
+        if (!iFlag && origin.dist === '생보') {
+            iFlag = true;
+
+            output.push({
+                label: '생보전체',
+                value: 'dist:생보',
+            });
+        }
+
+        output.push({
+            label,
+            value: `wcode:${value}`,
+        });
+    }
+
+    return output;
 }

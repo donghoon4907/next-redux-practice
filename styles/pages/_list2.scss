@@ -20,17 +20,19 @@
         align-items: center;
         padding: $wr-gutter-size 0;
 
-        & + & {
-            border-top: 1px solid $wr-input-border-color;
-        }
+        // & + & {
+        //     border-top: 1px solid $wr-input-border-color;
+        // }
     }
 
     &__left {
         flex: 1;
         height: 100%;
         display: flex;
-        flex-direction: column;
-        padding: 0 25px;
+        // flex-direction: column;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: $wr-gutter-size 25px;
     }
 
     &__search {
@@ -52,20 +54,25 @@
 
     &__filter {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-start;
         align-items: center;
         gap: 10px;
+        height: 60px;
+        // border: 1px solid black;
+        // & > div {
+        //     flex: 1;
+        // }
 
-        & > div {
-            flex: 1;
-        }
+        // & + & {
+        //     border-left: 1px solid black;
+        // }
     }
 
     &__field {
         display: flex;
         flex-direction: column;
         gap: 5px;
-        height: 50px;
+        flex: 1;
     }
 
     &__checkboxfield {
@@ -87,6 +94,9 @@
         font-size: 11px;
         line-height: 1.5;
         color: $wr-secondary-color;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         &--active {
             color: $wr-primary-color;
@@ -108,7 +118,7 @@
     &__divider {
         min-width: 2px;
         background-color: $wr-input-border-color;
-        margin: 0 10px;
+        // margin: 0 10px;
         height: 50px;
     }
 

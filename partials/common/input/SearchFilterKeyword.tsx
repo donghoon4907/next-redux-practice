@@ -27,15 +27,13 @@ export const SearchFilterKeywordInput: FC<Props> = () => {
             <label className={`${displayName}__label`} htmlFor="search">
                 검색
             </label>
-            <div style={{ width: 235 }}>
-                <MyInput
-                    id="search"
-                    name="search"
-                    type="search"
-                    placeholder="검색어를 입력하세요."
-                    {...keyword}
-                />
-            </div>
+            <MyInput
+                id="search"
+                name="search"
+                type="search"
+                placeholder="검색어를 입력하세요."
+                {...keyword}
+            />
         </div>
     );
 };

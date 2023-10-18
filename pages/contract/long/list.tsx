@@ -45,7 +45,7 @@ const Longs: NextPage = () => {
                     <LongSearchFilter />
                     <SearchResultTemplate
                         total={longs.total.count}
-                        pageName="장기 / 장기계약"
+                        pageName="장기 / 보유계약"
                         description={`/ 보험료계: ${
                             longs.total.pay
                                 ? longs.total.pay.toLocaleString()

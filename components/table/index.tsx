@@ -148,34 +148,6 @@ export const MyTable: FC<Props> = ({
         }
     }, [router]);
 
-    // useEffect(() => {
-    //     if (tableRef.current) {
-    //         // 말 줄임표 처리 관련
-    //         const columns =
-    //             tableRef.current.querySelectorAll<HTMLSpanElement>(
-    //                 'thead th span',
-    //             );
-    //         const fields =
-    //             tableRef.current.querySelectorAll<HTMLSpanElement>(
-    //                 'tbody td span',
-    //             );
-    //         let colSpanWidth = -1;
-    //         Array.from(columns).some((span) => {
-    //             let output = false;
-    //             if (span.classList.contains('ellipsisTarget')) {
-    //                 colSpanWidth = span.offsetWidth;
-    //                 output = true;
-    //             }
-    //             return output;
-    //         });
-    //         const d = document.querySelectorAll('.text-truncate');
-    //         Array.from(fields).forEach((v) => {
-    //             if (v.classList.contains('text-truncate')) {
-    //                 v.style.width = `${colSpanWidth + 150}px`;
-    //             }
-    //         });
-    //     }
-    // }, []);
     return (
         <div className="wr-table__wrap" ref={tableWrapRef}>
             <table

@@ -1,10 +1,8 @@
 import type { FC } from 'react';
 import type { Cell } from '@tanstack/react-table';
 import { memo } from 'react';
-// import { flexRender } from '@tanstack/react-table';
 import { MyColumnDef } from '@hooks/use-column';
 import { InternalInput } from '@components/input/Internal';
-import { checkSeparatorNeeded } from '@utils/validation';
 import { isValidOnlyNumPhone } from '@utils/validator/user';
 import { convertPhoneNumber } from '@utils/converter';
 
@@ -21,32 +19,32 @@ export const EmptyTd: FC<EmptyTdProps> = ({ colSpan }) => {
 export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
     let className = '';
 
-    // 숫자인 경우 콤마를 사용해 천단위로 나누고, 오른쪽 정렬
-    // let isTextEnd =
-    //     isNumberic(getValue()) &&
-    //     checkSeparatorNeeded(column.id) &&
-    //     checkTextAlignRightNeeded(column.id);
-
-    // if (isTextEnd) {
-    //     className += 'text-end';
-    // }
-
-    let value = getValue() as string;
+    let value = getValue() as any;
     // 휴대폰 번호의 경우
     if (typeof value === 'string' && isValidOnlyNumPhone(value)) {
         value = convertPhoneNumber(value);
     }
-
-    if (Number.isInteger(value) && checkSeparatorNeeded(column.id)) {
+    // 정수형 데이터의 경우 오른쪽 정렬 및 천단위 구분
+    // 문자형 데이터의 경우 왼쪽 정렬
+    if (Number.isInteger(value)) {
         className += 'text-end';
+
+        value = Number(value).toLocaleString();
     } else {
         className += 'text-start';
     }
 
+    if (typeof value === 'boolean') {
+        if (value) {
+            value = 'Y';
+        } else {
+            value = 'N';
+        }
+    }
+
     return (
-        <td className={className}>
+        <td className={className} title={value}>
             {value}
-            {/* {flexRender(column.columnDef.cell, getContext())} */}
         </td>
     );
 });

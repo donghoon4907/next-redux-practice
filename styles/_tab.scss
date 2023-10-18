@@ -50,7 +50,7 @@
     }
 
     &:not(.active) {
-        background-color: $wr-disable-bg-color;
+        background-color: $gray-200;
         color: $wr-disable-font-color;
     }
 

@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { HrState } from '@reducers/hr';
 import { AppState } from '@reducers/index';
@@ -14,9 +14,8 @@ import { SearchFilterUserSelect } from '@partials/common/select/SearchFilterUser
 import { SearchFilterDatepicker } from '@partials/common/datepicker/SearchFilter';
 import { SearchFilterKeywordInput } from '@partials/common/input/SearchFilterKeyword';
 import { findSelectOption } from '@utils/getter';
-import { MyInput } from '@components/input';
 import { MyCheckbox } from '@components/checkbox';
-import { generateAllOption } from '@utils/generate';
+import { generateAllOption, generateAllOptionWcode } from '@utils/generate';
 import { SearchFilterDateTypeLabel } from '@partials/common/label/SearchFilterDateType';
 
 interface Props {}
@@ -30,10 +29,13 @@ export const LongSearchFilter: FC<Props> = () => {
         (props) => props.hr,
     );
 
-    // 검색필터 - 보험사
-    const [company, setCompany] = useSelect(
-        generateAllOption(longViewCompanies),
+    const memorizedCompany = useMemo(
+        () => generateAllOption(generateAllOptionWcode(longViewCompanies)),
+        [],
     );
+
+    // 검색필터 - 보험사
+    const [company, setCompany] = useSelect(memorizedCompany);
     // 검색필터 - 보종
     const [spec, setSpec] = useSelect(longConstants.productType2);
     // 검색필터 - 현상태
@@ -67,7 +69,7 @@ export const LongSearchFilter: FC<Props> = () => {
         } = router.query;
 
         if (company) {
-            setCompany(findSelectOption(company, longViewCompanies));
+            setCompany(findSelectOption(company, memorizedCompany));
         }
 
         if (spec) {
@@ -109,20 +111,16 @@ export const LongSearchFilter: FC<Props> = () => {
         if (privacyinfo) {
             setPrivacyinfo(findSelectOption(privacyinfo, commonConstants.yn));
         }
-
-        // if (product) {
-        //     setProduct(findSelectOption(product, longs.products));
-        // }
     }, [router]);
 
     return (
         <SearchFilterForm>
             <div className={`${displayName}__left`}>
-                <div className={`${displayName}__filters`}>
-                    <div className={`${displayName}__filter`}>
-                        <SearchFilterOrgaSelect activeUser />
-                        <SearchFilterUserSelect />
-                        <div className={`${displayName}__checkboxfield`}>
+                <div className={`${displayName}__filter`}>
+                    <SearchFilterOrgaSelect activeUser />
+                    <SearchFilterUserSelect />
+                    <div className={`${displayName}__checkboxfield`}>
+                        <div style={{ width: 80 }}>
                             <MyCheckbox
                                 id="check_user"
                                 value="Y"
@@ -130,168 +128,149 @@ export const LongSearchFilter: FC<Props> = () => {
                             />
                         </div>
                     </div>
-                    <div className={`${displayName}__divider`}></div>
-                    <div className={`${displayName}__filter`}>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="company"
-                            >
-                                보험사
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="company"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...company}
-                                />
-                            </div>
-                        </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="spec"
-                            >
-                                보종
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="spec"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...spec}
-                                />
-                            </div>
-                        </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="status"
-                            >
-                                현상태
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="status"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...status}
-                                />
-                            </div>
-                        </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="pay_cycle"
-                            >
-                                납입주기
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="pay_cycle"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...pay_cycle}
-                                />
-                            </div>
-                        </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="sourceroot"
-                            >
-                                고객경로
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="sourceroot"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...sourceroot}
-                                />
-                            </div>
+                </div>
+                <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="company"
+                        >
+                            보험사
+                        </label>
+                        <div style={{ width: 100 }}>
+                            <MySelect
+                                id="company"
+                                fontSize={13}
+                                placeholder="선택"
+                                {...company}
+                            />
                         </div>
                     </div>
-                    <div className={`${displayName}__divider`}></div>
-                    <div className={`${displayName}__filter`}>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="monitoring_cust"
-                            >
-                                금소법확인
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="monitoring_cust"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...monitoring_cust}
-                                />
-                            </div>
-                        </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="monitoring_sale"
-                            >
-                                완전판매모니터링
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="monitoring_sale"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...monitoring_sale}
-                                />
-                            </div>
-                        </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="monitoring_compare"
-                            >
-                                상품비교설명
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="monitoring_compare"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...monitoring_compare}
-                                />
-                            </div>
-                        </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="privacyinfo"
-                            >
-                                개인정보동의
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="privacyinfo"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...privacyinfo}
-                                />
-                            </div>
-                        </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="spec"
+                        >
+                            보종
+                        </label>
+
+                        <MySelect
+                            id="spec"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...spec}
+                        />
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="status"
+                        >
+                            현상태
+                        </label>
+                        <MySelect
+                            id="status"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...status}
+                        />
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="pay_cycle"
+                        >
+                            납입주기
+                        </label>
+                        <MySelect
+                            id="pay_cycle"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...pay_cycle}
+                        />
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="sourceroot"
+                        >
+                            고객경로
+                        </label>
+                        <MySelect
+                            id="sourceroot"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...sourceroot}
+                        />
                     </div>
                 </div>
-                <div className={`${displayName}__filters`}>
-                    <div className={`${displayName}__filter`}>
-                        <div className={`${displayName}__field`}>
-                            <SearchFilterDateTypeLabel
-                                indateLabel="계약일자"
-                                outdateLabel="상태반영일"
-                            />
-                            <SearchFilterDatepicker />
-                        </div>
-                        <SearchFilterKeywordInput />
+                <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="monitoring_cust"
+                        >
+                            금소법확인
+                        </label>
+                        <MySelect
+                            id="monitoring_cust"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...monitoring_cust}
+                        />
                     </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="monitoring_sale"
+                        >
+                            완전판매모니터링
+                        </label>
+                        <MySelect
+                            id="monitoring_sale"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...monitoring_sale}
+                        />
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="monitoring_compare"
+                        >
+                            상품비교설명
+                        </label>
+                        <MySelect
+                            id="monitoring_compare"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...monitoring_compare}
+                        />
+                    </div>
+                    <div className={`${displayName}__field`}>
+                        <label
+                            className={`${displayName}__label`}
+                            htmlFor="privacyinfo"
+                        >
+                            개인정보동의
+                        </label>
+                        <MySelect
+                            id="privacyinfo"
+                            fontSize={13}
+                            placeholder="선택"
+                            {...privacyinfo}
+                        />
+                    </div>
+                </div>
+                <div className={`${displayName}__filter`}>
+                    <div className={`${displayName}__field`}>
+                        <SearchFilterDateTypeLabel
+                            indateLabel="계약일자"
+                            outdateLabel="상태반영일"
+                        />
+                        <SearchFilterDatepicker />
+                    </div>
+                    <SearchFilterKeywordInput />
                 </div>
             </div>
         </SearchFilterForm>

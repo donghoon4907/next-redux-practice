@@ -100,7 +100,7 @@ td {
 
 .rs-picker-toggle {
     border-radius: 0 !important;
-    border: 1px solid #dce2eb !important;
+    border: 1px solid $wr-input-border-color !important;
     // display: flex !important;
     // justify-content: flex-start !important;
     // align-items: center;
@@ -204,7 +204,7 @@ input[type='number'] {
     border-radius: 0 !important;
     font-size: 16px;
     box-shadow: none !important;
-    border-color: #dce2eb !important;
+    border-color: $wr-input-border-color !important;
     // height: 30px;
     height: 100%;
 }

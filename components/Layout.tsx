@@ -12,15 +12,9 @@ interface Props extends CoreProps {}
 export const MyLayout: FC<Props> = ({ children }) => {
     const { activeGnb } = useSelector<AppState, GnbState>((state) => state.gnb);
 
-    const hasGnb = Object.keys(activeGnb).length > 0;
-
     return (
         <div className="wr-layout">
-            <nav
-                className={`wr-layout__left wr-layout__left--${
-                    hasGnb ? 'show' : 'hide'
-                }`}
-            >
+            <nav className="wr-layout__left">
                 <MyNav menu={activeGnb} />
             </nav>
             <div className="wr-layout__right">
