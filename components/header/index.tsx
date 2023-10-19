@@ -1,9 +1,13 @@
 import type { FC } from 'react';
+import { deleteCookie } from 'cookies-next';
+import { LuSearch } from 'react-icons/lu';
+import { FaPowerOff } from 'react-icons/fa';
+import { GNBS } from '@constants/gnb';
+import { IconWrapper } from '@components/IconWrapper';
 // import { useSelector } from 'react-redux';
 // import { AiOutlineFolder, AiOutlinePoweroff } from 'react-icons/ai';
 // import { MdLogout } from 'react-icons/md';
 // import { LuMenu } from 'react-icons/lu';
-import { GNBS } from '@constants/gnb';
 // import { useDrawer } from '@hooks/use-drawer';
 
 // import { AppState } from '@reducers/index';
@@ -18,13 +22,27 @@ import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
 // import { useSelect } from '@hooks/use-select';
 // import { MyInput } from '@components/input';
-import { LuSearch } from 'react-icons/lu';
-import { FaPowerOff } from 'react-icons/fa';
-import { IconWrapper } from '@components/IconWrapper';
+// import { useApi } from '@hooks/use-api';
+// import { logoutRequest } from '@actions/hr/logout.action';
 
 interface Props {}
 
 export const MyHeader: FC<Props> = () => {
+    // const logout = useApi(logoutRequest);
+
+    const handleLogout = () => {
+        const tf = confirm('로그아웃 하시겠습니까?');
+
+        if (tf) {
+            const cookieKey = process.env.COOKIE_TOKEN_KEY || '';
+
+            deleteCookie(cookieKey);
+
+            location.replace('/login');
+            // logout();
+        }
+    };
+
     // const { loggedInUser } = useSelector<AppState, HrState>(
     //     (state) => state.hr,
     // );
@@ -183,10 +201,11 @@ export const MyHeader: FC<Props> = () => {
                                 </div>
                             </div>
                             <div className="wr-gnb__logout">
-                                <IconWrapper
-                                    onClick={() => alert('준비 중입니다.')}
-                                >
+                                <IconWrapper onClick={handleLogout}>
                                     <FaPowerOff size={20} />
+                                    <span className="visually-hidden">
+                                        로그아웃
+                                    </span>
                                 </IconWrapper>
                             </div>
                         </div>

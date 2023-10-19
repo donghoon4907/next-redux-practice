@@ -12,6 +12,7 @@ import { watchGetCompanyRegNum } from './get-company-regnum';
 import { watchGetProducts } from './get-products';
 import { watchSearchUsers } from './search-users';
 import { watchSearchOrgas } from './search-orgas';
+import { watchLogout } from './logout';
 // import { watchGetPermission } from './get-permission';
 // import { watchGetIp } from './get-ip';
 // import { watchGetUser } from './get-user';
@@ -19,6 +20,7 @@ import { watchSearchOrgas } from './search-orgas';
 export function* hrSaga() {
     yield all([
         fork(watchLogin),
+        fork(watchLogout),
         fork(watchCreateUser),
         fork(watchUpdateUser),
         fork(watchGetOrgas),

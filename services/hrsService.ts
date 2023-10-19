@@ -17,6 +17,14 @@ export function login(payload: LoginRequestPayload) {
     return getInternalAxios().post('/api/login', payload);
 }
 
+export function beforeLogout() {
+    return getInternalAxios().post('/api/logout');
+}
+
+export function logout() {
+    return getBackendAxios().get(`/orga/logout/browser`);
+}
+
 export function verify(payload: LoginRequestPayload) {
     return getBackendAxios().post('/orga/login', payload);
 }
@@ -129,6 +137,8 @@ export function getProducts(payload: GetProductsRequestPayload) {
 
 const rootServices = {
     login,
+    beforeLogout,
+    logout,
     verify,
     getPermission,
     beforeCreateUser,
