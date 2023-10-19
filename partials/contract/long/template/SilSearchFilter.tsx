@@ -6,7 +6,6 @@ import { HrState } from '@reducers/hr';
 import { AppState } from '@reducers/index';
 import { useSelect } from '@hooks/use-select';
 import longConstants from '@constants/options/long';
-import commonConstants from '@constants/options/common';
 import { MySelect } from '@components/select';
 import { SearchFilterForm } from '@partials/common/form/SearchFilter';
 import { SearchFilterOrgaSelect } from '@partials/common/select/SearchFilterOrga';
@@ -15,14 +14,13 @@ import { SearchFilterDatepicker } from '@partials/common/datepicker/SearchFilter
 import { SearchFilterKeywordInput } from '@partials/common/input/SearchFilterKeyword';
 import { findSelectOption } from '@utils/getter';
 import { generateAllOption, generateAllOptionWcode } from '@utils/generate';
-import { SearchFilterDateTypeLabel } from '@partials/common/label/SearchFilterDateType';
 import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
 import { IconWrapper } from '@components/IconWrapper';
 import { SearchFilterUserCheckbox } from '@partials/common/checkbox/SearchFilterCheckUser';
 
 interface Props {}
 
-export const LongSearchFilter: FC<Props> = () => {
+export const LongSilSearchFilter: FC<Props> = () => {
     const displayName = 'wr-pages-list2';
 
     const router = useRouter();
@@ -42,38 +40,21 @@ export const LongSearchFilter: FC<Props> = () => {
     // 검색필터 - 보종
     const [spec, setSpec] = useSelect(longConstants.productType2);
     // 검색필터 - 현상태
-    const [status, setStatus] = useSelect(longConstants.boStatus);
+    const [status, setStatus] = useSelect(longConstants.silStatus);
     // 검색필터 - 납입주기
     const [pay_cycle, setPayCycle] = useSelect(longConstants.payCycle2);
-    // 검색필터 - 고객경로
-    const [sourceroot, setSourceroot] = useSelect(longConstants.sourceroot);
-    // 검색필터 - 금소법확인
-    const [monitoring_cust, setMonitoringCust] = useSelect(commonConstants.yn);
-    // 검색필터 - 완전판매모니터링
-    const [monitoring_sale, setMonitoringSale] = useSelect(commonConstants.yn);
-    // 검색필터 - 상품비교설명
-    const [monitoring_compare, setMonitoringCompare] = useSelect(
-        commonConstants.yn,
-    );
-    // 검색필터 - 개인정보동의
-    const [privacyinfo, setPrivacyinfo] = useSelect(commonConstants.yn);
+    // 검색필터 - 납입방법
+    const [cycle, setCycle] = useSelect(longConstants.payCycle2);
+    // 검색필터 - 입금구분
+    const [sildist, setSildist] = useSelect(longConstants.silDist);
 
     const handleExpand = () => {
         setExpand(!expand);
     };
 
     useEffect(() => {
-        const {
-            company,
-            spec,
-            status,
-            pay_cycle,
-            sourceroot,
-            monitoring_cust,
-            monitoring_sale,
-            monitoring_compare,
-            privacyinfo,
-        } = router.query;
+        const { company, spec, status, pay_cycle, cycle, sildist } =
+            router.query;
 
         if (company) {
             setCompany(findSelectOption(company, memorizedCompany));
@@ -84,39 +65,19 @@ export const LongSearchFilter: FC<Props> = () => {
         }
 
         if (status) {
-            setStatus(findSelectOption(status, longConstants.boStatus));
+            setStatus(findSelectOption(status, longConstants.silStatus));
         }
 
         if (pay_cycle) {
             setPayCycle(findSelectOption(pay_cycle, longConstants.payCycle2));
         }
 
-        if (sourceroot) {
-            setSourceroot(
-                findSelectOption(sourceroot, longConstants.sourceroot),
-            );
+        if (cycle) {
+            setCycle(findSelectOption(cycle, longConstants.payCycle2));
         }
 
-        if (monitoring_cust) {
-            setMonitoringCust(
-                findSelectOption(monitoring_cust, commonConstants.yn),
-            );
-        }
-
-        if (monitoring_sale) {
-            setMonitoringSale(
-                findSelectOption(monitoring_sale, commonConstants.yn),
-            );
-        }
-
-        if (monitoring_compare) {
-            setMonitoringCompare(
-                findSelectOption(monitoring_compare, commonConstants.yn),
-            );
-        }
-
-        if (privacyinfo) {
-            setPrivacyinfo(findSelectOption(privacyinfo, commonConstants.yn));
+        if (sildist) {
+            setSildist(findSelectOption(sildist, longConstants.silDist));
         }
     }, [router]);
 
@@ -129,9 +90,9 @@ export const LongSearchFilter: FC<Props> = () => {
             >
                 <IconWrapper onClick={handleExpand}>
                     {expand ? (
-                        <AiOutlineCaretUp size={20} fill="#FF813F" />
+                        <AiOutlineCaretUp size={20} fill="#BED3F2" />
                     ) : (
-                        <AiOutlineCaretDown size={20} fill="#FF813F" />
+                        <AiOutlineCaretDown size={20} fill="#BED3F2" />
                     )}
                 </IconWrapper>
             </div>
@@ -167,7 +128,7 @@ export const LongSearchFilter: FC<Props> = () => {
                             >
                                 보종
                             </label>
-                            <div style={{ width: 110 }}>
+                            <div style={{ width: 100 }}>
                                 <MySelect
                                     id="spec"
                                     fontSize={13}
@@ -208,29 +169,20 @@ export const LongSearchFilter: FC<Props> = () => {
                                 />
                             </div>
                         </div>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="sourceroot"
-                            >
-                                고객경로
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="sourceroot"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...sourceroot}
-                                />
-                            </div>
-                        </div>
                         <div className={`${displayName}__divider`}></div>
                     </div>
                     <div className={`${displayName}__filter`}>
                         <div className={`${displayName}__field`}>
-                            <SearchFilterDateTypeLabel
-                                indateLabel="계약일자"
-                                outdateLabel="상태반영일"
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="date_type"
+                            >
+                                영수일
+                            </label>
+                            <input
+                                type="hidden"
+                                name="date_type"
+                                value="sildate"
                             />
                             <SearchFilterDatepicker />
                         </div>
@@ -243,64 +195,32 @@ export const LongSearchFilter: FC<Props> = () => {
                             <div className={`${displayName}__field`}>
                                 <label
                                     className={`${displayName}__label`}
-                                    htmlFor="monitoring_cust"
+                                    htmlFor="cycle"
                                 >
-                                    금소법확인
+                                    납입방법
                                 </label>
-                                <div style={{ width: 86 }}>
+                                <div style={{ width: 100 }}>
                                     <MySelect
-                                        id="monitoring_cust"
+                                        id="cycle"
                                         fontSize={13}
                                         placeholder="선택"
-                                        {...monitoring_cust}
+                                        {...cycle}
                                     />
                                 </div>
                             </div>
                             <div className={`${displayName}__field`}>
                                 <label
                                     className={`${displayName}__label`}
-                                    htmlFor="monitoring_sale"
+                                    htmlFor="sildist"
                                 >
-                                    완전판매모니터링
+                                    입금구분
                                 </label>
-                                <div style={{ width: 86 }}>
+                                <div style={{ width: 110 }}>
                                     <MySelect
-                                        id="monitoring_sale"
+                                        id="sildist"
                                         fontSize={13}
                                         placeholder="선택"
-                                        {...monitoring_sale}
-                                    />
-                                </div>
-                            </div>
-                            <div className={`${displayName}__field`}>
-                                <label
-                                    className={`${displayName}__label`}
-                                    htmlFor="monitoring_compare"
-                                >
-                                    상품비교설명
-                                </label>
-                                <div style={{ width: 86 }}>
-                                    <MySelect
-                                        id="monitoring_compare"
-                                        fontSize={13}
-                                        placeholder="선택"
-                                        {...monitoring_compare}
-                                    />
-                                </div>
-                            </div>
-                            <div className={`${displayName}__field`}>
-                                <label
-                                    className={`${displayName}__label`}
-                                    htmlFor="privacyinfo"
-                                >
-                                    개인정보동의
-                                </label>
-                                <div style={{ width: 86 }}>
-                                    <MySelect
-                                        id="privacyinfo"
-                                        fontSize={13}
-                                        placeholder="선택"
-                                        {...privacyinfo}
+                                        {...sildist}
                                     />
                                 </div>
                             </div>

@@ -57,9 +57,9 @@ export const MyTh: FC<Props> = ({
                 role="button"
                 onClick={handleClick}
             >
-                <strong>
+                <span>
                     {isPlaceholder ? '' : (column.columnDef as any).headerText}
-                </strong>
+                </span>
                 {type === id && (
                     <div>
                         {sort === 'asc' && (

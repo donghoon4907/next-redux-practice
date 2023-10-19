@@ -257,6 +257,11 @@ export const ASIDE_MENU: any = {
                 label: '보유계약',
                 to: '/contract/long/bo',
             },
+            sil: {
+                id: 'contract-long_sil',
+                label: '장기실적',
+                to: '/contract/long/sil',
+            },
             // upload: {
             //     id: 'contract-long_upload',
             //     label: '선택업로드',

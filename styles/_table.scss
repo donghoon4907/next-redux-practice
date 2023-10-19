@@ -84,6 +84,8 @@
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-align: center;
+        color: #484848;
     }
 
     & tbody {
@@ -125,9 +127,9 @@
         cursor: pointer;
         gap: 3px;
         user-select: none;
-        max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-weight: 500;
     }
 
     &__extension {

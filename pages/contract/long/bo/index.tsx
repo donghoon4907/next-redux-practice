@@ -50,7 +50,7 @@ const Longs: NextPage = () => {
                                 longs.total.pay
                                     ? longs.total.pay.toLocaleString()
                                     : 0
-                            }건`,
+                            }`,
                         ]}
                     />
                     <div className={`${displayName}__body`}>

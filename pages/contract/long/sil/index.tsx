@@ -12,20 +12,22 @@ import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getLongsRequest } from '@actions/contract/long/get-longs.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
-import { LongSearchFilter } from '@partials/contract/long/template/SearchFilter';
+import { LongSilSearchFilter } from '@partials/contract/long/template/SilSearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
+import { getLongSilsRequest } from '@actions/contract/long/get-long-sils.action';
 
 const LongSils: NextPage = () => {
     const displayName = 'wr-pages-list2';
 
     const router = useRouter();
 
-    const { longs } = useSelector<AppState, LongState>((props) => props.long);
+    const { longSils } = useSelector<AppState, LongState>(
+        (props) => props.long,
+    );
 
-    const columns = useColumn(longs.fields);
+    const columns = useColumn(longSils.fields);
 
     const handleClickRow = ({ idx }: any) => {
         router.push(`/contract/long/bo/${idx}`);
@@ -42,29 +44,36 @@ const LongSils: NextPage = () => {
             </Head>
             <MyLayout>
                 <div className={displayName}>
-                    <LongSearchFilter />
+                    <LongSilSearchFilter />
                     <SearchResultTemplate
                         data={[
-                            `계약건수:${longs.total.count.toLocaleString()}건`,
+                            `계약건수:${longSils.total.count.toLocaleString()}건`,
                             `보험료계:${
-                                longs.total.pay
-                                    ? longs.total.pay.toLocaleString()
+                                longSils.total.pay
+                                    ? longSils.total.pay.toLocaleString()
                                     : 0
-                            }건`,
+                            }`,
+                            `수정보험료계:${
+                                longSils.total.tp
+                                    ? longSils.total.tp.toLocaleString()
+                                    : 0
+                            }`,
                         ]}
                     />
                     <div className={`${displayName}__body`}>
                         <div className="wr-table--scrollable wr-table--hover">
                             <MyTable
                                 columns={columns}
-                                data={longs.rows}
-                                pageSize={longs.lastPayload?.nums}
+                                data={longSils.rows}
+                                pageSize={longSils.lastPayload?.nums}
                                 onClickRow={handleClickRow}
                             />
                         </div>
                     </div>
                     <div className={`${displayName}__footer`}>
-                        <MyPagination total={longs.total.count}></MyPagination>
+                        <MyPagination
+                            total={longSils.total.count}
+                        ></MyPagination>
                     </div>
                 </div>
             </MyLayout>
@@ -89,14 +98,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
         // 계약일자 / 상태반영일
         if (date_type && date) {
-            if (date_type === 'indate') {
-                params.condition!['contdate'] = String(date).split(',');
-            } else if (date_type === 'outdate') {
-                params.condition!['status_date'] = String(date).split(',');
+            if (date_type === 'sildate') {
+                params.condition!['sildate'] = String(date).split(',');
             }
         }
 
-        dispatch(getLongsRequest(params));
+        dispatch(getLongSilsRequest(params));
 
         dispatch(getCompaniesRequest('long-view'));
 

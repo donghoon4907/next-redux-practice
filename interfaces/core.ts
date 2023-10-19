@@ -25,6 +25,7 @@ export interface CoreSelectOption {
     // 멀티사용시 선택 여부
     isSelected?: boolean;
     color?: string;
+    fontWeight?: string;
 }
 
 export interface CoreMenuOption {

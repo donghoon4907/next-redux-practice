@@ -9,7 +9,7 @@
         justify-content: space-between;
         background-color: $white;
         border-radius: 5px;
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
         position: relative;
     }
 
@@ -36,12 +36,12 @@
 
     &__filterrow {
         // flex: 1;
-        height: 80px;
         display: flex;
         // flex-direction: column;
         flex-wrap: nowrap;
-        gap: 15px;
-        padding: $wr-gutter-size 25px;
+        gap: $wr-gutter-size;
+        padding: $wr-gutter-size 0;
+        margin: 0 15px;
 
         &--expanded {
             height: 160px;
@@ -73,7 +73,7 @@
         justify-content: flex-start;
         align-items: center;
         gap: 10px;
-        height: 60px;
+        height: 50px;
         // border: 1px solid black;
         // & > div {
         //     flex: 1;

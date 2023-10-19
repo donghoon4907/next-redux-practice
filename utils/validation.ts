@@ -22,45 +22,18 @@ export function checkEllipsisNeeded(columnName: string) {
 }
 
 /**
- * 천 단위 적용 여부
+ * 좌측 정렬 적용 여부
  *
  */
-export function checkSeparatorNeeded(columnName: string) {
-    let output = true;
-    /**
-     * cnum: 계약번호
-     * orga: 조직
-     * cycle: 납입주기
-     * bo_du: 보장기간
-     * whoi: 회차
-     * pay_du: 납입기간
-     */
-    const omits = [
-        'cnum',
-        'bno',
-        'orga',
-        'cycle',
-        'bo_du',
-        'whoi',
-        'pay_du',
-        'fccode',
-        '사용인코드',
-    ];
-    if (omits.some((v) => columnName === v)) {
-        output = false;
-    }
-
-    return output;
-}
-
-/**
- * 가운데 적용 여부
- *
- */
-export function checkTextAlignRightNeeded(columnName: string) {
-    let output = true;
-    if (columnName === 'bviews') {
-        output = false;
+export function checkTextAlignLeftNeeded(columnName: string) {
+    let output = false;
+    if (
+        columnName === 'orga' ||
+        columnName === 'team' ||
+        columnName === 'title' ||
+        columnName === 'cnum'
+    ) {
+        output = true;
     }
 
     return output;

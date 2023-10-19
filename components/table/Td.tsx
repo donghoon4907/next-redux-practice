@@ -5,6 +5,7 @@ import { MyColumnDef } from '@hooks/use-column';
 import { InternalInput } from '@components/input/Internal';
 import { isValidOnlyNumPhone } from '@utils/validator/user';
 import { convertPhoneNumber } from '@utils/converter';
+import { checkTextAlignLeftNeeded } from '@utils/validation';
 
 interface EmptyTdProps {
     colSpan: number;
@@ -31,7 +32,9 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
 
         value = Number(value).toLocaleString();
     } else {
-        className += 'text-start';
+        if (checkTextAlignLeftNeeded(column.id)) {
+            className += 'text-start';
+        }
     }
 
     if (typeof value === 'boolean') {

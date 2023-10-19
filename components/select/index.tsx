@@ -177,7 +177,14 @@ export const MySelect: FC<MySelectProps> = ({
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    color: state.data.color ? state.data.color : 'black',
+                    color: state.data.color
+                        ? state.data.color
+                        : state.isSelected
+                        ? 'white'
+                        : 'black',
+                    fontWeight: state.data.fontWeight
+                        ? state.data.fontWeight
+                        : '400',
                     // backgroundColor: state.isFocused ? 'blue' : 'white', // 포커스 상태에 따른 배경색 변경
                     // color: state.isFocused ? 'white' : 'black', // 포커스 상태에 따른 글자색 변경
                     // '&:hover': {
