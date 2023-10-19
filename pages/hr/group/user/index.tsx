@@ -43,8 +43,9 @@ const Users: NextPage = () => {
                 <div className={displayName}>
                     <UserSearchFilter />
                     <SearchResultTemplate
-                        total={searchUsers.total.count}
-                        pageName="조직관리 / 영업가족"
+                        data={[
+                            `영업가족수:${searchUsers.total.count.toLocaleString()}`,
+                        ]}
                     />
                     <div className={`${displayName}__body`}>
                         <div className="wr-table--scrollable wr-table--hover">

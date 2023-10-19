@@ -41,8 +41,9 @@ const Orgas: NextPage = () => {
                 <div className={displayName}>
                     <OrgaSearchFilter />
                     <SearchResultTemplate
-                        total={searchOrgas.total.count}
-                        pageName="조직관리 / 지점명세"
+                        data={[
+                            `조직수:${searchOrgas.total.count.toLocaleString()}`,
+                        ]}
                     />
                     <div className={`${displayName}__body`}>
                         <div className="wr-table--scrollable wr-table--hover">

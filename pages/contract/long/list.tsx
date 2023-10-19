@@ -27,8 +27,8 @@ const Longs: NextPage = () => {
 
     const columns = useColumn(longs.fields);
 
-    const handleClickRow = ({ cidx }: any) => {
-        router.push(`/contract/long/${cidx}`);
+    const handleClickRow = ({ idx }: any) => {
+        router.push(`/contract/long/${idx}`);
     };
 
     return (
@@ -44,14 +44,15 @@ const Longs: NextPage = () => {
                 <div className={displayName}>
                     <LongSearchFilter />
                     <SearchResultTemplate
-                        total={longs.total.count}
-                        pageName="장기 / 보유계약"
-                        description={`/ 보험료계: ${
-                            longs.total.pay
-                                ? longs.total.pay.toLocaleString()
-                                : 0
-                        }`}
-                        customUrl="/contract/long/create"
+                        data={[
+                            `계약건수:${longs.total.count.toLocaleString()}건`,
+                            `보험료계:${
+                                longs.total.pay
+                                    ? longs.total.pay.toLocaleString()
+                                    : 0
+                            }건`,
+                        ]}
+                        createUrl="/contract/long/create"
                     />
                     <div className={`${displayName}__body`}>
                         <div className="wr-table--scrollable wr-table--hover">

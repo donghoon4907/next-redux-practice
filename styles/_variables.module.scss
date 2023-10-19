@@ -54,6 +54,8 @@ $wr-table-border-color: $wr-gray2;
 $wr-thead-bg-color: #deebff;
 // 활성화 색
 $wr-active-color: #185bc3;
+// 입력창 텍스트 색
+$wr-input-font-color: #555;
 
 // $wr-header-color: #1466a4;
 $wr-header-color: $wr-primary-color;
@@ -86,6 +88,7 @@ $wr-disable-input-color: #e9ecef;
     navWidth: $wr-nav-width;
     layoutWidth: $wr-layout-width;
     inputBorderColor: $wr-input-border-color;
+    inputFontColor: $wr-input-font-color;
     blue1: $wr-blue1;
     blue2: $wr-blue2;
     blue3: $wr-blue3;

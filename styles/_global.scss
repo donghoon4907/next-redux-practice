@@ -129,7 +129,7 @@ td {
 // }
 // Datepicker - Placeholder 설정
 .rs-picker-toggle-value {
-    color: $black !important;
+    color: $wr-input-font-color !important;
 }
 .rs-stack-item {
     font-size: $wr-filter-font-size;
@@ -205,6 +205,7 @@ input[type='number'] {
     font-size: 16px;
     box-shadow: none !important;
     border-color: $wr-input-border-color !important;
+    color: $wr-input-font-color !important;
     // height: 30px;
     height: 100%;
 }

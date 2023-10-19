@@ -166,11 +166,11 @@ const STATUS: CoreSelectOption[] = [
         value: '정상유지',
         isFixed: false,
     },
-    {
-        label: '계약철회',
-        value: '계약철회',
-        isFixed: false,
-    },
+    // {
+    //     label: '계약철회',
+    //     value: '계약철회',
+    //     isFixed: false,
+    // },
     {
         label: '품보해지',
         value: '품보해지',
@@ -182,8 +182,19 @@ const STATUS: CoreSelectOption[] = [
         isFixed: false,
     },
     {
+        label: '미유지',
+        value: '미유지',
+        isFixed: false,
+        color: 'red',
+    },
+    {
         label: '임의해지',
         value: '임의해지',
+        isFixed: false,
+    },
+    {
+        label: '실효해지',
+        value: '실효해지',
         isFixed: false,
     },
     {
@@ -206,6 +217,16 @@ const STATUS: CoreSelectOption[] = [
         value: '타사이관',
         isFixed: false,
     },
+    {
+        label: '장기실효',
+        value: '장기실효',
+        isFixed: false,
+    },
+    {
+        label: '장기부활',
+        value: '장기부활',
+        isFixed: false,
+    },
 ];
 const STATUS2: CoreSelectOption[] = [
     {
@@ -217,7 +238,7 @@ const STATUS2: CoreSelectOption[] = [
 ];
 
 // 수금 상태
-export const L_PSTATUS: CoreSelectOption[] = [
+const PAY_STATUS: CoreSelectOption[] = [
     {
         label: '납입중',
         value: '납입중',
@@ -486,7 +507,7 @@ const rootSelectOptions = {
     payDu: PAY_DURATION,
     status: STATUS,
     status2: STATUS2,
-    pStatus: L_PSTATUS,
+    pStatus: PAY_STATUS,
     pDist: L_PDIST,
     eDist: L_EDIST,
     payKind: PAY_KIND,

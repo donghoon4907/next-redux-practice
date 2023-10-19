@@ -27,11 +27,15 @@
     & .page-item {
         color: #797979;
         font-size: 12px;
-        padding: 0 3px;
+        padding: 0 5px;
         text-align: center;
 
         & + & {
             margin-left: 5px;
+        }
+
+        &.icon {
+            padding: 0;
         }
     }
 

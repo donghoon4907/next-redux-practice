@@ -50,7 +50,7 @@ export const SearchFilterOrgaSelect: FC<Props> = ({ activeUser }) => {
             <label className={`${displayName}__label`} htmlFor="orga_idx">
                 영업조직
             </label>
-            <div style={{ minWidth: 220 }}>
+            <div style={{ minWidth: 276 }}>
                 <MySelect
                     id="orga_idx"
                     fontSize={13}

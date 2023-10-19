@@ -105,7 +105,7 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                         <PageSizeSelect {...listCount} />
                     </div>
                     <ul className="pagination">
-                        <li className="page-item">
+                        <li className="page-item icon">
                             <button
                                 type="button"
                                 className="page-link "
@@ -115,7 +115,7 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                                 <LuChevronFirst size={17} />
                             </button>
                         </li>
-                        <li className="page-item">
+                        <li className="page-item icon">
                             <button
                                 type="button"
                                 className="page-link"
@@ -168,7 +168,7 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                             </>
                         )}
 
-                        <li className="page-item">
+                        <li className="page-item icon">
                             <button
                                 type="button"
                                 className="page-link"
@@ -178,7 +178,7 @@ export const MyPagination: FC<Props> = ({ children, total }) => {
                                 <LuChevronRight size={17} />
                             </button>
                         </li>
-                        <li className="page-item">
+                        <li className="page-item icon">
                             <button
                                 type="button"
                                 className="page-link"

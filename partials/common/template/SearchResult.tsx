@@ -1,46 +1,45 @@
 import type { FC } from 'react';
 import { useRouter } from 'next/router';
-import { IconWrapper } from '@components/IconWrapper';
+import { Fragment } from 'react';
 import { LuPlusSquare } from 'react-icons/lu';
+import { IconWrapper } from '@components/IconWrapper';
 
 interface Props {
-    total: number;
-    pageName: string;
-    description?: string;
-    customUrl?: string;
+    data: string[];
+    createUrl?: string;
 }
 
-export const SearchResultTemplate: FC<Props> = ({
-    total,
-    pageName,
-    description = '',
-    customUrl,
-}) => {
+export const SearchResultTemplate: FC<Props> = ({ data, createUrl }) => {
     const displayName = 'wr-pages-list2';
 
-    const { pathname, query, push } = useRouter();
-
-    const pageSize = query.nums ? +query.nums : 25;
-
-    const firstPage = query.page ? +query.page : 1;
-
-    const lastPage = Math.ceil(total / pageSize);
+    const router = useRouter();
 
     const handleCreate = () => {
-        if (customUrl) {
-            push(customUrl);
+        if (createUrl) {
+            router.push(createUrl);
         } else {
-            push(`${pathname}/create`);
+            router.push(`${router.pathname}/create`);
         }
     };
 
     return (
         <div className={`${displayName}__toolbar wr-mt`}>
             <div className={`${displayName}__total`}>
-                {pageName}&nbsp;
-                {lastPage !== 0 && `(${firstPage}-${lastPage}) `}/&nbsp;
-                {total.toLocaleString()}&nbsp;
-                {description}
+                {data.map((v, i) => {
+                    const [label, count] = v.split(':');
+
+                    return (
+                        <Fragment key={`total${i}`}>
+                            <div className={`${displayName}__title`}>
+                                {label}
+                            </div>
+                            <div className={`${displayName}__comma`}>:</div>
+                            <div className={`${displayName}__count`}>
+                                {count.toLocaleString()}
+                            </div>
+                        </Fragment>
+                    );
+                })}
             </div>
             <div className={`${displayName}__tool`}>
                 <IconWrapper onClick={handleCreate} title="추가">
