@@ -70,7 +70,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                     }
                 }
 
-                router.replace('/contract/long/list');
+                router.replace('/contract/long/bo');
             }
         } catch (e) {
             const { message } = commonAxiosErrorHandler(e);

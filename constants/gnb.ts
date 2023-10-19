@@ -252,10 +252,10 @@ export const ASIDE_MENU: any = {
             id: 'contract-long',
             label: '장기',
             to: '',
-            list: {
-                id: 'contract-long_list',
+            bo: {
+                id: 'contract-long_bo',
                 label: '보유계약',
-                to: '/contract/long/list',
+                to: '/contract/long/bo',
             },
             // upload: {
             //     id: 'contract-long_upload',

@@ -16,17 +16,10 @@ export const GetLongsActionTypes = {
 
 export interface GetLongsRequestPayload
     extends CorePayload,
-        CorePaginateOption {
-    condition?: {
-        paydate?: Array<string>;
-        search?: string;
-    };
-}
+        CorePaginateOption {}
 
 export interface GetLongsSuccessPayload
-    extends CorePaginateSuccessPayload<GetLongsRequestPayload> {
-    products: CoreSelectOption[];
-}
+    extends CorePaginateSuccessPayload<GetLongsRequestPayload> {}
 
 export interface GetLongsRequestAction extends Action<string> {
     payload: GetLongsRequestPayload;

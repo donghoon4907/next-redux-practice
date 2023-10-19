@@ -13,6 +13,7 @@ export interface CorePaginateOption {
     order?: any;
     page: number;
     nums: number;
+    condition?: any;
 }
 
 export interface CoreSelectOption {

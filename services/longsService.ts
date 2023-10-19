@@ -14,6 +14,13 @@ export function getLongs({ page, nums, ...rest }: GetLongsRequestPayload) {
     );
 }
 
+export function getLongSils({ page, nums, ...rest }: GetLongsRequestPayload) {
+    return getBackendAxios().post(
+        `/long/list/sil?page=${page}&nums=${nums}`,
+        rest,
+    );
+}
+
 export function getLong({ idx }: GetLongRequestPayload) {
     return getBackendAxios().get(`/long/detail/${idx}`);
 }
@@ -44,6 +51,7 @@ export function getLongFields() {
 
 const rootServices = {
     getLongs,
+    getLongSils,
     getLong,
     beforeCreateLong,
     createLong,

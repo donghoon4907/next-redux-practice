@@ -6,10 +6,12 @@ import { watchCreateLong } from './create-long';
 import { watchUpdateLong } from './update-long';
 import { watchUploadLong } from './upload-long';
 import { watchGetLongFields } from './get-long-fields';
+import { watchGetLongSils } from './get-long-sils';
 
 export function* longSaga() {
     yield all([
         fork(watchGetLongs),
+        fork(watchGetLongSils),
         fork(watchGetLong),
         fork(watchCreateLong),
         fork(watchUpdateLong),
