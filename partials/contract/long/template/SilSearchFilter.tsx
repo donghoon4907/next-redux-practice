@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useRouter } from 'next/router';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { HrState } from '@reducers/hr';
 import { AppState } from '@reducers/index';
@@ -13,10 +13,9 @@ import { SearchFilterUserSelect } from '@partials/common/select/SearchFilterUser
 import { SearchFilterDatepicker } from '@partials/common/datepicker/SearchFilter';
 import { SearchFilterKeywordInput } from '@partials/common/input/SearchFilterKeyword';
 import { findSelectOption } from '@utils/getter';
-import { generateAllOption, generateAllOptionWcode } from '@utils/generate';
-import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
-import { IconWrapper } from '@components/IconWrapper';
 import { SearchFilterUserCheckbox } from '@partials/common/checkbox/SearchFilterCheckUser';
+import { SearchFilterCollapseButton } from '@components/SearchFilterCollapse';
+import { SearchFilterCompanySelect } from '@partials/common/select/SearchFilterCompany';
 
 interface Props {}
 
@@ -29,14 +28,8 @@ export const LongSilSearchFilter: FC<Props> = () => {
         (props) => props.hr,
     );
 
-    const memorizedCompany = useMemo(
-        () => generateAllOption(generateAllOptionWcode(longViewCompanies)),
-        [],
-    );
     // 확장 여부
     const [expand, setExpand] = useState(false);
-    // 검색필터 - 보험사
-    const [company, setCompany] = useSelect(memorizedCompany);
     // 검색필터 - 보종
     const [spec, setSpec] = useSelect(longConstants.productType2);
     // 검색필터 - 현상태
@@ -48,17 +41,8 @@ export const LongSilSearchFilter: FC<Props> = () => {
     // 검색필터 - 입금구분
     const [sildist, setSildist] = useSelect(longConstants.silDist);
 
-    const handleExpand = () => {
-        setExpand(!expand);
-    };
-
     useEffect(() => {
-        const { company, spec, status, pay_cycle, cycle, sildist } =
-            router.query;
-
-        if (company) {
-            setCompany(findSelectOption(company, memorizedCompany));
-        }
+        const { spec, status, pay_cycle, cycle, sildist } = router.query;
 
         if (spec) {
             setSpec(findSelectOption(spec, longConstants.productType2));
@@ -83,19 +67,7 @@ export const LongSilSearchFilter: FC<Props> = () => {
 
     return (
         <SearchFilterForm>
-            <div
-                className={`${displayName}__extension ${
-                    expand ? `${displayName}__extension--expanded` : ''
-                }`}
-            >
-                <IconWrapper onClick={handleExpand}>
-                    {expand ? (
-                        <AiOutlineCaretUp size={20} fill="#BED3F2" />
-                    ) : (
-                        <AiOutlineCaretDown size={20} fill="#BED3F2" />
-                    )}
-                </IconWrapper>
-            </div>
+            <SearchFilterCollapseButton expand={expand} setExpand={setExpand} />
             <div className={`${displayName}__filters`}>
                 <div className={`${displayName}__filterrow`}>
                     <div className={`${displayName}__filter`}>
@@ -105,22 +77,9 @@ export const LongSilSearchFilter: FC<Props> = () => {
                         <div className={`${displayName}__divider`}></div>
                     </div>
                     <div className={`${displayName}__filter`}>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="company"
-                            >
-                                보험사
-                            </label>
-                            <div style={{ width: 120 }}>
-                                <MySelect
-                                    id="company"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...company}
-                                />
-                            </div>
-                        </div>
+                        <SearchFilterCompanySelect
+                            options={longViewCompanies}
+                        />
                         <div className={`${displayName}__field`}>
                             <label
                                 className={`${displayName}__label`}
@@ -189,44 +148,46 @@ export const LongSilSearchFilter: FC<Props> = () => {
                         <SearchFilterKeywordInput />
                     </div>
                 </div>
-                {expand && (
-                    <div className={`${displayName}__filterrow wr-border-t`}>
-                        <div className={`${displayName}__filter`}>
-                            <div className={`${displayName}__field`}>
-                                <label
-                                    className={`${displayName}__label`}
-                                    htmlFor="cycle"
-                                >
-                                    납입방법
-                                </label>
-                                <div style={{ width: 100 }}>
-                                    <MySelect
-                                        id="cycle"
-                                        fontSize={13}
-                                        placeholder="선택"
-                                        {...cycle}
-                                    />
-                                </div>
+                <div
+                    className={`${displayName}__filterrow ${
+                        expand ? '' : `${displayName}__filterrow--hide`
+                    } wr-border-t`}
+                >
+                    <div className={`${displayName}__filter`}>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="cycle"
+                            >
+                                납입방법
+                            </label>
+                            <div style={{ width: 100 }}>
+                                <MySelect
+                                    id="cycle"
+                                    fontSize={13}
+                                    placeholder="선택"
+                                    {...cycle}
+                                />
                             </div>
-                            <div className={`${displayName}__field`}>
-                                <label
-                                    className={`${displayName}__label`}
-                                    htmlFor="sildist"
-                                >
-                                    입금구분
-                                </label>
-                                <div style={{ width: 110 }}>
-                                    <MySelect
-                                        id="sildist"
-                                        fontSize={13}
-                                        placeholder="선택"
-                                        {...sildist}
-                                    />
-                                </div>
+                        </div>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="sildist"
+                            >
+                                입금구분
+                            </label>
+                            <div style={{ width: 110 }}>
+                                <MySelect
+                                    id="sildist"
+                                    fontSize={13}
+                                    placeholder="선택"
+                                    {...sildist}
+                                />
                             </div>
                         </div>
                     </div>
-                )}
+                </div>
             </div>
         </SearchFilterForm>
     );

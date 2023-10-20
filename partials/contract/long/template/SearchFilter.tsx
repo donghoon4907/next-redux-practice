@@ -1,6 +1,6 @@
 import type { FC } from 'react';
 import { useRouter } from 'next/router';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { HrState } from '@reducers/hr';
 import { AppState } from '@reducers/index';
@@ -14,11 +14,10 @@ import { SearchFilterUserSelect } from '@partials/common/select/SearchFilterUser
 import { SearchFilterDatepicker } from '@partials/common/datepicker/SearchFilter';
 import { SearchFilterKeywordInput } from '@partials/common/input/SearchFilterKeyword';
 import { findSelectOption } from '@utils/getter';
-import { generateAllOption, generateAllOptionWcode } from '@utils/generate';
 import { SearchFilterDateTypeLabel } from '@partials/common/label/SearchFilterDateType';
-import { AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai';
-import { IconWrapper } from '@components/IconWrapper';
 import { SearchFilterUserCheckbox } from '@partials/common/checkbox/SearchFilterCheckUser';
+import { SearchFilterCollapseButton } from '@components/SearchFilterCollapse';
+import { SearchFilterCompanySelect } from '@partials/common/select/SearchFilterCompany';
 
 interface Props {}
 
@@ -31,14 +30,8 @@ export const LongSearchFilter: FC<Props> = () => {
         (props) => props.hr,
     );
 
-    const memorizedCompany = useMemo(
-        () => generateAllOption(generateAllOptionWcode(longViewCompanies)),
-        [],
-    );
     // 확장 여부
     const [expand, setExpand] = useState(false);
-    // 검색필터 - 보험사
-    const [company, setCompany] = useSelect(memorizedCompany);
     // 검색필터 - 보종
     const [spec, setSpec] = useSelect(longConstants.productType2);
     // 검색필터 - 현상태
@@ -58,13 +51,8 @@ export const LongSearchFilter: FC<Props> = () => {
     // 검색필터 - 개인정보동의
     const [privacyinfo, setPrivacyinfo] = useSelect(commonConstants.yn);
 
-    const handleExpand = () => {
-        setExpand(!expand);
-    };
-
     useEffect(() => {
         const {
-            company,
             spec,
             status,
             pay_cycle,
@@ -74,10 +62,6 @@ export const LongSearchFilter: FC<Props> = () => {
             monitoring_compare,
             privacyinfo,
         } = router.query;
-
-        if (company) {
-            setCompany(findSelectOption(company, memorizedCompany));
-        }
 
         if (spec) {
             setSpec(findSelectOption(spec, longConstants.productType2));
@@ -122,19 +106,7 @@ export const LongSearchFilter: FC<Props> = () => {
 
     return (
         <SearchFilterForm>
-            <div
-                className={`${displayName}__extension ${
-                    expand ? `${displayName}__extension--expanded` : ''
-                }`}
-            >
-                <IconWrapper onClick={handleExpand}>
-                    {expand ? (
-                        <AiOutlineCaretUp size={20} fill="#FF813F" />
-                    ) : (
-                        <AiOutlineCaretDown size={20} fill="#FF813F" />
-                    )}
-                </IconWrapper>
-            </div>
+            <SearchFilterCollapseButton expand={expand} setExpand={setExpand} />
             <div className={`${displayName}__filters`}>
                 <div className={`${displayName}__filterrow`}>
                     <div className={`${displayName}__filter`}>
@@ -144,22 +116,9 @@ export const LongSearchFilter: FC<Props> = () => {
                         <div className={`${displayName}__divider`}></div>
                     </div>
                     <div className={`${displayName}__filter`}>
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="company"
-                            >
-                                보험사
-                            </label>
-                            <div style={{ width: 120 }}>
-                                <MySelect
-                                    id="company"
-                                    fontSize={13}
-                                    placeholder="선택"
-                                    {...company}
-                                />
-                            </div>
-                        </div>
+                        <SearchFilterCompanySelect
+                            options={longViewCompanies}
+                        />
                         <div className={`${displayName}__field`}>
                             <label
                                 className={`${displayName}__label`}
