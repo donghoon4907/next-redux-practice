@@ -11,7 +11,7 @@ import { MyPagination } from '@components/pagination';
 import { MySelect } from '@components/select';
 import { MyTable } from '@components/table';
 import { useColumn } from '@hooks/use-column';
-import { useLinkTab } from '@hooks/use-tab';
+// import { useLinkTab } from '@hooks/use-tab';
 import { BoardState } from '@reducers/board';
 import { AppState } from '@reducers/index';
 import { wrapper } from '@store/redux';

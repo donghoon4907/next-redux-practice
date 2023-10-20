@@ -1,11 +1,11 @@
 import type { FC, MouseEvent } from 'react';
 import type { CoreMenuOption, CoreProps } from '@interfaces/core';
-import { useLinkTab } from '@hooks/use-tab';
+import { useRoute } from '@hooks/use-route';
 
 interface Props extends CoreProps, Pick<CoreMenuOption, 'to'> {}
 
 export const GnbSubMenuItem: FC<Props> = ({ to, children }) => {
-    const tab = useLinkTab();
+    const route = useRoute();
 
     // const { onToggle } = useDrawer();
 
@@ -16,7 +16,7 @@ export const GnbSubMenuItem: FC<Props> = ({ to, children }) => {
             return alert('준비 중입니다.');
         }
 
-        tab.replace(to);
+        route.replace(to);
     };
 
     return (

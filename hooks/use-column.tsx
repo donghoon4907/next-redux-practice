@@ -1,11 +1,6 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import type { CoreColumnOption } from '@interfaces/core';
 import { useMemo } from 'react';
-import {
-    checkEllipsisNeeded,
-    checkSeparatorNeeded,
-    isNumberic,
-} from '@utils/validation';
 import { MyButton } from '@components/button';
 
 export type MyColumnDef = ColumnDef<any> & {
@@ -19,17 +14,7 @@ export const useColumn = (fields: CoreColumnOption) => {
             Object.entries(fields).map(([key, value]) => {
                 return {
                     header: (info: any) => {
-                        return (
-                            <strong
-                                className={
-                                    checkEllipsisNeeded(info.column.id)
-                                        ? 'ellipsisTarget'
-                                        : ''
-                                }
-                            >
-                                {value}
-                            </strong>
-                        );
+                        return <span>{value}</span>;
                     },
                     accessorKey: key,
                     headerText: value,
@@ -39,20 +24,8 @@ export const useColumn = (fields: CoreColumnOption) => {
                         let cellValue = info.getValue();
                         let output = null;
 
-                        // if (
-                        //     isNumberic(cellValue) &&
-                        //     checkSeparatorNeeded(info.column.id)
-                        // ) {
-                        //     cellValue = Number(cellValue).toLocaleString();
-                        // }
-
                         if (Number.isInteger(cellValue)) {
                             cellValue = cellValue.toLocaleString();
-                        }
-
-                        // 말줄임표가 필요한 경우
-                        if (checkEllipsisNeeded(info.column.id)) {
-                            className += 'text-truncate d-block';
                         }
 
                         if (Array.isArray(cellValue)) {

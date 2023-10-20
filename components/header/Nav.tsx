@@ -2,7 +2,7 @@ import type { AppState } from '@reducers/index';
 import type { TabState } from '@reducers/tab';
 import type { FC } from 'react';
 import { useSelector } from 'react-redux';
-import { HeaderTab } from './Tab';
+import { LinkTab } from '@components/tab/Link';
 
 interface Props {}
 
@@ -12,9 +12,9 @@ export const HeaderNav: FC<Props> = () => {
     return (
         <ul className="wr-tab__wrap" role="tablist">
             {tabs.map((tab, index) => (
-                <HeaderTab
+                <LinkTab
                     key={tab.id}
-                    isSingle={tabs.length === 1}
+                    isExpand={tabs.length !== 1}
                     isFirst={index === 0}
                     {...tab}
                 />

@@ -1,23 +1,18 @@
 import type { FC, MouseEvent } from 'react';
 import type { CoreLinkTabOption } from '@interfaces/core';
-import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 import { MdClose } from 'react-icons/md';
 import { IconWrapper } from '@components/IconWrapper';
 import variables from '@styles/_variables.module.scss';
+import { useRoute } from '@hooks/use-route';
+import { TabModule } from '@utils/storage';
+import { removeTab } from '@actions/tab/tab.action';
 
 interface Props extends CoreLinkTabOption {
     /**
      * 확장 여부
      */
     isExpand?: boolean;
-    /**
-     * 클릭 이벤트
-     */
-    onClick?: (tabId: string) => void;
-    /**
-     * 클릭 이벤트
-     */
-    onClose?: (tabId: string) => void;
     /**
      * 첫 번째 탭 여부
      */
@@ -29,11 +24,11 @@ export const LinkTab: FC<Props> = ({
     label = 'label props were not passed',
     to,
     isExpand,
-    onClick,
-    onClose,
     isFirst,
 }) => {
-    const router = useRouter();
+    const dispatch = useDispatch();
+
+    const route = useRoute();
 
     // const isActive = router.asPath.toLowerCase() === to.toLowerCase();
     const isActive = location.pathname === id;
@@ -41,19 +36,25 @@ export const LinkTab: FC<Props> = ({
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();
 
-        if (isActive) {
-            return;
-        }
-
-        onClick?.(id);
-
-        router.replace(to);
+        route.replace(to);
     };
 
     const handleClose = (evt: MouseEvent<HTMLButtonElement>) => {
         evt.preventDefault();
 
-        onClose?.(id);
+        const tab = new TabModule();
+
+        tab.remove(id);
+
+        const tabs = tab.getAll();
+        // 활성화된 탭인 경우
+        if (isActive) {
+            // 가장 마지막 탭을 활성화 시킴
+            route.replace(tabs[tabs.length - 1].to);
+            // 상태만 변경
+        } else {
+            dispatch(removeTab(id));
+        }
     };
 
     return (

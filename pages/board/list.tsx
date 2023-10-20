@@ -7,7 +7,7 @@ import { MyFooter } from '@components/footer';
 import { MyPagination } from '@components/pagination';
 import { MyTable } from '@components/table';
 import { useColumn } from '@hooks/use-column';
-import { useLinkTab } from '@hooks/use-tab';
+// import { useLinkTab } from '@hooks/use-tab';
 import { BoardSearchFilterTemplate } from '@partials/board/template/SearchFilter';
 import { BoardState } from '@reducers/board';
 import { AppState } from '@reducers/index';
@@ -22,7 +22,7 @@ const Boards: NextPage = () => {
 
     const columns = useColumn(boards.fields);
 
-    const tab = useLinkTab();
+    // const tab = useLinkTab();
 
     const handleClickRow = (row: any) => {
         // tab.fire(`board${row.idx}`, `게시글(${row.idx})`, `/board/${row.idx}`);
@@ -30,7 +30,7 @@ const Boards: NextPage = () => {
     };
 
     const handleCreatePost = () => {
-        tab.fire(`create-board`, `게시물 등록`, `/board/create`);
+        // tab.fire(`create-board`, `게시물 등록`, `/board/create`);
     };
 
     return (

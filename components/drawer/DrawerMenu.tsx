@@ -1,6 +1,5 @@
 import type { FC, MouseEvent } from 'react';
 import type { CoreMenuOption } from '@interfaces/core';
-import { useRouter } from 'next/router';
 import {
     UncontrolledAccordion,
     AccordionBody,
@@ -8,6 +7,7 @@ import {
     AccordionItem,
 } from 'reactstrap';
 import { TabModule } from '@utils/storage';
+import { useRoute } from '@hooks/use-route';
 
 interface Props {
     /**
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
-    const router = useRouter();
+    const route = useRoute();
 
     const handleClick = (
         evt: MouseEvent<HTMLAnchorElement>,
@@ -29,17 +29,13 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
     ) => {
         evt.preventDefault();
 
-        if (router.pathname === item.to) {
-            return;
-        }
-
-        const tab = new TabModule();
-        // 기존에 사용하던 탭을 제거
-        if (tab.read(item.to)) {
-            tab.remove(item.to);
-        }
-
-        router.replace(item.to);
+        route.replace(item.to, () => {
+            const tab = new TabModule();
+            // 기존에 사용하던 탭을 제거
+            if (tab.read(item.to)) {
+                tab.remove(item.to);
+            }
+        });
     };
 
     return (
