@@ -78,8 +78,16 @@ export const OrgaSearchFilter: FC<Props> = () => {
                     <div className={`${displayName}__filter`}>
                         <div className={`${displayName}__field`}>
                             <SearchFilterDateTypeLabel
-                                indateLabel="등록일"
-                                outdateLabel="폐점일"
+                                options={[
+                                    {
+                                        label: '등록일',
+                                        value: 'indate',
+                                    },
+                                    {
+                                        label: '폐점일',
+                                        value: 'outdate',
+                                    },
+                                ]}
                             />
 
                             <SearchFilterDatepicker />

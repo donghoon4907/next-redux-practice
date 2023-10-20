@@ -3,7 +3,6 @@ import type {
     CorePaginateOption,
     CorePaginateSuccessPayload,
     CorePayload,
-    CoreSelectOption,
 } from '@interfaces/core';
 
 export const GET_LONG_SILS_KEY = 'GET_LONG_SILS';

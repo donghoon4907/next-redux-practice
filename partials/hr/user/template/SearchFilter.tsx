@@ -104,8 +104,16 @@ export const UserSearchFilter: FC<Props> = () => {
                     <div className={`${displayName}__filter`}>
                         <div className={`${displayName}__field`}>
                             <SearchFilterDateTypeLabel
-                                indateLabel="입사일"
-                                outdateLabel="퇴사일"
+                                options={[
+                                    {
+                                        label: '입사일',
+                                        value: 'indate',
+                                    },
+                                    {
+                                        label: '퇴사일',
+                                        value: 'outdate',
+                                    },
+                                ]}
                             />
                             <SearchFilterDatepicker />
                         </div>

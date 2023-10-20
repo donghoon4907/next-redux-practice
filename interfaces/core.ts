@@ -32,8 +32,8 @@ export interface CoreMenuOption {
     id: string;
     to: string;
     label: string;
-    // level: number;
-    // items?: CoreMenuOption[];
+    // 사용여부
+    disabled?: boolean;
 }
 
 export interface CoreTabOption {

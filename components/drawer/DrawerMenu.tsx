@@ -41,7 +41,7 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
     return (
         <>
             {Object.entries(menu).map(([k, v]) => {
-                const { id, label, to, ...rest } = v;
+                const { id, label, to, disabled, ...rest } = v;
 
                 const children = Object.keys(rest);
 
@@ -73,14 +73,16 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
                         </AccordionItem>
                     </UncontrolledAccordion>
                 ) : (
-                    <a
-                        key={id}
-                        className="wr-drawer__subtitle"
-                        href={to}
-                        onClick={(evt) => handleClick(evt, v)}
-                    >
-                        {label}
-                    </a>
+                    !disabled && (
+                        <a
+                            key={id}
+                            className="wr-drawer__subtitle"
+                            href={to}
+                            onClick={(evt) => handleClick(evt, v)}
+                        >
+                            {label}
+                        </a>
+                    )
                 );
             })}
         </>

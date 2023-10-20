@@ -6,7 +6,6 @@ export const GNBS: CoreMenuOption[] = [
     { id: 'gnb3', label: '계약', to: '/contract/long/list' },
     { id: 'gnb4', label: '소득', to: '/income' },
     { id: 'gnb5', label: '인사', to: '/hr' },
-    // { id: 'gnb5', level: 1, label: 'Admin', to: '#' },
 ];
 
 export const SUBMENUS: CoreMenuOption[] = [
@@ -261,6 +260,12 @@ export const ASIDE_MENU: any = {
                 id: 'contract-long_sil',
                 label: '장기실적',
                 to: '/contract/long/sil',
+            },
+            silhyo: {
+                id: 'contract-long_silhyo',
+                label: '실효명세',
+                to: '/contract/long/silhyo',
+                disabled: true,
             },
             // upload: {
             //     id: 'contract-long_upload',

@@ -42,7 +42,8 @@ export function generateListSuccessPayload(data: any, payload: any) {
 
 // 목록 params 생성
 export function generateListParams(condition: any, query: any) {
-    const { page, nums, order, userid, ...rest } = query;
+    const { page, nums, order, userid, check_user, date_type, date, ...rest } =
+        query;
 
     const params: any = {
         page: 1,
@@ -64,9 +65,17 @@ export function generateListParams(condition: any, query: any) {
 
         params.order[type] = sort;
     }
-
+    // 영업가족
     if (userid) {
         params.condition['userid'] = String(userid).toUpperCase();
+        // 담당미지정 시 처리
+        if (check_user === 'Y') {
+            delete params.condition.userid;
+        }
+    }
+
+    if (date && date_type) {
+        params.condition[date_type] = String(date).split(',');
     }
     // 나머지
     for (const [key, value] of Object.entries(rest)) {

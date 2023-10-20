@@ -1,7 +1,6 @@
 import type { GetLongSilsRequestAction } from '@actions/contract/long/get-long-sils.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
 import longsService from '@services/longsService';
-
 import { generateListSuccessPayload } from '@utils/generate';
 import { commonMiddleware } from '@utils/generators/common';
 import {

@@ -68,7 +68,7 @@ const Orgas: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const { orga_idx, date, date_type, ...rest } = ctx.query;
+        const { orga_idx, ...rest } = ctx.query;
 
         const condition = {};
 
@@ -77,10 +77,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         // 영업조직
         if (orga_idx) {
             params.condition['idx'] = orga_idx;
-        }
-        // 입사일 및 퇴사일
-        if (date_type && date) {
-            params.condition[String(date_type)] = String(date).split(',');
         }
 
         // 영업조직 목록

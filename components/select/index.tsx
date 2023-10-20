@@ -127,6 +127,7 @@ export const MySelect: FC<MySelectProps> = ({
                     ...provided,
                     color: variables.inputFontColor,
                     fontSize: `${fontSize}px`,
+                    userSelect: 'none',
                 }),
                 placeholder: (defaultStyles) => {
                     return {
@@ -136,6 +137,7 @@ export const MySelect: FC<MySelectProps> = ({
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
+                        userSelect: 'none',
                     };
                 },
                 input: (provided, state) => ({

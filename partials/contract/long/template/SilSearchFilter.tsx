@@ -135,12 +135,9 @@ export const LongSilSearchFilter: FC<Props> = () => {
                     </div>
                     <div className={`${displayName}__filter`}>
                         <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="date_type"
-                            >
+                            <span className={`${displayName}__label`}>
                                 영수일
-                            </label>
+                            </span>
                             <input
                                 type="hidden"
                                 name="date_type"

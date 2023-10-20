@@ -3,7 +3,6 @@ import type {
     CorePaginateOption,
     CorePaginateSuccessPayload,
     CorePayload,
-    CoreSelectOption,
 } from '@interfaces/core';
 
 export const GET_LONGS_KEY = 'GET_LONGS';

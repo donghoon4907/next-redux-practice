@@ -9,6 +9,10 @@ import { GetLongActionTypes } from '@actions/contract/long/get-long.action';
 import { EndorsementActionTypes } from '@actions/contract/long/set-endorsement.action';
 import { GetLongFieldsActionTypes } from '@actions/contract/long/get-long-fields.action';
 import { GetLongSilsActionTypes } from '@actions/contract/long/get-long-sils.action';
+import {
+    GetLongSilhyosActionTypes,
+    GetLongSilhyosSuccessPayload,
+} from '@actions/contract/long/get-long-silhyos.action';
 
 export interface LongState {
     /**
@@ -19,6 +23,10 @@ export interface LongState {
      * 장기실적 목록
      */
     longSils: GetLongSilsSuccessPayload;
+    /**
+     * 장기실효계약 목록
+     */
+    longSilhyos: GetLongSilhyosSuccessPayload;
     /**
      * 장기계약 상세
      */
@@ -45,6 +53,12 @@ const initialState: LongState = {
         lastPayload: null,
     },
     longSils: {
+        fields: [],
+        rows: [],
+        total: null,
+        lastPayload: null,
+    },
+    longSilhyos: {
         fields: [],
         rows: [],
         total: null,
@@ -87,6 +101,11 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetLongSilsActionTypes.SUCCESS: {
                 draft.longSils = action.payload;
+
+                break;
+            }
+            case GetLongSilhyosActionTypes.SUCCESS: {
+                draft.longSilhyos = action.payload;
 
                 break;
             }

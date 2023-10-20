@@ -18,17 +18,17 @@ import { LongSearchFilter } from '@partials/contract/long/template/SearchFilter'
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 
-const Longs: NextPage = () => {
+const LongBo: NextPage = () => {
     const displayName = 'wr-pages-list2';
 
-    const router = useRouter();
+    const { push, pathname } = useRouter();
 
     const { longs } = useSelector<AppState, LongState>((props) => props.long);
 
     const columns = useColumn(longs.fields);
 
     const handleClickRow = ({ idx }: any) => {
-        router.push(`/contract/long/bo/${idx}`);
+        push(`${pathname}/${idx}`);
     };
 
     return (
@@ -74,27 +74,9 @@ const Longs: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const { date, date_type, check_user, userid, ...rest } = ctx.query;
-
         const condition = {};
 
-        const params = generateListParams(condition, rest);
-
-        // 영업가족
-        if (userid) {
-            // 담당미지정 시 처리
-            if (check_user !== 'Y') {
-                params.condition['userid'] = String(userid);
-            }
-        }
-        // 계약일자 / 상태반영일
-        if (date_type && date) {
-            if (date_type === 'indate') {
-                params.condition!['contdate'] = String(date).split(',');
-            } else if (date_type === 'outdate') {
-                params.condition!['status_date'] = String(date).split(',');
-            }
-        }
+        const params = generateListParams(condition, ctx.query);
 
         dispatch(getLongsRequest(params));
 
@@ -110,4 +92,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }),
 );
 
-export default Longs;
+export default LongBo;

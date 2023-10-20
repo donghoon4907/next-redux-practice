@@ -7,17 +7,17 @@ import { MyDateRangepicker } from '@components/datepicker/Range';
 import { IconWrapper } from '@components/IconWrapper';
 import { MdPlayArrow } from 'react-icons/md';
 
-interface Props {}
+interface Props {
+    defaultValue?: [Date, Date];
+}
 
-export const SearchFilterDatepicker: FC<Props> = () => {
+export const SearchFilterDatepicker: FC<Props> = ({ defaultValue = null }) => {
     const displayName = 'wr-pages-list2';
 
     const router = useRouter();
 
-    const [date, setDate, { onPrevMonth, onNextMonth }] = useDateRangepicker(
-        null,
-        // [startOfMonth(new Date()),new Date()]
-    );
+    const [date, setDate, { onPrevMonth, onNextMonth }] =
+        useDateRangepicker(defaultValue);
 
     useEffect(() => {
         const { date } = router.query;

@@ -18,10 +18,10 @@ import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongSilsRequest } from '@actions/contract/long/get-long-sils.action';
 
-const LongSils: NextPage = () => {
+const LongSil: NextPage = () => {
     const displayName = 'wr-pages-list2';
 
-    const router = useRouter();
+    const { push, pathname } = useRouter();
 
     const { longSils } = useSelector<AppState, LongState>(
         (props) => props.long,
@@ -30,7 +30,7 @@ const LongSils: NextPage = () => {
     const columns = useColumn(longSils.fields);
 
     const handleClickRow = ({ idx }: any) => {
-        router.push(`/contract/long/bo/${idx}`);
+        push(`${pathname}/${idx}`);
     };
 
     return (
@@ -83,25 +83,9 @@ const LongSils: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const { date, date_type, check_user, userid, ...rest } = ctx.query;
-
         const condition = {};
 
-        const params = generateListParams(condition, rest);
-
-        // 영업가족
-        if (userid) {
-            // 담당미지정 시 처리
-            if (check_user !== 'Y') {
-                params.condition['userid'] = String(userid);
-            }
-        }
-        // 계약일자 / 상태반영일
-        if (date_type && date) {
-            if (date_type === 'sildate') {
-                params.condition!['sildate'] = String(date).split(',');
-            }
-        }
+        const params = generateListParams(condition, ctx.query);
 
         dispatch(getLongSilsRequest(params));
 
@@ -117,4 +101,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }),
 );
 
-export default LongSils;
+export default LongSil;
