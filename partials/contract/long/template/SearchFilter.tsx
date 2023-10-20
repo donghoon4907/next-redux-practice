@@ -113,9 +113,9 @@ export const LongSearchFilter: FC<Props> = () => {
                         <SearchFilterOrgaSelect activeUser />
                         <SearchFilterUserSelect />
                         <SearchFilterUserCheckbox />
-                        <div className={`${displayName}__divider`}></div>
                     </div>
                     <div className={`${displayName}__filter`}>
+                        <div className={`${displayName}__divider`}></div>
                         <SearchFilterCompanySelect
                             options={longViewCompanies}
                         />
@@ -129,7 +129,6 @@ export const LongSearchFilter: FC<Props> = () => {
                             <div style={{ width: 110 }}>
                                 <MySelect
                                     id="spec"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...spec}
                                 />
@@ -145,7 +144,6 @@ export const LongSearchFilter: FC<Props> = () => {
                             <div style={{ width: 110 }}>
                                 <MySelect
                                     id="status"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...status}
                                 />
@@ -161,7 +159,6 @@ export const LongSearchFilter: FC<Props> = () => {
                             <div style={{ width: 100 }}>
                                 <MySelect
                                     id="pay_cycle"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...pay_cycle}
                                 />
@@ -177,7 +174,6 @@ export const LongSearchFilter: FC<Props> = () => {
                             <div style={{ width: 100 }}>
                                 <MySelect
                                     id="sourceroot"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...sourceroot}
                                 />
@@ -209,7 +205,6 @@ export const LongSearchFilter: FC<Props> = () => {
                                 <div style={{ width: 86 }}>
                                     <MySelect
                                         id="monitoring_cust"
-                                        fontSize={13}
                                         placeholder="선택"
                                         {...monitoring_cust}
                                     />
@@ -225,7 +220,6 @@ export const LongSearchFilter: FC<Props> = () => {
                                 <div style={{ width: 86 }}>
                                     <MySelect
                                         id="monitoring_sale"
-                                        fontSize={13}
                                         placeholder="선택"
                                         {...monitoring_sale}
                                     />
@@ -241,7 +235,6 @@ export const LongSearchFilter: FC<Props> = () => {
                                 <div style={{ width: 86 }}>
                                     <MySelect
                                         id="monitoring_compare"
-                                        fontSize={13}
                                         placeholder="선택"
                                         {...monitoring_compare}
                                     />
@@ -257,7 +250,6 @@ export const LongSearchFilter: FC<Props> = () => {
                                 <div style={{ width: 86 }}>
                                     <MySelect
                                         id="privacyinfo"
-                                        fontSize={13}
                                         placeholder="선택"
                                         {...privacyinfo}
                                     />

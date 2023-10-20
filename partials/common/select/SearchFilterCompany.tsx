@@ -38,12 +38,7 @@ export const SearchFilterCompanySelect: FC<Props> = ({ options }) => {
                 보험사
             </label>
             <div style={{ width: 120 }}>
-                <MySelect
-                    id="company"
-                    fontSize={13}
-                    placeholder="선택"
-                    {...company}
-                />
+                <MySelect id="company" placeholder="선택" {...company} />
             </div>
         </div>
     );

@@ -53,7 +53,6 @@ export const OrgaSearchFilter: FC<Props> = () => {
                             <div style={{ width: 100 }}>
                                 <MySelect
                                     id="orga_rank"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...rate}
                                 />
@@ -69,7 +68,6 @@ export const OrgaSearchFilter: FC<Props> = () => {
                             <div style={{ width: 100 }}>
                                 <MySelect
                                     id="status"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...status}
                                 />

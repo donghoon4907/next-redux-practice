@@ -64,7 +64,6 @@ export const UserSearchFilter: FC<Props> = () => {
                             <div style={{ width: 110 }}>
                                 <MySelect
                                     id="user_type"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...userType}
                                 />
@@ -80,7 +79,6 @@ export const UserSearchFilter: FC<Props> = () => {
                             <div style={{ width: 110 }}>
                                 <MySelect
                                     id="asso"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...asso}
                                 />
@@ -96,7 +94,6 @@ export const UserSearchFilter: FC<Props> = () => {
                             <div style={{ width: 110 }}>
                                 <MySelect
                                     id="status"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...status}
                                 />

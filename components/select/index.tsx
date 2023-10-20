@@ -75,7 +75,7 @@ export const MySelect: FC<MySelectProps> = ({
     placeholder = '선택',
     // width,
     height = variables.filterHeight,
-    fontSize = 16,
+    fontSize = 13,
     styles,
     isDisabled = false,
     placement = 'single',

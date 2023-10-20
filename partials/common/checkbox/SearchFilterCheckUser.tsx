@@ -23,7 +23,7 @@ export const SearchFilterUserCheckbox: FC<Props> = () => {
 
     return (
         <div className={`${displayName}__checkboxfield`}>
-            <div style={{ width: 80 }}>
+            <div style={{ width: 70 }}>
                 <MyCheckbox
                     id="check_user"
                     value="Y"

@@ -166,11 +166,11 @@ const STATUS_BEFORE: CoreSelectOption[] = [
         value: '정상유지',
         isFixed: false,
     },
-    // {
-    //     label: '계약철회',
-    //     value: '계약철회',
-    //     isFixed: false,
-    // },
+    {
+        label: '계약철회',
+        value: '계약철회',
+        isFixed: false,
+    },
     {
         label: '품보해지',
         value: '품보해지',
@@ -227,6 +227,7 @@ const BO_STATUS: CoreSelectOption[] = [
         value: '미유지',
         isFixed: false,
         color: 'red',
+        fontWeight: 'bold',
     },
     ...STATUS_AFTER,
     {
@@ -247,6 +248,13 @@ const SIL_STATUS: CoreSelectOption[] = [
         isFixed: false,
     },
     ...STATUS_BEFORE,
+    {
+        label: '미유지',
+        value: '미유지',
+        isFixed: false,
+        color: 'red',
+        fontWeight: 'bold',
+    },
     ...STATUS_AFTER,
 ];
 
@@ -594,6 +602,30 @@ const SIL_DIST: CoreSelectOption[] = [
     },
 ];
 
+// 회차
+const WHOI: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '1,999',
+        isFixed: false,
+    },
+    {
+        label: '초회',
+        value: '1,1',
+        isFixed: false,
+    },
+    {
+        label: '초년도',
+        value: '1,12',
+        isFixed: false,
+    },
+    {
+        label: '2차년도이상',
+        value: '13,999',
+        isFixed: false,
+    },
+];
+
 const rootSelectOptions = {
     payCycle: PAY_CYCLE,
     payCycle2: PAY_CYCLE2,
@@ -613,6 +645,7 @@ const rootSelectOptions = {
     duration: L_DURATION,
     sourceroot: SOURCE_ROOT,
     silDist: SIL_DIST,
+    whoi: WHOI,
 };
 
 export default rootSelectOptions;

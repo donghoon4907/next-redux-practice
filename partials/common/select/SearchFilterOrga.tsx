@@ -51,12 +51,7 @@ export const SearchFilterOrgaSelect: FC<Props> = ({ activeUser }) => {
                 영업조직
             </label>
             <div style={{ minWidth: 276 }}>
-                <MySelect
-                    id="orga_idx"
-                    fontSize={13}
-                    placeholder="선택"
-                    {...orga}
-                />
+                <MySelect id="orga_idx" placeholder="선택" {...orga} />
             </div>
         </div>
     );

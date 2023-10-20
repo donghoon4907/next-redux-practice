@@ -1,28 +1,5 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
-// 회차
-export const ROUNDS: CoreSelectOption[] = [
-    {
-        label: '전체',
-        value: '1,999',
-        isFixed: false,
-    },
-    {
-        label: '초회',
-        value: '1,1',
-        isFixed: false,
-    },
-    {
-        label: '초년도',
-        value: '1,12',
-        isFixed: false,
-    },
-    {
-        label: '2차년도이상',
-        value: '13,999',
-        isFixed: false,
-    },
-];
 // 입금구분
 export const DISTS: CoreSelectOption[] = [
     {

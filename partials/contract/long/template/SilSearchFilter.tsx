@@ -40,9 +40,11 @@ export const LongSilSearchFilter: FC<Props> = () => {
     const [cycle, setCycle] = useSelect(longConstants.payCycle2);
     // 검색필터 - 입금구분
     const [sildist, setSildist] = useSelect(longConstants.silDist);
+    // 검색필터 - 회차
+    const [whoi, setWhoi] = useSelect(longConstants.whoi);
 
     useEffect(() => {
-        const { spec, status, pay_cycle, cycle, sildist } = router.query;
+        const { spec, status, pay_cycle, cycle, sildist, whoi } = router.query;
 
         if (spec) {
             setSpec(findSelectOption(spec, longConstants.productType2));
@@ -63,6 +65,10 @@ export const LongSilSearchFilter: FC<Props> = () => {
         if (sildist) {
             setSildist(findSelectOption(sildist, longConstants.silDist));
         }
+
+        if (whoi) {
+            setWhoi(findSelectOption(whoi, longConstants.whoi));
+        }
     }, [router]);
 
     return (
@@ -74,9 +80,9 @@ export const LongSilSearchFilter: FC<Props> = () => {
                         <SearchFilterOrgaSelect activeUser />
                         <SearchFilterUserSelect />
                         <SearchFilterUserCheckbox />
-                        <div className={`${displayName}__divider`}></div>
                     </div>
                     <div className={`${displayName}__filter`}>
+                        <div className={`${displayName}__divider`}></div>
                         <SearchFilterCompanySelect
                             options={longViewCompanies}
                         />
@@ -90,7 +96,6 @@ export const LongSilSearchFilter: FC<Props> = () => {
                             <div style={{ width: 100 }}>
                                 <MySelect
                                     id="spec"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...spec}
                                 />
@@ -106,7 +111,6 @@ export const LongSilSearchFilter: FC<Props> = () => {
                             <div style={{ width: 110 }}>
                                 <MySelect
                                     id="status"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...status}
                                 />
@@ -122,7 +126,6 @@ export const LongSilSearchFilter: FC<Props> = () => {
                             <div style={{ width: 100 }}>
                                 <MySelect
                                     id="pay_cycle"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...pay_cycle}
                                 />
@@ -164,7 +167,6 @@ export const LongSilSearchFilter: FC<Props> = () => {
                             <div style={{ width: 100 }}>
                                 <MySelect
                                     id="cycle"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...cycle}
                                 />
@@ -180,9 +182,23 @@ export const LongSilSearchFilter: FC<Props> = () => {
                             <div style={{ width: 110 }}>
                                 <MySelect
                                     id="sildist"
-                                    fontSize={13}
                                     placeholder="선택"
                                     {...sildist}
+                                />
+                            </div>
+                        </div>
+                        <div className={`${displayName}__field`}>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="whoi"
+                            >
+                                회차
+                            </label>
+                            <div style={{ width: 130 }}>
+                                <MySelect
+                                    id="whoi"
+                                    placeholder="선택"
+                                    {...whoi}
                                 />
                             </div>
                         </div>
