@@ -83,6 +83,8 @@ export function generateListParams(condition: any, query: any) {
         // 여러 개인 데이터 처리
         if (val.includes(',')) {
             params.condition[key] = val.split(',');
+        } else if (val.includes('~')) {
+            params.condition[key] = val.split('~');
         } else if (val.includes(':')) {
             const target = val.split(':');
 

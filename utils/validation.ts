@@ -9,19 +9,6 @@ export function isNumberic(value: any): boolean {
 }
 
 /**
- * 말줄임표 적용 여부
- *
- */
-export function checkEllipsisNeeded(columnName: string) {
-    let output = false;
-    if (columnName === 'ptitle') {
-        output = true;
-    }
-
-    return output;
-}
-
-/**
  * 좌측 정렬 적용 여부
  *
  */
@@ -30,7 +17,6 @@ export function checkTextAlignLeftNeeded(columnName: string) {
     if (
         columnName === 'orga' ||
         columnName === 'team' ||
-        columnName === 'title' ||
         columnName === 'cnum'
     ) {
         output = true;

@@ -17,7 +17,7 @@ import { LongWhoiSettingTemplate } from './WhoiSetting';
 
 interface Props {}
 
-export const LongSilhyoSearchFilter: FC<Props> = () => {
+export const LongBuhwalSearchFilter: FC<Props> = () => {
     const displayName = 'wr-pages-list2';
 
     const router = useRouter();
@@ -26,14 +26,14 @@ export const LongSilhyoSearchFilter: FC<Props> = () => {
         (props) => props.hr,
     );
 
-    // 검색필터 - 종납회차
-    const [lastwhoi, setLastwhoi] = useState('1~999');
+    // 검색필터 - 회차
+    const [whoi, setWhoi] = useState('1~999');
 
     useEffect(() => {
-        const { lastwhoi } = router.query;
+        const { whoi } = router.query;
 
-        if (lastwhoi) {
-            setLastwhoi(lastwhoi as string);
+        if (whoi) {
+            setWhoi(whoi as string);
         }
     }, [router]);
 
@@ -52,13 +52,13 @@ export const LongSilhyoSearchFilter: FC<Props> = () => {
                         />
                         <div className={`${displayName}__field`}>
                             <span className={`${displayName}__label`}>
-                                종납회차
+                                회차
                             </span>
                             <div style={{ width: 130 }}>
                                 <PopupTriggerSelect
-                                    id="lastwhoi"
-                                    title={lastwhoi}
-                                    setTitle={setLastwhoi}
+                                    id="whoi"
+                                    title={whoi}
+                                    setTitle={setWhoi}
                                 >
                                     <LongWhoiSettingTemplate />
                                 </PopupTriggerSelect>
@@ -70,12 +70,12 @@ export const LongSilhyoSearchFilter: FC<Props> = () => {
                     <div className={`${displayName}__filter`}>
                         <div className={`${displayName}__field`}>
                             <span className={`${displayName}__label`}>
-                                실효일자
+                                부활일
                             </span>
                             <input
                                 type="hidden"
                                 name="date_type"
-                                value="sdate"
+                                value="budate"
                             />
                             <SearchFilterDatepicker
                                 defaultValue={[

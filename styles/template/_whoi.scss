@@ -1,0 +1,66 @@
+.whoi-popup {
+    &__wrap {
+        width: 330px;
+        padding: 5px;
+    }
+
+    &__settings {
+        display: flex;
+        justify-content: space-between;
+        gap: 30px;
+    }
+
+    &__direct {
+        display: flex;
+        flex-direction: column;
+        gap: $wr-gutter-size;
+        padding-top: 15px;
+    }
+
+    &__presets {
+        display: flex;
+        // flex-direction: column;
+        flex-wrap: wrap;
+        // gap: 5px;
+        width: 200px;
+    }
+
+    &__preset {
+        // flex: 1;
+        width: 80px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    &__directinput {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 5px;
+    }
+
+    &__submit {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
+    &__divider {
+        border: 1px solid #b4c8fb;
+    }
+
+    &__button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 49px;
+        padding: 2px 5px;
+        border-radius: 3px;
+        border: 1px solid #b4c8fb;
+        background: #e2eaff;
+        color: $wr-blue1;
+        font-size: 12px;
+        font-weight: 500;
+    }
+}

@@ -16,6 +16,9 @@ import { findSelectOption } from '@utils/getter';
 import { SearchFilterUserCheckbox } from '@partials/common/checkbox/SearchFilterCheckUser';
 import { SearchFilterCollapseButton } from '@components/SearchFilterCollapse';
 import { SearchFilterCompanySelect } from '@partials/common/select/SearchFilterCompany';
+import { PopupTriggerSelect } from '@components/select/PopupTrigger';
+
+import { LongWhoiSettingTemplate } from './WhoiSetting';
 
 interface Props {}
 
@@ -41,7 +44,7 @@ export const LongSilSearchFilter: FC<Props> = () => {
     // 검색필터 - 입금구분
     const [sildist, setSildist] = useSelect(longConstants.silDist);
     // 검색필터 - 회차
-    const [whoi, setWhoi] = useSelect(longConstants.whoi);
+    const [whoi, setWhoi] = useState('1~999');
 
     useEffect(() => {
         const { spec, status, pay_cycle, cycle, sildist, whoi } = router.query;
@@ -67,7 +70,7 @@ export const LongSilSearchFilter: FC<Props> = () => {
         }
 
         if (whoi) {
-            setWhoi(findSelectOption(whoi, longConstants.whoi));
+            setWhoi(whoi as string);
         }
     }, [router]);
 
@@ -185,18 +188,17 @@ export const LongSilSearchFilter: FC<Props> = () => {
                             </div>
                         </div>
                         <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="whoi"
-                            >
+                            <span className={`${displayName}__label`}>
                                 회차
-                            </label>
+                            </span>
                             <div style={{ width: 130 }}>
-                                <MySelect
+                                <PopupTriggerSelect
                                     id="whoi"
-                                    placeholder="선택"
-                                    {...whoi}
-                                />
+                                    title={whoi}
+                                    setTitle={setWhoi}
+                                >
+                                    <LongWhoiSettingTemplate />
+                                </PopupTriggerSelect>
                             </div>
                         </div>
                     </div>

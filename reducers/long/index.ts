@@ -2,6 +2,7 @@ import type { Reducer } from 'redux';
 import type { Endorsement } from '@models/endorsement';
 import type { GetLongsSuccessPayload } from '@actions/contract/long/get-longs.action';
 import type { GetLongSilsSuccessPayload } from '@actions/contract/long/get-long-sils.action';
+import type { GetLongBuhwalsSuccessPayload } from '@actions/contract/long/get-long-buhwals.action';
 import produce from 'immer';
 import { GetLongsActionTypes } from '@actions/contract/long/get-longs.action';
 import { GetLongActionTypes } from '@actions/contract/long/get-long.action';
@@ -13,6 +14,7 @@ import {
     GetLongSilhyosActionTypes,
     GetLongSilhyosSuccessPayload,
 } from '@actions/contract/long/get-long-silhyos.action';
+import { GetLongBuhwalsActionTypes } from '@actions/contract/long/get-long-buhwals.action';
 
 export interface LongState {
     /**
@@ -27,6 +29,10 @@ export interface LongState {
      * 장기실효계약 목록
      */
     longSilhyos: GetLongSilhyosSuccessPayload;
+    /**
+     * 부활계약 목록
+     */
+    longBuhwals: GetLongBuhwalsSuccessPayload;
     /**
      * 장기계약 상세
      */
@@ -59,6 +65,12 @@ const initialState: LongState = {
         lastPayload: null,
     },
     longSilhyos: {
+        fields: [],
+        rows: [],
+        total: null,
+        lastPayload: null,
+    },
+    longBuhwals: {
         fields: [],
         rows: [],
         total: null,
@@ -106,6 +118,11 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetLongSilhyosActionTypes.SUCCESS: {
                 draft.longSilhyos = action.payload;
+
+                break;
+            }
+            case GetLongBuhwalsActionTypes.SUCCESS: {
+                draft.longBuhwals = action.payload;
 
                 break;
             }

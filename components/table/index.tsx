@@ -81,15 +81,15 @@ export const MyTable: FC<Props> = ({
         getFilteredRowModel: getFilteredRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         state: {
-            rowSelection,
+            // rowSelection,
             pagination: {
                 pageIndex: 0,
                 pageSize,
             },
         },
-        enableRowSelection: true,
-        onRowSelectionChange: setRowSelection,
-        columnResizeMode: 'onChange',
+        // enableRowSelection: true,
+        // onRowSelectionChange: setRowSelection,
+        // columnResizeMode: 'onChange',
         debugTable: false,
     });
 
@@ -193,22 +193,6 @@ export const MyTable: FC<Props> = ({
                         );
                     })}
                 </tbody>
-                {/* {addCount > 0 && (
-                    <tfoot>
-                        {Array.from({ length: addCount }).map((_, index) => (
-                            <tr key={`additionalRow${index}`}>
-                                {columns.map((col, i) => {
-                                    return (
-                                        <AdditionalTd
-                                            key={`additionalCell${i}`}
-                                            {...col}
-                                        />
-                                    );
-                                })}
-                            </tr>
-                        ))}
-                    </tfoot>
-                )} */}
             </table>
             {showExtension && <MyTableExtension onClick={onClickAddRow} />}
         </div>

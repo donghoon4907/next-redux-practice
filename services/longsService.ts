@@ -38,6 +38,17 @@ export function getLongSilhyos({
     );
 }
 
+export function getLongBuhwals({
+    page,
+    nums,
+    ...rest
+}: GetLongSilhyosRequestPayload) {
+    return getBackendAxios().post(
+        `/long/list/buhwal?page=${page}&nums=${nums}`,
+        rest,
+    );
+}
+
 export function getLong({ idx }: GetLongRequestPayload) {
     return getBackendAxios().get(`/long/detail/${idx}`);
 }
@@ -70,6 +81,7 @@ const rootServices = {
     getLongs,
     getLongSils,
     getLongSilhyos,
+    getLongBuhwals,
     getLong,
     beforeCreateLong,
     createLong,

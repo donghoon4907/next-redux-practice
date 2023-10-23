@@ -265,7 +265,11 @@ export const ASIDE_MENU: any = {
                 id: 'contract-long_silhyo',
                 label: '실효명세',
                 to: '/contract/long/silhyo',
-                disabled: true,
+            },
+            buhwal: {
+                id: 'contract-long_buhwal',
+                label: '부활명세',
+                to: '/contract/long/buhwal',
             },
             // upload: {
             //     id: 'contract-long_upload',
