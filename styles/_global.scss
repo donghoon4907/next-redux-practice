@@ -114,9 +114,7 @@ td {
     right: $wr-gutter-size !important;
     transform: translate3d(0, -50%, 0);
 }
-.rs-picker-default .rs-picker-toggle.rs-btn {
-    padding-left: 6px !important;
-}
+
 .rs-picker-default .rs-picker-toggle {
     z-index: 0 !important;
 }
@@ -128,9 +126,9 @@ td {
 //     border: none;
 // }
 // Datepicker - Placeholder 설정
-.rs-picker-toggle-value {
-    color: $wr-input-font-color !important;
-}
+// .rs-picker-toggle-value {
+//     color: $wr-input-font-color;
+// }
 .rs-stack-item {
     font-size: $wr-filter-font-size;
 }

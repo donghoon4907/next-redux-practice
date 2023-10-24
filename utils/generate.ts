@@ -126,6 +126,7 @@ export function generateAllOptionWcode(options: CoreSelectOption[]) {
             output.push({
                 label: '손보전체',
                 value: 'dist:손보',
+                fontWeight: 'bold',
             });
         }
 
@@ -135,6 +136,7 @@ export function generateAllOptionWcode(options: CoreSelectOption[]) {
             output.push({
                 label: '생보전체',
                 value: 'dist:생보',
+                fontWeight: 'bold',
             });
         }
 

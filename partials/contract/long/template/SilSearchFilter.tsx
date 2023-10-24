@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { startOfMonth } from 'date-fns';
 import { HrState } from '@reducers/hr';
 import { AppState } from '@reducers/index';
 import { useSelect } from '@hooks/use-select';
@@ -107,33 +108,33 @@ export const LongSilSearchFilter: FC<Props> = () => {
                         <div className={`${displayName}__field`}>
                             <label
                                 className={`${displayName}__label`}
-                                htmlFor="status"
+                                htmlFor="sildist"
                             >
-                                현상태
+                                입금구분
                             </label>
                             <div style={{ width: 110 }}>
                                 <MySelect
-                                    id="status"
+                                    id="sildist"
                                     placeholder="선택"
-                                    {...status}
+                                    {...sildist}
                                 />
                             </div>
                         </div>
                         <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="pay_cycle"
-                            >
-                                납입주기
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="pay_cycle"
-                                    placeholder="선택"
-                                    {...pay_cycle}
-                                />
+                            <span className={`${displayName}__label`}>
+                                회차
+                            </span>
+                            <div style={{ width: 130 }}>
+                                <PopupTriggerSelect
+                                    id="whoi"
+                                    title={whoi}
+                                    setTitle={setWhoi}
+                                >
+                                    <LongWhoiSettingTemplate />
+                                </PopupTriggerSelect>
                             </div>
                         </div>
+
                         <div className={`${displayName}__divider`}></div>
                     </div>
                     <div className={`${displayName}__filter`}>
@@ -146,7 +147,12 @@ export const LongSilSearchFilter: FC<Props> = () => {
                                 name="date_type"
                                 value="sildate"
                             />
-                            <SearchFilterDatepicker />
+                            <SearchFilterDatepicker
+                                defaultValue={[
+                                    startOfMonth(new Date()),
+                                    new Date(),
+                                ]}
+                            />
                         </div>
                         <SearchFilterKeywordInput />
                     </div>
@@ -175,30 +181,31 @@ export const LongSilSearchFilter: FC<Props> = () => {
                         <div className={`${displayName}__field`}>
                             <label
                                 className={`${displayName}__label`}
-                                htmlFor="sildist"
+                                htmlFor="status"
                             >
-                                입금구분
+                                현상태
                             </label>
                             <div style={{ width: 110 }}>
                                 <MySelect
-                                    id="sildist"
+                                    id="status"
                                     placeholder="선택"
-                                    {...sildist}
+                                    {...status}
                                 />
                             </div>
                         </div>
                         <div className={`${displayName}__field`}>
-                            <span className={`${displayName}__label`}>
-                                회차
-                            </span>
-                            <div style={{ width: 130 }}>
-                                <PopupTriggerSelect
-                                    id="whoi"
-                                    title={whoi}
-                                    setTitle={setWhoi}
-                                >
-                                    <LongWhoiSettingTemplate />
-                                </PopupTriggerSelect>
+                            <label
+                                className={`${displayName}__label`}
+                                htmlFor="pay_cycle"
+                            >
+                                납입주기
+                            </label>
+                            <div style={{ width: 100 }}>
+                                <MySelect
+                                    id="pay_cycle"
+                                    placeholder="선택"
+                                    {...pay_cycle}
+                                />
                             </div>
                         </div>
                     </div>

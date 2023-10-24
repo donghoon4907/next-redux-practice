@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
+import dayjs from 'dayjs';
+import { startOfMonth } from 'date-fns';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
@@ -21,7 +23,7 @@ import { getLongSilsRequest } from '@actions/contract/long/get-long-sils.action'
 const LongSil: NextPage = () => {
     const displayName = 'wr-pages-list2';
 
-    const { push, pathname } = useRouter();
+    const router = useRouter();
 
     const { longSils } = useSelector<AppState, LongState>(
         (props) => props.long,
@@ -30,7 +32,7 @@ const LongSil: NextPage = () => {
     const columns = useColumn(longSils.fields);
 
     const handleClickRow = ({ idx }: any) => {
-        push(`${pathname}/${idx}`);
+        router.push(`/contract/long/${idx}`);
     };
 
     return (
@@ -83,7 +85,12 @@ const LongSil: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
-        const condition = {};
+        const condition = {
+            sildate: [
+                dayjs(startOfMonth(new Date())).format('YYYY-MM-DD'),
+                dayjs(new Date()).format('YYYY-MM-DD'),
+            ],
+        };
 
         const params = generateListParams(condition, ctx.query);
 

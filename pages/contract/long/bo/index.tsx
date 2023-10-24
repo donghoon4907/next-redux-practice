@@ -21,14 +21,14 @@ import { generateListParams } from '@utils/generate';
 const LongBo: NextPage = () => {
     const displayName = 'wr-pages-list2';
 
-    const { push, pathname } = useRouter();
+    const router = useRouter();
 
     const { longs } = useSelector<AppState, LongState>((props) => props.long);
 
     const columns = useColumn(longs.fields);
 
     const handleClickRow = ({ idx }: any) => {
-        push(`${pathname}/${idx}`);
+        router.push(`/contract/long/${idx}`);
     };
 
     return (

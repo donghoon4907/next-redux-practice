@@ -33,4 +33,12 @@
     & .form-control {
         height: $wr-list-filter-height;
     }
+    // 페이지 내 데이트피커 설정
+    & .rs-picker-toggle-value {
+        color: $wr-input-font-color;
+    }
+
+    .rs-picker-default .rs-picker-toggle.rs-btn {
+        padding-left: 6px !important;
+    }
 }

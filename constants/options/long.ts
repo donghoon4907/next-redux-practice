@@ -230,16 +230,6 @@ const BO_STATUS: CoreSelectOption[] = [
         fontWeight: 'bold',
     },
     ...STATUS_AFTER,
-    {
-        label: '장기실효',
-        value: '장기실효',
-        isFixed: false,
-    },
-    {
-        label: '장기부활',
-        value: '장기부활',
-        isFixed: false,
-    },
 ];
 const SIL_STATUS: CoreSelectOption[] = [
     {
@@ -583,7 +573,6 @@ const SIL_DIST: CoreSelectOption[] = [
         label: '계속취소',
         value: '계속취소',
         isFixed: false,
-        fontWeight: 'bold',
     },
     {
         label: '기타',

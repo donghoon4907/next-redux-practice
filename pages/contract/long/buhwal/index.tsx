@@ -5,6 +5,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
+import { startOfMonth } from 'date-fns';
+import dayjs from 'dayjs';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
@@ -17,13 +19,11 @@ import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongBuhwalsRequest } from '@actions/contract/long/get-long-buhwals.action';
 import { LongBuhwalSearchFilter } from '@partials/contract/long/template/BuhwalSearchFilter';
-import { startOfMonth } from 'date-fns';
-import dayjs from 'dayjs';
 
 const LongBuhwal: NextPage = () => {
     const displayName = 'wr-pages-list2';
 
-    const { push, pathname } = useRouter();
+    const router = useRouter();
 
     const { longBuhwals } = useSelector<AppState, LongState>(
         (props) => props.long,
@@ -32,7 +32,7 @@ const LongBuhwal: NextPage = () => {
     const columns = useColumn(longBuhwals.fields);
 
     const handleClickRow = ({ idx }: any) => {
-        push(`${pathname}/${idx}`);
+        router.push(`/contract/long/${idx}`);
     };
 
     return (
