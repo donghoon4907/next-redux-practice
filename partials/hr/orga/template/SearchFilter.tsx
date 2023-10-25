@@ -18,19 +18,19 @@ export const OrgaSearchFilter: FC<Props> = () => {
 
     const router = useRouter();
     // 검색필터 - 조직등급
-    const [rate, setRate] = useSelect(orgaConstants.rate);
+    const [grade, setGrade] = useSelect(orgaConstants.grade2);
     // 검색필터 - 현상태
-    const [status, setStatus] = useSelect(orgaConstants.status);
+    const [status, setStatus] = useSelect(orgaConstants.status2);
 
     useEffect(() => {
-        const { orga_rate, status } = router.query;
+        const { orga_rank, status } = router.query;
 
-        if (orga_rate) {
-            setRate(findSelectOption(orga_rate, orgaConstants.rate));
+        if (orga_rank) {
+            setGrade(findSelectOption(orga_rank, orgaConstants.grade2));
         }
 
         if (status) {
-            setStatus(findSelectOption(status, orgaConstants.status));
+            setStatus(findSelectOption(status, orgaConstants.status2));
         }
     }, [router]);
 
@@ -54,7 +54,7 @@ export const OrgaSearchFilter: FC<Props> = () => {
                                 <MySelect
                                     id="orga_rank"
                                     placeholder="선택"
-                                    {...rate}
+                                    {...grade}
                                 />
                             </div>
                         </div>

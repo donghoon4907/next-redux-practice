@@ -37,7 +37,7 @@ $wr-gray2: #d9d9d9;
 // 회색 컬러3 - 연한 구분선
 $wr-gray3: #dce2eb;
 // 구분선 색
-$wr-divider-color-100: #e5e5e5;
+$wr-divider-color: #e4e7ef;
 $wr-divider-color-200: rgba(0, 0, 0, 0.175);
 $wr-divider-color-300: $wr-gray2;
 // 메인색
@@ -61,7 +61,7 @@ $wr-detail-input-placeholder-color: #a6a9bb;
 // 상세 - input 배경 색
 $wr-detail-input-bg-color: #f8f9ff;
 // 상세 - input 테두리 색
-$wr-detail-input-border-color: #e4e7ef;
+$wr-detail-input-border-color: $wr-divider-color;
 
 // $wr-header-color: #1466a4;
 $wr-header-color: $wr-primary-color;

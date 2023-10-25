@@ -75,30 +75,48 @@
         flex-direction: column;
         flex: 1;
 
-        // Custom Bootstrap
-        & .nav-link {
-            background-color: white !important;
-
-            &:not(.active) {
-                background-color: inherit !important;
-                color: $black;
-            }
-
-            &:hover {
-                border-top: 1px solid $wr-divider-color-100;
-                border-right: 1px solid $wr-divider-color-100;
-                background-color: $white !important;
-                color: $black;
-            }
+        & .wr-tab {
+            // border-color: #e5edff !important;
+            border-radius: 8px 8px 0px 0px;
+            background-color: $wr-primary-color;
+            color: $white;
+            overflow: hidden;
         }
+
+        & .wr-tab.active {
+            background-color: $white !important;
+            color: $wr-gray1;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        // Custom Bootstrap
+        // & .nav-link {
+        //     background-color: $wr-primary-color !important;
+        //     color: white !important;
+
+        //     &:not(.active) {
+        //         background-color: inherit !important;
+        //         color: $black;
+        //     }
+
+        //     &:hover {
+        //         border-top: 1px solid $wr-divider-color-100;
+        //         border-right: 1px solid $wr-divider-color-100;
+        //         background-color: $white !important;
+        //         color: $black;
+        //     }
+        // }
     }
 
     &__body {
         flex: 1;
-        border: 1px solid $wr-divider-color-300;
+        border: 1px solid $wr-detail-input-border-color;
         border-top: 0;
         background-color: $white;
         overflow: hidden;
+        // box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 0px 2px 2px 2px;
     }
 
     &__block {

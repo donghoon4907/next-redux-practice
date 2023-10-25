@@ -106,3 +106,10 @@ export const DEPART_DETAIL_TABS: CoreTabOption[] = [
         panelId: 'tabpanelRentalAsset',
     },
 ];
+/**
+ * 사업부 상세 페이지 탭 목록
+ */
+export const ORGA_DETAIL_TABS: CoreTabOption[] = [
+    // { id: 'tabCommission', label: '수수료규정', panelId: 'tabpanelCommission' },
+    { id: 'tabAsso', label: '협회자격관리', panelId: 'tabpanelAsso' },
+];

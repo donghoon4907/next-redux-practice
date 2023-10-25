@@ -3,6 +3,7 @@ import type { MySelectProps } from '.';
 import { useState } from 'react';
 import Select from 'react-select';
 import variables from '@styles/_variables.module.scss';
+import { isEmpty } from '@utils/validator/common';
 
 interface Props extends MySelectProps {
     label: string;
@@ -13,7 +14,13 @@ interface Props extends MySelectProps {
     isRequired?: boolean;
 }
 
-export const FloatSelect: FC<Props> = ({ id, label, isRequired, ...rest }) => {
+export const FloatSelect: FC<Props> = ({
+    id,
+    label,
+    value,
+    isRequired,
+    ...rest
+}) => {
     const displayName = 'wr-detail-input';
 
     const [focus, setFocus] = useState(false);
@@ -26,26 +33,28 @@ export const FloatSelect: FC<Props> = ({ id, label, isRequired, ...rest }) => {
         setFocus(false);
     };
 
+    const isFloat = focus || !isEmpty(value);
+
     return (
         <div
             className={`${displayName}__wrap ${
-                focus ? `${displayName}--active` : ''
+                isFloat ? `${displayName}--active` : ''
             }`}
         >
             <div
                 className={`${displayName}__float ${
-                    focus ? `${displayName}__float--active` : ''
+                    isFloat ? `${displayName}__float--active` : ''
                 }`}
             >
                 <div
                     className={`${displayName}__label ${
-                        isRequired && focus ? 'wr-label--required' : ''
+                        isRequired && isFloat ? 'wr-label--required' : ''
                     }`}
                 >
                     {label}
                 </div>
             </div>
-            {isRequired && !focus && (
+            {isRequired && !isFloat && (
                 <div className={`${displayName}__required`}></div>
             )}
             <Select
@@ -55,6 +64,7 @@ export const FloatSelect: FC<Props> = ({ id, label, isRequired, ...rest }) => {
                 menuPlacement="bottom"
                 onFocus={handleFocus}
                 onBlur={handleBlur}
+                value={value}
                 styles={{
                     container: () => ({
                         width: '100%',

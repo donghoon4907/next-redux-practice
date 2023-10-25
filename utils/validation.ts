@@ -24,3 +24,15 @@ export function checkTextAlignLeftNeeded(columnName: string) {
 
     return output;
 }
+
+/**
+ * 원본 유지 컬럼 체크
+ */
+export function checkOrginNeeded(columnName: string) {
+    let output = false;
+    if (columnName === 'cnum') {
+        output = true;
+    }
+
+    return output;
+}

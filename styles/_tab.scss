@@ -2,7 +2,7 @@
     position: relative;
     font-size: 16px;
     font-weight: 500;
-    border: 1px solid $wr-divider-color-300;
+    border: 1px solid $wr-divider-color;
     color: $white;
 
     &__wrap {
@@ -16,7 +16,7 @@
 
     &__line {
         flex: 1;
-        border-bottom: 1px solid $wr-divider-color-300;
+        border-bottom: 1px solid $wr-divider-color;
     }
 
     &__link {

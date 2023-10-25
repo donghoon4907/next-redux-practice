@@ -5,7 +5,7 @@ import { MyColumnDef } from '@hooks/use-column';
 import { InternalInput } from '@components/input/Internal';
 import { isValidOnlyNumPhone } from '@utils/validator/user';
 import { convertPhoneNumber } from '@utils/converter';
-import { checkTextAlignLeftNeeded } from '@utils/validation';
+import { checkOrginNeeded, checkTextAlignLeftNeeded } from '@utils/validation';
 
 interface EmptyTdProps {
     colSpan: number;
@@ -22,7 +22,11 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
 
     let value = getValue() as any;
     // 휴대폰 번호의 경우
-    if (typeof value === 'string' && isValidOnlyNumPhone(value)) {
+    if (
+        typeof value === 'string' &&
+        isValidOnlyNumPhone(value) &&
+        !checkOrginNeeded(column.id)
+    ) {
         value = convertPhoneNumber(value);
     }
     // 정수형 데이터의 경우 오른쪽 정렬 및 천단위 구분

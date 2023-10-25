@@ -1,5 +1,4 @@
-import type { FC, InputHTMLAttributes } from 'react';
-import type { CoreProps } from '@interfaces/core';
+import type { FC, InputHTMLAttributes, FocusEvent } from 'react';
 import { useState } from 'react';
 import { LuSearch } from 'react-icons/lu';
 import { isEmpty } from '@utils/validator/common';
@@ -22,6 +21,8 @@ export const FloatInput: FC<Props> = ({
     label,
     isRequired,
     onSearch,
+    onFocus,
+    onBlur,
     value,
     ...rest
 }) => {
@@ -29,12 +30,16 @@ export const FloatInput: FC<Props> = ({
 
     const [focus, setFocus] = useState(false);
 
-    const handleFocus = () => {
+    const handleFocus = (evt: FocusEvent<HTMLInputElement>) => {
         setFocus(true);
+
+        onFocus?.(evt);
     };
 
-    const handleBlur = () => {
+    const handleBlur = (evt: FocusEvent<HTMLInputElement>) => {
         setFocus(false);
+
+        onBlur?.(evt);
     };
 
     const isFloat = focus || !isEmpty(value);
@@ -73,7 +78,11 @@ export const FloatInput: FC<Props> = ({
                     {...rest}
                 />
                 {onSearch && (
-                    <button type="button" className={`${displayName}__button`}>
+                    <button
+                        type="button"
+                        className={`${displayName}__button`}
+                        onClick={onSearch}
+                    >
                         <LuSearch size={18} />
                         <span className="visually-hidden">검색</span>
                     </button>

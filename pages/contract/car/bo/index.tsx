@@ -18,6 +18,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { CarSearchFilter } from '@partials/contract/car/SearchFilter';
+import dayjs from 'dayjs';
 
 const CarBo: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -77,7 +78,12 @@ const CarBo: NextPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
         const condition = {
-            bo_datefrom: [startOfMonth(addYears(new Date(), -1)), new Date()],
+            bo_datefrom: [
+                dayjs(startOfMonth(addYears(new Date(), -1))).format(
+                    'YYYY-MM-DD',
+                ),
+                dayjs(new Date()).format('YYYY-MM-DD'),
+            ],
         };
 
         const params = generateListParams(condition, ctx.query);

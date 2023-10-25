@@ -3,26 +3,25 @@ import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { HR_DETAIL_TABS } from '@constants/tab';
+import { ORGA_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { useApi } from '@hooks/use-api';
-import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { MyFooter } from '@components/footer';
 import { MyButton } from '@components/button';
-import { showImageUploadModal } from '@actions/modal/image-upload.action';
 import { useTab } from '@hooks/use-tab';
 import { CoreSelectOption } from '@interfaces/core';
 import { CreateUserDTO, UpdateUserDTO } from '@dto/hr/User.dto';
-import { createUserRequest } from '@actions/hr/create-user.action';
-import { getOrgaRequest } from '@actions/hr/get-orga';
-import { updateUserRequest } from '@actions/hr/update-user.action';
-import { uploadPortraitRequest } from '@actions/upload/portrait.action';
 import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
-import { useInput } from '@hooks/use-input';
+import { useInput, useNumbericInput, usePhoneInput } from '@hooks/use-input';
 import { FloatSelect } from '@components/select/Float';
 import { useDatepicker } from '@hooks/use-datepicker';
-import { MyTabpanel } from '@components/tab/Tabpanel';
+import { useSelect } from '@hooks/use-select';
+import commonConstants from '@constants/options/common';
+import orgaConstants from '@constants/options/orga';
+import { QualManageTabpanel } from '../user/tabpanels/QualManage';
+import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
+import { usePostcode } from '@hooks/use-postcode';
 
 interface Props {
     /**
@@ -50,22 +49,49 @@ interface Props {
 export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
     const displayName = 'wr-pages-orga-detail';
 
-    const dispatch = useDispatch();
+    const { users } = useSelector<AppState, HrState>((state) => state.hr);
 
-    const { orgas } = useSelector<AppState, HrState>((props) => props.hr);
+    // const dispatch = useDispatch();
 
-    const createUser = useApi(createUserRequest);
+    // const create = useApi(createUserRequest);
 
-    const updateUser = useApi(updateUserRequest);
+    // const update = useApi(updateUserRequest);
     // 탭 관리
-    const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
+    const [tab, setTab] = useTab(ORGA_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
-    const labelType = editable ? 'active' : 'disable';
-    // d
-    const [name] = useInput('');
-    // d
+    // 조직등급
+    const [orga_rank] = useSelect(orgaConstants.grade, null);
+    // 부서장
+    const [manager] = useSelect(users, null);
+    // 현황
+    const [status] = useSelect(orgaConstants.status, null);
+    // 조직명
+    const [orga_name] = useInput('');
+    // 개설일
     const [indate] = useDatepicker(null);
+    // 폐점일
+    const [outdate] = useDatepicker(null);
+    // 대표번호
+    const [tel] = usePhoneInput('');
+    // fax
+    const [fax] = usePhoneInput('');
+    // 우편번호
+    const [postcode, address1, address2, onClickPostcode] = usePostcode(
+        {
+            postcode: '',
+            address1: '',
+            address2: '',
+        },
+        { disabled: !editable },
+    );
+    const [address3] = useInput('');
+    // 예금주
+    const [income_name] = useInput('');
+    // 계좌번호
+    const [income_account] = useNumbericInput('');
+    // 과세여부
+    const [income_tax] = useSelect(commonConstants.yn, null);
 
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
@@ -85,7 +111,7 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
         const createUserDto = new CreateUserDTO(payload);
 
         if (createUserDto.requiredValidate()) {
-            createUser(createUserDto.getPayload(), ({ userid }) => {});
+            // createUser(createUserDto.getPayload(), ({ userid }) => {});
         }
     };
     const handleUpdate = () => {
@@ -94,7 +120,7 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
         const updateUserDto = new UpdateUserDTO(payload);
 
         if (updateUserDto.requiredValidate()) {
-            updateUser(updateUserDto.getPayload(), ({ Message }) => {});
+            // updateUser(updateUserDto.getPayload(), ({ Message }) => {});
         }
     };
     const createPayload = () => {
@@ -108,53 +134,54 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
     };
     return (
         <>
-            <div className={`${displayName} wr-pages-detail`}>
+            <form className={`${displayName} wr-pages-detail`}>
                 <div className={`${displayName}__left wr-pages-detail__left`}>
                     <div className="wr-pages-detail__inner">
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__content">
-                                <div className="row">
+                                {/* <div className="row">
                                     <div className="flex-fill">
                                         <FloatSelect label="소속" isRequired />
                                     </div>
-                                </div>
-                                <div className="row wr-mt">
+                                </div> */}
+                                <div className="row">
                                     <div className="flex-fill">
-                                        <FloatInput
+                                        <FloatSelect
                                             label="조직등급"
-                                            isRequired
+                                            {...orga_rank}
                                         />
                                     </div>
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="조직명"
-                                            isRequired
-                                            {...name}
+                                            {...orga_name}
                                         />
                                     </div>
                                 </div>
                                 <div className="row wr-mt">
                                     <div className="flex-fill">
-                                        <FloatInput label="부서장" isRequired />
+                                        <FloatSelect
+                                            label="부서장"
+                                            {...manager}
+                                        />
                                     </div>
                                     <div className="flex-fill">
-                                        <FloatInput label="현황" isRequired />
+                                        <FloatSelect label="현황" {...status} />
                                     </div>
                                 </div>
                                 <div className="row wr-mt">
                                     <div className="flex-fill">
                                         <FloatDatepicker
-                                            id="test"
+                                            id="indate"
                                             label="개설일"
-                                            isRequired
                                             hooks={indate}
                                         />
                                     </div>
                                     <div className="flex-fill">
                                         <FloatDatepicker
-                                            id="test"
+                                            id="outdate"
                                             label="폐점일"
-                                            isRequired
+                                            hooks={outdate}
                                         />
                                     </div>
                                 </div>
@@ -164,54 +191,41 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                             <div className="wr-pages-detail__content">
                                 <div className="row">
                                     <div className="flex-fill">
-                                        <FloatSelect label="지역" isRequired />
+                                        <FloatInput label="대표번호" {...tel} />
                                     </div>
                                     <div className="flex-fill">
-                                        <FloatInput
-                                            label="우편번호"
-                                            isRequired
-                                            onSearch={() => {}}
-                                        />
+                                        <FloatInput label="FAX" {...fax} />
                                     </div>
                                 </div>
-                                <div className="row wr-mt">
-                                    <div className="flex-fill">
-                                        <FloatInput label="주소1" isRequired />
-                                    </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="flex-fill">
-                                        <FloatInput label="주소2" isRequired />
-                                    </div>
-                                </div>
-                                <div className="row wr-mt">
-                                    <div className="flex-fill">
-                                        <FloatInput
-                                            label="상세주소"
-                                            isRequired
-                                        />
-                                    </div>
-                                </div>
+                                <SetPostcodeInput
+                                    activeMarginTop
+                                    disabled={!editable}
+                                    postcodeHooks={postcode}
+                                    address1Hooks={address1}
+                                    address2Hooks={address2}
+                                    address3Hooks={address3}
+                                    onClickPostcode={onClickPostcode}
+                                />
                             </div>
                         </div>
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__content">
                                 <div className="row">
                                     <div className="flex-fill">
-                                        <FloatSelect
-                                            label="은행명"
-                                            isRequired
-                                        />
+                                        <FloatSelect label="은행명" />
                                     </div>
                                     <div className="flex-fill">
-                                        <FloatInput label="예금주" isRequired />
+                                        <FloatInput
+                                            label="예금주"
+                                            {...income_name}
+                                        />
                                     </div>
                                 </div>
                                 <div className="row wr-mt">
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="계좌번호"
-                                            isRequired
+                                            {...income_account}
                                         />
                                     </div>
                                 </div>
@@ -219,7 +233,7 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                                     <div className="flex-fill">
                                         <FloatSelect
                                             label="과세여부"
-                                            isRequired
+                                            {...income_tax}
                                         />
                                     </div>
                                     <div className="flex-fill"></div>
@@ -230,7 +244,7 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                 </div>
                 <div className="wr-pages-detail__right">
                     <ul className="wr-tab__wrap" role="tablist">
-                        {HR_DETAIL_TABS.map((v) => (
+                        {ORGA_DETAIL_TABS.map((v) => (
                             <MyTab
                                 key={v.id}
                                 onClick={setTab}
@@ -241,7 +255,23 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                         <li className="wr-tab__line"></li>
                     </ul>
                     <div className="wr-pages-detail__body">
-                        <MyTabpanel id="test" tabId="test" hidden={false}>
+                        {/* <QualManageTabpanel
+                            id="tabpanelAsso"
+                            tabId="tabAsso"
+                            hidden={tab.id !== 'tabAsso'}
+                            editable={editable}
+                            giaNo={giaNo}
+                            giaComp={giaComp}
+                            giaIndate={giaIndate}
+                            giaOutdate={giaOutdate}
+                            giaQualification={giaQualification}
+                            liaNo={liaNo}
+                            liaComp={liaComp}
+                            liaIndate={liaIndate}
+                            liaOutdate={liaOutdate}
+                            liaQualification={liaQualification}
+                        /> */}
+                        {/* <MyTabpanel id="test" tabId="test" hidden={false}>
                             <div className="row">
                                 <div className="flex-fill">
                                     <div className="row">
@@ -265,10 +295,10 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                                 </div>
                                 <div className="flex-fill"></div>
                             </div>
-                        </MyTabpanel>
+                        </MyTabpanel> */}
                     </div>
                 </div>
-            </div>
+            </form>
             <MyFooter>
                 <div className="wr-footer__between">
                     <div></div>

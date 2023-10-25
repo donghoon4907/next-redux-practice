@@ -39,15 +39,15 @@ export const LongSearchFilter: FC<Props> = () => {
     // 검색필터 - 납입주기
     const [pay_cycle, setPayCycle] = useSelect(longConstants.payCycle2);
     // 검색필터 - 금소법확인
-    const [monitoring_cust, setMonitoringCust] = useSelect(commonConstants.yn);
+    const [monitoring_cust, setMonitoringCust] = useSelect(commonConstants.yn2);
     // 검색필터 - 완전판매모니터링
-    const [monitoring_sale, setMonitoringSale] = useSelect(commonConstants.yn);
+    const [monitoring_sale, setMonitoringSale] = useSelect(commonConstants.yn2);
     // 검색필터 - 상품비교설명
     const [monitoring_compare, setMonitoringCompare] = useSelect(
-        commonConstants.yn,
+        commonConstants.yn2,
     );
     // 검색필터 - 개인정보동의
-    const [privacyinfo, setPrivacyinfo] = useSelect(commonConstants.yn);
+    const [privacyinfo, setPrivacyinfo] = useSelect(commonConstants.yn2);
 
     useEffect(() => {
         const {
@@ -69,24 +69,24 @@ export const LongSearchFilter: FC<Props> = () => {
 
         if (monitoring_cust) {
             setMonitoringCust(
-                findSelectOption(monitoring_cust, commonConstants.yn),
+                findSelectOption(monitoring_cust, commonConstants.yn2),
             );
         }
 
         if (monitoring_sale) {
             setMonitoringSale(
-                findSelectOption(monitoring_sale, commonConstants.yn),
+                findSelectOption(monitoring_sale, commonConstants.yn2),
             );
         }
 
         if (monitoring_compare) {
             setMonitoringCompare(
-                findSelectOption(monitoring_compare, commonConstants.yn),
+                findSelectOption(monitoring_compare, commonConstants.yn2),
             );
         }
 
         if (privacyinfo) {
-            setPrivacyinfo(findSelectOption(privacyinfo, commonConstants.yn));
+            setPrivacyinfo(findSelectOption(privacyinfo, commonConstants.yn2));
         }
     }, [router]);
 
