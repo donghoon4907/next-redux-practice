@@ -6,6 +6,7 @@ import dayjs from 'dayjs';
 
 export interface MyDatepickerProps extends PickerBaseProps {
     id: string;
+    readOnly?: boolean;
     /**
      * Date format
      */

@@ -48,6 +48,7 @@ const LongSilhyo: NextPage = () => {
                 <div className={displayName}>
                     <LongSilhyoSearchFilter />
                     <SearchResultTemplate
+                        createUrl="/contract/long/create"
                         data={[
                             `계약건수:${longSilhyos.total.count.toLocaleString()}건`,
                         ]}

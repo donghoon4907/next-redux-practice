@@ -12,15 +12,6 @@ function* getLongsSaga({ payload }: GetLongsRequestAction) {
     const { data } = yield call(longsService.getLongs, payload);
 
     const successPayload = generateListSuccessPayload(data, payload);
-    // 상품 목록
-    // if (data.hasOwnProperty('data')) {
-    //     const target = data.data;
-    //     if (target.hasOwnProperty('search')) {
-    //         successPayload['products'] = target.search[0][0].row.map(
-    //             (v: any) => ({ label: v.title, value: v.p_code }),
-    //         );
-    //     }
-    // }
 
     yield put(getLongsSuccess(successPayload));
 

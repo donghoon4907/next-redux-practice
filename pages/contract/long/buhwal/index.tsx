@@ -48,6 +48,7 @@ const LongBuhwal: NextPage = () => {
                 <div className={displayName}>
                     <LongBuhwalSearchFilter />
                     <SearchResultTemplate
+                        createUrl="/contract/long/create"
                         data={[
                             `계약건수:${longBuhwals.total.count.toLocaleString()}건`,
                         ]}

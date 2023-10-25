@@ -133,7 +133,7 @@ export const MySelect: FC<MySelectProps> = ({
                     return {
                         ...defaultStyles,
                         fontSize: `${fontSize}px`,
-                        color: 'black',
+                        color: variables.inputFontColor,
                         whiteSpace: 'nowrap',
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',

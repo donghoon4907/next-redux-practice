@@ -1,15 +1,17 @@
 import type { Reducer } from 'redux';
 import type { Bupum } from '@models/bupum';
+import type { GetCarsSuccessPayload } from '@actions/contract/car/get-cars.action';
 import produce from 'immer';
 import { BupumActionTypes } from '@actions/contract/car/set-bupum.action';
 import { GetCarActionTypes } from '@actions/contract/car/get-car.action';
 import { GetCarcodeActionTypes } from '@actions/contract/car/get-carcode.action';
+import { GetCarsActionTypes } from '@actions/contract/car/get-cars.action';
 
 export interface CarState {
     /**
-     * 자동차계약 목록
+     * 자동차보유계약 목록
      */
-    // cars: GetCarsSuccessPayload;
+    cars: GetCarsSuccessPayload;
     /**
      * 자동차계약 상세
      */
@@ -48,13 +50,12 @@ export interface CarState {
 }
 
 const initialState: CarState = {
-    // cars: {
-    //     fields: [],
-    //     rows: [],
-    //     total: null,
-    //     ptitles: [],
-    //     lastPayload: null,
-    // },
+    cars: {
+        fields: [],
+        rows: [],
+        total: null,
+        lastPayload: null,
+    },
     car: null,
     // etcs: [],
     bupums: [],
@@ -75,6 +76,11 @@ export const carReducer: Reducer<CarState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
+            case GetCarsActionTypes.SUCCESS: {
+                draft.cars = action.payload;
+
+                break;
+            }
             case GetCarActionTypes.SUCCESS: {
                 draft.car = action.payload;
 

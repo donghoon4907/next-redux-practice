@@ -15,5 +15,5 @@ export function isValidPhone(phone: string) {
 }
 // 숫자형 데이터가 전화번호인지 여부 판별
 export function isValidOnlyNumPhone(phone: string) {
-    return onlyNumPhoneRegex.test(phone) || onlyNumPhoneRegex2.test(phone);
+    return onlyNumPhoneRegex.test(phone);
 }

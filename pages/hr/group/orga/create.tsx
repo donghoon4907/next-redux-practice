@@ -40,24 +40,24 @@ const CreateOrga: NextPage = () => {
     );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }) => {
-        dispatch(getOrgasRequest());
+// export const getServerSideProps = wrapper.getServerSideProps(
+//     permissionMiddleware(async ({ dispatch, sagaTask }) => {
+//         // dispatch(getOrgasRequest());
 
-        // dispatch(getBanksRequest());
+//         // dispatch(getBanksRequest());
 
-        dispatch(getAgenciesRequest());
+//         // dispatch(getAgenciesRequest());
 
-        dispatch(getCompaniesRequest('insu'));
+//         // dispatch(getCompaniesRequest('insu'));
 
-        dispatch(getCompaniesRequest('bank'));
+//         // dispatch(getCompaniesRequest('bank'));
 
-        dispatch(END);
+//         dispatch(END);
 
-        await sagaTask?.toPromise();
+//         await sagaTask?.toPromise();
 
-        return null;
-    }),
-);
+//         return null;
+//     }),
+// );
 
 export default CreateOrga;

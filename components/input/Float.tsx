@@ -42,8 +42,8 @@ export const FloatInput: FC<Props> = ({
     return (
         <div
             className={`${displayName}__wrap ${
-                isFloat ? `${displayName}--active` : ''
-            }`}
+                onSearch ? `${displayName}--search` : ''
+            } ${isFloat ? `${displayName}--active` : ''}`}
         >
             <div
                 className={`${displayName}__float ${

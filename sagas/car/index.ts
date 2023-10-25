@@ -5,11 +5,13 @@ import { watchGetCar } from './get-car';
 import { watchUpdateCar } from './update-car';
 import { watchCalculateCar } from './calculate-car';
 import { watchGetCarcode } from './get-carcode';
+import { watchGetCars } from './get-cars';
 
 export function* carSaga() {
     yield all([
-        fork(watchCreateCar),
+        fork(watchGetCars),
         fork(watchGetCar),
+        fork(watchCreateCar),
         fork(watchUpdateCar),
         fork(watchCalculateCar),
         fork(watchGetCarcode),

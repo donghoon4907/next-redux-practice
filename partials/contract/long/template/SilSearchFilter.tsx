@@ -20,6 +20,7 @@ import { SearchFilterCompanySelect } from '@partials/common/select/SearchFilterC
 import { PopupTriggerSelect } from '@components/select/PopupTrigger';
 
 import { LongWhoiSettingTemplate } from './WhoiSetting';
+import { SearchFilterLongSpecSelect } from '@partials/common/select/SearchFilterLongSpec';
 
 interface Props {}
 
@@ -34,8 +35,6 @@ export const LongSilSearchFilter: FC<Props> = () => {
 
     // 확장 여부
     const [expand, setExpand] = useState(false);
-    // 검색필터 - 보종
-    const [spec, setSpec] = useSelect(longConstants.productType2);
     // 검색필터 - 현상태
     const [status, setStatus] = useSelect(longConstants.silStatus);
     // 검색필터 - 납입주기
@@ -48,11 +47,7 @@ export const LongSilSearchFilter: FC<Props> = () => {
     const [whoi, setWhoi] = useState('1~999');
 
     useEffect(() => {
-        const { spec, status, pay_cycle, cycle, sildist, whoi } = router.query;
-
-        if (spec) {
-            setSpec(findSelectOption(spec, longConstants.productType2));
-        }
+        const { status, pay_cycle, cycle, sildist, whoi } = router.query;
 
         if (status) {
             setStatus(findSelectOption(status, longConstants.silStatus));
@@ -90,21 +85,7 @@ export const LongSilSearchFilter: FC<Props> = () => {
                         <SearchFilterCompanySelect
                             options={longViewCompanies}
                         />
-                        <div className={`${displayName}__field`}>
-                            <label
-                                className={`${displayName}__label`}
-                                htmlFor="spec"
-                            >
-                                보종
-                            </label>
-                            <div style={{ width: 100 }}>
-                                <MySelect
-                                    id="spec"
-                                    placeholder="선택"
-                                    {...spec}
-                                />
-                            </div>
-                        </div>
+                        <SearchFilterLongSpecSelect />
                         <div className={`${displayName}__field`}>
                             <label
                                 className={`${displayName}__label`}

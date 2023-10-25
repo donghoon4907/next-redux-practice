@@ -2,10 +2,18 @@ import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.a
 import type { GetCarcodeRequestPayload } from '@actions/contract/car/get-carcode.action';
 import type { GetCarRequestPayload } from '@actions/contract/car/get-car.action';
 import type { UpdateCarRequestPayload } from '@actions/contract/car/update-car.action';
+import type { GetCarsRequestPayload } from '@actions/contract/car/get-cars.action';
 import { getQuarter } from 'date-fns';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getExternalAxios } from '@utils/axios/external';
 import { getInternalAxios } from '@utils/axios/internal';
+
+export function getCars({ page, nums, ...rest }: GetCarsRequestPayload) {
+    return getBackendAxios().post(
+        `/car/list/bo?page=${page}&nums=${nums}`,
+        rest,
+    );
+}
 
 export function getCar({ idx }: GetCarRequestPayload) {
     return getBackendAxios().get(`/car/detail/${idx}`);
@@ -60,6 +68,7 @@ export function getCarcode({ idate, params = {} }: GetCarcodeRequestPayload) {
 }
 
 const rootServices = {
+    getCars,
     getCar,
     beforeCreateCar,
     createCar,

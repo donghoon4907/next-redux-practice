@@ -253,7 +253,7 @@ export const ASIDE_MENU: any = {
             to: '',
             bo: {
                 id: 'contract-long_bo',
-                label: '보유계약',
+                label: '장기보유계약',
                 to: '/contract/long/bo',
             },
             sil: {
@@ -282,41 +282,46 @@ export const ASIDE_MENU: any = {
             //     to: '/contract/long/sch',
             // },
         },
-        // car: {
-        //     id: 'contract-car',
-        //     label: '자동차',
-        //     to: '',
-        //     create: {
-        //         id: 'contract-car_create',
-        //         label: '자동차계약등록',
-        //         to: '/contract/car/create',
-        //     },
-        //     compare: {
-        //         id: 'contract-car-compare',
-        //         label: '비교견적',
-        //         to: '/contract/car/compare',
-        //     },
-        //     hc: {
-        //         id: 'contract-car_hc',
-        //         label: '보유계약',
-        //         to: '/contract/car/hc',
-        //     },
-        //     mc: {
-        //         id: 'contract-car_mc',
-        //         label: '만기계약',
-        //         to: '/contract/car/mc',
-        //     },
-        //     im: {
-        //         id: 'contract-car_im',
-        //         label: '분납관리',
-        //         to: '/contract/car/im',
-        //     },
-        //     sch: {
-        //         id: 'contract-car_sch',
-        //         label: '상태변경내역',
-        //         to: '/contract/car/sch',
-        //     },
-        // },
+        car: {
+            id: 'contract-car',
+            label: '자동차',
+            to: '',
+            bo: {
+                id: 'contract-car_bo',
+                label: '자동차보유계약',
+                to: '/contract/car/bo',
+            },
+            // create: {
+            //     id: 'contract-car_create',
+            //     label: '자동차계약등록',
+            //     to: '/contract/car/create',
+            // },
+            // compare: {
+            //     id: 'contract-car-compare',
+            //     label: '비교견적',
+            //     to: '/contract/car/compare',
+            // },
+            // hc: {
+            //     id: 'contract-car_hc',
+            //     label: '보유계약',
+            //     to: '/contract/car/hc',
+            // },
+            // mc: {
+            //     id: 'contract-car_mc',
+            //     label: '만기계약',
+            //     to: '/contract/car/mc',
+            // },
+            // im: {
+            //     id: 'contract-car_im',
+            //     label: '분납관리',
+            //     to: '/contract/car/im',
+            // },
+            // sch: {
+            //     id: 'contract-car_sch',
+            //     label: '상태변경내역',
+            //     to: '/contract/car/sch',
+            // },
+        },
         // general: {
         //     id: 'contract-general',
         //     label: '일반',

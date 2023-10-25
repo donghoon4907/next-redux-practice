@@ -22,6 +22,7 @@ import { FloatDatepicker } from '@components/datepicker/Float';
 import { useInput } from '@hooks/use-input';
 import { FloatSelect } from '@components/select/Float';
 import { useDatepicker } from '@hooks/use-datepicker';
+import { MyTabpanel } from '@components/tab/Tabpanel';
 
 interface Props {
     /**
@@ -113,6 +114,11 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__content">
                                 <div className="row">
+                                    <div className="flex-fill">
+                                        <FloatSelect label="소속" isRequired />
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="조직등급"
@@ -210,7 +216,13 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                                     </div>
                                 </div>
                                 <div className="row wr-mt">
-                                    <FloatSelect label="과세여부" isRequired />
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="과세여부"
+                                            isRequired
+                                        />
+                                    </div>
+                                    <div className="flex-fill"></div>
                                 </div>
                             </div>
                         </div>
@@ -228,7 +240,33 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                         ))}
                         <li className="wr-tab__line"></li>
                     </ul>
-                    <div className="wr-pages-detail__body"></div>
+                    <div className="wr-pages-detail__body">
+                        <MyTabpanel id="test" tabId="test" hidden={false}>
+                            <div className="row">
+                                <div className="flex-fill">
+                                    <div className="row">
+                                        <div className="flex-fill">
+                                            <label>자동차규정</label>
+                                            <div className="wr-pages-detail__block wr-mt">
+                                                <div className="wr-pages-detail__content">
+                                                    <FloatInput label="규정명" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="flex-fill">
+                                            <label>일반규정</label>
+                                            <div className="wr-pages-detail__block wr-mt">
+                                                <div className="wr-pages-detail__content">
+                                                    <FloatSelect label="지급율" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex-fill"></div>
+                            </div>
+                        </MyTabpanel>
+                    </div>
                 </div>
             </div>
             <MyFooter>

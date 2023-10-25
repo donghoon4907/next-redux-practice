@@ -44,6 +44,7 @@ const LongBo: NextPage = () => {
                 <div className={displayName}>
                     <LongSearchFilter />
                     <SearchResultTemplate
+                        createUrl="/contract/long/create"
                         data={[
                             `계약건수:${longs.total.count.toLocaleString()}건`,
                             `보험료계:${

@@ -1806,6 +1806,81 @@ export const CAR_HAS_BB: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 보종 목록
+const SPEC: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: '비사업용',
+        value: '비사업용',
+        isFixed: false,
+        fontWeight: 'bold',
+    },
+    {
+        label: '개인용',
+        value: '개인용',
+        isFixed: false,
+    },
+    {
+        label: '업무용',
+        value: '업무용',
+        isFixed: false,
+    },
+    {
+        label: '비사업기타',
+        value: '기타',
+        isFixed: false,
+    },
+    {
+        label: '영업용',
+        value: '영업용',
+        isFixed: false,
+    },
+    {
+        label: '이륜차',
+        value: '이륜차',
+        isFixed: false,
+    },
+];
+// 현상태
+const STATUS: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: '정상유지',
+        value: '정상유지',
+        isFixed: false,
+    },
+    {
+        label: '계약해지',
+        value: '계약해지',
+        isFixed: false,
+    },
+];
+// 납입방법
+const CYCLE: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    {
+        label: '일시납',
+        value: '일시납',
+        isFixed: false,
+    },
+    {
+        label: '분납',
+        value: '분납',
+        isFixed: false,
+    },
+];
 
 const rootSelectOptions = {
     dist: CAR_DIST,
@@ -1854,6 +1929,9 @@ const rootSelectOptions = {
     hasBb: CAR_HAS_BB,
     sportcar: CAR_SPORTS,
     year: CAR_YEAR,
+    spec: SPEC,
+    status: STATUS,
+    cycle: CYCLE,
 };
 
 export default rootSelectOptions;
