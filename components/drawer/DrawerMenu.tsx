@@ -29,13 +29,13 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
     ) => {
         evt.preventDefault();
 
-        route.replace(item.to, () => {
-            const tab = new TabModule();
-            // 기존에 사용하던 탭을 제거
-            if (tab.read(item.to)) {
-                tab.remove(item.to);
-            }
-        });
+        const tab = new TabModule();
+        // 기존에 사용하던 탭 제거
+        if (tab.read(item.to)) {
+            tab.remove(item.to);
+        }
+
+        route.push(item.to);
     };
 
     return (

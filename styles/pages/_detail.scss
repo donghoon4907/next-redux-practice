@@ -194,6 +194,26 @@
         align-items: center;
     }
 
+    &__tabtitle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #4165c0;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 6px;
+    }
+
+    &__tabsubtitle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #323232;
+        font-size: 13px;
+        font-weight: 400;
+        margin-bottom: 6px;
+    }
+
     &__footer {
         height: 36px;
         border-top: 1px solid $wr-divider-color-300;

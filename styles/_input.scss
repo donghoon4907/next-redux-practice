@@ -82,13 +82,11 @@
     &__float {
         position: absolute;
         opacity: 0;
-        z-index: 101;
-        top: 20px;
-        left: 20px;
+        top: -6px;
+        left: 15px;
+        opacity: 0;
 
         &--active {
-            top: -6px;
-            left: 15px;
             opacity: 1;
         }
     }

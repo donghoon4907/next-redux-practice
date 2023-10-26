@@ -35,14 +35,16 @@ export const MyCheckbox: FC<Props> = ({
                 name={id}
                 {...rest}
             />
-            <label
-                className={`form-check-label ${
-                    isRequired ? 'wr-label--required' : ''
-                }`}
-                htmlFor={id}
-            >
-                {label}
-            </label>
+            {label && (
+                <label
+                    className={`form-check-label ${
+                        isRequired ? 'wr-label--required' : ''
+                    }`}
+                    htmlFor={id}
+                >
+                    {label}
+                </label>
+            )}
         </div>
     );
 };

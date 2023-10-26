@@ -27,12 +27,15 @@ export const LongManagerAccordion: FC<Props> = ({ editable }) => {
     };
 
     let title = '';
+    // 소속이 있는지 여부(이관된 데이터의 경우 없을 수 있음)
+    let isGroup = false;
     if (newUserHistory) {
         title += `${newUserHistory.department} ${newUserHistory.username}`;
     } else {
         const lastHistory = userHistories[userHistories.length - 1];
         if (lastHistory.group) {
             title += `${lastHistory.group} ${lastHistory.username}`;
+            isGroup = true;
         } else {
             title += lastHistory.username;
         }
@@ -43,15 +46,17 @@ export const LongManagerAccordion: FC<Props> = ({ editable }) => {
             <AccordionItem>
                 <div className="wr-group wr-accordion__button--hide">
                     <span className="wr-pages-detail__department">{title}</span>
-                    <AccordionHeader
-                        targetId="user_his"
-                        role="tab"
-                        id="user_his"
-                    >
-                        <span className="btn btn-primary btn-sm">
-                            담당변경이력
-                        </span>
-                    </AccordionHeader>
+                    {isGroup && (
+                        <AccordionHeader
+                            targetId="user_his"
+                            role="tab"
+                            id="user_his"
+                        >
+                            <span className="btn btn-primary btn-sm">
+                                담당변경이력
+                            </span>
+                        </AccordionHeader>
+                    )}
                 </div>
 
                 <AccordionBody

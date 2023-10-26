@@ -170,6 +170,7 @@ export const MySelect: FC<MySelectProps> = ({
                 menuList: (provided, state) => ({
                     ...provided,
                     padding: 0,
+                    maxHeight: 150,
                 }),
                 option: (provided, state) => ({
                     ...provided,

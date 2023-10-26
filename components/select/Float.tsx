@@ -90,8 +90,9 @@ export const FloatSelect: FC<Props> = ({
                     }),
                     singleValue: (provided, state) => ({
                         ...provided,
-                        color: variables.secondaryColor,
+                        color: 'black',
                         fontSize: '16px',
+                        fontWeight: 400,
                     }),
                     placeholder: (defaultStyles) => {
                         return {
@@ -144,6 +145,7 @@ export const FloatSelect: FC<Props> = ({
                     menuList: (provided, state) => ({
                         ...provided,
                         padding: 0,
+                        maxHeight: 150,
                     }),
                     option: (provided, state) => ({
                         ...provided,

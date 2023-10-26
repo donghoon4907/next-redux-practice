@@ -153,7 +153,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
                             index: i,
                             checked: false,
                             gdate: long.userid_his[i].gdate,
-                            group: long.userid_his[i].group,
+                            group: long.userid_his[i].group
+                                ? long.userid_his[i].group
+                                : '',
                             userid: long.userid_his[i].userid,
                             username: long.userid_his[i].fcname,
                         }),

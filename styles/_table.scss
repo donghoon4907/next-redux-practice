@@ -21,6 +21,15 @@
             border: 1px solid $wr-table-border-color;
             border: 1px solid $wr-table-border-color;
         }
+
+        & .form-control {
+            height: 28px;
+            font-size: 13px;
+        }
+
+        & .form-control::placeholder {
+            font-size: 13px;
+        }
     }
 
     &--scrollable {
@@ -82,8 +91,8 @@
     & td {
         border: none;
         max-width: 200px;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        // overflow: hidden;
+        // text-overflow: ellipsis;
         text-align: center;
         color: #484848;
     }

@@ -8,7 +8,7 @@ export type Code = CoreCheckableModel & {
     fccode: string;
     password: string;
     cent_val: string;
-    indate: string | null;
+    indate?: string | null;
     // 손해 / 생명 구분
     dist: string;
     // 회사명

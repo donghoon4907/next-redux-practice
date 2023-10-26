@@ -20,5 +20,18 @@ export const useRoute = () => {
         router.replace(to);
     };
 
-    return { replace };
+    const push = (to: string, callback?: () => void) => {
+        // 현재 페이지인 경우
+        if (router.pathname === to) {
+            return;
+        }
+
+        callback?.();
+
+        loading.on();
+
+        router.push(to);
+    };
+
+    return { replace, push };
 };

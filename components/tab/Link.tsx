@@ -36,7 +36,7 @@ export const LinkTab: FC<Props> = ({
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();
 
-        route.replace(to);
+        route.push(to);
     };
 
     const handleClose = (evt: MouseEvent<HTMLButtonElement>) => {

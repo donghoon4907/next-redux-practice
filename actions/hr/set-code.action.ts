@@ -10,7 +10,7 @@ export const CodeActionTypes = {
     DELETE: `DELETE_${CODE_KEY}`,
 } as const;
 
-export interface CreateCodePayload extends CorePayload, Code {}
+export interface CreateCodePayload extends Code {}
 
 export interface UpdateCodePayload extends Partial<CreateCodePayload> {}
 

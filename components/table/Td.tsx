@@ -51,7 +51,7 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
 
     return (
         <td className={className} title={value}>
-            {value}
+            <div className="text-truncate">{value}</div>
         </td>
     );
 });

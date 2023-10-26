@@ -1,8 +1,9 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import dayjs from 'dayjs';
 import { ORGA_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { useApi } from '@hooks/use-api';
@@ -10,7 +11,6 @@ import { MyFooter } from '@components/footer';
 import { MyButton } from '@components/button';
 import { useTab } from '@hooks/use-tab';
 import { CoreSelectOption } from '@interfaces/core';
-import { CreateUserDTO, UpdateUserDTO } from '@dto/hr/User.dto';
 import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { useInput, useNumbericInput, usePhoneInput } from '@hooks/use-input';
@@ -19,9 +19,14 @@ import { useDatepicker } from '@hooks/use-datepicker';
 import { useSelect } from '@hooks/use-select';
 import commonConstants from '@constants/options/common';
 import orgaConstants from '@constants/options/orga';
-import { QualManageTabpanel } from '../user/tabpanels/QualManage';
 import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
 import { usePostcode } from '@hooks/use-postcode';
+import { createOrgaRequest } from '@actions/hr/create-orga.action';
+import { CreateOrgaDTO } from '@dto/hr/Orga.dto';
+import { isEmpty } from '@utils/validator/common';
+import { getUsersRequest } from '@actions/hr/get-users';
+
+import { OrgaQualManageTabpanel } from './tabpanels/QualManage';
 
 interface Props {
     /**
@@ -49,13 +54,15 @@ interface Props {
 export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
     const displayName = 'wr-pages-orga-detail';
 
-    const { users } = useSelector<AppState, HrState>((state) => state.hr);
+    const { users, banks, allCompanies } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    // const create = useApi(createUserRequest);
+    const createOrga = useApi(createOrgaRequest);
 
-    // const update = useApi(updateUserRequest);
+    // const updateOrga = useApi(updateOrgaRequest);
     // 탭 관리
     const [tab, setTab] = useTab(ORGA_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -69,7 +76,7 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
     // 조직명
     const [orga_name] = useInput('');
     // 개설일
-    const [indate] = useDatepicker(null);
+    const [indate] = useDatepicker(new Date());
     // 폐점일
     const [outdate] = useDatepicker(null);
     // 대표번호
@@ -86,12 +93,40 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
         { disabled: !editable },
     );
     const [address3] = useInput('');
+    // 은행
+    const [income_bank] = useSelect(banks, null);
     // 예금주
     const [income_name] = useInput('');
     // 계좌번호
     const [income_account] = useNumbericInput('');
     // 과세여부
     const [income_tax] = useSelect(commonConstants.yn, null);
+    // 손보 등록번호
+    const [d_no] = useInput('', { noSpace: true });
+    // 손보 등록보험사
+    const [d_wcode] = useSelect(
+        allCompanies.filter((v) => v.origin.dist === '손보'),
+        null,
+    );
+    // 손보 등록일
+    const [d_indate] = useDatepicker(null);
+    // 손보 해촉일
+    const [d_outdate] = useDatepicker(null);
+    // 손보 지점장
+    const [d_manager] = useSelect(users, null);
+    // 생보 등록번호
+    const [l_no] = useInput('', { noSpace: true });
+    // 생보 등록보험사
+    const [l_wcode] = useSelect(
+        allCompanies.filter((v) => v.origin.dist === '생보'),
+        null,
+    );
+    // 생보 등록일
+    const [l_indate] = useDatepicker(null);
+    // 생보 해촉일
+    const [l_outdate] = useDatepicker(null);
+    // 생보 지점장
+    const [l_manager] = useSelect(users, null);
 
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
@@ -108,30 +143,128 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
     const handleCreate = () => {
         const payload = createPayload();
 
-        const createUserDto = new CreateUserDTO(payload);
+        const createUserDto = new CreateOrgaDTO(payload);
 
         if (createUserDto.requiredValidate()) {
-            // createUser(createUserDto.getPayload(), ({ userid }) => {});
+            createOrga(createUserDto.getPayload(), () => {
+                alert('조직이 등록되었습니다.');
+            });
         }
     };
     const handleUpdate = () => {
         const payload = createPayload();
 
-        const updateUserDto = new UpdateUserDTO(payload);
+        // const updateUserDto = new UpdateUserDTO(payload);
 
-        if (updateUserDto.requiredValidate()) {
-            // updateUser(updateUserDto.getPayload(), ({ Message }) => {});
-        }
+        // if (updateUserDto.requiredValidate()) {
+        //     updateUser(updateUserDto.getPayload(), ({ Message }) => {});
+        // }
     };
     const createPayload = () => {
-        const payload: any = {};
+        const payload: any = {
+            associate: [
+                {
+                    type: '손보',
+                    no: d_no.value,
+                    wcode: d_wcode.value ? d_wcode.value.value : null,
+                    indate: d_indate.value
+                        ? dayjs(d_indate.value).format('YYYY-MM-DD')
+                        : null,
+                    outdate: d_outdate.value
+                        ? dayjs(d_outdate.value).format('YYYY-MM-DD')
+                        : null,
+                    manager_id: d_manager.value ? d_manager.value.value : null,
+                },
+                {
+                    type: '생보',
+                    no: l_no.value,
+                    wcode: l_wcode.value ? l_wcode.value.value : null,
+                    indate: l_indate.value
+                        ? dayjs(l_indate.value).format('YYYY-MM-DD')
+                        : null,
+                    outdate: l_outdate.value
+                        ? dayjs(l_outdate.value).format('YYYY-MM-DD')
+                        : null,
+                    manager_id: l_manager.value ? l_manager.value.value : null,
+                },
+            ],
+        };
 
-        if (idx !== -1) {
-            payload['idx'] = idx;
+        if (orga_rank.value) {
+            payload['orga_rank'] = orga_rank.value.value;
+        }
+
+        if (!isEmpty(orga_name.value)) {
+            payload['orga_name'] = orga_name.value;
+        }
+
+        if (manager.value) {
+            payload['manager_id'] = manager.value.value;
+        }
+
+        if (status.value) {
+            payload['status'] = status.value.value;
+        }
+
+        if (indate.value) {
+            payload['indate'] = dayjs(indate.value).format('YYYY-MM-DD');
+        }
+
+        if (outdate.value) {
+            payload['outdate'] = dayjs(outdate.value).format('YYYY-MM-DD');
+        }
+
+        if (!isEmpty(tel.value)) {
+            payload['tel'] = tel.value.replace(/-/g, '');
+        }
+
+        if (!isEmpty(fax.value)) {
+            payload['fax'] = fax.value.replace(/-/g, '');
+        }
+
+        if (!isEmpty(postcode.value)) {
+            payload['postcode'] = postcode.value;
+        }
+
+        if (!isEmpty(address1.value)) {
+            payload['address1'] = address1.value;
+        }
+
+        if (!isEmpty(address2.value)) {
+            payload['address2'] = address2.value;
+        }
+
+        if (!isEmpty(address3.value)) {
+            payload['address3'] = address3.value;
+        }
+
+        if (income_bank.value) {
+            payload['income_bank'] = income_bank.value;
+        }
+
+        if (!isEmpty(income_name.value)) {
+            payload['income_name'] = income_name.value;
+        }
+
+        if (!isEmpty(income_account.value)) {
+            payload['income_account'] = income_account.value;
+        }
+
+        if (income_tax.value) {
+            let flag = false;
+            if (income_tax.value.value === 'Y') {
+                flag = true;
+            }
+
+            payload['income_tax'] = flag;
         }
 
         return payload;
     };
+
+    useEffect(() => {
+        dispatch(getUsersRequest({ idx: '1' }));
+    }, []);
     return (
         <>
             <form className={`${displayName} wr-pages-detail`}>
@@ -139,11 +272,6 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                     <div className="wr-pages-detail__inner">
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__content">
-                                {/* <div className="row">
-                                    <div className="flex-fill">
-                                        <FloatSelect label="소속" isRequired />
-                                    </div>
-                                </div> */}
                                 <div className="row">
                                     <div className="flex-fill">
                                         <FloatSelect
@@ -212,7 +340,10 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                             <div className="wr-pages-detail__content">
                                 <div className="row">
                                     <div className="flex-fill">
-                                        <FloatSelect label="은행명" />
+                                        <FloatSelect
+                                            label="은행명"
+                                            {...income_bank}
+                                        />
                                     </div>
                                     <div className="flex-fill">
                                         <FloatInput
@@ -255,22 +386,22 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                         <li className="wr-tab__line"></li>
                     </ul>
                     <div className="wr-pages-detail__body">
-                        {/* <QualManageTabpanel
+                        <OrgaQualManageTabpanel
                             id="tabpanelAsso"
                             tabId="tabAsso"
                             hidden={tab.id !== 'tabAsso'}
                             editable={editable}
-                            giaNo={giaNo}
-                            giaComp={giaComp}
-                            giaIndate={giaIndate}
-                            giaOutdate={giaOutdate}
-                            giaQualification={giaQualification}
-                            liaNo={liaNo}
-                            liaComp={liaComp}
-                            liaIndate={liaIndate}
-                            liaOutdate={liaOutdate}
-                            liaQualification={liaQualification}
-                        /> */}
+                            dNo={d_no}
+                            dWcode={d_wcode}
+                            dIndate={d_indate}
+                            dOutdate={d_outdate}
+                            dManager={d_manager}
+                            lNo={l_no}
+                            lWcode={l_wcode}
+                            lIndate={l_indate}
+                            lOutdate={l_outdate}
+                            lManager={l_manager}
+                        />
                         {/* <MyTabpanel id="test" tabId="test" hidden={false}>
                             <div className="row">
                                 <div className="flex-fill">

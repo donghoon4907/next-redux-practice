@@ -1,28 +1,16 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getAgenciesRequest } from '@actions/hr/get-agencys';
-import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 import { OrgaForm } from '@partials/hr/orga/OrgaForm';
 
 const CreateOrga: NextPage = () => {
-    const dispatch = useDispatch();
-
     // 탭 설정
-    useInitTab('영업가족등록');
-
-    useEffect(() => {
-        // 부서 선택 모달 열기
-        dispatch(showDepartSearchModal());
-    }, []);
+    useInitTab('영업조직등록');
 
     return (
         <>
@@ -40,24 +28,18 @@ const CreateOrga: NextPage = () => {
     );
 };
 
-// export const getServerSideProps = wrapper.getServerSideProps(
-//     permissionMiddleware(async ({ dispatch, sagaTask }) => {
-//         // dispatch(getOrgasRequest());
+export const getServerSideProps = wrapper.getServerSideProps(
+    permissionMiddleware(async ({ dispatch, sagaTask }) => {
+        dispatch(getCompaniesRequest('insu'));
 
-//         // dispatch(getBanksRequest());
+        dispatch(getCompaniesRequest('bank'));
 
-//         // dispatch(getAgenciesRequest());
+        dispatch(END);
 
-//         // dispatch(getCompaniesRequest('insu'));
+        await sagaTask?.toPromise();
 
-//         // dispatch(getCompaniesRequest('bank'));
-
-//         dispatch(END);
-
-//         await sagaTask?.toPromise();
-
-//         return null;
-//     }),
-// );
+        return null;
+    }),
+);
 
 export default CreateOrga;

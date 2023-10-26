@@ -12,6 +12,7 @@ import type { SearchUsersRequestPayload } from '@actions/hr/search-users.action'
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getInternalAxios } from '@utils/axios/internal';
+import { CreateOrgaRequestPayload } from '@actions/hr/create-orga.action';
 
 export function login(payload: LoginRequestPayload) {
     return getInternalAxios().post('/api/login', payload);
@@ -33,6 +34,14 @@ export function getPermission(payload: GetPermissionRequestPayload) {
     return getBackendAxios().get(
         `/orga/permission?division=${payload.division}`,
     );
+}
+
+export function beforeCreateOrga(payload: CreateOrgaRequestPayload) {
+    return axios.post('/api/create-orga', payload);
+}
+
+export function createOrga(payload: CreateOrgaRequestPayload) {
+    return getBackendAxios().post('/orga/new_orga', payload);
 }
 
 export function beforeCreateUser(payload: CreateUserRequestPayload) {
@@ -141,6 +150,8 @@ const rootServices = {
     logout,
     verify,
     getPermission,
+    beforeCreateOrga,
+    createOrga,
     beforeCreateUser,
     createUser,
     beforeUpdateUser,
