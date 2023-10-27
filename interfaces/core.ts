@@ -6,7 +6,6 @@ export interface CoreProps {
 
 export interface CorePayload {
     callback?: (props: any) => void;
-    successAction?: (props: any) => void;
 }
 
 export interface CorePaginateOption {

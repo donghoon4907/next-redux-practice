@@ -12,11 +12,12 @@ export const CreateOrgaActionTypes = {
 } as const;
 
 export interface CreateOrgaRequestPayload extends CorePayload {
-    orga_rank?: string;
-    orga_name?: string;
-    manager_id?: string;
-    status?: string;
-    indate?: string;
+    orga_rank: string;
+    orga_name: string;
+    upper_idx: string;
+    manager_id: string;
+    status: string;
+    indate: string;
     outdate?: string;
     postcode?: string;
     address1?: string;

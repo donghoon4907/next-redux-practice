@@ -11,7 +11,7 @@ export default async function handler(
     const idx = req.query.idx as string;
 
     try {
-        const { data } = await hrsService.getOrga({
+        const { data } = await hrsService.getSimpleOrga({
             idx,
         });
 

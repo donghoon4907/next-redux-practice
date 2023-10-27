@@ -9,10 +9,12 @@ import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
 import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum';
 import type { GetProductsRequestPayload } from '@actions/hr/get-products';
 import type { SearchUsersRequestPayload } from '@actions/hr/search-users.action';
+import type { CreateOrgaRequestPayload } from '@actions/hr/create-orga.action';
+import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas';
+import type { UpdateOrgaRequestPayload } from '@actions/hr/update-orga.action';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getInternalAxios } from '@utils/axios/internal';
-import { CreateOrgaRequestPayload } from '@actions/hr/create-orga.action';
 
 export function login(payload: LoginRequestPayload) {
     return getInternalAxios().post('/api/login', payload);
@@ -44,6 +46,14 @@ export function createOrga(payload: CreateOrgaRequestPayload) {
     return getBackendAxios().post('/orga/new_orga', payload);
 }
 
+export function beforeUpdateOrga(payload: UpdateOrgaRequestPayload) {
+    return axios.post('/api/create-orga', payload);
+}
+
+export function updateOrga(payload: UpdateOrgaRequestPayload) {
+    return getBackendAxios().post('/orga/new_orga', payload);
+}
+
 export function beforeCreateUser(payload: CreateUserRequestPayload) {
     return axios.post('/api/create-user', payload);
 }
@@ -53,11 +63,11 @@ export function createUser(payload: CreateUserRequestPayload) {
 }
 
 export function beforeUpdateUser(payload: UpdateUserRequestPayload) {
-    return axios.post('/api/update-user', payload);
+    return axios.post('/api/update-orga', payload);
 }
 
 export function updateUser(payload: UpdateUserRequestPayload) {
-    return getBackendAxios().post('/orga/user_update', payload);
+    return getBackendAxios().post('/orga/orga_update', payload);
 }
 
 export function getCompanies(payload: GetCompaniesRequestPayload) {
@@ -72,20 +82,37 @@ export function getAgencies() {
     return getBackendAxios().get('/common/agencycom');
 }
 
-export function getOrgas() {
-    return getBackendAxios().get(`/orga/simpleOrgas`);
+export function beforeGetOrgas(payload: GetOrgasRequestPayload) {
+    return axios.get('/api/get-orgas', {
+        params: {
+            rate: payload.rate,
+        },
+    });
 }
 
-export function beforeGetOrga(payload: GetOrgaRequestPayload) {
-    return axios.get('/api/get-orga', {
+export function getOrgas(payload: GetOrgasRequestPayload) {
+    let search = '';
+    if (payload.rate) {
+        search += `?rate=${payload.rate}`;
+    }
+
+    return getBackendAxios().get(`/orga/simpleOrgas${search}`);
+}
+
+export function beforeGetSimpleOrga(payload: GetOrgaRequestPayload) {
+    return axios.get('/api/get-simple-orga', {
         params: {
             idx: payload.idx,
         },
     });
 }
 
-export function getOrga(payload: GetOrgaRequestPayload) {
+export function getSimpleOrga(payload: GetOrgaRequestPayload) {
     return getBackendAxios().get(`/orga/getsimpleorgainfo/${payload.idx}`);
+}
+
+export function getOrga(payload: GetOrgaRequestPayload) {
+    return getBackendAxios().get(`/orga/orgainfo/${payload.idx}`);
 }
 
 export function beforeGetUsers(payload: GetUsersRequestPayload) {
@@ -152,6 +179,8 @@ const rootServices = {
     getPermission,
     beforeCreateOrga,
     createOrga,
+    beforeUpdateOrga,
+    updateOrga,
     beforeCreateUser,
     createUser,
     beforeUpdateUser,
@@ -159,8 +188,10 @@ const rootServices = {
     getCompanies,
     getCompanyRegNum,
     getAgencies,
+    beforeGetOrgas,
     getOrgas,
-    beforeGetOrga,
+    beforeGetSimpleOrga,
+    getSimpleOrga,
     getOrga,
     getUsers,
     beforeGetUsers,

@@ -2,13 +2,14 @@ import type { Reducer } from 'redux';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { Guarantee } from '@models/guarantee';
 import type { Code } from '@models/code';
-import type { OrgaDetail } from '@models/orga';
+import type { SimpleOrga } from '@models/orga';
 import type { Commission } from '@models/commission';
 import type { Product } from '@models/product';
 import type { SearchUsersSuccessPayload } from '@actions/hr/search-users.action';
 import type { SearchOrgasSuccessPayload } from '@actions/hr/search-orgas.action';
 import produce from 'immer';
 import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
+import { GetLazyOrgasActionTypes } from '@actions/hr/get-lazy-orgas';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
 import { GetUsersActionTypes } from '@actions/hr/get-users';
 import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
@@ -24,6 +25,7 @@ import { CommissionActionTypes } from '@actions/hr/set-commission.action';
 import { GetProductsActionTypes } from '@actions/hr/get-products';
 import { SearchUsersActionTypes } from '@actions/hr/search-users.action';
 import { SearchOrgasActionTypes } from '@actions/hr/search-orgas.action';
+import { GetLazyUsersActionTypes } from '@actions/hr/get-lazy-users';
 
 export interface HrState {
     /**
@@ -58,9 +60,9 @@ export interface HrState {
      */
     orgas: CoreSelectOption[];
     /**
-     * 부서상세
+     * 부서상세요약
      */
-    orga: OrgaDetail | null;
+    orga: SimpleOrga | null;
     /**
      * 영업가족 목록 - 간소화
      */
@@ -200,6 +202,7 @@ export const hrReducer: Reducer<HrState, any> = (
                 draft.agencies = action.payload;
                 break;
             }
+            case GetLazyOrgasActionTypes.SUCCESS:
             case GetOrgasActionTypes.SUCCESS: {
                 draft.orgas = action.payload;
                 break;
@@ -208,6 +211,7 @@ export const hrReducer: Reducer<HrState, any> = (
                 draft.orga = action.payload;
                 break;
             }
+            case GetLazyUsersActionTypes.SUCCESS:
             case GetUsersActionTypes.SUCCESS: {
                 draft.users = action.payload;
                 break;

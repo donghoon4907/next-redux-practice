@@ -1,5 +1,4 @@
 import type { Action } from 'redux';
-import type { CorePayload } from '@interfaces/core';
 import type { Orga } from '@models/orga';
 
 export const GET_ORGAS_KEY = 'GET_ORGAS';
@@ -10,17 +9,26 @@ export const GetOrgasActionTypes = {
     FAILURE: `${GET_ORGAS_KEY}_FAILURE`,
 } as const;
 
+export interface GetOrgasRequestPayload {
+    rate?: string;
+}
+
 export type GetOrgasSuccessPayload = Orga[];
 
-export interface GetOrgasRequestAction extends Action<string> {}
+export interface GetOrgasRequestAction extends Action<string> {
+    payload: GetOrgasRequestPayload;
+}
 
 export interface GetOrgasSuccessAction extends Action<string> {
     payload: GetOrgasSuccessPayload;
 }
 
-export function getOrgasRequest(): GetOrgasRequestAction {
+export function getOrgasRequest(
+    payload: GetOrgasRequestPayload,
+): GetOrgasRequestAction {
     return {
         type: GetOrgasActionTypes.REQUEST,
+        payload,
     };
 }
 

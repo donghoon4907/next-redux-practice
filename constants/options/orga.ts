@@ -3,11 +3,6 @@ import type { CoreSelectOption } from '@interfaces/core';
 // 조직등급
 const GRADE: CoreSelectOption[] = [
     {
-        label: '회사',
-        value: '1',
-        isFixed: false,
-    },
-    {
         label: '본부',
         value: '2',
         isFixed: false,
@@ -28,6 +23,11 @@ const GRADE2: CoreSelectOption[] = [
     {
         label: '전체',
         value: '',
+        isFixed: false,
+    },
+    {
+        label: '회사',
+        value: '1',
         isFixed: false,
     },
     ...GRADE,

@@ -29,7 +29,7 @@ export const SetPostcodeInput: FC<Props> = ({
                         label="우편번호"
                         disabled
                         {...postcodeHooks}
-                        onSearch={onClickPostcode}
+                        onSearch={!disabled ? onClickPostcode : undefined}
                     />
                 </div>
                 <div className="flex-fill">

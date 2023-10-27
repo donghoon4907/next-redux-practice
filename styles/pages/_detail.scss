@@ -2,18 +2,42 @@
     flex: 1;
     display: flex;
     flex-direction: row;
-    gap: $wr-gutter-size;
+    gap: $wr-detail-gutter-size;
     --wr-tab-active-color: white;
+
+    & .row {
+        gap: $wr-detail-gutter-size;
+    }
+
+    & .wr-mt {
+        margin-top: $wr-detail-gutter-size !important;
+    }
 
     & svg {
         color: $wr-primary-color;
     }
-
+    // 데이트피커 - disabled 스타일
+    .rs-picker-default.rs-picker-disabled .rs-picker-toggle,
+    .rs-picker-input.rs-picker-disabled .rs-picker-toggle,
+    .rs-picker-default.rs-picker-disabled .rs-btn,
+    .rs-picker-input.rs-picker-disabled .rs-btn {
+        background-color: inherit !important;
+    }
+    // 데이트피커 - 일반 스타일
     & .rs-picker-default .rs-btn,
     .rs-picker-input .rs-btn,
     .rs-picker-default .rs-picker-toggle,
     .rs-picker-input .rs-picker-toggle {
         background-color: inherit !important;
+    }
+
+    & .rs-picker {
+        padding-right: 9px;
+        padding-left: $wr-detail-input-padding-left;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     & .rs-picker-toggle-placeholder,
@@ -25,24 +49,23 @@
         opacity: 1 !important;
     }
 
-    & .rs-picker-toggle-textbox {
-        font-size: 16px !important;
+    & .rs-picker-toggle-textbox,
+    & .rs-picker-toggle-value {
+        font-size: $wr-detail-input-font-size !important;
         padding-left: 0 !important;
-        color: $black;
+        color: $wr-detail-input-color;
         background-color: inherit !important;
+        font-weight: $wr-detail-input-font-weight !important;
     }
 
     .rs-picker-toggle-textbox::placeholder {
+        font-size: $wr-detail-input-font-size !important;
         color: $wr-detail-input-placeholder-color !important;
+        font-weight: $wr-detail-input-font-weight !important;
     }
 
     & .rs-picker-toggle {
         border: none !important;
-    }
-
-    & .rs-picker-toggle-value {
-        font-size: 16px !important;
-        color: $black !important;
     }
 
     .rs-picker-default .rs-picker-toggle.rs-btn {
@@ -60,13 +83,20 @@
         height: 100%;
         flex-shrink: 0;
         flex-grow: 0;
-        background-color: white;
-        border-radius: 2px;
-        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+        // 디자인 시안
+        // background-color: white;
+        // border-radius: 2px;
+        // box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+        // 스크롤 제거
+        &::-webkit-scrollbar {
+            width: 0px;
+            height: 0px;
+        }
     }
 
     &__inner {
-        padding: $wr-gutter-size;
+        // 디자인 시안
+        // padding: $wr-gutter-size;
     }
 
     &__right {
@@ -132,7 +162,7 @@
     }
 
     &__content {
-        padding: $wr-gutter-size;
+        padding: $wr-detail-gutter-size;
         position: relative;
 
         & .accordion-item {
@@ -157,7 +187,7 @@
         }
 
         & + & {
-            border-top: 1px solid $wr-divider-color-300;
+            border-top: 1px solid $wr-divider-color;
         }
     }
 
@@ -166,7 +196,7 @@
         justify-content: space-between;
         align-items: center;
         flex: 1;
-        gap: $wr-gutter-size;
+        gap: $wr-detail-gutter-size;
         height: 36px;
     }
 

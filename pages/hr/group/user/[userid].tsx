@@ -272,7 +272,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         const userid = query.userid as string;
 
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
 
         dispatch(getAgenciesRequest());
 

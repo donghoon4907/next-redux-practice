@@ -1,6 +1,5 @@
 import type { Action } from 'redux';
 import type { CorePayload } from '@interfaces/core';
-import type { OrgaDetail } from '@models/orga';
 
 export const GET_ORGA_KEY = 'GET_ORGA';
 
@@ -14,7 +13,7 @@ export interface GetOrgaRequestPayload extends CorePayload {
     idx: string;
 }
 
-export type GetOrgaSuccessPayload = OrgaDetail;
+export type GetOrgaSuccessPayload = any;
 
 export interface GetOrgaRequestAction extends Action<string> {
     payload: GetOrgaRequestPayload;

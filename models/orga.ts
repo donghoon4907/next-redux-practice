@@ -4,7 +4,7 @@ export type Orga = {
     orga_rank?: number;
 };
 
-export type OrgaDetail = {
+export type SimpleOrga = {
     idx: number;
     orga_name: string;
     tel: string;

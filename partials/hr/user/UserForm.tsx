@@ -378,7 +378,7 @@ export const UserForm: FC<Props> = ({
     const { lastSetPortraitImageFile, lastSetPortraitImagePreview } =
         useSelector<AppState, UploadState>((state) => state.upload);
 
-    const getOrga = useApi(getOrgaRequest);
+    const getSimpleOrga = useApi(getOrgaRequest);
 
     const createUser = useApi(createUserRequest);
 
@@ -938,7 +938,7 @@ export const UserForm: FC<Props> = ({
 
     useEffect(() => {
         if (selectedOrga) {
-            getOrga({ idx: selectedOrga.value });
+            getSimpleOrga({ idx: selectedOrga.value });
         }
     }, [selectedOrga]);
 

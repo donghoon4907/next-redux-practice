@@ -27,7 +27,7 @@ const Users: NextPage = () => {
     const columns = useColumn(searchUsers.fields);
 
     const handleClickRow = ({ userid }: any) => {
-        router.replace(`${router.pathname}/${userid}`);
+        router.push(`${router.pathname}/${userid}`);
     };
 
     return (

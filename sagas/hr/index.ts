@@ -3,7 +3,7 @@ import { all, fork } from 'redux-saga/effects';
 import { watchLogin } from './login';
 import { watchCreateUser } from './create-user';
 import { watchGetOrgas } from './get-orgas';
-import { watchGetOrga } from './get-orga';
+import { watchGetLazyOrgas } from './get-lazy-orgas';
 import { watchGetUsers } from './get-users';
 import { watchGetCompanies } from './get-companies';
 import { watchGetAgencies } from './get-agencies';
@@ -14,6 +14,10 @@ import { watchSearchUsers } from './search-users';
 import { watchSearchOrgas } from './search-orgas';
 import { watchLogout } from './logout';
 import { watchCreateOrga } from './create-orga';
+import { watchGetOrga } from './get-orga';
+import { watchGetLazyUsers } from './get-lazy-users';
+import { watchGetLazySimpleOrga } from './get-lazy-simple-orga';
+import { watchUpdateOrga } from './update-orga';
 // import { watchGetPermission } from './get-permission';
 // import { watchGetIp } from './get-ip';
 // import { watchGetUser } from './get-user';
@@ -23,10 +27,14 @@ export function* hrSaga() {
         fork(watchLogin),
         fork(watchLogout),
         fork(watchCreateOrga),
+        fork(watchUpdateOrga),
         fork(watchCreateUser),
         fork(watchUpdateUser),
         fork(watchGetOrgas),
+        fork(watchGetLazyOrgas),
         fork(watchGetOrga),
+        fork(watchGetLazySimpleOrga),
+        fork(watchGetLazyUsers),
         fork(watchGetUsers),
         // fork(watchGetUser),
         fork(watchGetCompanies),

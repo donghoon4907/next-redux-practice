@@ -1,5 +1,5 @@
 import type { Action } from 'redux';
-import type { CorePayload, CoreSelectOption } from '@interfaces/core';
+import type { CoreSelectOption } from '@interfaces/core';
 
 export const GET_USERS_KEY = 'GET_USERS';
 
@@ -9,7 +9,7 @@ export const GetUsersActionTypes = {
     FAILURE: `${GET_USERS_KEY}_FAILURE`,
 } as const;
 
-export interface GetUsersRequestPayload extends CorePayload {
+export interface GetUsersRequestPayload {
     idx: string;
 }
 

@@ -7,6 +7,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 import { OrgaForm } from '@partials/hr/orga/OrgaForm';
+import { getUsersRequest } from '@actions/hr/get-users';
 
 const CreateOrga: NextPage = () => {
     // 탭 설정
@@ -33,6 +34,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
         dispatch(getCompaniesRequest('insu'));
 
         dispatch(getCompaniesRequest('bank'));
+
+        dispatch(getUsersRequest({ idx: '1' }));
 
         dispatch(END);
 

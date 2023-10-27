@@ -100,23 +100,43 @@ export const AssoCodeTemplate: FC<Props> = ({
                 <div className="wr-pages-detail__content">
                     <div className="row">
                         <div className="flex-fill">
-                            <FloatInput label="등록번호" {...no} />
+                            <FloatInput
+                                label="등록번호"
+                                disabled={!editable}
+                                {...no}
+                            />
                         </div>
                         <div className="flex-fill">
-                            <FloatDatepicker label="등록일" hooks={indate} />
+                            <FloatDatepicker
+                                label="등록일"
+                                disabled={!editable}
+                                hooks={indate}
+                            />
                         </div>
                     </div>
                     <div className="row wr-mt">
                         <div className="flex-fill">
-                            <FloatSelect label="등록보험사" {...company} />
+                            <FloatSelect
+                                label="등록보험사"
+                                {...company}
+                                isDisabled={!editable}
+                            />
                         </div>
                         <div className="flex-fill">
-                            <FloatSelect label="지점장" {...manager} />
+                            <FloatSelect
+                                label="지점장"
+                                {...manager}
+                                isDisabled={!editable}
+                            />
                         </div>
                     </div>
                     <div className="row wr-mt">
                         <div className="flex-fill">
-                            <FloatDatepicker label="해촉일" hooks={outdate} />
+                            <FloatDatepicker
+                                label="해촉일"
+                                disabled={!editable}
+                                hooks={outdate}
+                            />
                         </div>
                         <div className="flex-fill"></div>
                     </div>
@@ -148,18 +168,10 @@ export const AssoCodeTemplate: FC<Props> = ({
                                 </th>
                             )}
 
-                            <th style={{ width: 130 }}>
-                                <strong>보험사</strong>
-                            </th>
-                            <th>
-                                <strong>코드</strong>
-                            </th>
-                            <th>
-                                <strong>비밀번호</strong>
-                            </th>
-                            <th>
-                                <strong>인증번호</strong>
-                            </th>
+                            <th style={{ width: 130 }}>보험사</th>
+                            <th>코드</th>
+                            <th>비밀번호</th>
+                            <th>인증번호</th>
                         </tr>
                     </thead>
                     <tbody>

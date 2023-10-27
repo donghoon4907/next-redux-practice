@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { MyTable } from '@components/table';
@@ -19,13 +20,14 @@ import { generateListParams } from '@utils/generate';
 const Orgas: NextPage = () => {
     const displayName = 'wr-pages-list2';
 
+    const router = useRouter();
+
     const { searchOrgas } = useSelector<AppState, HrState>((props) => props.hr);
 
     const columns = useColumn(searchOrgas.fields);
 
-    const handleClickRow = () => {
-        alert('준비중입니다.');
-        // router.replace(`/hr/user/${userid}`);
+    const handleClickRow = ({ idx }: any) => {
+        router.push(`${router.pathname}/${idx}`);
     };
 
     return (
@@ -80,7 +82,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         }
 
         // 영업조직 목록
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
         // 조직 목록
         dispatch(searchOrgasRequest(params));
 
