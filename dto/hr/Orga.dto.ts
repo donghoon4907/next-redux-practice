@@ -9,8 +9,36 @@ class OrgaDTO {
     };
 
     requiredValidate = () => {
-        const { orga_rank, orga_name, manager_id, status, indate } =
+        const { orga_rank, orga_name, manager_id, status, indate, insucode } =
             this.payload;
+
+        // 코드 유효성 검사
+        for (let i = 0; i < insucode.length; i++) {
+            const { wcode, fccode, dist } = insucode[i];
+            if (!wcode || !fccode) {
+                let message = '';
+
+                if (!wcode) {
+                    message += '보험사를 ';
+                } else if (!fccode) {
+                    message += '코드를 ';
+                }
+
+                message += '설정하지 않은 ';
+
+                if (dist === '손보') {
+                    message += '손해';
+                } else {
+                    message += '생명';
+                }
+
+                message += '보험사코드가 있습니다.';
+
+                alert(message);
+
+                return false;
+            }
+        }
 
         if (isEmpty(orga_rank)) {
             alert('조직등급을 선택해주세요.');

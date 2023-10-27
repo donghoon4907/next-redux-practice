@@ -73,7 +73,11 @@ export const useInput: UseInputFunction = (defaultValue, where = {}) => {
         where.callbackOnChange?.(nextVal);
     };
 
-    let output: UseInputOutput = { value, onChange };
+    const onBlur = () => {
+        where.callbackOnBlur?.(value);
+    };
+
+    let output: UseInputOutput = { value, onChange, onBlur };
 
     if (where.maxLength) {
         output.maxLength = where.maxLength;

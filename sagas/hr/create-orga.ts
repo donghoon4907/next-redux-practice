@@ -12,9 +12,9 @@ function* createOrgaSaga({ payload }: CreateOrgaRequestAction) {
 
     const { data } = yield call(hrsService.beforeCreateOrga, rest);
 
-    const { orgaid, Message } = data;
+    const { idx, Message } = data;
 
-    if (!orgaid) {
+    if (!idx) {
         alert(Message);
     }
 

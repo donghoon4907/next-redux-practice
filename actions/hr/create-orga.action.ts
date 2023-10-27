@@ -28,7 +28,7 @@ export interface CreateOrgaRequestPayload extends CorePayload {
     tel?: string;
     fax?: string;
     associate: Associate[];
-    fccode: Code[];
+    insucode: Code[];
 }
 
 export interface CreateOrgaRequestAction extends Action<string> {

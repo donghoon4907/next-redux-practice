@@ -5,7 +5,7 @@ import { DatePicker } from 'rsuite';
 import dayjs from 'dayjs';
 
 export interface MyDatepickerProps extends PickerBaseProps {
-    id: string;
+    id?: string;
     readOnly?: boolean;
     /**
      * Date format

@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { Code } from '@models/code';
+import type { CoreSelectOption } from '@interfaces/core';
 import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useInput } from '@hooks/use-input';
@@ -15,120 +16,80 @@ import { findSelectOption } from '@utils/getter';
 import { CodeDTO } from '@dto/hr/Code.dto';
 
 interface Props extends Code {
-    hidden?: boolean;
+    companies: CoreSelectOption[];
 }
 
-export const UpdateCodeTemplate: FC<Props> = ({ hidden, ...code }) => {
+export const UpdateCodeTemplate: FC<Props> = ({ companies, ...code }) => {
     const dispatch = useDispatch();
 
-    const { allCompanies } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
-
-    const filteredCompany = useMemo(
-        () => allCompanies.filter((v) => v.origin.dist === code.dist),
-        [],
-    );
-
     // 보험사
-    const [company, setCompany] = useSelect(
-        filteredCompany,
-        findSelectOption(code.wcode, filteredCompany),
+    const [company] = useSelect(
+        companies,
+        findSelectOption(code.wcode, companies),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    dispatch(
+                        updateCode({
+                            index: code.index,
+                            wcode: +next.value,
+                            company: next.label,
+                        }),
+                    );
+                }
+            },
+        },
     );
     // 코드
-    const [fccode, setFccode] = useInput(code.fccode || '', { noSpace: true });
-    // 비밀번호
-    const [password, setPassword] = useInput(code.password || '', {
+    const [fccode] = useInput(code.fccode || '', {
         noSpace: true,
-    });
-    // 인증번호
-    const [centval, setCentval] = useInput(code.cent_val || '', {
-        noSpace: true,
-    });
-
-    const handleBackup = () => {
-        const tf = confirm('초기 설정으로 변경하시겠습니까?');
-
-        if (tf) {
-            setCompany(findSelectOption(code.wcode, filteredCompany));
-
-            setFccode(code.fccode || '');
-
-            setPassword(code.password || '');
-
-            setCentval(code.cent_val || '');
-        }
-    };
-
-    const handleUpdate = () => {
-        const payload = createPayload();
-
-        const updateCodeDto = new CodeDTO(payload);
-
-        if (updateCodeDto.requiredValidate()) {
+        callbackOnBlur: (next) => {
             dispatch(
                 updateCode({
-                    ...code,
-                    ...updateCodeDto.getPayload(),
+                    index: code.index,
+                    fccode: next,
                 }),
             );
-        }
-    };
-
-    const createPayload = useCallback(() => {
-        const payload: any = {
-            index: code.index,
-        };
-
-        if (company.value) {
-            payload['wcode'] = +company.value.value;
-        }
-
-        if (!isEmpty(fccode.value)) {
-            payload['fccode'] = fccode.value;
-        }
-
-        if (!isEmpty(password.value)) {
-            payload['password'] = password.value;
-        }
-
-        if (!isEmpty(centval.value)) {
-            payload['cent_val'] = centval.value;
-        }
-
-        return payload;
-    }, [company, fccode, password, centval]);
-
-    useEffect(() => {
-        if (hidden) {
-            handleUpdate();
-        }
-    }, [hidden]);
+        },
+    });
+    // 비밀번호
+    const [password] = useInput(code.password || '', {
+        noSpace: true,
+        callbackOnBlur: (next) => {
+            dispatch(
+                updateCode({
+                    index: code.index,
+                    password: next,
+                }),
+            );
+        },
+    });
+    // 인증번호
+    const [centval] = useInput(code.cent_val || '', {
+        noSpace: true,
+        callbackOnBlur: (next) => {
+            dispatch(
+                updateCode({
+                    index: code.index,
+                    cent_val: next,
+                }),
+            );
+        },
+    });
 
     return (
         <>
-            <td hidden={hidden}>
+            <td>
                 <MySelect placeholder="선택" {...company} />
             </td>
-            <td hidden={hidden}>
+            <td>
                 <MyInput placeholder="코드" {...fccode} />
             </td>
-            <td hidden={hidden}>
+            <td>
                 <MyInput placeholder="비밀번호" {...password} />
             </td>
-            <td hidden={hidden}>
+            <td>
                 <MyInput placeholder="인증번호" {...centval} />
-            </td>
-            <td hidden={hidden}>
-                <div className="d-flex justify-content-center align-items-center">
-                    <MyButton
-                        type="button"
-                        className="btn-success btn-sm"
-                        onClick={handleBackup}
-                    >
-                        원래대로
-                    </MyButton>
-                </div>
             </td>
         </>
     );

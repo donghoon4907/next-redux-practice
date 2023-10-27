@@ -3,3 +3,5 @@ export type Company = {
     dist?: string;
     name: string;
 };
+
+export type CompanyDist = '손보' | '생보';

@@ -54,9 +54,10 @@ interface Props {
 export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
     const displayName = 'wr-pages-orga-detail';
 
-    const { users, banks, allCompanies } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
+    const { users, banks, allCompanies, codes } = useSelector<
+        AppState,
+        HrState
+    >((state) => state.hr);
 
     const dispatch = useDispatch();
 
@@ -188,6 +189,7 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                     manager_id: l_manager.value ? l_manager.value.value : null,
                 },
             ],
+            insucode: codes,
         };
 
         if (orga_rank.value) {
@@ -239,7 +241,7 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
         }
 
         if (income_bank.value) {
-            payload['income_bank'] = income_bank.value;
+            payload['income_bank'] = income_bank.value.value;
         }
 
         if (!isEmpty(income_name.value)) {
@@ -391,16 +393,16 @@ export const OrgaForm: FC<Props> = ({ mode, userid = '', idx = -1 }) => {
                             tabId="tabAsso"
                             hidden={tab.id !== 'tabAsso'}
                             editable={editable}
-                            dNo={d_no}
-                            dWcode={d_wcode}
-                            dIndate={d_indate}
-                            dOutdate={d_outdate}
-                            dManager={d_manager}
-                            lNo={l_no}
-                            lWcode={l_wcode}
-                            lIndate={l_indate}
-                            lOutdate={l_outdate}
-                            lManager={l_manager}
+                            d_no={d_no}
+                            d_company={d_wcode}
+                            d_indate={d_indate}
+                            d_outdate={d_outdate}
+                            d_manager={d_manager}
+                            l_no={l_no}
+                            l_company={l_wcode}
+                            l_indate={l_indate}
+                            l_outdate={l_outdate}
+                            l_manager={l_manager}
                         />
                         {/* <MyTabpanel id="test" tabId="test" hidden={false}>
                             <div className="row">
