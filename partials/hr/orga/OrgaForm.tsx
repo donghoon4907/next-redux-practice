@@ -400,7 +400,7 @@ export const OrgaForm: FC<Props> = ({
 
     return (
         <>
-            <form className={`${displayName} wr-pages-detail`}>
+            <div className={`${displayName} wr-pages-detail wr-frame__tabbody`}>
                 <div className={`${displayName}__left wr-pages-detail__left`}>
                     <div className="wr-pages-detail__inner">
                         <div className="wr-pages-detail__block">
@@ -609,7 +609,7 @@ export const OrgaForm: FC<Props> = ({
                         </MyTabpanel> */}
                     </div>
                 </div>
-            </form>
+            </div>
             <MyFooter>
                 <div className="wr-footer__between">
                     <div></div>
