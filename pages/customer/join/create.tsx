@@ -45,7 +45,7 @@ const CreateCustomer: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
 
         dispatch(getCompaniesRequest('long-view'));
 

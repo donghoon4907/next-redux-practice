@@ -12,7 +12,7 @@ export default async function handler(
 
     try {
         const { data } = await hrsService.getOrgas({
-            idx: idx as string,
+            // idx: idx as string,
             rate: rate as string,
         });
 

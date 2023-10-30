@@ -39,6 +39,7 @@
     position: relative;
     color: $wr-detail-input-color;
     padding: 8.5px 14px;
+    border-radius: 5px;
 
     &--active {
         background: $white !important;
@@ -122,6 +123,8 @@
         line-height: 12px;
         font-size: 11px;
         color: #3556a9;
+        background-color: $white;
+        padding: 0 3px;
     }
 
     &::placeholder {

@@ -83,7 +83,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         dispatch(getCompaniesRequest('long-view'));
 
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
 
         dispatch(END);
 

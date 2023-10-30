@@ -55,9 +55,9 @@ export const AssociationRegistTabpanel: FC<Props> = ({
 
     const labelType = editable ? 'active' : 'disable';
 
-    const filteredDamages = codes.filter((v) => v.dist === '손해');
+    const filteredDamages = codes.filter((v) => v.dist === '손보');
 
-    const filteredLifes = codes.filter((v) => v.dist === '생명');
+    const filteredLifes = codes.filter((v) => v.dist === '생보');
 
     const handleShowSettingModal = () => {
         dispatch(showCodeSettingModal());

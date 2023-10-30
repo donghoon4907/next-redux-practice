@@ -73,7 +73,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         const idx = query.idx as string;
 
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
 
         dispatch(getCompaniesRequest('gen-use'));
 

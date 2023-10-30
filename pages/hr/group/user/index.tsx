@@ -76,7 +76,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         const params = generateListParams(condition, ctx.query);
 
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
 
         dispatch(searchUsersRequest(params));
 

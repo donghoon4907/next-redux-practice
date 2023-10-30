@@ -23,7 +23,7 @@
 
         &::before {
             content: '';
-            background-image: url('http://via.placeholder.com/38x38');
+            background-image: url(/static/images/logo2.png);
             background-size: cover; /* 이미지를 요소 크기에 맞게 확대 또는 축소 */
             position: absolute; /* 이미지 위치를 조절하기 위해 절대 위치로 설정 */
             top: 0; /* 위쪽 여백 조절 */

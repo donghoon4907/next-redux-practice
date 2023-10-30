@@ -45,7 +45,7 @@ const CreateGeneral: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
 
         dispatch(getCompaniesRequest('gen-use'));
 

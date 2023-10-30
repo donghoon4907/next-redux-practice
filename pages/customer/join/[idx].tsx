@@ -216,7 +216,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         dispatch(getCompaniesRequest('insu'));
 
-        dispatch(getOrgasRequest());
+        dispatch(getOrgasRequest({}));
 
         dispatch(
             getUsersRequest({
