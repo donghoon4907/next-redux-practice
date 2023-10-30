@@ -16,7 +16,7 @@ import { SearchFilterKeywordInput } from '@partials/common/input/SearchFilterKey
 import { findSelectOption } from '@utils/getter';
 import { SearchFilterDateTypeLabel } from '@partials/common/label/SearchFilterDateType';
 import { SearchFilterUserCheckbox } from '@partials/common/checkbox/SearchFilterCheckUser';
-import { SearchFilterCollapseButton } from '@components/SearchFilterCollapse';
+import { CollapseButton } from '@components/Collapse';
 import { SearchFilterCompanySelect } from '@partials/common/select/SearchFilterCompany';
 import { SearchFilterLongSpecSelect } from '@partials/common/select/SearchFilterLongSpec';
 import { SearchFilterSourcerootSelect } from '@partials/common/select/SearchFilterSourceroot';
@@ -92,7 +92,11 @@ export const LongSearchFilter: FC<Props> = () => {
 
     return (
         <SearchFilterForm>
-            <SearchFilterCollapseButton expand={expand} setExpand={setExpand} />
+            <CollapseButton
+                type="horizontal"
+                expand={expand}
+                setExpand={setExpand}
+            />
             <div className={`${displayName}__filters`}>
                 <div className={`${displayName}__filterrow`}>
                     <div className={`${displayName}__filter`}>

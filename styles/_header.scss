@@ -1,53 +1,37 @@
 .wr-header {
     width: 100%;
-    // background-color: $wr-header-color;
-}
+    background-color: $wr-header-color;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
 
-.wr-meta {
-    height: 35px;
-    // background-color: $white;
-
-    &__inner {
-        height: 100%;
-        margin: 0 10px;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        gap: 10px;
-        color: $black;
-    }
-
-    &__left {
-        flex: 1;
+    &__logo {
+        background-color: $wr-header-color;
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        gap: 10px;
+        padding: 0 23px;
     }
 
-    &__right {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-    }
+    &__title {
+        padding-left: 53px;
+        font-size: 16px;
+        color: $white;
+        font-weight: 700;
+        position: relative;
+        height: 38px;
 
-    &__department {
-        font-size: 12px;
-        // margin-right: 10px;
-    }
-
-    &__username {
-        text-align: right;
-        font-weight: bold;
-        font-size: 14px;
-    }
-
-    &__log {
-        // margin-right: 20px;
-        font-size: 10px;
-        color: $wr-label-color;
-        margin-left: 50px;
+        &::before {
+            content: '';
+            background-image: url('http://via.placeholder.com/38x38');
+            background-size: cover; /* 이미지를 요소 크기에 맞게 확대 또는 축소 */
+            position: absolute; /* 이미지 위치를 조절하기 위해 절대 위치로 설정 */
+            top: 0; /* 위쪽 여백 조절 */
+            left: 0; /* 왼쪽 여백 조절 */
+            display: block;
+            width: 38px;
+            height: 38px;
+        }
     }
 }
 
@@ -113,15 +97,19 @@
     }
 
     &__menuitem {
-        float: left;
-        color: #fff;
-        font-size: 18px;
-        line-height: inherit;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 90px;
+        gap: 5px;
+        cursor: pointer;
 
-        & > a {
-            display: inline-block;
-            vertical-align: top;
-            overflow: hidden;
+        & + & {
+            border-left: 2px solid #476fd3;
+        }
+
+        & svg {
+            fill: $white;
         }
     }
 
@@ -142,16 +130,15 @@
     }
 
     &__title {
-        font-size: 14px;
-        line-height: 1.5;
-        font-weight: 500;
-        height: 24px;
+        font-size: 20px;
+        line-height: 20px;
+        font-weight: 700;
         position: relative;
-        display: inline-block;
-        color: #333;
-        vertical-align: top;
-        margin-left: 10px;
-        margin-right: 7px;
+        color: $white !important;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     &__subtitle {
@@ -211,59 +198,5 @@
             align-items: center;
             padding: 8px;
         }
-    }
-}
-
-.wr-lnb {
-    position: relative;
-    overflow: hidden;
-
-    &__inner {
-        position: relative;
-        display: flex;
-
-        & .nav {
-            height: 35px;
-        }
-    }
-
-    &__right {
-        flex: 1;
-        border-bottom: 1px solid $wr-divider-color-300;
-        // position: absolute;
-        // top: 50%;
-        // right: 0;
-        // transform: translateY(-50%);
-        // text-align: right;
-    }
-
-    &__metadata {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        font-size: 12px;
-        color: $gray-100;
-        font-weight: bold;
-        margin-right: 10px;
-    }
-}
-
-.wr-logo {
-    &__link {
-        display: block;
-        overflow: hidden;
-        padding: 0 10 0 15px;
-        height: 52px;
-        line-height: 52px;
-        text-align: center;
-    }
-
-    &__icon {
-        width: 180px;
-        height: 50px;
-        display: inline-block;
-        // margin: 17px auto 0;
-        vertical-align: top;
-        color: transparent;
     }
 }

@@ -11,10 +11,10 @@ $wr-filter-height: 30px;
 $wr-detail-filter-height: 36px;
 $wr-list-filter-height: 30px;
 $wr-border-radius: 0;
-$wr-header-size: 110px;
+$wr-header-size: 70px;
 $wr-footer-size: 70px;
-$wr-tab-size: 35px;
-$wr-nav-width: 150px;
+$wr-tab-size: 32px;
+$wr-nav-width: 220px;
 $wr-layout-width: calc(100vw - $wr-nav-width);
 // z-index
 $wr-gnb-index: 1049;
@@ -79,7 +79,7 @@ $wr-detail-input-padding-right: 14px;
 $wr-detail-input-padding-left: 14px;
 
 // $wr-header-color: #1466a4;
-$wr-header-color: $wr-primary-color;
+$wr-header-color: #2851b6;
 $wr-label-color: #aaa;
 $wr-with-label-active: #e7edcb;
 $wr-with-label-disable: #e2eaf2;

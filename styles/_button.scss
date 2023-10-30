@@ -14,3 +14,64 @@
         gap: 5px;
     }
 }
+
+.wr-collapse-btn {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &.vertical {
+        height: 100%;
+        top: 50%;
+        left: 100%;
+        transform: translate3d(0, -50%, 0);
+    }
+
+    &.horizontal {
+        width: 100%;
+        top: 100%;
+        left: 0;
+    }
+
+    &.vertical.expanded {
+        left: calc(100% - 10px);
+    }
+
+    &.horizontal.expanded {
+        top: calc(100% - 8px);
+    }
+
+    & button {
+        background: $wr-primary-color;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        padding: 0;
+    }
+
+    & button.vertical {
+        width: 10px;
+        height: 216px;
+        border-radius: 0px 20px 20px 0px;
+    }
+
+    & button.horizontal {
+        width: 216px;
+        height: 10px;
+        border-radius: 0px 0px 20px 20px;
+    }
+
+    & button.vertical.expanded {
+        border-radius: 20px 0px 0px 20px;
+    }
+
+    & button.horizontal.expanded {
+        border-radius: 20px 20px 0px 0px;
+    }
+
+    & svg {
+        color: $white;
+    }
+}

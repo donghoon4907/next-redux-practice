@@ -3,12 +3,24 @@
         height: $wr-header-size;
     }
 
+    &__history {
+        height: $wr-tab-size;
+    }
+
+    &__main {
+        height: calc(100vh - $wr-header-size);
+    }
+
     &__body {
-        height: calc(100vh - $wr-header-size - $wr-footer-size);
+        height: calc(100vh - $wr-header-size - $wr-tab-size);
 
         &--nofooter {
             height: calc(100vh - $wr-header-size);
         }
+    }
+
+    &__nav {
+        height: calc(100vh - $wr-header-size);
     }
 
     &__tabbody {

@@ -1,28 +1,38 @@
 import type { FC } from 'react';
 import type { CoreProps } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
-import type { GnbState } from '@reducers/gnb';
 import { useSelector } from 'react-redux';
 
 import { MyNav } from './nav';
 import { MyHeader } from './header';
+import { MyHistories } from './header/Histories';
+import { DrawerState } from '@reducers/drawer';
 
 interface Props extends CoreProps {}
 
 export const MyLayout: FC<Props> = ({ children }) => {
-    const { activeGnb } = useSelector<AppState, GnbState>((state) => state.gnb);
+    const displayName = 'wr-layout';
+
+    const { isOpen } = useSelector<AppState, DrawerState>(
+        (state) => state.drawer,
+    );
 
     return (
-        <div className="wr-layout">
-            <nav className="wr-layout__left">
-                <MyNav menu={activeGnb} />
-            </nav>
-            <div className="wr-layout__right">
-                <MyHeader />
-                <main className="wr-layout__main wr-frame__body--nofooter">
-                    <div className="wr-layout__inner">{children}</div>
-                </main>
-            </div>
+        <div className={displayName}>
+            <MyHeader />
+            <main className={`${displayName}__main wr-frame__main`}>
+                <MyNav />
+                <div
+                    className={`${displayName}__inner ${
+                        isOpen ? 'narrowed' : ''
+                    }`}
+                >
+                    <MyHistories />
+                    <div className={`${displayName}__content wr-frame__body`}>
+                        {children}
+                    </div>
+                </div>
+            </main>
         </div>
     );
 };

@@ -20,6 +20,8 @@ import { IconWrapper } from '@components/IconWrapper';
 import { GnbMenuItem } from './GnbMenuItem';
 import { GnbSubMenuItem } from './GnbSubMenuItem';
 import { HeaderNav } from './Nav';
+import Link from 'next/link';
+import { BsBookmark } from 'react-icons/bs';
 // import { useSelect } from '@hooks/use-select';
 // import { MyInput } from '@components/input';
 // import { useApi } from '@hooks/use-api';
@@ -28,6 +30,7 @@ import { HeaderNav } from './Nav';
 interface Props {}
 
 export const MyHeader: FC<Props> = () => {
+    const displayName = 'wr-header';
     // const logout = useApi(logoutRequest);
 
     const handleLogout = () => {
@@ -68,9 +71,25 @@ export const MyHeader: FC<Props> = () => {
     // });
 
     return (
-        <header className="wr-header wr-frame__header">
-            <div className="wr-meta">
-                {/* <div className="wr-meta__inner">
+        <header className={`${displayName} wr-frame__header`}>
+            <div className={`${displayName}__logo`}>
+                <Link href="/">
+                    <div className={`${displayName}__title`}>
+                        <span>우리인슈맨라이프</span>
+                        <br />
+                        <span>영업포탈</span>
+                    </div>
+                </Link>
+            </div>
+            <div className={`${displayName}__gnb`}>
+                <ul className="wr-gnb__menu" role="menubar">
+                    {GNBS.map(({ id, ...gnb }) => (
+                        <GnbMenuItem key={id} {...gnb} />
+                    ))}
+                </ul>
+            </div>
+            {/* <div className="wr-meta">
+                <div className="wr-meta__inner">
                     <div className="wr-meta__left">
                         <div style={{ width: 250 }}>
                             <WithLabel
@@ -132,8 +151,8 @@ export const MyHeader: FC<Props> = () => {
                             />
                         </div>
                     </div>
-                </div> */}
-            </div>
+                </div>
+            </div> */}
             <div className="wr-gnb">
                 <div className="wr-gnb__inner">
                     <div className="wr-gnb__both">
@@ -144,13 +163,13 @@ export const MyHeader: FC<Props> = () => {
                                 </IconWrapper>
                             </span> */}
                             <h2 className="visually-hidden">서비스메뉴</h2>
-                            <ul className="wr-gnb__menu" role="menubar">
+                            {/* <ul className="wr-gnb__menu" role="menubar">
                                 {GNBS.map(({ id, ...gnb }) => (
                                     <GnbMenuItem key={id} {...gnb} />
                                 ))}
-                            </ul>
+                            </ul> */}
                         </nav>
-                        <div className="wr-gnb__right">
+                        {/* <div className="wr-gnb__right">
                             <h2 className="visually-hidden">사용자서비스</h2>
                             <ul className="wr-gnb__services">
                                 <GnbSubMenuItem to="/404">
@@ -161,12 +180,12 @@ export const MyHeader: FC<Props> = () => {
                                 </GnbSubMenuItem>
                                 <GnbSubMenuItem to="/board/list">
                                     게시판
-                                    {/* <div className="wr-badge__wrap">
+                                    <div className="wr-badge__wrap">
                                         <span>게시판</span>
                                         <span className="badge bg-danger">
                                             23
                                         </span>
-                                    </div> */}
+                                    </div>
                                 </GnbSubMenuItem>
                                 <GnbSubMenuItem to="/calendar">
                                     일정관리
@@ -208,15 +227,8 @@ export const MyHeader: FC<Props> = () => {
                                     </span>
                                 </IconWrapper>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
-                </div>
-            </div>
-            <div className="wr-lnb">
-                <div className="wr-lnb__inner">
-                    <strong className="visually-hidden">탭 목록</strong>
-                    <HeaderNav />
-                    <div className="wr-tab__line"></div>
                 </div>
             </div>
         </header>

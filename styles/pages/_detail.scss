@@ -13,6 +13,31 @@
         margin-top: $wr-detail-gutter-size !important;
     }
 
+    & .wr-tab__line {
+        border-bottom: none;
+    }
+
+    & .wr-tab {
+        border: 1px solid $wr-divider-color !important;
+        border-radius: 8px 8px 0px 0px !important;
+        overflow: hidden;
+        border: 1px solid #d9d9d9 !important;
+    }
+
+    & .wr-tab.active {
+        background: $wr-primary-color !important;
+
+        & .wr-tab__link {
+            color: $white !important;
+        }
+    }
+
+    .wr-footer__inner {
+        border: none !important;
+        border-radius: 2px;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+    }
+
     & svg {
         color: $wr-primary-color;
     }
@@ -104,48 +129,16 @@
         display: flex;
         flex-direction: column;
         flex: 1;
-
-        & .wr-tab {
-            // border-color: #e5edff !important;
-            border-radius: 8px 8px 0px 0px;
-            background-color: $wr-primary-color;
-            color: $white;
-            overflow: hidden;
-        }
-
-        & .wr-tab.active {
-            background-color: $white !important;
-            color: $wr-gray1;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        // Custom Bootstrap
-        // & .nav-link {
-        //     background-color: $wr-primary-color !important;
-        //     color: white !important;
-
-        //     &:not(.active) {
-        //         background-color: inherit !important;
-        //         color: $black;
-        //     }
-
-        //     &:hover {
-        //         border-top: 1px solid $wr-divider-color-100;
-        //         border-right: 1px solid $wr-divider-color-100;
-        //         background-color: $white !important;
-        //         color: $black;
-        //     }
-        // }
     }
 
     &__body {
         flex: 1;
-        border: 1px solid $wr-detail-input-border-color;
+        // border: 1px solid $wr-detail-input-border-color;
         border-top: 0;
         background-color: $white;
         overflow: hidden;
-        // box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 0px 2px 2px 2px;
         border-radius: 0px 2px 2px 2px;
     }
 

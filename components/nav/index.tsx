@@ -1,34 +1,34 @@
 import type { FC } from 'react';
 import type { CoreMenuOption } from '@interfaces/core';
-import Link from 'next/link';
+import type { AppState } from '@reducers/index';
+import type { DrawerState } from '@reducers/drawer';
+import type { GnbState } from '@reducers/gnb';
+import { useSelector } from 'react-redux';
 import { DrawerMenu } from '@components/drawer/DrawerMenu';
 
-interface Props {
-    menu: CoreMenuOption[];
-}
+interface Props {}
 
-export const MyNav: FC<Props> = ({ menu }) => {
+export const MyNav: FC<Props> = () => {
+    const displayName = 'wr-nav';
+
+    const { activeGnb } = useSelector<AppState, GnbState>((state) => state.gnb);
+
+    const { isOpen } = useSelector<AppState, DrawerState>(
+        (state) => state.drawer,
+    );
+
     return (
-        <div className="wr-nav wr-border-r">
-            <div className="wr-nav__logo wr-frame__header">
-                <Link href="/">
-                    <a>
-                        <h1 className="visually-hidden">Wooriinsumanlife</h1>
-                        <img
-                            src="/static/images/logo.png"
-                            alt="Wooriinsumanlife"
-                            width={130}
-                            height={80}
-                        />
-                    </a>
-                </Link>
-            </div>
+        <div
+            className={`${displayName} wr-frame__nav ${
+                isOpen ? '' : 'collapsed'
+            }`}
+        >
             <div
-                className="wr-nav__body wr-drawer wr-frame__body"
+                className="wr-nav__body wr-drawer"
                 role="tablist"
                 aria-multiselectable="true"
             >
-                <DrawerMenu menu={menu} />
+                <DrawerMenu defaultOpen={isOpen} menu={activeGnb} />
             </div>
         </div>
     );

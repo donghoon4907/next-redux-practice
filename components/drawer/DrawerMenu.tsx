@@ -1,5 +1,10 @@
 import type { FC, MouseEvent } from 'react';
 import type { CoreMenuOption } from '@interfaces/core';
+import type { AppState } from '@reducers/index';
+import type { DrawerState } from '@reducers/drawer';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
     UncontrolledAccordion,
     AccordionBody,
@@ -8,8 +13,13 @@ import {
 } from 'reactstrap';
 import { TabModule } from '@utils/storage';
 import { useRoute } from '@hooks/use-route';
+import { CollapseButton } from '@components/Collapse';
+import { hideDrawer, showDrawer } from '@actions/drawer/drawer.action';
+import { setCookie } from 'cookies-next';
+import { useDispatch } from 'react-redux';
 
 interface Props {
+    defaultOpen: boolean;
     /**
      * 메뉴 생성에 필요한 데이터, 특정 형식을 따릅니다.
      */
@@ -20,7 +30,11 @@ interface Props {
     depth?: number;
 }
 
-export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
+export const DrawerMenu: FC<Props> = ({ defaultOpen, menu, depth = 1 }) => {
+    const router = useRouter();
+
+    const dispatch = useDispatch();
+
     const route = useRoute();
 
     const handleClick = (
@@ -38,10 +52,35 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
         route.push(item.to);
     };
 
+    const handleCollapse = (next: boolean) => {
+        const key = process.env.COOKIE_NAV_COLLAPSE_KEY || '';
+
+        setCookie(key, next ? 'Y' : 'N', {
+            maxAge: 60 * 60 * 24 * 365,
+        });
+
+        if (next) {
+            dispatch(showDrawer());
+        } else {
+            dispatch(hideDrawer());
+        }
+    };
+
     return (
         <>
+            <CollapseButton
+                type="vertical"
+                expand={defaultOpen}
+                setExpand={handleCollapse}
+            />
             {Object.entries(menu).map(([k, v]) => {
                 const { id, label, to, disabled, ...rest } = v;
+
+                const [gnb, lnb] = id.split('-');
+
+                const [_, gnb2, lnb2] = router.pathname.split('/');
+
+                const isActive = gnb === gnb2 && lnb === lnb2;
 
                 const children = Object.keys(rest);
 
@@ -57,6 +96,7 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
                                 role="tab"
                                 id={id}
                                 style={{ whiteSpace: 'nowrap' }}
+                                className={isActive ? 'active' : ''}
                             >
                                 {label}
                             </AccordionHeader>
@@ -66,6 +106,7 @@ export const DrawerMenu: FC<Props> = ({ menu, depth = 1 }) => {
                                 aria-labelledby={id}
                             >
                                 <DrawerMenu
+                                    defaultOpen={defaultOpen}
                                     menu={rest as CoreMenuOption[]}
                                     depth={depth + 1}
                                 />

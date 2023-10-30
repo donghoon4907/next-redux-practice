@@ -274,7 +274,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         dispatch(getOrgasRequest({}));
 
-        dispatch(getAgenciesRequest());
+        // dispatch(getAgenciesRequest());
 
         dispatch(getCompaniesRequest('insu'));
 
@@ -325,7 +325,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     );
                 }
             }
-        } catch {
+        } catch (e) {
+            console.log(e);
             output.redirect = {
                 destination: '/404',
                 permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션

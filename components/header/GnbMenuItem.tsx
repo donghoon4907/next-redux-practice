@@ -3,13 +3,14 @@ import type { CoreMenuOption } from '@interfaces/core';
 import { ASIDE_MENU } from '@constants/gnb';
 import { useDispatch } from 'react-redux';
 import { updateGnb } from '@actions/gnb/gnb.action';
+import { BsBookmark } from 'react-icons/bs';
 
 interface Props extends Pick<CoreMenuOption, 'to' | 'label'> {}
 
 export const GnbMenuItem: FC<Props> = ({ to, label }) => {
     const dispatch = useDispatch();
 
-    const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
+    const handleClick = (evt: MouseEvent<HTMLLIElement>) => {
         evt.preventDefault();
 
         const [_, gnb] = to.split('/');
@@ -20,13 +21,13 @@ export const GnbMenuItem: FC<Props> = ({ to, label }) => {
     };
 
     return (
-        <li className="wr-gnb__menuitem">
+        <li className="wr-gnb__menuitem" onClick={handleClick}>
+            <BsBookmark size={15} />
             <a
                 className="wr-gnb__title"
                 role="menuitem"
                 title={label}
                 href={to}
-                onClick={handleClick}
             >
                 {label}
             </a>

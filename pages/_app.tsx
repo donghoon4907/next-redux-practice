@@ -16,6 +16,8 @@ import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
+import { getCookie } from 'cookies-next';
+import { hideDrawer, showDrawer } from '@actions/drawer/drawer.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -112,5 +114,34 @@ function MyApp({ Component, pageProps }: AppProps) {
         </MyProvider>
     );
 }
+
+MyApp.getInitialProps = wrapper.getInitialAppProps(
+    ({ dispatch }) =>
+        async ({ Component, ctx }) => {
+            const { req, res } = ctx;
+            // 서버에서만 실행
+            if (req && res) {
+                const isCollapse = getCookie(
+                    process.env.COOKIE_NAV_COLLAPSE_KEY || '',
+                    {
+                        req,
+                        res,
+                    },
+                );
+                if (isCollapse === 'N') {
+                    dispatch(hideDrawer());
+                } else {
+                    dispatch(showDrawer());
+                }
+            }
+
+            let pageProps = {};
+            if (Component.getInitialProps) {
+                pageProps = await Component.getInitialProps(ctx);
+            }
+
+            return { pageProps };
+        },
+);
 
 export default wrapper.withRedux(MyApp);
