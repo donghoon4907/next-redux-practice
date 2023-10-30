@@ -377,7 +377,7 @@ const Calculate: NextPage<any> = (props) => {
     return (
         <>
             <Head>
-                <title>계산기</title>
+                <title>우리인슈맨라이프</title>
             </Head>
             <div
                 style={{
