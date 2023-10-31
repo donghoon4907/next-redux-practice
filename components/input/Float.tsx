@@ -6,6 +6,14 @@ import { isEmpty } from '@utils/validator/common';
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
     /**
+     * 단위 표시
+     */
+    unit?: string;
+    /**
+     * 숫자형 여부
+     */
+    isNumber?: boolean;
+    /**
      * 필수 여부
      *
      */
@@ -19,6 +27,8 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 export const FloatInput: FC<Props> = ({
     label,
+    unit,
+    isNumber,
     isRequired,
     onSearch,
     onFocus,
@@ -69,8 +79,8 @@ export const FloatInput: FC<Props> = ({
             <div className={`${displayName}__both`}>
                 <input
                     className={`${displayName} ${
-                        isFloat ? `${displayName}--active` : ''
-                    }`}
+                        isFloat && isNumber ? 'text-end' : ''
+                    } ${isFloat ? `${displayName}--active` : ''}`}
                     placeholder={label}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
@@ -87,6 +97,7 @@ export const FloatInput: FC<Props> = ({
                         <span className="visually-hidden">검색</span>
                     </button>
                 )}
+                {unit && <div className={`${displayName}__unit`}>{unit}</div>}
             </div>
         </div>
     );

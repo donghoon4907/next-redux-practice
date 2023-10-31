@@ -16,11 +16,11 @@ export const HR_DETAIL_TABS: CoreTabOption[] = [
  * 장기 계약 상세 페이지 탭 목록
  */
 export const LONG_DETAIL_TABS: CoreTabOption[] = [
-    {
-        id: 'tabCustomer',
-        label: '고객상세및동의현황',
-        panelId: 'tabpanelCustomer',
-    },
+    // {
+    //     id: 'tabCustomer',
+    //     label: '고객상세및동의현황',
+    //     panelId: 'tabpanelCustomer',
+    // },
     { id: 'tabPays', label: '납입실적', panelId: 'tabpanelPays' },
     { id: 'tabEndorsement', label: '배서구분', panelId: 'tabpanelEndorsement' },
     { id: 'tabCalcPerform', label: '정산실적', panelId: 'tabpanelCalcPerform' },

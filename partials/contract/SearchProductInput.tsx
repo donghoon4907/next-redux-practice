@@ -9,6 +9,7 @@ import { MyInput } from '@components/input';
 import { showProductSearchModal } from '@actions/modal/product-search.action';
 import { useApi } from '@hooks/use-api';
 import { getProductsRequest } from '@actions/hr/get-products';
+import { FloatInput } from '@components/input/Float';
 
 interface Props extends CoreEditableComponent {
     // 보험사 코드
@@ -38,7 +39,6 @@ export const SearchProductInput: FC<Props> = ({
 
     const getProducts = useApi(getProductsRequest);
 
-    const labelType = editable ? 'active' : 'disable';
     const _title = selectedProduct ? selectedProduct.title : title;
     const _spec = selectedProduct ? selectedProduct.spec : spec;
     const _subcategory = selectedProduct
@@ -74,57 +74,31 @@ export const SearchProductInput: FC<Props> = ({
 
     return (
         <div className="row wr-mt">
-            <div className="col">
-                <WithLabel
-                    id="title"
+            <div className="flex-fill">
+                <FloatInput
                     label="상품명"
-                    type={labelType}
-                    isRequired={editable}
-                >
-                    <div className="wr-with__badge">
-                        <MyInput
-                            type="text"
-                            id="title"
-                            className={`wr-with__badge--inside-left-${pTitlePaddingRate}`}
-                            placeholder=""
-                            disabled={true}
-                            value={_title}
-                            button={
-                                editable
-                                    ? {
-                                          className: 'btn-md btn-primary',
-                                          onClick: handleSearch,
-                                          children: (
-                                              <>
-                                                  <span>찾기</span>
-                                              </>
-                                          ),
-                                      }
-                                    : undefined
-                            }
-                            unit={_calSpec || ''}
-                        />
-
-                        <div className="wr-with__badge--left wr-badge__wrap">
-                            {_spec && (
-                                <span className="badge rounded-pill bg-primary wr-badge">
-                                    {_spec}
-                                    <span className="visually-hidden">
-                                        {_spec}
-                                    </span>
-                                </span>
-                            )}
-                            {_subcategory && (
-                                <span className="badge rounded-pill bg-warning wr-badge">
-                                    {_subcategory}
-                                    <span className="visually-hidden">
-                                        {_subcategory}
-                                    </span>
-                                </span>
-                            )}
-                        </div>
-                    </div>
-                </WithLabel>
+                    readOnly={!editable}
+                    value={_title}
+                    isRequired
+                    onSearch={editable ? handleSearch : undefined}
+                    // unit={_calSpec || ''}
+                />
+                <div className="wr-with__badge--left wr-badge__wrap">
+                    {_spec && (
+                        <span className="badge rounded-pill bg-primary wr-badge">
+                            {_spec}
+                            <span className="visually-hidden">{_spec}</span>
+                        </span>
+                    )}
+                    {_subcategory && (
+                        <span className="badge rounded-pill bg-warning wr-badge">
+                            {_subcategory}
+                            <span className="visually-hidden">
+                                {_subcategory}
+                            </span>
+                        </span>
+                    )}
+                </div>
             </div>
         </div>
     );

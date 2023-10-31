@@ -31,11 +31,9 @@ const CreateOrga: NextPage = () => {
 
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
-        dispatch(getCompaniesRequest('insu'));
-
         dispatch(getCompaniesRequest('bank'));
 
-        // dispatch(getCompaniesRequest('woori'));
+        dispatch(getCompaniesRequest('woori'));
 
         dispatch(getUsersRequest({ idx: '1' }));
 

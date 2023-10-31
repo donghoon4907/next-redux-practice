@@ -615,6 +615,25 @@ const WHOI: CoreSelectOption[] = [
     },
 ];
 
+// 청약설계
+const SUL_DIST: CoreSelectOption[] = [
+    {
+        label: '본인',
+        value: '본인',
+        isFixed: false,
+    },
+    {
+        label: '회사',
+        value: '회사',
+        isFixed: false,
+    },
+    {
+        label: '보험사',
+        value: '보험사',
+        isFixed: false,
+    },
+];
+
 const rootSelectOptions = {
     payCycle: PAY_CYCLE,
     payCycle2: PAY_CYCLE2,
@@ -635,6 +654,7 @@ const rootSelectOptions = {
     sourceroot: SOURCE_ROOT,
     silDist: SIL_DIST,
     whoi: WHOI,
+    sulDist: SUL_DIST,
 };
 
 export default rootSelectOptions;

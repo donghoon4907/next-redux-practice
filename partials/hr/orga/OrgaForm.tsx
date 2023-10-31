@@ -157,7 +157,7 @@ export const OrgaForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-orga-detail';
 
-    const { users, banks, allCompanies, codes, orgas } = useSelector<
+    const { users, banks, wrCompanies, codes, orgas } = useSelector<
         AppState,
         HrState
     >((state) => state.hr);
@@ -217,7 +217,7 @@ export const OrgaForm: FC<Props> = ({
     const [d_no] = useInput(defaultDno, { noSpace: true });
     // 손보 등록보험사
     const [d_wcode] = useSelect(
-        allCompanies.filter((v) => v.origin.dist === '손보'),
+        wrCompanies.filter((v) => v.origin.dist === '손보'),
         defaultDcom,
     );
     // 손보 등록일
@@ -234,7 +234,7 @@ export const OrgaForm: FC<Props> = ({
     const [l_no] = useInput(defaultLno, { noSpace: true });
     // 생보 등록보험사
     const [l_wcode] = useSelect(
-        allCompanies.filter((v) => v.origin.dist === '생보'),
+        wrCompanies.filter((v) => v.origin.dist === '생보'),
         defaultLcom,
     );
     // 생보 등록일

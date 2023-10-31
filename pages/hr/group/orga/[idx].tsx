@@ -20,10 +20,9 @@ import { convertPhoneNumber } from '@utils/converter';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 
 const Orga: NextPage<any> = ({ orga }) => {
-    const { orgas, users, banks, allCompanies } = useSelector<
-        AppState,
-        HrState
-    >((state) => state.hr);
+    const { orgas, users, banks, wrCompanies } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
     // 탭 설정
     useInitTab(`조직명세 - ${orga.orga_name}`);
@@ -65,7 +64,7 @@ const Orga: NextPage<any> = ({ orga }) => {
                 defaultDno = no;
 
                 if (wcode) {
-                    defaultDcom = findSelectOption(wcode, allCompanies);
+                    defaultDcom = findSelectOption(wcode, wrCompanies);
                 }
 
                 defaultDindate = indate;
@@ -75,7 +74,7 @@ const Orga: NextPage<any> = ({ orga }) => {
                 defaultLno = no;
 
                 if (wcode) {
-                    defaultLcom = findSelectOption(wcode, allCompanies);
+                    defaultLcom = findSelectOption(wcode, wrCompanies);
                 }
 
                 defaultLindate = indate;
@@ -137,11 +136,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         const idx = query.idx as string;
 
-        dispatch(getCompaniesRequest('insu'));
+        dispatch(getCompaniesRequest('bank'));
 
         dispatch(getCompaniesRequest('woori'));
-
-        dispatch(getCompaniesRequest('bank'));
 
         dispatch(getUsersRequest({ idx: '1' }));
 

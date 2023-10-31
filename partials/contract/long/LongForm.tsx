@@ -7,7 +7,7 @@ import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { differenceInMonths, addYears } from 'date-fns';
 import { MySelect } from '@components/select';
@@ -47,6 +47,11 @@ import { createLongRequest } from '@actions/contract/long/create-long.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { updateLongRequest } from '@actions/contract/long/update-long.action';
 import { SearchProductInput } from '@partials/contract/SearchProductInput';
+import { FloatSelect } from '@components/select/Float';
+import { FloatInput } from '@components/input/Float';
+import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
+import { showContractorSearchModal } from '@actions/modal/customer-search.action';
+import { FloatDatepicker } from '@components/datepicker/Float';
 
 interface Props {
     /**
@@ -177,6 +182,8 @@ interface Props {
     defaultCalDatefrom?: string;
     // 본인계약여부 기본값
     defaultFamily?: CoreSelectOption;
+    // 청약설계 기본값
+    defaultSulDist?: CoreSelectOption;
 }
 
 export const LongForm: FC<Props> = ({
@@ -215,10 +222,13 @@ export const LongForm: FC<Props> = ({
     defaultCalType = null,
     defaultCalDatefrom = null,
     defaultFamily = null,
+    defaultSulDist = null,
 }) => {
     const displayName = 'wr-pages-long-detail';
 
     const router = useRouter();
+
+    const dispatch = useDispatch();
 
     const { contacts, removedContacts, newUserHistory } = useSelector<
         AppState,
@@ -240,11 +250,12 @@ export const LongForm: FC<Props> = ({
     const updateLong = useApi(updateLongRequest);
 
     const getUsers = useApi(getUsersRequest);
+
+    const getUserCustomers = useApi(getUserCustomersRequest);
     // 탭 관리
     const [tab, setTab] = useTab(LONG_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
-    const labelType = editable ? 'active' : 'disable';
     // 조직
     const [orga] = useSelect(orgas, defaultOrga);
     // 담당자
@@ -253,66 +264,23 @@ export const LongForm: FC<Props> = ({
     const [comp] = useSelect(longUseCompanies, defaultComp);
     // 계약번호
     const [cnum] = useInput(defaultCnum);
+    // 계약자
+    const [cname] = useInput('', { noSpace: true });
+    // 피보험자
+    const [pname] = useInput('', { noSpace: true });
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : new Date(),
-        {
-            callbackOnChange: (next) => {
-                if (next) {
-                    if (payDu.value) {
-                        const date = addYears(next, +payDu.value.value);
-
-                        setPayDateto(dayjs(date).format('YYYY-MM-DD'));
-                    }
-
-                    if (boDu.value) {
-                        const date = addYears(next, +boDu.value.value);
-
-                        setBoDateto(dayjs(date).format('YYYY-MM-DD'));
-                    }
-                }
-            },
-        },
     );
-    // 보장만기
-    const [boDateto, setBoDateto] = useInput(defaultBodateto);
-    const [boDu] = useSelect(
-        longConstants.duration,
-        findSelectOption(defaultBoDu, longConstants.duration),
-        {
-            callbackOnChange: (next) => {
-                if (next) {
-                    if (contdate.value) {
-                        const date = addYears(contdate.value, +next.value);
-
-                        setBoDateto(dayjs(date).format('YYYY-MM-DD'));
-                    } else {
-                        alert('계약일을 입력해주세요');
-                    }
-                }
-            },
-        },
+    // 납입만기
+    const [pay_dateto] = useDatepicker(
+        defaultPayDateto ? new Date(defaultPayDateto) : null,
     );
     // 납입주기
-    const [payCycle] = useSelect(longConstants.payCycle, defaultPayCycle);
-    // 납입기간
-    const [payDateto, setPayDateto] = useInput(defaultPayDateto);
-    const [payDu] = useSelect(
-        longConstants.duration,
-        findSelectOption(defaultPayDu.toString(), longConstants.duration),
-        {
-            callbackOnChange: (next) => {
-                if (next) {
-                    if (contdate.value) {
-                        const date = addYears(contdate.value, +next.value);
-
-                        setPayDateto(dayjs(date).format('YYYY-MM-DD'));
-                    } else {
-                        alert('계약일을 입력해주세요');
-                    }
-                }
-            },
-        },
+    const [pay_cycle] = useSelect(longConstants.payCycle, defaultPayCycle);
+    // 보장만기
+    const [bo_dateto] = useDatepicker(
+        defaultBodateto ? new Date(defaultPayDateto) : null,
     );
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
@@ -348,6 +316,8 @@ export const LongForm: FC<Props> = ({
     );
     // 본인계약여부
     const [family] = useSelect(longConstants.family, defaultFamily);
+    // 청약설계
+    const [sul_dist] = useSelect(longConstants.sulDist, defaultSulDist);
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
         setEditable(true);
@@ -380,11 +350,11 @@ export const LongForm: FC<Props> = ({
     // 저축유지수정 비율
     let tpuRate = 0;
     if (!isEmpty(payment.value)) {
-        if (payCycle.value) {
-            if (payCycle.value.value === '0') {
-                if (!isEmpty(boDateto.value) && contdate.value) {
+        if (pay_cycle.value) {
+            if (pay_cycle.value.value === '0') {
+                if (bo_dateto.value && contdate.value) {
                     let diff = differenceInMonths(
-                        new Date(boDateto.value),
+                        bo_dateto.value,
                         contdate.value,
                     );
 
@@ -399,7 +369,7 @@ export const LongForm: FC<Props> = ({
             } else {
                 payM = Math.floor(
                     parseInt(payment.value.replace(/,/g, ''), 10) /
-                        +payCycle.value.value,
+                        +pay_cycle.value.value,
                 );
             }
         }
@@ -510,13 +480,13 @@ export const LongForm: FC<Props> = ({
             payload.wcode = comp.value.value;
         }
 
-        if (!isEmpty(payDateto.value)) {
-            payload.pay_dateto = payDateto.value;
-            payload['pay_du'] = payDu.value!.value;
+        if (pay_dateto.value) {
+            payload.pay_dateto = pay_dateto.value;
+            // payload['pay_du'] = payDu.value!.value;
         }
 
-        if (payCycle.value) {
-            payload.pay_cycle = +payCycle.value.value;
+        if (pay_cycle.value) {
+            payload.pay_cycle = pay_cycle.value.value;
         }
 
         if (!isEmpty(payment.value)) {
@@ -531,9 +501,9 @@ export const LongForm: FC<Props> = ({
             payload['cal_spec'] = selectedProduct.cal_spec;
         }
 
-        if (!isEmpty(boDateto.value)) {
-            payload['bo_dateto'] = boDateto.value;
-            payload['bo_du'] = boDu.value!.value;
+        if (bo_dateto.value) {
+            payload['bo_dateto'] = dayjs(bo_dateto.value).format('YYYY-MM-DD');
+            // payload['bo_du'] = boDu.value!.value;
         }
 
         if (payM !== -1) {
@@ -626,6 +596,19 @@ export const LongForm: FC<Props> = ({
         return payload;
     };
 
+    const handleSearchCustomer = () => {
+        if (isEmpty(cname.value)) {
+            return alert('계약자를 입력하세요.');
+        }
+
+        getUserCustomers(
+            { userid: manager.value?.value, username: cname.value },
+            () => {
+                dispatch(showContractorSearchModal());
+            },
+        );
+    };
+
     useEffect(() => {
         if (orga.value) {
             getUsers(
@@ -641,630 +624,250 @@ export const LongForm: FC<Props> = ({
 
     return (
         <>
-            <div className={`${displayName} wr-pages-detail`}>
+            <div className={`${displayName} wr-pages-detail wr-frame__tabbody`}>
                 <div className={`${displayName}__left wr-pages-detail__left`}>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            {mode === 'create' ? (
-                                <div className="row">
-                                    <div className="col">
-                                        <WithLabel
-                                            id="orga"
-                                            label="조직"
-                                            type={labelType}
-                                            // isRequired={editable}
-                                        >
-                                            <MySelect
-                                                id="orga"
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
+                    <div className="wr-pages-detail__inner">
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                {mode === 'create' ? (
+                                    <div className="row">
+                                        <div className="flex-fill">
+                                            <FloatSelect
+                                                label="소속"
                                                 isDisabled={!editable}
+                                                isRequired
                                                 {...orga}
                                             />
-                                        </WithLabel>
-                                    </div>
-                                    <div className="col">
-                                        <WithLabel
-                                            id="manager"
-                                            label="담당자"
-                                            type={labelType}
-                                            isRequired={editable}
-                                        >
-                                            <MySelect
-                                                id="manager"
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
+                                        </div>
+                                        <div className="flex-fill">
+                                            <FloatSelect
+                                                label="담당자"
                                                 isDisabled={!editable}
+                                                isRequired
                                                 {...manager}
                                             />
-                                        </WithLabel>
+                                        </div>
                                     </div>
-                                </div>
-                            ) : (
-                                <LongManagerAccordion editable={editable} />
-                            )}
+                                ) : (
+                                    <LongManagerAccordion editable={editable} />
+                                )}
+                            </div>
                         </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="col">
-                                    <WithLabel
-                                        id="company"
-                                        label="보험사"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MySelect
-                                            id="company"
-                                            placeholder={'선택'}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <div className="row">
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="보험사"
                                             isDisabled={!editable}
+                                            isRequired
                                             {...comp}
                                         />
-                                    </WithLabel>
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="계약번호"
+                                            readOnly={!editable}
+                                            isRequired
+                                            {...cnum}
+                                        />
+                                        {defaultIsConfirm === 'Y' && (
+                                            <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
+                                                검증
+                                            </div>
+                                        )}
+                                    </div>
                                 </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="cnum"
-                                        label="계약번호"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <div className="wr-with__badge">
-                                            <MyInput
-                                                id="cnum"
-                                                placeholder="계약번호"
-                                                disabled={!editable}
-                                                className="wr-with__badge--inside-right-1"
-                                                {...cnum}
-                                            />
-                                            {defaultIsConfirm === 'Y' && (
-                                                <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
-                                                    검증
-                                                </div>
-                                            )}
-                                        </div>
-                                    </WithLabel>
+                                <SearchProductInput
+                                    editable={editable}
+                                    wcode={comp.value?.value}
+                                    title={defaultTitle}
+                                    spec={defaultSpec}
+                                    subcategory={defaultSubCategory}
+                                    calSpec={defaultCalSpec}
+                                    spe="long"
+                                />
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="계약자"
+                                            readOnly={!editable}
+                                            isRequired
+                                            {...cname}
+                                            onSearch={
+                                                editable
+                                                    ? handleSearchCustomer
+                                                    : undefined
+                                            }
+                                        />
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="피보험자"
+                                            readOnly={!editable}
+                                            isRequired
+                                            {...pname}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
-                            <SearchProductInput
-                                editable={editable}
-                                wcode={comp.value?.value}
-                                title={defaultTitle}
-                                spec={defaultSpec}
-                                subcategory={defaultSubCategory}
-                                calSpec={defaultCalSpec}
-                                spe="long"
-                            />
-                            <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="contdate"
-                                        label="계약일자"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MyDatepicker
-                                            id="contdate"
-                                            size="md"
-                                            placeholder="계약일자"
-                                            disabled={!editable}
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatDatepicker
+                                            label="계약일자"
+                                            readOnly={!editable}
+                                            isRequired
                                             hooks={contdate}
                                         />
-                                    </WithLabel>
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatDatepicker
+                                            label="납입만기"
+                                            readOnly={!editable}
+                                            isRequired
+                                            hooks={pay_dateto}
+                                            unit="10년"
+                                        />
+                                    </div>
                                 </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="pay_cycle"
-                                        label="납입주기"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MySelect
-                                            id="pay_cycle"
-                                            placeholder={'선택'}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="납입주기"
                                             isDisabled={!editable}
-                                            {...payCycle}
+                                            isRequired
+                                            {...pay_cycle}
                                         />
-                                    </WithLabel>
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatDatepicker
+                                            label="보장만기"
+                                            readOnly={!editable}
+                                            isRequired
+                                            hooks={bo_dateto}
+                                            unit="10년"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="col">
-                                    <WithLabel
-                                        id="bo_dateto"
-                                        label="보장만기"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="bo_dateto"
-                                            placeholder="보장만기일"
-                                            disabled={true}
-                                            className="wr-with__badge--inside-right-1"
-                                            {...boDateto}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 86 }}
-                                        >
-                                            <MySelect
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                placement="right"
-                                                {...boDu}
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="pay_dateto"
-                                        label="납입만기"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MyInput
-                                            id="pay_dateto"
-                                            placeholder="납입만기"
-                                            disabled={true}
-                                            className="wr-with__badge--inside-right-1"
-                                            {...payDateto}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{
-                                                width: 86,
-                                            }}
-                                        >
-                                            <MySelect
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                placement="right"
-                                                {...payDu}
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                </div>
-                            </div>
-                            {mode === 'update' && (
-                                <>
+                        {mode === 'update' && (
+                            <div className="wr-pages-detail__block">
+                                <div className="wr-pages-detail__content">
                                     <div className="row wr-mt">
-                                        <div className="col">
-                                            <WithLabel
-                                                id="status"
+                                        <div className="flex-fill">
+                                            <FloatSelect
                                                 label="계약상태"
-                                                type={labelType}
-                                            >
-                                                <MySelect
-                                                    id="status"
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...status}
-                                                />
-                                            </WithLabel>
+                                                isDisabled={!editable}
+                                                {...status}
+                                            />
                                         </div>
-                                        <div className="col">
-                                            <WithLabel
-                                                id="pay_status"
-                                                label="납입상태"
-                                                type={labelType}
-                                            >
-                                                <MySelect
-                                                    id="pay_status"
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...payStatus}
-                                                />
-                                            </WithLabel>
+                                        <div className="flex-fill">
+                                            <FloatDatepicker
+                                                label="상태반영일"
+                                                readOnly={!editable}
+                                                hooks={statusDate}
+                                            />
                                         </div>
                                     </div>
                                     <div className="row wr-mt">
-                                        <div className="col">
-                                            <WithLabel
-                                                id="status_date"
-                                                label="상태반영일"
-                                                type={labelType}
-                                            >
-                                                <MyDatepicker
-                                                    id="status_date"
-                                                    size="md"
-                                                    placeholder="상태반영일"
-                                                    disabled={!editable}
-                                                    hooks={statusDate}
-                                                />
-                                                {/* <div className="wr-with__extension">
-                                                            <MyButton
-                                                                className="btn-primary btn-md"
-                                                                disabled={
-                                                                    !editable
-                                                                }
-                                                            >
-                                                                이력
-                                                            </MyButton>
-                                                        </div> */}
-                                            </WithLabel>
+                                        <div className="flex-fill">
+                                            <FloatSelect
+                                                label="납입상태"
+                                                isDisabled={!editable}
+                                                {...payStatus}
+                                            />
                                         </div>
-                                        <div className="col">
-                                            <WithLabel
-                                                id="last_whoi"
+                                        <div className="flex-fill">
+                                            <FloatInput
                                                 label="종납회차"
-                                                type={labelType}
-                                            >
-                                                <MyInput
-                                                    id="last_whoi"
-                                                    placeholder="종납일"
-                                                    disabled={true}
-                                                    value={defaultLastMonth}
-                                                />
-                                                <div
-                                                    className="wr-with__extension"
-                                                    style={{
-                                                        width: 100,
-                                                    }}
-                                                >
-                                                    <MyInput
-                                                        className="text-end wr-border-l--hide"
-                                                        placeholder="0"
-                                                        disabled={true}
-                                                        value={defaultLastWhoi}
-                                                        unit="회"
-                                                    />
-                                                </div>
-                                            </WithLabel>
+                                                readOnly={!editable}
+                                                value={defaultLastMonth}
+                                                unit={`${defaultLastWhoi}회`}
+                                            />
                                         </div>
                                     </div>
-                                </>
-                            )}
-                        </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="col">
-                                    <WithLabel
-                                        id="payment"
-                                        label="실적보험료"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MyInput
-                                            id="payment"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <div className="row">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="실적보험료"
+                                            readOnly={!editable}
+                                            isRequired
+                                            isNumber
                                             {...payment}
                                         />
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="payment_m"
-                                        label="월납기준"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="payment_m"
-                                            className="text-end"
-                                            placeholder="0"
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="수정보험료"
+                                            readOnly={!editable}
+                                            isNumber
+                                            unit={`${tpRate}%`}
+                                            {...tp}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="월납기준환산"
                                             disabled
+                                            isNumber
                                             value={
                                                 payM !== -1
                                                     ? payM.toLocaleString()
                                                     : ''
                                             }
                                         />
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="pay_bo"
-                                        label="보장보험료"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="pay_bo"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...payBo}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 86 }}
-                                        >
-                                            <MyInput
-                                                id="pay_bo_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={payBoRate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="pay_j"
-                                        label="적립보험료"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="pay_j"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...payJ}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 86 }}
-                                        >
-                                            <MyInput
-                                                id="pay_j_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={payJRate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="pay_s"
-                                        label="실손보험료"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="pay_s"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...payS}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 86 }}
-                                        >
-                                            <MyInput
-                                                id="pay_s_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={paySRate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="tp"
-                                        label="수정보험료"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="tp"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...tp}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{
-                                                width: 86,
-                                            }}
-                                        >
-                                            <MyInput
-                                                id="tp_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={tpRate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="tp1"
-                                        label="1차수정"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="tp1"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...tp1}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{
-                                                width: 86,
-                                            }}
-                                        >
-                                            <MyInput
-                                                id="tp1_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={tp1Rate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="tp2"
-                                        label="2차수정"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="tp2"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...tp2}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{
-                                                width: 86,
-                                            }}
-                                        >
-                                            <MyInput
-                                                id="tp2_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={tp2Rate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="tp3"
-                                        label="3차수정"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="tp3"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...tp3}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{
-                                                width: 86,
-                                            }}
-                                        >
-                                            <MyInput
-                                                id="tp3_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={tp3Rate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="tpu"
-                                        label="저축유지수정"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="tpu"
-                                            className="text-end"
-                                            placeholder="0"
-                                            disabled={!editable}
-                                            {...tpu}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{
-                                                width: 86,
-                                            }}
-                                        >
-                                            <MyInput
-                                                id="tpu_rate"
-                                                className="text-end wr-border-l--hide"
-                                                disabled
-                                                value={tpuRate}
-                                                unit="%"
-                                            />
-                                        </div>
-                                    </WithLabel>
+                                    </div>
+                                    <div className="flex-fill"></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="col">
-                                    <WithLabel
-                                        id="cal_type"
-                                        label="정산구분"
-                                        type={labelType}
-                                    >
-                                        <MySelect
-                                            id="cal_type"
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <div className="row">
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="정산구분"
                                             isDisabled={!editable}
-                                            menuPlacement="top"
                                             {...calType}
                                         />
-                                    </WithLabel>
-                                </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="cal_datefrom"
-                                        label="정산개시월"
-                                        type={labelType}
-                                    >
-                                        <MyDatepicker
-                                            id="cal_datefrom"
-                                            size="md"
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatDatepicker
+                                            label="정산개시월"
                                             format="yyyy-MM"
-                                            placeholder="정산개시월"
-                                            placement="autoVerticalStart"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             hooks={calDatefrom}
                                         />
-                                    </WithLabel>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="family"
-                                        label="본인계약여부"
-                                        type={labelType}
-                                    >
-                                        <MySelect
-                                            id="family"
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="본인계약여부"
                                             isDisabled={!editable}
-                                            menuPlacement="top"
                                             {...family}
                                         />
-                                    </WithLabel>
-                                </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="sd"
-                                        label="청약설계"
-                                        type={labelType}
-                                    >
-                                        <div className="wr-pages-detail__lock">
-                                            <span>준비중입니다.</span>
-                                        </div>
-                                        <MySelect
-                                            id="sd"
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="청약설계"
                                             isDisabled={!editable}
+                                            {...sul_dist}
                                         />
-                                    </WithLabel>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     {/* <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
                                     <CustomSettingAccordion data={[]} />
@@ -1284,14 +887,14 @@ export const LongForm: FC<Props> = ({
                         <li className="wr-tab__line"></li>
                     </ul>
                     <div className="wr-pages-detail__body">
-                        <CustomerTabpanel
+                        {/* <CustomerTabpanel
                             id="tabpanelCustomer"
                             tabId="tabCustomer"
                             hidden={tab.id !== 'tabCustomer'}
                             editable={editable}
                             userid={defaultUserid}
                             spe="long"
-                        />
+                        /> */}
                         <LongPaysTabpanel
                             id="tabpanelPays"
                             tabId="tabPays"
@@ -1310,14 +913,14 @@ export const LongForm: FC<Props> = ({
                             hidden={tab.id !== 'tabCalcPerform'}
                             editable={editable}
                         />
-                        <ContactTabpanel
+                        {/* <ContactTabpanel
                             id="tabpanelContactHis"
                             tabId="tabContactHis"
                             hidden={tab.id !== 'tabContactHis'}
                             editable={editable}
                             spe="long"
                             // cnum={cnum.value}
-                        />
+                        /> */}
 
                         <ChangeHistoryTabpanel
                             id="tabpanelChangeHis"
@@ -1325,13 +928,6 @@ export const LongForm: FC<Props> = ({
                             hidden={tab.id !== 'tabChangeHis'}
                             editable={editable}
                         />
-                        {/* <EtcsTabpanel
-                                    id="tabpanelEtcs"
-                                    tabId="tabEtcs"
-                                    hidden={tab.id !== 'tabEtcs'}
-                                    editable={editable}
-                                    etcs={long.etcs}
-                                /> */}
                     </div>
                 </div>
             </div>
@@ -1373,9 +969,6 @@ export const LongForm: FC<Props> = ({
             <ProductSearchModal spe="long" />
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
-            )}
-            {isShowInsuredSearchModal && (
-                <CustomerSearchModal type="insured-person" />
             )}
             <CreateLongPayModal
                 contdate={contdate.value!}

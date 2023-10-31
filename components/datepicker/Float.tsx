@@ -7,6 +7,10 @@ import { isEmpty } from '@utils/validator/common';
 interface Props extends MyDatepickerProps {
     label: string;
     /**
+     * 단위 표시
+     */
+    unit?: string;
+    /**
      * 필수 여부
      *
      */
@@ -16,6 +20,7 @@ interface Props extends MyDatepickerProps {
 export const FloatDatepicker: FC<Props> = ({
     children,
     label,
+    unit,
     isRequired,
     hooks,
     ...rest
@@ -64,6 +69,8 @@ export const FloatDatepicker: FC<Props> = ({
                 hooks={hooks}
                 {...rest}
             />
+
+            {unit && <div className={`${displayName}__pickerunit`}>{unit}</div>}
         </div>
     );
 };
