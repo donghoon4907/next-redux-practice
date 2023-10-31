@@ -86,49 +86,30 @@ td {
 }
 
 /* Custom Rsuite Datepicker */
-// Datepicker - 컨테이너 설정
 .rs-picker-menu {
     border-radius: $wr-border-radius !important;
     border: 1px solid $wr-input-border-color !important;
     margin-top: 2px;
     z-index: $wr-datepicker-index !important;
 }
-// Datepicker - 입력창 설정
 .rs-picker-disabled {
     opacity: 1 !important;
 }
-
 .rs-picker-toggle {
     border-radius: 0 !important;
     border: 1px solid $wr-input-border-color !important;
-    // display: flex !important;
-    // justify-content: flex-start !important;
-    // align-items: center;
-    // height: 100%;
-    // &:hover {
-    //     border: 1px solid $wr-hover-color !important;
-    // }
 }
 .rs-picker-toggle-clean {
     top: 50% !important;
     right: $wr-gutter-size !important;
     transform: translate3d(0, -50%, 0);
 }
-
 .rs-picker-default .rs-picker-toggle {
     z-index: 0 !important;
 }
 .rs-picker-toggle-active {
     box-shadow: none !important;
-    // border: 1px solid #2684ff !important;
 }
-// .rs-picker-toggle-active:hover {
-//     border: none;
-// }
-// Datepicker - Placeholder 설정
-// .rs-picker-toggle-value {
-//     color: $wr-input-font-color;
-// }
 .rs-stack-item {
     font-size: $wr-filter-font-size;
 }
@@ -172,32 +153,14 @@ td {
 .flex-fill {
     flex: 1 !important;
 }
-// grid gutter 제거
-[class='col'] {
-    padding: 0 !important;
-}
-
+// input
 input[type='number'] {
     text-align: right;
     padding-right: 0 !important;
 }
-
 .input-group > div {
     width: 100%;
 }
-
-// grid row 공통 스타일 재정의
-.row {
-    // 상위 컨테이너 이상의 너비를 갖지 않도록 조정
-    margin: 0 auto;
-    gap: $wr-gutter-size;
-}
-
-.row > * {
-    padding: 0;
-}
-
-// input 공통 스타일 재정의
 .form-control {
     border-radius: 0 !important;
     font-size: 16px;
@@ -207,7 +170,7 @@ input[type='number'] {
     // height: 30px;
     height: 100%;
 }
-// 버튼 공통 스타일 재정의
+// button
 .btn {
     display: flex;
     justify-content: center;
@@ -222,6 +185,22 @@ input[type='number'] {
 }
 .btn-md {
     height: $wr-detail-filter-height;
+}
+.btn-primary {
+    --bs-btn-bg: #4b74de;
+    --bs-btn-border-color: #4b74de;
+}
+// grid row 공통 스타일 재정의
+[class='col'] {
+    padding: 0 !important;
+}
+.row {
+    // 상위 컨테이너 이상의 너비를 갖지 않도록 조정
+    margin: 0 auto;
+    gap: $wr-gutter-size;
+}
+.row > * {
+    padding: 0;
 }
 // 테이블 관련 공통 스타일 재정의
 .table > :not(caption) > * > * {

@@ -47,11 +47,11 @@ export function createOrga(payload: CreateOrgaRequestPayload) {
 }
 
 export function beforeUpdateOrga(payload: UpdateOrgaRequestPayload) {
-    return axios.post('/api/create-orga', payload);
+    return axios.post('/api/update-orga', payload);
 }
 
 export function updateOrga(payload: UpdateOrgaRequestPayload) {
-    return getBackendAxios().post('/orga/new_orga', payload);
+    return getBackendAxios().post('/orga/orga_update', payload);
 }
 
 export function beforeCreateUser(payload: CreateUserRequestPayload) {
@@ -67,7 +67,7 @@ export function beforeUpdateUser(payload: UpdateUserRequestPayload) {
 }
 
 export function updateUser(payload: UpdateUserRequestPayload) {
-    return getBackendAxios().post('/orga/orga_update', payload);
+    return getBackendAxios().post('/orga/user_update', payload);
 }
 
 export function getCompanies(payload: GetCompaniesRequestPayload) {

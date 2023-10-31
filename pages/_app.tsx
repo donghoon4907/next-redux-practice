@@ -78,7 +78,12 @@ function MyApp({ Component, pageProps }: AppProps) {
                     initializeTab(router.pathname);
                     // gnb 추가 제한 페이지
                     if (!['board', 'calendar'].includes(gnb)) {
-                        dispatch(updateGnb(ASIDE_MENU[gnb]));
+                        dispatch(
+                            updateGnb({
+                                id: gnb,
+                                menu: ASIDE_MENU[gnb],
+                            }),
+                        );
                     }
                 }
             }

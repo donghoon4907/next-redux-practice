@@ -4,11 +4,13 @@ import produce from 'immer';
 import { GnbActionTypes } from '@actions/gnb/gnb.action';
 
 export interface GnbState {
-    activeGnb: CoreMenuOption[];
+    activeId: string;
+    activeMenu: CoreMenuOption[];
 }
 
 const initialState: GnbState = {
-    activeGnb: [],
+    activeId: '',
+    activeMenu: [],
 };
 
 export const gnbReducer: Reducer<GnbState, any> = (
@@ -18,7 +20,8 @@ export const gnbReducer: Reducer<GnbState, any> = (
     produce(state, (draft) => {
         switch (action.type) {
             case GnbActionTypes.UPDATE: {
-                draft.activeGnb = action.payload;
+                draft.activeId = action.payload.id;
+                draft.activeMenu = action.payload.menu;
                 break;
             }
             default:

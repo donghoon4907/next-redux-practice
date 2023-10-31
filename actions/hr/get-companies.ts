@@ -19,7 +19,8 @@ export type GetCompaniesRequestPayload =
     | 'long-use'
     | 'car-use'
     | 'gen-use'
-    | 'board';
+    | 'board'
+    | 'woori';
 
 export interface GetCompaniesSuccessPayload {
     type: GetCompaniesRequestPayload;

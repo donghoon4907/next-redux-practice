@@ -11,7 +11,9 @@ interface Props {}
 export const MyNav: FC<Props> = () => {
     const displayName = 'wr-nav';
 
-    const { activeGnb } = useSelector<AppState, GnbState>((state) => state.gnb);
+    const { activeMenu } = useSelector<AppState, GnbState>(
+        (state) => state.gnb,
+    );
 
     const { isOpen } = useSelector<AppState, DrawerState>(
         (state) => state.drawer,
@@ -28,7 +30,7 @@ export const MyNav: FC<Props> = () => {
                 role="tablist"
                 aria-multiselectable="true"
             >
-                <DrawerMenu defaultOpen={isOpen} menu={activeGnb} />
+                <DrawerMenu defaultOpen={isOpen} menu={activeMenu} />
             </div>
         </div>
     );

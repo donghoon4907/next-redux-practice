@@ -139,6 +139,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         dispatch(getCompaniesRequest('insu'));
 
+        dispatch(getCompaniesRequest('woori'));
+
         dispatch(getCompaniesRequest('bank'));
 
         dispatch(getUsersRequest({ idx: '1' }));

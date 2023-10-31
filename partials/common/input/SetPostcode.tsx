@@ -45,7 +45,7 @@ export const SetPostcodeInput: FC<Props> = ({
                 <div className="flex-fill">
                     <FloatInput
                         label="상세주소"
-                        disabled={disabled}
+                        readOnly={disabled}
                         {...address3Hooks}
                     />
                 </div>

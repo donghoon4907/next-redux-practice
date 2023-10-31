@@ -69,7 +69,7 @@ export const FloatInput: FC<Props> = ({
             <div className={`${displayName}__both`}>
                 <input
                     className={`${displayName} ${
-                        isFloat && `${displayName}--active`
+                        isFloat ? `${displayName}--active` : ''
                     }`}
                     placeholder={label}
                     onFocus={handleFocus}

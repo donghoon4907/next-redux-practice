@@ -108,20 +108,11 @@
         height: 100%;
         flex-shrink: 0;
         flex-grow: 0;
-        // 디자인 시안
-        // background-color: white;
-        // border-radius: 2px;
-        // box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
         // 스크롤 제거
         &::-webkit-scrollbar {
             width: 0px;
             height: 0px;
         }
-    }
-
-    &__inner {
-        // 디자인 시안
-        // padding: $wr-gutter-size;
     }
 
     &__right {
@@ -133,12 +124,10 @@
 
     &__body {
         flex: 1;
-        // border: 1px solid $wr-detail-input-border-color;
         border-top: 0;
         background-color: $white;
-        overflow: hidden;
+        overflow: auto;
         box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
-        border-radius: 0px 2px 2px 2px;
         border-radius: 0px 2px 2px 2px;
     }
 

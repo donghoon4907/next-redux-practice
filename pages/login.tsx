@@ -13,6 +13,7 @@ import hrsService from '@services/hrsService';
 import { commonAxiosErrorHandler } from '@utils/error';
 import { useCheckbox } from '@hooks/use-checkbox';
 import { isEmpty } from '@utils/validator/common';
+import { useLoading } from '@hooks/use-loading';
 
 interface LoginPageProps {
     ip: string;
@@ -22,6 +23,8 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
     const displayName = 'wr-pages-login';
 
     const router = useRouter();
+
+    const loading = useLoading();
 
     const [userid, setUserid] = useInput('');
 
@@ -39,6 +42,8 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
         evt.preventDefault();
 
         try {
+            loading.on();
+
             const { data } = await hrsService.login({
                 ip,
                 userid: userid.value,
@@ -73,9 +78,13 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
                 router.replace('/contract/long/bo');
             }
         } catch (e) {
+            loading.off();
+
             const { message } = commonAxiosErrorHandler(e);
 
-            alert(message);
+            if (message) {
+                alert(message);
+            }
         }
     };
 

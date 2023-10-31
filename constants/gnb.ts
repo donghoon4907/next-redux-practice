@@ -1,11 +1,11 @@
 import type { CoreMenuOption } from '@interfaces/core';
 
 export const GNBS: CoreMenuOption[] = [
-    { id: 'gnb1', label: '고객', to: '/customer' },
-    { id: 'gnb2', label: '영업', to: '/sales' },
-    { id: 'gnb3', label: '계약', to: '/contract/long/list' },
-    { id: 'gnb4', label: '소득', to: '/income' },
-    { id: 'gnb5', label: '인사', to: '/hr' },
+    { id: 'customer', label: '고객', to: '/customer' },
+    { id: 'sales', label: '영업', to: '/sales' },
+    { id: 'contract', label: '계약', to: '/contract/long/list' },
+    { id: 'income', label: '소득', to: '/income' },
+    { id: 'hr', label: '인사', to: '/hr' },
 ];
 
 export const SUBMENUS: CoreMenuOption[] = [

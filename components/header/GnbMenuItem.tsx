@@ -1,36 +1,42 @@
 import type { FC, MouseEvent } from 'react';
 import type { CoreMenuOption } from '@interfaces/core';
+import { useDispatch, useSelector } from 'react-redux';
 import { ASIDE_MENU } from '@constants/gnb';
-import { useDispatch } from 'react-redux';
 import { updateGnb } from '@actions/gnb/gnb.action';
-import { BsBookmark } from 'react-icons/bs';
+import { AppState } from '@reducers/index';
+import { GnbState } from '@reducers/gnb';
 
-interface Props extends Pick<CoreMenuOption, 'to' | 'label'> {}
+interface Props extends Pick<CoreMenuOption, 'id' | 'to' | 'label'> {}
 
-export const GnbMenuItem: FC<Props> = ({ to, label }) => {
+export const GnbMenuItem: FC<Props> = ({ id, to, label }) => {
     const dispatch = useDispatch();
 
-    const handleClick = (evt: MouseEvent<HTMLLIElement>) => {
+    const { activeId } = useSelector<AppState, GnbState>((state) => state.gnb);
+
+    const handleClick = (evt: MouseEvent<HTMLButtonElement>) => {
         evt.preventDefault();
 
         const [_, gnb] = to.split('/');
 
         if (gnb !== null) {
-            dispatch(updateGnb(ASIDE_MENU[gnb]));
+            dispatch(
+                updateGnb({
+                    id: gnb,
+                    menu: ASIDE_MENU[gnb],
+                }),
+            );
         }
     };
 
     return (
-        <li className="wr-gnb__menuitem" onClick={handleClick}>
-            <BsBookmark size={15} />
-            <a
-                className="wr-gnb__title"
-                role="menuitem"
-                title={label}
-                href={to}
+        <li className="wr-gnb__menuitem" role="menuitem">
+            <button
+                type="button"
+                className={`wr-gnb__title ${activeId === id ? 'active' : ''}`}
+                onClick={handleClick}
             >
                 {label}
-            </a>
+            </button>
         </li>
     );
 };

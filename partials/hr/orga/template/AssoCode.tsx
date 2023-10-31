@@ -47,12 +47,12 @@ export const AssoCodeTemplate: FC<Props> = ({
 }) => {
     const dispatch = useDispatch();
 
-    const { allCompanies, codes } = useSelector<AppState, HrState>(
+    const { wrCompanies, codes } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
     const filteredCompany = useMemo(
-        () => allCompanies.filter((v) => v.origin.dist === dist),
+        () => wrCompanies.filter((v) => v.origin.dist === dist),
         [],
     );
 
@@ -102,14 +102,14 @@ export const AssoCodeTemplate: FC<Props> = ({
                         <div className="flex-fill">
                             <FloatInput
                                 label="등록번호"
-                                disabled={!editable}
+                                readOnly={!editable}
                                 {...no}
                             />
                         </div>
                         <div className="flex-fill">
                             <FloatDatepicker
                                 label="등록일"
-                                disabled={!editable}
+                                readOnly={!editable}
                                 hooks={indate}
                             />
                         </div>
@@ -118,15 +118,15 @@ export const AssoCodeTemplate: FC<Props> = ({
                         <div className="flex-fill">
                             <FloatSelect
                                 label="등록보험사"
-                                {...company}
                                 isDisabled={!editable}
+                                {...company}
                             />
                         </div>
                         <div className="flex-fill">
                             <FloatSelect
                                 label="지점장"
-                                {...manager}
                                 isDisabled={!editable}
+                                {...manager}
                             />
                         </div>
                     </div>
@@ -134,7 +134,7 @@ export const AssoCodeTemplate: FC<Props> = ({
                         <div className="flex-fill">
                             <FloatDatepicker
                                 label="해촉일"
-                                disabled={!editable}
+                                readOnly={!editable}
                                 hooks={outdate}
                             />
                         </div>

@@ -22,10 +22,10 @@ import orgaConstants from '@constants/options/orga';
 import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
 import { usePostcode } from '@hooks/use-postcode';
 import { createOrgaRequest } from '@actions/hr/create-orga.action';
+import { updateOrgaRequest } from '@actions/hr/update-orga.action';
 import { CreateOrgaDTO, UpdateOrgaDTO } from '@dto/hr/Orga.dto';
 import { isEmpty } from '@utils/validator/common';
 import { getLazyOrgasRequest } from '@actions/hr/get-lazy-orgas';
-import { getLazyUsersRequest } from '@actions/hr/get-lazy-users';
 
 import { OrgaQualManageTabpanel } from './tabpanels/QualManage';
 
@@ -168,7 +168,7 @@ export const OrgaForm: FC<Props> = ({
 
     const createOrga = useApi(createOrgaRequest);
 
-    // const updateOrga = useApi(updateOrgaRequest);
+    const updateOrga = useApi(updateOrgaRequest);
     // 탭 관리
     const [tab, setTab] = useTab(ORGA_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -263,10 +263,10 @@ export const OrgaForm: FC<Props> = ({
     const handleCreate = () => {
         const payload = createPayload();
 
-        const createUserDto = new CreateOrgaDTO(payload);
+        const createDto = new CreateOrgaDTO(payload);
 
-        if (createUserDto.requiredValidate()) {
-            createOrga(createUserDto.getPayload(), () => {
+        if (createDto.requiredValidate()) {
+            createOrga(createDto.getPayload(), () => {
                 alert('조직이 등록되었습니다.');
             });
         }
@@ -274,11 +274,13 @@ export const OrgaForm: FC<Props> = ({
     const handleUpdate = () => {
         const payload = createPayload();
 
-        const updateUserDto = new UpdateOrgaDTO(payload);
+        const updateDto = new UpdateOrgaDTO(payload);
 
-        // if (updateUserDto.requiredValidate()) {
-        //     updateUser(updateUserDto.getPayload(), ({ Message }) => {});
-        // }
+        if (updateDto.requiredValidate()) {
+            updateOrga(updateDto.getPayload(), ({ Message }) => {
+                alert('수정되었습니다.');
+            });
+        }
     };
     const createPayload = () => {
         const payload: any = {
@@ -310,6 +312,10 @@ export const OrgaForm: FC<Props> = ({
             ],
             insucode: codes,
         };
+
+        if (idx !== -1) {
+            payload['idx'] = idx;
+        }
 
         if (orga_rank.value) {
             payload['orga_rank'] = orga_rank.value.value;
@@ -417,7 +423,7 @@ export const OrgaForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="조직명"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             isRequired
                                             {...orga_name}
                                         />
@@ -467,7 +473,7 @@ export const OrgaForm: FC<Props> = ({
                                         <FloatDatepicker
                                             id="indate"
                                             label="개설일"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             isRequired
                                             hooks={indate}
                                         />
@@ -476,7 +482,7 @@ export const OrgaForm: FC<Props> = ({
                                         <FloatDatepicker
                                             id="outdate"
                                             label="폐점일"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             hooks={outdate}
                                         />
                                     </div>
@@ -489,14 +495,14 @@ export const OrgaForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="대표번호"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             {...tel}
                                         />
                                     </div>
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="FAX"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             {...fax}
                                         />
                                     </div>
@@ -525,7 +531,7 @@ export const OrgaForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="예금주"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             {...income_name}
                                         />
                                     </div>
@@ -534,7 +540,7 @@ export const OrgaForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="계좌번호"
-                                            disabled={!editable}
+                                            readOnly={!editable}
                                             {...income_account}
                                         />
                                     </div>

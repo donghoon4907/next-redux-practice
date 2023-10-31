@@ -7,11 +7,16 @@ export const GnbActionTypes = {
     UPDATE: `UPDATE_${GNB_KEY}`,
 } as const;
 
-export interface GnbUpdateAction extends Action<string> {
-    payload: CoreMenuOption[];
+export interface GnbUpdatePayload {
+    id: string;
+    menu: CoreMenuOption[];
 }
 
-export function updateGnb(payload: CoreMenuOption[]): GnbUpdateAction {
+export interface GnbUpdateAction extends Action<string> {
+    payload: GnbUpdatePayload;
+}
+
+export function updateGnb(payload: GnbUpdatePayload): GnbUpdateAction {
     return {
         type: GnbActionTypes.UPDATE,
         payload,

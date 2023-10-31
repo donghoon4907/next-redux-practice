@@ -16,9 +16,7 @@ export interface UpdateOrgaRequestPayload
     idx: number;
     associate: Associate[];
     insucode: Code[];
-    remove: {
-        insucode?: Code[];
-    };
+    remove: {};
 }
 
 export interface UpdateOrgaRequestAction extends Action<string> {
