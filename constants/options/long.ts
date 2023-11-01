@@ -319,11 +319,11 @@ const PAY_DIST: CoreSelectOption[] = [
         value: '계속',
         isFixed: false,
     },
-    {
-        label: '계속취소',
-        value: '계속취소',
-        isFixed: false,
-    },
+    // {
+    //     label: '계속취소',
+    //     value: '계속취소',
+    //     isFixed: false,
+    // },
     {
         label: '철회',
         value: '철회',
@@ -335,13 +335,13 @@ const PAY_DIST: CoreSelectOption[] = [
         isFixed: false,
     },
     {
-        label: '추징',
-        value: '추징',
+        label: '환급',
+        value: '환급',
         isFixed: false,
     },
     {
-        label: '환급',
-        value: '환급',
+        label: '추징',
+        value: '추징',
         isFixed: false,
     },
 ];

@@ -1,19 +1,13 @@
 import type { FC } from 'react';
-import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
 import type { Code } from '@models/code';
 import type { CoreSelectOption } from '@interfaces/core';
-import { useCallback, useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useInput } from '@hooks/use-input';
 import { useSelect } from '@hooks/use-select';
 import { updateCode } from '@actions/hr/set-code.action';
-import { MyButton } from '@components/button';
 import { MyInput } from '@components/input';
 import { MySelect } from '@components/select';
-import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
-import { CodeDTO } from '@dto/hr/Code.dto';
 
 interface Props extends Code {
     companies: CoreSelectOption[];

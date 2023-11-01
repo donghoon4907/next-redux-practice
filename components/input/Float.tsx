@@ -1,5 +1,5 @@
 import type { FC, InputHTMLAttributes, FocusEvent } from 'react';
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { LuSearch } from 'react-icons/lu';
 import { isEmpty } from '@utils/validator/common';
 
@@ -19,10 +19,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
      */
     isRequired?: boolean;
     /**
-     * 검색이벤트 추가, 아이콘 활성화
-     *
+     * 입력창 이전 컴포넌트 추가
      */
-    onSearch?: () => void;
+    before?: ReactNode;
+    /**
+     * 입력창 이후 컴포넌트 추가
+     */
+    after?: ReactNode;
 }
 
 export const FloatInput: FC<Props> = ({
@@ -30,10 +33,10 @@ export const FloatInput: FC<Props> = ({
     unit,
     isNumber,
     isRequired,
-    onSearch,
     onFocus,
     onBlur,
-    value,
+    before,
+    after,
     ...rest
 }) => {
     const displayName = 'wr-detail-input';
@@ -52,12 +55,12 @@ export const FloatInput: FC<Props> = ({
         onBlur?.(evt);
     };
 
-    const isFloat = focus || !isEmpty(value);
+    const isFloat = focus || rest.value || rest.defaultValue;
 
     return (
         <div
             className={`${displayName}__wrap ${
-                onSearch ? `${displayName}--search` : ''
+                after ? `${displayName}--after` : ''
             } ${isFloat ? `${displayName}--active` : ''}`}
         >
             <div
@@ -77,6 +80,7 @@ export const FloatInput: FC<Props> = ({
                 <div className={`${displayName}__required`}></div>
             )}
             <div className={`${displayName}__both`}>
+                {before}
                 <input
                     className={`${displayName} ${
                         isFloat && isNumber ? 'text-end' : ''
@@ -84,20 +88,9 @@ export const FloatInput: FC<Props> = ({
                     placeholder={label}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    value={value}
                     {...rest}
                 />
-                {onSearch && (
-                    <button
-                        type="button"
-                        className={`${displayName}__button`}
-                        onClick={onSearch}
-                    >
-                        <LuSearch size={18} />
-                        <span className="visually-hidden">검색</span>
-                    </button>
-                )}
-                {unit && <div className={`${displayName}__unit`}>{unit}</div>}
+                {after}
             </div>
         </div>
     );

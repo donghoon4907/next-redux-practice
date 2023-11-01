@@ -125,6 +125,12 @@ td {
     height: 36px;
 }
 
+// 페이지 내 데이트피커 설정
+.rs-picker-toggle-value,
+.rs-picker-toggle-placeholder {
+    color: $wr-input-font-color !important;
+}
+
 /* Custom Toast Editor */
 .toastui-editor-defaultUI {
     border-radius: 0 !important;

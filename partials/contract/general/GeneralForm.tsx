@@ -40,7 +40,7 @@ import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { SearchProductInput } from '../SearchProductInput';
+import { SearchProductInput } from '../common/input/SearchProductInput';
 import {
     CreateGeneralDTO,
     UpdateGeneralDTO,

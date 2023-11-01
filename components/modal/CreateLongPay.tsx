@@ -151,7 +151,7 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
             dist: dist.value!.value,
             pay: +pay.value.replace(/,/g, ''),
             method: method.value?.value,
-            cycle: +cycle.value!.value,
+            cycle: cycle.value!.value,
             gdate: isPay
                 ? dayjs(
                       setMonth(

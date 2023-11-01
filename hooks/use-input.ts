@@ -130,7 +130,13 @@ export const useNumbericInput: UseInputFunction = (
         where.callbackOnChange?.(nextVal);
     };
 
-    let output: UseInputOutput = { value, onChange };
+    const onBlur = () => {
+        const converted = value.replace(/,/g, '');
+
+        where.callbackOnBlur?.(converted);
+    };
+
+    let output: UseInputOutput = { value, onChange, onBlur };
 
     if (where.addComma) {
         output.value = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');

@@ -70,7 +70,13 @@ export const FloatDatepicker: FC<Props> = ({
                 {...rest}
             />
 
-            {unit && <div className={`${displayName}__pickerunit`}>{unit}</div>}
+            {unit && (
+                <div
+                    className={`${displayName}__unit ${displayName}__unit--picker`}
+                >
+                    {unit}
+                </div>
+            )}
         </div>
     );
 };

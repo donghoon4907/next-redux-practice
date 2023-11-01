@@ -157,15 +157,13 @@
         border-top: 0;
     }
 
-    &__title {
-        background-color: #bfe4f2 !important;
-    }
-
-    &__subtitle {
-        background-color: #e3edec !important;
-    }
-
-    &__etc {
-        background-color: #ece1c3 !important;
+    &__toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #323232;
+        font-size: 13px;
+        font-weight: 400;
+        margin-bottom: 6px;
     }
 }

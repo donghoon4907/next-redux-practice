@@ -35,7 +35,7 @@ import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
 // import { showSetPeriodModal } from '@actions/modal/set-period.action';
-import { SearchProductInput } from '@partials/contract/SearchProductInput';
+import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
 import { CompareTabpanel } from '@partials/contract/car/tabpanels/Compare';
 import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
 import { useCheckbox } from '@hooks/use-checkbox';

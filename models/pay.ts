@@ -41,7 +41,7 @@ export type Pay = CoreCheckableModel & {
     /**
      * 납입주기
      */
-    cycle?: number;
+    cycle?: string;
     /**
      * 실적확인
      */

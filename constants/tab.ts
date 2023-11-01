@@ -22,10 +22,11 @@ export const LONG_DETAIL_TABS: CoreTabOption[] = [
     //     panelId: 'tabpanelCustomer',
     // },
     { id: 'tabPays', label: '납입실적', panelId: 'tabpanelPays' },
-    { id: 'tabEndorsement', label: '배서구분', panelId: 'tabpanelEndorsement' },
-    { id: 'tabCalcPerform', label: '정산실적', panelId: 'tabpanelCalcPerform' },
-    { id: 'tabContactHis', label: '접촉이력', panelId: 'tabpanelContactHis' },
-    { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
+    { id: 'tabBuhwal', label: '미유지/부활', panelId: 'tabpanelBuhwal' },
+    // { id: 'tabEndorsement', label: '배서구분', panelId: 'tabpanelEndorsement' },
+    // { id: 'tabCalcPerform', label: '정산실적', panelId: 'tabpanelCalcPerform' },
+    { id: 'tabContactHis', label: '고객상담', panelId: 'tabpanelContactHis' },
+    // { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
 ];
 /**
  * 일반 계약 상세 페이지 탭 목록

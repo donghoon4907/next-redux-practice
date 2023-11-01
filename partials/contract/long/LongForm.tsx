@@ -9,7 +9,13 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { differenceInMonths, addYears } from 'date-fns';
+import {
+    differenceInMonths,
+    addYears,
+    differenceInCalendarYears,
+    differenceInYears,
+    addDays,
+} from 'date-fns';
 import { MySelect } from '@components/select';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
@@ -46,12 +52,15 @@ import { CreateLongDTO, UpdateLongDTO } from '@dto/contractor/Long.dto';
 import { createLongRequest } from '@actions/contract/long/create-long.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { updateLongRequest } from '@actions/contract/long/update-long.action';
-import { SearchProductInput } from '@partials/contract/SearchProductInput';
+import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
 import { showContractorSearchModal } from '@actions/modal/customer-search.action';
 import { FloatDatepicker } from '@components/datepicker/Float';
+import { InputSearchButton } from '@components/button/InputSearch';
+import { MyUnit } from '@components/Unit';
+import { SearchContractorInput } from '../common/input/SearchContractorInput';
 
 interface Props {
     /**
@@ -219,9 +228,9 @@ export const LongForm: FC<Props> = ({
     defaultPayBo = '',
     defaultPayJ = '',
     defaultPayS = '',
-    defaultCalType = null,
+    defaultCalType = longConstants.calType[0],
     defaultCalDatefrom = null,
-    defaultFamily = null,
+    defaultFamily = longConstants.family[0],
     defaultSulDist = null,
 }) => {
     const displayName = 'wr-pages-long-detail';
@@ -265,7 +274,7 @@ export const LongForm: FC<Props> = ({
     // 계약번호
     const [cnum] = useInput(defaultCnum);
     // 계약자
-    const [cname] = useInput('', { noSpace: true });
+    // const [cname] = useInput('', { noSpace: true });
     // 피보험자
     const [pname] = useInput('', { noSpace: true });
     // 계약일자
@@ -294,8 +303,6 @@ export const LongForm: FC<Props> = ({
     const [payment] = useNumbericInput(defaultPayment, { addComma: true });
     // 수정보험료
     const [tp] = useNumbericInput(defaultTp, { addComma: true });
-    // 1차수정
-    const [tp1] = useNumbericInput(defaultTp1, { addComma: true });
     // 2차수정
     const [tp2] = useNumbericInput(defaultTp2, { addComma: true });
     // 3차수정
@@ -312,7 +319,7 @@ export const LongForm: FC<Props> = ({
     const [calType] = useSelect(longConstants.calType, defaultCalType);
     // 정산개시월
     const [calDatefrom] = useDatepicker(
-        defaultCalDatefrom ? new Date(defaultCalDatefrom) : null,
+        defaultCalDatefrom ? new Date(defaultCalDatefrom) : new Date(),
     );
     // 본인계약여부
     const [family] = useSelect(longConstants.family, defaultFamily);
@@ -330,7 +337,16 @@ export const LongForm: FC<Props> = ({
             location.reload();
         }
     };
-
+    // 납입만기 기간
+    let payDu = 0;
+    // 보장만기 기간
+    let boDu = 0;
+    if (pay_dateto.value) {
+        payDu = differenceInYears(addDays(pay_dateto.value, 1), new Date());
+    }
+    if (bo_dateto.value) {
+        boDu = differenceInYears(addDays(bo_dateto.value, 1), new Date());
+    }
     // 월납기준
     let payM = -1;
     // 보장보험료 비율
@@ -341,8 +357,6 @@ export const LongForm: FC<Props> = ({
     let paySRate = 0;
     // 수정보험료 비율
     let tpRate = 0;
-    // 1차수정 비율
-    let tp1Rate = 0;
     // 2차수정 비율
     let tp2Rate = 0;
     // 3차수정 비율
@@ -401,14 +415,6 @@ export const LongForm: FC<Props> = ({
         if (!isEmpty(tp.value)) {
             tpRate = Math.floor(
                 (parseInt(tp.value.replace(/,/g, ''), 10) /
-                    parseInt(payment.value.replace(/,/g, ''), 10)) *
-                    100,
-            );
-        }
-
-        if (!isEmpty(tp1.value)) {
-            tp1Rate = Math.floor(
-                (parseInt(tp1.value.replace(/,/g, ''), 10) /
                     parseInt(payment.value.replace(/,/g, ''), 10)) *
                     100,
             );
@@ -482,7 +488,7 @@ export const LongForm: FC<Props> = ({
 
         if (pay_dateto.value) {
             payload.pay_dateto = pay_dateto.value;
-            // payload['pay_du'] = payDu.value!.value;
+            payload['pay_du'] = payDu;
         }
 
         if (pay_cycle.value) {
@@ -503,7 +509,7 @@ export const LongForm: FC<Props> = ({
 
         if (bo_dateto.value) {
             payload['bo_dateto'] = dayjs(bo_dateto.value).format('YYYY-MM-DD');
-            // payload['bo_du'] = boDu.value!.value;
+            payload['bo_du'] = boDu;
         }
 
         if (payM !== -1) {
@@ -524,10 +530,6 @@ export const LongForm: FC<Props> = ({
 
         if (!isEmpty(tp.value)) {
             payload['tp'] = +tp.value.replace(/,/g, '');
-        }
-
-        if (!isEmpty(tp1.value)) {
-            payload['tp1'] = +tp1.value.replace(/,/g, '');
         }
 
         if (!isEmpty(tp2.value)) {
@@ -594,19 +596,6 @@ export const LongForm: FC<Props> = ({
         }
 
         return payload;
-    };
-
-    const handleSearchCustomer = () => {
-        if (isEmpty(cname.value)) {
-            return alert('계약자를 입력하세요.');
-        }
-
-        getUserCustomers(
-            { userid: manager.value?.value, username: cname.value },
-            () => {
-                dispatch(showContractorSearchModal());
-            },
-        );
     };
 
     useEffect(() => {
@@ -678,35 +667,37 @@ export const LongForm: FC<Props> = ({
                                         )}
                                     </div>
                                 </div>
-                                <SearchProductInput
-                                    editable={editable}
-                                    wcode={comp.value?.value}
-                                    title={defaultTitle}
-                                    spec={defaultSpec}
-                                    subcategory={defaultSubCategory}
-                                    calSpec={defaultCalSpec}
-                                    spe="long"
-                                />
                                 <div className="row wr-mt">
                                     <div className="flex-fill">
-                                        <FloatInput
-                                            label="계약자"
-                                            readOnly={!editable}
-                                            isRequired
-                                            {...cname}
-                                            onSearch={
-                                                editable
-                                                    ? handleSearchCustomer
-                                                    : undefined
+                                        <SearchProductInput
+                                            editable={editable}
+                                            wcode={comp.value?.value}
+                                            defaultTitle={defaultTitle}
+                                            defaultSpec={defaultSpec}
+                                            defaultSubcategory={
+                                                defaultSubCategory
                                             }
+                                            defaultCalSpec={defaultCalSpec}
+                                            spe="long"
                                         />
                                     </div>
+                                </div>
+
+                                <div className="row wr-mt">
                                     <div className="flex-fill">
-                                        <FloatInput
-                                            label="피보험자"
-                                            readOnly={!editable}
-                                            isRequired
-                                            {...pname}
+                                        <SearchContractorInput
+                                            type="계약자"
+                                            editable={editable}
+                                            userid={defaultUserid}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <SearchContractorInput
+                                            type="피보험자"
+                                            editable={editable}
+                                            userid={defaultUserid}
                                         />
                                     </div>
                                 </div>
@@ -715,6 +706,7 @@ export const LongForm: FC<Props> = ({
                                         <FloatDatepicker
                                             label="계약일자"
                                             readOnly={!editable}
+                                            disabled={pays.length > 0}
                                             isRequired
                                             hooks={contdate}
                                         />
@@ -725,7 +717,10 @@ export const LongForm: FC<Props> = ({
                                             readOnly={!editable}
                                             isRequired
                                             hooks={pay_dateto}
-                                            unit="10년"
+                                            unit={payDu ? `${payDu}년` : ''}
+                                            shouldDisableDate={(date) =>
+                                                date < addDays(new Date(), -1)
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -744,7 +739,10 @@ export const LongForm: FC<Props> = ({
                                             readOnly={!editable}
                                             isRequired
                                             hooks={bo_dateto}
-                                            unit="10년"
+                                            unit={boDu ? `${boDu}년` : ''}
+                                            shouldDisableDate={(date) =>
+                                                date < addDays(new Date(), -1)
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -804,10 +802,23 @@ export const LongForm: FC<Props> = ({
                                     </div>
                                     <div className="flex-fill">
                                         <FloatInput
-                                            label="수정보험료"
+                                            label={
+                                                tp2.value || tp3.value
+                                                    ? '1차수정'
+                                                    : '수정보험료'
+                                            }
                                             readOnly={!editable}
                                             isNumber
-                                            unit={`${tpRate}%`}
+                                            after={
+                                                <>
+                                                    <MyUnit placement="middle">
+                                                        {tpRate}
+                                                    </MyUnit>
+                                                    <MyUnit placement="last">
+                                                        %
+                                                    </MyUnit>
+                                                </>
+                                            }
                                             {...tp}
                                         />
                                     </div>
@@ -818,11 +829,125 @@ export const LongForm: FC<Props> = ({
                                             label="월납기준환산"
                                             disabled
                                             isNumber
-                                            value={
+                                            defaultValue={
                                                 payM !== -1
                                                     ? payM.toLocaleString()
                                                     : ''
                                             }
+                                        />
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="2차수정"
+                                            readOnly={!editable}
+                                            isNumber
+                                            after={
+                                                <>
+                                                    <MyUnit placement="middle">
+                                                        {tp2Rate}
+                                                    </MyUnit>
+                                                    <MyUnit placement="last">
+                                                        %
+                                                    </MyUnit>
+                                                </>
+                                            }
+                                            {...tp2}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="보장보험료"
+                                            readOnly={!editable}
+                                            isNumber
+                                            after={
+                                                <>
+                                                    <MyUnit placement="middle">
+                                                        {payBoRate}
+                                                    </MyUnit>
+                                                    <MyUnit placement="last">
+                                                        %
+                                                    </MyUnit>
+                                                </>
+                                            }
+                                            {...payBo}
+                                        />
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="3차수정"
+                                            readOnly={!editable}
+                                            isNumber
+                                            after={
+                                                <>
+                                                    <MyUnit placement="middle">
+                                                        {tp3Rate}
+                                                    </MyUnit>
+                                                    <MyUnit placement="last">
+                                                        %
+                                                    </MyUnit>
+                                                </>
+                                            }
+                                            {...tp3}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="적립보험료"
+                                            readOnly={!editable}
+                                            isNumber
+                                            after={
+                                                <>
+                                                    <MyUnit placement="middle">
+                                                        {payJRate}
+                                                    </MyUnit>
+                                                    <MyUnit placement="last">
+                                                        %
+                                                    </MyUnit>
+                                                </>
+                                            }
+                                            {...payBo}
+                                        />
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="저축유지수정"
+                                            readOnly={!editable}
+                                            isNumber
+                                            after={
+                                                <>
+                                                    <MyUnit placement="middle">
+                                                        {tpuRate}
+                                                    </MyUnit>
+                                                    <MyUnit placement="last">
+                                                        %
+                                                    </MyUnit>
+                                                </>
+                                            }
+                                            {...tpu}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="실손보험료"
+                                            readOnly={!editable}
+                                            isNumber
+                                            after={
+                                                <>
+                                                    <MyUnit placement="middle">
+                                                        {paySRate}
+                                                    </MyUnit>
+                                                    <MyUnit placement="last">
+                                                        %
+                                                    </MyUnit>
+                                                </>
+                                            }
+                                            {...payBo}
                                         />
                                     </div>
                                     <div className="flex-fill"></div>
@@ -900,8 +1025,10 @@ export const LongForm: FC<Props> = ({
                             tabId="tabPays"
                             hidden={tab.id !== 'tabPays'}
                             editable={editable}
+                            contdate={contdate.value!}
+                            payment={payment.value}
                         />
-                        <EndorsementTabpanel
+                        {/* <EndorsementTabpanel
                             id="tabpanelEndorsement"
                             tabId="tabEndorsement"
                             hidden={tab.id !== 'tabEndorsement'}
@@ -912,7 +1039,7 @@ export const LongForm: FC<Props> = ({
                             tabId="tabCalcPerform"
                             hidden={tab.id !== 'tabCalcPerform'}
                             editable={editable}
-                        />
+                        /> */}
                         {/* <ContactTabpanel
                             id="tabpanelContactHis"
                             tabId="tabContactHis"
@@ -922,12 +1049,12 @@ export const LongForm: FC<Props> = ({
                             // cnum={cnum.value}
                         /> */}
 
-                        <ChangeHistoryTabpanel
+                        {/* <ChangeHistoryTabpanel
                             id="tabpanelChangeHis"
                             tabId="tabChangeHis"
                             hidden={tab.id !== 'tabChangeHis'}
                             editable={editable}
-                        />
+                        /> */}
                     </div>
                 </div>
             </div>
@@ -970,10 +1097,13 @@ export const LongForm: FC<Props> = ({
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
             )}
-            <CreateLongPayModal
+            {isShowInsuredSearchModal && (
+                <CustomerSearchModal type="insured-person" />
+            )}
+            {/* <CreateLongPayModal
                 contdate={contdate.value!}
                 payment={payment.value}
-            />
+            /> */}
             <CreateEndorsementModal />
             <CreateEtcModal />
             {mode === 'update' && <UserHistoryModal type="contract" />}

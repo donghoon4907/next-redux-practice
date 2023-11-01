@@ -21,6 +21,7 @@ import { FloatSelect } from '@components/select/Float';
 import { IconWrapper } from '@components/IconWrapper';
 import { generateIndex } from '@utils/generate';
 import { UpdateCodeTemplate } from '@partials/common/template/UpdateCode';
+import { MyTableToolbar } from '@components/table/Toolbar';
 
 interface Props {
     editable: boolean;
@@ -71,7 +72,7 @@ export const AssoCodeTemplate: FC<Props> = ({
         dispatch(updateCode({ ...v, checked: evt.target.checked }));
     };
 
-    const handleDeleteDamages = () => {
+    const handleDelete = () => {
         if (filteredCodes.findIndex((v) => v.checked) === -1) {
             return alert('삭제할 코드를 선택해주세요.');
         }
@@ -96,7 +97,7 @@ export const AssoCodeTemplate: FC<Props> = ({
     return (
         <>
             <div className="wr-pages-detail__tabtitle">{title}</div>
-            <div className="wr-pages-detail__block">
+            <div className="wr-pages-detail__block wr-mb">
                 <div className="wr-pages-detail__content">
                     <div className="row">
                         <div className="flex-fill">
@@ -142,19 +143,12 @@ export const AssoCodeTemplate: FC<Props> = ({
                     </div>
                 </div>
             </div>
-            <div className="wr-pages-detail__tabsubtitle wr-mt">
-                <span>{subtitle}</span>
-                {editable && (
-                    <div className="d-flex">
-                        <IconWrapper onClick={handleCreate}>
-                            <AiOutlinePlus size={20} />
-                        </IconWrapper>
-                        <IconWrapper onClick={handleDeleteDamages}>
-                            <AiOutlineMinus size={20} />
-                        </IconWrapper>
-                    </div>
-                )}
-            </div>
+            <MyTableToolbar
+                editable={editable}
+                title={subtitle}
+                onCreate={handleCreate}
+                onDelete={handleDelete}
+            />
             <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>

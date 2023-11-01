@@ -7,15 +7,14 @@ import type { Spe } from '@models/spe';
 import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { WithLabel } from '@components/WithLabel';
-import { MySelect } from '@components/select';
 import { useSelect } from '@hooks/use-select';
-import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { hideProductSearchModal } from '@actions/modal/product-search.action';
 import longConstants from '@constants/options/long';
 import { MyRadio } from '@components/radio';
 import { updateProduct } from '@actions/contract/common/set-product.action';
+import { FloatSelect } from '@components/select/Float';
+import { FloatInput } from '@components/input/Float';
 
 interface Props {
     spe: Spe;
@@ -92,20 +91,11 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
             <ModalHeader toggle={handleClose}>상품 검색</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="mPtype" label="보종" type="active">
-                            <MySelect id="mPtype" {...pType} />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="보종" {...pType} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="mPtitle" label="상품명" type="active">
-                            <MyInput
-                                type="text"
-                                id="mPtitle"
-                                placeholder="상품명"
-                                {...search}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="상품명" {...search} />
                     </div>
                 </div>
                 <div
@@ -115,25 +105,12 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                     <table className="wr-table table">
                         <thead>
                             <tr>
-                                {filteredProducts.length !== 0 && (
-                                    <th style={{ width: '30px' }}>선택</th>
-                                )}
-
-                                <th style={{ width: '100px' }}>
-                                    <strong>코드</strong>
-                                </th>
-                                <th>
-                                    <strong>상품명</strong>
-                                </th>
-                                <th style={{ width: '100px' }}>
-                                    <strong>보종</strong>
-                                </th>
-                                <th style={{ width: '100px' }}>
-                                    <strong>세부보종</strong>
-                                </th>
-                                <th style={{ width: '100px' }}>
-                                    <strong>정산보종</strong>
-                                </th>
+                                <th style={{ width: '30px' }}>선택</th>
+                                <th style={{ width: '100px' }}>코드</th>
+                                <th>상품명</th>
+                                <th style={{ width: '100px' }}>보종</th>
+                                <th style={{ width: '100px' }}>세부보종</th>
+                                <th style={{ width: '100px' }}>정산보종</th>
                             </tr>
                         </thead>
                         <tbody>

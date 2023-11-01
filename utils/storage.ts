@@ -48,6 +48,19 @@ export class TabModule {
     }
 
     getAll(): CoreLinkTabOption[] {
+        // active된 탭이 가장 앞에 오도록 변경(2023-11-01)
+        this.tabs.sort((a, b) => {
+            const { pathname } = location;
+
+            if (a.id === pathname) {
+                return -1;
+            } else if (b.id === pathname) {
+                return 1;
+            } else {
+                return 0;
+            }
+        });
+
         return this.tabs;
     }
 }
