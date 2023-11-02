@@ -6,6 +6,10 @@ export interface UseSelectOption {
      * callback
      */
     callbackOnChange?: (nextOption: CoreSelectOption | null) => void;
+    /**
+     * before condition
+     */
+    beforeOnChangeCondition?: (nextOption: CoreSelectOption | null) => boolean;
 }
 
 export type UseSelectOutput = {
@@ -30,7 +34,15 @@ export const useSelect: UseSelectFunction = (
     const [value, setValue] = useState<CoreSelectOption | null>(defaultValue);
 
     const onChange = (v: CoreSelectOption | null) => {
-        setValue(v);
+        if (where.hasOwnProperty('beforeOnChangeCondition')) {
+            if (where.beforeOnChangeCondition!(v)) {
+                setValue(v);
+            } else {
+                return;
+            }
+        } else {
+            setValue(v);
+        }
 
         where.callbackOnChange?.(v);
     };

@@ -5,8 +5,8 @@ export type Contact = CoreCheckableModel & {
     idx?: number;
     kind: string;
     channel: string;
-    spe: string;
-    spe_label: string;
+    // spe: string;
+    // spe_label: string;
     cnum?: string;
     issuedate?: string;
     replydatetime?: string;

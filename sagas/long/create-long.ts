@@ -12,12 +12,10 @@ function* createLongSaga({ payload }: CreateLongRequestAction) {
 
     const { data } = yield call(longsService.beforeCreateLong, rest);
 
-    const { message } = data;
+    const { Message } = data;
 
-    if (message === 'Success') {
-        alert('등록되었습니다.');
-    } else {
-        alert(message);
+    if (!data.data && data.data.idx) {
+        alert(Message);
     }
 
     yield put(createLongSuccess());

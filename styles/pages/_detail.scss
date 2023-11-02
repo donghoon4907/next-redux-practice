@@ -197,13 +197,13 @@
     }
 
     &__title {
-        height: 36px;
-        border-bottom: 1px solid $wr-divider-color-300;
-        padding: $wr-gutter-size;
-        font-size: 16px;
+        font-size: 14px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        color: #6d6d6d;
+        font-weight: 500;
+        line-height: 1.5;
     }
 
     &__tabtitle {
@@ -246,6 +246,13 @@
         gap: $wr-gutter-size;
         // margin: $wr-gutter-size 0;
         height: 36px;
+    }
+
+    &__float {
+        position: absolute;
+        top: -6px;
+        left: 15px;
+        z-index: 1000;
     }
 
     &__subtitle,

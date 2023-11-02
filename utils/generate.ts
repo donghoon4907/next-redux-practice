@@ -1,10 +1,27 @@
 import type { CoreSelectOption } from '@interfaces/core';
 
 // 목록의 인덱스 값 설정
-export function generateIndex(arr: Array<any>, start = 0) {
-    let output = start;
-    if (arr.length > 0) {
-        output = arr[arr.length - 1].index + 1;
+export function generateIndex(arr: Array<any>) {
+    let output = -1;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].index > output) {
+            output = arr[i].index;
+        }
+    }
+
+    return output + 1;
+}
+// 다음 회차 계산
+export function generateNextWhoi(arr: Array<any>) {
+    let output = -1;
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i].whoi && arr[i].whoi > output) {
+            output = arr[i].whoi;
+        }
+    }
+
+    if (output !== -1) {
+        output++;
     }
 
     return output;

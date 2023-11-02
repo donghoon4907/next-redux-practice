@@ -11,17 +11,17 @@ export type Pay = CoreCheckableModel & {
      */
     whoi?: number;
     /**
-     * 납입구분
+     * 입금구분
      */
     dist: string;
     /**
      * 대상년월
      */
-    gdate?: string;
+    // gdate?: string;
     /**
      * 입금구분
      */
-    distkind?: string;
+    // distkind?: string;
     /**
      * 수금실적
      */

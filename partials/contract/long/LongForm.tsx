@@ -7,44 +7,24 @@ import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import {
-    differenceInMonths,
-    addYears,
-    differenceInCalendarYears,
-    differenceInYears,
-    addDays,
-} from 'date-fns';
-import { MySelect } from '@components/select';
+import { differenceInMonths, differenceInYears, addDays } from 'date-fns';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
-import variables from '@styles/_variables.module.scss';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
 import { LongPaysTabpanel } from '@partials/contract/long/tabpanels/LongPays';
-// import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
-import { ChangeHistoryTabpanel } from '@partials/contract/long/tabpanels/ChangeHistory';
 import { MyButton } from '@components/button';
-import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
-import { MyDatepicker } from '@components/datepicker';
-import { CustomerTabpanel } from '@partials/contract/common/tabpanels/Customer';
-import { EndorsementTabpanel } from '@partials/contract/long/tabpanels/Endorsement';
-import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
-import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerform';
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
-// import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
 import longConstants from '@constants/options/long';
+import commonConstants from '@constants/options/common';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
-import { CreateLongPayModal } from '@components/modal/CreateLongPay';
-import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
@@ -55,11 +35,11 @@ import { updateLongRequest } from '@actions/contract/long/update-long.action';
 import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';
-import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
-import { showContractorSearchModal } from '@actions/modal/customer-search.action';
 import { FloatDatepicker } from '@components/datepicker/Float';
-import { InputSearchButton } from '@components/button/InputSearch';
 import { MyUnit } from '@components/Unit';
+import { SingleContactTabpanel } from '@partials/customer/tabpanels/SingleContact';
+import { InfoCustAccordion } from '@components/accordion/InfoCust';
+
 import { SearchContractorInput } from '../common/input/SearchContractorInput';
 
 interface Props {
@@ -237,19 +217,21 @@ export const LongForm: FC<Props> = ({
 
     const router = useRouter();
 
-    const dispatch = useDispatch();
-
-    const { contacts, removedContacts, newUserHistory } = useSelector<
-        AppState,
-        CommonState
-    >((state) => state.common);
+    const { newUserHistory } = useSelector<AppState, CommonState>(
+        (state) => state.common,
+    );
 
     const { longUseCompanies, orgas, users } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
-    const { selectedProduct, insureds, loadedContract, pays, removedPays } =
-        useSelector<AppState, ContractState>((state) => state.contract);
+    const {
+        selectedProduct,
+        loadedContract,
+        loadedInsured,
+        pays,
+        removedPays,
+    } = useSelector<AppState, ContractState>((state) => state.contract);
 
     const { isShowContractorSearchModal, isShowInsuredSearchModal } =
         useSelector<AppState, ModalState>((state) => state.modal);
@@ -260,7 +242,6 @@ export const LongForm: FC<Props> = ({
 
     const getUsers = useApi(getUsersRequest);
 
-    const getUserCustomers = useApi(getUserCustomersRequest);
     // 탭 관리
     const [tab, setTab] = useTab(LONG_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -270,13 +251,9 @@ export const LongForm: FC<Props> = ({
     // 담당자
     const [manager, setManager] = useSelect(users);
     // 보험사
-    const [comp] = useSelect(longUseCompanies, defaultComp);
+    const [wcode] = useSelect(longUseCompanies, defaultComp);
     // 계약번호
     const [cnum] = useInput(defaultCnum);
-    // 계약자
-    // const [cname] = useInput('', { noSpace: true });
-    // 피보험자
-    const [pname] = useInput('', { noSpace: true });
     // 계약일자
     const [contdate] = useDatepicker(
         defaultContdate ? new Date(defaultContdate) : new Date(),
@@ -325,6 +302,11 @@ export const LongForm: FC<Props> = ({
     const [family] = useSelect(longConstants.family, defaultFamily);
     // 청약설계
     const [sul_dist] = useSelect(longConstants.sulDist, defaultSulDist);
+    // 고객청약서명 - 이후 상세작업필요
+    const [subs_sign] = useSelect(commonConstants.yn, null);
+    // 청약서제출여부
+    const [subs_submission] = useSelect(longConstants.subsSubmission, null);
+
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
         setEditable(true);
@@ -348,7 +330,7 @@ export const LongForm: FC<Props> = ({
         boDu = differenceInYears(addDays(bo_dateto.value, 1), new Date());
     }
     // 월납기준
-    let payM = -1;
+    let payM = 0;
     // 보장보험료 비율
     let payBoRate = 0;
     // 적립보험료 비율
@@ -448,10 +430,12 @@ export const LongForm: FC<Props> = ({
     const handleCreate = () => {
         const payload = createPayload();
 
-        const createLongDto = new CreateLongDTO(payload);
+        const createDto = new CreateLongDTO(payload);
 
-        if (createLongDto.requiredValidate()) {
-            createLong(createLongDto.getPayload());
+        if (createDto.requiredValidate()) {
+            createLong(createDto.getPayload(), () => {
+                alert('등록되었습니다.');
+            });
         }
     };
 
@@ -468,101 +452,15 @@ export const LongForm: FC<Props> = ({
     };
 
     const createPayload = () => {
+        // 필수값
         const payload: any = {
-            wcode: -1,
-            cnum: cnum.value,
-            contdate: dayjs(contdate.value).format('YYYY-MM-DD'),
-            pay_cycle: -1,
-            pay_dateto: null,
-            payment: -1,
             remove: {},
         };
-
+        // 수정 시 index 추가
         if (idx !== -1) {
             payload['idx'] = idx;
         }
-
-        if (comp.value) {
-            payload.wcode = comp.value.value;
-        }
-
-        if (pay_dateto.value) {
-            payload.pay_dateto = pay_dateto.value;
-            payload['pay_du'] = payDu;
-        }
-
-        if (pay_cycle.value) {
-            payload.pay_cycle = pay_cycle.value.value;
-        }
-
-        if (!isEmpty(payment.value)) {
-            payload.payment = +payment.value.replace(/,/g, '');
-        }
-
-        if (selectedProduct) {
-            payload['p_code'] = selectedProduct.p_code;
-            payload['title'] = selectedProduct.title;
-            payload['spec'] = selectedProduct.spec;
-            payload['subcategory'] = selectedProduct.subcategory;
-            payload['cal_spec'] = selectedProduct.cal_spec;
-        }
-
-        if (bo_dateto.value) {
-            payload['bo_dateto'] = dayjs(bo_dateto.value).format('YYYY-MM-DD');
-            payload['bo_du'] = boDu;
-        }
-
-        if (payM !== -1) {
-            payload['pay_month'] = payM;
-        }
-
-        if (!isEmpty(payBo.value)) {
-            payload['pay_bo'] = +payBo.value.replace(/,/g, '');
-        }
-
-        if (!isEmpty(payJ.value)) {
-            payload['pay_j'] = +payJ.value.replace(/,/g, '');
-        }
-
-        if (!isEmpty(payS.value)) {
-            payload['pay_s'] = +payS.value.replace(/,/g, '');
-        }
-
-        if (!isEmpty(tp.value)) {
-            payload['tp'] = +tp.value.replace(/,/g, '');
-        }
-
-        if (!isEmpty(tp2.value)) {
-            payload['tp2'] = +tp2.value.replace(/,/g, '');
-        }
-
-        if (!isEmpty(tp3.value)) {
-            payload['tp3'] = +tp3.value.replace(/,/g, '');
-        }
-
-        if (!isEmpty(tpu.value)) {
-            payload['tpu'] = +tpu.value.replace(/,/g, '');
-        }
-
-        if (calType.value) {
-            payload['cal_type'] = calType.value.value;
-        }
-
-        if (calDatefrom.value) {
-            payload['cal_datefrom'] = dayjs(calDatefrom.value).format(
-                'YYYY-MM-01',
-            );
-        }
-
-        if (family.value) {
-            payload['family'] = family.value.value === 'Y' ? true : false;
-        }
-
-        if (loadedContract) {
-            payload['c_idx'] = loadedContract.idx;
-            payload['c_name'] = loadedContract.name;
-        }
-
+        // 담당자 관련
         if (mode === 'create') {
             payload['userid'] = manager.value ? manager.value.value : null;
         } else if (mode === 'update') {
@@ -572,28 +470,142 @@ export const LongForm: FC<Props> = ({
                 payload['userid'] = defaultUserid;
             }
 
-            if (removedContacts.length > 0) {
-                payload['remove']['contacts'] = removedContacts.map(
-                    (v) => v.idx,
-                );
-            }
+            // API 분리로 인하여 제외
+            // if (removedContacts.length > 0) {
+            //     payload['remove']['contacts'] = removedContacts.map(
+            //         (v) => v.idx,
+            //     );
+            // }
 
             if (removedPays.length > 0) {
                 payload['remove']['pays'] = removedPays.map((v) => v.idx);
             }
         }
-
-        if (contacts.length > 0) {
-            payload['contacts'] = contacts;
+        // 보험사 관련
+        if (wcode.value) {
+            payload['wcode'] = wcode.value.value;
         }
-
-        if (insureds.length > 0) {
-            payload['p_persons'] = insureds;
+        // 계약번호 관련
+        if (!isEmpty(cnum.value)) {
+            payload['cnum'] = cnum.value;
         }
-
+        // 상품명 관련
+        if (selectedProduct) {
+            payload['p_code'] = selectedProduct.p_code;
+            payload['title'] = selectedProduct.title;
+            payload['spec'] = selectedProduct.spec;
+            payload['subcategory'] = selectedProduct.subcategory;
+            payload['cal_spec'] = selectedProduct.cal_spec;
+        }
+        // 계약자 관련
+        if (loadedContract) {
+            payload['c_idx'] = loadedContract.idx;
+            payload['c_name'] = loadedContract.name;
+        }
+        // 피보험자 관련
+        if (loadedInsured) {
+            payload['p_name'] = loadedInsured.name;
+        }
+        // 계약일자 관련
+        if (contdate.value) {
+            payload.contdate = dayjs(contdate.value).format('YYYY-MM-DD');
+        }
+        // 납입만기 관련
+        if (pay_dateto.value) {
+            payload.pay_dateto = dayjs(pay_dateto.value).format('YYYY-MM-DD');
+            payload['pay_du'] = payDu;
+        }
+        // 납입주기 관련
+        if (pay_cycle.value) {
+            payload['pay_cycle'] = pay_cycle.value.value;
+        }
+        // 보장만기 관련
+        if (bo_dateto.value) {
+            payload['bo_dateto'] = dayjs(bo_dateto.value).format('YYYY-MM-DD');
+            payload['bo_du'] = boDu;
+        }
+        // 실적보험료
+        if (!isEmpty(payment.value)) {
+            payload['payment'] = +payment.value.replace(/,/g, '');
+        }
+        // 월납기준환산
+        if (payM) {
+            payload['pay_month'] = payM;
+        }
+        // 보장보험료
+        if (!isEmpty(payBo.value)) {
+            payload['pay_bo'] = +payBo.value.replace(/,/g, '');
+        }
+        // 적립보험료
+        if (!isEmpty(payJ.value)) {
+            payload['pay_j'] = +payJ.value.replace(/,/g, '');
+        }
+        // 실손보험료
+        if (!isEmpty(payS.value)) {
+            payload['pay_s'] = +payS.value.replace(/,/g, '');
+        }
+        // 1차
+        if (!isEmpty(tp.value)) {
+            payload['tp'] = +tp.value.replace(/,/g, '');
+        }
+        // 2차
+        if (!isEmpty(tp2.value)) {
+            payload['tp2'] = +tp2.value.replace(/,/g, '');
+        }
+        // 3차
+        if (!isEmpty(tp3.value)) {
+            payload['tp3'] = +tp3.value.replace(/,/g, '');
+        }
+        // 저축유지
+        if (!isEmpty(tpu.value)) {
+            payload['tpu'] = +tpu.value.replace(/,/g, '');
+        }
+        // 정산구분
+        if (calType.value) {
+            payload['cal_type'] = calType.value.value;
+        }
+        // 정산개시월
+        if (calDatefrom.value) {
+            payload['cal_datefrom'] = dayjs(calDatefrom.value).format(
+                'YYYY-MM-01',
+            );
+        }
+        // 본인계약여부
+        if (family.value) {
+            payload['family'] = family.value.value === 'Y' ? true : false;
+        }
+        // 청약설계
+        if (sul_dist.value) {
+            payload['sul_dist'] = sul_dist.value.value;
+        }
+        // 고객청약서명
+        if (subs_sign.value) {
+            payload['subs_sign'] = subs_sign.value.value === 'Y' ? true : false;
+        }
+        // 청약서제출여부
+        if (subs_submission.value) {
+            payload['subs_submission'] = subs_submission.value.value;
+        }
+        // 납입실적
         if (pays.length > 0) {
-            payload['pays'] = pays;
+            payload['pays'] = pays.map((v) => {
+                const output = { ...v };
+
+                if (output.dist === '추징' || output.dist === '환급') {
+                    output.pay *= -1;
+                }
+
+                return output;
+            });
         }
+        // API 분리로 인하여 제외
+        // if (contacts.length > 0) {
+        //     payload['contacts'] = contacts;
+        // }
+        // 피보험자 입력 변경으로 인하여 제외
+        // if (insureds.length > 0) {
+        //     payload['p_persons'] = insureds;
+        // }
 
         return payload;
     };
@@ -650,7 +662,7 @@ export const LongForm: FC<Props> = ({
                                             label="보험사"
                                             isDisabled={!editable}
                                             isRequired
-                                            {...comp}
+                                            {...wcode}
                                         />
                                     </div>
                                     <div className="flex-fill">
@@ -671,7 +683,7 @@ export const LongForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <SearchProductInput
                                             editable={editable}
-                                            wcode={comp.value?.value}
+                                            wcode={wcode.value?.value}
                                             defaultTitle={defaultTitle}
                                             defaultSpec={defaultSpec}
                                             defaultSubcategory={
@@ -706,7 +718,6 @@ export const LongForm: FC<Props> = ({
                                         <FloatDatepicker
                                             label="계약일자"
                                             readOnly={!editable}
-                                            disabled={pays.length > 0}
                                             isRequired
                                             hooks={contdate}
                                         />
@@ -829,11 +840,7 @@ export const LongForm: FC<Props> = ({
                                             label="월납기준환산"
                                             disabled
                                             isNumber
-                                            defaultValue={
-                                                payM !== -1
-                                                    ? payM.toLocaleString()
-                                                    : ''
-                                            }
+                                            value={payM.toLocaleString()}
                                         />
                                     </div>
                                     <div className="flex-fill">
@@ -909,7 +916,7 @@ export const LongForm: FC<Props> = ({
                                                     </MyUnit>
                                                 </>
                                             }
-                                            {...payBo}
+                                            {...payJ}
                                         />
                                     </div>
                                     <div className="flex-fill">
@@ -947,7 +954,7 @@ export const LongForm: FC<Props> = ({
                                                     </MyUnit>
                                                 </>
                                             }
-                                            {...payBo}
+                                            {...payS}
                                         />
                                     </div>
                                     <div className="flex-fill"></div>
@@ -989,6 +996,27 @@ export const LongForm: FC<Props> = ({
                                         />
                                     </div>
                                 </div>
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="고객청약서명"
+                                            isDisabled={!editable}
+                                            {...subs_sign}
+                                        />
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="청약서제출여부"
+                                            isDisabled={!editable}
+                                            {...subs_submission}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <InfoCustAccordion editable={editable} />
                             </div>
                         </div>
                     </div>
@@ -1026,7 +1054,7 @@ export const LongForm: FC<Props> = ({
                             hidden={tab.id !== 'tabPays'}
                             editable={editable}
                             contdate={contdate.value!}
-                            payment={payment.value}
+                            payment={+payment.value.replace(/,/g, '')}
                         />
                         {/* <EndorsementTabpanel
                             id="tabpanelEndorsement"
@@ -1040,14 +1068,14 @@ export const LongForm: FC<Props> = ({
                             hidden={tab.id !== 'tabCalcPerform'}
                             editable={editable}
                         /> */}
-                        {/* <ContactTabpanel
-                            id="tabpanelContactHis"
-                            tabId="tabContactHis"
-                            hidden={tab.id !== 'tabContactHis'}
+                        <SingleContactTabpanel
+                            id="tabpanelContact"
+                            tabId="tabContact"
+                            hidden={tab.id !== 'tabContact'}
                             editable={editable}
                             spe="long"
                             // cnum={cnum.value}
-                        /> */}
+                        />
 
                         {/* <ChangeHistoryTabpanel
                             id="tabpanelChangeHis"
@@ -1104,8 +1132,8 @@ export const LongForm: FC<Props> = ({
                 contdate={contdate.value!}
                 payment={payment.value}
             /> */}
-            <CreateEndorsementModal />
-            <CreateEtcModal />
+            {/* <CreateEndorsementModal /> */}
+            {/* <CreateEtcModal /> */}
             {mode === 'update' && <UserHistoryModal type="contract" />}
         </>
     );

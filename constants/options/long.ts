@@ -309,11 +309,11 @@ const PAY_STATUS: CoreSelectOption[] = [
 
 // 납입구분
 const PAY_DIST: CoreSelectOption[] = [
-    {
-        label: '신규',
-        value: '신규',
-        isFixed: false,
-    },
+    // {
+    //     label: '신규',
+    //     value: '신규',
+    //     isFixed: false,
+    // },
     {
         label: '계속',
         value: '계속',
@@ -634,6 +634,25 @@ const SUL_DIST: CoreSelectOption[] = [
     },
 ];
 
+// 청약서제출여부
+const SUBS_SUBMISSION: CoreSelectOption[] = [
+    {
+        label: '미제출',
+        value: '미제출',
+        isFixed: false,
+    },
+    {
+        label: '회사',
+        value: '회사',
+        isFixed: false,
+    },
+    {
+        label: '보험사',
+        value: '보험사',
+        isFixed: false,
+    },
+];
+
 const rootSelectOptions = {
     payCycle: PAY_CYCLE,
     payCycle2: PAY_CYCLE2,
@@ -655,6 +674,7 @@ const rootSelectOptions = {
     silDist: SIL_DIST,
     whoi: WHOI,
     sulDist: SUL_DIST,
+    subsSubmission: SUBS_SUBMISSION,
 };
 
 export default rootSelectOptions;

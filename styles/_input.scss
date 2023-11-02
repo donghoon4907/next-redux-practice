@@ -148,6 +148,20 @@
             border-bottom-right-radius: 5px;
         }
 
+        &--first {
+            min-width: 50px;
+            background-color: #e2eaff;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        &--checkbox {
+            min-width: 30px;
+            background-color: $white;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
         &--middle {
             background-color: #f2f6ff;
             border-left-width: 1px;

@@ -22,10 +22,10 @@ export const LONG_DETAIL_TABS: CoreTabOption[] = [
     //     panelId: 'tabpanelCustomer',
     // },
     { id: 'tabPays', label: '납입실적', panelId: 'tabpanelPays' },
-    { id: 'tabBuhwal', label: '미유지/부활', panelId: 'tabpanelBuhwal' },
+    // { id: 'tabBuhwal', label: '미유지/부활', panelId: 'tabpanelBuhwal' },
     // { id: 'tabEndorsement', label: '배서구분', panelId: 'tabpanelEndorsement' },
     // { id: 'tabCalcPerform', label: '정산실적', panelId: 'tabpanelCalcPerform' },
-    { id: 'tabContactHis', label: '고객상담', panelId: 'tabpanelContactHis' },
+    { id: 'tabContact', label: '고객상담', panelId: 'tabpanelContact' },
     // { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
 ];
 /**

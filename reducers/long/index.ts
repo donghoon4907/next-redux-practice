@@ -15,6 +15,9 @@ import {
     GetLongSilhyosSuccessPayload,
 } from '@actions/contract/long/get-long-silhyos.action';
 import { GetLongBuhwalsActionTypes } from '@actions/contract/long/get-long-buhwals.action';
+import { KeyValue } from '@models/keyValue';
+import { InfoCustActionTypes } from '@actions/contract/long/set-info-cust.action';
+import { InfoProductActionTypes } from '@actions/contract/long/set-info-product.action';
 
 export interface LongState {
     /**
@@ -49,6 +52,14 @@ export interface LongState {
      * 삭제한 배서 목록
      */
     removedEndorsements: Endorsement[];
+    /**
+     * 관리정보 목록
+     */
+    infoCusts: KeyValue[];
+    /**
+     * 기타계약정보 목록
+     */
+    infoProducts: KeyValue[];
 }
 
 const initialState: LongState = {
@@ -98,6 +109,8 @@ const initialState: LongState = {
         },
     ],
     removedEndorsements: [],
+    infoCusts: [],
+    infoProducts: [],
 };
 
 export const longReducer: Reducer<LongState, any> = (
@@ -177,7 +190,76 @@ export const longReducer: Reducer<LongState, any> = (
 
                 break;
             }
+            case InfoCustActionTypes.CREATE: {
+                draft.infoCusts = draft.infoCusts.concat(action.payload);
+                break;
+            }
+            case InfoCustActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
 
+                for (let i = 0; i < draft.infoCusts.length; i++) {
+                    if (draft.infoCusts[i].index === index) {
+                        draft.infoCusts[i] = {
+                            ...draft.infoCusts[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case InfoCustActionTypes.DELETE: {
+                const findIndex = draft.infoCusts.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.infoCusts.splice(findIndex, 1);
+
+                    // if (deleted.idx) {
+                    //     draft.removedPays = draft.removedPays.concat(deleted);
+                    // }
+                }
+
+                break;
+            }
+            case InfoProductActionTypes.CREATE: {
+                draft.infoProducts = draft.infoProducts.concat(action.payload);
+                break;
+            }
+            case InfoProductActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.infoProducts.length; i++) {
+                    if (draft.infoProducts[i].index === index) {
+                        draft.infoProducts[i] = {
+                            ...draft.infoProducts[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case InfoProductActionTypes.DELETE: {
+                const findIndex = draft.infoProducts.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.infoProducts.splice(findIndex, 1);
+
+                    // if (deleted.idx) {
+                    //     draft.removedPays = draft.removedPays.concat(deleted);
+                    // }
+                }
+
+                break;
+            }
             default:
                 return state;
         }

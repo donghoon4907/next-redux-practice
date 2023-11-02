@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import type { CoreProps } from '@interfaces/core';
 
 interface Props extends CoreProps {
-    placement: 'middle' | 'last';
+    placement: 'first' | 'middle' | 'last' | 'checkbox';
 }
 
 export const MyUnit: FC<Props> = ({ children, placement }) => {

@@ -22,16 +22,20 @@ class LongDTO {
             contdate,
             pay_cycle,
             pay_dateto,
+            bo_dateto,
             payment,
+            c_idx,
+            p_name,
+            pays,
         } = this.payload;
 
-        if (!userid) {
+        if (isEmpty(userid)) {
             alert('담당자를 선택해주세요.');
 
             return false;
         }
 
-        if (wcode === -1) {
+        if (isEmpty(wcode)) {
             alert('보험사를 선택해주세요.');
 
             return false;
@@ -49,14 +53,20 @@ class LongDTO {
             return false;
         }
 
-        if (isEmpty(contdate)) {
-            alert('계약일자를 입력해주세요.');
+        if (isEmpty(c_idx)) {
+            alert('계약자를 설정해주세요.');
 
             return false;
         }
 
-        if (pay_cycle === -1) {
-            alert('납입주기를 선택해주세요.');
+        if (isEmpty(p_name)) {
+            alert('피보험자를 설정해주세요.');
+
+            return false;
+        }
+
+        if (isEmpty(contdate)) {
+            alert('계약일자를 입력해주세요.');
 
             return false;
         }
@@ -67,10 +77,34 @@ class LongDTO {
             return false;
         }
 
-        if (payment === -1) {
+        if (isEmpty(pay_cycle)) {
+            alert('납입주기를 선택해주세요.');
+
+            return false;
+        }
+
+        if (isEmpty(bo_dateto)) {
+            alert('보장만기를 입력해주세요.');
+
+            return false;
+        }
+
+        if (isEmpty(payment)) {
             alert('실적보험료를 입력해주세요.');
 
             return false;
+        }
+
+        if (Array.isArray(pays)) {
+            for (let i = 0; i < pays.length; i++) {
+                if (!pays[i].method) {
+                    alert(
+                        '금종을 설정하지 않은 실적 정보가 있습니다. 납입실적 탭을 확인하세요.',
+                    );
+
+                    return false;
+                }
+            }
         }
 
         return true;

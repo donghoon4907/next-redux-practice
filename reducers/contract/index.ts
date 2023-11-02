@@ -118,7 +118,7 @@ export const contractReducer: Reducer<ContractState, any> = (
                 break;
             }
             case PayActionTypes.CREATE: {
-                draft.pays = draft.pays.concat(action.payload);
+                draft.pays = [action.payload, ...draft.pays];
                 break;
             }
             case PayActionTypes.UPDATE: {

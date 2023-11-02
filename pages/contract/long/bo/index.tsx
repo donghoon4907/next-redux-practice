@@ -17,6 +17,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { LongSearchFilter } from '@partials/contract/long/template/SearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
+import { getUsersRequest } from '@actions/hr/get-users';
 
 const LongBo: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -84,6 +85,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         dispatch(getCompaniesRequest('long-view'));
 
         dispatch(getOrgasRequest({}));
+
+        dispatch(
+            getUsersRequest({
+                idx: '1',
+            }),
+        );
 
         dispatch(END);
 

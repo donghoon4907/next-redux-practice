@@ -58,7 +58,7 @@ export interface CreateLongRequestPayload extends CorePayload {
     // 수정보험료
     tp?: number;
     // 1차수정
-    tp1?: number;
+    // tp1?: number;
     // 2차수정
     tp2?: number;
     // 3차수정
@@ -75,12 +75,14 @@ export interface CreateLongRequestPayload extends CorePayload {
     c_idx?: number;
     // 계약자 이름
     c_name?: string;
+    // 피보험자명
+    p_name?: string;
     // 피보험자 목록
-    p_persions?: Insured[];
+    // p_persions?: Insured[];
     // 납입실적 목록
     pays?: Pay[];
     // 접촉이력
-    contacts?: Contact[];
+    // contacts?: Contact[];
 }
 
 export interface CreateLongRequestAction extends Action<string> {

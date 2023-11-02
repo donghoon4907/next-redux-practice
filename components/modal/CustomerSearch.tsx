@@ -81,24 +81,16 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
                                 {userCustomers.length !== 0 && (
                                     <th style={{ width: '30px' }}>선택</th>
                                 )}
+                                <th style={{ width: '100px' }}>고객구분</th>
+                                <th style={{ width: '100px' }}>이름(회사명)</th>
                                 <th style={{ width: '100px' }}>
-                                    <strong>고객구분</strong>
+                                    주민번호(사업자등록번호)
                                 </th>
                                 <th style={{ width: '100px' }}>
-                                    <strong>이름(회사명)</strong>
+                                    핸드폰(대표전화)
                                 </th>
-                                <th style={{ width: '100px' }}>
-                                    <strong>주민번호(사업자등록번호)</strong>
-                                </th>
-                                <th style={{ width: '100px' }}>
-                                    <strong>핸드폰(대표전화)</strong>
-                                </th>
-                                <th style={{ width: '100px' }}>
-                                    <strong>생일</strong>
-                                </th>
-                                <th style={{ width: '100px' }}>
-                                    <strong>최근 수정일</strong>
-                                </th>
+                                <th style={{ width: '100px' }}>생일</th>
+                                <th style={{ width: '100px' }}>최근 수정일</th>
                             </tr>
                         </thead>
                         <tbody>

@@ -199,11 +199,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
             //         );
             //     }
             // }
-        } catch {
-            output.redirect = {
-                destination: '/404',
-                permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
-            };
+        } catch (e) {
+            console.log(e);
+            // output.redirect = {
+            //     destination: '/404',
+            //     permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
+            // };
         }
 
         return output;

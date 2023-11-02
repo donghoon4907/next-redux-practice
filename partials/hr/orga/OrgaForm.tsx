@@ -267,7 +267,7 @@ export const OrgaForm: FC<Props> = ({
 
         if (createDto.requiredValidate()) {
             createOrga(createDto.getPayload(), () => {
-                alert('조직이 등록되었습니다.');
+                alert('등록되었습니다.');
             });
         }
     };

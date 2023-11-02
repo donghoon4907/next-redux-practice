@@ -1,3 +1,5 @@
+import { addMonths, differenceInMonths, getMonth, setMonth } from 'date-fns';
+
 /**
  * 주민등록번호를 일반나이로 변환하는 함수
  */
@@ -56,30 +58,25 @@ export function birthdayToInternationalAge(birthday: Date) {
     return age;
 }
 
-// 입금구분 반환
-// contdate: 계약일
-// paydate: 영수일
-// whoi: 회차
-export function makeDistkind(contdate: Date, paydate: Date, whoi: number) {
-    const nextMonth = calcTargetMonth(contdate, whoi);
-
-    const diffMonth = nextMonth - (paydate.getMonth() + 1);
+// 납입구분 계산
+export function calcDistkind(gdate: Date, paydate: Date) {
+    const diffMonth = differenceInMonths(gdate, paydate);
 
     let distkind;
-    if (diffMonth < -1) {
-        distkind = '부활';
-    } else if (diffMonth === -1) {
-        distkind = '유예';
+    if (diffMonth > 0) {
+        distkind = '선납';
     } else if (diffMonth === 0) {
         distkind = '응당';
+    } else if (diffMonth === -1) {
+        distkind = '유예';
     } else {
-        distkind = '선납';
+        distkind = '부활';
     }
 
     return distkind;
 }
 
 // 대상년월 계산
-export function calcTargetMonth(contdate: Date, whoi: number) {
-    return contdate.getMonth() + whoi;
+export function calcGdate(contdate: Date, whoi: number) {
+    return addMonths(contdate, whoi - 1);
 }
