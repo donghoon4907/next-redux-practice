@@ -42,7 +42,7 @@ export const LongBuhwalSearchFilter: FC<Props> = () => {
             <div className={`${displayName}__filters`}>
                 <div className={`${displayName}__filterrow`}>
                     <div className={`${displayName}__filter`}>
-                        <SearchFilterOrgaSelect activeUser />
+                        <SearchFilterOrgaSelect />
                         <SearchFilterUserSelect />
                     </div>
                     <div className={`${displayName}__filter`}>

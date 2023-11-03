@@ -58,7 +58,7 @@ export const SetInfoProductModal: FC<Props> = () => {
                         index: generateIndex(infoProducts),
                         checked: false,
                         key: key.value,
-                        val: val.value,
+                        value: val.value,
                     }),
                 );
             } else {
@@ -66,7 +66,7 @@ export const SetInfoProductModal: FC<Props> = () => {
                     updateInfoProduct({
                         ...selectedInfoProduct,
                         key: key.value,
-                        val: val.value,
+                        value: val.value,
                     }),
                 );
             }
@@ -79,7 +79,7 @@ export const SetInfoProductModal: FC<Props> = () => {
         if (selectedInfoProduct) {
             setKey(selectedInfoProduct.key);
 
-            setVal(selectedInfoProduct.val);
+            setVal(selectedInfoProduct.value);
         } else {
             setKey('');
 

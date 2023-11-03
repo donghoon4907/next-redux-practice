@@ -87,7 +87,7 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
     }, [filteredProducts]);
 
     return (
-        <Modal isOpen={isShowProductSearchModal} toggle={handleClose} size="lg">
+        <Modal isOpen={isShowProductSearchModal} toggle={handleClose} size="xl">
             <ModalHeader toggle={handleClose}>상품 검색</ModalHeader>
             <ModalBody>
                 <div className="row">
@@ -97,6 +97,7 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                     <div className="flex-fill">
                         <FloatInput label="상품명" {...search} />
                     </div>
+                    <div className="flex-fill"></div>
                 </div>
                 <div
                     className="wr-table--scrollable wr-table--hover wr-mt wr-border wr-table__wrap"
@@ -106,17 +107,17 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                         <thead>
                             <tr>
                                 <th style={{ width: '30px' }}>선택</th>
-                                <th style={{ width: '100px' }}>코드</th>
+                                <th>코드</th>
                                 <th>상품명</th>
-                                <th style={{ width: '100px' }}>보종</th>
-                                <th style={{ width: '100px' }}>세부보종</th>
-                                <th style={{ width: '100px' }}>정산보종</th>
+                                <th>보종</th>
+                                <th>세부보종</th>
+                                <th>정산보종</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredProducts.length === 0 && (
                                 <tr>
-                                    <td colSpan={5}>상품이 없습니다.</td>
+                                    <td colSpan={6}>상품이 없습니다.</td>
                                 </tr>
                             )}
                             {filteredProducts.map((v, i) => (
@@ -140,10 +141,7 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                                         <span>{v.p_code}</span>
                                     </td>
                                     <td>
-                                        <div
-                                            className="text-truncate"
-                                            style={{ width: 320 }}
-                                        >
+                                        <div className="text-start">
                                             {v.title}
                                         </div>
                                     </td>

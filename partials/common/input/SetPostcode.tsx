@@ -1,6 +1,7 @@
 import type { FC } from 'react';
 import { UseInputOutput } from '@hooks/use-input';
 import { FloatInput } from '@components/input/Float';
+import { InputSearchButton } from '@components/button/InputSearch';
 
 interface Props {
     activeMarginTop?: boolean;
@@ -28,8 +29,16 @@ export const SetPostcodeInput: FC<Props> = ({
                     <FloatInput
                         label="우편번호"
                         disabled
+                        after={
+                            !disabled && (
+                                <>
+                                    <InputSearchButton
+                                        onClick={onClickPostcode}
+                                    />
+                                </>
+                            )
+                        }
                         {...postcodeHooks}
-                        onSearch={!disabled ? onClickPostcode : undefined}
                     />
                 </div>
                 <div className="flex-fill">

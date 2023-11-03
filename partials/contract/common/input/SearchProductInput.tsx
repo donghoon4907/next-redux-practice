@@ -90,7 +90,7 @@ export const SearchProductInput: FC<Props> = ({
                     </>
                 }
             />
-            <div style={{ marginTop: 5 }}>
+            <div style={{ marginTop: 10 }}>
                 <ProductBadgeTemplate
                     spec={spec}
                     subcategory={subcategory}

@@ -8,5 +8,5 @@ export type KeyValue = CoreCheckableModel & {
     /**
      * value
      */
-    val: string;
+    value: string;
 };

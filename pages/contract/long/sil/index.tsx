@@ -19,6 +19,7 @@ import { LongSilSearchFilter } from '@partials/contract/long/template/SilSearchF
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongSilsRequest } from '@actions/contract/long/get-long-sils.action';
+import { getUsersRequest } from '@actions/hr/get-users';
 
 const LongSil: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -100,6 +101,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         dispatch(getCompaniesRequest('long-view'));
 
         dispatch(getOrgasRequest({}));
+
+        dispatch(
+            getUsersRequest({
+                idx: '1',
+            }),
+        );
 
         dispatch(END);
 

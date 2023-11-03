@@ -1,3 +1,4 @@
+import { textToBadgeColor } from '@utils/color';
 import type { FC } from 'react';
 
 interface Props {
@@ -14,15 +15,21 @@ export const ProductBadgeTemplate: FC<Props> = ({
     return (
         <div className="wr-badge__wrap">
             {spec && (
-                <span className="badge rounded-pill spec wr-badge">{spec}</span>
+                <span
+                    className={`badge rounded-pill wr-badge ${textToBadgeColor(
+                        spec,
+                    )}`}
+                >
+                    {spec}
+                </span>
             )}
             {subcategory && (
-                <span className="badge rounded-pill subcategory wr-badge">
+                <span className={`badge rounded-pill wr-badge lightgray`}>
                     {subcategory}
                 </span>
             )}
             {calSpec && (
-                <span className="badge rounded-pill calspec wr-badge">
+                <span className={`badge rounded-pill wr-badge lightblue`}>
                     {calSpec}
                 </span>
             )}

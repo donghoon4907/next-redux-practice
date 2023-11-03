@@ -10,10 +10,12 @@ export const GNBS: CoreMenuOption[] = [
 
 export const SUBMENUS: CoreMenuOption[] = [
     { id: 'submenu1', label: '통합검색', to: '#' },
-    { id: 'submenu2', label: '게시판', to: '#' },
-    { id: 'submenu3', label: '일정관리', to: '/calendar' },
+    { id: 'submenu2', label: '일정관리', to: '/calendar' },
+    { id: 'submenu3', label: '주요연락처', to: '#' },
+    { id: 'submenu3', label: '본사원격지원', to: '#' },
+    { id: 'submenu3', label: '에듀센터', to: '#' },
     { id: 'submenu3', label: 'SMS/Fax', to: '#' },
-    { id: 'submenu3', label: 'Mypage', to: '#' },
+    { id: 'submenu5', label: 'Mypage', to: '#' },
 ];
 
 export const ASIDE_MENU: any = {

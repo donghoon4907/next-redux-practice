@@ -3,7 +3,7 @@
     font-size: 16px;
     font-weight: 500;
     color: $white;
-    border-top-right-radius: 15px;
+    border-radius: 3px 15px 0px 0px;
 
     &:first-of-type {
         border-left-width: 0px !important;
@@ -20,7 +20,7 @@
 
     &__line {
         flex: 1;
-        border-bottom: 3px solid #7fa1f7;
+        border-bottom: 5px solid #f8b62d;
     }
 
     &__link {
@@ -56,16 +56,16 @@
         color: $wr-primary-color;
         border-bottom: 0;
         font-weight: 700;
-        border: 3px solid #7fa1f7;
+        border: 5px solid #f8b62d;
         border-bottom-width: 0;
-        border-top-left-radius: 3px;
     }
 
     &:not(.active) {
         background-color: #e0e5ef;
         font-weight: 400;
         border-top-width: 0;
-        border-bottom: 3px solid #7fa1f7;
+        border-bottom: 5px solid #f8b62d;
+        box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.25) inset;
     }
 
     &:hover {

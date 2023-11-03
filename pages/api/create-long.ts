@@ -14,7 +14,8 @@ export default async function handler(
         const { data } = await longsService.createLong(body);
 
         res.status(200).json({ data });
-    } catch {
+    } catch (e) {
+        console.log(e);
         res.status(500).json({
             message: '알 수 없는 문제가 발생했습니다.',
         });

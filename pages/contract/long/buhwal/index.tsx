@@ -19,6 +19,7 @@ import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongBuhwalsRequest } from '@actions/contract/long/get-long-buhwals.action';
 import { LongBuhwalSearchFilter } from '@partials/contract/long/template/BuhwalSearchFilter';
+import { getUsersRequest } from '@actions/hr/get-users';
 
 const LongBuhwal: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -90,6 +91,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         dispatch(getCompaniesRequest('long-view'));
 
         dispatch(getOrgasRequest({}));
+
+        dispatch(
+            getUsersRequest({
+                idx: '1',
+            }),
+        );
 
         dispatch(END);
 

@@ -122,8 +122,8 @@ export const ContactTabpanel: FC<Props> = ({
             insert_username: loggedInUser.user_info.name,
             insert_userid: loggedInUser.userid,
             checked: false,
-            spe: _spe.value!.value,
-            spe_label: _spe.value!.label,
+            // spe: _spe.value!.value,
+            // spe_label: _spe.value!.label,
         };
 
         if (issuedate.value) {

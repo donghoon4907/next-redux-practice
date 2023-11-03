@@ -588,7 +588,8 @@ export const LongForm: FC<Props> = ({
         }
         // 고객청약서명
         if (subs_sign.value) {
-            payload['subs_sign'] = subs_sign.value.value === 'Y' ? true : false;
+            // payload['subs_sign'] = subs_sign.value.value === 'Y' ? true : false;
+            payload['subs_sign'] = subs_sign.value.value;
         }
         // 청약서제출여부
         if (subs_submission.value) {
@@ -596,7 +597,7 @@ export const LongForm: FC<Props> = ({
         }
         // 관리정보
         if (infoCusts.length > 0) {
-            payload['info_cust'] = infoCusts;
+            payload['info_custom'] = infoCusts;
         }
         // 기타계약정보
         if (infoProducts.length > 0) {
@@ -642,7 +643,9 @@ export const LongForm: FC<Props> = ({
     return (
         <>
             <div className={`${displayName} wr-pages-detail wr-frame__tabbody`}>
-                <div className={`${displayName}__left wr-pages-detail__left`}>
+                <div
+                    className={`${displayName}__left wr-pages-detail__left wr-pages-detail__applydatepicker`}
+                >
                     <div className="wr-pages-detail__inner">
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__content">
@@ -1031,12 +1034,12 @@ export const LongForm: FC<Props> = ({
                             </div>
                         </div>
                         <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__content">
+                            <div className="wr-pages-detail__content p-15">
                                 <InfoCustAccordion editable={editable} />
                             </div>
                         </div>
                         <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__content">
+                            <div className="wr-pages-detail__content p-15">
                                 <InfoProductAccordion editable={editable} />
                             </div>
                         </div>

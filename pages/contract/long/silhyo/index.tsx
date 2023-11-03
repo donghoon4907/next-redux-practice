@@ -19,6 +19,7 @@ import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongSilhyosRequest } from '@actions/contract/long/get-long-silhyos.action';
 import { LongSilhyoSearchFilter } from '@partials/contract/long/template/SilhyoSearchFilter';
+import { getUsersRequest } from '@actions/hr/get-users';
 
 const LongSilhyo: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -90,6 +91,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         dispatch(getCompaniesRequest('long-view'));
 
         dispatch(getOrgasRequest({}));
+
+        dispatch(
+            getUsersRequest({
+                idx: '1',
+            }),
+        );
 
         dispatch(END);
 

@@ -15,7 +15,7 @@ import { LongForm } from '@partials/contract/long/LongForm';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 import { createInsured } from '@actions/contract/common/set-insured.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
-import { makeDistkind } from '@utils/calculator';
+import { calcDistkind } from '@utils/calculator';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { createContact } from '@actions/common/set-contact.action';
@@ -183,7 +183,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                             checked: false,
                             idx: long.pays[i].idx,
                             paydate: long.pays[i].paydate,
-                            gdate: long.pays[i].gdate,
+                            // gdate: long.pays[i].gdate,
                             whoi: long.pays[i].whoi,
                             dist: long.pays[i].dist,
                             pay: long.pays[i].pay,
@@ -195,11 +195,11 @@ export const getServerSideProps = wrapper.getServerSideProps(
                                       longConstants.payCycle,
                                   ).value
                                 : undefined,
-                            distkind: makeDistkind(
-                                new Date(long.contdate),
-                                new Date(long.pays[i].paydate),
-                                long.pays[i].whoi,
-                            ),
+                            // distkind: makeDistkind(
+                            //     new Date(long.contdate),
+                            //     new Date(long.pays[i].paydate),
+                            //     long.pays[i].whoi,
+                            // ),
                         }),
                     );
                 }

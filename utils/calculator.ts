@@ -1,4 +1,4 @@
-import { addMonths, differenceInMonths, getMonth, setMonth } from 'date-fns';
+import { addMonths, differenceInMonths } from 'date-fns';
 
 /**
  * 주민등록번호를 일반나이로 변환하는 함수

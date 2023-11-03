@@ -57,7 +57,7 @@ export const SetInfoCustModal: FC<Props> = () => {
                         index: generateIndex(infoCusts),
                         checked: false,
                         key: key.value,
-                        val: val.value,
+                        value: val.value,
                     }),
                 );
             } else {
@@ -65,7 +65,7 @@ export const SetInfoCustModal: FC<Props> = () => {
                     updateInfoCust({
                         ...selectedInfoCust,
                         key: key.value,
-                        val: val.value,
+                        value: val.value,
                     }),
                 );
             }
@@ -78,7 +78,7 @@ export const SetInfoCustModal: FC<Props> = () => {
         if (selectedInfoCust) {
             setKey(selectedInfoCust.key);
 
-            setVal(selectedInfoCust.val);
+            setVal(selectedInfoCust.value);
         } else {
             setKey('');
 

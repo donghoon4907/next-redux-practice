@@ -2,9 +2,9 @@ import type { FC, MouseEvent } from 'react';
 import type { CoreMenuOption, CoreProps } from '@interfaces/core';
 import { useRoute } from '@hooks/use-route';
 
-interface Props extends CoreProps, Pick<CoreMenuOption, 'to'> {}
+interface Props extends CoreProps, Pick<CoreMenuOption, 'to' | 'label'> {}
 
-export const GnbSubMenuItem: FC<Props> = ({ to, children }) => {
+export const GnbSubMenuItem: FC<Props> = ({ to, children, label }) => {
     const route = useRoute();
 
     // const { onToggle } = useDrawer();
@@ -12,7 +12,7 @@ export const GnbSubMenuItem: FC<Props> = ({ to, children }) => {
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();
 
-        if (to === '/404') {
+        if (to === '#') {
             return alert('준비 중입니다.');
         }
 
@@ -20,9 +20,9 @@ export const GnbSubMenuItem: FC<Props> = ({ to, children }) => {
     };
 
     return (
-        <li>
+        <li className="wr-gnb__menuitem" role="menuitem">
             <a className="wr-gnb__subtitle" href={to} onClick={handleClick}>
-                {children}
+                {label}
             </a>
         </li>
     );

@@ -35,7 +35,7 @@ export const SearchFilterOrgaSelect: FC<Props> = ({ activeUser }) => {
 
     useEffect(() => {
         const { orga_idx } = router.query;
-        // 검색한 경우
+
         if (orga_idx) {
             setOrga(findSelectOption(orga_idx, orgas));
 

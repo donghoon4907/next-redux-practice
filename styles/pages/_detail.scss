@@ -48,6 +48,12 @@
         height: $wr-detail-filter-height;
     }
 
+    & .form-floating label {
+        font-size: $wr-detail-input-font-size;
+        font-weight: $wr-detail-input-font-weight;
+        color: $wr-detail-input-color;
+    }
+
     &__left {
         overflow: auto;
         height: 100%;
@@ -58,61 +64,18 @@
             width: 0px;
             height: 0px;
         }
-        // 데이트피커 - disabled 스타일
-        .rs-picker-default.rs-picker-disabled .rs-picker-toggle,
-        .rs-picker-input.rs-picker-disabled .rs-picker-toggle,
-        .rs-picker-default.rs-picker-disabled .rs-btn,
-        .rs-picker-input.rs-picker-disabled .rs-btn {
-            background-color: inherit !important;
-        }
-        // 데이트피커 - 일반 스타일
-        & .rs-picker-default .rs-btn,
-        .rs-picker-input .rs-btn,
-        .rs-picker-default .rs-picker-toggle,
-        .rs-picker-input .rs-picker-toggle {
-            background-color: inherit !important;
-        }
+    }
 
-        & .rs-picker {
-            padding-right: 9px;
-            padding-left: $wr-detail-input-padding-left;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+    &__applydatepicker {
+        // 데이트피커
+        @include applyDetailDatepicker;
+    }
 
-        & .rs-picker-toggle-placeholder,
-        .rs-picker-toggle-value {
-            opacity: 0 !important;
-        }
-
-        & .rs-picker-toggle-read-only {
-            opacity: 1 !important;
-        }
-
-        & .rs-picker-toggle-textbox,
-        & .rs-picker-toggle-value {
-            font-size: $wr-detail-input-font-size !important;
-            padding-left: 0 !important;
-            color: $wr-detail-input-color;
-            background-color: inherit !important;
-            font-weight: $wr-detail-input-font-weight !important;
-        }
-
-        .rs-picker-toggle-textbox::placeholder {
-            font-size: $wr-detail-input-font-size !important;
-            color: $wr-detail-input-placeholder-color !important;
-            font-weight: $wr-detail-input-font-weight !important;
-        }
-
-        & .rs-picker-toggle {
-            border: none !important;
-        }
-
-        .rs-picker-default .rs-picker-toggle.rs-btn {
-            padding-left: 0 !important;
-        }
+    &__textarea {
+        font-size: $wr-detail-input-font-size !important;
+        border-radius: $wr-detail-input-border-radius !important;
+        font-weight: $wr-detail-input-font-weight;
+        border-color: $wr-detail-input-border-color !important;
     }
 
     &__right {
@@ -134,7 +97,7 @@
     &__block {
         position: relative;
         padding: 0 !important;
-        border-radius: 5px;
+        border-radius: $wr-detail-input-border-radius;
 
         @include wr-card;
 
@@ -144,8 +107,12 @@
     }
 
     &__content {
-        padding: 25px 20px 20px 20px;
         position: relative;
+        padding: 25px 20px 20px 20px;
+
+        &.p-15 {
+            padding: 15px;
+        }
 
         & .accordion-item {
             border: none;
@@ -280,11 +247,5 @@
         justify-content: center;
         align-items: center;
         gap: $wr-gutter-size;
-    }
-
-    // Custom Bootstrap
-    & .form-control {
-        font-size: 16px !important;
-        padding: 5px 6px;
     }
 }

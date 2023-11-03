@@ -80,7 +80,7 @@ export const LongSilSearchFilter: FC<Props> = () => {
             <div className={`${displayName}__filters`}>
                 <div className={`${displayName}__filterrow`}>
                     <div className={`${displayName}__filter`}>
-                        <SearchFilterOrgaSelect activeUser />
+                        <SearchFilterOrgaSelect />
                         <SearchFilterUserSelect />
                         <SearchFilterUserCheckbox />
                     </div>

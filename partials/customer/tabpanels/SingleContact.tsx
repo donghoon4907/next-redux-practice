@@ -146,22 +146,22 @@ export const SingleContactTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="row">
-                <div className="col">
+            <div className="row wr-pages-detail__applydatepicker">
+                <div className="flex-fill">
                     <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
+                        <div className="wr-pages-detail__content p-15">
                             <div className="wr-table__toolbar">
                                 <span>상담 설정</span>
                                 <div className="d-flex">
                                     <MyButton
-                                        className="btn-outline-secondary btn-md"
+                                        className="btn-warning btn-sm"
                                         onClick={handleReset}
                                         disabled={!editable}
                                     >
                                         원래대로
                                     </MyButton>
                                     <MyButton
-                                        className="btn-primary btn-md"
+                                        className="btn-primary btn-sm wr-ml"
                                         onClick={handleCreate}
                                         disabled={!editable}
                                     >
@@ -220,12 +220,11 @@ export const SingleContactTabpanel: FC<Props> = ({
                                 <div className="flex-fill">
                                     <div className="form-floating">
                                         <textarea
-                                            className="form-control"
+                                            className="form-control wr-pages-detail__textarea"
                                             placeholder="내용"
-                                            id="cot_memo"
                                             {...comment}
                                             style={{
-                                                height: editable ? 128 : 82,
+                                                height: 128,
                                             }}
                                             disabled={!editable}
                                         />
@@ -237,7 +236,7 @@ export const SingleContactTabpanel: FC<Props> = ({
                     </div>
                 </div>
             </div>
-            {editable && (
+            {/* {editable && (
                 <div className="wr-pages-detail__subtitle wr-mt">
                     <div></div>
                     <div>
@@ -249,7 +248,7 @@ export const SingleContactTabpanel: FC<Props> = ({
                         </MyButton>
                     </div>
                 </div>
-            )}
+            )} */}
 
             <div className="wr-table--normal wr-mt">
                 <table className="wr-table table">
@@ -265,36 +264,16 @@ export const SingleContactTabpanel: FC<Props> = ({
                                 </th>
                             )}
 
-                            <th style={{ width: '100px' }}>
-                                <strong>상담구분</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>채널</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>계약종목</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>계약번호</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>사유발생일</strong>
-                            </th>
-                            <th>
-                                <strong>내용</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>작성자</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>작성일시</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>응대예정일시</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>상태</strong>
-                            </th>
+                            <th>상담구분</th>
+                            <th>채널</th>
+                            <th>계약종목</th>
+                            <th>계약번호</th>
+                            <th>사유발생일</th>
+                            <th>내용</th>
+                            <th>작성자</th>
+                            <th>작성일시</th>
+                            <th>응대예정일시</th>
+                            <th>상태</th>
                         </tr>
                     </thead>
                     <tbody>

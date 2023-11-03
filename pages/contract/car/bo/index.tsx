@@ -19,6 +19,7 @@ import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { CarSearchFilter } from '@partials/contract/car/SearchFilter';
 import dayjs from 'dayjs';
+import { getUsersRequest } from '@actions/hr/get-users';
 
 const CarBo: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -93,6 +94,12 @@ export const getServerSideProps = wrapper.getServerSideProps(
         dispatch(getCompaniesRequest('long-view'));
 
         dispatch(getOrgasRequest({}));
+
+        dispatch(
+            getUsersRequest({
+                idx: '1',
+            }),
+        );
 
         dispatch(END);
 

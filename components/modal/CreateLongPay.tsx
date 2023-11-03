@@ -20,7 +20,7 @@ import { hideCreateLongPayModal } from '@actions/modal/create-pay.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
 import longConstants from '@constants/options/long';
 import { findSelectOption } from '@utils/getter';
-import { makeDistkind, calcTargetMonth } from '@utils/calculator';
+import { calcDistkind, calcGdate } from '@utils/calculator';
 
 interface Props {
     /**
@@ -131,7 +131,7 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
     };
 
     const createPayload = () => {
-        const distkind = makeDistkind(contdate, paydate.value!, +whoi.value);
+        // const distkind = calcDistkind(contdate, paydate.value!, +whoi.value);
 
         let isPay = true;
         if (
@@ -152,15 +152,15 @@ export const CreateLongPayModal: FC<Props> = ({ contdate, payment }) => {
             pay: +pay.value.replace(/,/g, ''),
             method: method.value?.value,
             cycle: cycle.value!.value,
-            gdate: isPay
-                ? dayjs(
-                      setMonth(
-                          contdate,
-                          calcTargetMonth(contdate, +whoi.value) - 1,
-                      ),
-                  ).format('YYYY-MM-01')
-                : undefined,
-            distkind: isPay ? distkind : undefined,
+            // gdate: isPay
+            //     ? dayjs(
+            //           setMonth(
+            //               contdate,
+            //               calcTargetMonth(contdate, +whoi.value) - 1,
+            //           ),
+            //       ).format('YYYY-MM-01')
+            //     : undefined,
+            // distkind: isPay ? distkind : undefined,
         };
 
         return payload;

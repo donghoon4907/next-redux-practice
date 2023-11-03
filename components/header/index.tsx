@@ -1,9 +1,10 @@
 import type { FC } from 'react';
 import Link from 'next/link';
 import { deleteCookie } from 'cookies-next';
-import { GNBS } from '@constants/gnb';
+import { GNBS, SUBMENUS } from '@constants/gnb';
 
 import { GnbMenuItem } from './GnbMenuItem';
+import { GnbSubMenuItem } from './GnbSubMenuItem';
 
 interface Props {}
 
@@ -52,7 +53,7 @@ export const MyHeader: FC<Props> = () => {
         <header className={`${displayName} wr-frame__header`}>
             <div className={`${displayName}__logo`}>
                 <Link href="/">
-                    <div className={`${displayName}__title`}>
+                    <div className={`${displayName}__title`} role="link">
                         <span>우리인슈맨라이프</span>
                         <br />
                         <span>영업포탈</span>
@@ -62,9 +63,21 @@ export const MyHeader: FC<Props> = () => {
             <div className={`${displayName}__gnb`}>
                 <ul className="wr-gnb__menu" role="menubar">
                     {GNBS.map((gnb, i) => (
-                        <GnbMenuItem key={`gnb${i}`} {...gnb} />
+                        <GnbMenuItem
+                            key={`gnb${i}`}
+                            activeDivider={i < 2}
+                            {...gnb}
+                        />
                     ))}
                 </ul>
+            </div>
+            <div className={`${displayName}__submenu`}>
+                <ul className="wr-gnb__menu" role="menubar">
+                    {SUBMENUS.map((menu, i) => (
+                        <GnbSubMenuItem key={`submenu${i}`} {...menu} />
+                    ))}
+                </ul>
+                <div className={`${displayName}__extension`}></div>
             </div>
             {/* <div className="wr-meta">
                 <div className="wr-meta__inner">

@@ -66,6 +66,7 @@ export function generateListParams(condition: any, query: any) {
         page: 1,
         nums: 25,
         condition,
+        ckbox: [],
         order: {},
     };
     // 페이지공통 - 페이지 번호
@@ -85,10 +86,10 @@ export function generateListParams(condition: any, query: any) {
     // 영업가족
     if (userid) {
         params.condition['userid'] = String(userid).toUpperCase();
-        // 담당미지정 시 처리
-        if (check_user === 'Y') {
-            delete params.condition.userid;
-        }
+    }
+    // 담당미지정 시 처리
+    if (check_user === 'Y') {
+        params.ckbox.push('userid');
     }
 
     if (date && date_type) {

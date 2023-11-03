@@ -129,7 +129,7 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                                                 </IconWrapper>
                                             </MyUnit>
                                         }
-                                        value={a.val}
+                                        value={a.value}
                                     />
                                 }
                             </div>
@@ -162,7 +162,7 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                                                 </MyUnit>
                                             )
                                         }
-                                        value={b.val}
+                                        value={b.value}
                                     />
                                 )}
                             </div>

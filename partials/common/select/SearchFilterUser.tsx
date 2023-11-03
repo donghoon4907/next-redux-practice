@@ -7,6 +7,7 @@ import { MySelect } from '@components/select';
 import { AppState } from '@reducers/index';
 import { HrState } from '@reducers/hr';
 import { findSelectOption } from '@utils/getter';
+import { generateAllOption } from '@utils/generate';
 
 interface Props {}
 
@@ -17,7 +18,7 @@ export const SearchFilterUserSelect: FC<Props> = () => {
 
     const { users } = useSelector<AppState, HrState>((props) => props.hr);
 
-    const [user, setUser] = useSelect(users, null);
+    const [user, setUser] = useSelect(generateAllOption(users), undefined);
 
     useEffect(() => {
         const { userid } = router.query;

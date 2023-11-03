@@ -18,3 +18,61 @@
     background-color: $white;
     border: 1px solid $wr-detail-input-border-color;
 }
+
+@mixin applyDetailDatepicker {
+    // 데이트피커 - disabled 스타일
+    & .rs-picker-default.rs-picker-disabled .rs-picker-toggle,
+    .rs-picker-input.rs-picker-disabled .rs-picker-toggle,
+    .rs-picker-default.rs-picker-disabled .rs-btn,
+    .rs-picker-input.rs-picker-disabled .rs-btn {
+        background-color: inherit !important;
+    }
+    // 데이트피커 - 일반 스타일
+    & .rs-picker-default .rs-btn,
+    .rs-picker-input .rs-btn,
+    .rs-picker-default .rs-picker-toggle,
+    .rs-picker-input .rs-picker-toggle {
+        background-color: inherit !important;
+    }
+
+    & .rs-picker {
+        padding-right: 9px;
+        padding-left: $wr-detail-input-padding-left;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    & .rs-picker-toggle-placeholder,
+    .rs-picker-toggle-value {
+        opacity: 0 !important;
+    }
+
+    & .rs-picker-toggle-read-only {
+        opacity: 1 !important;
+    }
+
+    & .rs-picker-toggle-textbox,
+    & .rs-picker-toggle-value {
+        font-size: $wr-detail-input-font-size !important;
+        padding-left: 0 !important;
+        color: $wr-detail-input-color;
+        background-color: inherit !important;
+        font-weight: $wr-detail-input-font-weight !important;
+    }
+
+    & .rs-picker-toggle-textbox::placeholder {
+        font-size: $wr-detail-input-font-size !important;
+        color: $wr-detail-input-placeholder-color !important;
+        font-weight: $wr-detail-input-font-weight !important;
+    }
+
+    & .rs-picker-toggle {
+        border: none !important;
+    }
+
+    & .rs-picker-default .rs-picker-toggle.rs-btn {
+        padding-left: 0 !important;
+    }
+}

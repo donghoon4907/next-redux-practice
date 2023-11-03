@@ -1233,10 +1233,10 @@ export const CarForm: FC<Props> = ({
                             <SearchProductInput
                                 editable={editable}
                                 wcode={comp.value?.value}
-                                title={defaultTitle}
-                                spec={defaultSpec}
-                                subcategory={null}
-                                calSpec={null}
+                                defaultTitle={defaultTitle}
+                                defaultSpec={defaultSpec}
+                                defaultSubcategory={null}
+                                defaultCalSpec={null}
                                 spe="car"
                             />
                             <div className="row wr-mt">
