@@ -5,6 +5,7 @@ export const INFO_CUST_KEY = 'WR-INFO_CUST';
 
 export const InfoCustActionTypes = {
     CREATE: `CREATE_${INFO_CUST_KEY}`,
+    SELECT: `SELECT_${INFO_CUST_KEY}`,
     UPDATE: `UPDATE_${INFO_CUST_KEY}`,
     DELETE: `DELETE_${INFO_CUST_KEY}`,
 } as const;
@@ -21,6 +22,10 @@ export interface CreateInfoCustAction extends Action<string> {
     payload: CreateInfoCustPayload;
 }
 
+export interface SelectInfoCustAction extends Action<string> {
+    payload: KeyValue | null;
+}
+
 export interface UpdateInfoCustAction extends Action<string> {
     payload: UpdateInfoCustPayload;
 }
@@ -34,6 +39,13 @@ export function createInfoCust(
 ): CreateInfoCustAction {
     return {
         type: InfoCustActionTypes.CREATE,
+        payload,
+    };
+}
+
+export function selectInfoCust(payload: KeyValue | null): SelectInfoCustAction {
+    return {
+        type: InfoCustActionTypes.SELECT,
         payload,
     };
 }

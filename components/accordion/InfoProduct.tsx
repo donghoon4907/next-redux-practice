@@ -18,53 +18,56 @@ import { MyCheckbox } from '@components/checkbox';
 import { FloatInput } from '@components/input/Float';
 import { MyUnit } from '@components/Unit';
 import { IconWrapper } from '@components/IconWrapper';
-import { showSetInfoCustModal } from '@actions/modal/set-info-cust.action';
 import { chunkArray } from '@utils/array';
 import {
-    deleteInfoCust,
-    selectInfoCust,
-    updateInfoCust,
-} from '@actions/contract/long/set-info-cust.action';
+    deleteInfoProduct,
+    selectInfoProduct,
+    updateInfoProduct,
+} from '@actions/contract/long/set-info-product.action';
+import { showSetInfoProductModal } from '@actions/modal/set-info-product.action';
 
 interface Props extends CoreEditableComponent {}
 
-export const InfoCustAccordion: FC<Props> = ({ editable }) => {
+export const InfoProductAccordion: FC<Props> = ({ editable }) => {
     const dispatch = useDispatch();
 
-    const { infoCusts } = useSelector<AppState, LongState>(
+    const { infoProducts } = useSelector<AppState, LongState>(
         (state) => state.long,
     );
 
-    const chunkedArray = useMemo(() => chunkArray(infoCusts, 2), [infoCusts]);
+    const chunkedArray = useMemo(
+        () => chunkArray(infoProducts, 2),
+        [infoProducts],
+    );
 
     const handleCreate = (evt: MouseEvent) => {
         evt.stopPropagation();
 
-        dispatch(showSetInfoCustModal());
+        dispatch(showSetInfoProductModal());
     };
 
     const handleCheck = (evt: ChangeEvent<HTMLInputElement>, v: KeyValue) => {
-        dispatch(updateInfoCust({ ...v, checked: evt.target.checked }));
+        dispatch(updateInfoProduct({ ...v, checked: evt.target.checked }));
     };
 
     const handleDelete = (evt: MouseEvent) => {
         evt.stopPropagation();
 
-        if (infoCusts.findIndex((v) => v.checked) === -1) {
+        if (infoProducts.findIndex((v) => v.checked) === -1) {
             return alert('삭제할 설정을 선택해주세요.');
         }
 
-        infoCusts
+        infoProducts
             .filter((v) => v.checked)
             .forEach((v) => {
-                dispatch(deleteInfoCust({ index: v.index }));
+                dispatch(deleteInfoProduct({ index: v.index }));
             });
     };
 
     const handleUpdate = (v: KeyValue) => {
-        dispatch(selectInfoCust(v));
+        dispatch(selectInfoProduct(v));
 
-        dispatch(showSetInfoCustModal());
+        dispatch(showSetInfoProductModal());
     };
 
     return (
@@ -73,7 +76,7 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                 <AccordionHeader targetId="info_cust" role="tab" id="info_cust">
                     <div className="d-flex">
                         <div className="wr-pages-detail__title wr-mr">
-                            관리정보
+                            기타계약정보
                         </div>
                         {editable && (
                             <>
@@ -93,10 +96,10 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                     role="tabpanel"
                     aria-labelledby="info_cust"
                 >
-                    {infoCusts.length === 0 && (
+                    {infoProducts.length === 0 && (
                         <div className="row wr-mt">
                             <div className="flex-fill text-center">
-                                등록된 관리정보가 없습니다.
+                                등록된 기타계약정보가 없습니다.
                             </div>
                         </div>
                     )}

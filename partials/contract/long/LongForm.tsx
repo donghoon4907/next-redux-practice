@@ -5,6 +5,7 @@ import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
+import type { LongState } from '@reducers/long';
 import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
@@ -39,6 +40,9 @@ import { FloatDatepicker } from '@components/datepicker/Float';
 import { MyUnit } from '@components/Unit';
 import { SingleContactTabpanel } from '@partials/customer/tabpanels/SingleContact';
 import { InfoCustAccordion } from '@components/accordion/InfoCust';
+import { SetInfoCustModal } from '@components/modal/SetInfoCust';
+import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
+import { InfoProductAccordion } from '@components/accordion/InfoProduct';
 
 import { SearchContractorInput } from '../common/input/SearchContractorInput';
 
@@ -223,6 +227,10 @@ export const LongForm: FC<Props> = ({
 
     const { longUseCompanies, orgas, users } = useSelector<AppState, HrState>(
         (state) => state.hr,
+    );
+
+    const { infoCusts, infoProducts } = useSelector<AppState, LongState>(
+        (state) => state.long,
     );
 
     const {
@@ -585,6 +593,14 @@ export const LongForm: FC<Props> = ({
         // 청약서제출여부
         if (subs_submission.value) {
             payload['subs_submission'] = subs_submission.value.value;
+        }
+        // 관리정보
+        if (infoCusts.length > 0) {
+            payload['info_cust'] = infoCusts;
+        }
+        // 기타계약정보
+        if (infoProducts.length > 0) {
+            payload['info_product'] = infoProducts;
         }
         // 납입실적
         if (pays.length > 0) {
@@ -1019,6 +1035,11 @@ export const LongForm: FC<Props> = ({
                                 <InfoCustAccordion editable={editable} />
                             </div>
                         </div>
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <InfoProductAccordion editable={editable} />
+                            </div>
+                        </div>
                     </div>
 
                     {/* <div className="wr-pages-detail__block">
@@ -1128,6 +1149,8 @@ export const LongForm: FC<Props> = ({
             {isShowInsuredSearchModal && (
                 <CustomerSearchModal type="insured-person" />
             )}
+            <SetInfoCustModal />
+            <SetInfoProductModal />
             {/* <CreateLongPayModal
                 contdate={contdate.value!}
                 payment={payment.value}

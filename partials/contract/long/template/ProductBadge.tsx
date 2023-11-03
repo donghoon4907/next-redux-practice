@@ -14,17 +14,15 @@ export const ProductBadgeTemplate: FC<Props> = ({
     return (
         <div className="wr-badge__wrap">
             {spec && (
-                <span className="badge rounded-pill bg-primary wr-badge">
-                    {spec}
-                </span>
+                <span className="badge rounded-pill spec wr-badge">{spec}</span>
             )}
             {subcategory && (
-                <span className="badge rounded-pill bg-warning wr-badge">
+                <span className="badge rounded-pill subcategory wr-badge">
                     {subcategory}
                 </span>
             )}
             {calSpec && (
-                <span className="badge rounded-pill bg-danger wr-badge">
+                <span className="badge rounded-pill calspec wr-badge">
                     {calSpec}
                 </span>
             )}

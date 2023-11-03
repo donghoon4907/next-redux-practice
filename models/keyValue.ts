@@ -4,9 +4,9 @@ export type KeyValue = CoreCheckableModel & {
     /**
      * label
      */
-    key?: string;
+    key: string;
     /**
      * value
      */
-    val?: string;
+    val: string;
 };

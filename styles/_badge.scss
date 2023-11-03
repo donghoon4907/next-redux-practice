@@ -9,4 +9,25 @@
         align-items: center;
         gap: 3px;
     }
+
+    &.spec {
+        background-color: #f00;
+        color: $white;
+        font-size: 11px;
+        font-weight: 400;
+    }
+
+    &.subcategory {
+        background-color: rgba(88, 194, 231, 0.2);
+        color: #323232;
+        font-size: 11px;
+        font-weight: 400;
+    }
+
+    &.calspec {
+        background-color: green;
+        color: $white;
+        font-size: 11px;
+        font-weight: 400;
+    }
 }

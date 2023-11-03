@@ -57,9 +57,17 @@ export interface LongState {
      */
     infoCusts: KeyValue[];
     /**
+     * 선택한 관리정보
+     */
+    selectedInfoCust: KeyValue | null;
+    /**
      * 기타계약정보 목록
      */
     infoProducts: KeyValue[];
+    /**
+     * 선택한 기타계약정보
+     */
+    selectedInfoProduct: KeyValue | null;
 }
 
 const initialState: LongState = {
@@ -110,7 +118,9 @@ const initialState: LongState = {
     ],
     removedEndorsements: [],
     infoCusts: [],
+    selectedInfoCust: null,
     infoProducts: [],
+    selectedInfoProduct: null,
 };
 
 export const longReducer: Reducer<LongState, any> = (
@@ -194,6 +204,10 @@ export const longReducer: Reducer<LongState, any> = (
                 draft.infoCusts = draft.infoCusts.concat(action.payload);
                 break;
             }
+            case InfoCustActionTypes.SELECT: {
+                draft.selectedInfoCust = action.payload;
+                break;
+            }
             case InfoCustActionTypes.UPDATE: {
                 const { index, ...rest } = action.payload;
 
@@ -227,6 +241,10 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case InfoProductActionTypes.CREATE: {
                 draft.infoProducts = draft.infoProducts.concat(action.payload);
+                break;
+            }
+            case InfoProductActionTypes.SELECT: {
+                draft.selectedInfoProduct = action.payload;
                 break;
             }
             case InfoProductActionTypes.UPDATE: {

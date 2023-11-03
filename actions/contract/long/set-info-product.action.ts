@@ -5,6 +5,7 @@ export const INFO_PRODUCT_KEY = 'WR-INFO_PRODUCT';
 
 export const InfoProductActionTypes = {
     CREATE: `CREATE_${INFO_PRODUCT_KEY}`,
+    SELECT: `SELECT_${INFO_PRODUCT_KEY}`,
     UPDATE: `UPDATE_${INFO_PRODUCT_KEY}`,
     DELETE: `DELETE_${INFO_PRODUCT_KEY}`,
 } as const;
@@ -22,6 +23,10 @@ export interface CreateInfoProductAction extends Action<string> {
     payload: CreateInfoProductPayload;
 }
 
+export interface SelectInfoProductAction extends Action<string> {
+    payload: KeyValue | null;
+}
+
 export interface UpdateInfoProductAction extends Action<string> {
     payload: UpdateInfoProductPayload;
 }
@@ -35,6 +40,15 @@ export function createInfoProduct(
 ): CreateInfoProductAction {
     return {
         type: InfoProductActionTypes.CREATE,
+        payload,
+    };
+}
+
+export function selectInfoProduct(
+    payload: KeyValue | null,
+): SelectInfoProductAction {
+    return {
+        type: InfoProductActionTypes.SELECT,
         payload,
     };
 }
