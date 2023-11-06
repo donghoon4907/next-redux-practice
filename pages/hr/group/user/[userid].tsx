@@ -325,8 +325,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     );
                 }
             }
-        } catch (e) {
-            console.log(e);
+        } catch {
             output.redirect = {
                 destination: '/404',
                 permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션

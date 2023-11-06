@@ -626,13 +626,10 @@ export const LongForm: FC<Props> = ({
             payload['subs_submission'] = subs_submission.value.value;
         }
         // 관리정보
-        if (infoCusts.length > 0) {
-            payload['info_custom'] = infoCusts;
-        }
+        payload['info_custom'] = infoCusts;
         // 기타계약정보
-        if (infoProducts.length > 0) {
-            payload['info_product'] = infoProducts;
-        }
+        payload['info_product'] = infoProducts;
+
         // 납입실적
         if (pays.length > 0) {
             payload['pays'] = pays.map((v) => {

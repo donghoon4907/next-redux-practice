@@ -14,7 +14,8 @@ function* createContactSaga({ payload }: CreateContactRequestAction) {
 
     const { Message } = data;
 
-    if (!data.data && data.data.idx) {
+    if (Message === 'Success') {
+    } else {
         alert(Message);
     }
 

@@ -156,7 +156,7 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
 
             <td>{rest.whoi ? rest.whoi : ''}</td>
             <td>
-                {editable ? (
+                {editable && rest.dist !== '신규' ? (
                     <MySelect placeholder="선택" {...dist} />
                 ) : (
                     rest.dist
