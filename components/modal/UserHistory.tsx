@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideUserHistoryModal } from '@actions/modal/user-history.action';
 import { WithLabel } from '@components/WithLabel';
-import { MySelect } from '@components/select';
 import { HrState } from '@reducers/hr';
 import { useSelect } from '@hooks/use-select';
 import { getUsersRequest } from '@actions/hr/get-users';
@@ -15,6 +14,7 @@ import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { insertUserHistory } from '@actions/common/set-user-history.action';
 import { generateIndex } from '@utils/generate';
+import { FloatSelect } from '@components/select/Float';
 
 interface Props {
     type: 'customer' | 'contract';
@@ -34,9 +34,9 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
     const { userHistories } = useSelector<AppState, CommonState>(
         (state) => state.common,
     );
-    // 부서
-    const [depart] = useSelect(orgas);
-    // 부서 내 영업가족
+    // 소속
+    const [depart] = useSelect(orgas, null);
+    // 소속 내 담당자
     const [user] = useSelect(users, null);
     // 비고
     const [remark] = useInput('');
@@ -82,15 +82,11 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
             <ModalHeader toggle={handleClose}>담당자 변경</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="mDepartment" label="부서" type="active">
-                            <MySelect id="mDepartment" {...depart} />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="소속" {...depart} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="mUser" label="영업가족" type="active">
-                            <MySelect id="mUser" {...user} />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="담당자" {...user} />
                     </div>
                 </div>
                 <div className="row wr-mt">

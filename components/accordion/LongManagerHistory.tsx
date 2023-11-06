@@ -68,21 +68,10 @@ export const LongManagerAccordion: FC<Props> = ({ editable }) => {
                         <table className="wr-table table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>기준일</strong>
-                                    </th>
-                                    {/* <th style={{ width: '100px' }}>
-                                        <strong>구분</strong>
-                                    </th> */}
-                                    <th style={{ width: '100px' }}>
-                                        <strong>사원번호</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>사용인명</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>사용인코드</strong>
-                                    </th>
+                                    <th>기준일</th>
+                                    <th>사원번호</th>
+                                    <th>사용인명</th>
+                                    <th>사용인코드</th>
                                 </tr>
                             </thead>
                             <tbody>

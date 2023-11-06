@@ -147,26 +147,39 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
                 </td>
             )}
             <td>
-                <MyDatepicker size="sm" hooks={paydate} cleanable={false} />
+                {editable ? (
+                    <MyDatepicker size="sm" hooks={paydate} cleanable={false} />
+                ) : (
+                    dayjs(rest.paydate).format('YYYY-MM-DD')
+                )}
             </td>
+
             <td>{rest.whoi ? rest.whoi : ''}</td>
             <td>
-                {rest.index === 0 ? (
-                    '신규'
-                ) : (
+                {editable ? (
                     <MySelect placeholder="선택" {...dist} />
+                ) : (
+                    rest.dist
                 )}
             </td>
             <td>{gdate ? dayjs(gdate).format('YYYY-MM') : ''}</td>
             <td>{distkind}</td>
             <td>
-                <MyInput type="text" className="text-end" {...pay} />
+                {editable ? (
+                    <MyInput type="text" className="text-end" {...pay} />
+                ) : (
+                    rest.pay.toLocaleString()
+                )}
             </td>
-            <td>
-                <MySelect {...method} />
-            </td>
+
+            <td>{editable ? <MySelect {...method} /> : rest.method}</td>
             <td>N</td>
             <td>N</td>
+            {!editable && (
+                <td>
+                    {rest.insert_userid} {rest.insert_datetime}
+                </td>
+            )}
         </tr>
     );
 };

@@ -108,26 +108,30 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                                         label={a.key}
                                         disabled
                                         before={
-                                            <MyUnit placement="checkbox">
-                                                <MyCheckbox
-                                                    label=""
-                                                    onChange={(evt) =>
-                                                        handleCheck(evt, a)
-                                                    }
-                                                    checked={a.checked}
-                                                />
-                                            </MyUnit>
+                                            editable && (
+                                                <MyUnit placement="checkbox">
+                                                    <MyCheckbox
+                                                        label=""
+                                                        onChange={(evt) =>
+                                                            handleCheck(evt, a)
+                                                        }
+                                                        checked={a.checked}
+                                                    />
+                                                </MyUnit>
+                                            )
                                         }
                                         after={
-                                            <MyUnit placement="last">
-                                                <IconWrapper
-                                                    onClick={() =>
-                                                        handleUpdate(a)
-                                                    }
-                                                >
-                                                    <BsPencil size={20} />
-                                                </IconWrapper>
-                                            </MyUnit>
+                                            editable && (
+                                                <MyUnit placement="last">
+                                                    <IconWrapper
+                                                        onClick={() =>
+                                                            handleUpdate(a)
+                                                        }
+                                                    >
+                                                        <BsPencil size={20} />
+                                                    </IconWrapper>
+                                                </MyUnit>
+                                            )
                                         }
                                         value={a.value}
                                     />
@@ -139,15 +143,17 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                                         label={b.key}
                                         disabled
                                         before={
-                                            <MyUnit placement="checkbox">
-                                                <MyCheckbox
-                                                    label=""
-                                                    onChange={(evt) =>
-                                                        handleCheck(evt, b)
-                                                    }
-                                                    checked={b.checked}
-                                                />
-                                            </MyUnit>
+                                            editable && (
+                                                <MyUnit placement="checkbox">
+                                                    <MyCheckbox
+                                                        label=""
+                                                        onChange={(evt) =>
+                                                            handleCheck(evt, b)
+                                                        }
+                                                        checked={b.checked}
+                                                    />
+                                                </MyUnit>
+                                            )
                                         }
                                         after={
                                             editable && (

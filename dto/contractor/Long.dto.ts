@@ -59,11 +59,11 @@ class LongDTO {
             return false;
         }
 
-        if (isEmpty(p_name)) {
-            alert('피보험자를 설정해주세요.');
+        // if (isEmpty(p_name)) {
+        //     alert('피보험자를 설정해주세요.');
 
-            return false;
-        }
+        //     return false;
+        // }
 
         if (isEmpty(contdate)) {
             alert('계약일자를 입력해주세요.');

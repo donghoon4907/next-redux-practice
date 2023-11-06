@@ -10,7 +10,12 @@ import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { differenceInMonths, differenceInYears, addDays } from 'date-fns';
+import {
+    differenceInMonths,
+    differenceInYears,
+    addDays,
+    setDate,
+} from 'date-fns';
 import { LONG_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { useInput, useNumbericInput } from '@hooks/use-input';
@@ -83,7 +88,7 @@ interface Props {
      * 보장만기 기본 값
      */
     defaultBodateto?: string;
-    defaultBoDu?: number;
+    // defaultBoDu?: number;
     /**
      * 납입주기 기본 값
      */
@@ -92,7 +97,7 @@ interface Props {
      * 납입기간 기본 값
      */
     defaultPayDateto?: string;
-    defaultPayDu?: number;
+    // defaultPayDu?: number;
     /**
      * 계약상태 기본 값
      */
@@ -100,7 +105,7 @@ interface Props {
     /**
      * 납입상태 기본 값
      */
-    defaultPstatus?: CoreSelectOption;
+    defaultPayStatus?: string;
     /**
      * 상태반영일 기본 값
      */
@@ -144,7 +149,7 @@ interface Props {
     /**
      * 1차수정 기본 값
      */
-    defaultTp1?: string;
+    // defaultTp1?: string;
     /**
      * 2차수정 기본 값
      */
@@ -177,6 +182,10 @@ interface Props {
     defaultFamily?: CoreSelectOption;
     // 청약설계 기본값
     defaultSulDist?: CoreSelectOption;
+    // 고객처약서명 기본값
+    defaultSubsSign?: CoreSelectOption;
+    // 청약서제출여부
+    defaultSubsSubmission?: CoreSelectOption;
 }
 
 export const LongForm: FC<Props> = ({
@@ -189,12 +198,10 @@ export const LongForm: FC<Props> = ({
     defaultTitle = '',
     defaultContdate = null,
     defaultBodateto = '',
-    defaultBoDu = -1,
     defaultPayCycle = longConstants.payCycle[0],
     defaultPayDateto = '',
-    defaultPayDu = -1,
     defaultStatus = null,
-    defaultPstatus = null,
+    defaultPayStatus = '',
     defaultStatusDate = null,
     defaultLastWhoi = '0',
     defaultLastMonth = '',
@@ -205,7 +212,7 @@ export const LongForm: FC<Props> = ({
     defaultPayment = '',
     // defaultPayMonth = '',
     defaultTp = '',
-    defaultTp1 = '',
+    // defaultTp1 = '',
     defaultTp2 = '',
     defaultTp3 = '',
     defaultTpu = '',
@@ -216,6 +223,8 @@ export const LongForm: FC<Props> = ({
     defaultCalDatefrom = null,
     defaultFamily = longConstants.family[0],
     defaultSulDist = null,
+    defaultSubsSign = null,
+    defaultSubsSubmission = null,
 }) => {
     const displayName = 'wr-pages-long-detail';
 
@@ -279,7 +288,7 @@ export const LongForm: FC<Props> = ({
     // 계약상태
     const [status] = useSelect(longConstants.status, defaultStatus);
     // 납입상태
-    const [payStatus] = useSelect(longConstants.pStatus, defaultPstatus);
+    // const [payStatus] = useSelect(longConstants.pStatus, defaultPstatus);
     // 상태반영일
     const [statusDate] = useDatepicker(
         defaultStatusDate ? new Date(defaultStatusDate) : null,
@@ -311,9 +320,12 @@ export const LongForm: FC<Props> = ({
     // 청약설계
     const [sul_dist] = useSelect(longConstants.sulDist, defaultSulDist);
     // 고객청약서명 - 이후 상세작업필요
-    const [subs_sign] = useSelect(commonConstants.yn, null);
+    const [subs_sign] = useSelect(commonConstants.yn, defaultSubsSign);
     // 청약서제출여부
-    const [subs_submission] = useSelect(longConstants.subsSubmission, null);
+    const [subs_submission] = useSelect(
+        longConstants.subsSubmission,
+        defaultSubsSubmission,
+    );
 
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
@@ -327,15 +339,23 @@ export const LongForm: FC<Props> = ({
             location.reload();
         }
     };
+    // 각 월의 1일로 계산
     // 납입만기 기간
     let payDu = 0;
     // 보장만기 기간
     let boDu = 0;
     if (pay_dateto.value) {
-        payDu = differenceInYears(addDays(pay_dateto.value, 1), new Date());
+        payDu = differenceInYears(
+            setDate(pay_dateto.value!, 2),
+            setDate(new Date(), 1),
+        );
     }
+
     if (bo_dateto.value) {
-        boDu = differenceInYears(addDays(bo_dateto.value, 1), new Date());
+        boDu = differenceInYears(
+            setDate(bo_dateto.value!, 2),
+            setDate(new Date(), 1),
+        );
     }
     // 월납기준
     let payM = 0;
@@ -488,6 +508,10 @@ export const LongForm: FC<Props> = ({
             if (removedPays.length > 0) {
                 payload['remove']['pays'] = removedPays.map((v) => v.idx);
             }
+            // 계약상태
+            if (status.value) {
+                payload['status'] = status.value.value;
+            }
         }
         // 보험사 관련
         if (wcode.value) {
@@ -626,7 +650,7 @@ export const LongForm: FC<Props> = ({
 
         return payload;
     };
-
+    // 조직에 맞는 담당자로 업데이트
     useEffect(() => {
         if (orga.value) {
             getUsers(
@@ -648,8 +672,8 @@ export const LongForm: FC<Props> = ({
                 >
                     <div className="wr-pages-detail__inner">
                         <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__content">
-                                {mode === 'create' ? (
+                            {mode === 'create' ? (
+                                <div className="wr-pages-detail__content">
                                     <div className="row">
                                         <div className="flex-fill">
                                             <FloatSelect
@@ -668,10 +692,12 @@ export const LongForm: FC<Props> = ({
                                             />
                                         </div>
                                     </div>
-                                ) : (
+                                </div>
+                            ) : (
+                                <div className="wr-pages-detail__content p-15">
                                     <LongManagerAccordion editable={editable} />
-                                )}
-                            </div>
+                                </div>
+                            )}
                         </div>
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__content">
@@ -723,7 +749,7 @@ export const LongForm: FC<Props> = ({
                                         />
                                     </div>
                                 </div>
-                                <div className="row wr-mt">
+                                {/* <div className="row wr-mt">
                                     <div className="flex-fill">
                                         <SearchContractorInput
                                             type="피보험자"
@@ -731,7 +757,7 @@ export const LongForm: FC<Props> = ({
                                             userid={defaultUserid}
                                         />
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className="row wr-mt">
                                     <div className="flex-fill">
                                         <FloatDatepicker
@@ -781,7 +807,7 @@ export const LongForm: FC<Props> = ({
                         {mode === 'update' && (
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__content">
-                                    <div className="row wr-mt">
+                                    <div className="row">
                                         <div className="flex-fill">
                                             <FloatSelect
                                                 label="계약상태"
@@ -792,25 +818,31 @@ export const LongForm: FC<Props> = ({
                                         <div className="flex-fill">
                                             <FloatDatepicker
                                                 label="상태반영일"
-                                                readOnly={!editable}
+                                                readOnly
                                                 hooks={statusDate}
                                             />
                                         </div>
                                     </div>
                                     <div className="row wr-mt">
                                         <div className="flex-fill">
-                                            <FloatSelect
+                                            <FloatInput
                                                 label="납입상태"
-                                                isDisabled={!editable}
-                                                {...payStatus}
+                                                readOnly
+                                                defaultValue={defaultPayStatus}
                                             />
                                         </div>
                                         <div className="flex-fill">
                                             <FloatInput
                                                 label="종납회차"
-                                                readOnly={!editable}
+                                                readOnly
                                                 value={defaultLastMonth}
-                                                unit={`${defaultLastWhoi}회`}
+                                                after={
+                                                    <>
+                                                        <MyUnit placement="last">
+                                                            {defaultLastWhoi}회
+                                                        </MyUnit>
+                                                    </>
+                                                }
                                             />
                                         </div>
                                     </div>

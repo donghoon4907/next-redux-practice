@@ -8,19 +8,20 @@ import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import longConstants from '@constants/options/long';
+import commonConstants from '@constants/options/common';
 import longsService from '@services/longsService';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
 import { LongForm } from '@partials/contract/long/LongForm';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createInsured } from '@actions/contract/common/set-insured.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
-import { calcDistkind } from '@utils/calculator';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { createContact } from '@actions/common/set-contact.action';
 import { MyLayout } from '@components/Layout';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
+import { createInfoCust } from '@actions/contract/long/set-info-cust.action';
+import { createInfoProduct } from '@actions/contract/long/set-info-product.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const { longUseCompanies } = useSelector<AppState, HrState>(
@@ -28,7 +29,6 @@ const Long: NextPage<LongState> = ({ long }) => {
     );
     // 탭 설정
     useInitTab(`장기계약상세${long.c_name ? ` - ${long.c_name}` : ''}`);
-    // console.log(long.c_idx);
     // 계약자 설정
     useInitCustomer(long.c_idx);
 
@@ -39,25 +39,41 @@ const Long: NextPage<LongState> = ({ long }) => {
         longConstants.payCycle,
     );
 
-    // const defaultPayDu = findSelectOption(long.pay_du, longConstants.payDu);
-
     const defaultStatus = findSelectOption(long.status, longConstants.status);
 
-    const defaultPstatus = findSelectOption(
-        long.pay_status,
-        longConstants.pStatus,
-    );
+    // const defaultPstatus = findSelectOption(
+    //     long.pay_status,
+    //     longConstants.pStatus,
+    // );
 
     const defaultCalType = findSelectOption(
         long.cal_type,
         longConstants.calType,
     );
 
+    const defaultSulDist = findSelectOption(
+        long.sul_dist,
+        longConstants.sulDist,
+    );
+
+    const defaultSubsSubmission = findSelectOption(
+        long.subs_submission,
+        longConstants.subsSubmission,
+    );
+
     let defaultFamily;
+    let defaultSubsSign;
     if (long.hasOwnProperty('family')) {
         defaultFamily = findSelectOption(
             long.family ? 'Y' : 'N',
             longConstants.family,
+        );
+    }
+
+    if (long.hasOwnProperty('subs_sign')) {
+        defaultSubsSign = findSelectOption(
+            long.subs_sign ? 'Y' : 'N',
+            commonConstants.yn,
         );
     }
 
@@ -80,12 +96,12 @@ const Long: NextPage<LongState> = ({ long }) => {
                     defaultTitle={long.title}
                     defaultContdate={long.contdate}
                     defaultBodateto={long.bo_dateto}
-                    defaultBoDu={long.bo_du}
+                    // defaultBoDu={long.bo_du}
                     defaultPayCycle={defaultPayCycle}
                     defaultPayDateto={long.pay_dateto}
-                    defaultPayDu={long.pay_du}
+                    // defaultPayDu={long.pay_du}
                     defaultStatus={defaultStatus}
-                    defaultPstatus={defaultPstatus}
+                    defaultPayStatus={long.pay_status}
                     defaultStatusDate={long.status_date}
                     defaultLastMonth={long.lastmonth}
                     defaultLastWhoi={long.lastwhoi}
@@ -95,7 +111,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                     defaultCalSpec={long.cal_spec}
                     defaultPayment={long.payment.toString()}
                     defaultTp={long.tp ? long.tp.toString() : ''}
-                    defaultTp1={long.tp1 ? long.tp1.toString() : ''}
+                    // defaultTp1={long.tp1 ? long.tp1.toString() : ''}
                     defaultTp2={long.tp2 ? long.tp2.toString() : ''}
                     defaultTp3={long.tp3 ? long.tp3.toString() : ''}
                     defaultTpu={long.tpu ? long.tpu.toString() : ''}
@@ -105,6 +121,9 @@ const Long: NextPage<LongState> = ({ long }) => {
                     defaultCalType={defaultCalType}
                     defaultCalDatefrom={long.cal_datefrom}
                     defaultFamily={defaultFamily}
+                    defaultSulDist={defaultSulDist}
+                    defaultSubsSign={defaultSubsSign}
+                    defaultSubsSubmission={defaultSubsSubmission}
                 />
             </MyLayout>
         </>
@@ -126,10 +145,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         };
 
         try {
-            dispatch(END);
-
-            await sagaTask?.toPromise();
-
             const { data } = await longsService.getLong({ idx });
 
             const long = data.data;
@@ -163,43 +178,66 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 }
             }
 
-            if (long.p_persons) {
-                for (let i = 0; i < long.p_persons.length; i++) {
+            if (long.info_custom) {
+                for (let i = 0; i < long.info_custom.length; i++) {
+                    const info_custom = long.info_custom[i];
+
                     dispatch(
-                        createInsured({
-                            ...long.p_persons[i],
+                        createInfoCust({
                             index: i,
                             checked: false,
+                            key: info_custom.key,
+                            value: info_custom.value,
                         }),
                     );
                 }
             }
 
+            if (long.info_product) {
+                for (let i = 0; i < long.info_product.length; i++) {
+                    const info_product = long.info_product[i];
+
+                    dispatch(
+                        createInfoProduct({
+                            index: i,
+                            checked: false,
+                            key: info_product.key,
+                            value: info_product.value,
+                        }),
+                    );
+                }
+            }
+
+            // if (long.p_persons) {
+            //     for (let i = 0; i < long.p_persons.length; i++) {
+            //         dispatch(
+            //             createInsured({
+            //                 ...long.p_persons[i],
+            //                 index: i,
+            //                 checked: false,
+            //             }),
+            //         );
+            //     }
+            // }
+
             if (long.pays) {
+                // 최근등록순으로 변경
+                const reversedPays = long.pays.reverse();
                 for (let i = 0; i < long.pays.length; i++) {
+                    const pay = reversedPays[i];
+
                     dispatch(
                         createPay({
                             index: i,
                             checked: false,
-                            idx: long.pays[i].idx,
-                            paydate: long.pays[i].paydate,
-                            // gdate: long.pays[i].gdate,
-                            whoi: long.pays[i].whoi,
-                            dist: long.pays[i].dist,
-                            pay: long.pays[i].pay,
-                            method: long.pays[i].method,
-                            insert_datetime: long.pays[i].insert_datetime,
-                            cycle: long.pays[i].cycle
-                                ? findSelectOptionByLabel(
-                                      long.pays[i].cycle,
-                                      longConstants.payCycle,
-                                  ).value
-                                : undefined,
-                            // distkind: makeDistkind(
-                            //     new Date(long.contdate),
-                            //     new Date(long.pays[i].paydate),
-                            //     long.pays[i].whoi,
-                            // ),
+                            idx: pay.idx,
+                            paydate: pay.paydate,
+                            whoi: pay.whoi,
+                            dist: pay.dist,
+                            pay: pay.pay,
+                            method: pay.method,
+                            insert_datetime: pay.insert_datetime,
+                            insert_userid: pay.insert_userid,
                         }),
                     );
                 }
@@ -216,6 +254,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     );
                 }
             }
+
+            dispatch(END);
+
+            await sagaTask?.toPromise();
         } catch {
             output.redirect = {
                 destination: '/404',
