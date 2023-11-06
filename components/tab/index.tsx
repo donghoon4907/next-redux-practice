@@ -10,6 +10,10 @@ interface Props extends CoreTabOption {
      * 클릭 이벤트
      */
     onClick: (tab: CoreTabOption) => void;
+    /**
+     * 숨김 여부
+     */
+    hidden?: boolean;
 }
 
 export const MyTab: FC<Props> = ({
@@ -17,10 +21,11 @@ export const MyTab: FC<Props> = ({
     panelId,
     label = 'label props were not passed',
     isActive = true,
+    hidden,
     onClick,
 }) => {
     return (
-        <li className={`wr-tab ${isActive ? 'active' : ''}`}>
+        <li className={`wr-tab ${isActive ? 'active' : ''}`} hidden={hidden}>
             <button
                 type="button"
                 className="wr-tab__link single"

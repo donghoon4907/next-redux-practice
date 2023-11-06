@@ -1,10 +1,8 @@
 import type { FC, MouseEvent } from 'react';
 import type { CoreMenuOption } from '@interfaces/core';
-import type { AppState } from '@reducers/index';
-import type { DrawerState } from '@reducers/drawer';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { setCookie } from 'cookies-next';
+import { useDispatch } from 'react-redux';
 import {
     UncontrolledAccordion,
     AccordionBody,
@@ -15,8 +13,6 @@ import { TabModule } from '@utils/storage';
 import { useRoute } from '@hooks/use-route';
 import { CollapseButton } from '@components/Collapse';
 import { hideDrawer, showDrawer } from '@actions/drawer/drawer.action';
-import { setCookie } from 'cookies-next';
-import { useDispatch } from 'react-redux';
 
 interface Props {
     defaultOpen: boolean;

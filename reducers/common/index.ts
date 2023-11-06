@@ -1,11 +1,17 @@
 import type { Reducer } from 'redux';
 import type { Contact } from '@models/contact';
 import type { UserHistory } from '@models/user-history';
+import type { GetContactsSuccessPayload } from '@actions/common/get-contacts.action';
 import produce from 'immer';
 import { ContactActionTypes } from '@actions/common/set-contact.action';
 import { UserHistoryActionTypes } from '@actions/common/set-user-history.action';
+import { GetContactsActionTypes } from '@actions/common/get-contacts.action';
 
 export interface CommonState {
+    /**
+     * 접촉이력 목록(API 분리)
+     */
+    singleContacts: GetContactsSuccessPayload;
     /**
      * 접촉이력 목록
      */
@@ -25,6 +31,12 @@ export interface CommonState {
 }
 
 const initialState: CommonState = {
+    singleContacts: {
+        fields: [],
+        rows: [],
+        total: null,
+        lastPayload: null,
+    },
     contacts: [],
     removedContacts: [],
     userHistories: [],
@@ -37,6 +49,11 @@ export const commonReducer: Reducer<CommonState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
+            case GetContactsActionTypes.SUCCESS: {
+                draft.singleContacts = action.payload;
+
+                break;
+            }
             case ContactActionTypes.CREATE: {
                 draft.contacts = draft.contacts.concat(action.payload);
                 break;

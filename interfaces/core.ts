@@ -39,6 +39,7 @@ export interface CoreTabOption {
     id: string;
     panelId: string;
     label: string;
+    isHideMode?: 'create' | 'update' | 'all';
 }
 
 export type CoreColumnOption = Record<string, string>;

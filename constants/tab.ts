@@ -25,7 +25,12 @@ export const LONG_DETAIL_TABS: CoreTabOption[] = [
     // { id: 'tabBuhwal', label: '미유지/부활', panelId: 'tabpanelBuhwal' },
     // { id: 'tabEndorsement', label: '배서구분', panelId: 'tabpanelEndorsement' },
     // { id: 'tabCalcPerform', label: '정산실적', panelId: 'tabpanelCalcPerform' },
-    { id: 'tabContact', label: '고객상담', panelId: 'tabpanelContact' },
+    {
+        id: 'tabContact',
+        label: '고객상담',
+        panelId: 'tabpanelContact',
+        isHideMode: 'create',
+    },
     // { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
 ];
 /**

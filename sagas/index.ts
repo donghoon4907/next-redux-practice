@@ -8,6 +8,7 @@ import { contractSaga } from './contract';
 import { longSaga } from './long';
 import { generalSaga } from './general';
 import { carSaga } from './car';
+import { commonSaga } from './common';
 
 export function* rootSaga() {
     yield all([
@@ -19,5 +20,6 @@ export function* rootSaga() {
         call(longSaga),
         call(generalSaga),
         call(carSaga),
+        call(commonSaga),
     ]);
 }

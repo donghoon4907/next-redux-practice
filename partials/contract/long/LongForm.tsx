@@ -512,6 +512,12 @@ export const LongForm: FC<Props> = ({
             if (status.value) {
                 payload['status'] = status.value.value;
             }
+            // 상태반영일
+            if (statusDate.value) {
+                payload['status_date'] = dayjs(statusDate.value).format(
+                    'YYYY-MM-DD',
+                );
+            }
         }
         // 보험사 관련
         if (wcode.value) {
@@ -744,7 +750,9 @@ export const LongForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <SearchContractorInput
                                             type="계약자"
-                                            editable={editable}
+                                            editable={
+                                                editable && mode === 'create'
+                                            }
                                             userid={defaultUserid}
                                         />
                                     </div>
@@ -818,7 +826,7 @@ export const LongForm: FC<Props> = ({
                                         <div className="flex-fill">
                                             <FloatDatepicker
                                                 label="상태반영일"
-                                                readOnly
+                                                readOnly={!editable}
                                                 hooks={statusDate}
                                             />
                                         </div>
@@ -1090,6 +1098,7 @@ export const LongForm: FC<Props> = ({
                                 key={v.id}
                                 onClick={setTab}
                                 isActive={v.id === tab.id}
+                                hidden={v.isHideMode === mode}
                                 {...v}
                             />
                         ))}
@@ -1124,14 +1133,18 @@ export const LongForm: FC<Props> = ({
                             hidden={tab.id !== 'tabCalcPerform'}
                             editable={editable}
                         /> */}
-                        <SingleContactTabpanel
-                            id="tabpanelContact"
-                            tabId="tabContact"
-                            hidden={tab.id !== 'tabContact'}
-                            editable={editable}
-                            spe="long"
-                            // cnum={cnum.value}
-                        />
+                        {mode === 'update' && loadedContract && (
+                            <SingleContactTabpanel
+                                id="tabpanelContact"
+                                tabId="tabContact"
+                                hidden={tab.id !== 'tabContact'}
+                                editable={editable}
+                                cust_idx={loadedContract.idx}
+                                spe_idx={idx}
+                                spe="long"
+                                cnum={cnum.value}
+                            />
+                        )}
 
                         {/* <ChangeHistoryTabpanel
                             id="tabpanelChangeHis"

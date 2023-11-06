@@ -5,7 +5,8 @@ import { ASIDE_MENU } from '@constants/gnb';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { AppState } from '@reducers/index';
 import { GnbState } from '@reducers/gnb';
-import { BsQuestionSquare } from 'react-icons/bs';
+import { getCookie, setCookie } from 'cookies-next';
+import { showDrawer } from '@actions/drawer/drawer.action';
 
 interface Props extends Pick<CoreMenuOption, 'id' | 'to' | 'label'> {
     activeDivider?: boolean;
@@ -28,6 +29,14 @@ export const GnbMenuItem: FC<Props> = ({ id, to, label, activeDivider }) => {
                     menu: ASIDE_MENU[gnb],
                 }),
             );
+
+            const key = process.env.COOKIE_NAV_COLLAPSE_KEY || '';
+
+            if (getCookie(key) === 'N') {
+                setCookie(key, 'Y');
+
+                dispatch(showDrawer());
+            }
         }
     };
 

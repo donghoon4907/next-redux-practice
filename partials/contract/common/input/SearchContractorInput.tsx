@@ -2,6 +2,7 @@ import type { FC } from 'react';
 import type { CoreEditableComponent } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { ContractState } from '@reducers/contract';
+import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useApi } from '@hooks/use-api';
@@ -27,6 +28,8 @@ export const SearchContractorInput: FC<Props> = ({
 }) => {
     const dispatch = useDispatch();
 
+    const router = useRouter();
+
     const { loadedContract, loadedInsured } = useSelector<
         AppState,
         ContractState
@@ -50,6 +53,12 @@ export const SearchContractorInput: FC<Props> = ({
         });
     };
 
+    const handleMove = () => {
+        if (loadedContract) {
+            router.push(`/customer/join/${loadedContract.idx}`);
+        }
+    };
+
     useEffect(() => {
         if (type === '계약자' && loadedContract) {
             setName(loadedContract.name);
@@ -67,7 +76,19 @@ export const SearchContractorInput: FC<Props> = ({
             label={type}
             readOnly={!editable}
             isRequired
-            after={editable && <InputSearchButton onClick={handleSearch} />}
+            after={
+                editable ? (
+                    <InputSearchButton onClick={handleSearch} />
+                ) : (
+                    <button
+                        type="button"
+                        className="wr-detail-input__button"
+                        onClick={handleMove}
+                    >
+                        상세
+                    </button>
+                )
+            }
             {...name}
         />
     );

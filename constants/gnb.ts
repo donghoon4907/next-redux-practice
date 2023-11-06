@@ -20,16 +20,16 @@ export const SUBMENUS: CoreMenuOption[] = [
 
 export const ASIDE_MENU: any = {
     customer: {
-        // join: {
-        //     id: 'customer-join',
-        //     label: '가입고객',
-        //     to: '',
-        //     create: {
-        //         id: 'customer-join_create',
-        //         label: '고객 등록',
-        //         to: '/customer/join/create',
-        //     },
-        // },
+        join: {
+            id: 'customer-join',
+            label: '가입고객',
+            to: '',
+            create: {
+                id: 'customer-join_create',
+                label: '고객 등록',
+                to: '/customer/join/create',
+            },
+        },
         // nojoin: {
         //     id: 'customer-nojoin',
         //     label: '미가입고객',
