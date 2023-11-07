@@ -1,13 +1,11 @@
 import type { Reducer } from 'redux';
-import type { Endorsement } from '@models/endorsement';
+import type { KeyValue } from '@models/keyValue';
 import type { GetLongsSuccessPayload } from '@actions/contract/long/get-longs.action';
 import type { GetLongSilsSuccessPayload } from '@actions/contract/long/get-long-sils.action';
 import type { GetLongBuhwalsSuccessPayload } from '@actions/contract/long/get-long-buhwals.action';
 import produce from 'immer';
 import { GetLongsActionTypes } from '@actions/contract/long/get-longs.action';
 import { GetLongActionTypes } from '@actions/contract/long/get-long.action';
-// import { LongEtcUpdateActionTypes } from '@actions/long/set-long-etc.action';
-import { EndorsementActionTypes } from '@actions/contract/long/set-endorsement.action';
 import { GetLongFieldsActionTypes } from '@actions/contract/long/get-long-fields.action';
 import { GetLongSilsActionTypes } from '@actions/contract/long/get-long-sils.action';
 import {
@@ -15,7 +13,6 @@ import {
     GetLongSilhyosSuccessPayload,
 } from '@actions/contract/long/get-long-silhyos.action';
 import { GetLongBuhwalsActionTypes } from '@actions/contract/long/get-long-buhwals.action';
-import { KeyValue } from '@models/keyValue';
 import { InfoCustActionTypes } from '@actions/contract/long/set-info-cust.action';
 import { InfoProductActionTypes } from '@actions/contract/long/set-info-product.action';
 
@@ -44,14 +41,6 @@ export interface LongState {
      * 장기테이블 필드 목록
      */
     fields: Array<any>;
-    /**
-     * 배서 목록
-     */
-    endorsements: Endorsement[];
-    /**
-     * 삭제한 배서 목록
-     */
-    removedEndorsements: Endorsement[];
     /**
      * 관리정보 목록
      */
@@ -97,26 +86,6 @@ const initialState: LongState = {
     },
     long: null,
     fields: [],
-    // etcs: [],
-    endorsements: [
-        {
-            index: 0,
-            checked: false,
-            idx: 3102,
-            dist: '해지',
-            paydate: '2023-06-14',
-            gdate: '2023-06-01',
-            whoi: 1,
-            pay_before: 78000,
-            pay_after: 78000,
-            tp_before: 78000,
-            tp_after: 78000,
-            balance: 78000,
-            confirm: 'Y',
-            insert: 'system 2023-07-04 17:46',
-        },
-    ],
-    removedEndorsements: [],
     infoCusts: [],
     selectedInfoCust: null,
     infoProducts: [],
@@ -156,47 +125,6 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetLongFieldsActionTypes.SUCCESS: {
                 draft.fields = action.payload;
-
-                break;
-            }
-            // case LongEtcUpdateActionTypes.UPDATE: {
-            //     draft.long.etcs[action.payload.field] = action.payload.content;
-
-            //     break;
-            // }
-            case EndorsementActionTypes.CREATE: {
-                draft.endorsements = draft.endorsements.concat(action.payload);
-                break;
-            }
-            case EndorsementActionTypes.UPDATE: {
-                const { index, ...rest } = action.payload;
-
-                for (let i = 0; i < draft.endorsements.length; i++) {
-                    if (draft.endorsements[i].index === index) {
-                        draft.endorsements[i] = {
-                            ...draft.endorsements[i],
-                            ...rest,
-                        };
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-            case EndorsementActionTypes.DELETE: {
-                const findIndex = draft.endorsements.findIndex(
-                    (v) => v.index === action.payload.index,
-                );
-
-                if (findIndex !== -1) {
-                    const [deleted] = draft.endorsements.splice(findIndex, 1);
-
-                    if (deleted.idx) {
-                        draft.removedEndorsements =
-                            draft.removedEndorsements.concat(deleted);
-                    }
-                }
 
                 break;
             }

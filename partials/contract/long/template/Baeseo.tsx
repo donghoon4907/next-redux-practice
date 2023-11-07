@@ -11,6 +11,7 @@ import { findSelectOption } from '@utils/getter';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { updateBaeseo } from '@actions/contract/common/set-baeseo.action';
 import longConstants from '@constants/options/long';
+import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';
 import { MyCheckbox } from '@components/checkbox';
 
@@ -73,7 +74,7 @@ export const BaeseoTemplate: FC<Props> = ({ editable, ...rest }) => {
         },
     });
     // 실적
-    const [pay_point] = useNumbericInput(rest.pay_point.toString(), {
+    const [pay_point] = useNumbericInput(Math.abs(rest.pay_point).toString(), {
         addComma: true,
         callbackOnBlur: (next) => {
             dispatch(
@@ -85,7 +86,7 @@ export const BaeseoTemplate: FC<Props> = ({ editable, ...rest }) => {
         },
     });
     // 수정보험료
-    const [tp_point] = useNumbericInput(rest.tp_point.toString(), {
+    const [tp_point] = useNumbericInput(Math.abs(rest.tp_point).toString(), {
         addComma: true,
         callbackOnBlur: (next) => {
             dispatch(
@@ -106,6 +107,40 @@ export const BaeseoTemplate: FC<Props> = ({ editable, ...rest }) => {
                         updateBaeseo({
                             index: rest.index,
                             gdate: dayjs(next).format('YYYY-MM-01'),
+                        }),
+                    );
+                }
+            },
+        },
+    );
+    // 실적확인
+    const [confirm] = useSelect(
+        commonConstants.yn,
+        findSelectOption(rest.confirm ? 'Y' : 'N', commonConstants.yn),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    dispatch(
+                        updateBaeseo({
+                            index: rest.index,
+                            confirm: next.value === 'Y' ? true : false,
+                        }),
+                    );
+                }
+            },
+        },
+    );
+    // 정산여부
+    const [cals] = useSelect(
+        commonConstants.yn,
+        findSelectOption(rest.cals ? 'Y' : 'N', commonConstants.yn),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    dispatch(
+                        updateBaeseo({
+                            index: rest.index,
+                            cals: next.value === 'Y' ? true : false,
                         }),
                     );
                 }
@@ -171,8 +206,16 @@ export const BaeseoTemplate: FC<Props> = ({ editable, ...rest }) => {
                     dayjs(rest.gdate).format('YYYY-MM')
                 )}
             </td>
-            <td>N</td>
-            <td>N</td>
+            <td>
+                {editable ? (
+                    <MySelect {...confirm} />
+                ) : rest.confirm ? (
+                    'Y'
+                ) : (
+                    'N'
+                )}
+            </td>
+            <td>{editable ? <MySelect {...cals} /> : rest.cals ? 'Y' : 'N'}</td>
             {!editable && (
                 <td>
                     {rest.insert_userid} {rest.insert_datetime}

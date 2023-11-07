@@ -67,6 +67,8 @@ export const LongBaeseossTabpanel: FC<Props> = ({
                 dist: '실효',
                 date: dayjs().format('YYYY-MM-DD'),
                 gdate: dayjs().format('YYYY-MM-01'),
+                confirm: false,
+                cals: false,
             }),
         );
     };
@@ -113,9 +115,7 @@ export const LongBaeseossTabpanel: FC<Props> = ({
                             <th>정산여부</th>
                             {!editable && (
                                 <>
-                                    <th>
-                                        <strong>입력</strong>
-                                    </th>
+                                    <th>입력</th>
                                 </>
                             )}
                         </tr>

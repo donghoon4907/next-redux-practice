@@ -9,7 +9,7 @@ class ContactDTO {
     };
 
     requiredValidate = () => {
-        const { kind, channel, issuedate, replydatetime, status } =
+        const { kind, channel, issuedate, replydatetime, status, comment } =
             this.payload;
 
         if (isEmpty(kind)) {
@@ -38,6 +38,12 @@ class ContactDTO {
 
         if (isEmpty(status)) {
             alert('진행상태를 선택해주세요.');
+
+            return false;
+        }
+
+        if (isEmpty(comment)) {
+            alert('내용을 입력해주세요.');
 
             return false;
         }

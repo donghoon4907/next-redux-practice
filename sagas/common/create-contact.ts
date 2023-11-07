@@ -12,13 +12,6 @@ function* createContactSaga({ payload }: CreateContactRequestAction) {
 
     const { data } = yield call(commonsService.beforeCreateContact, rest);
 
-    const { Message } = data;
-
-    if (Message === 'Success') {
-    } else {
-        alert(Message);
-    }
-
     yield put(createContactSuccess());
 
     return data;

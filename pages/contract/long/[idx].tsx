@@ -22,6 +22,7 @@ import { MyLayout } from '@components/Layout';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 import { createInfoCust } from '@actions/contract/long/set-info-cust.action';
 import { createInfoProduct } from '@actions/contract/long/set-info-product.action';
+import { createBaeseo } from '@actions/contract/common/set-baeseo.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
     const { longUseCompanies } = useSelector<AppState, HrState>(
@@ -239,6 +240,34 @@ export const getServerSideProps = wrapper.getServerSideProps(
                             method: pay.method,
                             insert_datetime: pay.insert_datetime,
                             insert_userid: pay.insert_userid,
+                            confirm: pay.confirm,
+                            cals: pay.cals,
+                        }),
+                    );
+                }
+            }
+
+            if (long.baeseos) {
+                // 최근등록순으로 변경
+                const reversedBaeseos = long.baeseos.reverse();
+                for (let i = 0; i < long.baeseos.length; i++) {
+                    const baeseo = reversedBaeseos[i];
+
+                    dispatch(
+                        createBaeseo({
+                            index: i,
+                            checked: false,
+                            idx: baeseo.idx,
+                            date: baeseo.date,
+                            gdate: baeseo.gdate,
+                            whoi: baeseo.whoi,
+                            dist: baeseo.dist,
+                            pay_point: baeseo.pay_point,
+                            tp_point: baeseo.tp_point,
+                            insert_datetime: baeseo.insert_datetime,
+                            insert_userid: baeseo.insert_userid,
+                            confirm: baeseo.confirm,
+                            cals: baeseo.cals,
                         }),
                     );
                 }

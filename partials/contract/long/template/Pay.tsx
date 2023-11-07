@@ -13,11 +13,11 @@ import { findSelectOption } from '@utils/getter';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { updatePay } from '@actions/contract/common/set-pay.action';
 import longConstants from '@constants/options/long';
+import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';
 import { calcGdate, calcDistkind } from '@utils/calculator';
 import { MyCheckbox } from '@components/checkbox';
 import { generateNextWhoi } from '@utils/generate';
-import { isNumberic } from '@utils/validation';
 
 interface Props extends Pay, CoreEditableComponent {
     contdate: Date;
@@ -117,7 +117,7 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
         },
     );
     // 영수보험료
-    const [pay] = useNumbericInput(rest.pay.toString(), {
+    const [pay] = useNumbericInput(Math.abs(rest.pay).toString(), {
         addComma: true,
         callbackOnBlur: (next) => {
             dispatch(
@@ -139,6 +139,40 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
                         updatePay({
                             index: rest.index,
                             method: next.value,
+                        }),
+                    );
+                }
+            },
+        },
+    );
+    // 실적확인
+    const [confirm] = useSelect(
+        commonConstants.yn,
+        findSelectOption(rest.confirm ? 'Y' : 'N', commonConstants.yn),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    dispatch(
+                        updatePay({
+                            index: rest.index,
+                            confirm: next.value === 'Y' ? true : false,
+                        }),
+                    );
+                }
+            },
+        },
+    );
+    // 정산여부
+    const [cals] = useSelect(
+        commonConstants.yn,
+        findSelectOption(rest.cals ? 'Y' : 'N', commonConstants.yn),
+        {
+            callbackOnChange: (next) => {
+                if (next) {
+                    dispatch(
+                        updatePay({
+                            index: rest.index,
+                            cals: next.value === 'Y' ? true : false,
                         }),
                     );
                 }
@@ -206,9 +240,23 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
                 )}
             </td>
 
-            <td>{editable ? <MySelect {...method} /> : rest.method}</td>
-            <td>N</td>
-            <td>N</td>
+            <td>
+                {editable && (rest.dist === '신규' || rest.dist === '계속') ? (
+                    <MySelect {...method} />
+                ) : (
+                    rest.method
+                )}
+            </td>
+            <td>
+                {editable ? (
+                    <MySelect {...confirm} />
+                ) : rest.confirm ? (
+                    'Y'
+                ) : (
+                    'N'
+                )}
+            </td>
+            <td>{editable ? <MySelect {...cals} /> : rest.cals ? 'Y' : 'N'}</td>
             {!editable && (
                 <td>
                     {rest.insert_userid} {rest.insert_datetime}

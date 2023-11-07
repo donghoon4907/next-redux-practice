@@ -102,7 +102,6 @@ interface Props {
      * 납입기간 기본 값
      */
     defaultPayDateto?: string;
-    // defaultPayDu?: number;
     /**
      * 계약상태 기본 값
      */
@@ -147,14 +146,6 @@ interface Props {
      * 수정보험료 기본 값
      */
     defaultTp?: string;
-    /**
-     * 월납기준 기본 값
-     */
-    // defaultPayMonth?: string;
-    /**
-     * 1차수정 기본 값
-     */
-    // defaultTp1?: string;
     /**
      * 2차수정 기본 값
      */
@@ -1135,14 +1126,6 @@ export const LongForm: FC<Props> = ({
                         <li className="wr-tab__line"></li>
                     </ul>
                     <div className="wr-pages-detail__body">
-                        {/* <CustomerTabpanel
-                            id="tabpanelCustomer"
-                            tabId="tabCustomer"
-                            hidden={tab.id !== 'tabCustomer'}
-                            editable={editable}
-                            userid={defaultUserid}
-                            spe="long"
-                        /> */}
                         <LongPaysTabpanel
                             id="tabpanelPays"
                             tabId="tabPays"
@@ -1159,18 +1142,6 @@ export const LongForm: FC<Props> = ({
                             payment={+payment.value.replace(/,/g, '')}
                             tp={+tp.value.replace(/,/g, '')}
                         />
-                        {/* <EndorsementTabpanel
-                            id="tabpanelEndorsement"
-                            tabId="tabEndorsement"
-                            hidden={tab.id !== 'tabEndorsement'}
-                            editable={editable}
-                        />
-                        <CalcPerformTabpanel
-                            id="tabpanelCalcPerform"
-                            tabId="tabCalcPerform"
-                            hidden={tab.id !== 'tabCalcPerform'}
-                            editable={editable}
-                        /> */}
                         {mode === 'update' && loadedContract && (
                             <SingleContactTabpanel
                                 id="tabpanelContact"
@@ -1183,13 +1154,6 @@ export const LongForm: FC<Props> = ({
                                 cnum={cnum.value}
                             />
                         )}
-
-                        {/* <ChangeHistoryTabpanel
-                            id="tabpanelChangeHis"
-                            tabId="tabChangeHis"
-                            hidden={tab.id !== 'tabChangeHis'}
-                            editable={editable}
-                        /> */}
                     </div>
                 </div>
             </div>

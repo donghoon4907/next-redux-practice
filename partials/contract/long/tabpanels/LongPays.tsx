@@ -91,6 +91,8 @@ export const LongPaysTabpanel: FC<Props> = ({
                 whoi,
                 pay: payment,
                 dist,
+                confirm: false,
+                cals: false,
             }),
         );
     };
@@ -136,9 +138,7 @@ export const LongPaysTabpanel: FC<Props> = ({
                             <th>정산여부</th>
                             {!editable && (
                                 <>
-                                    <th>
-                                        <strong>입력</strong>
-                                    </th>
+                                    <th>입력</th>
                                 </>
                             )}
                         </tr>

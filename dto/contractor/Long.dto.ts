@@ -96,16 +96,6 @@ class LongDTO {
             return false;
         }
 
-        if (Array.isArray(pays)) {
-            for (let i = 0; i < pays.length; i++) {
-                if (!pays[i].method) {
-                    alert('금종을 설정하지 않은 실적 정보가 있습니다.');
-
-                    return false;
-                }
-            }
-        }
-
         return true;
     };
 }

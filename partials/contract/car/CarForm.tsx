@@ -1181,7 +1181,10 @@ export const CarForm: FC<Props> = ({
                                     </div>
                                 </div>
                             ) : (
-                                <LongManagerAccordion editable={editable} />
+                                <LongManagerAccordion
+                                    editable={editable}
+                                    defaultTitle="test"
+                                />
                             )}
                         </div>
                     </div>

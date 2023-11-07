@@ -27,7 +27,6 @@ import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
 import { CustomerTabpanel } from '@partials/contract/common/tabpanels/Customer';
-import { EndorsementTabpanel } from '@partials/contract/long/tabpanels/Endorsement';
 import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/contract/long/tabpanels/CalcPerform';
 // import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
@@ -36,7 +35,6 @@ import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { CreateGeneralPayModal } from '@components/modal/CreateGeneralPay';
-import { CreateEndorsementModal } from '@components/modal/CreateEndorsement';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
@@ -346,7 +344,10 @@ export const GeneralForm: FC<Props> = ({
                                     </div>
                                 </div>
                             ) : (
-                                <LongManagerAccordion editable={editable} />
+                                <LongManagerAccordion
+                                    editable={editable}
+                                    defaultTitle="test"
+                                />
                             )}
                         </div>
                     </div>
@@ -538,12 +539,6 @@ export const GeneralForm: FC<Props> = ({
                             hidden={tab.id !== 'tabPays'}
                             editable={editable}
                         />
-                        <EndorsementTabpanel
-                            id="tabpanelEndorsement"
-                            tabId="tabEndorsement"
-                            hidden={tab.id !== 'tabEndorsement'}
-                            editable={editable}
-                        />
                         <CalcPerformTabpanel
                             id="tabpanelCalcPerform"
                             tabId="tabCalcPerform"
@@ -612,7 +607,6 @@ export const GeneralForm: FC<Props> = ({
                 <CustomerSearchModal type="insured-person" />
             )}
             <CreateGeneralPayModal payment={payment.value} />
-            <CreateEndorsementModal />
             <CreateEtcModal />
             {mode === 'update' && <UserHistoryModal type="contract" />}
         </>
