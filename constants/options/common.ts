@@ -171,12 +171,32 @@ const L_COMPANIES = [
     },
 ];
 
+// 청약설계
+const SUL_DIST: CoreSelectOption[] = [
+    {
+        label: '본인',
+        value: '본인',
+        isFixed: false,
+    },
+    {
+        label: '회사',
+        value: '회사',
+        isFixed: false,
+    },
+    {
+        label: '보험사',
+        value: '보험사',
+        isFixed: false,
+    },
+];
+
 const rootSelectOptions = {
     listCounts: LIST_COUNTS,
     dCompanies: D_COMPANIES,
     lCompanies: L_COMPANIES,
     yn: YES_NO,
     yn2: YES_NO2,
+    sulDist: SUL_DIST,
 };
 
 export default rootSelectOptions;

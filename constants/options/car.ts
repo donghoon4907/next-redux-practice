@@ -67,6 +67,19 @@ export const CAR_PAY_DIST: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 정산구분
+export const CAL_TYPE: CoreSelectOption[] = [
+    {
+        label: '정산',
+        value: 'Y',
+        isFixed: false,
+    },
+    {
+        label: '제외',
+        value: 'N',
+        isFixed: false,
+    },
+];
 // 납입방법
 export const CAR_PAY_METHOD: CoreSelectOption[] = [
     {
@@ -1932,6 +1945,7 @@ const rootSelectOptions = {
     spec: SPEC,
     status: STATUS,
     cycle: CYCLE,
+    calType: CAL_TYPE,
 };
 
 export default rootSelectOptions;

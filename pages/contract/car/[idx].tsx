@@ -67,6 +67,7 @@ const Car: NextPage<CarState> = ({ car }) => {
                 <CarForm
                     mode="update"
                     idx={car.idx}
+                    defaultOrganize={car.organize}
                     defaultUserid={car.userid}
                     defaultComp={defaultComp}
                     defaultPreComp={defaultPreComp}

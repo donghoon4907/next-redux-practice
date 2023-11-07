@@ -54,7 +54,7 @@ const Long: NextPage<LongState> = ({ long }) => {
 
     const defaultSulDist = findSelectOption(
         long.sul_dist,
-        longConstants.sulDist,
+        commonConstants.sulDist,
     );
 
     const defaultSubsSubmission = findSelectOption(

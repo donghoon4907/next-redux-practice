@@ -317,7 +317,7 @@ export const LongForm: FC<Props> = ({
     // 본인계약여부
     const [family] = useSelect(longConstants.family, defaultFamily);
     // 청약설계
-    const [sul_dist] = useSelect(longConstants.sulDist, defaultSulDist);
+    const [sul_dist] = useSelect(commonConstants.sulDist, defaultSulDist);
     // 고객청약서명 - 이후 상세작업필요
     const [subs_sign] = useSelect(commonConstants.yn, defaultSubsSign);
     // 청약서제출여부
@@ -741,11 +741,11 @@ export const LongForm: FC<Props> = ({
                                             isRequired
                                             {...cnum}
                                         />
-                                        {defaultIsConfirm === 'Y' && (
+                                        {/* {defaultIsConfirm === 'Y' && (
                                             <div className="badge rounded-pill bg-warning wr-with__badge--right wr-badge">
                                                 검증
                                             </div>
-                                        )}
+                                        )} */}
                                     </div>
                                 </div>
                                 <div className="row wr-mt">
@@ -1105,12 +1105,6 @@ export const LongForm: FC<Props> = ({
                             </div>
                         </div>
                     </div>
-
-                    {/* <div className="wr-pages-detail__block">
-                                <div className="wr-pages-detail__content">
-                                    <CustomSettingAccordion data={[]} />
-                                </div>
-                            </div> */}
                 </div>
                 <div className="wr-pages-detail__right">
                     <ul className="wr-tab__wrap" role="tablist">

@@ -55,11 +55,11 @@ export const GEN_DETAIL_TABS: CoreTabOption[] = [
  * 자동차 계약 상세 페이지 탭 목록
  */
 export const CAR_DETAIL_TABS: CoreTabOption[] = [
-    {
-        id: 'tabCustomer',
-        label: '고객상세및동의현황',
-        panelId: 'tabpanelCustomer',
-    },
+    // {
+    //     id: 'tabCustomer',
+    //     label: '고객상세및동의현황',
+    //     panelId: 'tabpanelCustomer',
+    // },
     { id: 'tabCompare', label: '비교견적정보', panelId: 'tabpanelCompare' },
     { id: 'tabPays', label: '입금 및 정산내역', panelId: 'tabpanelPays' },
 ];
