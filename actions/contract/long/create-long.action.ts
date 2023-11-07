@@ -1,7 +1,6 @@
 import type { Action } from 'redux';
 import type { Pay } from '@models/pay';
-import type { Insured } from '@models/insured';
-import type { Contact } from '@models/contact';
+import type { Baeseo } from '@models/baeseo';
 import type { CorePayload } from '@interfaces/core';
 
 export const CREATE_LONG_KEY = 'CREATE_LONG';
@@ -81,6 +80,8 @@ export interface CreateLongRequestPayload extends CorePayload {
     // p_persions?: Insured[];
     // 납입실적 목록
     pays?: Pay[];
+    // 미유지/부활 목록
+    baeseos?: Baeseo[];
     // 접촉이력
     // contacts?: Contact[];
 }

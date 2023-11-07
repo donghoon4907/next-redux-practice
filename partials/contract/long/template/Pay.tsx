@@ -5,7 +5,7 @@ import type { ContractState } from '@reducers/contract';
 import type { CoreEditableComponent } from '@interfaces/core';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { useNumbericInput } from '@hooks/use-input';
+import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useSelect } from '@hooks/use-select';
 import { MyInput } from '@components/input';
 import { MySelect } from '@components/select';
@@ -17,6 +17,7 @@ import { MyDatepicker } from '@components/datepicker';
 import { calcGdate, calcDistkind } from '@utils/calculator';
 import { MyCheckbox } from '@components/checkbox';
 import { generateNextWhoi } from '@utils/generate';
+import { isNumberic } from '@utils/validation';
 
 interface Props extends Pay, CoreEditableComponent {
     contdate: Date;
@@ -42,6 +43,29 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
             }
         },
     });
+    // 회차
+    const [whoi] = useInput(rest.whoi ? rest.whoi.toString() : '', {
+        beforeOnChangeCondition: (next) => {
+            let flag = true;
+            if (+next < 2) {
+                alert('회차는 2이상의 수로 설정해주세요.');
+
+                flag = false;
+            }
+
+            return flag;
+        },
+        callbackOnChange: (next) => {
+            if (next) {
+                dispatch(
+                    updatePay({
+                        index: rest.index,
+                        whoi: +next,
+                    }),
+                );
+            }
+        },
+    });
     // 입금구분
     const [dist] = useSelect(
         longConstants.pDist,
@@ -57,7 +81,7 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
                                 '다음 회차의 실적 정보가 없는 경우에만 설정할 수 있습니다.',
                             );
 
-                            return false;
+                            flag = false;
                         }
                     }
                 }
@@ -154,7 +178,17 @@ export const PayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
                 )}
             </td>
 
-            <td>{rest.whoi ? rest.whoi : ''}</td>
+            <td>
+                {rest.whoi ? (
+                    editable && rest.whoi !== 1 ? (
+                        <MyInput type="number" {...whoi} />
+                    ) : (
+                        rest.whoi
+                    )
+                ) : (
+                    ''
+                )}
+            </td>
             <td>
                 {editable && rest.dist !== '신규' ? (
                     <MySelect placeholder="선택" {...dist} />

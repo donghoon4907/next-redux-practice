@@ -347,7 +347,7 @@ const PAY_DIST: CoreSelectOption[] = [
 ];
 
 // 배서구분
-const L_EDIST: CoreSelectOption[] = [
+const BAESE_DIST: CoreSelectOption[] = [
     {
         label: '실효',
         value: '실효',
@@ -662,7 +662,7 @@ const rootSelectOptions = {
     silStatus: SIL_STATUS,
     pStatus: PAY_STATUS,
     pDist: PAY_DIST,
-    eDist: L_EDIST,
+    baeseDist: BAESE_DIST,
     payKind: PAY_KIND,
     calType: CAL_TYPE,
     family: L_FAMILY,

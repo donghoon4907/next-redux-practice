@@ -25,8 +25,9 @@ class LongDTO {
             bo_dateto,
             payment,
             c_idx,
-            p_name,
+            // p_name,
             pays,
+            baeseos,
         } = this.payload;
 
         if (isEmpty(userid)) {
@@ -98,9 +99,7 @@ class LongDTO {
         if (Array.isArray(pays)) {
             for (let i = 0; i < pays.length; i++) {
                 if (!pays[i].method) {
-                    alert(
-                        '금종을 설정하지 않은 실적 정보가 있습니다. 납입실적 탭을 확인하세요.',
-                    );
+                    alert('금종을 설정하지 않은 실적 정보가 있습니다.');
 
                     return false;
                 }

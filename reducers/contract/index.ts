@@ -2,6 +2,7 @@ import type { Reducer } from 'redux';
 import type { Product } from '@models/product';
 import type { Insured } from '@models/insured';
 import type { Pay } from '@models/pay';
+import type { Baeseo } from '@models/baeseo';
 import produce from 'immer';
 import { ProductActionTypes } from '@actions/contract/common/set-product.action';
 import {
@@ -10,7 +11,7 @@ import {
 } from '@actions/contract/common/set-contractor.action';
 import { InsuredActionTypes } from '@actions/contract/common/set-insured.action';
 import { PayActionTypes } from '@actions/contract/common/set-pay.action';
-import { GetCustomerActionTypes } from '@actions/customer/get-customer';
+import { BaeseoActionTypes } from '@actions/contract/common/set-baeseo.action';
 
 export interface ContractState {
     /**
@@ -41,6 +42,14 @@ export interface ContractState {
      * 삭제한 납입실적 목록
      */
     removedPays: Pay[];
+    /**
+     * 비유지/부활 목록
+     */
+    baeseos: Baeseo[];
+    /**
+     * 삭제한 비유지/부활 목록
+     */
+    removedBaeseos: Baeseo[];
 }
 
 const initialState: ContractState = {
@@ -51,6 +60,8 @@ const initialState: ContractState = {
     removedInsureds: [],
     pays: [],
     removedPays: [],
+    baeseos: [],
+    removedBaeseos: [],
 };
 
 export const contractReducer: Reducer<ContractState, any> = (
@@ -147,6 +158,42 @@ export const contractReducer: Reducer<ContractState, any> = (
 
                     if (deleted.idx) {
                         draft.removedPays = draft.removedPays.concat(deleted);
+                    }
+                }
+
+                break;
+            }
+            case BaeseoActionTypes.CREATE: {
+                draft.baeseos = [action.payload, ...draft.baeseos];
+                break;
+            }
+            case BaeseoActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.baeseos.length; i++) {
+                    if (draft.baeseos[i].index === index) {
+                        draft.baeseos[i] = {
+                            ...draft.baeseos[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case BaeseoActionTypes.DELETE: {
+                const findIndex = draft.baeseos.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.baeseos.splice(findIndex, 1);
+
+                    if (deleted.idx) {
+                        draft.removedBaeseos =
+                            draft.removedBaeseos.concat(deleted);
                     }
                 }
 

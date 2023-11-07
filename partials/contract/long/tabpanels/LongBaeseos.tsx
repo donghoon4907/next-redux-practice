@@ -4,105 +4,83 @@ import type { ContractState } from '@reducers/contract';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { CoreEditableComponent } from '@interfaces/core';
 import { useDispatch, useSelector } from 'react-redux';
-import dayjs from 'dayjs';
 import { v4 as uuidv4 } from 'uuid';
+import dayjs from 'dayjs';
 import { MyTabpanel } from '@components/tab/Tabpanel';
-import { deletePay, updatePay } from '@actions/contract/long/set-pay.action';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableToolbar } from '@components/table/Toolbar';
 import { generateIndex, generateNextWhoi } from '@utils/generate';
-import { createPay } from '@actions/contract/common/set-pay.action';
+import {
+    createBaeseo,
+    deleteBaeseo,
+    updateBaeseo,
+} from '@actions/contract/common/set-baeseo.action';
 
-import { PayTemplate } from '../template/Pay';
+import { BaeseoTemplate } from '../template/Baeseo';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {
-    contdate: Date;
     payment: number;
+    tp: number;
 }
 
-export const LongPaysTabpanel: FC<Props> = ({
+export const LongBaeseossTabpanel: FC<Props> = ({
     id,
     tabId,
     hidden,
     editable,
-    contdate,
     payment,
+    tp,
 }) => {
     const dispatch = useDispatch();
 
-    const { pays } = useSelector<AppState, ContractState>(
+    const { baeseos } = useSelector<AppState, ContractState>(
         (state) => state.contract,
     );
 
     const handleAllCheck = (evt: ChangeEvent<HTMLInputElement>) => {
-        pays.forEach((v) => {
-            dispatch(updatePay({ ...v, checked: evt.target.checked }));
+        baeseos.forEach((v) => {
+            dispatch(updateBaeseo({ ...v, checked: evt.target.checked }));
         });
     };
 
     const handleCreate = () => {
-        // 계약일자 설정 여부
-        if (!contdate) {
-            return alert('계약일자를 입력해주세요.');
-        }
         // 실적보험료 설정 여부
         if (payment === 0) {
             return alert('실적보험료를 입력해주세요.');
         }
 
-        // 계약종료 여부
-        let isFin = false;
-        for (let i = 0; i < pays.length; i++) {
-            const { dist } = pays[i];
-
-            if (dist === '철회' || dist === '취소') {
-                isFin = true;
-
-                break;
-            }
+        // 수정보험료 설정 여부
+        if (tp === 0) {
+            return alert('수정보험료를 입력해주세요.');
         }
 
-        if (isFin) {
-            return alert('철회 및 취소처리가 되어 더이상 추가할 수 없습니다.');
-        }
-
-        const index = generateIndex(pays);
-        // 마지막으로 설정된 회차 + 1
-        const whoi = generateNextWhoi(pays);
-
-        let paydate;
-        let dist;
-        // 신규인 경우
-        if (index === 0) {
-            // 영수일을 계약일자로
-            paydate = contdate;
-            dist = '신규';
-        } else {
-            // 영수일을 오늘날짜로
-            paydate = new Date();
-            dist = '계속';
-        }
+        const index = generateIndex(baeseos);
+        const whoi = generateNextWhoi(baeseos);
 
         dispatch(
-            createPay({
+            createBaeseo({
                 index,
                 checked: false,
-                paydate: dayjs(paydate).format('YYYY-MM-DD'),
                 whoi,
-                pay: payment,
-                dist,
+                pay_point: payment,
+                tp_point: tp,
+                dist: '실효',
+                date: dayjs().format('YYYY-MM-DD'),
+                gdate: dayjs().format('YYYY-MM-01'),
             }),
         );
     };
 
     const handleDelete = () => {
-        if (pays.findIndex((v) => v.checked) === -1) {
+        if (baeseos.findIndex((v) => v.checked) === -1) {
             return alert('삭제할 설정을 선택해주세요.');
         }
 
-        pays.filter((v) => v.checked).forEach((v) => {
-            dispatch(deletePay({ index: v.index }));
-        });
+        baeseos
+            .filter((v) => v.checked)
+            .forEach((v) => {
+                dispatch(deleteBaeseo({ index: v.index }));
+            });
     };
 
     return (
@@ -125,13 +103,12 @@ export const LongPaysTabpanel: FC<Props> = ({
                                 </th>
                             )}
 
-                            <th>영수일</th>
+                            <th>실적일</th>
+                            <th>구분</th>
                             <th style={{ width: 70 }}>회차</th>
-                            <th>입금구분</th>
-                            <th>대상년월</th>
-                            <th>납입구분</th>
-                            <th>영수보험료</th>
-                            <th>금종</th>
+                            <th>실적</th>
+                            <th>수정보험료</th>
+                            <th>정산월</th>
                             <th>실적확인</th>
                             <th>정산여부</th>
                             {!editable && (
@@ -144,16 +121,15 @@ export const LongPaysTabpanel: FC<Props> = ({
                         </tr>
                     </thead>
                     <tbody>
-                        {pays.length === 0 && (
+                        {baeseos.length === 0 && (
                             <tr>
-                                <td colSpan={11}>실적 정보가 없습니다.</td>
+                                <td colSpan={10}>실적 정보가 없습니다.</td>
                             </tr>
                         )}
-                        {pays.map((v) => (
-                            <PayTemplate
-                                key={`pay-${uuidv4()}`}
+                        {baeseos.map((v) => (
+                            <BaeseoTemplate
+                                key={`baeseo-${uuidv4()}`}
                                 editable={editable}
-                                contdate={contdate}
                                 {...v}
                             />
                         ))}

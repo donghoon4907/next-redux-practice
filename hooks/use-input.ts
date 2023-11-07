@@ -31,6 +31,10 @@ export interface UseInputOption {
     callbackOnChange?: (nextVal?: string) => void;
     // callbackOnFocus?: () => void;
     callbackOnBlur?: (convertedVal: string) => void;
+    /**
+     * before condition
+     */
+    beforeOnChangeCondition?: (nextVal: string) => boolean;
 }
 
 export interface UseInputOutput {
@@ -68,7 +72,15 @@ export const useInput: UseInputFunction = (defaultValue, where = {}) => {
         //     nextVal = nextVal.replace(/[^0-9\-]/g, '');
         // }
 
-        setValue(nextVal);
+        if (where.hasOwnProperty('beforeOnChangeCondition')) {
+            if (where.beforeOnChangeCondition!(nextVal)) {
+                setValue(nextVal);
+            } else {
+                return;
+            }
+        } else {
+            setValue(nextVal);
+        }
 
         where.callbackOnChange?.(nextVal);
     };

@@ -17,7 +17,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { MyCheckbox } from '@components/checkbox';
 import { FloatInput } from '@components/input/Float';
 import { MyUnit } from '@components/Unit';
-import { IconWrapper } from '@components/IconWrapper';
 import { showSetInfoCustModal } from '@actions/modal/set-info-cust.action';
 import { chunkArray } from '@utils/array';
 import {
@@ -77,12 +76,20 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                         </div>
                         {editable && (
                             <>
-                                <IconWrapper onClick={handleCreate}>
+                                <div
+                                    role="button"
+                                    className="wr-icon wr-btn"
+                                    onClick={handleCreate}
+                                >
                                     <AiOutlinePlus size={20} />
-                                </IconWrapper>
-                                <IconWrapper onClick={handleDelete}>
+                                </div>
+                                <div
+                                    role="button"
+                                    className="wr-icon wr-btn"
+                                    onClick={handleDelete}
+                                >
                                     <AiOutlineMinus size={20} />
-                                </IconWrapper>
+                                </div>
                             </>
                         )}
                     </div>
@@ -123,13 +130,15 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                                         after={
                                             editable && (
                                                 <MyUnit placement="last">
-                                                    <IconWrapper
+                                                    <div
+                                                        role="button"
+                                                        className="wr-icon wr-btn"
                                                         onClick={() =>
                                                             handleUpdate(a)
                                                         }
                                                     >
                                                         <BsPencil size={20} />
-                                                    </IconWrapper>
+                                                    </div>
                                                 </MyUnit>
                                             )
                                         }
@@ -158,13 +167,15 @@ export const InfoCustAccordion: FC<Props> = ({ editable }) => {
                                         after={
                                             editable && (
                                                 <MyUnit placement="last">
-                                                    <IconWrapper
+                                                    <div
+                                                        role="button"
+                                                        className="wr-icon wr-btn"
                                                         onClick={() =>
                                                             handleUpdate(b)
                                                         }
                                                     >
                                                         <BsPencil size={20} />
-                                                    </IconWrapper>
+                                                    </div>
                                                 </MyUnit>
                                             )
                                         }

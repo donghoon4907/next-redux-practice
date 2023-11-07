@@ -20,7 +20,9 @@ export function generateNextWhoi(arr: Array<any>) {
         }
     }
 
-    if (output !== -1) {
+    if (output === -1) {
+        output = 1;
+    } else {
         output++;
     }
 

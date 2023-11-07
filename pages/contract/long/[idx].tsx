@@ -90,6 +90,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                 <LongForm
                     mode="update"
                     idx={long.idx}
+                    defaultOrganize={long.organize}
                     defaultUserid={long.userid}
                     defaultComp={defaultComp}
                     defaultCnum={long.cnum}

@@ -144,100 +144,81 @@ export const SingleContactTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            {editable && (
-                <div className="row wr-pages-detail__applydatepicker">
-                    <div className="flex-fill">
-                        <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__content p-15">
-                                <div className="wr-table__toolbar">
-                                    <span>상담 설정</span>
-                                    <div className="d-flex">
-                                        <MyButton
-                                            className="btn-warning btn-sm"
-                                            onClick={handleReset}
-                                            disabled={!editable}
-                                        >
-                                            원래대로
-                                        </MyButton>
-                                        <MyButton
-                                            className="btn-primary btn-sm wr-ml"
-                                            onClick={handleCreate}
-                                            disabled={!editable}
-                                        >
-                                            저장
-                                        </MyButton>
-                                    </div>
+            <div className="row wr-pages-detail__applydatepicker">
+                <div className="flex-fill">
+                    <div className="wr-pages-detail__block">
+                        <div className="wr-pages-detail__content p-15">
+                            <div className="wr-table__toolbar">
+                                <span>상담 설정</span>
+                                <div className="d-flex">
+                                    <MyButton
+                                        className="btn-warning btn-sm"
+                                        onClick={handleReset}
+                                    >
+                                        원래대로
+                                    </MyButton>
+                                    <MyButton
+                                        className="btn-primary btn-sm wr-ml"
+                                        onClick={handleCreate}
+                                    >
+                                        저장
+                                    </MyButton>
                                 </div>
-                                <div className="row">
-                                    <div className="flex-fill">
-                                        <FloatSelect
-                                            label="상담구분"
-                                            isDisabled={!editable}
-                                            {...kind}
-                                        />
-                                    </div>
-                                    <div className="flex-fill">
-                                        <FloatSelect
-                                            label="채널"
-                                            isDisabled={!editable}
-                                            {...channel}
-                                        />
-                                    </div>
-                                    <div className="flex-fill">
-                                        <FloatDatepicker
-                                            label="사유발생일"
-                                            readOnly={!editable}
-                                            hooks={issuedate}
-                                        />
-                                    </div>
+                            </div>
+                            <div className="row">
+                                <div className="flex-fill">
+                                    <FloatSelect label="상담구분" {...kind} />
                                 </div>
-                                <div className="row wr-mt">
-                                    <div className="flex-fill">
-                                        <FloatDatepicker
-                                            label="응대예정일"
-                                            readOnly={!editable}
-                                            format="yyyy-MM-dd HH:mm"
-                                            hooks={replydatetime}
-                                        />
-                                    </div>
-                                    <div className="flex-fill">
-                                        <FloatSelect
-                                            label="진행상태"
-                                            isDisabled={!editable}
-                                            {...status}
-                                        />
-                                    </div>
-                                    <div className="flex-fill">
-                                        <FloatInput
-                                            label="작성자"
-                                            readOnly
-                                            defaultValue={`${loggedInUser.user_info.name} (${loggedInUser.userid})`}
-                                        />
-                                    </div>
+                                <div className="flex-fill">
+                                    <FloatSelect label="채널" {...channel} />
                                 </div>
-                                <div className="row wr-mt">
-                                    <div className="flex-fill">
-                                        <div className="form-floating">
-                                            <textarea
-                                                className="form-control wr-pages-detail__textarea"
-                                                placeholder="내용"
-                                                {...comment}
-                                                style={{
-                                                    height: 128,
-                                                }}
-                                                disabled={!editable}
-                                            />
-                                            <label htmlFor="cot_memo">
-                                                내용
-                                            </label>
-                                        </div>
+                                <div className="flex-fill">
+                                    <FloatDatepicker
+                                        label="사유발생일"
+                                        hooks={issuedate}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row wr-mt">
+                                <div className="flex-fill">
+                                    <FloatDatepicker
+                                        label="응대예정일"
+                                        format="yyyy-MM-dd HH:mm"
+                                        hooks={replydatetime}
+                                    />
+                                </div>
+                                <div className="flex-fill">
+                                    <FloatSelect label="진행상태" {...status} />
+                                </div>
+                                <div className="flex-fill">
+                                    <FloatInput
+                                        label="작성자"
+                                        readOnly
+                                        defaultValue={`${loggedInUser.user_info.name} (${loggedInUser.userid})`}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row wr-mt">
+                                <div className="flex-fill">
+                                    <div className="form-floating">
+                                        <textarea
+                                            id="cot_memo"
+                                            className="form-control wr-pages-detail__textarea"
+                                            placeholder="내용"
+                                            {...comment}
+                                            style={{
+                                                height: 128,
+                                            }}
+                                        />
+                                        <label htmlFor="cot_memo">내용</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            )}
+            </div>
+
             <div className="wr-table--normal wr-mt">
                 <table className="wr-table table">
                     <thead>

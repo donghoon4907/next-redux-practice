@@ -50,6 +50,7 @@ import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
 import { InfoProductAccordion } from '@components/accordion/InfoProduct';
 
 import { SearchContractorInput } from '../common/input/SearchContractorInput';
+import { LongBaeseossTabpanel } from './tabpanels/LongBaeseos';
 
 interface Props {
     /**
@@ -64,6 +65,10 @@ interface Props {
      * 담당자 기본 ID
      */
     defaultUserid: string;
+    /**
+     * 수정 시
+     */
+    defaultOrganize?: string;
     /**
      * 담당자 조직 기본 ID
      */
@@ -192,6 +197,7 @@ export const LongForm: FC<Props> = ({
     mode,
     idx = -1,
     defaultUserid,
+    defaultOrganize = '',
     defaultOrga = null,
     defaultComp = null,
     defaultCnum = '',
@@ -247,7 +253,9 @@ export const LongForm: FC<Props> = ({
         loadedContract,
         loadedInsured,
         pays,
+        baeseos,
         removedPays,
+        removedBaeseos,
     } = useSelector<AppState, ContractState>((state) => state.contract);
 
     const { isShowContractorSearchModal, isShowInsuredSearchModal } =
@@ -474,7 +482,9 @@ export const LongForm: FC<Props> = ({
 
         if (updateLongDto.requiredValidate()) {
             updateLong(updateLongDto.getPayload(), () => {
-                router.replace(location.href);
+                // router.replace(location.href);
+                alert('수정되었습니다.');
+                location.reload();
             });
         }
     };
@@ -507,6 +517,9 @@ export const LongForm: FC<Props> = ({
 
             if (removedPays.length > 0) {
                 payload['remove']['pays'] = removedPays.map((v) => v.idx);
+            }
+            if (removedBaeseos.length > 0) {
+                payload['remove']['baeseos'] = removedBaeseos.map((v) => v.idx);
             }
             // 계약상태
             if (status.value) {
@@ -642,6 +655,20 @@ export const LongForm: FC<Props> = ({
                 return output;
             });
         }
+
+        // 미유지/부활
+        if (baeseos.length > 0) {
+            payload['baeseos'] = baeseos.map((v) => {
+                const output = { ...v };
+
+                if (output.dist !== '부활') {
+                    output.pay_point *= -1;
+                    output.tp_point *= -1;
+                }
+
+                return output;
+            });
+        }
         // API 분리로 인하여 제외
         // if (contacts.length > 0) {
         //     payload['contacts'] = contacts;
@@ -698,7 +725,10 @@ export const LongForm: FC<Props> = ({
                                 </div>
                             ) : (
                                 <div className="wr-pages-detail__content p-15">
-                                    <LongManagerAccordion editable={editable} />
+                                    <LongManagerAccordion
+                                        editable={editable}
+                                        defaultTitle={defaultOrganize}
+                                    />
                                 </div>
                             )}
                         </div>
@@ -843,8 +873,11 @@ export const LongForm: FC<Props> = ({
                                                 value={defaultLastMonth}
                                                 after={
                                                     <>
+                                                        <MyUnit placement="middle">
+                                                            {defaultLastWhoi}
+                                                        </MyUnit>
                                                         <MyUnit placement="last">
-                                                            {defaultLastWhoi}회
+                                                            회
                                                         </MyUnit>
                                                     </>
                                                 }
@@ -1117,6 +1150,14 @@ export const LongForm: FC<Props> = ({
                             editable={editable}
                             contdate={contdate.value!}
                             payment={+payment.value.replace(/,/g, '')}
+                        />
+                        <LongBaeseossTabpanel
+                            id="tabpanelBuhwal"
+                            tabId="tabBuhwal"
+                            hidden={tab.id !== 'tabBuhwal'}
+                            editable={editable}
+                            payment={+payment.value.replace(/,/g, '')}
+                            tp={+tp.value.replace(/,/g, '')}
                         />
                         {/* <EndorsementTabpanel
                             id="tabpanelEndorsement"
