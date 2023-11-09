@@ -52,7 +52,7 @@ export const OrgaQualManageTabpanel: FC<Props> = ({
                         editable={editable}
                     />
                 </div>
-                <div className="wr-pages-orga-detail__vdivider"></div>
+                <div className="wr-divider__vertical orga"></div>
                 <div className="flex-fill">
                     <AssoCodeTemplate
                         dist="생보"

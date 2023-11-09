@@ -19,7 +19,7 @@ const CreateCar: NextPage = () => {
     );
 
     // 탭 설정
-    // useInitTab('자동차계약등록');
+    useInitTab('자동차계약등록');
 
     const defaultOrga = findSelectOption(
         loggedInUser.user_info.orga_idx,
@@ -50,7 +50,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
         dispatch(getOrgasRequest({}));
 
-        dispatch(getCompaniesRequest('car-use'));
+        dispatch(getCompaniesRequest('long-use'));
 
         dispatch(END);
 

@@ -1,11 +1,16 @@
 import type { Reducer } from 'redux';
 import type { Bupum } from '@models/bupum';
 import type { GetCarsSuccessPayload } from '@actions/contract/car/get-cars.action';
+import {
+    GetEstimatesActionTypes,
+    type GetEstimatesSuccessPayload,
+} from '@actions/contract/car/get-estimates.action';
 import produce from 'immer';
 import { BupumActionTypes } from '@actions/contract/car/set-bupum.action';
 import { GetCarActionTypes } from '@actions/contract/car/get-car.action';
 import { GetCarcodeActionTypes } from '@actions/contract/car/get-carcode.action';
 import { GetCarsActionTypes } from '@actions/contract/car/get-cars.action';
+import { GetLazyEstimateActionTypes } from '@actions/contract/car/get-lazy-estimate.action';
 
 export interface CarState {
     /**
@@ -47,6 +52,14 @@ export interface CarState {
      * 제품의 세부항목 목록
      */
     carOptions: any[];
+    /**
+     * 비교견적 목록
+     */
+    estimates: GetEstimatesSuccessPayload;
+    /**
+     * 비교견적 상세
+     */
+    estimate: any;
 }
 
 const initialState: CarState = {
@@ -68,6 +81,13 @@ const initialState: CarState = {
     carYears: [],
     carSeries: [],
     carOptions: [],
+    estimates: {
+        fields: [],
+        rows: [],
+        total: null,
+        lastPayload: null,
+    },
+    estimate: null,
 };
 
 export const carReducer: Reducer<CarState, any> = (
@@ -158,6 +178,16 @@ export const carReducer: Reducer<CarState, any> = (
                 } else if (type === 'car-series') {
                     draft.carOptions = [];
                 }
+
+                break;
+            }
+            case GetEstimatesActionTypes.SUCCESS: {
+                draft.estimates = action.payload;
+
+                break;
+            }
+            case GetLazyEstimateActionTypes.SUCCESS: {
+                draft.estimate = action.payload;
 
                 break;
             }

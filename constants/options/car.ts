@@ -792,18 +792,23 @@ export const CAR_USAGE: CoreSelectOption[] = [
 // 단기구분
 export const CAR_SHORT_DIST: CoreSelectOption[] = [
     {
-        label: '단기(출)',
-        value: '단기(출)',
+        label: '1년',
+        value: '1년',
         isFixed: false,
     },
     {
-        label: '단기(상)',
-        value: '단기(상)',
+        label: '단기(출고)',
+        value: '단기(출고)',
         isFixed: false,
     },
     {
-        label: '기타',
-        value: '기타',
+        label: '단기(상품)',
+        value: '단기(상품)',
+        isFixed: false,
+    },
+    {
+        label: '기타단기',
+        value: '기타단기',
         isFixed: false,
     },
 ];
@@ -1894,6 +1899,29 @@ const CYCLE: CoreSelectOption[] = [
         isFixed: false,
     },
 ];
+// 입금구분
+const PAY_DIST: CoreSelectOption[] = [
+    {
+        label: '신규',
+        value: '신규',
+        isFixed: false,
+    },
+    {
+        label: '해지',
+        value: '해지',
+        isFixed: false,
+    },
+    {
+        label: '추징',
+        value: '추징',
+        isFixed: false,
+    },
+    {
+        label: '환급',
+        value: '환급',
+        isFixed: false,
+    },
+];
 
 const rootSelectOptions = {
     dist: CAR_DIST,
@@ -1946,6 +1974,7 @@ const rootSelectOptions = {
     status: STATUS,
     cycle: CYCLE,
     calType: CAL_TYPE,
+    pDist: PAY_DIST,
 };
 
 export default rootSelectOptions;

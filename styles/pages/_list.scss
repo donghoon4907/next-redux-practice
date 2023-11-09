@@ -3,6 +3,7 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    --wr-gutter-size: 10px;
 
     &__header {
         display: flex;

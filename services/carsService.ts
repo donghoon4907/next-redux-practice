@@ -7,6 +7,9 @@ import { getQuarter } from 'date-fns';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getExternalAxios } from '@utils/axios/external';
 import { getInternalAxios } from '@utils/axios/internal';
+import { GetEstimatesRequestPayload } from '@actions/contract/car/get-estimates.action';
+import { GetEstimateRequestPayload } from '@actions/contract/car/get-estimate.action';
+import { GetLazyEstimateRequestPayload } from '@actions/contract/car/get-lazy-estimate.action';
 
 export function getCars({ page, nums, ...rest }: GetCarsRequestPayload) {
     return getBackendAxios().post(
@@ -67,6 +70,26 @@ export function getCarcode({ idate, params = {} }: GetCarcodeRequestPayload) {
     );
 }
 
+export function beforeGetEstimates(payload: GetEstimatesRequestPayload) {
+    return getInternalAxios().get('/api/get-estimates', {
+        params: payload,
+    });
+}
+
+export function getEstimates(payload: GetEstimatesRequestPayload) {
+    return getBackendAxios().post('/estimate/slist', payload);
+}
+
+export function beforeGetEstimate(payload: GetLazyEstimateRequestPayload) {
+    return getInternalAxios().get('/api/get-estimate', {
+        params: payload,
+    });
+}
+
+export function getEstimate({ idx }: GetEstimateRequestPayload) {
+    return getBackendAxios().get(`/estimate/sdetail/${idx}`);
+}
+
 const rootServices = {
     getCars,
     getCar,
@@ -77,6 +100,10 @@ const rootServices = {
     calculateCar,
     beforeGetCarcode,
     getCarcode,
+    beforeGetEstimates,
+    getEstimates,
+    beforeGetEstimate,
+    getEstimate,
 };
 
 export default rootServices;

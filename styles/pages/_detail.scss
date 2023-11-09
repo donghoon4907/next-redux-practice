@@ -4,13 +4,10 @@
     flex-direction: row;
     gap: $wr-detail-gutter-size;
     --wr-tab-active-color: white;
+    --wr-gutter-size: 15px;
 
     & .row {
         gap: $wr-detail-gutter-size;
-    }
-
-    & .wr-mt {
-        margin-top: $wr-detail-gutter-size !important;
     }
 
     & .wr-tab__line {

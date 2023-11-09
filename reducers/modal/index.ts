@@ -29,6 +29,7 @@ import { GetCarcodeModalActionTypes } from '@actions/modal/get-carcode.action';
 import { SetCaraccModalActionTypes } from '@actions/modal/set-caracc.action';
 import { SetInfoCustModalActionTypes } from '@actions/modal/set-info-cust.action';
 import { SetInfoProductModalActionTypes } from '@actions/modal/set-info-product.action';
+import { EstimateSearchModalActionTypes } from '@actions/modal/estimate-search.action';
 
 export interface ModalState {
     isShowdepartSearchModal: boolean;
@@ -59,6 +60,7 @@ export interface ModalState {
     isShowSetCaraccModal: boolean;
     isShowSetInfoCustModal: boolean;
     isShowSetInfoProductModal: boolean;
+    isShowEstimateSearchModal: boolean;
 }
 
 const initialState: ModalState = {
@@ -90,6 +92,7 @@ const initialState: ModalState = {
     isShowSetCaraccModal: false,
     isShowSetInfoCustModal: false,
     isShowSetInfoProductModal: false,
+    isShowEstimateSearchModal: false,
 };
 
 export const modalReducer: Reducer<ModalState, any> = (
@@ -316,6 +319,14 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case SetInfoProductModalActionTypes.HIDE: {
                 draft.isShowSetInfoProductModal = false;
+                break;
+            }
+            case EstimateSearchModalActionTypes.SHOW: {
+                draft.isShowEstimateSearchModal = true;
+                break;
+            }
+            case EstimateSearchModalActionTypes.HIDE: {
+                draft.isShowEstimateSearchModal = false;
                 break;
             }
             default:

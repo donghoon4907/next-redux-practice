@@ -1141,7 +1141,6 @@ export const LongForm: FC<Props> = ({
                                 id="tabpanelContact"
                                 tabId="tabContact"
                                 hidden={tab.id !== 'tabContact'}
-                                editable={editable}
                                 cust_idx={loadedContract.idx}
                                 spe_idx={idx}
                                 spe="long"

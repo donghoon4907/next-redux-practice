@@ -1,0 +1,11 @@
+.wr-divider {
+    &__vertical {
+        flex-basis: 1px;
+        background-color: $wr-divider-color;
+        align-self: stretch;
+
+        &.orga {
+            margin-top: 25px;
+        }
+    }
+}

@@ -13,7 +13,7 @@ import { MyTableToolbar } from '@components/table/Toolbar';
 import { generateIndex, generateNextWhoi } from '@utils/generate';
 import { createPay } from '@actions/contract/common/set-pay.action';
 
-import { PayTemplate } from '../template/Pay';
+import { LongPayTemplate } from '../template/Pay';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {
     contdate: Date;
@@ -150,7 +150,7 @@ export const LongPaysTabpanel: FC<Props> = ({
                             </tr>
                         )}
                         {pays.map((v) => (
-                            <PayTemplate
+                            <LongPayTemplate
                                 key={`pay-${uuidv4()}`}
                                 editable={editable}
                                 contdate={contdate}

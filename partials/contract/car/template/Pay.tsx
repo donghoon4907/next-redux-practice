@@ -1,34 +1,24 @@
 import type { FC, ChangeEvent } from 'react';
 import type { Pay } from '@models/pay';
-import type { AppState } from '@reducers/index';
-import type { ContractState } from '@reducers/contract';
 import type { CoreEditableComponent } from '@interfaces/core';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
-import { useInput, useNumbericInput } from '@hooks/use-input';
+import { useNumbericInput } from '@hooks/use-input';
 import { useSelect } from '@hooks/use-select';
 import { MyInput } from '@components/input';
 import { MySelect } from '@components/select';
 import { findSelectOption } from '@utils/getter';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { updatePay } from '@actions/contract/common/set-pay.action';
-import longConstants from '@constants/options/long';
+import carConstants from '@constants/options/car';
 import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';
-import { calcGdate, calcDistkind } from '@utils/calculator';
 import { MyCheckbox } from '@components/checkbox';
-import { generateNextWhoi } from '@utils/generate';
 
-interface Props extends Pay, CoreEditableComponent {
-    contdate: Date;
-}
+interface Props extends Pay, CoreEditableComponent {}
 
-export const LongPayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
+export const CarPayTemplate: FC<Props> = ({ editable, ...rest }) => {
     const dispatch = useDispatch();
-
-    const { pays } = useSelector<AppState, ContractState>(
-        (state) => state.contract,
-    );
 
     // 영수일
     const [paydate] = useDatepicker(new Date(rest.paydate), {
@@ -43,73 +33,17 @@ export const LongPayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
             }
         },
     });
-    // 회차
-    const [whoi] = useInput(rest.whoi ? rest.whoi.toString() : '', {
-        beforeOnChangeCondition: (next) => {
-            let flag = true;
-            if (+next < 2) {
-                alert('회차는 2이상의 수로 설정해주세요.');
-
-                flag = false;
-            }
-
-            return flag;
-        },
-        callbackOnChange: (next) => {
-            if (next) {
-                dispatch(
-                    updatePay({
-                        index: rest.index,
-                        whoi: +next,
-                    }),
-                );
-            }
-        },
-    });
-    // 입금구분
+    // 납입구분
     const [dist] = useSelect(
-        longConstants.pDist,
-        findSelectOption(rest.dist, longConstants.pDist),
+        carConstants.pDist,
+        findSelectOption(rest.dist, carConstants.pDist),
         {
-            beforeOnChangeCondition: (next) => {
-                let flag = true;
-                if (next) {
-                    if (next.value !== '계속') {
-                        // 다음 데이터가 있는 경우
-                        if (pays[rest.index + 1]) {
-                            alert(
-                                '다음 회차의 실적 정보가 없는 경우에만 설정할 수 있습니다.',
-                            );
-
-                            flag = false;
-                        }
-                    }
-                }
-
-                return flag;
-            },
             callbackOnChange: (next) => {
                 if (next) {
-                    let nextWhoi = rest.whoi;
-                    // let nextPay = +pay.value.replace(/,/g, '');
-                    if (next.value === '철회' || next.value === '취소') {
-                        // 1회차로 변경
-                        nextWhoi = 1;
-                    } else {
-                        if (next.value === '추징' || next.value === '환급') {
-                            // 회차 비활성화
-                            nextWhoi = undefined;
-                        } else if (next.value === '계속') {
-                            // 마지막으로 설정된 회차 + 1
-                            nextWhoi = generateNextWhoi(pays);
-                        }
-                    }
-
                     dispatch(
                         updatePay({
                             index: rest.index,
                             dist: next.value,
-                            whoi: nextWhoi,
                         }),
                     );
                 }
@@ -117,7 +51,7 @@ export const LongPayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
         },
     );
     // 영수보험료
-    const [pay] = useNumbericInput(Math.abs(rest.pay).toString(), {
+    const [pay] = useNumbericInput(rest.pay ? rest.pay.toString() : '', {
         addComma: true,
         callbackOnBlur: (next) => {
             dispatch(
@@ -128,10 +62,34 @@ export const LongPayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
             );
         },
     });
+    // 책임
+    const [pay1] = useNumbericInput(rest.pay1 ? rest.pay1.toString() : '', {
+        addComma: true,
+        callbackOnBlur: (next) => {
+            dispatch(
+                updatePay({
+                    index: rest.index,
+                    pay1: +next,
+                }),
+            );
+        },
+    });
+    // 임의보험료
+    const [pay2] = useNumbericInput(rest.pay2 ? rest.pay2.toString() : '', {
+        addComma: true,
+        callbackOnBlur: (next) => {
+            dispatch(
+                updatePay({
+                    index: rest.index,
+                    pay2: +next,
+                }),
+            );
+        },
+    });
     // 금종
     const [method] = useSelect(
-        longConstants.payKind,
-        findSelectOption(rest.method, longConstants.payKind),
+        commonConstants.payKind,
+        findSelectOption(rest.method, commonConstants.payKind),
         {
             callbackOnChange: (next) => {
                 if (next) {
@@ -184,15 +142,6 @@ export const LongPayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
         dispatch(updatePay({ ...v, checked: evt.target.checked }));
     };
 
-    // 대상년월
-    let gdate;
-    let distkind;
-    if (rest.dist === '신규' || rest.dist === '계속') {
-        gdate = calcGdate(contdate, rest.whoi!);
-
-        distkind = calcDistkind(gdate, new Date(rest.paydate));
-    }
-
     return (
         <tr>
             {editable && (
@@ -211,27 +160,13 @@ export const LongPayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
                     dayjs(rest.paydate).format('YYYY-MM-DD')
                 )}
             </td>
-
             <td>
-                {rest.whoi ? (
-                    editable && rest.whoi !== 1 ? (
-                        <MyInput type="number" {...whoi} />
-                    ) : (
-                        rest.whoi
-                    )
-                ) : (
-                    ''
-                )}
-            </td>
-            <td>
-                {editable && rest.dist !== '신규' ? (
+                {editable ? (
                     <MySelect placeholder="선택" {...dist} />
                 ) : (
                     rest.dist
                 )}
             </td>
-            <td>{gdate ? dayjs(gdate).format('YYYY-MM') : ''}</td>
-            <td>{distkind}</td>
             <td>
                 {editable ? (
                     <MyInput type="text" className="text-end" {...pay} />
@@ -239,14 +174,26 @@ export const LongPayTemplate: FC<Props> = ({ editable, contdate, ...rest }) => {
                     rest.pay.toLocaleString()
                 )}
             </td>
-
             <td>
-                {editable && (rest.dist === '신규' || rest.dist === '계속') ? (
-                    <MySelect {...method} />
+                {editable ? (
+                    <MyInput type="text" className="text-end" {...pay1} />
+                ) : rest.pay1 ? (
+                    rest.pay1.toLocaleString()
                 ) : (
-                    rest.method
+                    ''
                 )}
             </td>
+            <td>
+                {editable ? (
+                    <MyInput type="text" className="text-end" {...pay2} />
+                ) : rest.pay2 ? (
+                    rest.pay2.toLocaleString()
+                ) : (
+                    ''
+                )}
+            </td>
+
+            <td>{editable ? <MySelect {...method} /> : rest.method}</td>
             <td>
                 {editable ? (
                     <MySelect {...confirm} />

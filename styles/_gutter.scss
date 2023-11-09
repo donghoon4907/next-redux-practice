@@ -1,35 +1,35 @@
 .wr-p {
     &l {
-        padding-left: $wr-gutter-size !important;
+        padding-left: var(--wr-gutter-size) !important;
     }
 
     &r {
-        padding-right: $wr-gutter-size !important;
+        padding-right: var(--wr-gutter-size) !important;
     }
 
     &t {
-        padding-top: $wr-gutter-size !important;
+        padding-top: var(--wr-gutter-size) !important;
     }
 
     &b {
-        padding-bottom: $wr-gutter-size !important;
+        padding-bottom: var(--wr-gutter-size) !important;
     }
 }
 
 .wr-m {
     &l {
-        margin-left: $wr-gutter-size !important;
+        margin-left: var(--wr-gutter-size) !important;
     }
 
     &r {
-        margin-right: $wr-gutter-size !important;
+        margin-right: var(--wr-gutter-size) !important;
     }
 
     &t {
-        margin-top: $wr-gutter-size !important;
+        margin-top: var(--wr-gutter-size) !important;
     }
 
     &b {
-        margin-bottom: $wr-gutter-size !important;
+        margin-bottom: var(--wr-gutter-size) !important;
     }
 }

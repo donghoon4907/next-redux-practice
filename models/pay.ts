@@ -27,11 +27,11 @@ export type Pay = CoreCheckableModel & {
      */
     pay: number;
     /**
-     *
+     * 책임(only 자동차계약)
      */
     pay1?: number;
     /**
-     *
+     * 책임(only 자동차계약)
      */
     pay2?: number;
     /**

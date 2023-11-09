@@ -60,8 +60,25 @@ export const CAR_DETAIL_TABS: CoreTabOption[] = [
     //     label: '고객상세및동의현황',
     //     panelId: 'tabpanelCustomer',
     // },
-    { id: 'tabCompare', label: '비교견적정보', panelId: 'tabpanelCompare' },
-    { id: 'tabPays', label: '입금 및 정산내역', panelId: 'tabpanelPays' },
+    // { id: 'tabCompare', label: '비교견적정보', panelId: 'tabpanelCompare' },
+    { id: 'tabPays', label: '납입실적', panelId: 'tabpanelPays' },
+    {
+        id: 'tabCompare',
+        label: '차량 / 담보 / 요율',
+        panelId: 'tabpanelCompare',
+    },
+    {
+        id: 'tabContact',
+        label: '고객상담',
+        panelId: 'tabpanelContact',
+        isHideMode: 'create',
+    },
+    {
+        id: 'tabChangeHis',
+        label: '변경내역',
+        panelId: 'tabpanelChangeHis',
+        isHideMode: 'create',
+    },
 ];
 /**
  * 고객 상세 페이지 탭 목록

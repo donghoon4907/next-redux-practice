@@ -24,7 +24,6 @@ import { CreateContactDTO } from '@dto/common/Contact.dto';
 import { createContactRequest } from '@actions/common/create-contact.action';
 
 interface Props extends MyTabpanelProps {
-    editable: boolean;
     cust_idx: number;
     spe_idx: number;
     spe: Spe;
@@ -35,7 +34,6 @@ export const SingleContactTabpanel: FC<Props> = ({
     id,
     tabId,
     hidden,
-    editable,
     cust_idx,
     spe_idx,
     spe,
@@ -59,7 +57,7 @@ export const SingleContactTabpanel: FC<Props> = ({
     // 사유발생일
     const [issuedate, setIssuedate] = useDatepicker(null);
     // 응대예정일시
-    const [replydatetime, setReplydatetimet] = useDatepicker(null);
+    const [replydatetime, setReplydatetime] = useDatepicker(null);
     // 진행상태
     const [status, setStatus] = useSelect(customerConstants.status, null);
     // 내용
@@ -72,10 +70,28 @@ export const SingleContactTabpanel: FC<Props> = ({
             setKind(customerConstants.counselingDivision[0]);
             setChannel(customerConstants.channel[0]);
             setIssuedate(null);
-            setReplydatetimet(null);
+            setReplydatetime(null);
             setStatus(null);
             setComment('');
         }
+    };
+
+    const handleClick = (contact: any) => {
+        setKind(
+            findSelectOption(
+                contact.kind,
+                customerConstants.counselingDivision,
+            ),
+        );
+        setChannel(
+            findSelectOption(contact.channel, customerConstants.channel),
+        );
+        setIssuedate(contact.issuedate ? new Date(contact.issuedate) : null);
+        setReplydatetime(
+            contact.replydatetime ? new Date(contact.replydatetime) : null,
+        );
+        setStatus(findSelectOption(contact.status, customerConstants.status));
+        setComment(contact.comment || '');
     };
 
     const handleCreate = () => {
@@ -220,7 +236,7 @@ export const SingleContactTabpanel: FC<Props> = ({
             </div>
 
             <div className="wr-table--normal wr-mt">
-                <table className="wr-table table">
+                <table className="wr-table table wr-table--hover">
                     <thead>
                         <tr>
                             {Object.entries(singleContacts.fields).map(
@@ -235,24 +251,25 @@ export const SingleContactTabpanel: FC<Props> = ({
                     <tbody>
                         {singleContacts.rows.length === 0 && (
                             <tr>
-                                <td colSpan={editable ? 11 : 10}>
-                                    접촉 이력이 없습니다.
-                                </td>
+                                <td colSpan={11}>접촉 이력이 없습니다.</td>
                             </tr>
                         )}
                         {singleContacts.rows.map((v: any, i: number) => (
-                            <tr key={`contact${i}`}>
+                            <tr
+                                key={`contact${i}`}
+                                onClick={() => handleClick(v)}
+                            >
                                 <td>{v.kind}</td>
                                 <td>{v.channel}</td>
-                                <td>
+                                {/* <td>
                                     {
                                         findSelectOption(
                                             spe,
                                             customerConstants.spe,
                                         ).label
                                     }
-                                </td>
-                                <td>{v.cnum ? v.cnum : '-'}</td>
+                                </td> */}
+                                {/* <td>{v.cnum ? v.cnum : '-'}</td> */}
                                 <td>{v.issuedate ? v.issuedate : '-'}</td>
                                 <td>
                                     {v.replydatetime ? v.replydatetime : '-'}

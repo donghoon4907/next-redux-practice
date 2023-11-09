@@ -2,12 +2,4 @@
     &__left {
         flex-basis: 577px;
     }
-
-    // 수직 구분선
-    &__vdivider {
-        flex-basis: 1px;
-        background-color: $wr-divider-color;
-        align-self: stretch;
-        margin-top: 25px;
-    }
 }

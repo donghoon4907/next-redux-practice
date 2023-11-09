@@ -22,7 +22,7 @@ body {
 }
 
 hr {
-    --rs-border-primary: black;
+    --rs-border-primary: $wr-divider-color;
     margin-top: $wr-gutter-size !important;
     margin-bottom: $wr-gutter-size !important;
 }

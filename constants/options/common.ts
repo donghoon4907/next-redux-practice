@@ -190,6 +190,20 @@ const SUL_DIST: CoreSelectOption[] = [
     },
 ];
 
+// 금종
+const PAY_KIND: CoreSelectOption[] = [
+    {
+        label: '카드',
+        value: '카드',
+        isFixed: false,
+    },
+    {
+        label: '현금',
+        value: '현금',
+        isFixed: false,
+    },
+];
+
 const rootSelectOptions = {
     listCounts: LIST_COUNTS,
     dCompanies: D_COMPANIES,
@@ -197,6 +211,7 @@ const rootSelectOptions = {
     yn: YES_NO,
     yn2: YES_NO2,
     sulDist: SUL_DIST,
+    payKind: PAY_KIND,
 };
 
 export default rootSelectOptions;
