@@ -163,7 +163,7 @@ export const Compare2Tabpanel: FC<Props> = ({
                             </div>
                             <div className="flex-fill"></div>
                         </div>
-                        {estimate.bbox === 'Y' && (
+                        {estimate.bbox && (
                             <div className="row wr-mt wr-pb wr-border-b">
                                 <div className="flex-fill">
                                     <FloatDatepicker
@@ -176,6 +176,7 @@ export const Compare2Tabpanel: FC<Props> = ({
                                     <FloatInput
                                         label="구입가"
                                         readOnly={!editable}
+                                        isNumber
                                         after={
                                             <MyUnit placement="last">
                                                 만원

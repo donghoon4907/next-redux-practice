@@ -1,7 +1,7 @@
 export function textToBadgeColor(str: string) {
     let output;
 
-    if (str === '인보장' || str === '개인용') {
+    if (str === '인보장' || str === '개인용' || str === '사업용') {
         output = 'red';
     } else if (str === '종신') {
         output = 'navy';

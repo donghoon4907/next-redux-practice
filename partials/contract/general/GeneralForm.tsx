@@ -400,10 +400,6 @@ export const GeneralForm: FC<Props> = ({
                             <SearchProductInput
                                 editable={editable}
                                 wcode={comp.value?.value}
-                                defaultTitle={defaultTitle}
-                                defaultSpec={defaultSpec}
-                                defaultSubcategory={null}
-                                defaultCalSpec={null}
                                 spe="gen"
                             />
                             <div className="row wr-mt">
