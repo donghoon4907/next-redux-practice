@@ -14,6 +14,7 @@ import carConstants from '@constants/options/car';
 import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';
 import { MyCheckbox } from '@components/checkbox';
+import { isEmpty } from '@utils/validator/common';
 
 interface Props extends Pay, CoreEditableComponent {}
 
@@ -177,19 +178,15 @@ export const CarPayTemplate: FC<Props> = ({ editable, ...rest }) => {
             <td>
                 {editable ? (
                     <MyInput type="text" className="text-end" {...pay1} />
-                ) : rest.pay1 ? (
-                    rest.pay1.toLocaleString()
                 ) : (
-                    ''
+                    rest.pay1?.toLocaleString()
                 )}
             </td>
             <td>
                 {editable ? (
                     <MyInput type="text" className="text-end" {...pay2} />
-                ) : rest.pay2 ? (
-                    rest.pay2.toLocaleString()
                 ) : (
-                    ''
+                    rest.pay2?.toLocaleString()
                 )}
             </td>
 

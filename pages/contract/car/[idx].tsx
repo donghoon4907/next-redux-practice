@@ -13,15 +13,15 @@ import { findSelectOption } from '@utils/getter';
 import longConstants from '@constants/options/long';
 import carConstants from '@constants/options/car';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createInsured } from '@actions/contract/common/set-insured.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
-// import { createContact } from '@actions/common/set-contact.action';
+import { createContact } from '@actions/common/set-contact.action';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { MyLayout } from '@components/Layout';
 import { CarForm } from '@partials/contract/car/CarForm';
-import { birthdayToAge, residentNumToAge } from '@utils/calculator';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
+import { createInfoCust } from '@actions/contract/common/set-info-cust.action';
+import { createInfoProduct } from '@actions/contract/common/set-info-product.action';
 
 const Car: NextPage<CarState> = ({ car }) => {
     const { carUseCompanies } = useSelector<AppState, HrState>(
@@ -97,17 +97,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
         dispatch(getOrgasRequest({}));
 
-        dispatch(getCompaniesRequest('car-use'));
+        dispatch(getCompaniesRequest('long-use'));
 
         const output: any = {
             props: {},
         };
 
         try {
-            dispatch(END);
-
-            await sagaTask?.toPromise();
-
             const { data } = await carsService.getCar({ idx });
 
             const car = data.data;
@@ -139,70 +135,112 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 }
             }
 
-            if (car.p_persons) {
-                for (let i = 0; i < car.p_persons.length; i++) {
-                    let age = null;
-                    if (car.p_persons[i].dist === '주피보험자') {
-                        if (car.p_persons[i].jumin) {
-                            age = residentNumToAge(car.p_persons[i].jumin);
-                        }
-                    } else {
-                        if (car.p_persons[i].birthday) {
-                            age = birthdayToAge(
-                                new Date(car.p_persons[i].birthday),
-                            );
-                        }
-                    }
-
-                    if (age) {
-                        age -= 1;
-                    }
+            if (car.info_custom) {
+                for (let i = 0; i < car.info_custom.length; i++) {
+                    const info_custom = car.info_custom[i];
 
                     dispatch(
-                        createInsured({
-                            ...car.p_persons[i],
+                        createInfoCust({
                             index: i,
                             checked: false,
-                            age,
+                            key: info_custom.key,
+                            value: info_custom.value,
                         }),
                     );
                 }
             }
 
-            if (car.pays) {
-                for (let i = 0; i < car.pays.length; i++) {
+            if (car.info_product) {
+                for (let i = 0; i < car.info_product.length; i++) {
+                    const info_product = car.info_product[i];
+
                     dispatch(
-                        createPay({
+                        createInfoProduct({
                             index: i,
                             checked: false,
-                            idx: car.pays[i].idx,
-                            paydate: car.pays[i].paydate,
-                            dist: car.pays[i].dist,
-                            pay: car.pays[i].pay,
-                            insert_datetime: car.pays[i].insert_datetime,
-                            insert_userid: car.pays[i].insert_userid,
+                            key: info_product.key,
+                            value: info_product.value,
                         }),
                     );
                 }
             }
 
-            // if (general.contacts) {
-            //     for (let i = 0; i < general.contacts.length; i++) {
+            // if (car.p_persons) {
+            //     for (let i = 0; i < car.p_persons.length; i++) {
+            //         let age = null;
+            //         if (car.p_persons[i].dist === '주피보험자') {
+            //             if (car.p_persons[i].jumin) {
+            //                 age = residentNumToAge(car.p_persons[i].jumin);
+            //             }
+            //         } else {
+            //             if (car.p_persons[i].birthday) {
+            //                 age = birthdayToAge(
+            //                     new Date(car.p_persons[i].birthday),
+            //                 );
+            //             }
+            //         }
+
+            //         if (age) {
+            //             age -= 1;
+            //         }
+
             //         dispatch(
-            //             createContact({
-            //                 ...general.contacts[i],
+            //             createInsured({
+            //                 ...car.p_persons[i],
             //                 index: i,
             //                 checked: false,
+            //                 age,
             //             }),
             //         );
             //     }
             // }
-        } catch (e) {
-            console.log(e);
-            // output.redirect = {
-            //     destination: '/404',
-            //     permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
-            // };
+
+            if (car.pays) {
+                const reversedCars = car.pays.reverse();
+
+                for (let i = 0; i < reversedCars.length; i++) {
+                    const pay = reversedCars[i];
+
+                    dispatch(
+                        createPay({
+                            index: i,
+                            checked: false,
+                            idx: pay.idx,
+                            paydate: pay.paydate,
+                            dist: pay.dist,
+                            pay: pay.pay,
+                            pay1: pay.pay1,
+                            pay2: pay.pay2,
+                            method: pay.method,
+                            insert_datetime: pay.insert_datetime,
+                            insert_userid: pay.insert_userid,
+                            confirm: pay.confirm,
+                            cals: pay.cals,
+                        }),
+                    );
+                }
+            }
+
+            if (car.contacts) {
+                for (let i = 0; i < car.contacts.length; i++) {
+                    dispatch(
+                        createContact({
+                            ...car.contacts[i],
+                            index: i,
+                            checked: false,
+                        }),
+                    );
+                }
+            }
+
+            dispatch(END);
+
+            await sagaTask?.toPromise();
+        } catch {
+            output.redirect = {
+                destination: '/404',
+                permanent: true, // true로 설정하면 301 상태 코드로 리다이렉션
+            };
         }
 
         return output;

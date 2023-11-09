@@ -79,7 +79,7 @@ export const SearchContractorInput: FC<Props> = ({
             after={
                 editable ? (
                     <InputSearchButton onClick={handleSearch} />
-                ) : (
+                ) : loadedContract ? (
                     <button
                         type="button"
                         className="wr-detail-input__button"
@@ -87,6 +87,8 @@ export const SearchContractorInput: FC<Props> = ({
                     >
                         상세
                     </button>
+                ) : (
+                    ''
                 )
             }
             {...name}

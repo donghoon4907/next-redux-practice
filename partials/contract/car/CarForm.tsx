@@ -274,8 +274,8 @@ export const CarForm: FC<Props> = ({
 
     const handleClickLoadEstimate = () => {
         getEstimates(
-            { userid: 'W0383', bo_datefrom: '2023-11-12' },
-            // { userid: defaultUserid, bo_datefrom: boDatefrom.value },
+            // { userid: 'W0383', bo_datefrom: '2023-11-12' },
+            { userid: defaultUserid, bo_datefrom: boDatefrom.value },
             () => {
                 dispatch(showEstimateSearchModal());
             },
@@ -691,12 +691,11 @@ export const CarForm: FC<Props> = ({
                             hidden={tab.id !== 'tabPays'}
                             editable={editable}
                         />
-                        {mode === 'update' && loadedContract && (
+                        {mode === 'update' && (
                             <SingleContactTabpanel
                                 id="tabpanelContact"
                                 tabId="tabContact"
                                 hidden={tab.id !== 'tabContact'}
-                                cust_idx={loadedContract.idx}
                                 spe_idx={idx}
                                 spe="car"
                                 cnum={cnum.value}

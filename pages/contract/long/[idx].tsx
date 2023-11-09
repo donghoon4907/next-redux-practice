@@ -221,7 +221,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
             if (long.pays) {
                 // 최근등록순으로 변경
                 const reversedPays = long.pays.reverse();
-                for (let i = 0; i < long.pays.length; i++) {
+                for (let i = 0; i < reversedPays.length; i++) {
                     const pay = reversedPays[i];
 
                     dispatch(
