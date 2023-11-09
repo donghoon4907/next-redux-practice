@@ -4,14 +4,11 @@ import type { HrState } from '@reducers/hr';
 import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
-import type { CarState } from '@reducers/car';
 import type { CoreSelectOption } from '@interfaces/core';
-import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { addYears } from 'date-fns';
-import { differenceInYears } from 'date-fns';
 import { CAR_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
 import { useInput, useNumbericInput } from '@hooks/use-input';
@@ -19,7 +16,6 @@ import { useSelect } from '@hooks/use-select';
 import { MyButton } from '@components/button';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
-// import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
 import carConstants from '@constants/options/car';
 import longConstants from '@constants/options/long';
 import commonConstants from '@constants/options/common';
@@ -28,13 +24,10 @@ import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/hr/get-users';
-// import { showSetPeriodModal } from '@actions/modal/set-period.action';
 import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
 import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
-// import { CreateBupumModal } from '@components/modal/CreateBupum';
 import { createCarRequest } from '@actions/contract/car/create-car.action';
 import { CreateCarDTO, UpdateCarDTO } from '@dto/contractor/Car.dto';
-import { CreateCarPayModal } from '@components/modal/CreateCarPay';
 import { MyFooter } from '@components/footer';
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
 import { updateCarRequest } from '@actions/contract/car/update-car.action';
@@ -50,6 +43,9 @@ import { Compare2Tabpanel } from './tabpanels/Compare2';
 import { getEstimatesRequest } from '@actions/contract/car/get-estimates.action';
 import { showEstimateSearchModal } from '@actions/modal/estimate-search.action';
 import { EstimateSearchModal } from '@components/modal/EstimateSearch';
+import { isEmpty } from '@utils/validator/common';
+import { SetInfoCustModal } from '@components/modal/SetInfoCust';
+import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
 
 interface Props {
     /**
@@ -81,25 +77,9 @@ interface Props {
      */
     defaultCnum?: string;
     /**
-     * 상품명 기본 값
-     */
-    defaultTitle?: string;
-    /**
-     * 보종 기본 값
-     */
-    defaultSpec?: string;
-    /**
-     * 정산보종 기본 값
-     */
-    defaultCalSpec?: string;
-    /**
      * 인수구분 기본 값
      */
     defaultInsu?: CoreSelectOption;
-    /**
-     * 납입보험료 기본 값
-     */
-    defaultSumpay?: string;
     /**
      * 등급 기본 값
      */
@@ -155,15 +135,11 @@ interface Props {
     /**
      * 블랙박스 구입시기 기본 값
      */
-    // defaultBlackboxBuydate?: string;
+    defaultBboxDate?: string;
     /**
      * 블랙박스 금액 기본 값
      */
-    // defaultBlackboxBuyPrice?: string;
-    /**
-     * 기본차량가액 기본 값
-     */
-    defaultCarprice?: string;
+    defaultBboxPrice?: string;
     /**
      * 검증 여부 기본 값
      */
@@ -178,9 +154,8 @@ export const CarForm: FC<Props> = ({
     defaultOrga = null,
     defaultComp = null,
     defaultCnum = '',
-    defaultTitle = '',
     defaultInsu = null,
-    defaultSumpay = '',
+    // defaultSumpay = '',
     defaultRate = null,
     defaultCalType = null,
     defaultSulDist = null,
@@ -194,14 +169,13 @@ export const CarForm: FC<Props> = ({
     defaultBodesc = carConstants.shortDist[0],
     defaultPreComp = null,
     defaultPreCnum = '',
-    defaultSpec = '',
     defaultIsConfirm = 'N',
+    defaultBboxPrice = '',
+    defaultBboxDate = null,
 }) => {
     const displayName = 'wr-pages-car-detail';
 
     const dispatch = useDispatch();
-
-    const router = useRouter();
 
     const { newUserHistory } = useSelector<AppState, CommonState>(
         (state) => state.common,
@@ -211,12 +185,14 @@ export const CarForm: FC<Props> = ({
         (state) => state.hr,
     );
 
-    const { selectedProduct, loadedContract, pays, removedPays } = useSelector<
-        AppState,
-        ContractState
-    >((state) => state.contract);
-
-    // const { estimate } = useSelector<AppState, CarState>((state) => state.car);
+    const {
+        selectedProduct,
+        loadedContract,
+        pays,
+        removedPays,
+        infoCusts,
+        infoProducts,
+    } = useSelector<AppState, ContractState>((state) => state.contract);
 
     const { isShowContractorSearchModal } = useSelector<AppState, ModalState>(
         (state) => state.modal,
@@ -244,9 +220,7 @@ export const CarForm: FC<Props> = ({
     // 인수구분
     const [insu] = useSelect(carConstants.dist, defaultInsu);
     // 납입보험료
-    const [sumpay] = useNumbericInput(defaultSumpay, {
-        addComma: true,
-    });
+    const payment = pays.reduce((acc, cur) => acc + cur.pay, 0);
     // 등급
     const [rate] = useSelect(carConstants.cGrade, defaultRate);
     // 정산구분
@@ -277,7 +251,14 @@ export const CarForm: FC<Props> = ({
     const [preWcode] = useSelect(longUseCompanies, defaultPreComp);
     // 전계약번호
     const [preCnum] = useInput(defaultPreCnum);
-
+    // 블랙박스 구입시기
+    const [blackboxDate] = useDatepicker(
+        defaultBboxDate ? new Date(defaultBboxDate) : null,
+    );
+    // 블랙박스 구입가
+    const [blackboxPrice] = useNumbericInput(defaultBboxPrice, {
+        addComma: true,
+    });
     // 수정 버튼 클릭 핸들러
     const handleClickModify = () => {
         setEditable(true);
@@ -307,7 +288,9 @@ export const CarForm: FC<Props> = ({
         const createCarDto = new CreateCarDTO(payload);
 
         if (createCarDto.requiredValidate()) {
-            createCar(createCarDto.getPayload());
+            createCar(createCarDto.getPayload(), () => {
+                alert('등록되었습니다.');
+            });
         }
     };
 
@@ -318,64 +301,27 @@ export const CarForm: FC<Props> = ({
 
         if (updateLongDto.requiredValidate()) {
             updateCar(updateLongDto.getPayload(), () => {
-                router.replace(location.href);
+                alert('수정되었습니다.');
+                location.reload();
             });
         }
     };
 
     const createPayload = () => {
         const payload: any = {
+            payment,
+            info_custom: infoCusts,
+            info_product: infoProducts,
             remove: {},
         };
-
-        if (idx !== -1) {
-            payload['idx'] = idx;
-        }
-
-        if (wcode.value) {
-            payload.wcode = +wcode.value.value;
-        }
-
-        if (selectedProduct) {
-            payload['p_code'] = selectedProduct.p_code;
-            payload['title'] = selectedProduct.title;
-            payload['spec'] = selectedProduct.spec;
-            // payload['subcategory'] = selectedProduct.subcategory;
-            payload['cal_spec'] = selectedProduct.cal_spec;
-        }
-
-        if (insu.value) {
-            payload['insu'] = insu.value.value;
-        }
-
-        if (rate.value) {
-            payload['rate'] = rate.value.value;
-        }
-
-        if (cycle.value) {
-            payload['cycle'] = cycle.value.value;
-        }
-
-        if (loadedContract) {
-            payload['c_idx'] = loadedContract.idx;
-            payload['c_name'] = loadedContract.name;
-        }
-
-        if (carfamily.value) {
-            payload['carfamily'] = carfamily.value.value;
-        }
-
-        if (carage.value) {
-            payload['carage'] = carage.value.value;
-        }
-
-        if (pays.length > 0) {
-            payload['pays'] = pays;
-        }
 
         if (mode === 'create') {
             payload['userid'] = manager.value ? manager.value.value : null;
         } else if (mode === 'update') {
+            if (idx !== -1) {
+                payload['idx'] = idx;
+            }
+
             if (newUserHistory) {
                 payload['userid'] = newUserHistory.userid;
             } else {
@@ -385,6 +331,99 @@ export const CarForm: FC<Props> = ({
             if (removedPays.length > 0) {
                 payload['remove']['pays'] = removedPays.map((v) => v.idx);
             }
+        }
+
+        if (wcode.value) {
+            payload.wcode = +wcode.value.value;
+        }
+
+        // 계약번호 관련
+        if (!isEmpty(cnum.value)) {
+            payload['cnum'] = cnum.value;
+        }
+        // 상품명 관련
+        if (selectedProduct) {
+            payload['p_code'] = selectedProduct.p_code;
+            payload['title'] = selectedProduct.title;
+            payload['spec'] = selectedProduct.spec;
+            // payload['subcategory'] = selectedProduct.subcategory;
+            payload['cal_spec'] = selectedProduct.cal_spec;
+        }
+        // 계약자 관련
+        if (loadedContract) {
+            payload['c_idx'] = loadedContract.idx;
+            payload['c_name'] = loadedContract.name;
+        }
+        // 인수구분 관련
+        if (insu.value) {
+            payload['insu'] = insu.value.value;
+        }
+        // 등급 관련
+        if (rate.value) {
+            payload['rate'] = rate.value.value;
+        }
+        // 정산구분 관련
+        if (cal_type.value) {
+            payload['cal_type'] = cal_type.value.value === 'Y' ? true : false;
+        }
+        // 청약설계 관련
+        if (sul_dist.value) {
+            payload['sul_dist'] = sul_dist.value.value;
+        }
+        // 운전자 범위 관련
+        if (carfamily.value) {
+            payload['carfamily'] = carfamily.value.value;
+        }
+        // 최저운전자 연령 관련
+        if (carage.value) {
+            payload['carage'] = carage.value.value;
+        }
+        // 차량번호 관련
+        if (!isEmpty(carnum.value)) {
+            payload['carnum'] = carnum.value;
+        }
+        // 보험시기 관련
+        if (boDatefrom.value) {
+            payload['bo_datefrom'] = dayjs(boDatefrom.value).format(
+                'YYYY-MM-DD',
+            );
+        }
+        // 납입방법 관련
+        if (cycle.value) {
+            payload['cycle'] = cycle.value.value;
+        }
+        // 보험만기 관련
+        if (boDateto.value) {
+            payload['bo_dateto'] = dayjs(boDateto.value).format('YYYY-MM-DD');
+        }
+        // 계약상태 관련
+        if (status.value) {
+            payload['status'] = status.value.value;
+        }
+        // 보험기간구분 관련
+        if (boDesc.value) {
+            payload['bo_desc'] = boDesc.value.value;
+        }
+        // 전보험사 관련
+        if (preWcode.value) {
+            payload['pre_wcode'] = preWcode.value.value;
+        }
+        // 전계약번호 관련
+        if (preCnum.value) {
+            payload['pre_cnum'] = preCnum.value;
+        }
+        // 블랙박스 관련
+        if (blackboxDate.value) {
+            payload['blackbox_date'] = dayjs(blackboxDate.value).format(
+                'YYYY-MM-DD',
+            );
+        }
+        if (blackboxPrice.value) {
+            payload['blackbox_price'] = +blackboxPrice.value.replace(/,/g, '');
+        }
+        // 납입실적 관련
+        if (pays.length > 0) {
+            payload['pays'] = pays;
         }
 
         return payload;
@@ -471,10 +510,6 @@ export const CarForm: FC<Props> = ({
                                         <SearchProductInput
                                             editable={editable}
                                             wcode={wcode.value?.value}
-                                            defaultTitle={defaultTitle}
-                                            defaultSpec={defaultSpec}
-                                            defaultSubcategory={null}
-                                            defaultCalSpec={null}
                                             spe="car"
                                         />
                                     </div>
@@ -491,7 +526,7 @@ export const CarForm: FC<Props> = ({
                                         <FloatInput
                                             label="납입보험료"
                                             readOnly
-                                            {...sumpay}
+                                            value={payment.toLocaleString()}
                                         />
                                     </div>
                                 </div>
@@ -567,6 +602,7 @@ export const CarForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <FloatDatepicker
                                             label="보험시기"
+                                            isRequired
                                             readOnly={!editable}
                                             hooks={boDatefrom}
                                         />
@@ -583,6 +619,7 @@ export const CarForm: FC<Props> = ({
                                     <div className="flex-fill">
                                         <FloatDatepicker
                                             label="보험만기"
+                                            isRequired
                                             readOnly={!editable}
                                             hooks={boDateto}
                                         />
@@ -670,6 +707,8 @@ export const CarForm: FC<Props> = ({
                             tabId="tabCompare"
                             hidden={tab.id !== 'tabCompare'}
                             editable={editable}
+                            bboxDateHooks={blackboxDate}
+                            bboxPriceHooks={blackboxPrice}
                         />
                     </div>
                 </div>
@@ -722,7 +761,8 @@ export const CarForm: FC<Props> = ({
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
             )}
-            <CreateCarPayModal />
+            <SetInfoCustModal />
+            <SetInfoProductModal />
             <EstimateSearchModal />
             {mode === 'update' && <UserHistoryModal type="contract" />}
         </>

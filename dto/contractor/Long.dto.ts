@@ -26,8 +26,6 @@ class LongDTO {
             payment,
             c_idx,
             // p_name,
-            pays,
-            baeseos,
         } = this.payload;
 
         if (isEmpty(userid)) {

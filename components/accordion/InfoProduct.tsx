@@ -1,7 +1,7 @@
 import type { FC, ChangeEvent, MouseEvent } from 'react';
 import type { CoreEditableComponent } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import type { KeyValue } from '@models/keyValue';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +22,7 @@ import {
     deleteInfoProduct,
     selectInfoProduct,
     updateInfoProduct,
-} from '@actions/contract/long/set-info-product.action';
+} from '@actions/contract/common/set-info-product.action';
 import { showSetInfoProductModal } from '@actions/modal/set-info-product.action';
 
 interface Props extends CoreEditableComponent {}
@@ -30,8 +30,8 @@ interface Props extends CoreEditableComponent {}
 export const InfoProductAccordion: FC<Props> = ({ editable }) => {
     const dispatch = useDispatch();
 
-    const { infoProducts } = useSelector<AppState, LongState>(
-        (state) => state.long,
+    const { infoProducts } = useSelector<AppState, ContractState>(
+        (state) => state.contract,
     );
 
     const chunkedArray = useMemo(

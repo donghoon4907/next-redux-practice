@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useInput } from '@hooks/use-input';
@@ -11,7 +11,7 @@ import {
     createInfoProduct,
     selectInfoProduct,
     updateInfoProduct,
-} from '@actions/contract/long/set-info-product.action';
+} from '@actions/contract/common/set-info-product.action';
 import { hideSetInfoProductModal } from '@actions/modal/set-info-product.action';
 
 interface Props {}
@@ -21,8 +21,8 @@ export const SetInfoProductModal: FC<Props> = () => {
 
     const { infoProducts, selectedInfoProduct } = useSelector<
         AppState,
-        LongState
-    >((state) => state.long);
+        ContractState
+    >((state) => state.contract);
 
     const { isShowSetInfoProductModal } = useSelector<AppState, ModalState>(
         (state) => state.modal,

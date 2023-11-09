@@ -12,12 +12,10 @@ function* createCarSaga({ payload }: CreateCarRequestAction) {
 
     const { data } = yield call(carsService.beforeCreateCar, rest);
 
-    const { message } = data;
+    const { Message } = data;
 
-    if (message === 'Success') {
-        alert('등록되었습니다.');
-    } else {
-        alert(message);
+    if (!data.data) {
+        alert(Message);
     }
 
     yield put(createCarSuccess());

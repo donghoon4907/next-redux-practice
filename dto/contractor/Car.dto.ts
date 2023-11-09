@@ -19,20 +19,20 @@ class CarDTO {
             wcode,
             cnum,
             p_code,
-            contdate,
+            c_idx,
             bo_datefrom,
             bo_dateto,
             payment,
             // p_persons,
         } = this.payload;
 
-        if (!userid) {
+        if (isEmpty(userid)) {
             alert('담당자를 선택해주세요.');
 
             return false;
         }
 
-        if (wcode === -1) {
+        if (isEmpty(wcode)) {
             alert('보험사를 선택해주세요.');
 
             return false;
@@ -50,26 +50,20 @@ class CarDTO {
             return false;
         }
 
-        if (isEmpty(contdate)) {
-            alert('계약일자를 입력해주세요.');
+        if (isEmpty(c_idx)) {
+            alert('계약자를 설정해주세요.');
 
             return false;
         }
 
         if (isEmpty(bo_datefrom)) {
-            alert('보장시기를 입력해주세요.');
+            alert('보험시기를 입력해주세요.');
 
             return false;
         }
 
         if (isEmpty(bo_dateto)) {
             alert('보장만기를 입력해주세요.');
-
-            return false;
-        }
-
-        if (payment === -1) {
-            alert('보험료를 입력해주세요.');
 
             return false;
         }

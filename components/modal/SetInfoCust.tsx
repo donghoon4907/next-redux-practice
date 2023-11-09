@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useInput } from '@hooks/use-input';
@@ -10,7 +10,7 @@ import {
     createInfoCust,
     selectInfoCust,
     updateInfoCust,
-} from '@actions/contract/long/set-info-cust.action';
+} from '@actions/contract/common/set-info-cust.action';
 import { generateIndex } from '@utils/generate';
 import { hideSetInfoCustModal } from '@actions/modal/set-info-cust.action';
 
@@ -19,13 +19,14 @@ interface Props {}
 export const SetInfoCustModal: FC<Props> = () => {
     const dispatch = useDispatch();
 
-    const { infoCusts, selectedInfoCust } = useSelector<AppState, LongState>(
-        (state) => state.long,
-    );
-
     const { isShowSetInfoCustModal } = useSelector<AppState, ModalState>(
         (state) => state.modal,
     );
+
+    const { infoCusts, selectedInfoCust } = useSelector<
+        AppState,
+        ContractState
+    >((state) => state.contract);
 
     const [key, setKey] = useInput('');
 

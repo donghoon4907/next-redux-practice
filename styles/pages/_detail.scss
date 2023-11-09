@@ -245,4 +245,10 @@
         align-items: center;
         gap: $wr-gutter-size;
     }
+
+    &__total {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 18px;
+        font-weight: 500;
+    }
 }

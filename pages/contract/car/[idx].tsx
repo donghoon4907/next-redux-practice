@@ -73,13 +73,10 @@ const Car: NextPage<CarState> = ({ car }) => {
                     defaultPreComp={defaultPreComp}
                     defaultCnum={car.cnum}
                     defaultPreCnum={car.pre_cnum}
-                    defaultTitle={car.title}
-                    defaultContdate={car.contdate}
                     defaultBodatefrom={car.bo_datefrom}
                     defaultBodateto={car.bo_dateto}
                     defaultBodesc={defaultBodesc}
                     defaultStatus={defaultStatus}
-                    defaultSpec={car.spec}
                     defaultIsConfirm={car.confirm ? 'Y' : 'N'}
                     defaultInsu={defaultInsu}
                     defaultRate={defaultRate}

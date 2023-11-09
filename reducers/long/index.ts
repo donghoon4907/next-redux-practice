@@ -1,5 +1,4 @@
 import type { Reducer } from 'redux';
-import type { KeyValue } from '@models/keyValue';
 import type { GetLongsSuccessPayload } from '@actions/contract/long/get-longs.action';
 import type { GetLongSilsSuccessPayload } from '@actions/contract/long/get-long-sils.action';
 import type { GetLongBuhwalsSuccessPayload } from '@actions/contract/long/get-long-buhwals.action';
@@ -13,8 +12,6 @@ import {
     GetLongSilhyosSuccessPayload,
 } from '@actions/contract/long/get-long-silhyos.action';
 import { GetLongBuhwalsActionTypes } from '@actions/contract/long/get-long-buhwals.action';
-import { InfoCustActionTypes } from '@actions/contract/long/set-info-cust.action';
-import { InfoProductActionTypes } from '@actions/contract/long/set-info-product.action';
 
 export interface LongState {
     /**
@@ -41,22 +38,6 @@ export interface LongState {
      * 장기테이블 필드 목록
      */
     fields: Array<any>;
-    /**
-     * 관리정보 목록
-     */
-    infoCusts: KeyValue[];
-    /**
-     * 선택한 관리정보
-     */
-    selectedInfoCust: KeyValue | null;
-    /**
-     * 기타계약정보 목록
-     */
-    infoProducts: KeyValue[];
-    /**
-     * 선택한 기타계약정보
-     */
-    selectedInfoProduct: KeyValue | null;
 }
 
 const initialState: LongState = {
@@ -86,10 +67,6 @@ const initialState: LongState = {
     },
     long: null,
     fields: [],
-    infoCusts: [],
-    selectedInfoCust: null,
-    infoProducts: [],
-    selectedInfoProduct: null,
 };
 
 export const longReducer: Reducer<LongState, any> = (
@@ -128,84 +105,7 @@ export const longReducer: Reducer<LongState, any> = (
 
                 break;
             }
-            case InfoCustActionTypes.CREATE: {
-                draft.infoCusts = draft.infoCusts.concat(action.payload);
-                break;
-            }
-            case InfoCustActionTypes.SELECT: {
-                draft.selectedInfoCust = action.payload;
-                break;
-            }
-            case InfoCustActionTypes.UPDATE: {
-                const { index, ...rest } = action.payload;
 
-                for (let i = 0; i < draft.infoCusts.length; i++) {
-                    if (draft.infoCusts[i].index === index) {
-                        draft.infoCusts[i] = {
-                            ...draft.infoCusts[i],
-                            ...rest,
-                        };
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-            case InfoCustActionTypes.DELETE: {
-                const findIndex = draft.infoCusts.findIndex(
-                    (v) => v.index === action.payload.index,
-                );
-
-                if (findIndex !== -1) {
-                    const [deleted] = draft.infoCusts.splice(findIndex, 1);
-
-                    // if (deleted.idx) {
-                    //     draft.removedPays = draft.removedPays.concat(deleted);
-                    // }
-                }
-
-                break;
-            }
-            case InfoProductActionTypes.CREATE: {
-                draft.infoProducts = draft.infoProducts.concat(action.payload);
-                break;
-            }
-            case InfoProductActionTypes.SELECT: {
-                draft.selectedInfoProduct = action.payload;
-                break;
-            }
-            case InfoProductActionTypes.UPDATE: {
-                const { index, ...rest } = action.payload;
-
-                for (let i = 0; i < draft.infoProducts.length; i++) {
-                    if (draft.infoProducts[i].index === index) {
-                        draft.infoProducts[i] = {
-                            ...draft.infoProducts[i],
-                            ...rest,
-                        };
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-            case InfoProductActionTypes.DELETE: {
-                const findIndex = draft.infoProducts.findIndex(
-                    (v) => v.index === action.payload.index,
-                );
-
-                if (findIndex !== -1) {
-                    const [deleted] = draft.infoProducts.splice(findIndex, 1);
-
-                    // if (deleted.idx) {
-                    //     draft.removedPays = draft.removedPays.concat(deleted);
-                    // }
-                }
-
-                break;
-            }
             default:
                 return state;
         }

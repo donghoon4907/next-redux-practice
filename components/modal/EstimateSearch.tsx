@@ -74,7 +74,7 @@ export const EstimateSearchModal: FC<Props> = () => {
                         <tbody>
                             {estimates.rows.length === 0 && (
                                 <tr>
-                                    <td colSpan={6}>상품이 없습니다.</td>
+                                    <td colSpan={6}>비교견적이 없습니다.</td>
                                 </tr>
                             )}
                             {estimates.rows.map((v: any) => (

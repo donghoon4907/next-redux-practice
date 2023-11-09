@@ -3,6 +3,8 @@ import type { AppState } from '@reducers/index';
 import type { CarState } from '@reducers/car';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { CoreEditableComponent } from '@interfaces/core';
+import type { UseDatepickerOutput } from '@hooks/use-datepicker';
+import type { UseInputOutput } from '@hooks/use-input';
 import { useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyCheckbox } from '@components/checkbox';
@@ -10,13 +12,18 @@ import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { MyUnit } from '@components/Unit';
 
-interface Props extends MyTabpanelProps, CoreEditableComponent {}
+interface Props extends MyTabpanelProps, CoreEditableComponent {
+    bboxDateHooks: UseDatepickerOutput;
+    bboxPriceHooks: UseInputOutput;
+}
 
 export const Compare2Tabpanel: FC<Props> = ({
     id,
     tabId,
     hidden,
     editable,
+    bboxDateHooks,
+    bboxPriceHooks,
 }) => {
     const { estimate } = useSelector<AppState, CarState>((state) => state.car);
 
@@ -156,80 +163,30 @@ export const Compare2Tabpanel: FC<Props> = ({
                             </div>
                             <div className="flex-fill"></div>
                         </div>
-                        <div className="row wr-mt wr-pb wr-border-b">
-                            <div className="flex-fill">
-                                <FloatDatepicker label="구입시기" readOnly />
-                            </div>
-                            <div className="flex-fill">
-                                <FloatInput
-                                    label="구입가"
-                                    readOnly
-                                    after={
-                                        <MyUnit placement="last">만원</MyUnit>
-                                    }
-                                />
-                            </div>
-                        </div>
-                        {/* <div className="row wr-mt">
-                            <div className="flex-fill">
-                                <FloatInput
-                                    label="추가부속 (합계금액: 3,200 만원)"
-                                    readOnly
-                                />
-                            </div>
-                        </div> */}
-                        {/* <div className="wr-pages-detail__block wr-mt wr-mb">
-                            <div className="wr-pages-detail__content p-15">
-                                <div>
-                                    <FloatInput
-                                        label="부품명 1"
-                                        readOnly
-                                        after={
-                                            <>
-                                                <MyUnit placement="middle">
-                                                    3,200
-                                                </MyUnit>
-                                                <MyUnit placement="last">
-                                                    만원
-                                                </MyUnit>
-                                            </>
-                                        }
+                        {estimate.bbox === 'Y' && (
+                            <div className="row wr-mt wr-pb wr-border-b">
+                                <div className="flex-fill">
+                                    <FloatDatepicker
+                                        label="구입시기"
+                                        readOnly={!editable}
+                                        hooks={bboxDateHooks}
                                     />
                                 </div>
-                                <div className="wr-mt">
+                                <div className="flex-fill">
                                     <FloatInput
-                                        label="부품명 2"
-                                        readOnly
+                                        label="구입가"
+                                        readOnly={!editable}
                                         after={
-                                            <>
-                                                <MyUnit placement="middle">
-                                                    3,200
-                                                </MyUnit>
-                                                <MyUnit placement="last">
-                                                    만원
-                                                </MyUnit>
-                                            </>
+                                            <MyUnit placement="last">
+                                                만원
+                                            </MyUnit>
                                         }
-                                    />
-                                </div>
-                                <div className="wr-mt">
-                                    <FloatInput
-                                        label="부품명 3"
-                                        readOnly
-                                        after={
-                                            <>
-                                                <MyUnit placement="middle">
-                                                    3,200
-                                                </MyUnit>
-                                                <MyUnit placement="last">
-                                                    만원
-                                                </MyUnit>
-                                            </>
-                                        }
+                                        {...bboxPriceHooks}
                                     />
                                 </div>
                             </div>
-                        </div> */}
+                        )}
+
                         <div className="row wr-mt">
                             <div className="flex-fill">
                                 <FloatInput
@@ -261,10 +218,10 @@ export const Compare2Tabpanel: FC<Props> = ({
                                 />
                             </div>
                             <div className="flex-fill wr-border-b">
-                                <div className="wr-pages-detail__subtitle">
+                                <div className="wr-pages-detail__title wr-pt">
                                     <div>총차량가액</div>
                                     <div>
-                                        <span>
+                                        <span className="wr-pages-detail__total">
                                             {estimate.car_tot.toLocaleString()}
                                         </span>
                                         <span className="wr-pl">만원</span>

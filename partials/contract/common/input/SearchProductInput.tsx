@@ -8,30 +8,17 @@ import { showProductSearchModal } from '@actions/modal/product-search.action';
 import { useApi } from '@hooks/use-api';
 import { getProductsRequest } from '@actions/hr/get-products';
 import { FloatInput } from '@components/input/Float';
-import { ProductBadgeTemplate } from '../../long/template/ProductBadge';
 import { InputSearchButton } from '@components/button/InputSearch';
-import { MyUnit } from '@components/Unit';
+
+import { ProductBadgeTemplate } from '../../long/template/ProductBadge';
 
 interface Props extends CoreEditableComponent {
     // 보험사 코드
     wcode?: string;
-    // 상품명
-    defaultTitle: string;
-    defaultSpec: string;
-    defaultSubcategory: string | null;
-    defaultCalSpec: string | null;
     spe: Spe;
 }
 
-export const SearchProductInput: FC<Props> = ({
-    editable,
-    wcode,
-    defaultTitle,
-    defaultSpec,
-    defaultSubcategory,
-    defaultCalSpec,
-    spe,
-}) => {
+export const SearchProductInput: FC<Props> = ({ editable, wcode, spe }) => {
     const dispatch = useDispatch();
 
     const { selectedProduct } = useSelector<AppState, ContractState>(
@@ -39,13 +26,6 @@ export const SearchProductInput: FC<Props> = ({
     );
 
     const getProducts = useApi(getProductsRequest);
-
-    const title = selectedProduct ? selectedProduct.title : defaultTitle;
-    const spec = selectedProduct ? selectedProduct.spec : defaultSpec;
-    const subcategory = selectedProduct
-        ? selectedProduct.subcategory
-        : defaultSubcategory;
-    const calSpec = selectedProduct ? selectedProduct.cal_spec : defaultCalSpec;
 
     const handleSearch = () => {
         if (wcode) {
@@ -69,7 +49,7 @@ export const SearchProductInput: FC<Props> = ({
             <FloatInput
                 label="상품명"
                 readOnly
-                defaultValue={title}
+                value={selectedProduct?.title ?? ''}
                 isRequired
                 // before={
                 //     (spec || subcategory) && (
@@ -92,9 +72,9 @@ export const SearchProductInput: FC<Props> = ({
             />
             <div style={{ marginTop: 10 }}>
                 <ProductBadgeTemplate
-                    spec={spec}
-                    subcategory={subcategory}
-                    calSpec={calSpec}
+                    spec={selectedProduct?.spec ?? ''}
+                    subcategory={selectedProduct?.subcategory ?? ''}
+                    calSpec={selectedProduct?.cal_spec ?? ''}
                 />
             </div>
         </>

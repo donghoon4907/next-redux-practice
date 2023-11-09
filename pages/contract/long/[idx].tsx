@@ -20,8 +20,8 @@ import { updateProduct } from '@actions/contract/common/set-product.action';
 import { createContact } from '@actions/common/set-contact.action';
 import { MyLayout } from '@components/Layout';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
-import { createInfoCust } from '@actions/contract/long/set-info-cust.action';
-import { createInfoProduct } from '@actions/contract/long/set-info-product.action';
+import { createInfoCust } from '@actions/contract/common/set-info-cust.action';
+import { createInfoProduct } from '@actions/contract/common/set-info-product.action';
 import { createBaeseo } from '@actions/contract/common/set-baeseo.action';
 
 const Long: NextPage<LongState> = ({ long }) => {
@@ -95,7 +95,6 @@ const Long: NextPage<LongState> = ({ long }) => {
                     defaultUserid={long.userid}
                     defaultComp={defaultComp}
                     defaultCnum={long.cnum}
-                    defaultTitle={long.title}
                     defaultContdate={long.contdate}
                     defaultBodateto={long.bo_dateto}
                     // defaultBoDu={long.bo_du}
@@ -107,10 +106,7 @@ const Long: NextPage<LongState> = ({ long }) => {
                     defaultStatusDate={long.status_date}
                     defaultLastMonth={long.lastmonth}
                     defaultLastWhoi={long.lastwhoi}
-                    defaultSpec={long.spec}
-                    defaultSubCategory={long.subcategory}
                     defaultIsConfirm={long.confirm}
-                    defaultCalSpec={long.cal_spec}
                     defaultPayment={long.payment.toString()}
                     defaultTp={long.tp ? long.tp.toString() : ''}
                     // defaultTp1={long.tp1 ? long.tp1.toString() : ''}

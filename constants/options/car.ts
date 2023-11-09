@@ -1901,11 +1901,11 @@ const CYCLE: CoreSelectOption[] = [
 ];
 // 입금구분
 const PAY_DIST: CoreSelectOption[] = [
-    {
-        label: '신규',
-        value: '신규',
-        isFixed: false,
-    },
+    // {
+    //     label: '신규',
+    //     value: '신규',
+    //     isFixed: false,
+    // },
     {
         label: '해지',
         value: '해지',

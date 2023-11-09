@@ -3,6 +3,7 @@ import type { Product } from '@models/product';
 import type { Insured } from '@models/insured';
 import type { Pay } from '@models/pay';
 import type { Baeseo } from '@models/baeseo';
+import type { KeyValue } from '@models/keyValue';
 import produce from 'immer';
 import { ProductActionTypes } from '@actions/contract/common/set-product.action';
 import {
@@ -12,6 +13,8 @@ import {
 import { InsuredActionTypes } from '@actions/contract/common/set-insured.action';
 import { PayActionTypes } from '@actions/contract/common/set-pay.action';
 import { BaeseoActionTypes } from '@actions/contract/common/set-baeseo.action';
+import { InfoProductActionTypes } from '@actions/contract/common/set-info-product.action';
+import { InfoCustActionTypes } from '@actions/contract/common/set-info-cust.action';
 
 export interface ContractState {
     /**
@@ -50,6 +53,22 @@ export interface ContractState {
      * 삭제한 비유지/부활 목록
      */
     removedBaeseos: Baeseo[];
+    /**
+     * 관리정보 목록
+     */
+    infoCusts: KeyValue[];
+    /**
+     * 선택한 관리정보
+     */
+    selectedInfoCust: KeyValue | null;
+    /**
+     * 기타계약정보 목록
+     */
+    infoProducts: KeyValue[];
+    /**
+     * 선택한 기타계약정보
+     */
+    selectedInfoProduct: KeyValue | null;
 }
 
 const initialState: ContractState = {
@@ -62,6 +81,10 @@ const initialState: ContractState = {
     removedPays: [],
     baeseos: [],
     removedBaeseos: [],
+    infoCusts: [],
+    selectedInfoCust: null,
+    infoProducts: [],
+    selectedInfoProduct: null,
 };
 
 export const contractReducer: Reducer<ContractState, any> = (
@@ -195,6 +218,84 @@ export const contractReducer: Reducer<ContractState, any> = (
                         draft.removedBaeseos =
                             draft.removedBaeseos.concat(deleted);
                     }
+                }
+
+                break;
+            }
+            case InfoCustActionTypes.CREATE: {
+                draft.infoCusts = draft.infoCusts.concat(action.payload);
+                break;
+            }
+            case InfoCustActionTypes.SELECT: {
+                draft.selectedInfoCust = action.payload;
+                break;
+            }
+            case InfoCustActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.infoCusts.length; i++) {
+                    if (draft.infoCusts[i].index === index) {
+                        draft.infoCusts[i] = {
+                            ...draft.infoCusts[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case InfoCustActionTypes.DELETE: {
+                const findIndex = draft.infoCusts.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.infoCusts.splice(findIndex, 1);
+
+                    // if (deleted.idx) {
+                    //     draft.removedPays = draft.removedPays.concat(deleted);
+                    // }
+                }
+
+                break;
+            }
+            case InfoProductActionTypes.CREATE: {
+                draft.infoProducts = draft.infoProducts.concat(action.payload);
+                break;
+            }
+            case InfoProductActionTypes.SELECT: {
+                draft.selectedInfoProduct = action.payload;
+                break;
+            }
+            case InfoProductActionTypes.UPDATE: {
+                const { index, ...rest } = action.payload;
+
+                for (let i = 0; i < draft.infoProducts.length; i++) {
+                    if (draft.infoProducts[i].index === index) {
+                        draft.infoProducts[i] = {
+                            ...draft.infoProducts[i],
+                            ...rest,
+                        };
+
+                        break;
+                    }
+                }
+
+                break;
+            }
+            case InfoProductActionTypes.DELETE: {
+                const findIndex = draft.infoProducts.findIndex(
+                    (v) => v.index === action.payload.index,
+                );
+
+                if (findIndex !== -1) {
+                    const [deleted] = draft.infoProducts.splice(findIndex, 1);
+
+                    // if (deleted.idx) {
+                    //     draft.removedPays = draft.removedPays.concat(deleted);
+                    // }
                 }
 
                 break;

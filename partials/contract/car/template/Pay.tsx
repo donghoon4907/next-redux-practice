@@ -161,7 +161,7 @@ export const CarPayTemplate: FC<Props> = ({ editable, ...rest }) => {
                 )}
             </td>
             <td>
-                {editable ? (
+                {editable && rest.dist !== '신규' ? (
                     <MySelect placeholder="선택" {...dist} />
                 ) : (
                     rest.dist

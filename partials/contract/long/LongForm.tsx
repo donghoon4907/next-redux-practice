@@ -5,8 +5,6 @@ import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
-import type { LongState } from '@reducers/long';
-import { useRouter } from 'next/router';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
@@ -82,10 +80,6 @@ interface Props {
      */
     defaultCnum?: string;
     /**
-     * 상품명 기본 값
-     */
-    defaultTitle?: string;
-    /**
      * 계약일자 기본 값
      */
     defaultContdate?: string;
@@ -123,21 +117,9 @@ interface Props {
      */
     defaultLastMonth?: string;
     /**
-     * 보종 기본 값
-     */
-    defaultSpec?: string;
-    /**
-     * 상품보종 기본 값
-     */
-    defaultSubCategory?: string;
-    /**
      * 검증 여부 기본 값
      */
     defaultIsConfirm?: string;
-    /**
-     * 정산보종 기본 값
-     */
-    defaultCalSpec?: string;
     /**
      * 실적보험료 기본 값
      */
@@ -192,7 +174,6 @@ export const LongForm: FC<Props> = ({
     defaultOrga = null,
     defaultComp = null,
     defaultCnum = '',
-    defaultTitle = '',
     defaultContdate = null,
     defaultBodateto = '',
     defaultPayCycle = longConstants.payCycle[0],
@@ -202,10 +183,7 @@ export const LongForm: FC<Props> = ({
     defaultStatusDate = null,
     defaultLastWhoi = '0',
     defaultLastMonth = '',
-    defaultSpec = '',
-    defaultSubCategory = '',
     defaultIsConfirm = 'N',
-    defaultCalSpec = '',
     defaultPayment = '',
     // defaultPayMonth = '',
     defaultTp = '',
@@ -225,18 +203,12 @@ export const LongForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-long-detail';
 
-    const router = useRouter();
-
     const { newUserHistory } = useSelector<AppState, CommonState>(
         (state) => state.common,
     );
 
     const { longUseCompanies, orgas, users } = useSelector<AppState, HrState>(
         (state) => state.hr,
-    );
-
-    const { infoCusts, infoProducts } = useSelector<AppState, LongState>(
-        (state) => state.long,
     );
 
     const {
@@ -247,6 +219,8 @@ export const LongForm: FC<Props> = ({
         baeseos,
         removedPays,
         removedBaeseos,
+        infoCusts,
+        infoProducts,
     } = useSelector<AppState, ContractState>((state) => state.contract);
 
     const { isShowContractorSearchModal, isShowInsuredSearchModal } =
@@ -483,16 +457,20 @@ export const LongForm: FC<Props> = ({
     const createPayload = () => {
         // 필수값
         const payload: any = {
+            info_custom: infoCusts,
+            info_product: infoProducts,
             remove: {},
         };
-        // 수정 시 index 추가
-        if (idx !== -1) {
-            payload['idx'] = idx;
-        }
+
         // 담당자 관련
         if (mode === 'create') {
             payload['userid'] = manager.value ? manager.value.value : null;
         } else if (mode === 'update') {
+            // 수정 시 index 추가
+            if (idx !== -1) {
+                payload['idx'] = idx;
+            }
+
             if (newUserHistory) {
                 payload['userid'] = newUserHistory.userid;
             } else {
@@ -629,10 +607,6 @@ export const LongForm: FC<Props> = ({
         if (subs_submission.value) {
             payload['subs_submission'] = subs_submission.value.value;
         }
-        // 관리정보
-        payload['info_custom'] = infoCusts;
-        // 기타계약정보
-        payload['info_product'] = infoProducts;
 
         // 납입실적
         if (pays.length > 0) {
@@ -753,12 +727,6 @@ export const LongForm: FC<Props> = ({
                                         <SearchProductInput
                                             editable={editable}
                                             wcode={wcode.value?.value}
-                                            defaultTitle={defaultTitle}
-                                            defaultSpec={defaultSpec}
-                                            defaultSubcategory={
-                                                defaultSubCategory
-                                            }
-                                            defaultCalSpec={defaultCalSpec}
                                             spe="long"
                                         />
                                     </div>
@@ -1194,12 +1162,6 @@ export const LongForm: FC<Props> = ({
             )}
             <SetInfoCustModal />
             <SetInfoProductModal />
-            {/* <CreateLongPayModal
-                contdate={contdate.value!}
-                payment={payment.value}
-            /> */}
-            {/* <CreateEndorsementModal /> */}
-            {/* <CreateEtcModal /> */}
             {mode === 'update' && <UserHistoryModal type="contract" />}
         </>
     );

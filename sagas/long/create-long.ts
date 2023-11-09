@@ -14,7 +14,7 @@ function* createLongSaga({ payload }: CreateLongRequestAction) {
 
     const { Message } = data;
 
-    if (!data.data && data.data.idx) {
+    if (!data.data) {
         alert(Message);
     }
 

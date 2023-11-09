@@ -1,7 +1,7 @@
 import type { FC, ChangeEvent, MouseEvent } from 'react';
 import type { CoreEditableComponent } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
-import type { LongState } from '@reducers/long';
+import type { ContractState } from '@reducers/contract';
 import type { KeyValue } from '@models/keyValue';
 import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,15 +23,15 @@ import {
     deleteInfoCust,
     selectInfoCust,
     updateInfoCust,
-} from '@actions/contract/long/set-info-cust.action';
+} from '@actions/contract/common/set-info-cust.action';
 
 interface Props extends CoreEditableComponent {}
 
 export const InfoCustAccordion: FC<Props> = ({ editable }) => {
     const dispatch = useDispatch();
 
-    const { infoCusts } = useSelector<AppState, LongState>(
-        (state) => state.long,
+    const { infoCusts } = useSelector<AppState, ContractState>(
+        (state) => state.contract,
     );
 
     const chunkedArray = useMemo(() => chunkArray(infoCusts, 2), [infoCusts]);
