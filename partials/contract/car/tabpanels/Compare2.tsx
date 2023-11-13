@@ -537,7 +537,7 @@ export const Compare2Tabpanel: FC<Props> = ({
                     </div>
                 </div>
             ) : (
-                <p>가져온 비교견적 정보가 없습니다.</p>
+                <p>연결된 비교견적 정보가 없습니다.</p>
             )}
         </MyTabpanel>
     );

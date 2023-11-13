@@ -22,6 +22,7 @@ import { CarForm } from '@partials/contract/car/CarForm';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 import { createInfoCust } from '@actions/contract/common/set-info-cust.action';
 import { createInfoProduct } from '@actions/contract/common/set-info-product.action';
+import { getEstimateRequest } from '@actions/contract/car/get-estimate.action';
 
 const Car: NextPage<CarState> = ({ car }) => {
     const { longUseCompanies } = useSelector<AppState, HrState>(
@@ -35,7 +36,7 @@ const Car: NextPage<CarState> = ({ car }) => {
 
     const defaultComp = findSelectOption(car.wcode, longUseCompanies);
 
-    const defaultPreComp = findSelectOption(car.pre_wcode, longUseCompanies);
+    // const defaultPreComp = findSelectOption(car.pre_wcode, longUseCompanies);
 
     const defaultStatus = findSelectOption(car.status, longConstants.status);
 
@@ -85,7 +86,7 @@ const Car: NextPage<CarState> = ({ car }) => {
                     defaultOrganize={car.organize}
                     defaultUserid={car.userid}
                     defaultComp={defaultComp}
-                    defaultPreComp={defaultPreComp}
+                    defaultPreComp={car.pre_company}
                     defaultCnum={car.cnum}
                     defaultPreCnum={car.pre_cnum}
                     defaultBodatefrom={car.bo_datefrom}
@@ -101,6 +102,8 @@ const Car: NextPage<CarState> = ({ car }) => {
                     defaultCycle={defaultCycle}
                     defaultCarfamily={defaultCarfamily}
                     defaultCarage={defaultCarage}
+                    defaultBboxDate={car.blackbox_date}
+                    defaultBboxPrice={car.blackbox_price}
                 />
             </MyLayout>
         </>
@@ -127,6 +130,10 @@ export const getServerSideProps = wrapper.getServerSideProps(
             const car = data.data;
 
             output.props.car = car;
+
+            if (car.est_idx) {
+                dispatch(getEstimateRequest({ idx: car.est_idx }));
+            }
 
             dispatch(
                 updateProduct({
@@ -238,18 +245,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     );
                 }
             }
-
-            // if (car.contacts) {
-            //     for (let i = 0; i < car.contacts.length; i++) {
-            //         dispatch(
-            //             createContact({
-            //                 ...car.contacts[i],
-            //                 index: i,
-            //                 checked: false,
-            //             }),
-            //         );
-            //     }
-            // }
 
             dispatch(END);
 

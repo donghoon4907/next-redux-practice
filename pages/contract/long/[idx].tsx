@@ -268,18 +268,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 }
             }
 
-            // if (long.contacts) {
-            //     for (let i = 0; i < long.contacts.length; i++) {
-            //         dispatch(
-            //             createContact({
-            //                 ...long.contacts[i],
-            //                 index: i,
-            //                 checked: false,
-            //             }),
-            //         );
-            //     }
-            // }
-
             dispatch(END);
 
             await sagaTask?.toPromise();

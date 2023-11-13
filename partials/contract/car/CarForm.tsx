@@ -4,6 +4,7 @@ import type { HrState } from '@reducers/hr';
 import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
+import type { CarState } from '@reducers/car';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -127,7 +128,7 @@ interface Props {
     /**
      * 전보험사 기본 값
      */
-    defaultPreComp?: CoreSelectOption;
+    defaultPreComp?: string;
     /**
      * 전계약번호 기본 값
      */
@@ -167,7 +168,7 @@ export const CarForm: FC<Props> = ({
     defaultBodateto = '',
     defaultStatus = null,
     defaultBodesc = carConstants.shortDist[0],
-    defaultPreComp = null,
+    defaultPreComp = '',
     defaultPreCnum = '',
     defaultIsConfirm = 'N',
     defaultBboxPrice = '',
@@ -197,6 +198,8 @@ export const CarForm: FC<Props> = ({
     const { isShowContractorSearchModal } = useSelector<AppState, ModalState>(
         (state) => state.modal,
     );
+
+    const { estimate } = useSelector<AppState, CarState>((state) => state.car);
 
     const createCar = useApi(createCarRequest);
 
@@ -244,13 +247,13 @@ export const CarForm: FC<Props> = ({
         defaultBodateto ? new Date(defaultBodateto) : addYears(new Date(), 1),
     );
     // 계약상태
-    const [status] = useSelect(longConstants.status, defaultStatus);
+    const [status] = useSelect(carConstants.status, defaultStatus);
     // 보험기간구분
     const [boDesc] = useSelect(carConstants.shortDist, defaultBodesc);
     // 전보험사
-    const [preWcode] = useSelect(longUseCompanies, defaultPreComp);
+    // const [preWcode] = useSelect(longUseCompanies, defaultPreComp);
     // 전계약번호
-    const [preCnum] = useInput(defaultPreCnum);
+    // const [preCnum] = useInput(defaultPreCnum);
     // 블랙박스 구입시기
     const [blackboxDate] = useDatepicker(
         defaultBboxDate ? new Date(defaultBboxDate) : null,
@@ -274,8 +277,11 @@ export const CarForm: FC<Props> = ({
 
     const handleClickLoadEstimate = () => {
         getEstimates(
-            // { userid: 'W0383', bo_datefrom: '2023-11-12' },
-            { userid: defaultUserid, bo_datefrom: boDatefrom.value },
+            { userid: 'W0383', bo_datefrom: '2023-11-12' },
+            // {
+            //     userid: defaultUserid,
+            //     bo_datefrom: dayjs(boDatefrom.value).format('YYYY-MM-DD'),
+            // },
             () => {
                 dispatch(showEstimateSearchModal());
             },
@@ -405,25 +411,34 @@ export const CarForm: FC<Props> = ({
             payload['bo_desc'] = boDesc.value.value;
         }
         // 전보험사 관련
-        if (preWcode.value) {
-            payload['pre_wcode'] = preWcode.value.value;
-        }
+        // if (preWcode.value) {
+        //     payload['pre_wcode'] = preWcode.value.value;
+        // }
         // 전계약번호 관련
-        if (preCnum.value) {
-            payload['pre_cnum'] = preCnum.value;
-        }
-        // 블랙박스 관련
-        if (blackboxDate.value) {
-            payload['blackbox_date'] = dayjs(blackboxDate.value).format(
-                'YYYY-MM-DD',
-            );
-        }
-        if (blackboxPrice.value) {
-            payload['blackbox_price'] = +blackboxPrice.value.replace(/,/g, '');
-        }
+        // if (preCnum.value) {
+        //     payload['pre_cnum'] = preCnum.value;
+        // }
+
         // 납입실적 관련
         if (pays.length > 0) {
             payload['pays'] = pays;
+        }
+
+        // 비교견적 관련
+        if (estimate) {
+            payload['est_idx'] = estimate.idx;
+            // 블랙박스 관련
+            if (blackboxDate.value) {
+                payload['blackbox_date'] = dayjs(blackboxDate.value).format(
+                    'YYYY-MM-DD',
+                );
+            }
+            if (blackboxPrice.value) {
+                payload['blackbox_price'] = +blackboxPrice.value.replace(
+                    /,/g,
+                    '',
+                );
+            }
         }
 
         return payload;
@@ -643,17 +658,17 @@ export const CarForm: FC<Props> = ({
                                 </div>
                                 <div className="row wr-mt">
                                     <div className="flex-fill">
-                                        <FloatSelect
+                                        <FloatInput
                                             label="전보험사"
-                                            isDisabled={!editable}
-                                            {...preWcode}
+                                            readOnly
+                                            value={defaultPreComp}
                                         />
                                     </div>
                                     <div className="flex-fill">
                                         <FloatInput
                                             label="전계약번호"
-                                            readOnly={!editable}
-                                            {...preCnum}
+                                            readOnly
+                                            value={defaultPreCnum}
                                         />
                                     </div>
                                 </div>
@@ -691,11 +706,11 @@ export const CarForm: FC<Props> = ({
                             hidden={tab.id !== 'tabPays'}
                             editable={editable}
                         />
-                        {mode === 'update' && (
+                        {tab.id === 'tabContact' && (
                             <SingleContactTabpanel
                                 id="tabpanelContact"
                                 tabId="tabContact"
-                                hidden={tab.id !== 'tabContact'}
+                                hidden={false}
                                 spe_idx={idx}
                                 spe="car"
                                 cnum={cnum.value}
@@ -715,13 +730,15 @@ export const CarForm: FC<Props> = ({
             <MyFooter>
                 <div className="wr-footer__between">
                     <div>
-                        <MyButton
-                            type="button"
-                            className="btn-warning btn-sm"
-                            onClick={handleClickLoadEstimate}
-                        >
-                            비교견적 가져오기
-                        </MyButton>
+                        {editable && (
+                            <MyButton
+                                type="button"
+                                className="btn-warning btn-sm"
+                                onClick={handleClickLoadEstimate}
+                            >
+                                비교견적 가져오기
+                            </MyButton>
+                        )}
                     </div>
                     <div className="wr-pages-detail__buttons">
                         {editable && mode === 'update' && (

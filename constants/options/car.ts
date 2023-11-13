@@ -1866,11 +1866,6 @@ const SPEC: CoreSelectOption[] = [
 // 현상태
 const STATUS: CoreSelectOption[] = [
     {
-        label: '전체',
-        value: '',
-        isFixed: false,
-    },
-    {
         label: '정상유지',
         value: '정상유지',
         isFixed: false,
@@ -1880,6 +1875,14 @@ const STATUS: CoreSelectOption[] = [
         value: '계약해지',
         isFixed: false,
     },
+];
+const STATUS2: CoreSelectOption[] = [
+    {
+        label: '전체',
+        value: '',
+        isFixed: false,
+    },
+    ...STATUS,
 ];
 // 납입방법
 const CYCLE: CoreSelectOption[] = [
@@ -1972,6 +1975,7 @@ const rootSelectOptions = {
     year: CAR_YEAR,
     spec: SPEC,
     status: STATUS,
+    status2: STATUS2,
     cycle: CYCLE,
     calType: CAL_TYPE,
     pDist: PAY_DIST,

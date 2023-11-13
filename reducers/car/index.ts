@@ -11,6 +11,7 @@ import { GetCarActionTypes } from '@actions/contract/car/get-car.action';
 import { GetCarcodeActionTypes } from '@actions/contract/car/get-carcode.action';
 import { GetCarsActionTypes } from '@actions/contract/car/get-cars.action';
 import { GetLazyEstimateActionTypes } from '@actions/contract/car/get-lazy-estimate.action';
+import { GetEstimateActionTypes } from '@actions/contract/car/get-estimate.action';
 
 export interface CarState {
     /**
@@ -186,6 +187,7 @@ export const carReducer: Reducer<CarState, any> = (
 
                 break;
             }
+            case GetEstimateActionTypes.SUCCESS:
             case GetLazyEstimateActionTypes.SUCCESS: {
                 draft.estimate = action.payload;
 

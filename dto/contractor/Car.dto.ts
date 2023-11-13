@@ -1,5 +1,6 @@
 import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.action';
 import type { UpdateCarRequestPayload } from '@actions/contract/car/update-car.action';
+import { checkCarnum } from '@utils/validation';
 import { isEmpty } from '@utils/validator/common';
 
 class CarDTO {
@@ -22,8 +23,7 @@ class CarDTO {
             c_idx,
             bo_datefrom,
             bo_dateto,
-            payment,
-            // p_persons,
+            carnum,
         } = this.payload;
 
         if (isEmpty(userid)) {
@@ -66,6 +66,15 @@ class CarDTO {
             alert('보장만기를 입력해주세요.');
 
             return false;
+        }
+
+        if (!isEmpty(carnum)) {
+            // 차량번호 형식 검사
+            if (!checkCarnum(carnum!)) {
+                alert('차량번호를 확인하세요.');
+
+                return false;
+            }
         }
 
         return true;

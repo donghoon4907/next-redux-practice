@@ -8,6 +8,7 @@ import { watchGetCarcode } from './get-carcode';
 import { watchGetCars } from './get-cars';
 import { watchGetEstimates } from './get-estimates';
 import { watchGetLazyEstimate } from './get-lazy-estimate';
+import { watchGetEstimate } from './get-estimate';
 
 export function* carSaga() {
     yield all([
@@ -18,6 +19,7 @@ export function* carSaga() {
         fork(watchCalculateCar),
         fork(watchGetCarcode),
         fork(watchGetEstimates),
+        fork(watchGetEstimate),
         fork(watchGetLazyEstimate),
     ]);
 }

@@ -12,7 +12,7 @@ function* getLazyEstimateSaga({ payload }: GetLazyEstimateRequestAction) {
 
     const { data } = yield call(carsService.beforeGetEstimate, rest);
 
-    yield put(getLazyEstimateSuccess(data));
+    yield put(getLazyEstimateSuccess({ idx: payload.idx, ...data }));
 
     return data;
 }

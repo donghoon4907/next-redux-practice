@@ -1104,11 +1104,11 @@ export const LongForm: FC<Props> = ({
                             payment={+payment.value.replace(/,/g, '')}
                             tp={+tp.value.replace(/,/g, '')}
                         />
-                        {mode === 'update' && (
+                        {tab.id === 'tabContact' && (
                             <SingleContactTabpanel
                                 id="tabpanelContact"
                                 tabId="tabContact"
-                                hidden={tab.id !== 'tabContact'}
+                                hidden={false}
                                 spe_idx={idx}
                                 spe="long"
                                 cnum={cnum.value}

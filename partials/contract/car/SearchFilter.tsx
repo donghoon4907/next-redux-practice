@@ -37,7 +37,7 @@ export const CarSearchFilter: FC<Props> = () => {
     // 검색필터 - 보종
     const [spec, setSpec] = useSelect(carConstants.spec);
     // 검색필터 - 현상태
-    const [status, setStatus] = useSelect(carConstants.status);
+    const [status, setStatus] = useSelect(carConstants.status2);
     // 검색필터 - 납입방법
     const [car_cycle, setCarCycle] = useSelect(carConstants.cycle);
     // 검색필터 - 금소법확인
@@ -67,7 +67,7 @@ export const CarSearchFilter: FC<Props> = () => {
         }
 
         if (status) {
-            setStatus(findSelectOption(status, carConstants.status));
+            setStatus(findSelectOption(status, carConstants.status2));
         }
 
         if (car_cycle) {
