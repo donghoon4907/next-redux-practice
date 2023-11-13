@@ -21,6 +21,8 @@ export function commonMiddleware(saga: any): Saga {
                 alert('세션이 만료되었습니다. 로그인 페이지로 이동합니다.');
 
                 location.href = '/login';
+            } else if (statusCode === 500) {
+                alert('서버 요청 중 에러가 발생했습니다.');
             }
         }
     };

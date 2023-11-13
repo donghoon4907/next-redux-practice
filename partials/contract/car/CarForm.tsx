@@ -18,7 +18,6 @@ import { MyButton } from '@components/button';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import carConstants from '@constants/options/car';
-import longConstants from '@constants/options/long';
 import commonConstants from '@constants/options/common';
 import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
@@ -35,18 +34,19 @@ import { updateCarRequest } from '@actions/contract/car/update-car.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';
-import { SearchContractorInput } from '../common/input/SearchContractorInput';
 import { InfoCustAccordion } from '@components/accordion/InfoCust';
 import { InfoProductAccordion } from '@components/accordion/InfoProduct';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { SingleContactTabpanel } from '@partials/customer/tabpanels/SingleContact';
-import { Compare2Tabpanel } from './tabpanels/Compare2';
 import { getEstimatesRequest } from '@actions/contract/car/get-estimates.action';
 import { showEstimateSearchModal } from '@actions/modal/estimate-search.action';
 import { EstimateSearchModal } from '@components/modal/EstimateSearch';
 import { isEmpty } from '@utils/validator/common';
 import { SetInfoCustModal } from '@components/modal/SetInfoCust';
 import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
+
+import { SearchContractorInput } from '../common/input/SearchContractorInput';
+import { Compare2Tabpanel } from './tabpanels/Compare2';
 
 interface Props {
     /**
@@ -277,11 +277,11 @@ export const CarForm: FC<Props> = ({
 
     const handleClickLoadEstimate = () => {
         getEstimates(
-            { userid: 'W0383', bo_datefrom: '2023-11-12' },
-            // {
-            //     userid: defaultUserid,
-            //     bo_datefrom: dayjs(boDatefrom.value).format('YYYY-MM-DD'),
-            // },
+            // { userid: 'W0383', bo_datefrom: '2023-11-12' },
+            {
+                userid: defaultUserid,
+                bo_datefrom: dayjs(boDatefrom.value).format('YYYY-MM-DD'),
+            },
             () => {
                 dispatch(showEstimateSearchModal());
             },
