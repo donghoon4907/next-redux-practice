@@ -15,6 +15,7 @@ import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';
 import { MyCheckbox } from '@components/checkbox';
 import { isEmpty } from '@utils/validator/common';
+import { isNumberic } from '@utils/validation';
 
 interface Props extends Pay, CoreEditableComponent {}
 
@@ -52,41 +53,50 @@ export const CarPayTemplate: FC<Props> = ({ editable, ...rest }) => {
         },
     );
     // 영수보험료
-    const [pay] = useNumbericInput(rest.pay ? rest.pay.toString() : '', {
-        addComma: true,
-        callbackOnBlur: (next) => {
-            dispatch(
-                updatePay({
-                    index: rest.index,
-                    pay: +next,
-                }),
-            );
+    const [pay] = useNumbericInput(
+        isNumberic(rest.pay) ? rest.pay.toString() : '',
+        {
+            addComma: true,
+            callbackOnBlur: (next) => {
+                dispatch(
+                    updatePay({
+                        index: rest.index,
+                        pay: +next,
+                    }),
+                );
+            },
         },
-    });
+    );
     // 책임
-    const [pay1] = useNumbericInput(rest.pay1 ? rest.pay1.toString() : '', {
-        addComma: true,
-        callbackOnBlur: (next) => {
-            dispatch(
-                updatePay({
-                    index: rest.index,
-                    pay1: +next,
-                }),
-            );
+    const [pay1] = useNumbericInput(
+        isNumberic(rest.pay1) ? rest.pay1!.toString() : '',
+        {
+            addComma: true,
+            callbackOnBlur: (next) => {
+                dispatch(
+                    updatePay({
+                        index: rest.index,
+                        pay1: +next,
+                    }),
+                );
+            },
         },
-    });
+    );
     // 임의보험료
-    const [pay2] = useNumbericInput(rest.pay2 ? rest.pay2.toString() : '', {
-        addComma: true,
-        callbackOnBlur: (next) => {
-            dispatch(
-                updatePay({
-                    index: rest.index,
-                    pay2: +next,
-                }),
-            );
+    const [pay2] = useNumbericInput(
+        isNumberic(rest.pay2) ? rest.pay2!.toString() : '',
+        {
+            addComma: true,
+            callbackOnBlur: (next) => {
+                dispatch(
+                    updatePay({
+                        index: rest.index,
+                        pay2: +next,
+                    }),
+                );
+            },
         },
-    });
+    );
     // 금종
     const [method] = useSelect(
         commonConstants.payKind,

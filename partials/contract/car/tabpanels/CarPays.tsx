@@ -5,7 +5,6 @@ import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { CoreEditableComponent } from '@interfaces/core';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { v4 as uuidv4 } from 'uuid';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { deletePay, updatePay } from '@actions/contract/long/set-pay.action';
 import { MyCheckbox } from '@components/checkbox';
@@ -101,7 +100,7 @@ export const CarPaysTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         )}
                         {pays.map((v) => (
                             <CarPayTemplate
-                                key={`pay-${uuidv4()}`}
+                                key={`pay-${v.index}`}
                                 editable={editable}
                                 {...v}
                             />

@@ -4,7 +4,6 @@ import type { ContractState } from '@reducers/contract';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import type { CoreEditableComponent } from '@interfaces/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyCheckbox } from '@components/checkbox';
@@ -128,7 +127,7 @@ export const LongBaeseossTabpanel: FC<Props> = ({
                         )}
                         {baeseos.map((v) => (
                             <BaeseoTemplate
-                                key={`baeseo-${uuidv4()}`}
+                                key={`baeseo-${v.index}`}
                                 editable={editable}
                                 {...v}
                             />

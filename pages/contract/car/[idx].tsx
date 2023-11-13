@@ -10,7 +10,6 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 import carsService from '@services/carsService';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption } from '@utils/getter';
-import longConstants from '@constants/options/long';
 import carConstants from '@constants/options/car';
 import commonConstants from '@constants/options/common';
 import { createUserHistory } from '@actions/common/set-user-history.action';
@@ -38,7 +37,7 @@ const Car: NextPage<CarState> = ({ car }) => {
 
     // const defaultPreComp = findSelectOption(car.pre_wcode, longUseCompanies);
 
-    const defaultStatus = findSelectOption(car.status, longConstants.status);
+    const defaultStatus = findSelectOption(car.status, carConstants.status);
 
     const defaultBodesc = findSelectOption(car.bo_desc, carConstants.shortDist);
 
@@ -221,10 +220,8 @@ export const getServerSideProps = wrapper.getServerSideProps(
             // }
 
             if (car.pays) {
-                const reversedCars = car.pays.reverse();
-
-                for (let i = 0; i < reversedCars.length; i++) {
-                    const pay = reversedCars[i];
+                for (let i = 0; i < car.pays.length; i++) {
+                    const pay = car.pays[i];
 
                     dispatch(
                         createPay({

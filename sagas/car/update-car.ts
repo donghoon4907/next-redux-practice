@@ -14,9 +14,7 @@ function* updateCarSaga({ payload }: UpdateCarRequestAction) {
 
     const { message } = data;
 
-    if (message === 'Success') {
-        alert('수정되었습니다.');
-    } else {
+    if (message !== 'Success') {
         alert(message);
     }
 
