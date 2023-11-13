@@ -17,7 +17,6 @@ import { createUserHistory } from '@actions/common/set-user-history.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { updateProduct } from '@actions/contract/common/set-product.action';
-import { createContact } from '@actions/common/set-contact.action';
 import { MyLayout } from '@components/Layout';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 import { createInfoCust } from '@actions/contract/common/set-info-cust.action';
@@ -269,17 +268,17 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 }
             }
 
-            if (long.contacts) {
-                for (let i = 0; i < long.contacts.length; i++) {
-                    dispatch(
-                        createContact({
-                            ...long.contacts[i],
-                            index: i,
-                            checked: false,
-                        }),
-                    );
-                }
-            }
+            // if (long.contacts) {
+            //     for (let i = 0; i < long.contacts.length; i++) {
+            //         dispatch(
+            //             createContact({
+            //                 ...long.contacts[i],
+            //                 index: i,
+            //                 checked: false,
+            //             }),
+            //         );
+            //     }
+            // }
 
             dispatch(END);
 

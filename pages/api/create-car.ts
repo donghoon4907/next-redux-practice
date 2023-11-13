@@ -14,8 +14,7 @@ export default async function handler(
         const { data } = await carsService.createCar(body);
 
         res.status(200).json({ data });
-    } catch (e) {
-        console.log(e);
+    } catch {
         res.status(500).json({
             message: '알 수 없는 문제가 발생했습니다.',
         });

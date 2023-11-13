@@ -12,10 +12,10 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption } from '@utils/getter';
 import longConstants from '@constants/options/long';
 import carConstants from '@constants/options/car';
+import commonConstants from '@constants/options/common';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 import { createPay } from '@actions/contract/long/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
-import { createContact } from '@actions/common/set-contact.action';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { MyLayout } from '@components/Layout';
 import { CarForm } from '@partials/contract/car/CarForm';
@@ -24,7 +24,7 @@ import { createInfoCust } from '@actions/contract/common/set-info-cust.action';
 import { createInfoProduct } from '@actions/contract/common/set-info-product.action';
 
 const Car: NextPage<CarState> = ({ car }) => {
-    const { carUseCompanies } = useSelector<AppState, HrState>(
+    const { longUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
@@ -33,9 +33,9 @@ const Car: NextPage<CarState> = ({ car }) => {
     // 계약자 설정
     useInitCustomer(car.c_idx);
 
-    const defaultComp = findSelectOption(car.wcode, carUseCompanies);
+    const defaultComp = findSelectOption(car.wcode, longUseCompanies);
 
-    const defaultPreComp = findSelectOption(car.pre_wcode, carUseCompanies);
+    const defaultPreComp = findSelectOption(car.pre_wcode, longUseCompanies);
 
     const defaultStatus = findSelectOption(car.status, longConstants.status);
 
@@ -43,7 +43,22 @@ const Car: NextPage<CarState> = ({ car }) => {
 
     const defaultInsu = findSelectOption(car.insu, carConstants.dist);
 
+    let calType;
+    if (typeof car.cal_type === 'boolean') {
+        if (car.cal_type) {
+            calType = 'Y';
+        } else {
+            calType = 'N';
+        }
+    }
+    const defaultCalType = findSelectOption(calType, carConstants.calType);
+
     const defaultRate = findSelectOption(car.rate, carConstants.cGrade);
+
+    const defaultSulDist = findSelectOption(
+        car.sul_dist,
+        commonConstants.sulDist,
+    );
 
     const defaultCycle = findSelectOption(car.cycle, carConstants.payMethod);
 
@@ -80,6 +95,9 @@ const Car: NextPage<CarState> = ({ car }) => {
                     defaultIsConfirm={car.confirm ? 'Y' : 'N'}
                     defaultInsu={defaultInsu}
                     defaultRate={defaultRate}
+                    defaultCalType={defaultCalType}
+                    defaultSulDist={defaultSulDist}
+                    defaultCarNum={car.carnum}
                     defaultCycle={defaultCycle}
                     defaultCarfamily={defaultCarfamily}
                     defaultCarage={defaultCarage}
@@ -221,17 +239,17 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 }
             }
 
-            if (car.contacts) {
-                for (let i = 0; i < car.contacts.length; i++) {
-                    dispatch(
-                        createContact({
-                            ...car.contacts[i],
-                            index: i,
-                            checked: false,
-                        }),
-                    );
-                }
-            }
+            // if (car.contacts) {
+            //     for (let i = 0; i < car.contacts.length; i++) {
+            //         dispatch(
+            //             createContact({
+            //                 ...car.contacts[i],
+            //                 index: i,
+            //                 checked: false,
+            //             }),
+            //         );
+            //     }
+            // }
 
             dispatch(END);
 

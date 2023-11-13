@@ -73,12 +73,6 @@ export const CAR_DETAIL_TABS: CoreTabOption[] = [
         panelId: 'tabpanelContact',
         isHideMode: 'create',
     },
-    {
-        id: 'tabChangeHis',
-        label: '변경내역',
-        panelId: 'tabpanelChangeHis',
-        isHideMode: 'create',
-    },
 ];
 /**
  * 고객 상세 페이지 탭 목록
