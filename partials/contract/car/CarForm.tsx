@@ -46,7 +46,7 @@ import { SetInfoCustModal } from '@components/modal/SetInfoCust';
 import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
 
 import { SearchContractorInput } from '../common/input/SearchContractorInput';
-import { Compare2Tabpanel } from './tabpanels/Compare2';
+import { CompareTabpanel } from './tabpanels/Compare';
 
 interface Props {
     /**
@@ -727,7 +727,7 @@ export const CarForm: FC<Props> = ({
                                 cnum={cnum.value}
                             />
                         )}
-                        <Compare2Tabpanel
+                        <CompareTabpanel
                             id="tabpanelCompare"
                             tabId="tabCompare"
                             hidden={tab.id !== 'tabCompare'}

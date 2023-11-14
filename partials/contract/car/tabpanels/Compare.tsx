@@ -1,95 +1,20 @@
-import type { FC, ChangeEvent } from 'react';
-import type { Bupum } from '@models/bupum';
-import type { MyTabpanelProps } from '@components/tab/Tabpanel';
-import type { CoreEditableComponent } from '@interfaces/core';
-import type { UseInputOutput } from '@hooks/use-input';
-import type { UseSelectOutput } from '@hooks/use-select';
-import type { UseDatepickerOutput } from '@hooks/use-datepicker';
-import type { UseCheckboxOutput } from '@hooks/use-checkbox';
+import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { CarState } from '@reducers/car';
-import { useDispatch, useSelector } from 'react-redux';
+import type { MyTabpanelProps } from '@components/tab/Tabpanel';
+import type { CoreEditableComponent } from '@interfaces/core';
+import type { UseDatepickerOutput } from '@hooks/use-datepicker';
+import type { UseInputOutput } from '@hooks/use-input';
+import { useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
 import { MyCheckbox } from '@components/checkbox';
-import { MySelect } from '@components/select';
-import variables from '@styles/_variables.module.scss';
-import { MyDatepicker } from '@components/datepicker';
-import { MyTableExtension } from '@components/table/Extension';
-import { showCreateBupumModal } from '@actions/modal/create-bupum.action';
-import {
-    deleteBupum,
-    updateBupum,
-} from '@actions/contract/car/set-bupum.action';
-import { MyButton } from '@components/button';
+import { FloatInput } from '@components/input/Float';
+import { FloatDatepicker } from '@components/datepicker/Float';
+import { MyUnit } from '@components/Unit';
 
 interface Props extends MyTabpanelProps, CoreEditableComponent {
-    carNumHooks: UseInputOutput;
-    carYearHooks: UseSelectOutput;
-    carCodeHooks: UseInputOutput;
-    cardateHooks: UseDatepickerOutput;
-    checkLpgHooks: UseCheckboxOutput;
-    checkTopcarHooks: UseCheckboxOutput;
-    checkSportcarHooks: UseCheckboxOutput;
-    carnameHooks: UseInputOutput;
-    carGradeHooks: UseSelectOutput;
-    baegirangHooks: UseInputOutput;
-    peopleNumHooks: UseInputOutput;
-    checkAutoHooks: UseCheckboxOutput;
-    checkAbsHalinHooks: UseCheckboxOutput;
-    checkImoHooks: UseCheckboxOutput;
-    hasBbHooks: UseSelectOutput;
-    bbBuydateHooks: UseDatepickerOutput;
-    bbBuyPriceHooks: UseInputOutput;
-    aircodeHooks: UseSelectOutput;
-    chungHooks: UseSelectOutput;
-    checkBluelinkHooks: UseCheckboxOutput;
-    gpsHooks: UseSelectOutput;
-    checkJobcodeNmHooks: UseCheckboxOutput;
-    membercodeHooks: UseSelectOutput;
-    carpriceHooks: UseInputOutput;
-    usangHooks: UseSelectOutput;
-    usang2Hooks: UseInputOutput;
-    dambo2Hooks: UseSelectOutput;
-    dambo3Hooks: UseSelectOutput;
-    dambo4Hooks: UseSelectOutput;
-    dambo5Hooks: UseSelectOutput;
-    dambo6Hooks: UseSelectOutput;
-    gooutDistHooks: UseSelectOutput;
-    gooutDetailHooks: UseSelectOutput;
-    mulSagoHooks: UseSelectOutput;
-    mileDistHooks: UseSelectOutput;
-    mileDetailHooks: UseSelectOutput;
-    drateDistHooks: UseSelectOutput;
-    drateDetailHooks: UseDatepickerOutput;
-    tmapDistHooks: UseSelectOutput;
-    tmapDetailHooks: UseInputOutput;
-    caruseHooks: UseSelectOutput;
-    ilPriceHooks: UseInputOutput;
-    childdriveHooks: UseSelectOutput;
-    guipcarrerHooks: UseSelectOutput;
-    guipcarrerCarHooks: UseSelectOutput;
-    lJobcodeHooks: UseSelectOutput;
-    guipCarrerKbHooks: UseSelectOutput;
-    trafficDistHooks: UseSelectOutput;
-    trafficDetailHooks: UseSelectOutput;
-    halinHooks: UseSelectOutput;
-    checkRateUHooks: UseCheckboxOutput;
-    specialCodeHooks: UseSelectOutput;
-    specialCode2Hooks: UseSelectOutput;
-    ssSago3Hooks: UseSelectOutput;
-    preSago3Hooks: UseSelectOutput;
-    pSagoHooks: UseSelectOutput;
-    goout2Hooks: UseSelectOutput;
-    sago3Hooks: UseSelectOutput;
-    carNonumHooks: UseSelectOutput;
-    sago1Hooks: UseSelectOutput;
-    carSago3Hooks: UseSelectOutput;
-    carSago2Hooks: UseSelectOutput;
-    carSago1Hooks: UseSelectOutput;
-    totalBupumPrice: number;
-    totalPrice: number;
+    bboxDateHooks: UseDatepickerOutput;
+    bboxPriceHooks: UseInputOutput;
 }
 
 export const CompareTabpanel: FC<Props> = ({
@@ -97,1302 +22,523 @@ export const CompareTabpanel: FC<Props> = ({
     tabId,
     hidden,
     editable,
-    carNumHooks,
-    carYearHooks,
-    carCodeHooks,
-    cardateHooks,
-    checkLpgHooks,
-    checkTopcarHooks,
-    checkSportcarHooks,
-    carnameHooks,
-    carGradeHooks,
-    baegirangHooks,
-    peopleNumHooks,
-    checkAutoHooks,
-    checkAbsHalinHooks,
-    checkImoHooks,
-    hasBbHooks,
-    bbBuydateHooks,
-    bbBuyPriceHooks,
-    aircodeHooks,
-    chungHooks,
-    checkBluelinkHooks,
-    gpsHooks,
-    checkJobcodeNmHooks,
-    membercodeHooks,
-    carpriceHooks,
-    usangHooks,
-    usang2Hooks,
-    dambo2Hooks,
-    dambo3Hooks,
-    dambo4Hooks,
-    dambo5Hooks,
-    dambo6Hooks,
-    gooutDistHooks,
-    gooutDetailHooks,
-    mulSagoHooks,
-    mileDistHooks,
-    mileDetailHooks,
-    drateDistHooks,
-    drateDetailHooks,
-    tmapDistHooks,
-    tmapDetailHooks,
-    caruseHooks,
-    ilPriceHooks,
-    childdriveHooks,
-    guipcarrerHooks,
-    guipcarrerCarHooks,
-    lJobcodeHooks,
-    guipCarrerKbHooks,
-    trafficDistHooks,
-    trafficDetailHooks,
-    halinHooks,
-    checkRateUHooks,
-    specialCodeHooks,
-    specialCode2Hooks,
-    ssSago3Hooks,
-    preSago3Hooks,
-    pSagoHooks,
-    goout2Hooks,
-    sago3Hooks,
-    carNonumHooks,
-    sago1Hooks,
-    carSago3Hooks,
-    carSago2Hooks,
-    carSago1Hooks,
-    totalBupumPrice,
-    totalPrice,
+    bboxDateHooks,
+    bboxPriceHooks,
 }) => {
-    const dispatch = useDispatch();
-
-    const { bupums } = useSelector<AppState, CarState>((state) => state.car);
-
-    const labelType = editable ? 'active' : 'disable';
-
-    const handleSearch = () => {
-        alert('차명코드 조회 실행됨');
-    };
-
-    const handleShowCreateBupumModal = () => {
-        dispatch(showCreateBupumModal());
-    };
-
-    const handleAllCheckBupum = (evt: ChangeEvent<HTMLInputElement>) => {
-        bupums.forEach((v) => {
-            dispatch(updateBupum({ ...v, checked: evt.target.checked }));
-        });
-    };
-
-    const handleCheckBupum = (evt: ChangeEvent<HTMLInputElement>, v: Bupum) => {
-        dispatch(updateBupum({ ...v, checked: evt.target.checked }));
-    };
-
-    const handleDeleteBupum = () => {
-        if (bupums.findIndex((v) => v.checked) === -1) {
-            return alert('삭제할 추가부속을 선택해주세요.');
-        }
-
-        bupums
-            .filter((v) => v.checked)
-            .forEach((v) => {
-                dispatch(deleteBupum({ index: v.index }));
-            });
-    };
+    const { estimate } = useSelector<AppState, CarState>((state) => state.car);
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="wr-frame__tabbody overflow-auto">
-                <div className="row">
-                    <div className="col">
-                        <WithLabel
-                            id="carnum"
-                            label="차량번호"
-                            type={labelType}
-                        >
-                            <MyInput
-                                type="search"
-                                id="carnum"
-                                placeholder="차량번호"
-                                disabled={!editable}
-                                {...carNumHooks}
-                            />
-                        </WithLabel>
-                    </div>
-                    <div className="col">
-                        <WithLabel
-                            id="caryear"
-                            label="차량연식"
-                            type={labelType}
-                            // isRequired={editable}
-                        >
-                            <MySelect
-                                id="caryear"
-                                height={variables.detailFilterHeight}
-                                {...carYearHooks}
-                            />
-                        </WithLabel>
-                    </div>
-                </div>
-                <div className="row wr-mt">
-                    <div className="col">
-                        <form onSubmit={handleSearch}>
-                            <WithLabel
-                                id="carcode"
-                                label="차명코드"
-                                type={labelType}
-                                // isRequired={editable}
-                            >
-                                <MyInput
-                                    type="search"
-                                    id="carcode"
-                                    placeholder="차명코드"
-                                    disabled={!editable}
-                                    button={
-                                        editable
-                                            ? {
-                                                  type: 'submit',
-                                                  className:
-                                                      'btn-primary btn-md',
-                                                  disabled: !editable,
-                                                  children: (
-                                                      <>
-                                                          <span>조회</span>
-                                                      </>
-                                                  ),
-                                              }
-                                            : undefined
-                                    }
-                                    {...carCodeHooks}
-                                />
-                            </WithLabel>
-                        </form>
-                    </div>
-                    <div className="col">
-                        <WithLabel
-                            id="ccarDate"
-                            label="차량등록일"
-                            type={labelType}
-                            // isRequired={editable}
-                        >
-                            <MyDatepicker
-                                id="ccarDate"
-                                size="md"
-                                placeholder="차량등록일"
-                                {...cardateHooks}
-                            />
-                        </WithLabel>
-                    </div>
-                </div>
-                <div className="row wr-mt">
-                    <div className="col">
-                        <div className="wr-pages-detail__buttons">
-                            <MyCheckbox
-                                id="ccarLpg"
-                                label="LPG"
-                                {...checkLpgHooks}
-                            />
-                            <MyCheckbox
-                                id="ccarTopcar"
-                                label="탑차"
-                                {...checkTopcarHooks}
-                            />
-                            <MyCheckbox
-                                id="ccarsportcar"
-                                label="스포츠카"
-                                {...checkSportcarHooks}
-                            />
-                        </div>
-                        <WithLabel
-                            id="ccarName"
-                            label="차량명"
-                            type={labelType}
-                        >
-                            <MyInput
-                                type="text"
-                                id="ccarName"
-                                placeholder="차량명"
-                                disabled={!editable}
-                                {...carnameHooks}
-                            />
-                        </WithLabel>
-                    </div>
-                </div>
-                <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel
-                            id="ccarGrade"
-                            label="차량등급"
-                            type={labelType}
-                        >
-                            <MySelect
-                                id="ccarGrade"
-                                height={variables.detailFilterHeight}
-                                {...carGradeHooks}
-                            />
-                        </WithLabel>
-                    </div>
-                    <div className="col">
-                        <WithLabel
-                            id="ccarBaegirang"
-                            label="배기량/인원"
-                            type={labelType}
-                        >
-                            <MyInput
-                                type="number"
-                                id="ccarBaegirang"
-                                placeholder="0"
-                                className="text-end"
-                                disabled={!editable}
-                                unit="cc"
-                                {...baegirangHooks}
-                            />
-                            <div
-                                className="wr-with__extension"
-                                style={{ width: 135 }}
-                            >
-                                <MyInput
-                                    type="number"
-                                    placeholder="0"
-                                    className="wr-border-l--hide"
-                                    disabled={!editable}
-                                    unit="인승"
-                                    {...peopleNumHooks}
-                                />
-                            </div>
-                        </WithLabel>
-                    </div>
-                </div>
-                <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel label="기본부속1" type={labelType}>
-                            <div
-                                style={{
-                                    height: variables.detailFilterHeight,
-                                }}
-                                className="wr-with__checkbox wr-border"
-                            >
-                                <div className="wr-pages-detail__buttons">
-                                    <MyCheckbox
-                                        id="ccarAuto"
-                                        label="오토"
-                                        {...checkAutoHooks}
-                                    />
-                                    <MyCheckbox
-                                        id="ccarAbs"
-                                        label="ABS"
-                                        {...checkAbsHalinHooks}
-                                    />
-                                    <MyCheckbox
-                                        id="ccarImo"
-                                        label="이모빌라이저"
-                                        {...checkImoHooks}
-                                    />
-                                </div>
-                            </div>
-                        </WithLabel>
-                    </div>
-                    <div className="col">
-                        <WithLabel
-                            id="ccarHasBb"
-                            label="블랙박스"
-                            type={labelType}
-                        >
-                            <MySelect
-                                id="ccarHasBb"
-                                height={variables.detailFilterHeight}
-                                isDisabled={!editable}
-                                {...hasBbHooks}
-                            />
-                        </WithLabel>
-                    </div>
-                </div>
-                <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel
-                            id="ccarAircode"
-                            label="에어백"
-                            type={labelType}
-                        >
-                            <MySelect
-                                id="ccarAircode"
-                                height={variables.detailFilterHeight}
-                                isDisabled={!editable}
-                                {...aircodeHooks}
-                            />
-                        </WithLabel>
-                    </div>
-                    {hasBbHooks.value?.value === '장착' && (
-                        <div className="col">
-                            <div className="row">
-                                <div className="col">
-                                    <WithLabel
-                                        id="ccarBbBuydate"
-                                        label="구입시기"
-                                        type={labelType}
-                                    >
-                                        <MyDatepicker
-                                            id="ccarBbBuydate"
-                                            size="md"
-                                            placeholder="구입시기"
-                                            hooks={bbBuydateHooks}
-                                        />
-                                    </WithLabel>
-                                </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="ccarBbBuyPrice"
-                                        label="금액"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            type="text"
-                                            id="ccarBbBuyPrice"
-                                            placeholder="0"
-                                            className="text-end"
-                                            disabled={!editable}
-                                            unit="만원"
-                                            {...bbBuyPriceHooks}
-                                        />
-                                    </WithLabel>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                </div>
-                <div className="wr-pages-detail__block wr-mt">
-                    <div className="wr-pages-detail__title">
-                        <strong>기본부속 2</strong>
-                    </div>
-                    <div className="wr-pages-detail__content">
+            {estimate ? (
+                <div className="row wr-pages-detail__applydatepicker">
+                    <div className="flex-fill">
                         <div className="row">
-                            <div className="col">
-                                <WithLabel
-                                    id="ccarChung"
-                                    label="전방출동"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarChung"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...chungHooks}
-                                    />
-                                </WithLabel>
-                                <div className="wr-pages-detail__buttons">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차명코드"
+                                    readOnly
+                                    value={estimate.carcode}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차량연식"
+                                    readOnly
+                                    value={estimate.caryear}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차명"
+                                    readOnly
+                                    value={estimate.carname}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차량등급"
+                                    readOnly
+                                    value={estimate.car_grade}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차량등록일"
+                                    readOnly
+                                    value={estimate.cardate}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="배기량"
+                                    readOnly
+                                    value={estimate.baegirang}
+                                    after={<MyUnit placement="last">cc</MyUnit>}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="탑승인원"
+                                    readOnly
+                                    value={estimate.people_num}
+                                    after={
+                                        <MyUnit placement="last">인승</MyUnit>
+                                    }
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt wr-pb wr-border-b">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="에어백"
+                                    readOnly
+                                    value={estimate.aircode}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <div className="wr-pages-detail__buttons h-100">
                                     <MyCheckbox
-                                        id="ccarBluelink"
-                                        label="커넥티드카 (블루링크 또는 UVO)"
-                                        {...checkBluelinkHooks}
+                                        label="오토"
+                                        readOnly
+                                        checked={estimate.auto}
+                                    />
+                                    <MyCheckbox
+                                        label="ABS"
+                                        readOnly
+                                        checked={estimate.abs_halin}
+                                    />
+                                    <MyCheckbox
+                                        label="이모빌라이저"
+                                        readOnly
+                                        checked={estimate.imo}
                                     />
                                 </div>
                             </div>
-                            <div className="col">
-                                <WithLabel
-                                    id="ccarGps"
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="전방충돌"
+                                    readOnly
+                                    value={estimate.chung}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
                                     label="차선이탈"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarGps"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...gpsHooks}
+                                    readOnly
+                                    value={estimate.gps}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt wr-pb wr-border-b">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="커넥티드카(블루링크 또는 UVO)"
+                                    readOnly
+                                    value={estimate.blue_link ? 'Y' : 'N'}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="지능형 안전장치"
+                                    readOnly
+                                    value={estimate.l_jobcode_nm ? 'Y' : 'N'}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="블랙박스"
+                                    readOnly
+                                    value={estimate.bbox ? 'Y' : 'N'}
+                                />
+                            </div>
+                            <div className="flex-fill"></div>
+                        </div>
+                        {estimate.bbox && (
+                            <div className="row wr-mt wr-pb wr-border-b">
+                                <div className="flex-fill">
+                                    <FloatDatepicker
+                                        label="구입시기"
+                                        readOnly={!editable}
+                                        hooks={bboxDateHooks}
                                     />
-                                </WithLabel>
-                                <div className="wr-pages-detail__buttons">
-                                    <MyCheckbox
-                                        id="ccarJobcodeNm"
-                                        label="지능형 안전장치"
-                                        {...checkJobcodeNmHooks}
+                                </div>
+                                <div className="flex-fill">
+                                    <FloatInput
+                                        label="구입가"
+                                        readOnly={!editable}
+                                        isNumber
+                                        after={
+                                            <MyUnit placement="last">
+                                                만원
+                                            </MyUnit>
+                                        }
+                                        {...bboxPriceHooks}
                                     />
                                 </div>
                             </div>
+                        )}
+
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="기본차량가액"
+                                    readOnly
+                                    value={estimate.carprice.toLocaleString()}
+                                    after={
+                                        <MyUnit placement="last">만원</MyUnit>
+                                    }
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차량구매형태"
+                                    readOnly
+                                    value={estimate.membercode}
+                                />
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div className="row wr-mt">
-                    <div className="col">
-                        <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__title">
-                                <strong>추가부속</strong>
-                                {editable && (
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="부속차량가액"
+                                    readOnly
+                                    value={estimate.bupum_price.toLocaleString()}
+                                    after={
+                                        <MyUnit placement="last">만원</MyUnit>
+                                    }
+                                />
+                            </div>
+                            <div className="flex-fill wr-border-b">
+                                <div className="wr-pages-detail__title wr-pt">
+                                    <div>총차량가액</div>
                                     <div>
-                                        <MyButton
-                                            className="btn-danger btn-sm"
-                                            onClick={handleDeleteBupum}
-                                        >
-                                            선택삭제
-                                        </MyButton>
+                                        <span className="wr-pages-detail__total">
+                                            {estimate.car_tot.toLocaleString()}
+                                        </span>
+                                        <span className="wr-pl">만원</span>
                                     </div>
-                                )}
-                            </div>
-                            <div className="wr-pages-detail__content">
-                                <div className="wr-table--normal">
-                                    <table className="wr-table table">
-                                        <thead>
-                                            <tr>
-                                                {editable && (
-                                                    <th
-                                                        style={{
-                                                            width: '30px',
-                                                        }}
-                                                    >
-                                                        <MyCheckbox
-                                                            label=""
-                                                            onChange={
-                                                                handleAllCheckBupum
-                                                            }
-                                                        />
-                                                    </th>
-                                                )}
-
-                                                <th>
-                                                    <strong>부속명</strong>
-                                                </th>
-                                                <th style={{ width: '100px' }}>
-                                                    <strong>부속가액</strong>
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {bupums.length === 0 && (
-                                                <tr>
-                                                    <td
-                                                        colSpan={
-                                                            editable ? 3 : 2
-                                                        }
-                                                    >
-                                                        부속 정보가 없습니다.
-                                                    </td>
-                                                </tr>
-                                            )}
-
-                                            {bupums.map((v, i) => (
-                                                <tr key={`pay${i}`}>
-                                                    {editable && (
-                                                        <td>
-                                                            <MyCheckbox
-                                                                label=""
-                                                                checked={
-                                                                    v.checked
-                                                                }
-                                                                onChange={(
-                                                                    evt,
-                                                                ) =>
-                                                                    handleCheckBupum(
-                                                                        evt,
-                                                                        v,
-                                                                    )
-                                                                }
-                                                            />
-                                                        </td>
-                                                    )}
-
-                                                    <td>
-                                                        <span>
-                                                            {v.name
-                                                                ? v.name
-                                                                : '-'}
-                                                        </span>
-                                                    </td>
-                                                    <td>
-                                                        <span>
-                                                            {v.price
-                                                                ? v.price.toLocaleString()
-                                                                : '-'}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
-                                    {editable && (
-                                        <MyTableExtension
-                                            onClick={handleShowCreateBupumModal}
-                                        />
-                                    )}
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="col">
-                        <WithLabel
-                            id="ccarMembercode"
-                            label="차량구매형태"
-                            type={labelType}
-                        >
-                            <MySelect
-                                id="ccarMembercode"
-                                height={variables.detailFilterHeight}
-                                isDisabled={!editable}
-                                {...membercodeHooks}
+                        <div className="wr-pages-detail__buttons wr-mt">
+                            <MyCheckbox
+                                label="LPG"
+                                readOnly
+                                checked={estimate.lpg}
                             />
-                        </WithLabel>
-                        <WithLabel
-                            id="ccarPrice"
-                            label="기본차량가액"
-                            type={labelType}
-                        >
-                            <MyInput
-                                type="text"
-                                id="ccarPrice"
-                                placeholder="0"
-                                className="text-end"
-                                disabled={!editable}
-                                unit="만원"
-                                {...carpriceHooks}
+                            <MyCheckbox
+                                label="탑차"
+                                readOnly
+                                checked={estimate.topcar}
                             />
-                        </WithLabel>
-                        <WithLabel label="부속가액합계" type={labelType}>
-                            <MyInput
-                                type="text"
-                                placeholder="0"
-                                className="text-end"
-                                disabled={true}
-                                value={totalBupumPrice.toLocaleString()}
-                                unit="만원"
+                            <MyCheckbox
+                                label="스포츠카"
+                                readOnly
+                                checked={estimate.sportcar}
                             />
-                        </WithLabel>
-                        <div className="wr-pages-detail__toolbar wr-border-b">
-                            <div>총 차량가액</div>
-                            <div>{totalPrice.toLocaleString()} 만원</div>
                         </div>
-                    </div>
-                </div>
-                <div className="row wr-mt">
-                    <div className="col">
-                        <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__title">
-                                <strong>기타사항</strong>
-                            </div>
-                            <div className="wr-pages-detail__content">
-                                <WithLabel
-                                    id="ccarUsang"
+                        <div className="row wr-mt wr-pb wr-border-b">
+                            <div className="flex-fill">
+                                <FloatInput
                                     label="유상운송"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarUsang"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...usangHooks}
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarUsang2"
-                                    label="기중기장치요율"
-                                    type={labelType}
-                                >
-                                    <MyInput
-                                        type="number"
-                                        id="ccarUsang2"
-                                        placeholder="0"
-                                        className="text-end"
-                                        disabled={!editable}
-                                        unit="%"
-                                        {...usang2Hooks}
-                                    />
-                                </WithLabel>
+                                    readOnly
+                                    value={estimate.usang}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="기중기 장치요율"
+                                    readOnly
+                                    value={estimate.usang2}
+                                    after={<MyUnit placement="last">%</MyUnit>}
+                                />
                             </div>
                         </div>
-                        <div className="wr-pages-detail__block wr-mt">
-                            <div className="wr-pages-detail__title">
-                                <strong>세부담보설정</strong>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="총 차량대수"
+                                    readOnly
+                                    value={estimate.childdrive}
+                                />
                             </div>
-                            <div className="wr-pages-detail__content">
-                                <WithLabel label="대인배상I" type={labelType}>
-                                    <MyInput
-                                        type="text"
-                                        placeholder="대인배상I"
-                                        disabled={true}
-                                        value="의무가입"
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarDambo2"
-                                    label="대인배상II"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarDambo2"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...dambo2Hooks}
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarDambo3"
-                                    label="대물한도"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarDambo3"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...dambo3Hooks}
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarDambo4"
-                                    label="자손/자상"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarDambo4"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...dambo4Hooks}
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarDambo5"
-                                    label="무보험차"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarDambo5"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...dambo5Hooks}
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarDambo6"
-                                    label="자기차량"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarDambo6"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...dambo6Hooks}
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarGooutDist"
-                                    label="긴급출동"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarGooutDist"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...gooutDistHooks}
-                                    />
-                                    <div
-                                        className="wr-with__extension"
-                                        style={{ width: 190 }}
-                                    >
-                                        <MySelect
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
-                                            placement="right"
-                                            isDisabled={!editable}
-                                            {...gooutDetailHooks}
-                                        />
-                                    </div>
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarMulSago"
-                                    label="물적사고할증"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarMulSago"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...mulSagoHooks}
-                                    />
-                                </WithLabel>
-                            </div>
-                        </div>
-                        <div className="wr-pages-detail__block wr-mt">
-                            <div className="wr-pages-detail__title">
-                                <strong>특약사항</strong>
-                            </div>
-                            <div className="wr-pages-detail__content">
-                                <WithLabel
-                                    id="ccarMileDist"
-                                    label="마일리지"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarMileDist"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...mileDistHooks}
-                                    />
-                                    {mileDistHooks.value?.value !==
-                                        '미가입' && (
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 190 }}
-                                        >
-                                            <MySelect
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                placement="right"
-                                                isDisabled={!editable}
-                                                {...mileDetailHooks}
-                                            />
-                                        </div>
-                                    )}
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarDrateDist"
-                                    label="자녀특약"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarDrateDist"
-                                        placeholder="미가입"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        placement={
-                                            drateDistHooks.value?.value ===
-                                            '자녀'
-                                                ? 'left'
-                                                : 'single'
-                                        }
-                                        {...drateDistHooks}
-                                    />
-                                    {drateDistHooks.value?.value === '자녀' && (
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 191 }}
-                                        >
-                                            <MyDatepicker
-                                                id=""
-                                                size="md"
-                                                placeholder="생년월일"
-                                                hooks={drateDetailHooks}
-                                            />
-                                        </div>
-                                    )}
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarTmapDist"
-                                    label="안전운전습관"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarTmapDist"
-                                        height={variables.detailFilterHeight}
-                                        placement={
-                                            tmapDistHooks.value?.value ===
-                                            '미가입'
-                                                ? 'single'
-                                                : 'left'
-                                        }
-                                        isDisabled={!editable}
-                                        {...tmapDistHooks}
-                                    />
-                                    {tmapDistHooks.value?.value !==
-                                        '미가입' && (
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 191 }}
-                                        >
-                                            <MyInput
-                                                type="number"
-                                                placeholder="0"
-                                                className="text-end"
-                                                disabled={!editable}
-                                                unit="점"
-                                                {...tmapDetailHooks}
-                                            />
-                                        </div>
-                                    )}
-                                </WithLabel>
-                            </div>
-                        </div>
-                        <div className="wr-pages-detail__block wr-mt">
-                            <div className="wr-pages-detail__title">
-                                <strong>기타</strong>
-                            </div>
-                            <div className="wr-pages-detail__content">
-                                <WithLabel
-                                    id="ccarUse"
+                            <div className="flex-fill">
+                                <FloatInput
                                     label="차량용도"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarUse"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...caruseHooks}
-                                    />
-                                </WithLabel>
-                                <WithLabel
-                                    id="ccarIlPrice"
-                                    label="일부담보"
-                                    type={labelType}
-                                >
-                                    <MyInput
-                                        type="text"
-                                        id="ccarIlPrice"
-                                        placeholder="0"
-                                        className="text-end"
-                                        disabled={!editable}
-                                        unit="원"
-                                        {...ilPriceHooks}
-                                    />
-                                </WithLabel>
+                                    readOnly
+                                    value={estimate.caruse}
+                                />
                             </div>
                         </div>
                     </div>
-                    <div className="col">
-                        <div className="wr-pages-detail__block">
-                            <div className="wr-pages-detail__title">
-                                <strong>요율사항</strong>
+                    <div className="wr-divider__vertical"></div>
+                    <div className="flex-fill">
+                        <div className="wr-pages-detail__title wr-border-b">
+                            세부담보
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="대인배상I"
+                                    readOnly
+                                    value={estimate.dambo1}
+                                />
                             </div>
-                            <div className="wr-pages-detail__content">
-                                <WithLabel
-                                    id="ccarChilddrive"
-                                    label="총차량대수"
-                                    type={labelType}
-                                >
-                                    <MySelect
-                                        id="ccarChilddrive"
-                                        height={variables.detailFilterHeight}
-                                        isDisabled={!editable}
-                                        {...childdriveHooks}
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="대인배상II"
+                                    readOnly
+                                    value={estimate.dambo2}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="대물한도"
+                                    readOnly
+                                    value={estimate.dambo3}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="자손/자상"
+                                    readOnly
+                                    value={estimate.dambo4}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="무보험차"
+                                    readOnly
+                                    value={estimate.dambo5}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="자기차량"
+                                    readOnly
+                                    value={estimate.dambo6}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt wr-pb wr-border-b">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="물적사고할증"
+                                    readOnly
+                                    value={estimate.mul_sago}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="긴급출동"
+                                    readOnly
+                                    value={`${estimate.goout1}, ${estimate.goout_dist}`}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="마일리지"
+                                    readOnly
+                                    value={`${estimate.mile1}, ${estimate.mile2}`}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="자녀특약"
+                                    readOnly
+                                    value={estimate.drate}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="일부담보"
+                                    readOnly
+                                    value={estimate.il_price.toLocaleString()}
+                                    after={
+                                        <MyUnit placement="last">만원</MyUnit>
+                                    }
+                                />
+                            </div>
+                            <div className="flex-fill"></div>
+                        </div>
+                        <div className="wr-mt wr-pages-detail__title wr-border-b">
+                            보험요율
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="보험가입경력(피보기준)"
+                                    readOnly
+                                    value={estimate.guipcarrer}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="보험가입경력(차량기준)"
+                                    readOnly
+                                    value={estimate.guipcarrer_car}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt wr-pb wr-border-b">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="직전3년가입경력(DB)"
+                                    readOnly
+                                    value={estimate.l_jobcode}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="직전3년가입경력(KB)"
+                                    readOnly
+                                    value={estimate.guipcarrer_kb}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="교통법규위반"
+                                    readOnly
+                                    value={estimate.traffic}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="교통법규위반건수"
+                                    readOnly
+                                    value={estimate.gr_area}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt wr-pb wr-border-b">
+                            <div className="flex-fill">
+                                <div className="wr-pages-detail__buttons wr-mt">
+                                    <MyCheckbox
+                                        label="군/법인/해외경력 인정"
+                                        readOnly
+                                        checked={estimate.rate_u}
                                     />
-                                </WithLabel>
-                                <div className="wr-pages-detail__block wr-mt">
-                                    <div className="wr-pages-detail__title">
-                                        <strong>보험가입경력</strong>
-                                    </div>
-                                    <div className="wr-pages-detail__content">
-                                        <div className="row">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarGuipcarrer"
-                                                    label="피보험자"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarGuipcarrer"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...guipcarrerHooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarGuipcarrerCar"
-                                                    label="차량"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarGuipcarrerCar"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...guipcarrerCarHooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-                                <div className="wr-pages-detail__block wr-mt">
-                                    <div className="wr-pages-detail__title">
-                                        <strong>직전3년가입경력</strong>
-                                    </div>
-                                    <div className="wr-pages-detail__content">
-                                        <div className="row">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarLJobcode"
-                                                    label="DB"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarLJobcode"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...lJobcodeHooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarGuipCarrerKb"
-                                                    label="KB"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarGuipCarrerKb"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...guipCarrerKbHooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="wr-pages-detail__block wr-mt">
-                                    <div className="wr-pages-detail__title">
-                                        <strong>교통법규위반</strong>
-                                    </div>
-                                    <div className="wr-pages-detail__content">
-                                        <div className="row">
-                                            <div className="col">
-                                                <MySelect
-                                                    height={
-                                                        variables.detailFilterHeight
-                                                    }
-                                                    isDisabled={!editable}
-                                                    {...trafficDistHooks}
-                                                />
-                                            </div>
-                                            <div className="col">
-                                                <div className="d-flex">
-                                                    <div className="flex-fill">
-                                                        <MySelect
-                                                            fontSize={16}
-                                                            height={
-                                                                variables.detailFilterHeight
-                                                            }
-                                                            placement="left"
-                                                            isDisabled={
-                                                                !editable
-                                                            }
-                                                            {...trafficDetailHooks}
-                                                        />
-                                                    </div>
-
-                                                    <div className="wr-form__unit">
-                                                        건
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="wr-pages-detail__block wr-mt">
-                                    <div className="wr-pages-detail__title">
-                                        <strong>할증율</strong>
-                                    </div>
-                                    <div className="wr-pages-detail__content">
-                                        <div className="row">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarHalin"
-                                                    label="할인할증"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarHalin"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...halinHooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            {(guipcarrerHooks.value?.value ===
-                                                'B2' ||
-                                                guipcarrerHooks.value?.value ===
-                                                    'B3') && (
-                                                <div className="col d-flex justify-content-start align-items-center">
-                                                    <MyCheckbox
-                                                        id="ccarRateU"
-                                                        label="군/법인/해외경력인정"
-                                                        {...checkRateUHooks}
-                                                    />
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="row wr-mt">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarSpecialCode"
-                                                    label="기본할증"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarSpecialCode"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...specialCodeHooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarSpecialCode2"
-                                                    label="추가할증"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarSpecialCode2"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...specialCode2Hooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="wr-pages-detail__block wr-mt">
-                                    <div className="wr-pages-detail__title">
-                                        <strong>사고요율</strong>
-                                    </div>
-                                    <div className="wr-pages-detail__content">
-                                        <div className="row">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarSsSago3"
-                                                    label="3년간사고요율"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarSsSago3"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...ssSago3Hooks}
-                                                    />
-                                                </WithLabel>
-                                                <WithLabel
-                                                    id="ccarPreSago3"
-                                                    label="전계약사고요율"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarPreSago3"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...preSago3Hooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                        <div className="row wr-mt">
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarPSago"
-                                                    label="3년사고점수"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarPSago"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...pSagoHooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                            <div className="col">
-                                                <WithLabel
-                                                    id="ccarGoout2"
-                                                    label="1년사고점수"
-                                                    type={labelType}
-                                                >
-                                                    <MySelect
-                                                        id="ccarGoout2"
-                                                        height={
-                                                            variables.detailFilterHeight
-                                                        }
-                                                        isDisabled={!editable}
-                                                        {...goout2Hooks}
-                                                    />
-                                                </WithLabel>
-                                            </div>
-                                        </div>
-                                        <div className="wr-pages-detail__block wr-mt">
-                                            <div className="wr-pages-detail__title">
-                                                <strong>
-                                                    피보기준 사고건수
-                                                </strong>
-                                            </div>
-                                            <div className="wr-pages-detail__content">
-                                                <div className="row">
-                                                    <div className="col">
-                                                        <WithLabel
-                                                            id="ccarSago3"
-                                                            label="3년간"
-                                                            type={labelType}
-                                                        >
-                                                            <MySelect
-                                                                id="ccarSago3"
-                                                                fontSize={16}
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                {...sago3Hooks}
-                                                            />
-                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                                건
-                                                            </div>
-                                                        </WithLabel>
-                                                    </div>
-                                                </div>
-                                                <div className="row wr-mt">
-                                                    <div className="col">
-                                                        <WithLabel
-                                                            id="ccarCarNonum"
-                                                            label="2년간"
-                                                            type={labelType}
-                                                        >
-                                                            <MySelect
-                                                                id="ccarCarNonum"
-                                                                fontSize={16}
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                {...carNonumHooks}
-                                                            />
-                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                                건
-                                                            </div>
-                                                        </WithLabel>
-                                                    </div>
-                                                </div>
-                                                <div className="row wr-mt">
-                                                    <div className="col">
-                                                        <WithLabel
-                                                            id="ccarSago1"
-                                                            label="1년간"
-                                                            type={labelType}
-                                                        >
-                                                            <MySelect
-                                                                id="ccarSago1"
-                                                                fontSize={16}
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                {...sago1Hooks}
-                                                            />
-                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                                건
-                                                            </div>
-                                                        </WithLabel>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="wr-pages-detail__block wr-mt">
-                                            <div className="wr-pages-detail__title">
-                                                <strong>
-                                                    차량기준 사고건수
-                                                </strong>
-                                            </div>
-                                            <div className="wr-pages-detail__content">
-                                                <div className="row">
-                                                    <div className="col">
-                                                        <WithLabel
-                                                            id="ccarCarSago3"
-                                                            label="3년간"
-                                                            type={labelType}
-                                                        >
-                                                            <MySelect
-                                                                id="ccarCarSago3"
-                                                                fontSize={16}
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                {...carSago3Hooks}
-                                                            />
-                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                                건
-                                                            </div>
-                                                        </WithLabel>
-                                                    </div>
-                                                </div>
-                                                <div className="row wr-mt">
-                                                    <div className="col">
-                                                        <WithLabel
-                                                            id="ccarCarSago2"
-                                                            label="2년간"
-                                                            type={labelType}
-                                                        >
-                                                            <MySelect
-                                                                id="ccarCarSago2"
-                                                                fontSize={16}
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                {...carSago2Hooks}
-                                                            />
-                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                                건
-                                                            </div>
-                                                        </WithLabel>
-                                                    </div>
-                                                </div>
-                                                <div className="row wr-mt">
-                                                    <div className="col">
-                                                        <WithLabel
-                                                            id="ccarCarSago1"
-                                                            label="1년간"
-                                                            type={labelType}
-                                                        >
-                                                            <MySelect
-                                                                id="ccarCarSago1"
-                                                                fontSize={16}
-                                                                height={
-                                                                    variables.detailFilterHeight
-                                                                }
-                                                                isDisabled={
-                                                                    !editable
-                                                                }
-                                                                {...carSago1Hooks}
-                                                            />
-                                                            <div className="wr-with__extension wr-form__unit wr-border-l--hide">
-                                                                건
-                                                            </div>
-                                                        </WithLabel>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="특별할증율(추가할증)"
+                                    readOnly
+                                    value={`${estimate.special_code}, ${estimate.special_code2}`}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="3년간 사고요율"
+                                    readOnly
+                                    value={estimate.ss_sago3}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="전계약 사고요율"
+                                    readOnly
+                                    value={estimate.pre_sago3}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt wr-pb wr-border-b">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="3년간 사고점수"
+                                    readOnly
+                                    value={estimate.goout2}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="1년간 사고점수"
+                                    readOnly
+                                    value={estimate.p_sago}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="피보기준 3년간 사고건수"
+                                    readOnly
+                                    value={estimate.sago3}
+                                    after={<MyUnit placement="last">건</MyUnit>}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차량기준 3년간 사고건수"
+                                    readOnly
+                                    value={estimate.car_sago3}
+                                    after={<MyUnit placement="last">건</MyUnit>}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="피보기준 2년간 사고건수"
+                                    readOnly
+                                    value={estimate.car_nonum}
+                                    after={<MyUnit placement="last">건</MyUnit>}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차량기준 2년간 사고건수"
+                                    readOnly
+                                    value={estimate.car_sago2}
+                                    after={<MyUnit placement="last">건</MyUnit>}
+                                />
+                            </div>
+                        </div>
+                        <div className="row wr-mt">
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="피보기준 1년간 사고건수"
+                                    readOnly
+                                    value={estimate.sago1}
+                                    after={<MyUnit placement="last">건</MyUnit>}
+                                />
+                            </div>
+                            <div className="flex-fill">
+                                <FloatInput
+                                    label="차량기준 1년간 사고건수"
+                                    readOnly
+                                    value={estimate.car_sago1}
+                                    after={<MyUnit placement="last">건</MyUnit>}
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            ) : (
+                <p>연결된 비교견적 정보가 없습니다.</p>
+            )}
         </MyTabpanel>
     );
 };

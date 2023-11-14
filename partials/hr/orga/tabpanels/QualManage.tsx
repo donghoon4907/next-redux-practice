@@ -38,7 +38,7 @@ export const OrgaQualManageTabpanel: FC<Props> = ({
 }) => {
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="row">
+            <div className="row wr-pages-detail__applydatepicker">
                 <div className="flex-fill">
                     <AssoCodeTemplate
                         dist="손보"

@@ -4,7 +4,6 @@ import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
 import type { CompanyDist } from '@models/company';
 import { useMemo } from 'react';
-import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { UseInputOutput } from '@hooks/use-input';
 import { UseSelectOutput } from '@hooks/use-select';
@@ -18,7 +17,6 @@ import {
 import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { FloatSelect } from '@components/select/Float';
-import { IconWrapper } from '@components/IconWrapper';
 import { generateIndex } from '@utils/generate';
 import { UpdateCodeTemplate } from '@partials/common/template/UpdateCode';
 import { MyTableToolbar } from '@components/table/Toolbar';
@@ -176,9 +174,9 @@ export const AssoCodeTemplate: FC<Props> = ({
                                 </td>
                             </tr>
                         )}
-                        {filteredCodes.map((v, i) => {
+                        {filteredCodes.map((v) => {
                             return (
-                                <tr key={`${dist}-code${i}`}>
+                                <tr key={`${dist}-code${v.index}`}>
                                     {editable && (
                                         <td>
                                             <MyCheckbox

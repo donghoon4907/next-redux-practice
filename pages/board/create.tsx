@@ -24,7 +24,6 @@ import { wrapper } from '@store/redux';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { END } from 'redux-saga';
 import { getUsersRequest } from '@actions/hr/get-users';
-import { ORGA_RANK } from '@constants/selectOption';
 import { useApi } from '@hooks/use-api';
 import { createPostRequest } from '@actions/board/create-post.action';
 import { useInput } from '@hooks/use-input';
@@ -55,7 +54,7 @@ const CreateBoard: NextPage = () => {
     // 제목
     const [title] = useInput('');
     // 부서
-    const [orga] = useSelect(ORGA_RANK);
+    const [orga] = useSelect([]);
     // 태그
     const [tag] = useInput('');
 

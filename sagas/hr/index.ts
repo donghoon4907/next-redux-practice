@@ -16,7 +16,6 @@ import { watchLogout } from './logout';
 import { watchCreateOrga } from './create-orga';
 import { watchGetOrga } from './get-orga';
 import { watchGetLazyUsers } from './get-lazy-users';
-import { watchGetLazySimpleOrga } from './get-lazy-simple-orga';
 import { watchUpdateOrga } from './update-orga';
 // import { watchGetPermission } from './get-permission';
 // import { watchGetIp } from './get-ip';
@@ -33,7 +32,6 @@ export function* hrSaga() {
         fork(watchGetOrgas),
         fork(watchGetLazyOrgas),
         fork(watchGetOrga),
-        fork(watchGetLazySimpleOrga),
         fork(watchGetLazyUsers),
         fork(watchGetUsers),
         // fork(watchGetUser),

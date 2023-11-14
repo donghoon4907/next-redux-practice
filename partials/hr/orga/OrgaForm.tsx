@@ -407,7 +407,9 @@ export const OrgaForm: FC<Props> = ({
     return (
         <>
             <div className={`${displayName} wr-pages-detail wr-frame__tabbody`}>
-                <div className={`${displayName}__left wr-pages-detail__left`}>
+                <div
+                    className={`${displayName}__left wr-pages-detail__left wr-pages-detail__applydatepicker`}
+                >
                     <div className="wr-pages-detail__inner">
                         <div className="wr-pages-detail__block">
                             <div className="wr-pages-detail__content">
