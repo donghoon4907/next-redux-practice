@@ -1,8 +1,9 @@
 import type { FC } from 'react';
 import type { MyDatepickerProps } from '.';
-import { useState } from 'react';
-import { MyDatepicker } from '.';
+import { useState, ReactNode } from 'react';
 import { isEmpty } from '@utils/validator/common';
+
+import { MyDatepicker } from '.';
 
 interface Props extends MyDatepickerProps {
     label: string;
@@ -15,6 +16,10 @@ interface Props extends MyDatepickerProps {
      *
      */
     isRequired?: boolean;
+    /**
+     * 입력창 이후 컴포넌트 추가
+     */
+    after?: ReactNode;
 }
 
 export const FloatDatepicker: FC<Props> = ({
@@ -23,6 +28,7 @@ export const FloatDatepicker: FC<Props> = ({
     unit,
     isRequired,
     hooks,
+    after,
     ...rest
 }) => {
     const displayName = 'wr-detail-input';
@@ -70,13 +76,7 @@ export const FloatDatepicker: FC<Props> = ({
                 {...rest}
             />
 
-            {unit && (
-                <div
-                    className={`${displayName}__unit ${displayName}__unit--picker`}
-                >
-                    {unit}
-                </div>
-            )}
+            {after}
         </div>
     );
 };

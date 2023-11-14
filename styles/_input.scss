@@ -53,6 +53,17 @@
         padding-right: 0 !important;
     }
 
+    &--bconnect {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+    }
+
+    &--aconnect {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        border-right-width: 0 !important;
+    }
+
     &__wrap {
         position: relative;
         border-radius: 2px;
@@ -176,6 +187,16 @@
             height: 100%;
             border-left-width: 1px;
             border-right-width: 1px;
+        }
+
+        &--button {
+            background-color: $wr-primary-color;
+            color: $white;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+            font-size: 13px;
+            width: 50px;
+            cursor: pointer;
         }
     }
 

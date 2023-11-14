@@ -767,9 +767,15 @@ export const LongForm: FC<Props> = ({
                                             readOnly={!editable}
                                             isRequired
                                             hooks={pay_dateto}
-                                            unit={payDu ? `${payDu}년` : ''}
                                             shouldDisableDate={(date) =>
                                                 date < addDays(new Date(), -1)
+                                            }
+                                            after={
+                                                payDu > 0 && (
+                                                    <MyUnit placement="picker">
+                                                        {`${payDu}년`}
+                                                    </MyUnit>
+                                                )
                                             }
                                         />
                                     </div>
@@ -789,9 +795,15 @@ export const LongForm: FC<Props> = ({
                                             readOnly={!editable}
                                             isRequired
                                             hooks={bo_dateto}
-                                            unit={boDu ? `${boDu}년` : ''}
                                             shouldDisableDate={(date) =>
                                                 date < addDays(new Date(), -1)
+                                            }
+                                            after={
+                                                boDu > 0 && (
+                                                    <MyUnit placement="picker">
+                                                        {`${boDu}년`}
+                                                    </MyUnit>
+                                                )
                                             }
                                         />
                                     </div>

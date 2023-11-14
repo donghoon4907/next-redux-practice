@@ -44,10 +44,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
         dispatch(getOrgasRequest({}));
 
-        // dispatch(getBanksRequest());
-
-        dispatch(getAgenciesRequest());
-
         dispatch(getCompaniesRequest('insu'));
 
         dispatch(getCompaniesRequest('bank'));

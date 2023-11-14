@@ -53,7 +53,6 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
 
     const handleSubmit = () => {
         if (checkedProduct) {
-            console.log(checkedProduct);
             if (spe === 'long') {
                 dispatch(updateProduct(checkedProduct));
             } else if (spe === 'gen') {

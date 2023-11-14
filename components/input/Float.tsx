@@ -1,18 +1,21 @@
 import type { FC, InputHTMLAttributes, FocusEvent } from 'react';
 import { useState, ReactNode } from 'react';
-import { LuSearch } from 'react-icons/lu';
 import { isEmpty } from '@utils/validator/common';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
     label: string;
     /**
-     * 단위 표시
-     */
-    unit?: string;
-    /**
      * 숫자형 여부
      */
     isNumber?: boolean;
+    /**
+     * 이전에 연결된 컴포넌트 유무
+     */
+    isConnectBefore?: boolean;
+    /**
+     * 이후에 연결된 컴포넌트 유무
+     */
+    isConnectAfter?: boolean;
     /**
      * 필수 여부
      *
@@ -30,8 +33,9 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 export const FloatInput: FC<Props> = ({
     label,
-    unit,
     isNumber,
+    isConnectBefore,
+    isConnectAfter,
     isRequired,
     onFocus,
     onBlur,
@@ -61,6 +65,8 @@ export const FloatInput: FC<Props> = ({
     return (
         <div
             className={`${displayName}__wrap ${
+                isConnectBefore ? `${displayName}--bconnect` : ''
+            } ${isConnectAfter ? `${displayName}--aconnect` : ''} ${
                 after ? `${displayName}--after` : ''
             } ${isFloat ? `${displayName}--active` : ''}`}
         >

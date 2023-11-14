@@ -70,7 +70,7 @@ export const SearchProductInput: FC<Props> = ({ editable, wcode, spe }) => {
                     </>
                 }
             />
-            <div style={{ marginTop: 10 }}>
+            <div style={{ marginTop: selectedProduct ? 10 : 0 }}>
                 <ProductBadgeTemplate
                     spec={selectedProduct?.spec ?? ''}
                     subcategory={selectedProduct?.subcategory ?? ''}

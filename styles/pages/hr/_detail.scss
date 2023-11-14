@@ -8,10 +8,12 @@
     }
 
     &__avatar {
-        width: 200px;
-        height: 220px;
+        width: 195px;
+        height: 206px;
         padding: 0.25rem;
-        border: 1px solid $wr-divider-color-300;
+        border: 1px solid $wr-detail-input-border-color;
+        background: $wr-detail-input-bg-color;
+        border-radius: 5px;
 
         & > img {
             width: 100%;

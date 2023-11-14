@@ -49,6 +49,11 @@ import {
 import { PostcodeInput } from '@partials/common/input/Postcode';
 import { DateAndSLInput } from '@partials/common/input/DateAndSL';
 import { WithSelectInput } from '@partials/common/input/WithSelect';
+import { FloatInput } from '@components/input/Float';
+import { FloatDatepicker } from '@components/datepicker/Float';
+import { MyUnit } from '@components/Unit';
+import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
+import { FloatSelect } from '@components/select/Float';
 
 interface Props {
     /**
@@ -647,7 +652,7 @@ export const UserForm: FC<Props> = ({
         defaultLiaQualification,
     );
     // 썸네일
-    let thumbnail = 'http://via.placeholder.com/200x220';
+    let thumbnail = 'http://via.placeholder.com/195x206';
     if (userid) {
         thumbnail = `${process.env.STORAGE_PATH}/user/${userid}.jpg`;
     }
@@ -669,6 +674,10 @@ export const UserForm: FC<Props> = ({
     // 부서변경 클릭 핸들러
     const handleClickDepart = () => {
         dispatch(showDepartSearchModal());
+    };
+    // 음/양력 클릭 핸들러
+    const handleClickBirthType = () => {
+        setBirthType(!birthType);
     };
     // 프로필 사진 클릭 핸들러
     const handleClickImage = () => {
@@ -954,10 +963,12 @@ export const UserForm: FC<Props> = ({
 
     return (
         <>
-            <div className={`${displayName} wr-pages-detail`}>
-                <div className={`${displayName}__left wr-pages-detail__left`}>
+            <div className={`${displayName} wr-pages-detail wr-frame__tabbody`}>
+                <div
+                    className={`${displayName}__left wr-pages-detail__left wr-pages-detail__applydatepicker`}
+                >
                     <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
+                        <div className="wr-pages-detail__content p-15">
                             <div className="wr-group">
                                 <span
                                     className={`${displayName}__department ${
@@ -983,120 +994,60 @@ export const UserForm: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="col">
-                                    <WithLabel
-                                        id="nick"
-                                        label="영업명"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="nick"
-                                            placeholder="영업명"
-                                            disabled={!editable}
+                                <div className="flex-fill">
+                                    <FloatInput
+                                        label="이름"
+                                        readOnly={!editable}
+                                        isRequired
+                                        {...name}
+                                    />
+                                    <div className="wr-mt">
+                                        <FloatInput
+                                            label="영업명"
+                                            readOnly={!editable}
+                                            isRequired
                                             {...nick}
                                         />
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="name"
-                                        label="이름"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MyInput
-                                            id="name"
-                                            placeholder="이름"
-                                            onBlur={handleBlurName}
-                                            disabled={!editable}
-                                            {...name}
-                                        />
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="title"
-                                        label="직함"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="title"
-                                            placeholder="직함"
-                                            disabled={!editable}
+                                    </div>
+                                    <div className="wr-mt">
+                                        <FloatInput
+                                            label="직함"
+                                            readOnly={!editable}
+                                            isRequired
                                             {...title}
                                         />
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="sNum"
-                                        label="주민번호"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MyInput
-                                            id="sNum"
-                                            placeholder="주민번호"
-                                            disabled={!editable}
+                                    </div>
+                                    <div className="wr-mt">
+                                        <FloatInput
+                                            label="주민번호"
+                                            readOnly={!editable}
+                                            isRequired
                                             {...idnum1}
                                         />
-                                    </WithLabel>
-                                    <DateAndSLInput
-                                        id="birthday"
-                                        label="생년월일"
-                                        dateHooks={birthday}
-                                        type={birthType}
-                                        setType={setBirthType}
-                                        labelType={labelType}
-                                        disabled={!editable}
-                                        size="md"
-                                    />
-                                    <WithLabel
-                                        id="mobile"
-                                        label="핸드폰"
-                                        type={labelType}
-                                        isRequired={editable}
-                                    >
-                                        <MyInput
-                                            id="mobile"
-                                            placeholder="핸드폰"
-                                            disabled={!editable}
-                                            {...mobile}
+                                    </div>
+                                    <div className="wr-mt">
+                                        <FloatDatepicker
+                                            label="생년월일"
+                                            readOnly={!editable}
+                                            isRequired
+                                            hooks={birthday}
+                                            after={
+                                                <MyUnit
+                                                    placement="button"
+                                                    role="button"
+                                                    onClick={
+                                                        handleClickBirthType
+                                                    }
+                                                >
+                                                    {birthType
+                                                        ? '양력'
+                                                        : '음력'}
+                                                </MyUnit>
+                                            }
                                         />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 140 }}
-                                        >
-                                            <MySelect
-                                                placeholder={'선택'}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                placement="right"
-                                                isDisabled={!editable}
-                                                {...mobileCom}
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="telephone"
-                                        label="내선번호"
-                                        type={labelType}
-                                    >
-                                        <MyInput
-                                            id="telephone"
-                                            placeholder="내선번호"
-                                            disabled={!editable}
-                                            {...telephone}
-                                        />
-                                        <div
-                                            className="wr-with__extension"
-                                            style={{ width: 140 }}
-                                        >
-                                            <MyInput
-                                                id="tel_direct"
-                                                className="wr-border-l--hide"
-                                                placeholder="직통번호"
-                                                disabled={!editable}
-                                                {...telDirect}
-                                            />
-                                        </div>
-                                    </WithLabel>
-                                    <WithSelectInput
+                                    </div>
+
+                                    {/* <WithSelectInput
                                         id="email"
                                         label="이메일"
                                         selectWidth={140}
@@ -1104,115 +1055,112 @@ export const UserForm: FC<Props> = ({
                                         inputHooks={email}
                                         selectHooks={emailCom}
                                         disabled={!editable}
-                                    />
+                                    />  */}
                                 </div>
                                 <div className="col-4">
+                                    <FloatInput
+                                        label="사원번호"
+                                        readOnly={!editable}
+                                        isRequired
+                                        value={userid}
+                                        disabled
+                                    />
                                     <div
-                                        className={`${displayName}__avatar wr-mb ${
+                                        className={`${displayName}__avatar wr-mt ${
                                             editable ? 'wr-cursor--pointer' : ''
                                         }`}
+                                        role="button"
+                                        onClick={handleClickImage}
                                     >
-                                        <img
-                                            src={
-                                                lastSetPortraitImagePreview
-                                                    ? lastSetPortraitImagePreview
-                                                    : thumbnail
-                                            }
-                                            alt="Avatar"
-                                            onClick={handleClickImage}
-                                        />
+                                        {lastSetPortraitImagePreview && (
+                                            <img
+                                                src={
+                                                    lastSetPortraitImagePreview
+                                                }
+                                                alt="Avatar"
+                                            />
+                                        )}
                                     </div>
-                                    <WithLabel
-                                        id="userid"
-                                        label="사원번호"
-                                        type="disable"
-                                    >
-                                        <MyInput
-                                            id="userid"
-                                            placeholder="사원번호"
-                                            value={userid}
-                                            disabled
-                                        />
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="user_type"
-                                        label="영업구분"
-                                        type={labelType}
-                                    >
-                                        <MySelect
-                                            id="user_type"
-                                            placeholder={'선택'}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
-                                            isDisabled={!editable}
-                                            {...userType}
-                                        />
-                                    </WithLabel>
-                                    <WithLabel
-                                        id="status"
-                                        label="재직현황"
-                                        type={labelType}
-                                    >
-                                        <MySelect
-                                            id="status"
-                                            placeholder={'선택'}
-                                            height={
-                                                variables.detailFilterHeight
-                                            }
-                                            isDisabled={!editable}
-                                            {...status}
-                                        />
-                                    </WithLabel>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
-                            <PostcodeInput
-                                index={0}
+                            <div className="row">
+                                <div className="flex-fill">
+                                    <FloatSelect
+                                        label="영업구분"
+                                        isDisabled={!editable}
+                                        {...userType}
+                                    />
+                                </div>
+                                <div className="flex-fill">
+                                    <FloatSelect
+                                        label="재직현황"
+                                        isDisabled={!editable}
+                                        {...status}
+                                    />
+                                </div>
+                            </div>
+                            <div className="row wr-mt">
+                                <div className="flex-fill">
+                                    <FloatDatepicker
+                                        label="입사일"
+                                        readOnly={!editable}
+                                        isRequired
+                                        hooks={indate}
+                                    />
+                                </div>
+                                <div className="flex-fill">
+                                    <FloatDatepicker
+                                        label="퇴사일"
+                                        readOnly={!editable}
+                                        hooks={outdate}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="wr-pages-detail__block">
+                        <div className="wr-pages-detail__content">
+                            <div className="row">
+                                <div className="flex-fill">
+                                    <FloatInput
+                                        label="핸드폰"
+                                        readOnly={!editable}
+                                        {...mobile}
+                                    />
+                                </div>
+                                <div className="flex-fill d-flex">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="내선번호"
+                                            readOnly={!editable}
+                                            isConnectAfter
+                                            {...telephone}
+                                        />
+                                    </div>
+
+                                    <div style={{ width: 100 }}>
+                                        <FloatInput
+                                            label="직통번호"
+                                            readOnly={!editable}
+                                            isConnectBefore
+                                            {...telDirect}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <SetPostcodeInput
+                                activeMarginTop
                                 disabled={!editable}
-                                labelType={labelType}
-                                size="md"
                                 postcodeHooks={postcode}
                                 address1Hooks={address1}
                                 address2Hooks={address2}
                                 address3Hooks={address3}
                                 onClickPostcode={onClickPostcode}
                             />
-                            <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="indate"
-                                        label="입사일"
-                                        type={labelType}
-                                    >
-                                        <MyDatepicker
-                                            id="indate"
-                                            size="md"
-                                            placeholder="입사일"
-                                            disabled={!editable}
-                                            hooks={indate}
-                                        />
-                                    </WithLabel>
-                                </div>
-                                <div className="col">
-                                    <WithLabel
-                                        id="outdate"
-                                        label="퇴사일"
-                                        type={labelType}
-                                    >
-                                        <MyDatepicker
-                                            id="outdate"
-                                            size="md"
-                                            placeholder="퇴사일"
-                                            disabled={!editable}
-                                            hooks={outdate}
-                                        />
-                                    </WithLabel>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div className="wr-pages-detail__block">
