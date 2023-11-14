@@ -13,7 +13,7 @@ import { findSelectOption } from '@utils/getter';
 import carConstants from '@constants/options/car';
 import commonConstants from '@constants/options/common';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createPay } from '@actions/contract/long/set-pay.action';
+import { createPay } from '@actions/contract/common/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { MyLayout } from '@components/Layout';
@@ -99,6 +99,7 @@ const Car: NextPage<CarState> = ({ car }) => {
                     defaultSulDist={defaultSulDist}
                     defaultCarNum={car.carnum}
                     defaultCycle={defaultCycle}
+                    defaultPname={car.p_name}
                     defaultCarfamily={defaultCarfamily}
                     defaultCarage={defaultCarage}
                     defaultBboxDate={car.blackbox_date}

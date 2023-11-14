@@ -11,7 +11,7 @@ import { commonMiddleware } from '@utils/generators/common';
 function* getEstimatesSaga({ payload }: GetEstimatesRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(carsService.beforeGetEstimates, rest);
+    const { data } = yield call(carsService.getEstimates, rest);
 
     const successPayload = generateListSuccessPayload(data, payload);
 

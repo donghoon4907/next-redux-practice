@@ -38,7 +38,7 @@ import { InfoCustAccordion } from '@components/accordion/InfoCust';
 import { InfoProductAccordion } from '@components/accordion/InfoProduct';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { SingleContactTabpanel } from '@partials/customer/tabpanels/SingleContact';
-import { getEstimatesRequest } from '@actions/contract/car/get-estimates.action';
+import { getLazyEstimatesRequest } from '@actions/contract/car/get-lazy-estimates.action';
 import { showEstimateSearchModal } from '@actions/modal/estimate-search.action';
 import { EstimateSearchModal } from '@components/modal/EstimateSearch';
 import { isEmpty } from '@utils/validator/common';
@@ -93,6 +93,10 @@ interface Props {
      * 청약설계 기본 값
      */
     defaultSulDist?: CoreSelectOption;
+    /**
+     * 피보험자명 기본 값
+     */
+    defaultPname?: string;
     /**
      * 운전자범위 기본 값
      */
@@ -160,6 +164,7 @@ export const CarForm: FC<Props> = ({
     defaultRate = null,
     defaultCalType = null,
     defaultSulDist = null,
+    defaultPname = '',
     defaultCarfamily = null,
     defaultCarage = null,
     defaultCarNum = '',
@@ -207,7 +212,7 @@ export const CarForm: FC<Props> = ({
 
     const getUsers = useApi(getUsersRequest);
 
-    const getEstimates = useApi(getEstimatesRequest);
+    const getLazyEstimates = useApi(getLazyEstimatesRequest);
     // 탭 관리
     const [tab, setTab] = useTab(CAR_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -230,6 +235,8 @@ export const CarForm: FC<Props> = ({
     const [cal_type] = useSelect(carConstants.calType, defaultCalType);
     // 청약설계
     const [sul_dist] = useSelect(commonConstants.sulDist, defaultSulDist);
+    // 피보험자명
+    const [p_name] = useInput(defaultPname);
     // 운전자범위
     const [carfamily] = useSelect(carConstants.driverRange, defaultCarfamily);
     // 최저운전자 연령
@@ -276,7 +283,7 @@ export const CarForm: FC<Props> = ({
     };
 
     const handleClickLoadEstimate = () => {
-        getEstimates(
+        getLazyEstimates(
             // { userid: 'W0383', bo_datefrom: '2023-11-12' },
             {
                 userid: defaultUserid,
@@ -375,6 +382,10 @@ export const CarForm: FC<Props> = ({
         // 청약설계 관련
         if (sul_dist.value) {
             payload['sul_dist'] = sul_dist.value.value;
+        }
+        // 피보험자 관련
+        if (!isEmpty(p_name.value)) {
+            payload['p_name'] = p_name.value;
         }
         // 운전자 범위 관련
         if (carfamily.value) {

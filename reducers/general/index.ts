@@ -3,7 +3,7 @@ import type { Pay } from '@models/pay';
 import type { Insured } from '@models/insured';
 import type { GetGeneralSuccessPayload } from '@actions/contract/general/get-general.action';
 import produce from 'immer';
-import { PayActionTypes } from '@actions/contract/long/set-pay.action';
+import { PayActionTypes } from '@actions/contract/common/set-pay.action';
 import { GetGeneralActionTypes } from '@actions/contract/general/get-general.action';
 
 export interface GeneralState {

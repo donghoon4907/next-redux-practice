@@ -13,7 +13,7 @@ import { findSelectOption } from '@utils/getter';
 import longConstants from '@constants/options/long';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 import { createInsured } from '@actions/contract/common/set-insured.action';
-import { createPay } from '@actions/contract/long/set-pay.action';
+import { createPay } from '@actions/contract/common/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { createContact } from '@actions/common/set-contact.action';
 import { updateProduct } from '@actions/contract/common/set-product.action';

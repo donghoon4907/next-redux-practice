@@ -1,10 +1,7 @@
 import type { Reducer } from 'redux';
 import type { Bupum } from '@models/bupum';
 import type { GetCarsSuccessPayload } from '@actions/contract/car/get-cars.action';
-import {
-    GetEstimatesActionTypes,
-    type GetEstimatesSuccessPayload,
-} from '@actions/contract/car/get-estimates.action';
+import type { GetEstimatesSuccessPayload } from '@actions/contract/car/get-estimates.action';
 import produce from 'immer';
 import { BupumActionTypes } from '@actions/contract/car/set-bupum.action';
 import { GetCarActionTypes } from '@actions/contract/car/get-car.action';
@@ -12,6 +9,8 @@ import { GetCarcodeActionTypes } from '@actions/contract/car/get-carcode.action'
 import { GetCarsActionTypes } from '@actions/contract/car/get-cars.action';
 import { GetLazyEstimateActionTypes } from '@actions/contract/car/get-lazy-estimate.action';
 import { GetEstimateActionTypes } from '@actions/contract/car/get-estimate.action';
+import { GetLazyEstimatesActionTypes } from '@actions/contract/car/get-lazy-estimates.action';
+import { GetEstimatesActionTypes } from '@actions/contract/car/get-estimates.action';
 
 export interface CarState {
     /**
@@ -182,7 +181,8 @@ export const carReducer: Reducer<CarState, any> = (
 
                 break;
             }
-            case GetEstimatesActionTypes.SUCCESS: {
+            case GetEstimatesActionTypes.SUCCESS:
+            case GetLazyEstimatesActionTypes.SUCCESS: {
                 draft.estimates = action.payload;
 
                 break;

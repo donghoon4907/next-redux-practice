@@ -22,7 +22,6 @@ import { GeneralPaysTabpanel } from '@partials/contract/long/tabpanels/GeneralPa
 // import { StateHistoryTabpanel } from '@partials/contract/long/tabpanels/StateHistory';
 import { ChangeHistoryTabpanel } from '@partials/contract/long/tabpanels/ChangeHistory';
 import { MyButton } from '@components/button';
-import { CreateEtcModal } from '@components/modal/CreateEtc';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
@@ -603,7 +602,6 @@ export const GeneralForm: FC<Props> = ({
                 <CustomerSearchModal type="insured-person" />
             )}
             <CreateGeneralPayModal payment={payment.value} />
-            <CreateEtcModal />
             {mode === 'update' && <UserHistoryModal type="contract" />}
         </>
     );

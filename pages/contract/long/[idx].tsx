@@ -14,7 +14,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
 import { LongForm } from '@partials/contract/long/LongForm';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createPay } from '@actions/contract/long/set-pay.action';
+import { createPay } from '@actions/contract/common/set-pay.action';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { MyLayout } from '@components/Layout';
