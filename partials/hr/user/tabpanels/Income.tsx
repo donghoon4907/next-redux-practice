@@ -49,7 +49,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                         label="테이블"
                                         value="테이블"
                                         name="carRule"
-                                        readOnly={!editable}
+                                        disabled={!editable}
                                         checked={carType === '테이블'}
                                         onChange={onChangeCarType}
                                     />
@@ -57,7 +57,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                         label="비례"
                                         value="비례"
                                         name="carRule"
-                                        readOnly={!editable}
+                                        disabled={!editable}
                                         checked={carType === '비례'}
                                         onChange={onChangeCarType}
                                     />
@@ -111,7 +111,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                         <div className="wr-pages-detail__horizontal">
                                             <MyCheckbox
                                                 label="구간적용"
-                                                readOnly={!editable}
+                                                disabled={!editable}
                                                 {...longGrade}
                                             />
                                         </div>
@@ -120,9 +120,16 @@ export const IncomeTabpanel: FC<Props> = ({
                                         <table className="wr-table table">
                                             <thead>
                                                 <tr>
-                                                    <th style={{ width: 30 }}>
-                                                        <MyCheckbox label="" />
-                                                    </th>
+                                                    {editable && (
+                                                        <th
+                                                            style={{
+                                                                width: 30,
+                                                            }}
+                                                        >
+                                                            <MyCheckbox label="" />
+                                                        </th>
+                                                    )}
+
                                                     <th>시작월</th>
                                                     <th>종료월</th>
                                                     <th>규정구분</th>
@@ -131,9 +138,12 @@ export const IncomeTabpanel: FC<Props> = ({
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>
-                                                        <MyCheckbox label="" />
-                                                    </td>
+                                                    {editable && (
+                                                        <td>
+                                                            <MyCheckbox label="" />
+                                                        </td>
+                                                    )}
+
                                                     <td rowSpan={2}>
                                                         <span>2022-11</span>
                                                     </td>

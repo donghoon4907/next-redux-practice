@@ -2,14 +2,10 @@ import type { FC, ChangeEvent } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
 import { showGuaranteeSettingModal } from '@actions/modal/guarantee-setting.action';
 import { AppState } from '@reducers/index';
 import { HrState } from '@reducers/hr';
-import { MyTableExtension } from '@components/table/Extension';
 import { MyCheckbox } from '@components/checkbox';
-import { MyButton } from '@components/button';
 import {
     deleteGuarantee,
     updateGuarantee,
@@ -30,8 +26,6 @@ export const GuaranteeTabpanel: FC<Props> = ({
     const dispatch = useDispatch();
 
     const { guarantees } = useSelector<AppState, HrState>((state) => state.hr);
-
-    const labelType = 'disable';
 
     const handleShowSettingModal = () => {
         dispatch(showGuaranteeSettingModal());
@@ -150,22 +144,20 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                         </th>
                                     )}
 
-                                    <th style={{ width: '100px' }}>보증구분</th>
-                                    <th style={{ width: '100px' }}>
-                                        보증금(천원)
-                                    </th>
+                                    <th>보증구분</th>
+                                    <th>보증금(천원)</th>
                                     <th>내용(계약번호)</th>
-                                    <th style={{ width: '100px' }}>보증시기</th>
-                                    <th style={{ width: '100px' }}>보증만기</th>
-                                    <th style={{ width: '100px' }}>갱신만기</th>
-                                    <th style={{ width: '100px' }}>유효</th>
-                                    <th style={{ width: '100px' }}>관리기관</th>
+                                    <th>보증시기</th>
+                                    <th>보증만기</th>
+                                    <th>갱신만기</th>
+                                    <th>유효</th>
+                                    <th>관리기관</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {guarantees.length === 0 && (
                                     <tr>
-                                        <td colSpan={editable ? 9 : 8}>
+                                        <td colSpan={9}>
                                             등록된 설정이 없습니다.
                                         </td>
                                     </tr>

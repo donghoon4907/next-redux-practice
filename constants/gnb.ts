@@ -273,6 +273,11 @@ export const ASIDE_MENU: any = {
                 label: '부활명세',
                 to: '/contract/long/buhwal',
             },
+            rule: {
+                id: 'contract-long_rule',
+                label: '장기 환수 제도',
+                to: '/contract/long/rule',
+            },
             // upload: {
             //     id: 'contract-long_upload',
             //     label: '선택업로드',
