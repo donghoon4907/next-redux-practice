@@ -1,10 +1,11 @@
 import type { FC } from 'react';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
+import type { UseInputOutput } from '@hooks/use-input';
+import type { UseSelectOutput } from '@hooks/use-select';
+import type { UseDatepickerOutput } from '@hooks/use-datepicker';
 import { MyTabpanel } from '@components/tab/Tabpanel';
-import { UseInputOutput } from '@hooks/use-input';
-import { UseSelectOutput } from '@hooks/use-select';
-import { UseDatepickerOutput } from '@hooks/use-datepicker';
-import { AssoCodeTemplate } from '../template/AssoCode';
+
+import { OrgaAssoCodeTemplate } from '../template/AssoCode';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -40,7 +41,7 @@ export const OrgaQualManageTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="row wr-pages-detail__applydatepicker">
                 <div className="flex-fill">
-                    <AssoCodeTemplate
+                    <OrgaAssoCodeTemplate
                         dist="손보"
                         no={d_no}
                         company={d_company}
@@ -54,7 +55,7 @@ export const OrgaQualManageTabpanel: FC<Props> = ({
                 </div>
                 <div className="wr-divider__vertical orga"></div>
                 <div className="flex-fill">
-                    <AssoCodeTemplate
+                    <OrgaAssoCodeTemplate
                         dist="생보"
                         no={l_no}
                         company={l_company}

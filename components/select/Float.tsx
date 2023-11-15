@@ -12,6 +12,15 @@ interface Props extends MySelectProps {
      *
      */
     isRequired?: boolean;
+    /**
+     * 이전에 연결된 컴포넌트 유무
+     */
+    isConnectBefore?: boolean;
+    /**
+     * 이후에 연결된 컴포넌트 유무
+     *
+     */
+    isConnectAfter?: boolean;
 }
 
 export const FloatSelect: FC<Props> = ({
@@ -19,6 +28,8 @@ export const FloatSelect: FC<Props> = ({
     label,
     value,
     isRequired,
+    isConnectBefore,
+    isConnectAfter,
     ...rest
 }) => {
     const displayName = 'wr-detail-input';
@@ -38,6 +49,8 @@ export const FloatSelect: FC<Props> = ({
     return (
         <div
             className={`${displayName}__wrap ${
+                isConnectBefore ? `${displayName}--bconnect` : ''
+            } ${isConnectAfter ? `${displayName}--aconnect` : ''} ${
                 isFloat ? `${displayName}--active` : ''
             }`}
         >

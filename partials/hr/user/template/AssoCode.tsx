@@ -27,19 +27,21 @@ interface Props {
     company: UseSelectOutput;
     indate: UseDatepickerOutput;
     outdate: UseDatepickerOutput;
-    manager: UseSelectOutput;
+    // manager: UseSelectOutput;
+    qualification: UseSelectOutput;
     dist: CompanyDist;
     title: string;
     subtitle: string;
 }
 
-export const OrgaAssoCodeTemplate: FC<Props> = ({
+export const UserAssoCodeTemplate: FC<Props> = ({
     editable,
     no,
     company,
     indate,
     outdate,
-    manager,
+    // manager,
+    qualification,
     dist,
     title,
     subtitle,
@@ -123,9 +125,9 @@ export const OrgaAssoCodeTemplate: FC<Props> = ({
                         </div>
                         <div className="flex-fill">
                             <FloatSelect
-                                label="지점장"
+                                label="자격구분"
                                 isDisabled={!editable}
-                                {...manager}
+                                {...qualification}
                             />
                         </div>
                     </div>

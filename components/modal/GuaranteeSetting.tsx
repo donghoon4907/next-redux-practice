@@ -5,22 +5,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import addMonths from 'date-fns/addMonths';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { WithLabel } from '@components/WithLabel';
-import { MySelect } from '@components/select';
 import { useSelect } from '@hooks/use-select';
 import { hideGuaranteeSettingModal } from '@actions/modal/guarantee-setting.action';
-import { MyInput } from '@components/input';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { HrState } from '@reducers/hr';
 import { isEmpty } from '@utils/validator/common';
-import { MyDatepicker } from '@components/datepicker';
 import userConstants from '@constants/options/user';
 import {
     CreateGuaranteePayload,
     createGuarantee,
 } from '@actions/hr/set-guarantee.action';
 import { generateIndex } from '@utils/generate';
+import { FloatSelect } from '@components/select/Float';
+import { FloatInput } from '@components/input/Float';
+import { MyUnit } from '@components/Unit';
+import { FloatDatepicker } from '@components/datepicker/Float';
 
 interface Props {}
 
@@ -134,169 +134,79 @@ export const GuaranteeSettingModal: FC<Props> = () => {
             size="lg"
         >
             <ModalHeader toggle={handleClose}>보증설정</ModalHeader>
-            <ModalBody>
+            <ModalBody className="wr-pages-detail__applydatepicker">
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="gKind" label="보증구분" type="active">
-                            <MySelect id="gKind" {...kind} />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="보증구분" {...kind} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="gMoney" label="보증금" type="active">
-                            <MyInput
-                                id="gMoney"
-                                placeholder="보증금"
-                                className="text-end"
-                                {...gMoney}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="예금주" {...gMoney} />
                     </div>
                 </div>
                 {kind.value?.label === '적립금' ? (
                     <>
                         <div className="row wr-mt">
-                            <div className="col">
-                                <WithLabel
-                                    id="accGoal"
+                            <div className="flex-fill">
+                                <FloatInput
                                     label="적립목표"
-                                    type="active"
-                                >
-                                    <MyInput
-                                        id="accGoal"
-                                        placeholder="적립목표"
-                                        className="text-end"
-                                        {...accGoal}
-                                    />
-                                </WithLabel>
+                                    isNumber
+                                    {...accGoal}
+                                />
                             </div>
-                            <div className="col">
-                                <WithLabel
-                                    id="accStatus"
-                                    label="상태"
-                                    type="active"
-                                >
-                                    <MySelect
-                                        id="accStatus"
-                                        placeholder="상태"
-                                        {...accStatus}
-                                    />
-                                </WithLabel>
+                            <div className="flex-fill">
+                                <FloatSelect label="상태" {...accStatus} />
                             </div>
                         </div>
                         <div className="row wr-mt">
-                            <div className="col">
-                                <WithLabel
-                                    id="accType"
-                                    label="산출기준"
-                                    type="active"
-                                >
-                                    <MySelect
-                                        id="accType"
-                                        placeholder="산출기준"
-                                        {...accType}
-                                    />
-                                </WithLabel>
+                            <div className="flex-fill">
+                                <FloatSelect label="산출기준" {...accType} />
                             </div>
-                            <div className="col">
-                                <WithLabel
-                                    id="accRate"
+                            <div className="flex-fill">
+                                <FloatInput
                                     label="적립율"
-                                    type="active"
-                                >
-                                    <MyInput
-                                        id="accRate"
-                                        placeholder="적립율"
-                                        className="text-end"
-                                        unit="%"
-                                        {...accRate}
-                                    />
-                                </WithLabel>
+                                    isNumber
+                                    {...accRate}
+                                    after={<MyUnit placement="last">%</MyUnit>}
+                                />
                             </div>
                         </div>
                     </>
                 ) : (
                     <>
                         <div className="row wr-mt">
-                            <div className="col">
-                                <WithLabel
-                                    id="gRemark"
+                            <div className="flex-fill">
+                                <FloatInput
                                     label="보증내용"
-                                    type="active"
-                                >
-                                    <MyInput
-                                        id="gRemark"
-                                        placeholder="계약번호 또는 상세"
-                                        {...remark}
-                                    />
-                                </WithLabel>
+                                    isNumber
+                                    {...remark}
+                                />
                             </div>
                         </div>
                         <div className="row wr-mt">
-                            <div className="col">
-                                <WithLabel
-                                    id="sdate"
+                            <div className="flex-fill">
+                                <FloatDatepicker
                                     label="보증시기"
-                                    type="active"
-                                >
-                                    <MyDatepicker
-                                        id="sdate"
-                                        size="sm"
-                                        placeholder="보증시기"
-                                        hooks={sdate}
-                                    />
-                                </WithLabel>
+                                    hooks={sdate}
+                                />
                             </div>
-                            <div className="col">
-                                <WithLabel
-                                    id="edate"
+                            <div className="flex-fill">
+                                <FloatDatepicker
                                     label="보증만기"
-                                    type="active"
-                                >
-                                    <MyDatepicker
-                                        id="edate"
-                                        size="sm"
-                                        placeholder="보증만기"
-                                        hooks={edate}
-                                    />
-                                </WithLabel>
+                                    hooks={edate}
+                                />
                             </div>
                         </div>
                         <div className="row wr-mt">
-                            <div className="col">
-                                <WithLabel
-                                    id="redate"
+                            <div className="flex-fill">
+                                <FloatDatepicker
                                     label="갱신만기"
-                                    type="active"
-                                >
-                                    <MyDatepicker
-                                        id="redate"
-                                        size="sm"
-                                        placeholder="갱신만기"
-                                        hooks={redate}
-                                    />
-                                </WithLabel>
+                                    hooks={redate}
+                                />
                             </div>
-                            <div className="col">
-                                <WithLabel
-                                    id="agencyCom"
-                                    label="금융기관"
-                                    type="active"
-                                >
-                                    <MySelect
-                                        id="agencyCom"
-                                        placeholder="금융기관"
-                                        {...agencyCom}
-                                    />
-                                </WithLabel>
+                            <div className="flex-fill">
+                                <FloatSelect label="금융기관" {...agencyCom} />
                             </div>
                         </div>
-                        {/* <div className="row wr-mt">
-                            <div className="col">
-                                <WithLabel id="gEtc" label="기타" type="active">
-                                    <MyInput id="gEtc" placeholder="기타" />
-                                </WithLabel>
-                            </div>
-                        </div> */}
                     </>
                 )}
             </ModalBody>

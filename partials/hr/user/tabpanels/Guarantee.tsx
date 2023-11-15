@@ -15,6 +15,7 @@ import {
     updateGuarantee,
 } from '@actions/hr/set-guarantee.action';
 import { Guarantee } from '@models/guarantee';
+import { MyTableToolbar } from '@components/table/Toolbar';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -63,7 +64,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="row">
+            {/* <div className="row">
                 <div className="col-3">
                     <WithLabel id="gt_goal" label="보증목표" type={labelType}>
                         <div className="wr-pages-detail__lock">
@@ -125,22 +126,15 @@ export const GuaranteeTabpanel: FC<Props> = ({
                         />
                     </WithLabel>
                 </div>
-            </div>
-            <div className="row wr-mt">
-                <div className="col">
-                    <div className="wr-pages-detail__subtitle">
-                        <strong>보증설정 내역</strong>
-                        {editable && (
-                            <div>
-                                <MyButton
-                                    className="btn-danger btn-sm"
-                                    onClick={handleDeleteGuarantee}
-                                >
-                                    선택삭제
-                                </MyButton>
-                            </div>
-                        )}
-                    </div>
+            </div> */}
+            <div className="row">
+                <div className="flex-fill">
+                    <MyTableToolbar
+                        editable={editable}
+                        title="보증설정 내역"
+                        onCreate={handleShowSettingModal}
+                        onDelete={handleDeleteGuarantee}
+                    />
                     <div className="wr-table--normal wr-mb">
                         <table className="wr-table table">
                             <thead>
@@ -148,7 +142,6 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: 30 }}>
                                             <MyCheckbox
-                                                id="gt_allcheck"
                                                 label=""
                                                 onChange={
                                                     handleAllCheckGuarantee
@@ -157,30 +150,16 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                         </th>
                                     )}
 
+                                    <th style={{ width: '100px' }}>보증구분</th>
                                     <th style={{ width: '100px' }}>
-                                        <strong>보증구분</strong>
+                                        보증금(천원)
                                     </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>보증금(천원)</strong>
-                                    </th>
-                                    <th>
-                                        <strong>내용(계약번호)</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>보증시기</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>보증만기</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>갱신만기</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>유효</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>관리기관</strong>
-                                    </th>
+                                    <th>내용(계약번호)</th>
+                                    <th style={{ width: '100px' }}>보증시기</th>
+                                    <th style={{ width: '100px' }}>보증만기</th>
+                                    <th style={{ width: '100px' }}>갱신만기</th>
+                                    <th style={{ width: '100px' }}>유효</th>
+                                    <th style={{ width: '100px' }}>관리기관</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -276,18 +255,13 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                 })}
                             </tbody>
                         </table>
-                        {editable && (
-                            <MyTableExtension
-                                onClick={handleShowSettingModal}
-                            />
-                        )}
                     </div>
                 </div>
             </div>
-            <div className="row wr-mt">
+            {/* <div className="row wr-mt">
                 <div className="col">
                     <div className="wr-pages-detail__subtitle">
-                        <strong>적립금 관리 내역</strong>
+                        적립금 관리 내역
                         <div>
                             <span className="wr-pages-detail__description">
                                 목표액 : 5,000, 적립기준 : 소득전체 5%, 단위 :
@@ -302,30 +276,22 @@ export const GuaranteeTabpanel: FC<Props> = ({
                         <table className="wr-table table">
                             <thead>
                                 <tr>
+                                    <th style={{ width: '100px' }}>적립월</th>
                                     <th style={{ width: '100px' }}>
-                                        <strong>적립월</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>보증목표액</strong>
+                                        보증목표액
                                     </th>
                                     <th style={{ width: '100px' }}>
-                                        <strong>기준액(소득)</strong>
+                                        기준액(소득)
                                     </th>
                                     <th style={{ width: '100px' }}>
-                                        <strong>적립/변동액</strong>
+                                        적립/변동액
                                     </th>
+                                    <th style={{ width: '100px' }}>누계</th>
+                                    <th style={{ width: '100px' }}>목표잔여</th>
                                     <th style={{ width: '100px' }}>
-                                        <strong>누계</strong>
+                                        예상만기월
                                     </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>목표잔여</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>예상만기월</strong>
-                                    </th>
-                                    <th>
-                                        <strong>비고</strong>
-                                    </th>
+                                    <th>비고</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -346,16 +312,14 @@ export const GuaranteeTabpanel: FC<Props> = ({
                                         <span>265</span>
                                     </td>
                                     <td className="text-end">
-                                        <span>
-                                            <strong>4,535</strong>
-                                        </span>
+                                        <span>4,535</span>
                                     </td>
                                     <td>
                                         <span>2026-04</span>
                                     </td>
                                     <td>
                                         <span className="text-danger">
-                                            <strong>부분 상환</strong> &nbsp;
+                                            부분 상환 &nbsp;
                                         </span>
                                         <span className="text-secondary">
                                             (2023-01-25, 홍길순)
@@ -366,7 +330,7 @@ export const GuaranteeTabpanel: FC<Props> = ({
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </MyTabpanel>
     );
 };

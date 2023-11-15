@@ -1,9 +1,8 @@
 import type { FC } from 'react';
-import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import type { HrState } from '@reducers/hr';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideDepartSearchModal } from '@actions/modal/depart-search.action';
@@ -11,6 +10,7 @@ import { updateDepart } from '@actions/hr/set-depart.action';
 import { WithLabel } from '@components/WithLabel';
 import { MySelect } from '@components/select';
 import { useSelect } from '@hooks/use-select';
+import { FloatSelect } from '@components/select/Float';
 
 interface Props {}
 
@@ -52,14 +52,8 @@ export const SelectDepartModal: FC<Props> = () => {
             <ModalHeader toggle={handleClose}>부서 선택</ModalHeader>
             <ModalBody>
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="depart" label="부서" type="active">
-                            <MySelect
-                                id="depart"
-                                placeholder={'선택'}
-                                {...depart}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="부서" {...depart} />
                     </div>
                 </div>
             </ModalBody>

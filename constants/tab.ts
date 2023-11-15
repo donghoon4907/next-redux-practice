@@ -7,9 +7,9 @@ export const HR_DETAIL_TABS: CoreTabOption[] = [
     { id: 'tabGuarantee', label: '보증설정', panelId: 'tabpanelGuarantee' },
     { id: 'tabAuthority', label: '권한설정', panelId: 'tabpanelAuthority' },
     {
-        id: 'tabQualManage',
+        id: 'tabAsso',
         label: '협회자격관리',
-        panelId: 'tabpanelQualManage',
+        panelId: 'tabpanelAsso',
     },
 ];
 /**

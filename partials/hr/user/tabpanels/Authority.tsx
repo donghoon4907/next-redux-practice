@@ -26,49 +26,41 @@ export const AuthorityTabpanel: FC<Props> = ({
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="wr-pages-detail__toolbar">
                 <div className="wr-pages-detail__buttons">
-                    <MyCheckbox id="at_is_min" label="최소허용" disabled />
-                    <MyCheckbox id="at_is_all" label="전체허용" disabled />
+                    <MyCheckbox label="최소허용" disabled />
+                    <MyCheckbox label="전체허용" disabled />
                 </div>
                 <div>
-                    <MyCheckbox
-                        id="at_is_excel"
-                        label="엑셀다운로드 일괄허용"
-                        disabled
-                    />
+                    <MyCheckbox label="엑셀다운로드 일괄허용" disabled />
                 </div>
             </div>
-            <hr />
-            <div className="row">
+            <div className="row wr-mt">
                 <div className="col">
                     <div className="row">
-                        <div className="col">
+                        <div className="col-8">
                             <div className="wr-pages-detail__block">
-                                <div className="wr-pages-detail__title">
-                                    <strong>시스템사용</strong>
-                                </div>
-                                <div className="wr-pages-detail__content">
-                                    <div className="wr-pages-detail__with">
+                                <div className="wr-pages-detail__content p-15">
+                                    <div className="wr-pages-detail__subtitle">
+                                        시스템사용
+                                    </div>
+                                    <div className="wr-pages-detail__toolbar wr-mt">
                                         <MyCheckbox
-                                            id="at_is_web"
                                             disabled={!editable}
                                             label="웹"
                                             {...useWeb}
                                         />
                                         <MyCheckbox
-                                            id="at_is_mobile"
                                             disabled={!editable}
                                             label="모바일"
                                             {...useMobile}
                                         />
                                         <MyCheckbox
-                                            id="at_is_login"
                                             label="중복로그인"
                                             disabled
                                         />
                                     </div>
                                 </div>
                             </div>
-                            <div className="wr-pages-detail__block">
+                            {/* <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__lock">
                                     <p>준비 중입니다.</p>
                                 </div>
@@ -91,9 +83,9 @@ export const AuthorityTabpanel: FC<Props> = ({
                                         />
                                     </div>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
-                        <div className="col">
+                        {/* <div className="col">
                             <div className="wr-pages-detail__block">
                                 <div className="wr-pages-detail__lock">
                                     <p>준비 중입니다.</p>
@@ -146,11 +138,11 @@ export const AuthorityTabpanel: FC<Props> = ({
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 <div className="col">
-                    <div className="wr-pages-detail__block">
+                    {/* <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__lock">
                             <p>준비 중입니다.</p>
                         </div>
@@ -216,10 +208,10 @@ export const AuthorityTabpanel: FC<Props> = ({
                                 </div>
                             </WithText>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
-            <div className="row wr-mt">
+            {/* <div className="row wr-mt">
                 <div className="col">
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__lock">
@@ -258,7 +250,7 @@ export const AuthorityTabpanel: FC<Props> = ({
                     </div>
                 </div>
                 <div className="col"></div>
-            </div>
+            </div> */}
         </MyTabpanel>
     );
 };

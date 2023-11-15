@@ -35,7 +35,6 @@ import { useCheckbox } from '@hooks/use-checkbox';
 import { CodeSettingModal } from '@components/modal/CodeSetting';
 import { createUserRequest } from '@actions/hr/create-user.action';
 import { getOrgaRequest } from '@actions/hr/get-orga';
-import { MyDatepicker } from '@components/datepicker';
 import { updateUserRequest } from '@actions/hr/update-user.action';
 import { usePostcode } from '@hooks/use-postcode';
 import { convertPhoneNumber } from '@utils/converter';
@@ -46,14 +45,13 @@ import {
     usePhoneInput,
     useResidentNumberInput,
 } from '@hooks/use-input';
-import { PostcodeInput } from '@partials/common/input/Postcode';
-import { DateAndSLInput } from '@partials/common/input/DateAndSL';
-import { WithSelectInput } from '@partials/common/input/WithSelect';
 import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { MyUnit } from '@components/Unit';
 import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
 import { FloatSelect } from '@components/select/Float';
+import { UserEstimateAccordion } from '@components/accordion/UserEstimate';
+import { OrgaQualManageTabpanel } from '../orga/tabpanels/QualManage';
 
 interface Props {
     /**
@@ -1046,16 +1044,6 @@ export const UserForm: FC<Props> = ({
                                             }
                                         />
                                     </div>
-
-                                    {/* <WithSelectInput
-                                        id="email"
-                                        label="이메일"
-                                        selectWidth={140}
-                                        labelType={labelType}
-                                        inputHooks={email}
-                                        selectHooks={emailCom}
-                                        disabled={!editable}
-                                    />  */}
                                 </div>
                                 <div className="col-4">
                                     <FloatInput
@@ -1125,12 +1113,23 @@ export const UserForm: FC<Props> = ({
                     <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="flex-fill">
-                                    <FloatInput
-                                        label="핸드폰"
-                                        readOnly={!editable}
-                                        {...mobile}
-                                    />
+                                <div className="flex-fill d-flex">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="핸드폰"
+                                            readOnly={!editable}
+                                            isConnectAfter
+                                            {...mobile}
+                                        />
+                                    </div>
+                                    <div style={{ width: 130 }}>
+                                        <FloatSelect
+                                            label="통신사"
+                                            isDisabled={!editable}
+                                            isConnectBefore
+                                            {...mobileCom}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="flex-fill d-flex">
                                     <div className="flex-fill">
@@ -1142,7 +1141,7 @@ export const UserForm: FC<Props> = ({
                                         />
                                     </div>
 
-                                    <div style={{ width: 100 }}>
+                                    <div style={{ width: 80 }}>
                                         <FloatInput
                                             label="직통번호"
                                             readOnly={!editable}
@@ -1151,6 +1150,36 @@ export const UserForm: FC<Props> = ({
                                         />
                                     </div>
                                 </div>
+                            </div>
+                            {/* <WithSelectInput
+                                        id="email"
+                                        label="이메일"
+                                        selectWidth={140}
+                                        labelType={labelType}
+                                        inputHooks={email}
+                                        selectHooks={emailCom}
+                                        disabled={!editable}
+                                    />  */}
+                            <div className="row wr-mt">
+                                <div className="flex-fill d-flex">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="이메일"
+                                            readOnly={!editable}
+                                            isConnectAfter
+                                            {...mobile}
+                                        />
+                                    </div>
+                                    <div style={{ width: 130 }}>
+                                        <FloatSelect
+                                            label="플랫폼"
+                                            isDisabled={!editable}
+                                            isConnectBefore
+                                            {...emailCom}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex-fill d-flex"></div>
                             </div>
                             <SetPostcodeInput
                                 activeMarginTop
@@ -1164,207 +1193,51 @@ export const UserForm: FC<Props> = ({
                         </div>
                     </div>
                     <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__title">
-                            <strong>비교견적 설정</strong>
-                        </div>
                         <div className="wr-pages-detail__content">
                             <div className="row">
-                                <div className="col">
-                                    <WithLabel
-                                        id="estComNm"
-                                        label="회사명"
-                                        type={labelType}
-                                    >
-                                        <div style={{ width: 200 }}>
-                                            <MySelect
-                                                placeholder={'선택'}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...estComInputType}
-                                            />
-                                        </div>
-
-                                        <MyInput
-                                            className="wr-border-l--hide"
-                                            id="estComNm"
-                                            placeholder="회사명"
-                                            disabled={
-                                                editable
-                                                    ? estComInputType.value
-                                                          ?.value !== '직접입력'
-                                                    : true
-                                            }
-                                            {...estComNm}
-                                        />
-                                    </WithLabel>
+                                <div className="flex-fill">
+                                    <FloatSelect
+                                        label="은행명"
+                                        isDisabled={!editable}
+                                        {...bank}
+                                    />
+                                </div>
+                                <div className="flex-fill">
+                                    <FloatInput
+                                        label="예금주"
+                                        readOnly={!editable}
+                                        {...holder}
+                                    />
                                 </div>
                             </div>
                             <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="estSalesNm"
-                                        label="견적영업명"
-                                        type={labelType}
-                                    >
-                                        <div style={{ width: 200 }}>
-                                            <MySelect
-                                                placeholder={'선택'}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...estSalesNmInputType}
-                                            />
-                                        </div>
-
-                                        <MyInput
-                                            className="wr-border-l--hide"
-                                            id="estSalesNm"
-                                            placeholder="견적영업명"
-                                            disabled={
-                                                editable
-                                                    ? estSalesNmInputType.value
-                                                          ?.value !== '직접입력'
-                                                    : true
-                                            }
-                                            {...estSalesNm}
-                                        />
-                                    </WithLabel>
+                                <div className="flex-fill">
+                                    <FloatInput
+                                        label="계좌번호"
+                                        readOnly={!editable}
+                                        {...account}
+                                    />
                                 </div>
                             </div>
-                            <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="estPhone"
-                                        label="대표전화"
-                                        type={labelType}
-                                    >
-                                        <div style={{ width: 200 }}>
-                                            <MySelect
-                                                placeholder={'선택'}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...estPhoneInputType}
-                                            />
-                                        </div>
-                                        <MyInput
-                                            className="wr-border-l--hide"
-                                            id="estPhone"
-                                            placeholder="대표전화"
-                                            disabled={
-                                                editable
-                                                    ? estPhoneInputType.value
-                                                          ?.value !== '직접입력'
-                                                    : true
-                                            }
-                                            {...estPhone}
-                                        />
-                                    </WithLabel>
-                                </div>
-                            </div>
-                            <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="estFax"
-                                        label="팩스번호"
-                                        type={labelType}
-                                    >
-                                        <div style={{ width: 200 }}>
-                                            <MySelect
-                                                placeholder={'선택'}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...estFaxInputType}
-                                            />
-                                        </div>
-
-                                        <MyInput
-                                            className="wr-border-l--hide"
-                                            id="estFax"
-                                            placeholder="팩스번호"
-                                            disabled={
-                                                editable
-                                                    ? estFaxInputType.value
-                                                          ?.value !== '직접입력'
-                                                    : true
-                                            }
-                                            {...estFax}
-                                        />
-                                    </WithLabel>
-                                </div>
-                            </div>
-                            <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="direct"
-                                        label="직통전화"
-                                        type={labelType}
-                                    >
-                                        <div style={{ width: 200 }}>
-                                            <MySelect
-                                                placeholder={'선택'}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...estDirectInputType}
-                                            />
-                                        </div>
-
-                                        <MyInput
-                                            className="wr-border-l--hide"
-                                            id="direct"
-                                            placeholder="직통전화"
-                                            disabled={
-                                                editable
-                                                    ? estDirectInputType.value
-                                                          ?.value !== '직접입력'
-                                                    : true
-                                            }
-                                            {...estDirect}
-                                        />
-                                    </WithLabel>
-                                </div>
-                            </div>
-                            <div className="row wr-mt">
-                                <div className="col">
-                                    <WithLabel
-                                        id="estAddress"
-                                        label="표기주소"
-                                        type={labelType}
-                                    >
-                                        <div style={{ width: 200 }}>
-                                            <MySelect
-                                                placeholder={'선택'}
-                                                height={
-                                                    variables.detailFilterHeight
-                                                }
-                                                isDisabled={!editable}
-                                                {...estAddrInputType}
-                                            />
-                                        </div>
-
-                                        <MyInput
-                                            className="wr-border-l--hide"
-                                            id="estAddress"
-                                            placeholder="표기주소"
-                                            disabled={
-                                                editable
-                                                    ? estAddrInputType.value
-                                                          ?.value !== '직접입력'
-                                                    : true
-                                            }
-                                            {...estAddr}
-                                        />
-                                    </WithLabel>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                    <div className="wr-pages-detail__block">
+                        <div className="wr-pages-detail__content p-15">
+                            <UserEstimateAccordion
+                                editable={editable}
+                                comNmHooks={estComNm}
+                                comTypeHooks={estComInputType}
+                                salesNmHooks={estSalesNm}
+                                salesTypeHooks={estSalesNmInputType}
+                                phoneHooks={estPhone}
+                                phoneTypeHooks={estPhoneInputType}
+                                faxHooks={estFax}
+                                faxTypeHooks={estFaxInputType}
+                                directHooks={estDirect}
+                                directTypeHooks={estDirectInputType}
+                                addressHooks={estAddr}
+                                addressTypeHooks={estAddrInputType}
+                            />
                         </div>
                     </div>
                 </div>
@@ -1386,9 +1259,6 @@ export const UserForm: FC<Props> = ({
                             tabId="tabIncome"
                             hidden={tab.id !== 'tabIncome'}
                             editable={editable}
-                            bank={bank}
-                            account={account}
-                            holder={holder}
                             carType={carType}
                             onChangeCarType={handleChangeCarType}
                             genType={genType}
@@ -1411,21 +1281,21 @@ export const UserForm: FC<Props> = ({
                             useWeb={useWeb}
                             useMobile={useMobile}
                         />
-                        <QualManageTabpanel
-                            id="tabpanelQualManage"
-                            tabId="tabQualManage"
-                            hidden={tab.id !== 'tabQualManage'}
+                        <OrgaQualManageTabpanel
+                            id="tabpanelAsso"
+                            tabId="tabAsso"
+                            hidden={tab.id !== 'tabAsso'}
                             editable={editable}
-                            giaNo={giaNo}
-                            giaComp={giaComp}
-                            giaIndate={giaIndate}
-                            giaOutdate={giaOutdate}
-                            giaQualification={giaQualification}
-                            liaNo={liaNo}
-                            liaComp={liaComp}
-                            liaIndate={liaIndate}
-                            liaOutdate={liaOutdate}
-                            liaQualification={liaQualification}
+                            d_no={giaNo}
+                            d_company={giaComp}
+                            d_indate={giaIndate}
+                            d_outdate={giaOutdate}
+                            d_manager={giaQualification}
+                            l_no={liaNo}
+                            l_company={liaComp}
+                            l_indate={liaIndate}
+                            l_outdate={liaOutdate}
+                            l_manager={liaQualification}
                         />
                     </div>
                 </div>
