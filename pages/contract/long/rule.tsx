@@ -1,30 +1,21 @@
 import type { NextPage } from 'next';
-import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
-import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
-import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 import { LongRuleForm } from '@partials/contract/long/LongRuleForm';
+import { getSudistsRequest } from '@actions/rule/get-sudists';
+import { getMakeableRatesRequest } from '@actions/rule/get-makeable-rates';
+import { getGradesRequest } from '@actions/rule/get-grades';
+import { getHwansRequest } from '@actions/rule/get-hwans';
 
 const LongRule: NextPage = () => {
-    const { loggedInUser, orgas } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
-
     // 탭 설정
     useInitTab('장기 환수 제도');
-
-    const defaultOrga = findSelectOption(
-        loggedInUser.user_info.orga_idx,
-        orgas,
-    );
 
     return (
         <>
@@ -36,11 +27,7 @@ const LongRule: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <LongRuleForm
-                    mode="create"
-                    defaultUserid={loggedInUser.userid}
-                    defaultOrga={defaultOrga}
-                />
+                <LongRuleForm />
             </MyLayout>
         </>
     );
@@ -49,6 +36,14 @@ const LongRule: NextPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
         dispatch(getOrgasRequest({}));
+
+        dispatch(getMakeableRatesRequest());
+
+        dispatch(getGradesRequest());
+
+        dispatch(getHwansRequest());
+
+        dispatch(getSudistsRequest({ spe: 'long' }));
 
         dispatch(getCompaniesRequest('long-use'));
 

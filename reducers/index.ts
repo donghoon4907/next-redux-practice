@@ -15,6 +15,7 @@ import { customerReducer } from './customer';
 import { commonReducer } from './common';
 import { contractReducer } from './contract';
 import { carReducer } from './car';
+import { ruleReducer } from './rule';
 
 const combinedReducer = combineReducers({
     tab: tabReducer,
@@ -31,6 +32,7 @@ const combinedReducer = combineReducers({
     common: commonReducer,
     contract: contractReducer,
     car: carReducer,
+    rule: ruleReducer,
 });
 
 export const rootReducer = (state: any, action: AnyAction) => {

@@ -1,56 +1,72 @@
 import type { FC } from 'react';
-import type { CoreSelectOption } from '@interfaces/core';
+import type { AppState } from '@reducers/index';
+import type { HrState } from '@reducers/hr';
+import type { RuleState } from '@reducers/rule';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { MyFooter } from '@components/footer';
 import { MyButton } from '@components/button';
 import { CreateLongDTO } from '@dto/contractor/Long.dto';
-import { LongSearchFilter } from './template/SearchFilter';
 import { FloatInput } from '@components/input/Float';
 import { FloatSelect } from '@components/select/Float';
+import commonConstants from '@constants/options/common';
+import { useSelect } from '@hooks/use-select';
+import { useApi } from '@hooks/use-api';
+import { getCalspecsRequest } from '@actions/rule/get-calspecs';
+import { getRuleOrgasRequest } from '@actions/rule/get-orgas';
 
-interface Props {
-    /**
-     * 모드: 등록 / 수정
-     */
-    mode: 'create' | 'update';
-    /**
-     * PK
-     */
-    idx?: number;
-    /**
-     * 담당자 기본 ID
-     */
-    defaultUserid: string;
-    /**
-     * 수정 시
-     */
-    defaultOrganize?: string;
-    /**
-     * 담당자 조직 기본 ID
-     */
-    defaultOrga?: CoreSelectOption;
-}
+interface Props {}
 
-export const LongRuleForm: FC<Props> = ({
-    mode,
-    idx = -1,
-    defaultUserid,
-    defaultOrganize = '',
-    defaultOrga = null,
-}) => {
+export const LongRuleForm: FC<Props> = () => {
     const displayName = 'wr-pages-long-detail';
 
-    // 수정 모드 여부
-    const [editable, setEditable] = useState(mode === 'create' ? true : false);
+    const { longUseCompanies } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
 
-    // 취소 버튼 클릭 핸들러
-    const handleClickCancel = () => {
-        const tf = confirm('수정을 취소하시겠습니까?');
+    const { makeableRates, sudists, calspecs, orgas, grades, hwans } =
+        useSelector<AppState, RuleState>((state) => state.rule);
 
-        if (tf) {
-            location.reload();
-        }
-    };
+    const getCalspecs = useApi(getCalspecsRequest);
+
+    const getOrgas = useApi(getRuleOrgasRequest);
+
+    // 제도 적용 등급
+    const [rate] = useSelect(makeableRates, null, {
+        callbackOnChange: (next) => {
+            if (next) {
+                getOrgas({ rate: next.value });
+            }
+        },
+    });
+    // 제도 적용 조직
+    const [orga] = useSelect(orgas, null);
+    // 사용 유무
+    const [use] = useSelect(commonConstants.yn, null);
+    // 구간 규정 유무
+    const [grade] = useSelect(commonConstants.yn, null, {
+        callbackOnChange: (next) => {
+            if (next) {
+                setGradeRate(null);
+            }
+        },
+    });
+    // 구간 등급
+    const [grade_rate, setGradeRate] = useSelect(grades, null);
+    // 환수 제도
+    const [hwan] = useSelect(hwans, null);
+    // 테이블 지급 규정 - 보험사
+    const [wcode] = useSelect(longUseCompanies, null, {
+        callbackOnChange: (next) => {
+            if (next) {
+                getCalspecs({ spe: 'long', wcode: next.value });
+            }
+        },
+    });
+    // 테이블 지급 규정 - 수수료항목
+    const [sudist] = useSelect(sudists, null);
+    // 테이블 지급 규정 - 정산종목
+    const [calspec] = useSelect(calspecs, null);
 
     const handleCreate = () => {
         const payload = createPayload();
@@ -84,28 +100,35 @@ export const LongRuleForm: FC<Props> = ({
                             <FloatInput label="장기 지급 제도명" />
                         </div>
                         <div className="col-2">
-                            <FloatInput label="제도 적용 등급" />
+                            <FloatSelect label="제도 적용 등급" {...rate} />
                         </div>
                         <div className="col-2">
-                            <FloatSelect label="제도 적용 조직" />
+                            <FloatSelect label="제도 적용 조직" {...orga} />
                         </div>
                         <div className="col-2">
-                            <FloatSelect label="사용유무" />
+                            <FloatSelect label="사용유무" {...use} />
                         </div>
                     </div>
                     <div className="row wr-mt">
                         <div className="col-2">
                             <div className="row">
                                 <div className="flex-fill">
-                                    <FloatSelect label="구간 규정 여부" />
+                                    <FloatSelect
+                                        label="구간 규정 여부"
+                                        {...grade}
+                                    />
                                 </div>
                                 <div className="flex-fill">
-                                    <FloatSelect label="구간등급" />
+                                    <FloatSelect
+                                        label="구간등급"
+                                        isDisabled={grade.value?.value === 'N'}
+                                        {...grade_rate}
+                                    />
                                 </div>
                             </div>
                         </div>
                         <div className="col-2">
-                            <FloatSelect label="환수 제도" />
+                            <FloatSelect label="환수 제도" {...hwan} />
                         </div>
                     </div>
                 </div>
@@ -119,13 +142,19 @@ export const LongRuleForm: FC<Props> = ({
                             </div>
                             <div className="row wr-mt">
                                 <div className="col-3">
-                                    <FloatSelect label="보험사" />
+                                    <FloatSelect label="보험사" {...wcode} />
                                 </div>
                                 <div className="col-3">
-                                    <FloatSelect label="수수료항목" />
+                                    <FloatSelect
+                                        label="수수료항목"
+                                        {...sudist}
+                                    />
                                 </div>
                                 <div className="col-3">
-                                    <FloatSelect label="정산항목" />
+                                    <FloatSelect
+                                        label="정산종목"
+                                        {...calspec}
+                                    />
                                 </div>
                             </div>
                             <div className="wr-table--normal wr-mt">
@@ -199,23 +228,13 @@ export const LongRuleForm: FC<Props> = ({
                 <div className="wr-footer__between">
                     <div></div>
                     <div className="wr-pages-detail__buttons">
-                        {editable && mode === 'update' && (
-                            <MyButton
-                                className="btn-secondary btn-sm"
-                                onClick={handleClickCancel}
-                            >
-                                취소
-                            </MyButton>
-                        )}
-                        {mode === 'create' && (
-                            <MyButton
-                                type="button"
-                                className="btn-primary btn-sm"
-                                onClick={handleCreate}
-                            >
-                                저장
-                            </MyButton>
-                        )}
+                        <MyButton
+                            type="button"
+                            className="btn-primary btn-sm"
+                            onClick={handleCreate}
+                        >
+                            저장
+                        </MyButton>
                     </div>
                 </div>
             </MyFooter>

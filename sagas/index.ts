@@ -9,6 +9,7 @@ import { longSaga } from './long';
 import { generalSaga } from './general';
 import { carSaga } from './car';
 import { commonSaga } from './common';
+import { ruleSaga } from './rule';
 
 export function* rootSaga() {
     yield all([
@@ -21,5 +22,6 @@ export function* rootSaga() {
         call(generalSaga),
         call(carSaga),
         call(commonSaga),
+        call(ruleSaga),
     ]);
 }
