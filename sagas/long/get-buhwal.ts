@@ -1,4 +1,4 @@
-import type { GetLongBuhwalsRequestAction } from '@actions/contract/long/get-long-buhwals.action';
+import type { GetLongBuhwalsRequestAction } from '@actions/contract/long/get-buhwals.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
 import longsService from '@services/longsService';
 import { generateListSuccessPayload } from '@utils/generate';
@@ -6,7 +6,7 @@ import { commonMiddleware } from '@utils/generators/common';
 import {
     GetLongBuhwalsActionTypes,
     getLongBuhwalsSuccess,
-} from '@actions/contract/long/get-long-buhwals.action';
+} from '@actions/contract/long/get-buhwals.action';
 
 function* getLongBuhwalsSaga({ payload }: GetLongBuhwalsRequestAction) {
     const { data } = yield call(longsService.getLongBuhwals, payload);

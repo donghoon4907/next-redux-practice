@@ -1,5 +1,8 @@
 import type { NextPage } from 'next';
+import type { AppState } from '@reducers/index';
+import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
+import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
@@ -7,13 +10,16 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
-import { LongRuleForm } from '@partials/contract/long/LongRuleForm';
+import { LongRuleForm } from '@partials/rule/long/LongRuleForm';
 import { getSudistsRequest } from '@actions/rule/get-sudists';
 import { getMakeableRatesRequest } from '@actions/rule/get-makeable-rates';
 import { getGradesRequest } from '@actions/rule/get-grades';
 import { getHwansRequest } from '@actions/rule/get-hwans';
 
-const LongRule: NextPage = () => {
+const CreateLongRule: NextPage = () => {
+    const { loggedInUser } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
     // 탭 설정
     useInitTab('장기 환수 제도');
 
@@ -27,7 +33,10 @@ const LongRule: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <LongRuleForm />
+                <LongRuleForm
+                    mode="create"
+                    defaultUserid={loggedInUser.userid}
+                />
             </MyLayout>
         </>
     );
@@ -55,4 +64,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }),
 );
 
-export default LongRule;
+export default CreateLongRule;

@@ -1,7 +1,7 @@
 import type { Action } from 'redux';
 import type { Contact } from '@models/contact';
 import type { Pay } from '@models/pay';
-import type { CreateGeneralRequestPayload } from './create-general.action';
+import type { CreateGeneralRequestPayload } from './create.action';
 
 export const UPDATE_GENERAL_KEY = 'UPDATE_GENERAL';
 

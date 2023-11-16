@@ -1,7 +1,7 @@
 import type { Action } from 'redux';
 import type { Contact } from '@models/contact';
 import type { Pay } from '@models/pay';
-import type { CreateLongRequestPayload } from './create-long.action';
+import type { CreateLongRequestPayload } from './create.action';
 
 export const UPDATE_LONG_KEY = 'UPDATE_LONG';
 

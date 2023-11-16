@@ -42,8 +42,8 @@ import {
     CreateGeneralDTO,
     UpdateGeneralDTO,
 } from '@dto/contractor/General.dto';
-import { createGeneralRequest } from '@actions/contract/general/create-general.action';
-import { updateGeneralRequest } from '@actions/contract/general/update-general.action';
+import { createGeneralRequest } from '@actions/contract/general/create.action';
+import { updateGeneralRequest } from '@actions/contract/general/update.action';
 import { LongManagerAccordion } from '@components/accordion/LongManagerHistory';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 

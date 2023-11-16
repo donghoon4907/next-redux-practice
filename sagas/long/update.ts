@@ -1,11 +1,11 @@
-import type { UpdateLongRequestAction } from '@actions/contract/long/update-long.action';
+import type { UpdateLongRequestAction } from '@actions/contract/long/update.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import longsService from '@services/longsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     UpdateLongActionTypes,
     updateLongSuccess,
-} from '@actions/contract/long/update-long.action';
+} from '@actions/contract/long/update.action';
 
 function* updateLongSaga({ payload }: UpdateLongRequestAction) {
     const { callback, ...rest } = payload;

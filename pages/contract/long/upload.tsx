@@ -20,7 +20,7 @@ import { MyFooter } from '@components/footer';
 import { CoreSelectOption } from '@interfaces/core';
 import { MyLocalPagination } from '@components/pagination/local';
 import { useApi } from '@hooks/use-api';
-import { uploadLongRequest } from '@actions/contract/long/upload-long.action';
+import { uploadLongRequest } from '@actions/contract/long/upload.action';
 import longConstants from '@constants/options/long';
 
 const LongUpload: NextPage = () => {

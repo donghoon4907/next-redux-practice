@@ -1,6 +1,6 @@
-import type { CreateGeneralRequestPayload } from '@actions/contract/general/create-general.action';
+import type { CreateGeneralRequestPayload } from '@actions/contract/general/create.action';
 import type { GetGeneralRequestPayload } from '@actions/contract/general/get-general.action';
-import type { UpdateGeneralRequestPayload } from '@actions/contract/general/update-general.action';
+import type { UpdateGeneralRequestPayload } from '@actions/contract/general/update.action';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 

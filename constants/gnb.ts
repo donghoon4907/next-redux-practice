@@ -276,7 +276,7 @@ export const ASIDE_MENU: any = {
             rule: {
                 id: 'contract-long_rule',
                 label: '장기 환수 제도',
-                to: '/contract/long/rule',
+                to: '/contract/long/create-rule',
             },
             // upload: {
             //     id: 'contract-long_upload',

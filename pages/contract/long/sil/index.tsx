@@ -18,7 +18,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { LongSilSearchFilter } from '@partials/contract/long/template/SilSearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
-import { getLongSilsRequest } from '@actions/contract/long/get-long-sils.action';
+import { getLongSilsRequest } from '@actions/contract/long/get-sils.action';
 import { getUsersRequest } from '@actions/hr/get-users';
 
 const LongSil: NextPage = () => {

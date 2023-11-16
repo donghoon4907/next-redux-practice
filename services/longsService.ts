@@ -1,10 +1,10 @@
-import type { CreateLongRequestPayload } from '@actions/contract/long/create-long.action';
+import type { CreateLongRequestPayload } from '@actions/contract/long/create.action';
 import type { GetLongRequestPayload } from '@actions/contract/long/get-long.action';
 import type { GetLongsRequestPayload } from '@actions/contract/long/get-longs.action';
-import type { UpdateLongRequestPayload } from '@actions/contract/long/update-long.action';
-import type { UploadLongRequestPayload } from '@actions/contract/long/upload-long.action';
-import type { GetLongSilsRequestPayload } from '@actions/contract/long/get-long-sils.action';
-import type { GetLongSilhyosRequestPayload } from '@actions/contract/long/get-long-silhyos.action';
+import type { UpdateLongRequestPayload } from '@actions/contract/long/update.action';
+import type { UploadLongRequestPayload } from '@actions/contract/long/upload.action';
+import type { GetLongSilsRequestPayload } from '@actions/contract/long/get-sils.action';
+import type { GetLongSilhyosRequestPayload } from '@actions/contract/long/get-silhyos.action';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getNodeAxios } from '@utils/axios/node';

@@ -1,11 +1,11 @@
-import type { UpdateGeneralRequestAction } from '@actions/contract/general/update-general.action';
+import type { UpdateGeneralRequestAction } from '@actions/contract/general/update.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import generalsService from '@services/generalsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     UpdateGeneralActionTypes,
     updateGeneralSuccess,
-} from '@actions/contract/general/update-general.action';
+} from '@actions/contract/general/update.action';
 
 function* updateGeneralSaga({ payload }: UpdateGeneralRequestAction) {
     const { callback, ...rest } = payload;

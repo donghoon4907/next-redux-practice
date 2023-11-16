@@ -1,7 +1,7 @@
-import type { CreateCarRequestPayload } from '@actions/contract/car/create-car.action';
+import type { CreateCarRequestPayload } from '@actions/contract/car/create.action';
 import type { GetCarcodeRequestPayload } from '@actions/contract/car/get-carcode.action';
 import type { GetCarRequestPayload } from '@actions/contract/car/get-car.action';
-import type { UpdateCarRequestPayload } from '@actions/contract/car/update-car.action';
+import type { UpdateCarRequestPayload } from '@actions/contract/car/update.action';
 import type { GetCarsRequestPayload } from '@actions/contract/car/get-cars.action';
 import { getQuarter } from 'date-fns';
 import { getBackendAxios } from '@utils/axios/backend';

@@ -6,6 +6,7 @@ import { watchGetCalspecs } from './get-calspecs';
 import { watchGetRuleOrgas } from './get-orgas';
 import { watchGetGrades } from './get-grades';
 import { watchGetHwans } from './get-hwans';
+import { watchCreateLongRule } from './create-long';
 
 export function* ruleSaga() {
     yield all([
@@ -15,5 +16,6 @@ export function* ruleSaga() {
         fork(watchGetRuleOrgas),
         fork(watchGetGrades),
         fork(watchGetHwans),
+        fork(watchCreateLongRule),
     ]);
 }

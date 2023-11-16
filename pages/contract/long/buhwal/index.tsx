@@ -17,7 +17,7 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
-import { getLongBuhwalsRequest } from '@actions/contract/long/get-long-buhwals.action';
+import { getLongBuhwalsRequest } from '@actions/contract/long/get-buhwals.action';
 import { LongBuhwalSearchFilter } from '@partials/contract/long/template/BuhwalSearchFilter';
 import { getUsersRequest } from '@actions/hr/get-users';
 

@@ -1,6 +1,7 @@
-import { GetCalspecsRequestPayload } from '@actions/rule/get-calspecs';
-import { GetRuleOrgasRequestPayload } from '@actions/rule/get-orgas';
+import type { GetCalspecsRequestPayload } from '@actions/rule/get-calspecs';
+import type { GetRuleOrgasRequestPayload } from '@actions/rule/get-orgas';
 import type { GetSudistsRequestPayload } from '@actions/rule/get-sudists';
+import type { CreateLongRuleRequestPayload } from '@actions/rule/long/create.action';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getInternalAxios } from '@utils/axios/internal';
 
@@ -47,6 +48,14 @@ export function getHwans() {
     return getBackendAxios().get('/cals/rule/sget_hwan_list');
 }
 
+export function beforeCreateLongRule(payload: CreateLongRuleRequestPayload) {
+    return getInternalAxios().post('/api/create-long-rule', payload);
+}
+
+export function createLongRule(payload: CreateLongRuleRequestPayload) {
+    return getBackendAxios().post('/cals/rule/long/new', payload);
+}
+
 const rootServices = {
     getMakeableRates,
     getSudists,
@@ -56,6 +65,8 @@ const rootServices = {
     getRuleOrgas,
     getGrades,
     getHwans,
+    beforeCreateLongRule,
+    createLongRule,
 };
 
 export default rootServices;

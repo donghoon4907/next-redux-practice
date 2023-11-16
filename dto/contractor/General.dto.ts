@@ -1,5 +1,5 @@
-import type { CreateGeneralRequestPayload } from '@actions/contract/general/create-general.action';
-import type { UpdateGeneralRequestPayload } from '@actions/contract/general/update-general.action';
+import type { CreateGeneralRequestPayload } from '@actions/contract/general/create.action';
+import type { UpdateGeneralRequestPayload } from '@actions/contract/general/update.action';
 import { isEmpty } from '@utils/validator/common';
 
 class GeneralDTO {

@@ -17,7 +17,7 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
-import { getLongSilhyosRequest } from '@actions/contract/long/get-long-silhyos.action';
+import { getLongSilhyosRequest } from '@actions/contract/long/get-silhyos.action';
 import { LongSilhyoSearchFilter } from '@partials/contract/long/template/SilhyoSearchFilter';
 import { getUsersRequest } from '@actions/hr/get-users';
 
