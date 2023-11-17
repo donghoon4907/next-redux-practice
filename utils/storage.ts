@@ -20,7 +20,7 @@ export class TabModule {
     create(item: CoreLinkTabOption): void {
         const index = this.tabs.findIndex((tab) => tab.id === item.id);
         if (index === -1) {
-            this.tabs.push(item);
+            this.tabs.unshift(item);
             this.save();
         }
     }
