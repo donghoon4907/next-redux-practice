@@ -18,6 +18,10 @@ import { createLongRuleRequest } from '@actions/rule/long/create.action';
 import { isEmpty } from '@utils/validator/common';
 
 import { SetRuleTemplate } from './template/SetRule';
+import { MyUnit } from '@components/Unit';
+import { MyCheckbox } from '@components/checkbox';
+import { MySelect } from '@components/select';
+import { MyInput } from '@components/input';
 
 interface Props {
     /**
@@ -33,8 +37,8 @@ interface Props {
      */
     defaultUserid: string;
 }
-/** 장기 규정 폼 */
-export const LongRuleForm: FC<Props> = ({ mode, idx = -1, defaultUserid }) => {
+/** 장기 환수 폼 */
+export const LongHwanForm: FC<Props> = ({ mode, idx = -1, defaultUserid }) => {
     const displayName = 'wr-pages-long-detail';
 
     const { makeableRates, orgas, grades, hwans, rules } = useSelector<
@@ -48,7 +52,7 @@ export const LongRuleForm: FC<Props> = ({ mode, idx = -1, defaultUserid }) => {
 
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
-    // 장기 지급 제도명
+    // 제도명
     const [rule_name] = useInput('');
     // 제도 적용 등급
     const [rule_rate] = useSelect(makeableRates, null, {
@@ -62,18 +66,6 @@ export const LongRuleForm: FC<Props> = ({ mode, idx = -1, defaultUserid }) => {
     const [orga_idx] = useSelect(orgas, null);
     // 사용 유무
     const [use] = useSelect(commonConstants.yn, null);
-    // 구간 규정 유무
-    const [grade] = useSelect(commonConstants.yn, null, {
-        callbackOnChange: (next) => {
-            if (next) {
-                setGradeRate(null);
-            }
-        },
-    });
-    // 구간 등급
-    const [grade_rate, setGradeRate] = useSelect(grades, null);
-    // 환수 제도
-    const [hwan_idx] = useSelect(hwans, null);
 
     const handleCreate = () => {
         const payload = createPayload();
@@ -109,18 +101,6 @@ export const LongRuleForm: FC<Props> = ({ mode, idx = -1, defaultUserid }) => {
         // 사용유무
         if (use.value) {
             payload['use'] = use.value.value === 'Y' ? true : false;
-        }
-        // 구간 규정 여부
-        if (grade.value) {
-            payload['grade'] = grade.value.value === 'Y' ? true : false;
-        }
-        // 구간 등급
-        if (grade_rate.value) {
-            payload['grade_rate'] = grade_rate.value.value;
-        }
-        // 환수제도
-        if (hwan_idx.value) {
-            payload['hwan_idx'] = hwan_idx.value.value;
         }
         // 규정목록
         if (rules.length > 0) {
@@ -159,55 +139,38 @@ export const LongRuleForm: FC<Props> = ({ mode, idx = -1, defaultUserid }) => {
                             <FloatSelect label="사용유무" {...use} />
                         </div>
                     </div>
-                    <div className="row wr-mt">
-                        <div className="col-2">
-                            <div className="row">
-                                <div className="flex-fill">
-                                    <FloatSelect
-                                        label="구간 규정 여부"
-                                        {...grade}
-                                    />
-                                </div>
-                                <div className="flex-fill">
-                                    <FloatSelect
-                                        label="구간등급"
-                                        isDisabled={grade.value?.value === 'N'}
-                                        {...grade_rate}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-2">
-                            <FloatSelect label="환수 제도" {...hwan_idx} />
-                        </div>
-                    </div>
                 </div>
             </div>
             <div className={`${displayName} wr-pages-detail wr-mt`}>
                 <div className="flex-fill">
-                    <SetRuleTemplate editable={editable} />
-                </div>
-                <div className="flex-fill">
-                    <div className="wr-pages-detail__block h-100 w-100">
+                    <div className="wr-pages-detail__block">
                         <div className="wr-pages-detail__content">
-                            <div className="wr-pages-detail__subtitle wr-border-b">
-                                <strong>원수수료 기준 비례 지급 규정</strong>
+                            <div className="wr-pages-detail__subtitle wr-pb wr-border-b">
+                                <strong>손해보험 환수 규정</strong>
+                                <div className="wr-pages-detail__buttons">
+                                    <FloatInput
+                                        label="철회 환수율"
+                                        after={
+                                            <MyUnit placement="last">%</MyUnit>
+                                        }
+                                    />
+                                    <FloatInput
+                                        label="취소 환수율"
+                                        after={
+                                            <MyUnit placement="last">%</MyUnit>
+                                        }
+                                    />
+                                    <FloatInput
+                                        label="부활 환급율"
+                                        after={
+                                            <MyUnit placement="last">%</MyUnit>
+                                        }
+                                    />
+                                </div>
                             </div>
                             <div className="row wr-mt wr-mb">
-                                <div className="col-3">
-                                    <FloatSelect label="보험사" isDisabled />
-                                </div>
-                                <div className="col-3">
-                                    <FloatSelect
-                                        label="수입수수료항목"
-                                        isDisabled
-                                    />
-                                </div>
-                                <div className="col-3">
-                                    <FloatSelect
-                                        label="환수정산방식"
-                                        isDisabled
-                                    />
+                                <div className="wr-pages-detail__subtitle">
+                                    미유지 (실효/해지), 감액환수율
                                 </div>
                             </div>
                             <MyTableToolbar
@@ -220,19 +183,74 @@ export const LongRuleForm: FC<Props> = ({ mode, idx = -1, defaultUserid }) => {
                                 }}
                             />
                             <div className="wr-table--normal">
-                                <table className="wr-table table">
-                                    <thead>
-                                        <tr>
-                                            <th>보험사</th>
-                                            <th>지급수수료항목</th>
-                                            <th>수입수수료종목</th>
-                                            <th>시작회차</th>
-                                            <th>종료회차</th>
-                                            <th>비례율</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody></tbody>
-                                </table>
+                                <div className="wr-table__wrap">
+                                    <table className="wr-table table">
+                                        <thead>
+                                            <tr>
+                                                <th
+                                                    rowSpan={2}
+                                                    style={{
+                                                        width: '30px',
+                                                    }}
+                                                >
+                                                    <MyCheckbox label="" />
+                                                </th>
+                                                <th
+                                                    rowSpan={2}
+                                                    style={{ width: 200 }}
+                                                >
+                                                    보험사
+                                                </th>
+                                                <th
+                                                    rowSpan={2}
+                                                    style={{ width: 200 }}
+                                                >
+                                                    정산종목
+                                                </th>
+                                                <th colSpan={24}>
+                                                    회차별 환수율
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                {Array.from({
+                                                    length: 24,
+                                                }).map((_, i) => (
+                                                    <td
+                                                        key={`whoi${i}`}
+                                                        style={{
+                                                            width: 80,
+                                                        }}
+                                                    >
+                                                        {i + 1}
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <MyCheckbox label="" />
+                                                </td>
+                                                <td>
+                                                    <MySelect placeholder="선택" />
+                                                </td>
+                                                <td>
+                                                    <MySelect placeholder="선택" />
+                                                </td>
+                                                {Array.from({
+                                                    length: 24,
+                                                }).map((_, i) => (
+                                                    <td key={`input-whoi${i}`}>
+                                                        <MyInput
+                                                            type="text"
+                                                            className="text-end"
+                                                        />
+                                                    </td>
+                                                ))}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -248,8 +248,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
         dispatch(getCompaniesRequest('long-use'));
 
-        // dispatch(getLongFieldsRequest());
-
         dispatch(END);
 
         await sagaTask?.toPromise();

@@ -22,8 +22,8 @@ import { isEmpty } from '@utils/validator/common';
 import { LongRuleTemplate } from './Rule';
 
 interface Props extends CoreEditableComponent {}
-/** 장기 규정 설정 템플릿 */
-export const SetRuleTemplate: FC<Props> = ({ editable }) => {
+/** 장기 환수 설정 템플릿 */
+export const SetHwanTemplate: FC<Props> = ({ editable }) => {
     const dispatch = useDispatch();
 
     const { longUseCompanies } = useSelector<AppState, HrState>(

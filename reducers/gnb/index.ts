@@ -4,7 +4,9 @@ import produce from 'immer';
 import { GnbActionTypes } from '@actions/gnb/gnb.action';
 
 export interface GnbState {
+    /** 선택된 GNB ID */
     activeId: string;
+    /** 선택된 GNB의 하위 메뉴 */
     activeMenu: CoreMenuOption[];
 }
 

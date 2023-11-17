@@ -20,7 +20,7 @@ import { MyInput } from '@components/input';
 interface Props extends Rule, CoreEditableComponent {
     visibility?: boolean;
 }
-
+/** 장기 규정 템플릿 */
 export const LongRuleTemplate: FC<Props> = ({
     editable,
     visibility,

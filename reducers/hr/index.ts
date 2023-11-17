@@ -37,19 +37,28 @@ export interface HrState {
      */
     wrCompanies: CoreSelectOption[];
     /**
-     * 장기 계약 관련 보험사목록
+     * 공개 중인 장기계약 보험사목록
      */
     longViewCompanies: CoreSelectOption[];
+    /**
+     * 사용 중인 장기계약 보험사목록
+     */
     longUseCompanies: CoreSelectOption[];
     /**
-     * 자동차 계약 관련 보험사목록
+     * 공개 중인 자동차계약 보험사목록
      */
     carCompanies: CoreSelectOption[];
+    /**
+     * 사용 중인 자동차계약 보험사목록
+     */
     carUseCompanies: CoreSelectOption[];
     /**
-     * 일반 계약 관련 보험사목록
+     * 공개 중인 일반계약 보험사목록
      */
     genCompanies: CoreSelectOption[];
+    /**
+     * 사용 중인 일반계약 보험사목록
+     */
     genUseCompanies: CoreSelectOption[];
     /**
      * 은행목록

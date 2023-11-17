@@ -3,6 +3,7 @@ import produce from 'immer';
 import { DrawerActionTypes } from '@actions/drawer/drawer.action';
 
 export interface DrawerState {
+    /** 열림 여부 */
     isOpen: boolean;
 }
 

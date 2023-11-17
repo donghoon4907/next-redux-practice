@@ -5,7 +5,6 @@ import type { GetLongBuhwalsSuccessPayload } from '@actions/contract/long/get-bu
 import produce from 'immer';
 import { GetLongsActionTypes } from '@actions/contract/long/get-longs.action';
 import { GetLongActionTypes } from '@actions/contract/long/get-long.action';
-import { GetLongFieldsActionTypes } from '@actions/contract/long/get-fields.action';
 import { GetLongSilsActionTypes } from '@actions/contract/long/get-sils.action';
 import {
     GetLongSilhyosActionTypes,
@@ -34,10 +33,6 @@ export interface LongState {
      * 장기계약 상세
      */
     long: any;
-    /**
-     * 장기테이블 필드 목록
-     */
-    fields: Array<any>;
 }
 
 const initialState: LongState = {
@@ -66,7 +61,6 @@ const initialState: LongState = {
         lastPayload: null,
     },
     long: null,
-    fields: [],
 };
 
 export const longReducer: Reducer<LongState, any> = (
@@ -97,11 +91,6 @@ export const longReducer: Reducer<LongState, any> = (
             }
             case GetLongActionTypes.SUCCESS: {
                 draft.long = action.payload;
-
-                break;
-            }
-            case GetLongFieldsActionTypes.SUCCESS: {
-                draft.fields = action.payload;
 
                 break;
             }

@@ -10,18 +10,18 @@ import { getCompaniesRequest } from '@actions/hr/get-companies';
 import { getOrgasRequest } from '@actions/hr/get-orgas';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
-import { LongRuleForm } from '@partials/rule/long/LongRuleForm';
 import { getSudistsRequest } from '@actions/rule/get-sudists';
 import { getMakeableRatesRequest } from '@actions/rule/get-makeable-rates';
 import { getGradesRequest } from '@actions/rule/get-grades';
 import { getHwansRequest } from '@actions/rule/get-hwans';
+import { LongHwanForm } from '@partials/rule/long/LongHwanForm';
 
-const CreateLongRule: NextPage = () => {
+const CreateLongHwan: NextPage = () => {
     const { loggedInUser } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
     // 탭 설정
-    useInitTab('장기 지급 제도 등록');
+    useInitTab('장기 환수 제도 등록');
 
     return (
         <>
@@ -33,7 +33,7 @@ const CreateLongRule: NextPage = () => {
                 />
             </Head>
             <MyLayout>
-                <LongRuleForm
+                <LongHwanForm
                     mode="create"
                     defaultUserid={loggedInUser.userid}
                 />
@@ -64,4 +64,4 @@ export const getServerSideProps = wrapper.getServerSideProps(
     }),
 );
 
-export default CreateLongRule;
+export default CreateLongHwan;

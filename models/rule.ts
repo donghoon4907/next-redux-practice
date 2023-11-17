@@ -16,3 +16,13 @@ export type Rule = CoreCheckableModel & {
     ewhoi?: string;
     rate?: string;
 };
+
+/**
+ * 환수
+ */
+export type Hwan = CoreCheckableModel & {
+    idx?: number;
+    wcode?: string;
+    cal_spec?: string;
+    hw_rates?: Object;
+};
