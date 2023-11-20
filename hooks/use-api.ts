@@ -4,7 +4,6 @@ import { AnyAction } from 'redux';
 
 import { AppState } from '@reducers/index';
 import { LoadingState } from '@reducers/common/loading';
-// import { useAuth } from './use-auth';
 
 interface OptionProps {
     beforeAuth?: boolean;
@@ -19,22 +18,12 @@ export const useApi = (
 
     const dispatch = useDispatch();
 
-    // const { validateToken } = useAuth();
-
     const { loading } = useSelector<AppState, LoadingState>(
         (state) => state.loading,
     );
 
     const fireEvent = (args = {}, callback?: (params: any) => void) => {
         const { beforeAuth, afterReload } = options;
-
-        // if (useAuth) {
-        //     const token = validateToken();
-
-        //     if (token === null) {
-        //         return null;
-        //     }
-        // }
 
         if (loading) {
             return alert('요청 중입니다. 잠시만 기다려주세요.');

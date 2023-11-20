@@ -1,8 +1,6 @@
 import type { FC } from 'react';
 import type { Cell } from '@tanstack/react-table';
 import { memo } from 'react';
-import { MyColumnDef } from '@hooks/use-column';
-import { InternalInput } from '@components/input/Internal';
 import { isValidOnlyNumPhone } from '@utils/validator/user';
 import { convertPhoneNumber } from '@utils/converter';
 import { checkOrginNeeded, checkTextAlignLeftNeeded } from '@utils/validation';
@@ -55,11 +53,3 @@ export const MyTd: FC<MyTdProps> = memo(({ column, getValue, getContext }) => {
         </td>
     );
 });
-
-export const AdditionalTd: FC<MyColumnDef> = ({ headerKey, headerText }) => {
-    return (
-        <td data-field={headerKey}>
-            <InternalInput placeholder={headerText} />
-        </td>
-    );
-};
