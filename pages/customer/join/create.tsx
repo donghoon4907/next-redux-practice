@@ -19,7 +19,7 @@ const CreateCustomer: NextPage = () => {
     );
 
     // 탭 설정
-    // useInitTab('고객등록');
+    useInitTab('고객등록');
 
     return (
         <>
@@ -35,8 +35,7 @@ const CreateCustomer: NextPage = () => {
                     mode="create"
                     spe="customer"
                     defaultUserid={loggedInUser.userid}
-                    defaultUsername={loggedInUser.user_info.name}
-                    defaultUserFulls={loggedInUser.user_info.fulls}
+                    defaultOrganize={`${loggedInUser.user_info.orga} ${loggedInUser.user_info.name}`}
                 />
             </MyLayout>
         </>

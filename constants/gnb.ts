@@ -20,16 +20,16 @@ export const SUBMENUS: CoreMenuOption[] = [
 
 export const ASIDE_MENU: any = {
     customer: {
-        // join: {
-        //     id: 'customer-join',
-        //     label: '가입고객',
-        //     to: '',
-        //     create: {
-        //         id: 'customer-join_create',
-        //         label: '고객 등록',
-        //         to: '/customer/join/create',
-        //     },
-        // },
+        join: {
+            id: 'customer-join',
+            label: '가입고객',
+            to: '',
+            create: {
+                id: 'customer-join_create',
+                label: '고객 등록',
+                to: '/customer/join/create',
+            },
+        },
     },
     sales: {},
     contract: {
@@ -56,16 +56,6 @@ export const ASIDE_MENU: any = {
                 id: 'contract-long_buhwal',
                 label: '부활명세',
                 to: '/contract/long/buhwal',
-            },
-            rule: {
-                id: 'contract-long_rule',
-                label: '장기 지급 제도 등록',
-                to: '/contract/long/create-rule',
-            },
-            hwan: {
-                id: 'contract-long_hwan',
-                label: '장기 환수 제도 등록',
-                to: '/contract/long/create-hwan',
             },
         },
         car: {

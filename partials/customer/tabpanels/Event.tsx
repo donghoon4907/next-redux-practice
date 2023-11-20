@@ -61,11 +61,8 @@ export const EventTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="wr-pages-detail__title">
+            <div className="wr-pages-detail__subtitle">
                 <strong>기념일</strong>
-            </div>
-            <div className="wr-pages-detail__subtitle wr-mt">
-                <strong></strong>
                 {editable && (
                     <div>
                         <MyButton
@@ -77,44 +74,27 @@ export const EventTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     </div>
                 )}
             </div>
-            <div className="wr-table--normal wr-mt">
+            <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
-                                        id="et_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
                                 </th>
                             )}
 
-                            <th style={{ width: '100px' }}>
-                                <strong>대상자</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>대상자구분</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>기념일내용</strong>
-                            </th>
-                            <th style={{ width: '200px' }}>
-                                <strong>기념일상세</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>기념일</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>양/음</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>관리여부</strong>
-                            </th>
-                            <th>
-                                <strong>비고</strong>
-                            </th>
+                            <th style={{ width: '100px' }}>대상자</th>
+                            <th style={{ width: '100px' }}>대상자구분</th>
+                            <th style={{ width: '100px' }}>기념일내용</th>
+                            <th style={{ width: '200px' }}>기념일상세</th>
+                            <th style={{ width: '100px' }}>기념일</th>
+                            <th style={{ width: '100px' }}>양/음</th>
+                            <th style={{ width: '100px' }}>관리여부</th>
+                            <th>비고</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -130,7 +110,6 @@ export const EventTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
-                                            id={`et_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

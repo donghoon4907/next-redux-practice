@@ -64,11 +64,8 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="wr-pages-detail__title">
+            <div className="wr-pages-detail__subtitle">
                 <strong>가족 및 지인</strong>
-            </div>
-            <div className="wr-pages-detail__subtitle wr-mt">
-                <strong></strong>
                 {editable && (
                     <div>
                         <MyButton
@@ -80,38 +77,25 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                     </div>
                 )}
             </div>
-            <div className="wr-table--normal wr-mt">
+            <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
                         <tr>
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
-                                        id="ft_allcheck"
                                         label=""
                                         onChange={handleAllCheck}
                                     />
                                 </th>
                             )}
 
-                            <th style={{ width: '100px' }}>
-                                <strong>이름</strong>
-                            </th>
-                            <th style={{ width: '200px' }}>
-                                <strong>구분</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>관계</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>생년월일</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>성별</strong>
-                            </th>
-                            <th>
-                                <strong>비고</strong>
-                            </th>
+                            <th style={{ width: '100px' }}>이름</th>
+                            <th style={{ width: '200px' }}>구분</th>
+                            <th style={{ width: '100px' }}>관계</th>
+                            <th style={{ width: '100px' }}>생년월일</th>
+                            <th style={{ width: '100px' }}>성별</th>
+                            <th>비고</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -127,7 +111,6 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
-                                            id={`ft_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

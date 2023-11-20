@@ -78,12 +78,11 @@ export const CAR_DETAIL_TABS: CoreTabOption[] = [
  * 고객 상세 페이지 탭 목록
  */
 export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [
-    { id: 'tabContactHis', label: '접촉이력', panelId: 'tabpanelContactHis' },
-    {
-        id: 'tabHoldingContract',
-        label: '보유계약',
-        panelId: 'tabpanelHoldingContract',
-    },
+    // {
+    //     id: 'tabHoldingContract',
+    //     label: '보유계약',
+    //     panelId: 'tabpanelHoldingContract',
+    // },
     {
         id: 'tabExcontract',
         label: '타사계약',
@@ -99,6 +98,12 @@ export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [
         id: 'tabEvent',
         label: '기념일관리',
         panelId: 'tabpanelEvent',
+    },
+    {
+        id: 'tabContact',
+        label: '고객상담',
+        panelId: 'tabpanelContact',
+        isHideMode: 'create',
     },
 ];
 /**

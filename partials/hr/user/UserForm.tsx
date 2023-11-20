@@ -965,193 +965,198 @@ export const UserForm: FC<Props> = ({
                 <div
                     className={`${displayName}__left wr-pages-detail__left wr-pages-detail__applydatepicker`}
                 >
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content p-15">
-                            <div className="wr-group">
-                                <span
-                                    className={`${displayName}__department ${
-                                        selectedOrga ? '' : 'wr-label--required'
-                                    }`}
-                                >
-                                    {selectedOrga
-                                        ? selectedOrga.label
-                                        : '부서를 선택하세요'}
-                                </span>
-                                {editable && (
-                                    <button
-                                        className="btn btn-primary btn-sm"
-                                        type="button"
-                                        onClick={handleClickDepart}
-                                    >
-                                        부서변경
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="flex-fill">
-                                    <FloatInput
-                                        label="이름"
-                                        readOnly={!editable}
-                                        isRequired
-                                        {...name}
-                                    />
-                                    <div className="wr-mt">
-                                        <FloatInput
-                                            label="영업명"
-                                            readOnly={!editable}
-                                            isRequired
-                                            {...nick}
-                                        />
-                                    </div>
-                                    <div className="wr-mt">
-                                        <FloatInput
-                                            label="직함"
-                                            readOnly={!editable}
-                                            isRequired
-                                            {...title}
-                                        />
-                                    </div>
-                                    <div className="wr-mt">
-                                        <FloatInput
-                                            label="주민번호"
-                                            readOnly={!editable}
-                                            isRequired
-                                            {...idnum1}
-                                        />
-                                    </div>
-                                    <div className="wr-mt">
-                                        <FloatDatepicker
-                                            label="생년월일"
-                                            readOnly={!editable}
-                                            isRequired
-                                            hooks={birthday}
-                                            after={
-                                                <MyUnit
-                                                    placement="button"
-                                                    role="button"
-                                                    onClick={
-                                                        handleClickBirthType
-                                                    }
-                                                >
-                                                    {birthType
-                                                        ? '양력'
-                                                        : '음력'}
-                                                </MyUnit>
-                                            }
-                                        />
-                                    </div>
-                                </div>
-                                <div className="col-4">
-                                    <FloatInput
-                                        label="사원번호"
-                                        readOnly={!editable}
-                                        isRequired
-                                        value={userid}
-                                        disabled
-                                    />
-                                    <div
-                                        className={`${displayName}__avatar wr-mt ${
-                                            editable ? 'wr-cursor--pointer' : ''
+                    <div className="wr-pages-detail__inner">
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content p-15">
+                                <div className="wr-group">
+                                    <span
+                                        className={`${displayName}__department ${
+                                            selectedOrga
+                                                ? ''
+                                                : 'wr-label--required'
                                         }`}
-                                        role="button"
-                                        onClick={handleClickImage}
                                     >
-                                        {lastSetPortraitImagePreview && (
-                                            <img
-                                                src={
-                                                    lastSetPortraitImagePreview
-                                                }
-                                                alt="Avatar"
+                                        {selectedOrga
+                                            ? selectedOrga.label
+                                            : '부서를 선택하세요'}
+                                    </span>
+                                    {editable && (
+                                        <button
+                                            className="btn btn-primary btn-sm"
+                                            type="button"
+                                            onClick={handleClickDepart}
+                                        >
+                                            부서변경
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <div className="row">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="이름"
+                                            readOnly={!editable}
+                                            isRequired
+                                            {...name}
+                                        />
+                                        <div className="wr-mt">
+                                            <FloatInput
+                                                label="영업명"
+                                                readOnly={!editable}
+                                                isRequired
+                                                {...nick}
                                             />
-                                        )}
+                                        </div>
+                                        <div className="wr-mt">
+                                            <FloatInput
+                                                label="직함"
+                                                readOnly={!editable}
+                                                isRequired
+                                                {...title}
+                                            />
+                                        </div>
+                                        <div className="wr-mt">
+                                            <FloatInput
+                                                label="주민번호"
+                                                readOnly={!editable}
+                                                isRequired
+                                                {...idnum1}
+                                            />
+                                        </div>
+                                        <div className="wr-mt">
+                                            <FloatDatepicker
+                                                label="생년월일"
+                                                readOnly={!editable}
+                                                isRequired
+                                                hooks={birthday}
+                                                after={
+                                                    <MyUnit
+                                                        placement="button"
+                                                        role="button"
+                                                        onClick={
+                                                            handleClickBirthType
+                                                        }
+                                                    >
+                                                        {birthType
+                                                            ? '양력'
+                                                            : '음력'}
+                                                    </MyUnit>
+                                                }
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="flex-fill">
-                                    <FloatSelect
-                                        label="영업구분"
-                                        isDisabled={!editable}
-                                        {...userType}
-                                    />
-                                </div>
-                                <div className="flex-fill">
-                                    <FloatSelect
-                                        label="재직현황"
-                                        isDisabled={!editable}
-                                        {...status}
-                                    />
-                                </div>
-                            </div>
-                            <div className="row wr-mt">
-                                <div className="flex-fill">
-                                    <FloatDatepicker
-                                        label="입사일"
-                                        readOnly={!editable}
-                                        isRequired
-                                        hooks={indate}
-                                    />
-                                </div>
-                                <div className="flex-fill">
-                                    <FloatDatepicker
-                                        label="퇴사일"
-                                        readOnly={!editable}
-                                        hooks={outdate}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="flex-fill d-flex">
-                                    <div className="flex-fill">
+                                    <div className="col-4">
                                         <FloatInput
-                                            label="핸드폰"
+                                            label="사원번호"
                                             readOnly={!editable}
-                                            isConnectAfter
-                                            {...mobile}
+                                            isRequired
+                                            value={userid}
+                                            disabled
                                         />
+                                        <div
+                                            className={`${displayName}__avatar wr-mt ${
+                                                editable
+                                                    ? 'wr-cursor--pointer'
+                                                    : ''
+                                            }`}
+                                            role="button"
+                                            onClick={handleClickImage}
+                                        >
+                                            {lastSetPortraitImagePreview && (
+                                                <img
+                                                    src={
+                                                        lastSetPortraitImagePreview
+                                                    }
+                                                    alt="Avatar"
+                                                />
+                                            )}
+                                        </div>
                                     </div>
-                                    <div style={{ width: 130 }}>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <div className="row">
+                                    <div className="flex-fill">
                                         <FloatSelect
-                                            label="통신사"
+                                            label="영업구분"
                                             isDisabled={!editable}
-                                            isConnectBefore
-                                            {...mobileCom}
+                                            {...userType}
+                                        />
+                                    </div>
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="재직현황"
+                                            isDisabled={!editable}
+                                            {...status}
                                         />
                                     </div>
                                 </div>
-                                <div className="flex-fill d-flex">
+                                <div className="row wr-mt">
                                     <div className="flex-fill">
-                                        <FloatInput
-                                            label="내선번호"
+                                        <FloatDatepicker
+                                            label="입사일"
                                             readOnly={!editable}
-                                            isConnectAfter
-                                            {...telephone}
+                                            isRequired
+                                            hooks={indate}
                                         />
                                     </div>
-
-                                    <div style={{ width: 80 }}>
-                                        <FloatInput
-                                            label="직통번호"
+                                    <div className="flex-fill">
+                                        <FloatDatepicker
+                                            label="퇴사일"
                                             readOnly={!editable}
-                                            isConnectBefore
-                                            {...telDirect}
+                                            hooks={outdate}
                                         />
                                     </div>
                                 </div>
                             </div>
-                            {/* <WithSelectInput
+                        </div>
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <div className="row">
+                                    <div className="flex-fill d-flex">
+                                        <div className="flex-fill">
+                                            <FloatInput
+                                                label="핸드폰"
+                                                readOnly={!editable}
+                                                isConnectAfter
+                                                {...mobile}
+                                            />
+                                        </div>
+                                        <div style={{ width: 130 }}>
+                                            <FloatSelect
+                                                label="통신사"
+                                                isDisabled={!editable}
+                                                isConnectBefore
+                                                {...mobileCom}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex-fill d-flex">
+                                        <div className="flex-fill">
+                                            <FloatInput
+                                                label="내선번호"
+                                                readOnly={!editable}
+                                                isConnectAfter
+                                                {...telephone}
+                                            />
+                                        </div>
+
+                                        <div style={{ width: 80 }}>
+                                            <FloatInput
+                                                label="직통번호"
+                                                readOnly={!editable}
+                                                isConnectBefore
+                                                {...telDirect}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* <WithSelectInput
                                         id="email"
                                         label="이메일"
                                         selectWidth={140}
@@ -1160,84 +1165,85 @@ export const UserForm: FC<Props> = ({
                                         selectHooks={emailCom}
                                         disabled={!editable}
                                     />  */}
-                            <div className="row wr-mt">
-                                <div className="flex-fill d-flex">
+                                <div className="row wr-mt">
+                                    <div className="flex-fill d-flex">
+                                        <div className="flex-fill">
+                                            <FloatInput
+                                                label="이메일"
+                                                readOnly={!editable}
+                                                isConnectAfter
+                                                {...mobile}
+                                            />
+                                        </div>
+                                        <div style={{ width: 130 }}>
+                                            <FloatSelect
+                                                label="플랫폼"
+                                                isDisabled={!editable}
+                                                isConnectBefore
+                                                {...emailCom}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="flex-fill d-flex"></div>
+                                </div>
+                                <SetPostcodeInput
+                                    activeMarginTop
+                                    disabled={!editable}
+                                    postcodeHooks={postcode}
+                                    address1Hooks={address1}
+                                    address2Hooks={address2}
+                                    address3Hooks={address3}
+                                    onClickPostcode={onClickPostcode}
+                                />
+                            </div>
+                        </div>
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content">
+                                <div className="row">
+                                    <div className="flex-fill">
+                                        <FloatSelect
+                                            label="은행명"
+                                            isDisabled={!editable}
+                                            {...bank}
+                                        />
+                                    </div>
                                     <div className="flex-fill">
                                         <FloatInput
-                                            label="이메일"
+                                            label="예금주"
                                             readOnly={!editable}
-                                            isConnectAfter
-                                            {...mobile}
-                                        />
-                                    </div>
-                                    <div style={{ width: 130 }}>
-                                        <FloatSelect
-                                            label="플랫폼"
-                                            isDisabled={!editable}
-                                            isConnectBefore
-                                            {...emailCom}
+                                            {...holder}
                                         />
                                     </div>
                                 </div>
-                                <div className="flex-fill d-flex"></div>
-                            </div>
-                            <SetPostcodeInput
-                                activeMarginTop
-                                disabled={!editable}
-                                postcodeHooks={postcode}
-                                address1Hooks={address1}
-                                address2Hooks={address2}
-                                address3Hooks={address3}
-                                onClickPostcode={onClickPostcode}
-                            />
-                        </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content">
-                            <div className="row">
-                                <div className="flex-fill">
-                                    <FloatSelect
-                                        label="은행명"
-                                        isDisabled={!editable}
-                                        {...bank}
-                                    />
-                                </div>
-                                <div className="flex-fill">
-                                    <FloatInput
-                                        label="예금주"
-                                        readOnly={!editable}
-                                        {...holder}
-                                    />
-                                </div>
-                            </div>
-                            <div className="row wr-mt">
-                                <div className="flex-fill">
-                                    <FloatInput
-                                        label="계좌번호"
-                                        readOnly={!editable}
-                                        {...account}
-                                    />
+                                <div className="row wr-mt">
+                                    <div className="flex-fill">
+                                        <FloatInput
+                                            label="계좌번호"
+                                            readOnly={!editable}
+                                            {...account}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="wr-pages-detail__block">
-                        <div className="wr-pages-detail__content p-15">
-                            <UserEstimateAccordion
-                                editable={editable}
-                                comNmHooks={estComNm}
-                                comTypeHooks={estComInputType}
-                                salesNmHooks={estSalesNm}
-                                salesTypeHooks={estSalesNmInputType}
-                                phoneHooks={estPhone}
-                                phoneTypeHooks={estPhoneInputType}
-                                faxHooks={estFax}
-                                faxTypeHooks={estFaxInputType}
-                                directHooks={estDirect}
-                                directTypeHooks={estDirectInputType}
-                                addressHooks={estAddr}
-                                addressTypeHooks={estAddrInputType}
-                            />
+                        <div className="wr-pages-detail__block">
+                            <div className="wr-pages-detail__content p-15">
+                                <UserEstimateAccordion
+                                    editable={editable}
+                                    comNmHooks={estComNm}
+                                    comTypeHooks={estComInputType}
+                                    salesNmHooks={estSalesNm}
+                                    salesTypeHooks={estSalesNmInputType}
+                                    phoneHooks={estPhone}
+                                    phoneTypeHooks={estPhoneInputType}
+                                    faxHooks={estFax}
+                                    faxTypeHooks={estFaxInputType}
+                                    directHooks={estDirect}
+                                    directTypeHooks={estDirectInputType}
+                                    addressHooks={estAddr}
+                                    addressTypeHooks={estAddrInputType}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

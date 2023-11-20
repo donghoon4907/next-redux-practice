@@ -155,8 +155,7 @@ const Customer: NextPage<CustomerState> = ({ customer }) => {
                     idx={customer.idx}
                     defaultName={customer.name}
                     defaultUserid={customer.userid}
-                    defaultUsername={customer.username}
-                    defaultUserFulls={customer.fulls}
+                    defaultOrganize={`${customer.fulls} ${customer.username}`}
                     defaultCusttype={defaultCusttype}
                     defaultIdnum={customer.custtype === 0 ? customer.idnum : ''}
                     defaultComRegNum={

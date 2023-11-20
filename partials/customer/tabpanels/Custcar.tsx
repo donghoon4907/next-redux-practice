@@ -77,7 +77,7 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="wr-pages-detail__title">
-                <strong>고객보유차량 및 피담보물건</strong>
+                고객보유차량 및 피담보물건
             </div>
 
             <div className="wr-pages-detail__subtitle wr-mt">
@@ -100,31 +100,18 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
-                                        id="cut_car_allcheck"
                                         label=""
                                         onChange={handleAllCheckCars}
                                     />
                                 </th>
                             )}
 
-                            <th style={{ width: '100px' }}>
-                                <strong>차량번호</strong>
-                            </th>
-                            <th style={{ width: '200px' }}>
-                                <strong>차량정보</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>차명코드</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>보험만기일</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>만기안내여부</strong>
-                            </th>
-                            <th>
-                                <strong>비고</strong>
-                            </th>
+                            <th style={{ width: '100px' }}>차량번호</th>
+                            <th style={{ width: '200px' }}>차량정보</th>
+                            <th style={{ width: '100px' }}>차명코드</th>
+                            <th style={{ width: '100px' }}>보험만기일</th>
+                            <th style={{ width: '100px' }}>만기안내여부</th>
+                            <th>비고</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -140,7 +127,6 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
-                                            id={`cut_car_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>
@@ -203,25 +189,16 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             {editable && (
                                 <th style={{ width: '30px' }}>
                                     <MyCheckbox
-                                        id="cut_thing_allcheck"
                                         label=""
                                         onChange={handleAllCheckCusts}
                                     />
                                 </th>
                             )}
 
-                            <th style={{ width: '100px' }}>
-                                <strong>피담보물</strong>
-                            </th>
-                            <th style={{ width: '300px' }}>
-                                <strong>소재지번</strong>
-                            </th>
-                            <th style={{ width: '100px' }}>
-                                <strong>만기안내여부</strong>
-                            </th>
-                            <th>
-                                <strong>비고</strong>
-                            </th>
+                            <th style={{ width: '100px' }}>피담보물</th>
+                            <th style={{ width: '300px' }}>소재지번</th>
+                            <th style={{ width: '100px' }}>만기안내여부</th>
+                            <th>비고</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -237,7 +214,6 @@ export const CustcarTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                                 {editable && (
                                     <td>
                                         <MyCheckbox
-                                            id={`cut_thing_check${i}`}
                                             label=""
                                             checked={v.checked}
                                             onChange={(evt) =>

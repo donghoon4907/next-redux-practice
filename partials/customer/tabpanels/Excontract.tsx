@@ -1,4 +1,5 @@
 import type { FC, ChangeEvent } from 'react';
+import type { Excontract } from '@models/excontract';
 import type { AppState } from '@reducers/index';
 import type { CustomerState } from '@reducers/customer';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
@@ -13,7 +14,6 @@ import {
     deleteExcontract,
     updateExcontract,
 } from '@actions/customer/set-excontract.action';
-import { Excontract } from '@models/excontract';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -102,7 +102,7 @@ export const ExcontractTabpanel: FC<Props> = ({
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
             <div className="wr-pages-detail__title">
-                <strong>타사에서 가입한 보험계약 내역</strong>
+                타사에서 가입한 보험계약 내역
                 <span className="wr-pages-detail__description">
                     총계약건수: {excontracts.length}(장기 {filteredLongs.length}
                     , 자동차 {filteredCars.length}, 일반 {filteredGens.length})
@@ -130,31 +130,18 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: '30px' }}>
                                             <MyCheckbox
-                                                id="et_l_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckLongs}
                                             />
                                         </th>
                                     )}
 
-                                    <th style={{ width: '100px' }}>
-                                        <strong>보험사</strong>
-                                    </th>
-                                    <th style={{ width: '200px' }}>
-                                        <strong>상품명</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>세부보종</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>보험료</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>계약일자</strong>
-                                    </th>
-                                    <th>
-                                        <strong>비고</strong>
-                                    </th>
+                                    <th style={{ width: '100px' }}>보험사</th>
+                                    <th style={{ width: '200px' }}>상품명</th>
+                                    <th style={{ width: '100px' }}>세부보종</th>
+                                    <th style={{ width: '100px' }}>보험료</th>
+                                    <th style={{ width: '100px' }}>계약일자</th>
+                                    <th>비고</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,12 +152,11 @@ export const ExcontractTabpanel: FC<Props> = ({
                                         </td>
                                     </tr>
                                 )}
-                                {filteredLongs.map((v, i) => (
-                                    <tr key={`excontractLong${i}`}>
+                                {filteredLongs.map((v) => (
+                                    <tr key={`excontractLong${v.index}`}>
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
-                                                    id={`et_l_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>
@@ -249,34 +235,21 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: '30px' }}>
                                             <MyCheckbox
-                                                id="et_c_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckCars}
                                             />
                                         </th>
                                     )}
 
+                                    <th style={{ width: '100px' }}>보험사</th>
+                                    <th style={{ width: '100px' }}>차량번호</th>
+                                    <th style={{ width: '100px' }}>총보험료</th>
+                                    <th style={{ width: '100px' }}>개시일자</th>
+                                    <th style={{ width: '100px' }}>만기일자</th>
                                     <th style={{ width: '100px' }}>
-                                        <strong>보험사</strong>
+                                        만기안내여부
                                     </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>차량번호</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>총보험료</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>개시일자</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>만기일자</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>만기안내여부</strong>
-                                    </th>
-                                    <th>
-                                        <strong>비고</strong>
-                                    </th>
+                                    <th>비고</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -287,12 +260,11 @@ export const ExcontractTabpanel: FC<Props> = ({
                                         </td>
                                     </tr>
                                 )}
-                                {filteredCars.map((v, i) => (
-                                    <tr key={`excontractCar${i}`}>
+                                {filteredCars.map((v) => (
+                                    <tr key={`excontractCar${v.index}`}>
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
-                                                    id={`et_c_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>
@@ -375,34 +347,21 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     {editable && (
                                         <th style={{ width: '30px' }}>
                                             <MyCheckbox
-                                                id="et_g_allcheck"
                                                 label=""
                                                 onChange={handleAllCheckGens}
                                             />
                                         </th>
                                     )}
 
+                                    <th style={{ width: '100px' }}>보험사</th>
+                                    <th style={{ width: '200px' }}>상품</th>
+                                    <th style={{ width: '100px' }}>보험료</th>
+                                    <th style={{ width: '100px' }}>개시일자</th>
+                                    <th style={{ width: '100px' }}>만기일자</th>
                                     <th style={{ width: '100px' }}>
-                                        <strong>보험사</strong>
+                                        만기안내여부
                                     </th>
-                                    <th style={{ width: '200px' }}>
-                                        <strong>상품</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>보험료</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>개시일자</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>만기일자</strong>
-                                    </th>
-                                    <th style={{ width: '100px' }}>
-                                        <strong>만기안내여부</strong>
-                                    </th>
-                                    <th>
-                                        <strong>비고</strong>
-                                    </th>
+                                    <th>비고</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -413,12 +372,11 @@ export const ExcontractTabpanel: FC<Props> = ({
                                         </td>
                                     </tr>
                                 )}
-                                {filteredGens.map((v, i) => (
-                                    <tr key={`excontractGen${i}`}>
+                                {filteredGens.map((v) => (
+                                    <tr key={`excontractGen${v.index}`}>
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
-                                                    id={`et_g_check${i}`}
                                                     label=""
                                                     checked={v.checked}
                                                     onChange={(evt) =>
