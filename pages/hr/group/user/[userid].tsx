@@ -3,13 +3,11 @@ import type { HrState } from '@reducers/hr';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { getOrgasRequest } from '@actions/hr/get-orgas.action';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserForm } from '@partials/hr/user/UserForm';
-// import { getBanksRequest } from '@actions/hr/get-banks';
-import { getAgenciesRequest } from '@actions/hr/get-agencys';
-import { getCompaniesRequest } from '@actions/hr/get-companies';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import hrsService from '@services/hrsService';
 import userConstants from '@constants/options/user';
 import { updateDepart } from '@actions/hr/set-depart.action';
@@ -273,8 +271,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         const userid = query.userid as string;
 
         dispatch(getOrgasRequest({}));
-
-        // dispatch(getAgenciesRequest());
 
         dispatch(getCompaniesRequest('insu'));
 

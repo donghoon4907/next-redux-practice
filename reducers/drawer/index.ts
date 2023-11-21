@@ -8,7 +8,7 @@ export interface DrawerState {
 }
 
 const initialState: DrawerState = {
-    isOpen: false,
+    isOpen: true,
 };
 
 export const drawerReducer: Reducer<DrawerState, any> = (

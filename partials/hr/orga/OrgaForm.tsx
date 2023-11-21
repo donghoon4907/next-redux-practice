@@ -25,7 +25,7 @@ import { createOrgaRequest } from '@actions/hr/create-orga.action';
 import { updateOrgaRequest } from '@actions/hr/update-orga.action';
 import { CreateOrgaDTO, UpdateOrgaDTO } from '@dto/hr/Orga.dto';
 import { isEmpty } from '@utils/validator/common';
-import { getLazyOrgasRequest } from '@actions/hr/get-lazy-orgas';
+import { getLazyOrgasRequest } from '@actions/hr/get-lazy-orgas.action';
 
 import { OrgaQualManageTabpanel } from './tabpanels/QualManage';
 

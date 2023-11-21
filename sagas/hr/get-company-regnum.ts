@@ -1,11 +1,11 @@
-import type { GetCompanyRegNumRequestAction } from '@actions/hr/get-company-regnum';
+import type { GetCompanyRegNumRequestAction } from '@actions/hr/get-company-regnum.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import hrsService from '@services/hrsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     GetCompanyRegNumActionTypes,
     getCompanyRegNumSuccess,
-} from '@actions/hr/get-company-regnum';
+} from '@actions/hr/get-company-regnum.action';
 
 function* getCompanyRegNumSaga(action: GetCompanyRegNumRequestAction) {
     const { data } = yield call(hrsService.getCompanyRegNum, action.payload);

@@ -13,7 +13,7 @@ import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { searchOrgasRequest } from '@actions/hr/search-orgas.action';
 import { OrgaSearchFilter } from '@partials/hr/orga/template/SearchFilter';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { getOrgasRequest } from '@actions/hr/get-orgas.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 

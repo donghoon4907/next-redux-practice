@@ -7,9 +7,9 @@ import { END } from 'redux-saga';
 import { CustomerForm } from '@partials/customer/CustomerForm';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
-import { getUsersRequest } from '@actions/hr/get-users';
-import { getCompaniesRequest } from '@actions/hr/get-companies';
+import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 

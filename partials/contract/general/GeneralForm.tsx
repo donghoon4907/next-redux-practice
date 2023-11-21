@@ -36,7 +36,7 @@ import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { CreateGeneralPayModal } from '@components/modal/CreateGeneralPay';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
-import { getUsersRequest } from '@actions/hr/get-users';
+import { getUsersRequest } from '@actions/hr/get-users.action';
 import { SearchProductInput } from '../common/input/SearchProductInput';
 import {
     CreateGeneralDTO,

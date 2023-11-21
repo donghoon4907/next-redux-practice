@@ -23,7 +23,7 @@ import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { findSelectOption } from '@utils/getter';
-import { getUsersRequest } from '@actions/hr/get-users';
+import { getUsersRequest } from '@actions/hr/get-users.action';
 import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
 import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
 import { createCarRequest } from '@actions/contract/car/create.action';

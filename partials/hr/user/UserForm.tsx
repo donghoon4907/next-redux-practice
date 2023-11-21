@@ -34,7 +34,7 @@ import { CreateUserDTO, UpdateUserDTO } from '@dto/hr/User.dto';
 import { useCheckbox } from '@hooks/use-checkbox';
 import { CodeSettingModal } from '@components/modal/CodeSetting';
 import { createUserRequest } from '@actions/hr/create-user.action';
-import { getOrgaRequest } from '@actions/hr/get-orga';
+import { getOrgaRequest } from '@actions/hr/get-orga.action';
 import { updateUserRequest } from '@actions/hr/update-user.action';
 import { usePostcode } from '@hooks/use-postcode';
 import { convertPhoneNumber } from '@utils/converter';

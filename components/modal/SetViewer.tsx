@@ -14,7 +14,7 @@ import { hideSetViewerModal } from '@actions/modal/set-viewer.action';
 import { IconWrapper } from '@components/IconWrapper';
 import { MyCheckbox } from '@components/checkbox';
 import { useApi } from '@hooks/use-api';
-import { getUsersRequest } from '@actions/hr/get-users';
+import { getUsersRequest } from '@actions/hr/get-users.action';
 import { updateViewer } from '@actions/board/set-viewer.action';
 import { BoardState } from '@reducers/board';
 

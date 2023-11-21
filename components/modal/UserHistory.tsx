@@ -9,7 +9,7 @@ import { hideUserHistoryModal } from '@actions/modal/user-history.action';
 import { WithLabel } from '@components/WithLabel';
 import { HrState } from '@reducers/hr';
 import { useSelect } from '@hooks/use-select';
-import { getUsersRequest } from '@actions/hr/get-users';
+import { getUsersRequest } from '@actions/hr/get-users.action';
 import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { insertUserHistory } from '@actions/common/set-user-history.action';

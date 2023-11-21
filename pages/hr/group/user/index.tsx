@@ -14,7 +14,7 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserSearchFilter } from '@partials/hr/user/template/SearchFilter';
 import { searchUsersRequest } from '@actions/hr/search-users.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { getOrgasRequest } from '@actions/hr/get-orgas.action';
 import { generateListParams } from '@utils/generate';
 
 const Users: NextPage = () => {

@@ -1,7 +1,10 @@
-import type { GetOrgaRequestAction } from '@actions/hr/get-orga';
+import type { GetOrgaRequestAction } from '@actions/hr/get-orga.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import hrsService from '@services/hrsService';
-import { GetOrgaActionTypes, getOrgaSuccess } from '@actions/hr/get-orga';
+import {
+    GetOrgaActionTypes,
+    getOrgaSuccess,
+} from '@actions/hr/get-orga.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* getOrgaSaga({ payload }: GetOrgaRequestAction) {

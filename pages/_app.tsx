@@ -1,5 +1,4 @@
 import '@styles/main.scss';
-// import 'react-modern-drawer/dist/index.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import 'rsuite/dist/rsuite.css';
 import 'cropperjs/dist/cropper.css';
@@ -8,113 +7,60 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { getCookie } from 'cookies-next';
 import { wrapper } from '@store/redux';
-// import { MyDrawer } from '@components/drawer';
 import { MyProvider } from '@components/Provider';
 import { MyLoading } from '@components/loading';
 import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
-import { getCookie } from 'cookies-next';
-import { hideDrawer, showDrawer } from '@actions/drawer/drawer.action';
+import { hideDrawer } from '@actions/drawer/drawer.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const router = useRouter();
 
     const dispatch = useDispatch();
 
-    // 라우팅 시 탭 및 GNB 갱신
+    // 페이지 이동 시마다 탭 및 네비게이션 바 내 목록 갱신
     useEffect(() => {
-        onRouteChange();
+        const tab = new TabModule();
 
-        // 탭 활성화
-        function initializeTab(url: string) {
-            const [_, gnb, ...lnbs] = url.split('/');
+        const url = router.pathname;
 
-            let target = ASIDE_MENU[gnb];
-            for (let i = 0; i < lnbs.length; i++) {
-                target = target[lnbs[i]];
-            }
-
-            // 상세페이지인 경우 제외
-            if (!target) {
-                return;
-            }
-
-            const tab = new TabModule();
-
+        const [_, root, ...children] = url.split('/');
+        // ASIDE_MENU에 명세된 페이지 정보가 있는지 찾습니다.
+        let page = ASIDE_MENU[root];
+        for (let i = 0; i < children.length; i++) {
+            page = page[children[i]];
+        }
+        // 페이지 정보가 있는 경우
+        if (page) {
+            // 탭 목록에 존재하지 않는 경우 새 탭 추가
             if (!tab.read(url)) {
                 tab.create({
                     id: url,
-                    label: target.label,
+                    label: page.label,
                     to: url,
                 });
             }
-
-            dispatch(initTab(tab.getAll()));
+            // 네비게이션 바 내 목록 갱신
+            dispatch(
+                updateGnb({
+                    id: root,
+                    menu: ASIDE_MENU[root],
+                }),
+            );
         }
-
-        function onRouteChange(url?: string) {
-            // 404, 500 페이지 제한
-            if (
-                [
-                    '/404',
-                    '/500',
-                    '/test',
-                    '/select-upload',
-                    '/etc/shop_list',
-                    '/calculate',
-                ].includes(router.route)
-            ) {
-                const tab = new TabModule();
-
-                dispatch(initTab(tab.getAll()));
-            } else {
-                const [_, gnb] = router.asPath.split('/');
-
-                // 탭 추가 제한 페이지
-                if (gnb !== 'login') {
-                    initializeTab(router.pathname);
-                    // gnb 추가 제한 페이지
-                    if (!['board', 'calendar'].includes(gnb)) {
-                        dispatch(
-                            updateGnb({
-                                id: gnb,
-                                menu: ASIDE_MENU[gnb],
-                            }),
-                        );
-                    }
-                }
-            }
-        }
-
-        // const handleKeyPress = (event: KeyboardEvent) => {
-        //     // 전역 키보드 이벤트 처리
-        //     if (event.ctrlKey && (event.key === 'f' || event.key === 'F')) {
-        //         // Ctrl + F를 눌렀을 때 기본 동작 중지
-        //         event.preventDefault();
-
-        //         // 여기서 원하는 동작을 추가
-        //         alert(
-        //             'Ctrl + F가 눌렸습니다. 사용자 정의 동작을 수행할 수 있습니다.',
-        //         );
-        //     }
-        // };
-
-        // window.addEventListener('keydown', handleKeyPress);
-        // events.on('routeChangeComplete', onRouteChange);
-        return () => {
-            // window.removeEventListener('keydown', handleKeyPress);
-            // events.off('routeChangeComplete', onRouteChange);
-        };
+        // 탭 목록 갱신
+        dispatch(initTab(tab.getAll()));
     }, [router]);
 
     return (
         <MyProvider>
+            {/* 페이지 컴포넌트에 서버 사이드에서 발생한 정보 주입*/}
             <Component {...pageProps} />
-
-            {/* <MyDrawer /> */}
+            {/* 로딩 컴포넌트 */}
             <MyLoading />
         </MyProvider>
     );
@@ -126,17 +72,14 @@ MyApp.getInitialProps = wrapper.getInitialAppProps(
             const { req, res } = ctx;
             // 서버에서만 실행
             if (req && res) {
-                const isCollapse = getCookie(
-                    process.env.COOKIE_NAV_COLLAPSE_KEY || '',
-                    {
-                        req,
-                        res,
-                    },
-                );
-                if (isCollapse === 'N') {
+                const navKey = process.env.COOKIE_NAV_COLLAPSE_KEY || '';
+                // 네비게이션 바 업데이트
+                const isOpen = getCookie(navKey, {
+                    req,
+                    res,
+                });
+                if (isOpen === 'N') {
                     dispatch(hideDrawer());
-                } else {
-                    dispatch(showDrawer());
                 }
             }
 

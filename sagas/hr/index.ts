@@ -6,7 +6,6 @@ import { watchGetOrgas } from './get-orgas';
 import { watchGetLazyOrgas } from './get-lazy-orgas';
 import { watchGetUsers } from './get-users';
 import { watchGetCompanies } from './get-companies';
-import { watchGetAgencies } from './get-agencies';
 import { watchUpdateUser } from './update-user';
 import { watchGetCompanyRegNum } from './get-company-regnum';
 import { watchGetProducts } from './get-products';
@@ -37,7 +36,6 @@ export function* hrSaga() {
         // fork(watchGetUser),
         fork(watchGetCompanies),
         fork(watchGetCompanyRegNum),
-        fork(watchGetAgencies),
         fork(watchGetProducts),
         fork(watchSearchUsers),
         fork(watchSearchOrgas),

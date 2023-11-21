@@ -3,13 +3,12 @@ import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { END } from 'redux-saga';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { getOrgasRequest } from '@actions/hr/get-orgas.action';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserForm } from '@partials/hr/user/UserForm';
-import { getAgenciesRequest } from '@actions/hr/get-agencys';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
-import { getCompaniesRequest } from '@actions/hr/get-companies';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 

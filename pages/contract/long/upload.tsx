@@ -12,7 +12,7 @@ import { MyLayout } from '@components/Layout';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { END } from 'redux-saga';
-import { getCompaniesRequest } from '@actions/hr/get-companies';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
 import { MyButton } from '@components/button';

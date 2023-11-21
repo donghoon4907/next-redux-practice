@@ -1,9 +1,12 @@
 import type { User } from '@models/user';
-import type { GetUsersRequestAction } from '@actions/hr/get-users';
+import type { GetUsersRequestAction } from '@actions/hr/get-users.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import hrsService from '@services/hrsService';
 import { commonMiddleware } from '@utils/generators/common';
-import { GetUsersActionTypes, getUsersSuccess } from '@actions/hr/get-users';
+import {
+    GetUsersActionTypes,
+    getUsersSuccess,
+} from '@actions/hr/get-users.action';
 
 function* getUsersSaga({ payload }: GetUsersRequestAction) {
     const { data } = yield call(hrsService.getUsers, payload);

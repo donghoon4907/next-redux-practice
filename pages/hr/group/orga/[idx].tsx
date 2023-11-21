@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/get-companies';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import hrsService from '@services/hrsService';
 import { createCode } from '@actions/hr/set-code.action';
 import { findSelectOption } from '@utils/getter';
@@ -15,9 +15,9 @@ import { useInitTab } from '@hooks/use-initialize';
 import commonConstants from '@constants/options/common';
 import orgaConstants from '@constants/options/orga';
 import { OrgaForm } from '@partials/hr/orga/OrgaForm';
-import { getUsersRequest } from '@actions/hr/get-users';
+import { getUsersRequest } from '@actions/hr/get-users.action';
 import { convertPhoneNumber } from '@utils/converter';
-import { getOrgasRequest } from '@actions/hr/get-orgas';
+import { getOrgasRequest } from '@actions/hr/get-orgas.action';
 
 const Orga: NextPage<any> = ({ orga }) => {
     const { orgas, users, banks, wrCompanies } = useSelector<AppState, HrState>(

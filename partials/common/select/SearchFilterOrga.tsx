@@ -6,7 +6,7 @@ import { useSelect } from '@hooks/use-select';
 import { AppState } from '@reducers/index';
 import { HrState } from '@reducers/hr';
 import { useApi } from '@hooks/use-api';
-import { getUsersRequest } from '@actions/hr/get-users';
+import { getUsersRequest } from '@actions/hr/get-users.action';
 import { findSelectOption } from '@utils/getter';
 import { MySelect } from '@components/select';
 import { generateAllOption } from '@utils/generate';

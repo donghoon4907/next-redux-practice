@@ -41,7 +41,7 @@ import {
     UpdateCustomerDTO,
 } from '@dto/customer/Customer.dto';
 import { UserHistoryModal } from '@components/modal/UserHistory';
-import { getCompanyRegNumRequest } from '@actions/hr/get-company-regnum';
+import { getCompanyRegNumRequest } from '@actions/hr/get-company-regnum.action';
 import {
     useInput,
     useNumbericInput,

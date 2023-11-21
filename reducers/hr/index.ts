@@ -3,29 +3,26 @@ import type { CoreSelectOption } from '@interfaces/core';
 import type { Guarantee } from '@models/guarantee';
 import type { Code } from '@models/code';
 import type { SimpleOrga } from '@models/orga';
-import type { Commission } from '@models/commission';
 import type { Product } from '@models/product';
 import type { SearchUsersSuccessPayload } from '@actions/hr/search-users.action';
 import type { SearchOrgasSuccessPayload } from '@actions/hr/search-orgas.action';
 import produce from 'immer';
-import { GetOrgasActionTypes } from '@actions/hr/get-orgas';
-import { GetLazyOrgasActionTypes } from '@actions/hr/get-lazy-orgas';
+import { GetOrgasActionTypes } from '@actions/hr/get-orgas.action';
+import { GetLazyOrgasActionTypes } from '@actions/hr/get-lazy-orgas.action';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
-import { GetUsersActionTypes } from '@actions/hr/get-users';
-import { GetCompaniesActionTypes } from '@actions/hr/get-companies';
+import { GetUsersActionTypes } from '@actions/hr/get-users.action';
+import { GetCompaniesActionTypes } from '@actions/hr/get-companies.action';
 // import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
 // import { GetIpActionTypes } from '@actions/hr/get-ip.action';
 import { PermissionActionTypes } from '@actions/hr/set-permission.action';
 import { GuaranteeActionTypes } from '@actions/hr/set-guarantee.action';
-import { GetAgenciesActionTypes } from '@actions/hr/get-agencys';
 import { CodeActionTypes } from '@actions/hr/set-code.action';
-import { GetOrgaActionTypes } from '@actions/hr/get-orga';
-import { GetUserActionTypes } from '@actions/hr/get-user';
-import { CommissionActionTypes } from '@actions/hr/set-commission.action';
-import { GetProductsActionTypes } from '@actions/hr/get-products';
+import { GetOrgaActionTypes } from '@actions/hr/get-orga.action';
+import { GetUserActionTypes } from '@actions/hr/get-user.action';
+import { GetProductsActionTypes } from '@actions/hr/get-products.action';
 import { SearchUsersActionTypes } from '@actions/hr/search-users.action';
 import { SearchOrgasActionTypes } from '@actions/hr/search-orgas.action';
-import { GetLazyUsersActionTypes } from '@actions/hr/get-lazy-users';
+import { GetLazyUsersActionTypes } from '@actions/hr/get-lazy-users.action';
 
 export interface HrState {
     /**
@@ -121,14 +118,6 @@ export interface HrState {
      */
     removedCodes: Code[];
     /**
-     * 수수료 규정 목록
-     */
-    commissions: Commission[];
-    /**
-     * 삭제된 수수료 규정 목록
-     */
-    removedCommissions: Commission[];
-    /**
      * 보험사의 상품 목록
      */
     products: {
@@ -171,8 +160,6 @@ const initialState: HrState = {
     removedGuarantees: [],
     codes: [],
     removedCodes: [],
-    commissions: [],
-    removedCommissions: [],
     products: {
         data: [],
         wcode: '',
@@ -208,14 +195,6 @@ export const hrReducer: Reducer<HrState, any> = (
                     draft.wrCompanies = action.payload.companies;
                 }
 
-                break;
-            }
-            // case GetBanksActionTypes.SUCCESS: {
-            //     draft.banks = action.payload;
-            //     break;
-            // }
-            case GetAgenciesActionTypes.SUCCESS: {
-                draft.agencies = action.payload;
                 break;
             }
             case GetLazyOrgasActionTypes.SUCCESS:
@@ -326,42 +305,6 @@ export const hrReducer: Reducer<HrState, any> = (
 
                     if (deleted.idx) {
                         draft.removedCodes = draft.removedCodes.concat(deleted);
-                    }
-                }
-
-                break;
-            }
-            case CommissionActionTypes.CREATE: {
-                draft.commissions = draft.commissions.concat(action.payload);
-                break;
-            }
-            case CommissionActionTypes.UPDATE: {
-                const { index, ...rest } = action.payload;
-
-                for (let i = 0; i < draft.commissions.length; i++) {
-                    if (draft.commissions[i].index === index) {
-                        draft.commissions[i] = {
-                            ...draft.commissions[i],
-                            ...rest,
-                        };
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-            case CommissionActionTypes.DELETE: {
-                const findIndex = draft.commissions.findIndex(
-                    (v) => v.index === action.payload.index,
-                );
-
-                if (findIndex !== -1) {
-                    const [deleted] = draft.commissions.splice(findIndex, 1);
-
-                    if (deleted.idx) {
-                        draft.removedCommissions =
-                            draft.removedCommissions.concat(deleted);
                     }
                 }
 

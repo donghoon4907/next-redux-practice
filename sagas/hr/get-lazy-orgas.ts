@@ -1,11 +1,11 @@
-import type { GetLazyOrgasRequestAction } from '@actions/hr/get-lazy-orgas';
+import type { GetLazyOrgasRequestAction } from '@actions/hr/get-lazy-orgas.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import hrsService from '@services/hrsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     getLazyOrgasSuccess,
     GetLazyOrgasActionTypes,
-} from '@actions/hr/get-lazy-orgas';
+} from '@actions/hr/get-lazy-orgas.action';
 import { Orga } from '@models/orga';
 
 function* getLazyOrgasSaga({ payload }: GetLazyOrgasRequestAction) {

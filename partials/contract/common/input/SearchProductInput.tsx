@@ -6,7 +6,7 @@ import type { ContractState } from '@reducers/contract';
 import { useDispatch, useSelector } from 'react-redux';
 import { showProductSearchModal } from '@actions/modal/product-search.action';
 import { useApi } from '@hooks/use-api';
-import { getProductsRequest } from '@actions/hr/get-products';
+import { getProductsRequest } from '@actions/hr/get-products.action';
 import { FloatInput } from '@components/input/Float';
 import { InputSearchButton } from '@components/button/InputSearch';
 

@@ -31,7 +31,7 @@ import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
-import { getUsersRequest } from '@actions/hr/get-users';
+import { getUsersRequest } from '@actions/hr/get-users.action';
 import { CreateLongDTO, UpdateLongDTO } from '@dto/contractor/Long.dto';
 import { createLongRequest } from '@actions/contract/long/create.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';

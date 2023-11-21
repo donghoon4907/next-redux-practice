@@ -1,16 +1,16 @@
 import type { CreateUserRequestPayload } from '@actions/hr/create-user.action';
 import type { LoginRequestPayload } from '@actions/hr/login.action';
-import type { GetOrgaRequestPayload } from '@actions/hr/get-orga';
-import type { GetUsersRequestPayload } from '@actions/hr/get-users';
+import type { GetOrgaRequestPayload } from '@actions/hr/get-orga.action';
+import type { GetUsersRequestPayload } from '@actions/hr/get-users.action';
 import type { GetPermissionRequestPayload } from '@actions/hr/get-permission.action';
-import type { GetUserRequestPayload } from '@actions/hr/get-user';
+import type { GetUserRequestPayload } from '@actions/hr/get-user.action';
 import type { UpdateUserRequestPayload } from '@actions/hr/update-user.action';
-import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies';
-import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum';
-import type { GetProductsRequestPayload } from '@actions/hr/get-products';
+import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies.action';
+import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum.action';
+import type { GetProductsRequestPayload } from '@actions/hr/get-products.action';
 import type { SearchUsersRequestPayload } from '@actions/hr/search-users.action';
 import type { CreateOrgaRequestPayload } from '@actions/hr/create-orga.action';
-import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas';
+import type { GetOrgasRequestPayload } from '@actions/hr/get-orgas.action';
 import type { UpdateOrgaRequestPayload } from '@actions/hr/update-orga.action';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
@@ -78,9 +78,9 @@ export function getCompanyRegNum(payload: GetCompanyRegNumRequestPayload) {
     return getBackendAxios().get(`/customer/ckCompanyCust/${payload.num}`);
 }
 
-export function getAgencies() {
-    return getBackendAxios().get('/common/agencycom');
-}
+// export function getAgencies() {
+//     return getBackendAxios().get('/common/agencycom');
+// }
 
 export function beforeGetOrgas(payload: GetOrgasRequestPayload) {
     return axios.get('/api/get-orgas', {
@@ -187,7 +187,7 @@ const rootServices = {
     updateUser,
     getCompanies,
     getCompanyRegNum,
-    getAgencies,
+    // getAgencies,
     beforeGetOrgas,
     getOrgas,
     beforeGetSimpleOrga,
