@@ -1,23 +1,26 @@
 import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
 import { LongForm } from '@partials/contract/long/LongForm';
-import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 // 장기계약 등록 페이지 컴포넌트
 // 주석추가 - 등록 페이지 구조 이해
 const CreateLong: NextPage = () => {
-    // 로그인 정보(권한 조회 후 업데이트) 및 소속 정보
-    const { loggedInUser, orgas } = useSelector<AppState, HrState>(
-        (state) => state.hr,
+    // 소속 정보
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+    // 로그인 정보(권한 조회 후 업데이트)
+    const { loggedInUser } = useSelector<AppState, UserState>(
+        (state) => state.user,
     );
 
     // 탭 추가 - ASIDE_MENU에 없는 경우 수동으로 추가 필요

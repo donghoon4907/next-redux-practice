@@ -3,11 +3,11 @@ import Head from 'next/head';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 import { OrgaForm } from '@partials/hr/orga/OrgaForm';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 
 const CreateOrga: NextPage = () => {
     // 탭 설정

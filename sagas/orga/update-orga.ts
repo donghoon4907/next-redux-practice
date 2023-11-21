@@ -1,16 +1,16 @@
-import type { UpdateOrgaRequestAction } from '@actions/hr/update-orga.action';
+import type { UpdateOrgaRequestAction } from '@actions/hr/orga/update-orga.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import hrsService from '@services/hrsService';
+import orgasService from '@services/orgasService';
 import {
     UpdateOrgaActionTypes,
     updateOrgaSuccess,
-} from '@actions/hr/update-orga.action';
+} from '@actions/hr/orga/update-orga.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* updateOrgaSaga({ payload }: UpdateOrgaRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(hrsService.beforeUpdateOrga, rest);
+    const { data } = yield call(orgasService.beforeUpdateOrga, rest);
 
     const { Message } = data;
 

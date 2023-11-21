@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import hrsService from '@services/hrsService';
+import usersService from '@services/usersService';
 
 export default async function handler(
     req: NextApiRequest,
@@ -10,7 +10,7 @@ export default async function handler(
 
         const { ip, userid, password } = req.body;
 
-        const { data } = await hrsService.verify({
+        const { data } = await usersService.verify({
             ip,
             userid,
             password,

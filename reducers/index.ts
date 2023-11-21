@@ -16,6 +16,8 @@ import { commonReducer } from './common';
 import { contractReducer } from './contract';
 import { carReducer } from './car';
 import { ruleReducer } from './rule';
+import { orgaReducer } from './orga';
+import { userReducer } from './user';
 
 const combinedReducer = combineReducers({
     tab: tabReducer,
@@ -28,6 +30,8 @@ const combinedReducer = combineReducers({
     gnb: gnbReducer,
     modal: modalReducer,
     hr: hrReducer,
+    orga: orgaReducer,
+    user: userReducer,
     customer: customerReducer,
     common: commonReducer,
     contract: contractReducer,

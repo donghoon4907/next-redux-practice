@@ -13,7 +13,10 @@ import { useDatepicker } from '@hooks/use-datepicker';
 import { HrState } from '@reducers/hr';
 import { MyDatepicker } from '@components/datepicker';
 import { hideCodeSettingModal } from '@actions/modal/code-setting.action';
-import { CreateCodePayload, createCode } from '@actions/hr/set-code.action';
+import {
+    CreateCodePayload,
+    createCode,
+} from '@actions/hr/common/set-code.action';
 import { generateIndex } from '@utils/generate';
 
 interface Props {}

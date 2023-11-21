@@ -3,7 +3,9 @@ import type { User } from '@models/user';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { HrState } from '@reducers/hr';
+import type { BoardState } from '@reducers/board';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
@@ -14,9 +16,8 @@ import { hideSetViewerModal } from '@actions/modal/set-viewer.action';
 import { IconWrapper } from '@components/IconWrapper';
 import { MyCheckbox } from '@components/checkbox';
 import { useApi } from '@hooks/use-api';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 import { updateViewer } from '@actions/board/set-viewer.action';
-import { BoardState } from '@reducers/board';
 
 function removeDuplicate(
     defaultArr: User[],
@@ -52,9 +53,9 @@ export const SetViewerModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const { orgas, users } = useSelector<AppState, HrState>(
-        (state) => state.hr,
-    );
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { users } = useSelector<AppState, UserState>((state) => state.hr);
 
     const { viewer } = useSelector<AppState, BoardState>(
         (state) => state.board,

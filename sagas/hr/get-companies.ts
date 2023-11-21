@@ -1,4 +1,4 @@
-import type { GetCompaniesRequestAction } from '@actions/hr/get-companies.action';
+import type { GetCompaniesRequestAction } from '@actions/hr/common/get-companies.action';
 import type { Company } from '@models/company';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import hrsService from '@services/hrsService';
@@ -6,7 +6,7 @@ import { commonMiddleware } from '@utils/generators/common';
 import {
     GetCompaniesActionTypes,
     getCompaniesSuccess,
-} from '@actions/hr/get-companies.action';
+} from '@actions/hr/common/get-companies.action';
 
 function* getCompaniesSaga(action: GetCompaniesRequestAction) {
     const { data } = yield call(hrsService.getCompanies, action.payload);

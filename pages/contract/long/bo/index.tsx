@@ -10,14 +10,14 @@ import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
 import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
-import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { getLongsRequest } from '@actions/contract/long/get-longs.action';
-import { getCompaniesRequest } from '@actions/hr/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
 import { LongSearchFilter } from '@partials/contract/long/template/SearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 // 장기계약 조회 페이지 컴포넌트
 // 주석추가 - 목록 페이지 구조 이해
 const LongBo: NextPage = () => {

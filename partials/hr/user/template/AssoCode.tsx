@@ -13,7 +13,7 @@ import {
     createCode,
     deleteCode,
     updateCode,
-} from '@actions/hr/set-code.action';
+} from '@actions/hr/common/set-code.action';
 import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { FloatSelect } from '@components/select/Float';

@@ -1,14 +1,12 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
-import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideDepartSearchModal } from '@actions/modal/depart-search.action';
-import { updateDepart } from '@actions/hr/set-depart.action';
-import { WithLabel } from '@components/WithLabel';
-import { MySelect } from '@components/select';
+import { updateDepart } from '@actions/hr/common/set-depart.action';
 import { useSelect } from '@hooks/use-select';
 import { FloatSelect } from '@components/select/Float';
 
@@ -21,7 +19,7 @@ export const SelectDepartModal: FC<Props> = () => {
         (state) => state.modal,
     );
 
-    const { orgas } = useSelector<AppState, HrState>((state) => state.hr);
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
 
     const [depart, setDepart] = useSelect(orgas, null);
 

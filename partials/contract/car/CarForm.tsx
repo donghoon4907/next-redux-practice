@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
@@ -23,7 +25,7 @@ import { ProductSearchModal } from '@components/modal/ProductSearch';
 import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { findSelectOption } from '@utils/getter';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
 import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
 import { createCarRequest } from '@actions/contract/car/create.action';
@@ -187,9 +189,13 @@ export const CarForm: FC<Props> = ({
         (state) => state.common,
     );
 
-    const { longUseCompanies, orgas, users } = useSelector<AppState, HrState>(
+    const { longUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { users } = useSelector<AppState, UserState>((state) => state.user);
 
     const {
         selectedProduct,

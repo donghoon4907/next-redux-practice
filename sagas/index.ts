@@ -10,12 +10,16 @@ import { generalSaga } from './general';
 import { carSaga } from './car';
 import { commonSaga } from './common';
 import { ruleSaga } from './rule';
+import { orgaSaga } from './orga';
+import { userSaga } from './user';
 
 export function* rootSaga() {
     yield all([
         // call(boardSaga),
         call(uploadSaga),
         call(hrSaga),
+        call(orgaSaga),
+        call(userSaga),
         call(customerSaga),
         call(contractSaga),
         call(longSaga),

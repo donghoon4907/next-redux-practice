@@ -1,20 +1,23 @@
 import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { CarForm } from '@partials/contract/car/CarForm';
 import { MyLayout } from '@components/Layout';
 
 const CreateCar: NextPage = () => {
-    const { loggedInUser, orgas } = useSelector<AppState, HrState>(
-        (state) => state.hr,
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { loggedInUser } = useSelector<AppState, UserState>(
+        (state) => state.user,
     );
 
     const defaultOrga = findSelectOption(

@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
+import type { UserState } from '@reducers/user';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -12,9 +12,9 @@ import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserSearchFilter } from '@partials/hr/user/template/SearchFilter';
-import { searchUsersRequest } from '@actions/hr/search-users.action';
+import { searchUsersRequest } from '@actions/hr/user/search-users.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
-import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { generateListParams } from '@utils/generate';
 
 const Users: NextPage = () => {
@@ -22,7 +22,9 @@ const Users: NextPage = () => {
 
     const router = useRouter();
 
-    const { searchUsers } = useSelector<AppState, HrState>((props) => props.hr);
+    const { searchUsers } = useSelector<AppState, UserState>(
+        (props) => props.user,
+    );
 
     const columns = useColumn(searchUsers.fields);
 

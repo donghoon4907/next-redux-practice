@@ -2,27 +2,12 @@ import type { Reducer } from 'redux';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { Guarantee } from '@models/guarantee';
 import type { Code } from '@models/code';
-import type { SimpleOrga } from '@models/orga';
 import type { Product } from '@models/product';
-import type { SearchUsersSuccessPayload } from '@actions/hr/search-users.action';
-import type { SearchOrgasSuccessPayload } from '@actions/hr/search-orgas.action';
 import produce from 'immer';
-import { GetOrgasActionTypes } from '@actions/hr/get-orgas.action';
-import { GetLazyOrgasActionTypes } from '@actions/hr/get-lazy-orgas.action';
-import { DepartActionTypes } from '@actions/hr/set-depart.action';
-import { GetUsersActionTypes } from '@actions/hr/get-users.action';
-import { GetCompaniesActionTypes } from '@actions/hr/get-companies.action';
-// import { GetPermissionActionTypes } from '@actions/hr/get-permission.action';
-// import { GetIpActionTypes } from '@actions/hr/get-ip.action';
-import { PermissionActionTypes } from '@actions/hr/set-permission.action';
-import { GuaranteeActionTypes } from '@actions/hr/set-guarantee.action';
-import { CodeActionTypes } from '@actions/hr/set-code.action';
-import { GetOrgaActionTypes } from '@actions/hr/get-orga.action';
-import { GetUserActionTypes } from '@actions/hr/get-user.action';
-import { GetProductsActionTypes } from '@actions/hr/get-products.action';
-import { SearchUsersActionTypes } from '@actions/hr/search-users.action';
-import { SearchOrgasActionTypes } from '@actions/hr/search-orgas.action';
-import { GetLazyUsersActionTypes } from '@actions/hr/get-lazy-users.action';
+import { GetCompaniesActionTypes } from '@actions/hr/common/get-companies.action';
+import { GuaranteeActionTypes } from '@actions/hr/common/set-guarantee.action';
+import { CodeActionTypes } from '@actions/hr/common/set-code.action';
+import { GetProductsActionTypes } from '@actions/hr/common/get-products.action';
 
 export interface HrState {
     /**
@@ -66,42 +51,6 @@ export interface HrState {
      */
     agencies: CoreSelectOption[];
     /**
-     * 부서목록
-     */
-    orgas: CoreSelectOption[];
-    /**
-     * 부서상세요약
-     */
-    orga: SimpleOrga | null;
-    /**
-     * 영업가족 목록 - 간소화
-     */
-    users: CoreSelectOption[];
-    /**
-     * 영업가족 목록 - 검색
-     */
-    searchUsers: SearchUsersSuccessPayload;
-    /**
-     * 영업조직 목록 - 검색
-     */
-    searchOrgas: SearchOrgasSuccessPayload;
-    /**
-     * 영업가족 상세
-     */
-    user: any;
-    /**
-     * 선택한 부서(조직)
-     */
-    selectedOrga: CoreSelectOption | null;
-    /**
-     * 로그인한 사용자 정보
-     */
-    loggedInUser: any;
-    /**
-     * 사용자 환경의 IP
-     */
-    // ip: string;
-    /**
      * 보증 설정 목록
      */
     guarantees: Guarantee[];
@@ -137,24 +86,6 @@ const initialState: HrState = {
     genUseCompanies: [],
     banks: [],
     agencies: [],
-    orgas: [],
-    orga: null,
-    users: [],
-    searchUsers: {
-        fields: [],
-        rows: [],
-        total: null,
-        lastPayload: null,
-    },
-    searchOrgas: {
-        fields: [],
-        rows: [],
-        total: null,
-        lastPayload: null,
-    },
-    user: null,
-    selectedOrga: null,
-    loggedInUser: null,
     // ip: '',
     guarantees: [],
     removedGuarantees: [],
@@ -195,48 +126,6 @@ export const hrReducer: Reducer<HrState, any> = (
                     draft.wrCompanies = action.payload.companies;
                 }
 
-                break;
-            }
-            case GetLazyOrgasActionTypes.SUCCESS:
-            case GetOrgasActionTypes.SUCCESS: {
-                draft.orgas = action.payload;
-                break;
-            }
-            case GetOrgaActionTypes.SUCCESS: {
-                draft.orga = action.payload;
-                break;
-            }
-            case GetLazyUsersActionTypes.SUCCESS:
-            case GetUsersActionTypes.SUCCESS: {
-                draft.users = action.payload;
-                break;
-            }
-            case SearchUsersActionTypes.SUCCESS: {
-                draft.searchUsers = action.payload;
-                break;
-            }
-            case SearchOrgasActionTypes.SUCCESS: {
-                draft.searchOrgas = action.payload;
-                break;
-            }
-            case GetUserActionTypes.SUCCESS: {
-                draft.user = action.payload;
-                break;
-            }
-            case DepartActionTypes.UPDATE: {
-                draft.selectedOrga = action.payload;
-                break;
-            }
-            // case GetPermissionActionTypes.SUCCESS: {
-            //     draft.loggedInUser = action.payload;
-            //     break;
-            // }
-            // case GetIpActionTypes.SUCCESS: {
-            //     draft.ip = action.payload.ip;
-            //     break;
-            // }
-            case PermissionActionTypes.UPDATE: {
-                draft.loggedInUser = action.payload;
                 break;
             }
             case GuaranteeActionTypes.CREATE: {

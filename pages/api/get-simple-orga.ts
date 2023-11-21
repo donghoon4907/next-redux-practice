@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import hrsService from '@services/hrsService';
+import orgasService from '@services/orgasService';
 import { tokenMiddleware } from '@utils/middleware/next';
 
 export default async function handler(
@@ -11,7 +11,7 @@ export default async function handler(
     const idx = req.query.idx as string;
 
     try {
-        const { data } = await hrsService.getSimpleOrga({
+        const { data } = await orgasService.getSimpleOrga({
             idx,
         });
 

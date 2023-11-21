@@ -1,16 +1,16 @@
-import type { UpdateUserRequestAction } from '@actions/hr/update-user.action';
+import type { UpdateUserRequestAction } from '@actions/hr/user/update-user.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import hrsService from '@services/hrsService';
+import usersService from '@services/usersService';
 import {
     UpdateUserActionTypes,
     updateUserSuccess,
-} from '@actions/hr/update-user.action';
+} from '@actions/hr/user/update-user.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* updateUserSaga({ payload }: UpdateUserRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(hrsService.beforeUpdateUser, rest);
+    const { data } = yield call(usersService.beforeUpdateUser, rest);
 
     const { Message } = data;
 

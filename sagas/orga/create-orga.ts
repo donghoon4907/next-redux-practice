@@ -1,16 +1,16 @@
-import type { CreateOrgaRequestAction } from '@actions/hr/create-orga.action';
+import type { CreateOrgaRequestAction } from '@actions/hr/orga/create-orga.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import hrsService from '@services/hrsService';
+import orgasService from '@services/orgasService';
 import {
     CreateOrgaActionTypes,
     createOrgaSuccess,
-} from '@actions/hr/create-orga.action';
+} from '@actions/hr/orga/create-orga.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* createOrgaSaga({ payload }: CreateOrgaRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(hrsService.beforeCreateOrga, rest);
+    const { data } = yield call(orgasService.beforeCreateOrga, rest);
 
     const { idx, Message } = data;
 

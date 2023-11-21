@@ -1,15 +1,15 @@
-import type { SearchUsersRequestAction } from '@actions/hr/search-users.action';
+import type { SearchUsersRequestAction } from '@actions/hr/user/search-users.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
-import hrsService from '@services/hrsService';
+import usersService from '@services/usersService';
 import {
     SearchUsersActionTypes,
     searchUsersSuccess,
-} from '@actions/hr/search-users.action';
+} from '@actions/hr/user/search-users.action';
 import { commonMiddleware } from '@utils/generators/common';
 import { generateListSuccessPayload } from '@utils/generate';
 
 function* searchUsersSaga({ payload }: SearchUsersRequestAction) {
-    const { data } = yield call(hrsService.searchUsers, payload);
+    const { data } = yield call(usersService.searchUsers, payload);
 
     const successPayload = generateListSuccessPayload(data, payload);
 

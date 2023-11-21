@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 import type { Spe } from '@models/spe';
 import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
+import type { UserState } from '@reducers/user';
 import type { ContractState } from '@reducers/contract';
 import type { CommonState } from '@reducers/common';
 import type { MyTabpanelProps } from '@components/tab/Tabpanel';
@@ -38,9 +38,10 @@ export const SingleContactTabpanel: FC<Props> = ({
     spe,
     cnum,
 }) => {
-    const { loggedInUser } = useSelector<AppState, HrState>(
-        (state) => state.hr,
+    const { loggedInUser } = useSelector<AppState, UserState>(
+        (state) => state.user,
     );
+
     const { singleContacts } = useSelector<AppState, CommonState>(
         (state) => state.common,
     );

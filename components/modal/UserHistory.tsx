@@ -2,19 +2,19 @@ import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import type { CommonState } from '@reducers/common';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideUserHistoryModal } from '@actions/modal/user-history.action';
-import { WithLabel } from '@components/WithLabel';
-import { HrState } from '@reducers/hr';
 import { useSelect } from '@hooks/use-select';
-import { getUsersRequest } from '@actions/hr/get-users.action';
-import { MyInput } from '@components/input';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 import { useInput } from '@hooks/use-input';
 import { insertUserHistory } from '@actions/common/set-user-history.action';
 import { generateIndex } from '@utils/generate';
 import { FloatSelect } from '@components/select/Float';
+import { FloatInput } from '@components/input/Float';
 
 interface Props {
     type: 'customer' | 'contract';
@@ -27,8 +27,10 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
         (state) => state.modal,
     );
 
-    const { orgas, users, loggedInUser } = useSelector<AppState, HrState>(
-        (state) => state.hr,
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { users, loggedInUser } = useSelector<AppState, UserState>(
+        (state) => state.user,
     );
 
     const { userHistories } = useSelector<AppState, CommonState>(
@@ -48,8 +50,12 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
     };
 
     const handleSubmit = () => {
+        if (!depart.value) {
+            return alert('소속을 선택하세요.');
+        }
+
         if (!user.value) {
-            return alert('영업가족을 선택하세요.');
+            return alert('담당자를 선택하세요.');
         }
 
         const tf = confirm('담당자를 변경하시겠습니까?');
@@ -90,18 +96,12 @@ export const UserHistoryModal: FC<Props> = ({ type }) => {
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
+                    <div className="flex-fill">
                         {type === 'customer' && (
-                            <WithLabel id="mRemark" label="비고" type="active">
-                                <MyInput
-                                    id="mRemark"
-                                    placeholder="비고"
-                                    {...remark}
-                                />
-                            </WithLabel>
+                            <FloatInput label="비고" {...remark} />
                         )}
                     </div>
-                    <div className="col"></div>
+                    <div className="flex-fill"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

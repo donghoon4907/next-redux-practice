@@ -1,12 +1,12 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import hrsService from '@services/hrsService';
+import usersService from '@services/usersService';
 
 export default async function handler(
     req: NextApiRequest,
     res: NextApiResponse,
 ) {
     try {
-        const { data } = await hrsService.logout();
+        const { data } = await usersService.logout();
 
         res.status(200).send('');
     } catch {

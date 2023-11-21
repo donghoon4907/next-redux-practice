@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -21,11 +23,11 @@ import commonConstants from '@constants/options/common';
 import orgaConstants from '@constants/options/orga';
 import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
 import { usePostcode } from '@hooks/use-postcode';
-import { createOrgaRequest } from '@actions/hr/create-orga.action';
-import { updateOrgaRequest } from '@actions/hr/update-orga.action';
+import { createOrgaRequest } from '@actions/hr/orga/create-orga.action';
+import { updateOrgaRequest } from '@actions/hr/orga/update-orga.action';
 import { CreateOrgaDTO, UpdateOrgaDTO } from '@dto/hr/Orga.dto';
 import { isEmpty } from '@utils/validator/common';
-import { getLazyOrgasRequest } from '@actions/hr/get-lazy-orgas.action';
+import { getLazyOrgasRequest } from '@actions/hr/orga/get-lazy-orgas.action';
 
 import { OrgaQualManageTabpanel } from './tabpanels/QualManage';
 
@@ -157,10 +159,13 @@ export const OrgaForm: FC<Props> = ({
 }) => {
     const displayName = 'wr-pages-orga-detail';
 
-    const { users, banks, wrCompanies, codes, orgas } = useSelector<
-        AppState,
-        HrState
-    >((state) => state.hr);
+    const { banks, wrCompanies, codes } = useSelector<AppState, HrState>(
+        (state) => state.hr,
+    );
+
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { users } = useSelector<AppState, UserState>((state) => state.user);
 
     const getLazyOrgas = useApi(getLazyOrgasRequest);
 

@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
@@ -26,7 +28,7 @@ import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { MyDatepicker } from '@components/datepicker';
 import { CustomerTabpanel } from '@partials/contract/common/tabpanels/Customer';
-import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
+// import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
 import { CalcPerformTabpanel } from '@partials/contract/general/tabpanels/CalcPerform';
 // import { CustomSettingAccordion } from '@components/accordion/CustomSetting';
 import longConstants from '@constants/options/long';
@@ -36,7 +38,7 @@ import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { CreateGeneralPayModal } from '@components/modal/CreateGeneralPay';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 import { SearchProductInput } from '../common/input/SearchProductInput';
 import {
     CreateGeneralDTO,
@@ -131,9 +133,13 @@ export const GeneralForm: FC<Props> = ({
         CommonState
     >((state) => state.common);
 
-    const { genUseCompanies, orgas, users } = useSelector<AppState, HrState>(
+    const { genUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { users } = useSelector<AppState, UserState>((state) => state.user);
 
     const { selectedProduct, insureds, loadedContract, pays, removedPays } =
         useSelector<AppState, ContractState>((state) => state.contract);
@@ -540,13 +546,13 @@ export const GeneralForm: FC<Props> = ({
                             hidden={tab.id !== 'tabCalcPerform'}
                             editable={editable}
                         />
-                        <ContactTabpanel
+                        {/* <ContactTabpanel
                             id="tabpanelContactHis"
                             tabId="tabContactHis"
                             hidden={tab.id !== 'tabContactHis'}
                             editable={editable}
                             spe="gen"
-                        />
+                        /> */}
 
                         <ChangeHistoryTabpanel
                             id="tabpanelChangeHis"

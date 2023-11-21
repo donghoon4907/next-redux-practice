@@ -1,24 +1,25 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
+import type { UserState } from '@reducers/user';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
-import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserForm } from '@partials/hr/user/UserForm';
-import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import hrsService from '@services/hrsService';
+import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import usersService from '@services/usersService';
 import userConstants from '@constants/options/user';
-import { updateDepart } from '@actions/hr/set-depart.action';
+import { updateDepart } from '@actions/hr/common/set-depart.action';
 import { AppState } from '@reducers/index';
-import { createCode } from '@actions/hr/set-code.action';
-import { createGuarantee } from '@actions/hr/set-guarantee.action';
+import { createCode } from '@actions/hr/common/set-code.action';
+import { createGuarantee } from '@actions/hr/common/set-guarantee.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 
-const User: NextPage<HrState> = ({ user }) => {
+const User: NextPage<UserState> = ({ user }) => {
     const { banks, allCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
@@ -285,7 +286,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             await sagaTask?.toPromise();
 
-            const { data } = await hrsService.getUser({ idx: userid });
+            const { data } = await usersService.getUser({ idx: userid });
 
             const user = data.data[0];
 
@@ -293,7 +294,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             dispatch(
                 updateDepart({
-                    label: `${user.orga} ${user.fc}`,
+                    label: user.orga,
                     value: user.orga_idx,
                 }),
             );

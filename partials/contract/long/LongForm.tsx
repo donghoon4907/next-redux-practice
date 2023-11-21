@@ -1,6 +1,8 @@
 import type { FC } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import type { CommonState } from '@reducers/common';
 import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
@@ -31,7 +33,7 @@ import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 import { CreateLongDTO, UpdateLongDTO } from '@dto/contractor/Long.dto';
 import { createLongRequest } from '@actions/contract/long/create.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
@@ -207,9 +209,13 @@ export const LongForm: FC<Props> = ({
         (state) => state.common,
     );
 
-    const { longUseCompanies, orgas, users } = useSelector<AppState, HrState>(
+    const { longUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { users } = useSelector<AppState, UserState>((state) => state.user);
 
     const {
         selectedProduct,

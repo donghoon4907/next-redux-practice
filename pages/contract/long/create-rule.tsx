@@ -1,13 +1,13 @@
 import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
-import type { HrState } from '@reducers/hr';
+import type { UserState } from '@reducers/user';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 import { LongRuleForm } from '@partials/rule/long/LongRuleForm';
@@ -17,8 +17,8 @@ import { getGradesRequest } from '@actions/rule/get-grades';
 import { getHwansRequest } from '@actions/rule/get-hwans';
 
 const CreateLongRule: NextPage = () => {
-    const { loggedInUser } = useSelector<AppState, HrState>(
-        (state) => state.hr,
+    const { loggedInUser } = useSelector<AppState, UserState>(
+        (state) => state.user,
     );
     // 탭 설정
     useInitTab('장기 지급 제도 등록');

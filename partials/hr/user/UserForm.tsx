@@ -1,16 +1,13 @@
 import type { FC, ChangeEvent } from 'react';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
+import type { OrgaState } from '@reducers/orga';
 import type { UploadState } from '@reducers/upload';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
-import { MySelect } from '@components/select';
 import { HR_DETAIL_TABS } from '@constants/tab';
 import { MyTab } from '@components/tab';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
-import variables from '@styles/_variables.module.scss';
 import { useApi } from '@hooks/use-api';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { MyFooter } from '@components/footer';
@@ -23,7 +20,6 @@ import { IncomeTabpanel } from '@partials/hr/user/tabpanels/Income';
 import { GuaranteeTabpanel } from '@partials/hr/user/tabpanels/Guarantee';
 import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
 import { AuthorityTabpanel } from '@partials/hr/user/tabpanels/Authority';
-import { QualManageTabpanel } from '@partials/hr/user/tabpanels/QualManage';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { CoreSelectOption } from '@interfaces/core';
@@ -33,9 +29,9 @@ import userConstants from '@constants/options/user';
 import { CreateUserDTO, UpdateUserDTO } from '@dto/hr/User.dto';
 import { useCheckbox } from '@hooks/use-checkbox';
 import { CodeSettingModal } from '@components/modal/CodeSetting';
-import { createUserRequest } from '@actions/hr/create-user.action';
-import { getOrgaRequest } from '@actions/hr/get-orga.action';
-import { updateUserRequest } from '@actions/hr/update-user.action';
+import { createUserRequest } from '@actions/hr/user/create-user.action';
+import { getOrgaRequest } from '@actions/hr/orga/get-orga.action';
+import { updateUserRequest } from '@actions/hr/user/update-user.action';
 import { usePostcode } from '@hooks/use-postcode';
 import { convertPhoneNumber } from '@utils/converter';
 import { uploadPortraitRequest } from '@actions/upload/portrait.action';
@@ -368,15 +364,17 @@ export const UserForm: FC<Props> = ({
     const dispatch = useDispatch();
 
     const {
-        selectedOrga,
         banks,
         allCompanies,
-        orga,
         guarantees,
         codes,
         removedGuarantees,
         removedCodes,
     } = useSelector<AppState, HrState>((state) => state.hr);
+
+    const { selectedOrga, orga } = useSelector<AppState, OrgaState>(
+        (state) => state.orga,
+    );
 
     const { lastSetPortraitImageFile, lastSetPortraitImagePreview } =
         useSelector<AppState, UploadState>((state) => state.upload);
@@ -392,7 +390,6 @@ export const UserForm: FC<Props> = ({
     const [tab, setTab] = useTab(HR_DETAIL_TABS[0]);
     // 수정 모드 여부
     const [editable, setEditable] = useState(mode === 'create' ? true : false);
-    const labelType = editable ? 'active' : 'disable';
     // 별칭
     const [nick] = useInput(defaultNick, { noSpace: true });
     // 이름
@@ -649,12 +646,6 @@ export const UserForm: FC<Props> = ({
         userConstants.qDivision,
         defaultLiaQualification,
     );
-    // 썸네일
-    let thumbnail = 'http://via.placeholder.com/195x206';
-    if (userid) {
-        thumbnail = `${process.env.STORAGE_PATH}/user/${userid}.jpg`;
-    }
-
     // 소득 설정 - 자동차 규정 라디오 변경 핸들러
     const handleChangeCarType = (evt: ChangeEvent<HTMLInputElement>) => {
         setCarType(evt.target.value);
@@ -1156,15 +1147,6 @@ export const UserForm: FC<Props> = ({
                                         </div>
                                     </div>
                                 </div>
-                                {/* <WithSelectInput
-                                        id="email"
-                                        label="이메일"
-                                        selectWidth={140}
-                                        labelType={labelType}
-                                        inputHooks={email}
-                                        selectHooks={emailCom}
-                                        disabled={!editable}
-                                    />  */}
                                 <div className="row wr-mt">
                                     <div className="flex-fill d-flex">
                                         <div className="flex-fill">

@@ -1,12 +1,12 @@
 import type { FC } from 'react';
+import type { AppState } from '@reducers/index';
+import type { OrgaState } from '@reducers/orga';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useSelect } from '@hooks/use-select';
-import { AppState } from '@reducers/index';
-import { HrState } from '@reducers/hr';
 import { useApi } from '@hooks/use-api';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 import { findSelectOption } from '@utils/getter';
 import { MySelect } from '@components/select';
 import { generateAllOption } from '@utils/generate';
@@ -20,7 +20,7 @@ export const SearchFilterOrgaSelect: FC<Props> = ({ activeUser }) => {
 
     const router = useRouter();
 
-    const { orgas } = useSelector<AppState, HrState>((props) => props.hr);
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
 
     const getUsers = useApi(getUsersRequest);
 

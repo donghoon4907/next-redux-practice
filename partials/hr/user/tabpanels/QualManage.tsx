@@ -16,7 +16,7 @@ import { MyTableExtension } from '@components/table/Extension';
 import { showCodeSettingModal } from '@actions/modal/code-setting.action';
 import { MyCheckbox } from '@components/checkbox';
 import { Code } from '@models/code';
-import { deleteCode, updateCode } from '@actions/hr/set-code.action';
+import { deleteCode, updateCode } from '@actions/hr/common/set-code.action';
 import { MyButton } from '@components/button';
 
 interface Props extends MyTabpanelProps {

@@ -1,5 +1,5 @@
-import type { CreateOrgaRequestPayload } from '@actions/hr/create-orga.action';
-import { UpdateOrgaRequestPayload } from '@actions/hr/update-orga.action';
+import type { CreateOrgaRequestPayload } from '@actions/hr/orga/create-orga.action';
+import { UpdateOrgaRequestPayload } from '@actions/hr/orga/update-orga.action';
 import { isEmpty } from '@utils/validator/common';
 
 class OrgaDTO {

@@ -1,28 +1,34 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
 import type { AppState } from '@reducers/index';
+import type { OrgaState } from '@reducers/orga';
+import type { UserState } from '@reducers/user';
 import Head from 'next/head';
 import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import hrsService from '@services/hrsService';
-import { createCode } from '@actions/hr/set-code.action';
+import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import orgasService from '@services/orgasService';
+import { createCode } from '@actions/hr/common/set-code.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 import commonConstants from '@constants/options/common';
 import orgaConstants from '@constants/options/orga';
 import { OrgaForm } from '@partials/hr/orga/OrgaForm';
-import { getUsersRequest } from '@actions/hr/get-users.action';
+import { getUsersRequest } from '@actions/hr/user/get-users.action';
 import { convertPhoneNumber } from '@utils/converter';
-import { getOrgasRequest } from '@actions/hr/get-orgas.action';
+import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 
 const Orga: NextPage<any> = ({ orga }) => {
-    const { orgas, users, banks, wrCompanies } = useSelector<AppState, HrState>(
+    const { banks, wrCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
+
+    const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
+
+    const { users } = useSelector<AppState, UserState>((state) => state.user);
 
     // 탭 설정
     useInitTab(`조직명세 - ${orga.orga_name}`);
@@ -147,7 +153,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         };
 
         try {
-            const { data } = await hrsService.getOrga({ idx });
+            const { data } = await orgasService.getOrga({ idx });
 
             output.props.orga = data;
 

@@ -4,7 +4,7 @@ import type { CoreSelectOption } from '@interfaces/core';
 import { useDispatch } from 'react-redux';
 import { useInput } from '@hooks/use-input';
 import { useSelect } from '@hooks/use-select';
-import { updateCode } from '@actions/hr/set-code.action';
+import { updateCode } from '@actions/hr/common/set-code.action';
 import { MyInput } from '@components/input';
 import { MySelect } from '@components/select';
 import { findSelectOption } from '@utils/getter';

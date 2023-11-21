@@ -1,7 +1,6 @@
-import type { GetIpRequestPayload } from '@actions/hr/get-ip.action';
 import { getExternalAxios } from '@utils/axios/external';
 
-export function getIp({ isIPv6 }: GetIpRequestPayload) {
+export function getIp({ isIPv6 }: any) {
     let url;
     if (isIPv6) {
         url = 'https://api64.ipify.org?format=json';

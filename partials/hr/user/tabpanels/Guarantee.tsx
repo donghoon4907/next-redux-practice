@@ -9,7 +9,7 @@ import { MyCheckbox } from '@components/checkbox';
 import {
     deleteGuarantee,
     updateGuarantee,
-} from '@actions/hr/set-guarantee.action';
+} from '@actions/hr/common/set-guarantee.action';
 import { Guarantee } from '@models/guarantee';
 import { MyTableToolbar } from '@components/table/Toolbar';
 

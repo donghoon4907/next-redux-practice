@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import hrsService from '@services/hrsService';
+import usersService from '@services/usersService';
 import { tokenMiddleware } from '@utils/middleware/next';
 
 export default async function handler(
@@ -11,7 +11,7 @@ export default async function handler(
     const { body } = req;
 
     try {
-        const { data } = await hrsService.createUser(body);
+        const { data } = await usersService.createUser(body);
 
         res.status(200).json(data);
     } catch {
