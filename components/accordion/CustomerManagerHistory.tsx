@@ -65,15 +65,9 @@ export const CustomerManagerAccordion: FC<Props> = ({
                         <table className="wr-table table">
                             <thead>
                                 <tr>
-                                    <th style={{ width: '150px' }}>
-                                        <strong>등록일</strong>
-                                    </th>
-                                    <th style={{ width: '150px' }}>
-                                        <strong>등록자</strong>
-                                    </th>
-                                    <th>
-                                        <strong>비고</strong>
-                                    </th>
+                                    <th>등록일</th>
+                                    <th>등록자</th>
+                                    <th>비고</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -83,7 +77,7 @@ export const CustomerManagerAccordion: FC<Props> = ({
                                     </tr>
                                 )}
                                 {userHistories.map((v, i) => (
-                                    <tr key={`customerManagerHistory${i}`}>
+                                    <tr key={`user_his${i}`}>
                                         <td>
                                             <span>
                                                 {v.insert_date

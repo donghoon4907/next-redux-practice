@@ -204,6 +204,20 @@ const PAY_KIND: CoreSelectOption[] = [
     },
 ];
 
+// 성별
+const GENDER: CoreSelectOption[] = [
+    {
+        label: '남',
+        value: 'M',
+        isFixed: false,
+    },
+    {
+        label: '여',
+        value: 'F',
+        isFixed: false,
+    },
+];
+
 const rootSelectOptions = {
     listCounts: LIST_COUNTS,
     dCompanies: D_COMPANIES,
@@ -212,6 +226,7 @@ const rootSelectOptions = {
     yn2: YES_NO2,
     sulDist: SUL_DIST,
     payKind: PAY_KIND,
+    gender: GENDER,
 };
 
 export default rootSelectOptions;

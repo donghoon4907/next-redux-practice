@@ -21,7 +21,7 @@ const CreateLong: NextPage = () => {
     );
 
     // 탭 추가 - ASIDE_MENU에 없는 경우 수동으로 추가 필요
-    useInitTab('장기계약등록');
+    useInitTab('장기계약 등록');
     // default~ - 셀렉트 박스 기본 값 설정
     const defaultOrga = findSelectOption(
         loggedInUser.user_info.orga_idx,

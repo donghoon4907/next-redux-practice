@@ -7,13 +7,12 @@ import type { CreateExcontractModalPayload } from '@actions/modal/create-excontr
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyCheckbox } from '@components/checkbox';
-import { MyButton } from '@components/button';
-import { MyTableExtension } from '@components/table/Extension';
 import { showCreateExcontractModal } from '@actions/modal/create-excontract.action';
 import {
     deleteExcontract,
     updateExcontract,
 } from '@actions/customer/set-excontract.action';
+import { MyTableToolbar } from '@components/table/Toolbar';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -37,7 +36,7 @@ export const ExcontractTabpanel: FC<Props> = ({
 
     const filteredGens = excontracts.filter((v) => v.spe === 'gen');
 
-    const handleShowCreateModal = (payload: CreateExcontractModalPayload) => {
+    const handleCreate = (payload: CreateExcontractModalPayload) => {
         dispatch(showCreateExcontractModal(payload));
     };
 
@@ -101,28 +100,21 @@ export const ExcontractTabpanel: FC<Props> = ({
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="wr-pages-detail__title">
+            {/* <div className="wr-pages-detail__title">
                 타사에서 가입한 보험계약 내역
                 <span className="wr-pages-detail__description">
                     총계약건수: {excontracts.length}(장기 {filteredLongs.length}
                     , 자동차 {filteredCars.length}, 일반 {filteredGens.length})
                 </span>
-            </div>
-            <div className="row wr-mt">
-                <div className="col">
-                    <div className="wr-pages-detail__subtitle">
-                        <strong>장기보험 ({filteredLongs.length})</strong>
-                        {editable && (
-                            <div>
-                                <MyButton
-                                    className="btn-danger btn-sm"
-                                    onClick={handleDeleteLongs}
-                                >
-                                    선택삭제
-                                </MyButton>
-                            </div>
-                        )}
-                    </div>
+            </div> */}
+            <div className="row">
+                <div className="flex-fill">
+                    <MyTableToolbar
+                        editable={editable}
+                        title="장기보험"
+                        onCreate={() => handleCreate('long')}
+                        onDelete={handleDeleteLongs}
+                    />
                     <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
@@ -137,7 +129,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     )}
 
                                     <th style={{ width: '100px' }}>보험사</th>
-                                    <th style={{ width: '200px' }}>상품명</th>
+                                    <th style={{ width: '100px' }}>상품명</th>
                                     <th style={{ width: '100px' }}>세부보종</th>
                                     <th style={{ width: '100px' }}>보험료</th>
                                     <th style={{ width: '100px' }}>계약일자</th>
@@ -145,15 +137,8 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredLongs.length === 0 && (
-                                    <tr>
-                                        <td colSpan={editable ? 7 : 6}>
-                                            내역이 없습니다.
-                                        </td>
-                                    </tr>
-                                )}
                                 {filteredLongs.map((v) => (
-                                    <tr key={`excontractLong${v.index}`}>
+                                    <tr key={`excontract-long${v.index}`}>
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
@@ -205,29 +190,17 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 ))}
                             </tbody>
                         </table>
-                        {editable && (
-                            <MyTableExtension
-                                onClick={() => handleShowCreateModal('long')}
-                            />
-                        )}
                     </div>
                 </div>
             </div>
             <div className="row wr-mt">
                 <div className="col">
-                    <div className="wr-pages-detail__subtitle">
-                        <strong>자동차보험 ({filteredCars.length})</strong>
-                        {editable && (
-                            <div>
-                                <MyButton
-                                    className="btn-danger btn-sm"
-                                    onClick={handleDeleteCars}
-                                >
-                                    선택삭제
-                                </MyButton>
-                            </div>
-                        )}
-                    </div>
+                    <MyTableToolbar
+                        editable={editable}
+                        title="자동차보험"
+                        onCreate={() => handleCreate('car')}
+                        onDelete={handleDeleteCars}
+                    />
                     <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
@@ -253,15 +226,8 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredCars.length === 0 && (
-                                    <tr>
-                                        <td colSpan={editable ? 8 : 7}>
-                                            내역이 없습니다.
-                                        </td>
-                                    </tr>
-                                )}
                                 {filteredCars.map((v) => (
-                                    <tr key={`excontractCar${v.index}`}>
+                                    <tr key={`excontract-car${v.index}`}>
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
@@ -317,29 +283,17 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 ))}
                             </tbody>
                         </table>
-                        {editable && (
-                            <MyTableExtension
-                                onClick={() => handleShowCreateModal('car')}
-                            />
-                        )}
                     </div>
                 </div>
             </div>
             <div className="row wr-mt">
-                <div className="col">
-                    <div className="wr-pages-detail__subtitle">
-                        <strong>일반보험 ({filteredGens.length})</strong>
-                        {editable && (
-                            <div>
-                                <MyButton
-                                    className="btn-danger btn-sm"
-                                    onClick={handleDeleteGens}
-                                >
-                                    선택삭제
-                                </MyButton>
-                            </div>
-                        )}
-                    </div>
+                <div className="flex-fill">
+                    <MyTableToolbar
+                        editable={editable}
+                        title="일반보험"
+                        onCreate={() => handleCreate('gen')}
+                        onDelete={handleDeleteGens}
+                    />
                     <div className="wr-table--normal">
                         <table className="wr-table table">
                             <thead>
@@ -354,7 +308,7 @@ export const ExcontractTabpanel: FC<Props> = ({
                                     )}
 
                                     <th style={{ width: '100px' }}>보험사</th>
-                                    <th style={{ width: '200px' }}>상품</th>
+                                    <th style={{ width: '100px' }}>상품명</th>
                                     <th style={{ width: '100px' }}>보험료</th>
                                     <th style={{ width: '100px' }}>개시일자</th>
                                     <th style={{ width: '100px' }}>만기일자</th>
@@ -365,15 +319,8 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 </tr>
                             </thead>
                             <tbody>
-                                {filteredGens.length === 0 && (
-                                    <tr>
-                                        <td colSpan={editable ? 8 : 7}>
-                                            내역이 없습니다.
-                                        </td>
-                                    </tr>
-                                )}
                                 {filteredGens.map((v) => (
-                                    <tr key={`excontractGen${v.index}`}>
+                                    <tr key={`excontract-gen${v.index}`}>
                                         {editable && (
                                             <td>
                                                 <MyCheckbox
@@ -429,11 +376,6 @@ export const ExcontractTabpanel: FC<Props> = ({
                                 ))}
                             </tbody>
                         </table>
-                        {editable && (
-                            <MyTableExtension
-                                onClick={() => handleShowCreateModal('gen')}
-                            />
-                        )}
                     </div>
                 </div>
             </div>

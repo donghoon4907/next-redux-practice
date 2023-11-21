@@ -6,15 +6,14 @@ import type { CustomerState } from '@reducers/customer';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
-import { MyDatepicker } from '@components/datepicker';
 import { isEmpty } from '@utils/validator/common';
 import { hideCreateCustcarModal } from '@actions/modal/create-custcar.action';
 import { createCustcar } from '@actions/customer/set-custcar.action';
 import { generateIndex } from '@utils/generate';
+import { FloatInput } from '@components/input/Float';
+import { FloatDatepicker } from '@components/datepicker/Float';
 
 interface Props {}
 
@@ -92,67 +91,27 @@ export const CreateCustcarCarModal: FC<Props> = () => {
             size="lg"
         >
             <ModalHeader toggle={handleClose}>보유차량 추가</ModalHeader>
-            <ModalBody>
+            <ModalBody className="wr-pages-detail__applydatepicker">
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="carNum" label="차량번호" type="active">
-                            <MyInput
-                                type="text"
-                                id="carNum"
-                                placeholder="서울00가0000"
-                                {...carnum}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="차량번호" {...carnum} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="carname" label="차량정보" type="active">
-                            <MyInput
-                                type="text"
-                                id="carname"
-                                placeholder="차량정보"
-                                {...carname}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="차량정보" {...carname} />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel id="carcode" label="차명코드" type="active">
-                            <MyInput
-                                type="text"
-                                id="carcode"
-                                placeholder="차명코드"
-                                {...carcode}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="차명코드" {...carcode} />
                     </div>
-                    <div className="col">
-                        <WithLabel
-                            id="bo_dateto"
-                            label="보험만기일"
-                            type="active"
-                        >
-                            <MyDatepicker
-                                id="bo_dateto"
-                                size="sm"
-                                placeholder="보험만기일"
-                                hooks={bo_dateto}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatDatepicker label="보험만기일" hooks={bo_dateto} />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel id="remark" label="비고" type="active">
-                            <MyInput
-                                type="text"
-                                id="remark"
-                                placeholder="비고"
-                                {...remark}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="비고" {...remark} />
                     </div>
-                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

@@ -1,4 +1,4 @@
-import type { FC, ChangeEvent } from 'react';
+import type { FC } from 'react';
 import type { Family } from '@models/family';
 import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
@@ -7,16 +7,19 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { isEmpty } from '@utils/validator/common';
 import { generateIndex } from '@utils/generate';
-import { MyRadio } from '@components/radio';
-import { DateAndSLInput } from '@partials/common/input/DateAndSL';
 import { createFamily } from '@actions/customer/set-family.action';
 import { hideCreateFamilyModal } from '@actions/modal/create-family.action';
+import { FloatSelect } from '@components/select/Float';
+import { FloatInput } from '@components/input/Float';
+import customerConstants from '@constants/options/customer';
+import commonConstants from '@constants/options/common';
+import { useSelect } from '@hooks/use-select';
+import { FloatDatepicker } from '@components/datepicker/Float';
+import { MyUnit } from '@components/Unit';
 
 interface Props {}
 
@@ -34,23 +37,20 @@ export const CreateFamilyModal: FC<Props> = () => {
     // 이름
     const [name] = useInput('', { noSpace: true });
     // 구분
-    const [type, setType] = useState('가족');
+    const [type] = useSelect(customerConstants.familyDist, null);
     // 관계
     const [relation] = useInput('', { noSpace: true });
     // 생년월일
     const [birthday] = useDatepicker(null);
     const [bType, setBtype] = useState(true);
     // 성별
-    const [sex, setSex] = useState('M');
+    const [gender] = useSelect(commonConstants.gender, null);
     // 비고
     const [remark] = useInput('');
 
-    const handleChangeType = (evt: ChangeEvent<HTMLInputElement>) => {
-        setType(evt.target.value);
-    };
-
-    const handleChangeSex = (evt: ChangeEvent<HTMLInputElement>) => {
-        setSex(evt.target.value);
+    // 음/양력 클릭 핸들러
+    const handleClickBirthType = () => {
+        setBtype(!bType);
     };
 
     const handleClose = () => {
@@ -70,11 +70,17 @@ export const CreateFamilyModal: FC<Props> = () => {
 
     const createPayload = () => {
         const payload: Family = {
-            type,
             index: generateIndex(family),
             checked: false,
-            sex,
         };
+
+        if (type.value) {
+            payload['type'] = type.value.value;
+        }
+
+        if (gender.value) {
+            payload['sex'] = gender.value.value;
+        }
 
         if (!isEmpty(name.value)) {
             payload['name'] = name.value;
@@ -100,88 +106,42 @@ export const CreateFamilyModal: FC<Props> = () => {
     return (
         <Modal isOpen={isShowCreateFamilyModal} toggle={handleClose} size="lg">
             <ModalHeader toggle={handleClose}>가족 및 지인 추가</ModalHeader>
-            <ModalBody>
+            <ModalBody className="wr-pages-detail__applydatepicker">
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="fname" label="이름" type="active">
-                            <MyInput
-                                type="text"
-                                id="fname"
-                                placeholder="이름"
-                                {...name}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="이름" {...name} />
                     </div>
-                    <div className="col">
-                        <WithLabel label="구분" type="active">
-                            <div className="wr-with__container">
-                                <MyRadio
-                                    label="가족"
-                                    value="가족"
-                                    checked={type === '가족'}
-                                    onChange={handleChangeType}
-                                />
-                                <MyRadio
-                                    label="지인"
-                                    value="지인"
-                                    checked={type === '지인'}
-                                    onChange={handleChangeType}
-                                />
-                            </div>
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="구분" {...type} />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel id="frelation" label="관계" type="active">
-                            <MyInput
-                                type="text"
-                                id="frelation"
-                                placeholder="관계"
-                                {...relation}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="관계" {...relation} />
                     </div>
-                    <div className="col">
-                        <DateAndSLInput
-                            id="fbirthday"
+                    <div className="flex-fill">
+                        <FloatDatepicker
                             label="생년월일"
-                            dateHooks={birthday}
-                            type={bType}
-                            setType={setBtype}
-                            labelType="active"
-                            size="sm"
+                            isRequired
+                            hooks={birthday}
+                            after={
+                                <MyUnit
+                                    placement="button"
+                                    role="button"
+                                    onClick={handleClickBirthType}
+                                >
+                                    {bType ? '양력' : '음력'}
+                                </MyUnit>
+                            }
                         />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel label="성별" type="active">
-                            <div className="wr-with__container">
-                                <MyRadio
-                                    label="남"
-                                    value="M"
-                                    checked={sex === 'M'}
-                                    onChange={handleChangeSex}
-                                />
-                                <MyRadio
-                                    label="여"
-                                    value="F"
-                                    checked={sex === 'F'}
-                                    onChange={handleChangeSex}
-                                />
-                            </div>
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="성별" {...gender} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="fremark" label="비고" type="active">
-                            <MyInput
-                                type="text"
-                                id="fremark"
-                                placeholder="비고"
-                                {...remark}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="비고" {...remark} />
                     </div>
                 </div>
             </ModalBody>

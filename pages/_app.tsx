@@ -29,12 +29,22 @@ function MyApp({ Component, pageProps }: AppProps) {
         const url = router.pathname;
 
         const [_, root, ...children] = url.split('/');
-        // ASIDE_MENU에 명세된 페이지 정보가 있는지 찾습니다.
+
         let page = ASIDE_MENU[root];
+        // ASIDE_MENU 내 정의된 경우 네비게이션 바 내 목록 갱신
+        if (page) {
+            dispatch(
+                updateGnb({
+                    id: root,
+                    menu: ASIDE_MENU[root],
+                }),
+            );
+        }
+        // ASIDE_MENU에 정의된 페이지 정보가 있는지 찾습니다.
         for (let i = 0; i < children.length; i++) {
             page = page[children[i]];
         }
-        // 페이지 정보가 있는 경우
+        // 정의된 페이지 정보가 있는 경우
         if (page) {
             // 탭 목록에 존재하지 않는 경우 새 탭 추가
             if (!tab.read(url)) {
@@ -44,13 +54,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                     to: url,
                 });
             }
-            // 네비게이션 바 내 목록 갱신
-            dispatch(
-                updateGnb({
-                    id: root,
-                    menu: ASIDE_MENU[root],
-                }),
-            );
         }
         // 탭 목록 갱신
         dispatch(initTab(tab.getAll()));

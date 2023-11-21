@@ -5,13 +5,12 @@ import type { ModalState } from '@reducers/modal';
 import type { CustomerState } from '@reducers/customer';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { WithLabel } from '@components/WithLabel';
-import { MyInput } from '@components/input';
 import { useInput } from '@hooks/use-input';
 import { isEmpty } from '@utils/validator/common';
 import { hideCreateCustcarModal } from '@actions/modal/create-custcar.action';
 import { createCustcar } from '@actions/customer/set-custcar.action';
 import { generateIndex } from '@utils/generate';
+import { FloatInput } from '@components/input/Float';
 
 interface Props {}
 
@@ -77,45 +76,19 @@ export const CreateCustcarCustModal: FC<Props> = () => {
             size="lg"
         >
             <ModalHeader toggle={handleClose}>피담보물건 추가</ModalHeader>
-            <ModalBody>
+            <ModalBody className="wr-pages-detail__applydatepicker">
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="p_title" label="피담보물" type="active">
-                            <MyInput
-                                type="text"
-                                id="p_title"
-                                placeholder="피담보물"
-                                {...p_title}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="피담보물" {...p_title} />
                     </div>
-                    <div className="col">
-                        <WithLabel
-                            id="p_address"
-                            label="소재지번"
-                            type="active"
-                        >
-                            <MyInput
-                                type="text"
-                                id="p_address"
-                                placeholder="소재지번"
-                                {...p_address}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="소재지번" {...p_address} />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel id="remark" label="비고" type="active">
-                            <MyInput
-                                type="text"
-                                id="remark"
-                                placeholder="비고"
-                                {...remark}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="비고" {...remark} />
                     </div>
-                    <div className="col"></div>
                 </div>
             </ModalBody>
             <ModalFooter>

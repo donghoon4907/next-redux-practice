@@ -11,7 +11,6 @@ const Calendar: NextPage = () => {
     const loading = useLoading();
 
     useEffect(() => {
-        //임시
         loading.off();
     }, []);
 

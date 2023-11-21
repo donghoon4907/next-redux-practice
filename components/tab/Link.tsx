@@ -30,7 +30,6 @@ export const LinkTab: FC<Props> = ({
 
     const route = useRoute();
 
-    // const isActive = router.asPath.toLowerCase() === to.toLowerCase();
     const isActive = location.pathname === id;
 
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
@@ -49,8 +48,8 @@ export const LinkTab: FC<Props> = ({
         const tabs = tab.getAll();
         // 활성화된 탭인 경우
         if (isActive) {
-            // 가장 마지막 탭을 활성화 시킴
-            route.replace(tabs[tabs.length - 1].to);
+            // 가장 첫 번째 탭을 활성화 시킴
+            route.replace(tabs[0].to);
             // 상태만 변경
         } else {
             dispatch(removeTab(id));

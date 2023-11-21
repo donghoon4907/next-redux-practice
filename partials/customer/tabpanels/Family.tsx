@@ -6,13 +6,12 @@ import type { MyTabpanelProps } from '@components/tab/Tabpanel';
 import { useDispatch, useSelector } from 'react-redux';
 import { MyTabpanel } from '@components/tab/Tabpanel';
 import { MyCheckbox } from '@components/checkbox';
-import { MyTableExtension } from '@components/table/Extension';
 import {
     deleteFamily,
     updateFamily,
 } from '@actions/customer/set-family.action';
 import { showCreateFamilyModal } from '@actions/modal/create-family.action';
-import { MyButton } from '@components/button';
+import { MyTableToolbar } from '@components/table/Toolbar';
 
 interface Props extends MyTabpanelProps {
     editable: boolean;
@@ -35,7 +34,7 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
         dispatch(updateFamily({ ...v, checked: evt.target.checked }));
     };
 
-    const handleShowSettingModal = () => {
+    const handleCreate = () => {
         dispatch(showCreateFamilyModal());
     };
 
@@ -64,19 +63,12 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
 
     return (
         <MyTabpanel id={id} tabId={tabId} hidden={hidden}>
-            <div className="wr-pages-detail__subtitle">
-                <strong>가족 및 지인</strong>
-                {editable && (
-                    <div>
-                        <MyButton
-                            className="btn-danger btn-sm"
-                            onClick={handleDelete}
-                        >
-                            선택삭제
-                        </MyButton>
-                    </div>
-                )}
-            </div>
+            <MyTableToolbar
+                editable={editable}
+                title="가족 및 지인"
+                onCreate={() => handleCreate()}
+                onDelete={handleDelete}
+            />
             <div className="wr-table--normal">
                 <table className="wr-table table">
                     <thead>
@@ -91,7 +83,7 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                             )}
 
                             <th style={{ width: '100px' }}>이름</th>
-                            <th style={{ width: '200px' }}>구분</th>
+                            <th style={{ width: '100px' }}>구분</th>
                             <th style={{ width: '100px' }}>관계</th>
                             <th style={{ width: '100px' }}>생년월일</th>
                             <th style={{ width: '100px' }}>성별</th>
@@ -99,15 +91,8 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {family.length === 0 && (
-                            <tr>
-                                <td colSpan={editable ? 7 : 6}>
-                                    데이터가 없습니다.
-                                </td>
-                            </tr>
-                        )}
-                        {family.map((v, i) => (
-                            <tr key={`family${i}`}>
+                        {family.map((v) => (
+                            <tr key={`family${v.index}`}>
                                 {editable && (
                                     <td>
                                         <MyCheckbox
@@ -144,9 +129,6 @@ export const FamilyTabpanel: FC<Props> = ({ id, tabId, hidden, editable }) => {
                         ))}
                     </tbody>
                 </table>
-                {editable && (
-                    <MyTableExtension onClick={handleShowSettingModal} />
-                )}
             </div>
         </MyTabpanel>
     );

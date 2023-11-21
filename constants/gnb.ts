@@ -92,16 +92,4 @@ export const ASIDE_MENU: any = {
             },
         },
     },
-    board: {
-        list: {
-            id: 'board_list',
-            label: '게시판목록',
-            to: '/board/list',
-        },
-    },
-    calendar: {
-        id: 'calendar',
-        label: '일정관리',
-        to: '/calendar',
-    },
 };

@@ -4,10 +4,10 @@ export type Family = CoreCheckableModel & {
     // id
     idx?: number;
     name?: string;
-    type: string;
+    type?: string;
     relation?: string;
     birthday?: string;
     birth_type?: boolean;
-    sex: string;
+    sex?: string;
     remark?: string;
 };

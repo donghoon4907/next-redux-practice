@@ -16,8 +16,6 @@ import { useSelect } from '@hooks/use-select';
 import { MyButton } from '@components/button';
 import { useTab } from '@hooks/use-tab';
 import { usePostcode } from '@hooks/use-postcode';
-import { ContactTabpanel } from '@partials/customer/tabpanels/Contact';
-import { HoldingContractTabpanel } from '@partials/customer/tabpanels/HoldingContract';
 import { ExcontractTabpanel } from '@partials/customer/tabpanels/Excontract';
 import { CustcarTabpanel } from '@partials/customer/tabpanels/Custcar';
 import { FamilyTabpanel } from '@partials/customer/tabpanels/Family';
@@ -59,7 +57,8 @@ import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { MyUnit } from '@components/Unit';
 import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
-import { SingleContactTabpanel } from './tabpanels/SingleContact';
+
+// import { SingleContactTabpanel } from './tabpanels/SingleContact';
 
 interface Props {
     /**
@@ -665,7 +664,7 @@ export const CustomerForm: FC<Props> = ({
         <>
             <div className={`${displayName} wr-pages-detail wr-frame__tabbody`}>
                 <div
-                    className={`${displayName}__left wr-pages-detail__left  wr-pages-detail__applydatepicker`}
+                    className={`${displayName}__left wr-pages-detail__left wr-pages-detail__applydatepicker`}
                 >
                     <div className="wr-pages-detail__inner">
                         <div className="wr-pages-detail__block">

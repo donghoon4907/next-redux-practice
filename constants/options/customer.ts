@@ -249,6 +249,34 @@ const C_SPE: CoreSelectOption[] = [
     },
 ];
 
+// 가족 및 지인
+const FAMILY_DIST: CoreSelectOption[] = [
+    {
+        label: '가족',
+        value: '가족',
+        isFixed: false,
+    },
+    {
+        label: '지인',
+        value: '지인',
+        isFixed: false,
+    },
+];
+
+// 기념일 구분
+const EVENT_DIST: CoreSelectOption[] = [
+    {
+        label: '자녀',
+        value: '자녀',
+        isFixed: false,
+    },
+    {
+        label: '본인',
+        value: '본인',
+        isFixed: false,
+    },
+];
+
 const rootSelectOptions = {
     division: C_DIVISION,
     age: C_AGE,
@@ -261,6 +289,8 @@ const rootSelectOptions = {
     status: C_STATUS,
     notice: C_NOTICE,
     spe: C_SPE,
+    familyDist: FAMILY_DIST,
+    eventDist: EVENT_DIST,
 };
 
 export default rootSelectOptions;

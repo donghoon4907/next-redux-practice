@@ -41,7 +41,7 @@ export const FloatInput: FC<Props> = ({
     onBlur,
     before,
     after,
-    value,
+    value = '',
     ...rest
 }) => {
     const displayName = 'wr-detail-input';
@@ -95,7 +95,7 @@ export const FloatInput: FC<Props> = ({
                     placeholder={label}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    value={value === null ? '' : value}
+                    value={value}
                     {...rest}
                 />
                 {after}

@@ -7,17 +7,16 @@ import type { HrState } from '@reducers/hr';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
-import { WithLabel } from '@components/WithLabel';
-import { MySelect } from '@components/select';
 import { useSelect } from '@hooks/use-select';
-import { MyInput } from '@components/input';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { useDatepicker } from '@hooks/use-datepicker';
-import { MyDatepicker } from '@components/datepicker';
 import { hideCreateExcontractModal } from '@actions/modal/create-excontract.action';
 import { isEmpty } from '@utils/validator/common';
 import { createExcontract } from '@actions/customer/set-excontract.action';
 import { generateIndex } from '@utils/generate';
+import { FloatSelect } from '@components/select/Float';
+import { FloatInput } from '@components/input/Float';
+import { FloatDatepicker } from '@components/datepicker/Float';
 
 interface Props {}
 
@@ -29,7 +28,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
         ModalState
     >((state) => state.modal);
 
-    const { allCompanies } = useSelector<AppState, HrState>(
+    const { longViewCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,
     );
 
@@ -38,7 +37,7 @@ export const CreateExcontractLongModal: FC<Props> = () => {
     );
 
     // 보험사
-    const [comp] = useSelect(allCompanies);
+    const [comp] = useSelect(longViewCompanies, null);
     // 상품명
     const [title] = useInput('');
     // 세부보종
@@ -104,74 +103,29 @@ export const CreateExcontractLongModal: FC<Props> = () => {
             size="lg"
         >
             <ModalHeader toggle={handleClose}>타사 장기보험 추가</ModalHeader>
-            <ModalBody>
+            <ModalBody className="wr-pages-detail__applydatepicker">
                 <div className="row">
-                    <div className="col">
-                        <WithLabel id="lComp" label="보험사" type="active">
-                            <MySelect id="lComp" {...comp} />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatSelect label="보험사" {...comp} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="lTitle" label="상품명" type="active">
-                            <MyInput
-                                type="text"
-                                id="lTitle"
-                                placeholder="상품명"
-                                {...title}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="상품명" {...title} />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel
-                            id="lSubcategory"
-                            label="세부보종"
-                            type="active"
-                        >
-                            <MyInput
-                                type="text"
-                                id="lSubcategory"
-                                placeholder="세부보종"
-                                {...subcategory}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="세부보종" {...subcategory} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="lPay" label="보험료" type="active">
-                            <MyInput
-                                type="text"
-                                id="lPay"
-                                placeholder="보험료"
-                                {...pay}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="보험료" isNumber {...pay} />
                     </div>
                 </div>
                 <div className="row wr-mt">
-                    <div className="col">
-                        <WithLabel
-                            id="lContdate"
-                            label="계약일자"
-                            type="active"
-                        >
-                            <MyDatepicker
-                                id="lContdate"
-                                size="sm"
-                                placeholder="계약일자"
-                                hooks={contdate}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatDatepicker label="법인설립일" hooks={contdate} />
                     </div>
-                    <div className="col">
-                        <WithLabel id="lRemark" label="비고" type="active">
-                            <MyInput
-                                type="text"
-                                id="lRemark"
-                                placeholder="비고"
-                                {...remark}
-                            />
-                        </WithLabel>
+                    <div className="flex-fill">
+                        <FloatInput label="비고" {...remark} />
                     </div>
                 </div>
             </ModalBody>

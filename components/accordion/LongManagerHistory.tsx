@@ -82,7 +82,7 @@ export const LongManagerAccordion: FC<Props> = ({ editable, defaultTitle }) => {
                                     </tr>
                                 )}
                                 {userHistories.map((v, i) => (
-                                    <tr key={`longManagerHistory${i}`}>
+                                    <tr key={`user_his${i}`}>
                                         <td>
                                             <span>
                                                 {v.gdate ? v.gdate : '-'}
