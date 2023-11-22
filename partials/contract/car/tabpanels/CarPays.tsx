@@ -6,11 +6,11 @@ import type { CoreEditableComponent } from '@interfaces/core';
 import { useDispatch, useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 import { MyTabpanel } from '@components/tab/Tabpanel';
-import { deletePay, updatePay } from '@actions/contract/common/set-pay.action';
+import { deletePay, updatePay } from '@actions/contract/set-pay.action';
 import { MyCheckbox } from '@components/checkbox';
 import { MyTableToolbar } from '@components/table/Toolbar';
 import { generateIndex } from '@utils/generate';
-import { createPay } from '@actions/contract/common/set-pay.action';
+import { createPay } from '@actions/contract/set-pay.action';
 
 import { CarPayTemplate } from '../template/Pay';
 

@@ -23,11 +23,11 @@ import commonConstants from '@constants/options/common';
 import orgaConstants from '@constants/options/orga';
 import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
 import { usePostcode } from '@hooks/use-postcode';
-import { createOrgaRequest } from '@actions/hr/orga/create-orga.action';
-import { updateOrgaRequest } from '@actions/hr/orga/update-orga.action';
+import { createOrgaRequest } from '@actions/orga/create-orga.action';
+import { updateOrgaRequest } from '@actions/orga/update-orga.action';
 import { CreateOrgaDTO, UpdateOrgaDTO } from '@dto/hr/Orga.dto';
 import { isEmpty } from '@utils/validator/common';
-import { getLazyOrgasRequest } from '@actions/hr/orga/get-lazy-orgas.action';
+import { getLazyOrgasRequest } from '@actions/orga/get-lazy-orgas.action';
 
 import { OrgaQualManageTabpanel } from './tabpanels/QualManage';
 

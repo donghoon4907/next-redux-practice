@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideUserHistoryModal } from '@actions/modal/user-history.action';
 import { useSelect } from '@hooks/use-select';
-import { getUsersRequest } from '@actions/hr/user/get-users.action';
+import { getUsersRequest } from '@actions/user/get-users.action';
 import { useInput } from '@hooks/use-input';
 import { insertUserHistory } from '@actions/common/set-user-history.action';
 import { generateIndex } from '@utils/generate';

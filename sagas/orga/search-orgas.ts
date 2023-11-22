@@ -1,10 +1,10 @@
-import type { SearchOrgasRequestAction } from '@actions/hr/orga/search-orgas.action';
+import type { SearchOrgasRequestAction } from '@actions/orga/search-orgas.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import orgasService from '@services/orgasService';
 import {
     SearchOrgasActionTypes,
     searchOrgasSuccess,
-} from '@actions/hr/orga/search-orgas.action';
+} from '@actions/orga/search-orgas.action';
 import { commonMiddleware } from '@utils/generators/common';
 import { generateListSuccessPayload } from '@utils/generate';
 

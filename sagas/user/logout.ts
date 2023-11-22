@@ -1,11 +1,8 @@
-import type { LogoutRequestAction } from '@actions/hr/user/logout.action';
+import type { LogoutRequestAction } from '@actions/user/logout.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { deleteCookie } from 'cookies-next';
 import usersService from '@services/usersService';
-import {
-    LogoutActionTypes,
-    logoutSuccess,
-} from '@actions/hr/user/logout.action';
+import { LogoutActionTypes, logoutSuccess } from '@actions/user/logout.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* logoutSaga(action: LogoutRequestAction) {

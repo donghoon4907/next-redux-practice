@@ -1,10 +1,10 @@
-import type { CreateUserRequestAction } from '@actions/hr/user/create-user.action';
+import type { CreateUserRequestAction } from '@actions/user/create-user.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import usersService from '@services/usersService';
 import {
     CreateUserActionTypes,
     createUserSuccess,
-} from '@actions/hr/user/create-user.action';
+} from '@actions/user/create-user.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* createUserSaga({ payload }: CreateUserRequestAction) {

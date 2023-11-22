@@ -23,7 +23,7 @@ import {
     deleteInfoCust,
     selectInfoCust,
     updateInfoCust,
-} from '@actions/contract/common/set-info-cust.action';
+} from '@actions/contract/set-info-cust.action';
 
 interface Props extends CoreEditableComponent {}
 

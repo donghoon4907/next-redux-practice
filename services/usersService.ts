@@ -1,9 +1,9 @@
-import type { CreateUserRequestPayload } from '@actions/hr/user/create-user.action';
-import type { LoginRequestPayload } from '@actions/hr/user/login.action';
-import type { GetUsersRequestPayload } from '@actions/hr/user/get-users.action';
-import type { GetUserRequestPayload } from '@actions/hr/user/get-user.action';
-import type { UpdateUserRequestPayload } from '@actions/hr/user/update-user.action';
-import type { SearchUsersRequestPayload } from '@actions/hr/user/search-users.action';
+import type { CreateUserRequestPayload } from '@actions/user/create-user.action';
+import type { LoginRequestPayload } from '@actions/user/login.action';
+import type { GetUsersRequestPayload } from '@actions/user/get-users.action';
+import type { GetUserRequestPayload } from '@actions/user/get-user.action';
+import type { UpdateUserRequestPayload } from '@actions/user/update-user.action';
+import type { SearchUsersRequestPayload } from '@actions/user/search-users.action';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getInternalAxios } from '@utils/axios/internal';

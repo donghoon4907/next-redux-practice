@@ -1,4 +1,4 @@
-import type { GetLongSilsRequestAction } from '@actions/contract/long/get-sils.action';
+import type { GetLongSilsRequestAction } from '@actions/long/get-sils.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
 import longsService from '@services/longsService';
 import { generateListSuccessPayload } from '@utils/generate';
@@ -6,7 +6,7 @@ import { commonMiddleware } from '@utils/generators/common';
 import {
     GetLongSilsActionTypes,
     getLongSilsSuccess,
-} from '@actions/contract/long/get-sils.action';
+} from '@actions/long/get-sils.action';
 
 function* getLongSilsSaga({ payload }: GetLongSilsRequestAction) {
     const { data } = yield call(longsService.getLongSils, payload);

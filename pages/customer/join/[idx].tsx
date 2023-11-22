@@ -7,14 +7,13 @@ import dayjs from 'dayjs';
 import { CustomerForm } from '@partials/customer/CustomerForm';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
-import { getUsersRequest } from '@actions/hr/user/get-users.action';
-import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
+import { getUsersRequest } from '@actions/user/get-users.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import userConstants from '@constants/options/user';
 import customerConstants from '@constants/options/customer';
 import customersService from '@services/customersService';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createContact } from '@actions/common/set-contact.action';
 import { createExcontract } from '@actions/customer/set-excontract.action';
 import { createCustcar } from '@actions/customer/set-custcar.action';
 import { createFamily } from '@actions/customer/set-family.action';
@@ -243,18 +242,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     dispatch(
                         createUserHistory({
                             ...customer.userid_his[i],
-                        }),
-                    );
-                }
-            }
-
-            if (customer.contacts) {
-                for (let i = 0; i < customer.contacts.length; i++) {
-                    dispatch(
-                        createContact({
-                            ...customer.contacts[i],
-                            index: i,
-                            checked: false,
                         }),
                     );
                 }

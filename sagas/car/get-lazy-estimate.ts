@@ -1,10 +1,10 @@
-import type { GetLazyEstimateRequestAction } from '@actions/contract/car/get-lazy-estimate.action';
+import type { GetLazyEstimateRequestAction } from '@actions/car/get-lazy-estimate.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
 import carsService from '@services/carsService';
 import {
     GetLazyEstimateActionTypes,
     getLazyEstimateSuccess,
-} from '@actions/contract/car/get-lazy-estimate.action';
+} from '@actions/car/get-lazy-estimate.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* getLazyEstimateSaga({ payload }: GetLazyEstimateRequestAction) {

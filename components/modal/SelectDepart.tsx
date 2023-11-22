@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { hideDepartSearchModal } from '@actions/modal/depart-search.action';
-import { updateDepart } from '@actions/hr/common/set-depart.action';
+import { updateDepart } from '@actions/hr/set-depart.action';
 import { useSelect } from '@hooks/use-select';
 import { FloatSelect } from '@components/select/Float';
 

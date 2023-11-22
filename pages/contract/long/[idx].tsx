@@ -10,18 +10,18 @@ import { permissionMiddleware } from '@utils/middleware/permission';
 import longConstants from '@constants/options/long';
 import commonConstants from '@constants/options/common';
 import longsService from '@services/longsService';
-import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
 import { LongForm } from '@partials/contract/long/LongForm';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createPay } from '@actions/contract/common/set-pay.action';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
-import { updateProduct } from '@actions/contract/common/set-product.action';
+import { createPay } from '@actions/contract/set-pay.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
+import { updateProduct } from '@actions/contract/set-product.action';
 import { MyLayout } from '@components/Layout';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
-import { createInfoCust } from '@actions/contract/common/set-info-cust.action';
-import { createInfoProduct } from '@actions/contract/common/set-info-product.action';
-import { createBaeseo } from '@actions/contract/common/set-baeseo.action';
+import { createInfoCust } from '@actions/contract/set-info-cust.action';
+import { createInfoProduct } from '@actions/contract/set-info-product.action';
+import { createBaeseo } from '@actions/contract/set-baeseo.action';
 // 장기계약 상세 페이지 컴포넌트
 // 주석추가 - 상세 페이지 구조 이해
 const Long: NextPage<LongState> = ({ long }) => {

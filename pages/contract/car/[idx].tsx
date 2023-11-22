@@ -8,20 +8,20 @@ import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import carsService from '@services/carsService';
-import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { findSelectOption } from '@utils/getter';
 import carConstants from '@constants/options/car';
 import commonConstants from '@constants/options/common';
 import { createUserHistory } from '@actions/common/set-user-history.action';
-import { createPay } from '@actions/contract/common/set-pay.action';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
-import { updateProduct } from '@actions/contract/common/set-product.action';
+import { createPay } from '@actions/contract/set-pay.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
+import { updateProduct } from '@actions/contract/set-product.action';
 import { MyLayout } from '@components/Layout';
 import { CarForm } from '@partials/contract/car/CarForm';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
-import { createInfoCust } from '@actions/contract/common/set-info-cust.action';
-import { createInfoProduct } from '@actions/contract/common/set-info-product.action';
-import { getEstimateRequest } from '@actions/contract/car/get-estimate.action';
+import { createInfoCust } from '@actions/contract/set-info-cust.action';
+import { createInfoProduct } from '@actions/contract/set-info-product.action';
+import { getEstimateRequest } from '@actions/car/get-estimate.action';
 
 const Car: NextPage<CarState> = ({ car }) => {
     const { longUseCompanies } = useSelector<AppState, HrState>(

@@ -1,10 +1,10 @@
-import type { GetEstimatesRequestAction } from '@actions/contract/car/get-estimates.action';
+import type { GetEstimatesRequestAction } from '@actions/car/get-estimates.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
 import carsService from '@services/carsService';
 import {
     GetEstimatesActionTypes,
     getEstimatesSuccess,
-} from '@actions/contract/car/get-estimates.action';
+} from '@actions/car/get-estimates.action';
 import { generateListSuccessPayload } from '@utils/generate';
 import { commonMiddleware } from '@utils/generators/common';
 

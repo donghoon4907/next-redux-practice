@@ -1,11 +1,11 @@
-import type { UploadLongRequestAction } from '@actions/contract/long/upload.action';
+import type { UploadLongRequestAction } from '@actions/long/upload.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import longsService from '@services/longsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     UploadLongActionTypes,
     uploadLongSuccess,
-} from '@actions/contract/long/upload.action';
+} from '@actions/long/upload.action';
 
 function* uploadLongSaga({ payload }: UploadLongRequestAction) {
     const { data } = yield call(longsService.uploadLong, payload);

@@ -8,7 +8,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { MyRadio } from '@components/radio';
 import { hideEstimateSearchModal } from '@actions/modal/estimate-search.action';
 import { useApi } from '@hooks/use-api';
-import { getLazyEstimateRequest } from '@actions/contract/car/get-lazy-estimate.action';
+import { getLazyEstimateRequest } from '@actions/car/get-lazy-estimate.action';
 
 interface Props {}
 

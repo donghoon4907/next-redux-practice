@@ -9,7 +9,7 @@ import { MyInput } from '@components/input';
 import { MySelect } from '@components/select';
 import { findSelectOption } from '@utils/getter';
 import { useDatepicker } from '@hooks/use-datepicker';
-import { updatePay } from '@actions/contract/common/set-pay.action';
+import { updatePay } from '@actions/contract/set-pay.action';
 import carConstants from '@constants/options/car';
 import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';

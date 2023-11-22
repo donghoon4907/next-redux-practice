@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
-import { getContractorRequest } from '@actions/contract/common/set-contractor.action';
+import { getContractorRequest } from '@actions/contract/set-contractor.action';
 
 import { useApi } from './use-api';
 // 상세페이지에서 동적 메타데이터로 탭 구현시 사용

@@ -1,10 +1,10 @@
-import type { UpdateOrgaRequestAction } from '@actions/hr/orga/update-orga.action';
+import type { UpdateOrgaRequestAction } from '@actions/orga/update-orga.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import orgasService from '@services/orgasService';
 import {
     UpdateOrgaActionTypes,
     updateOrgaSuccess,
-} from '@actions/hr/orga/update-orga.action';
+} from '@actions/orga/update-orga.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* updateOrgaSaga({ payload }: UpdateOrgaRequestAction) {

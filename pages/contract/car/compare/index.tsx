@@ -4,8 +4,8 @@ import { END } from 'redux-saga';
 import { MyLayout } from '@components/Layout';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
-import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { CarCompareForm } from '@partials/contract/car/CompareForm';
 
 const ComparisonCar: NextPage = () => {

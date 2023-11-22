@@ -9,7 +9,7 @@ import { MyInput } from '@components/input';
 import { MySelect } from '@components/select';
 import { findSelectOption } from '@utils/getter';
 import { useDatepicker } from '@hooks/use-datepicker';
-import { updateBaeseo } from '@actions/contract/common/set-baeseo.action';
+import { updateBaeseo } from '@actions/contract/set-baeseo.action';
 import longConstants from '@constants/options/long';
 import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';

@@ -1,10 +1,10 @@
-import type { GetLongRequestAction } from '@actions/contract/long/get-long.action';
+import type { GetLongRequestAction } from '@actions/long/get-long.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import longsService from '@services/longsService';
 import {
     GetLongActionTypes,
     getLongSuccess,
-} from '@actions/contract/long/get-long.action';
+} from '@actions/long/get-long.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* getLongSaga({ payload }: GetLongRequestAction) {

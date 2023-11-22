@@ -12,7 +12,7 @@ import externalsService from '@services/externalsService';
 import { useCheckbox } from '@hooks/use-checkbox';
 import { isEmpty } from '@utils/validator/common';
 import { useApi } from '@hooks/use-api';
-import { loginRequest } from '@actions/hr/user/login.action';
+import { loginRequest } from '@actions/user/login.action';
 
 interface LoginPageProps {
     ip: string;

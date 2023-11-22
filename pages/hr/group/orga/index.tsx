@@ -11,9 +11,9 @@ import { MyPagination } from '@components/pagination';
 import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { searchOrgasRequest } from '@actions/hr/orga/search-orgas.action';
+import { searchOrgasRequest } from '@actions/orga/search-orgas.action';
 import { OrgaSearchFilter } from '@partials/hr/orga/template/SearchFilter';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 

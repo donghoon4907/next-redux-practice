@@ -1,5 +1,5 @@
-import type { CreateUserRequestPayload } from '@actions/hr/user/create-user.action';
-import type { UpdateUserRequestPayload } from '@actions/hr/user/update-user.action';
+import type { CreateUserRequestPayload } from '@actions/user/create-user.action';
+import type { UpdateUserRequestPayload } from '@actions/user/update-user.action';
 import { isEmpty } from '@utils/validator/common';
 
 class UserDTO {

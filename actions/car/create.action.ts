@@ -1,9 +1,6 @@
 import type { Action } from 'redux';
 import type { Pay } from '@models/pay';
 import type { CorePayload } from '@interfaces/core';
-import type { Insured } from '@models/insured';
-import type { Bupum } from '@models/bupum';
-// import type { Contact } from '@models/contact';
 
 export const CREATE_CAR_KEY = 'CREATE_CAR';
 

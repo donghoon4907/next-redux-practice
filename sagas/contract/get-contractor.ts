@@ -1,11 +1,11 @@
-import type { GetContractorRequestAction } from '@actions/contract/common/set-contractor.action';
+import type { GetContractorRequestAction } from '@actions/contract/set-contractor.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import customersService from '@services/customersService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     LoadedContractorActionTypes,
     getContractorSuccess,
-} from '@actions/contract/common/set-contractor.action';
+} from '@actions/contract/set-contractor.action';
 
 function* getContractorSaga({ payload }: GetContractorRequestAction) {
     const { data } = yield call(customersService.beforeGetCustomer, payload);

@@ -10,7 +10,7 @@ import {
     createInfoCust,
     selectInfoCust,
     updateInfoCust,
-} from '@actions/contract/common/set-info-cust.action';
+} from '@actions/contract/set-info-cust.action';
 import { generateIndex } from '@utils/generate';
 import { hideSetInfoCustModal } from '@actions/modal/set-info-cust.action';
 

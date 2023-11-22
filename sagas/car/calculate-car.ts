@@ -1,11 +1,11 @@
-import type { CalculateCarRequestAction } from '@actions/contract/car/calculate-car.action';
+import type { CalculateCarRequestAction } from '@actions/car/calculate-car.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import carsService from '@services/carsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     CalculateCarActionTypes,
     calculateCarSuccess,
-} from '@actions/contract/car/calculate-car.action';
+} from '@actions/car/calculate-car.action';
 
 function* calculateCarSaga({ payload }: CalculateCarRequestAction) {
     const formData = new FormData();

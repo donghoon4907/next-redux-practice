@@ -1,8 +1,8 @@
-import type { LoginRequestAction } from '@actions/hr/user/login.action';
+import type { LoginRequestAction } from '@actions/user/login.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { setCookie } from 'cookies-next';
 import usersService from '@services/usersService';
-import { LoginActionTypes, loginSuccess } from '@actions/hr/user/login.action';
+import { LoginActionTypes, loginSuccess } from '@actions/user/login.action';
 import { sagaError } from '@actions/error/error.action';
 import { commonMiddleware } from '@utils/generators/common';
 import { isEmpty } from '@utils/validator/common';

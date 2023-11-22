@@ -1,10 +1,10 @@
-import type { UpdateUserRequestAction } from '@actions/hr/user/update-user.action';
+import type { UpdateUserRequestAction } from '@actions/user/update-user.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import usersService from '@services/usersService';
 import {
     UpdateUserActionTypes,
     updateUserSuccess,
-} from '@actions/hr/user/update-user.action';
+} from '@actions/user/update-user.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* updateUserSaga({ payload }: UpdateUserRequestAction) {

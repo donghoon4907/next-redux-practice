@@ -15,7 +15,7 @@ import userConstants from '@constants/options/user';
 import {
     CreateGuaranteePayload,
     createGuarantee,
-} from '@actions/hr/common/set-guarantee.action';
+} from '@actions/hr/set-guarantee.action';
 import { generateIndex } from '@utils/generate';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';

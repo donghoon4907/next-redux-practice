@@ -6,7 +6,6 @@ import { loadingReducer } from './common/loading';
 import { tabReducer } from './tab';
 import { drawerReducer } from './drawer';
 import { longReducer } from './long';
-import { boardReducer } from './board';
 import { uploadReducer } from './upload';
 import { gnbReducer } from './gnb';
 import { modalReducer } from './modal';
@@ -23,7 +22,6 @@ const combinedReducer = combineReducers({
     tab: tabReducer,
     drawer: drawerReducer,
     long: longReducer,
-    board: boardReducer,
     error: errorReducer,
     loading: loadingReducer,
     upload: uploadReducer,

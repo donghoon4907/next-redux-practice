@@ -1,16 +1,16 @@
 import type { Reducer } from 'redux';
-import type { GetLongsSuccessPayload } from '@actions/contract/long/get-longs.action';
-import type { GetLongSilsSuccessPayload } from '@actions/contract/long/get-sils.action';
-import type { GetLongBuhwalsSuccessPayload } from '@actions/contract/long/get-buhwals.action';
+import type { GetLongsSuccessPayload } from '@actions/long/get-longs.action';
+import type { GetLongSilsSuccessPayload } from '@actions/long/get-sils.action';
+import type { GetLongBuhwalsSuccessPayload } from '@actions/long/get-buhwals.action';
 import produce from 'immer';
-import { GetLongsActionTypes } from '@actions/contract/long/get-longs.action';
-import { GetLongActionTypes } from '@actions/contract/long/get-long.action';
-import { GetLongSilsActionTypes } from '@actions/contract/long/get-sils.action';
+import { GetLongsActionTypes } from '@actions/long/get-longs.action';
+import { GetLongActionTypes } from '@actions/long/get-long.action';
+import { GetLongSilsActionTypes } from '@actions/long/get-sils.action';
 import {
     GetLongSilhyosActionTypes,
     GetLongSilhyosSuccessPayload,
-} from '@actions/contract/long/get-silhyos.action';
-import { GetLongBuhwalsActionTypes } from '@actions/contract/long/get-buhwals.action';
+} from '@actions/long/get-silhyos.action';
+import { GetLongBuhwalsActionTypes } from '@actions/long/get-buhwals.action';
 
 export interface LongState {
     /**

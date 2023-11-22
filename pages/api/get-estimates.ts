@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { GetEstimatesRequestPayload } from '@actions/contract/car/get-estimates.action';
+import type { GetEstimatesRequestPayload } from '@actions/car/get-estimates.action';
 import carsService from '@services/carsService';
 import { tokenMiddleware } from '@utils/middleware/next';
 

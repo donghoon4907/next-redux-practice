@@ -5,7 +5,7 @@ import type { SagaStore } from '@store/redux';
 import { getCookie } from 'cookies-next';
 import { initialzeBackendAxios } from '@utils/axios/backend';
 import usersService from '@services/usersService';
-import { updatePermission } from '@actions/hr/user/set-permission.action';
+import { updatePermission } from '@actions/user/set-permission.action';
 // 권한 조회 미들웨어
 export function permissionMiddleware(
     callback?: (

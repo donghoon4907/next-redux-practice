@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux';
 import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { LongForm } from '@partials/contract/long/LongForm';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
 // 장기계약 등록 페이지 컴포넌트

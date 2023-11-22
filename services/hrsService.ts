@@ -1,6 +1,6 @@
-import type { GetCompaniesRequestPayload } from '@actions/hr/common/get-companies.action';
-import type { GetCompanyRegNumRequestPayload } from '@actions/hr/common/get-company-regnum.action';
-import type { GetProductsRequestPayload } from '@actions/hr/common/get-products.action';
+import type { GetCompaniesRequestPayload } from '@actions/hr/get-companies.action';
+import type { GetCompanyRegNumRequestPayload } from '@actions/hr/get-company-regnum.action';
+import type { GetProductsRequestPayload } from '@actions/hr/get-products.action';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getInternalAxios } from '@utils/axios/internal';
 

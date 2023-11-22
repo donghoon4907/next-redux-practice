@@ -12,7 +12,7 @@ import { MyLayout } from '@components/Layout';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { END } from 'redux-saga';
-import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { MySelect } from '@components/select';
 import { MyInput } from '@components/input';
 import { MyButton } from '@components/button';
@@ -20,7 +20,7 @@ import { MyFooter } from '@components/footer';
 import { CoreSelectOption } from '@interfaces/core';
 import { MyLocalPagination } from '@components/pagination/local';
 import { useApi } from '@hooks/use-api';
-import { uploadLongRequest } from '@actions/contract/long/upload.action';
+import { uploadLongRequest } from '@actions/long/upload.action';
 import longConstants from '@constants/options/long';
 
 const LongUpload: NextPage = () => {

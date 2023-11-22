@@ -14,7 +14,7 @@ import { useApi } from '@hooks/use-api';
 import {
     clearCarcode,
     getCarcodeRequest,
-} from '@actions/contract/car/get-carcode.action';
+} from '@actions/car/get-carcode.action';
 import { MyMultipleAccordion } from '@components/accordion';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';

@@ -10,7 +10,7 @@ import { MyInput } from '@components/input';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { isEmpty } from '@utils/validator/common';
 import { generateIndex } from '@utils/generate';
-import { createBupum } from '@actions/contract/car/set-bupum.action';
+import { createBupum } from '@actions/car/set-bupum.action';
 import { hideCreateBupumModal } from '@actions/modal/create-bupum.action';
 
 interface Props {}

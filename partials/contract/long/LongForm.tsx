@@ -4,7 +4,6 @@ import type { HrState } from '@reducers/hr';
 import type { OrgaState } from '@reducers/orga';
 import type { UserState } from '@reducers/user';
 import type { CommonState } from '@reducers/common';
-import type { ModalState } from '@reducers/modal';
 import type { ContractState } from '@reducers/contract';
 import type { CoreSelectOption } from '@interfaces/core';
 import { useState, useEffect } from 'react';
@@ -33,11 +32,11 @@ import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { isEmpty } from '@utils/validator/common';
 import { findSelectOption } from '@utils/getter';
-import { getUsersRequest } from '@actions/hr/user/get-users.action';
+import { getUsersRequest } from '@actions/user/get-users.action';
 import { CreateLongDTO, UpdateLongDTO } from '@dto/contractor/Long.dto';
-import { createLongRequest } from '@actions/contract/long/create.action';
+import { createLongRequest } from '@actions/long/create.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
-import { updateLongRequest } from '@actions/contract/long/update.action';
+import { updateLongRequest } from '@actions/long/update.action';
 import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';
@@ -220,7 +219,6 @@ export const LongForm: FC<Props> = ({
     const {
         selectedProduct,
         loadedContract,
-        loadedInsured,
         pays,
         baeseos,
         removedPays,
@@ -228,9 +226,6 @@ export const LongForm: FC<Props> = ({
         infoCusts,
         infoProducts,
     } = useSelector<AppState, ContractState>((state) => state.contract);
-
-    const { isShowContractorSearchModal, isShowInsuredSearchModal } =
-        useSelector<AppState, ModalState>((state) => state.modal);
 
     const createLong = useApi(createLongRequest);
 
@@ -527,10 +522,6 @@ export const LongForm: FC<Props> = ({
         if (loadedContract) {
             payload['c_idx'] = loadedContract.idx;
             payload['c_name'] = loadedContract.name;
-        }
-        // 피보험자 관련
-        if (loadedInsured) {
-            payload['p_name'] = loadedInsured.name;
         }
         // 계약일자 관련
         if (contdate.value) {

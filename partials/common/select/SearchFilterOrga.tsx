@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useSelect } from '@hooks/use-select';
 import { useApi } from '@hooks/use-api';
-import { getUsersRequest } from '@actions/hr/user/get-users.action';
+import { getUsersRequest } from '@actions/user/get-users.action';
 import { findSelectOption } from '@utils/getter';
 import { MySelect } from '@components/select';
 import { generateAllOption } from '@utils/generate';

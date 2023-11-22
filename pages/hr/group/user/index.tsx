@@ -12,9 +12,9 @@ import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { UserSearchFilter } from '@partials/hr/user/template/SearchFilter';
-import { searchUsersRequest } from '@actions/hr/user/search-users.action';
+import { searchUsersRequest } from '@actions/user/search-users.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { generateListParams } from '@utils/generate';
 
 const Users: NextPage = () => {

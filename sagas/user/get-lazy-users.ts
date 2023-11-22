@@ -1,12 +1,12 @@
 import type { User } from '@models/user';
-import type { GetUsersRequestAction } from '@actions/hr/user/get-users.action';
+import type { GetUsersRequestAction } from '@actions/user/get-users.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import usersService from '@services/usersService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     GetLazyUsersActionTypes,
     getLazyUsersSuccess,
-} from '@actions/hr/user/get-lazy-users.action';
+} from '@actions/user/get-lazy-users.action';
 
 function* getLazyUsersSaga({ payload }: GetUsersRequestAction) {
     const { data } = yield call(usersService.beforeGetUsers, payload);

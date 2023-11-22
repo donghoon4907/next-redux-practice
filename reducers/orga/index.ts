@@ -1,13 +1,13 @@
 import type { Reducer } from 'redux';
 import type { CoreSelectOption } from '@interfaces/core';
 import type { SimpleOrga } from '@models/orga';
-import type { SearchOrgasSuccessPayload } from '@actions/hr/orga/search-orgas.action';
+import type { SearchOrgasSuccessPayload } from '@actions/orga/search-orgas.action';
 import produce from 'immer';
-import { GetOrgasActionTypes } from '@actions/hr/orga/get-orgas.action';
-import { GetLazyOrgasActionTypes } from '@actions/hr/orga/get-lazy-orgas.action';
-import { GetOrgaActionTypes } from '@actions/hr/orga/get-orga.action';
-import { SearchOrgasActionTypes } from '@actions/hr/orga/search-orgas.action';
-import { DepartActionTypes } from '@actions/hr/common/set-depart.action';
+import { GetOrgasActionTypes } from '@actions/orga/get-orgas.action';
+import { GetLazyOrgasActionTypes } from '@actions/orga/get-lazy-orgas.action';
+import { GetOrgaActionTypes } from '@actions/orga/get-orga.action';
+import { SearchOrgasActionTypes } from '@actions/orga/search-orgas.action';
+import { DepartActionTypes } from '@actions/hr/set-depart.action';
 
 export interface OrgaState {
     /**

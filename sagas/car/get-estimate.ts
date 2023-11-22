@@ -1,10 +1,10 @@
-import type { GetEstimateRequestAction } from '@actions/contract/car/get-estimate.action';
+import type { GetEstimateRequestAction } from '@actions/car/get-estimate.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
 import carsService from '@services/carsService';
 import {
     GetEstimateActionTypes,
     getEstimateSuccess,
-} from '@actions/contract/car/get-estimate.action';
+} from '@actions/car/get-estimate.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* getEstimateSaga({ payload }: GetEstimateRequestAction) {

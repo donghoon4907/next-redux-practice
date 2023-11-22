@@ -1,15 +1,15 @@
-import type { CreateCarRequestPayload } from '@actions/contract/car/create.action';
-import type { GetCarcodeRequestPayload } from '@actions/contract/car/get-carcode.action';
-import type { GetCarRequestPayload } from '@actions/contract/car/get-car.action';
-import type { UpdateCarRequestPayload } from '@actions/contract/car/update.action';
-import type { GetCarsRequestPayload } from '@actions/contract/car/get-cars.action';
+import type { CreateCarRequestPayload } from '@actions/car/create.action';
+import type { GetCarcodeRequestPayload } from '@actions/car/get-carcode.action';
+import type { GetCarRequestPayload } from '@actions/car/get-car.action';
+import type { UpdateCarRequestPayload } from '@actions/car/update.action';
+import type { GetCarsRequestPayload } from '@actions/car/get-cars.action';
 import { getQuarter } from 'date-fns';
 import { getBackendAxios } from '@utils/axios/backend';
 import { getExternalAxios } from '@utils/axios/external';
 import { getInternalAxios } from '@utils/axios/internal';
-import { GetEstimatesRequestPayload } from '@actions/contract/car/get-estimates.action';
-import { GetEstimateRequestPayload } from '@actions/contract/car/get-estimate.action';
-import { GetLazyEstimateRequestPayload } from '@actions/contract/car/get-lazy-estimate.action';
+import { GetEstimatesRequestPayload } from '@actions/car/get-estimates.action';
+import { GetEstimateRequestPayload } from '@actions/car/get-estimate.action';
+import { GetLazyEstimateRequestPayload } from '@actions/car/get-lazy-estimate.action';
 
 export function getCars({ page, nums, ...rest }: GetCarsRequestPayload) {
     return getBackendAxios().post(

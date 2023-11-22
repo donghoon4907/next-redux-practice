@@ -12,14 +12,14 @@ import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
 import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
-import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { getCompaniesRequest } from '@actions/hr/common/get-companies.action';
+import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { LongSilSearchFilter } from '@partials/contract/long/template/SilSearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
-import { getLongSilsRequest } from '@actions/contract/long/get-sils.action';
-import { getUsersRequest } from '@actions/hr/user/get-users.action';
+import { getLongSilsRequest } from '@actions/long/get-sils.action';
+import { getUsersRequest } from '@actions/user/get-users.action';
 
 const LongSil: NextPage = () => {
     const displayName = 'wr-pages-list2';

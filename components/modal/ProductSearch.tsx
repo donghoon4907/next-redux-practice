@@ -10,7 +10,7 @@ import { useSelect } from '@hooks/use-select';
 import { useInput } from '@hooks/use-input';
 import { hideProductSearchModal } from '@actions/modal/product-search.action';
 import { MyRadio } from '@components/radio';
-import { updateProduct } from '@actions/contract/common/set-product.action';
+import { updateProduct } from '@actions/contract/set-product.action';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';
 import { generateAllOption } from '@utils/generate';

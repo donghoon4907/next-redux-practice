@@ -11,7 +11,7 @@ import {
     createInfoProduct,
     selectInfoProduct,
     updateInfoProduct,
-} from '@actions/contract/common/set-info-product.action';
+} from '@actions/contract/set-info-product.action';
 import { hideSetInfoProductModal } from '@actions/modal/set-info-product.action';
 
 interface Props {}

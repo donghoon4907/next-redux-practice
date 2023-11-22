@@ -1,8 +1,8 @@
-import type { GetOrgaRequestPayload } from '@actions/hr/orga/get-orga.action';
-import type { SearchUsersRequestPayload } from '@actions/hr/user/search-users.action';
-import type { CreateOrgaRequestPayload } from '@actions/hr/orga/create-orga.action';
-import type { GetOrgasRequestPayload } from '@actions/hr/orga/get-orgas.action';
-import type { UpdateOrgaRequestPayload } from '@actions/hr/orga/update-orga.action';
+import type { GetOrgaRequestPayload } from '@actions/orga/get-orga.action';
+import type { SearchUsersRequestPayload } from '@actions/user/search-users.action';
+import type { CreateOrgaRequestPayload } from '@actions/orga/create-orga.action';
+import type { GetOrgasRequestPayload } from '@actions/orga/get-orgas.action';
+import type { UpdateOrgaRequestPayload } from '@actions/orga/update-orga.action';
 import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
 

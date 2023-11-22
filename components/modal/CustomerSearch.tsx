@@ -8,7 +8,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { MyRadio } from '@components/radio';
 import { hideContractorSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
-import { updateLoadedContractor } from '@actions/contract/common/set-contractor.action';
+import { updateLoadedContractor } from '@actions/contract/set-contractor.action';
 import customersService from '@services/customersService';
 import { ModalState } from '@reducers/modal';
 import { useApi } from '@hooks/use-api';

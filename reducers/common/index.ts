@@ -3,7 +3,6 @@ import type { Contact } from '@models/contact';
 import type { UserHistory } from '@models/user-history';
 import type { GetContactsSuccessPayload } from '@actions/common/get-contacts.action';
 import produce from 'immer';
-import { ContactActionTypes } from '@actions/common/set-contact.action';
 import { UserHistoryActionTypes } from '@actions/common/set-user-history.action';
 import { GetContactsActionTypes } from '@actions/common/get-contacts.action';
 
@@ -51,42 +50,6 @@ export const commonReducer: Reducer<CommonState, any> = (
         switch (action.type) {
             case GetContactsActionTypes.SUCCESS: {
                 draft.singleContacts = action.payload;
-
-                break;
-            }
-            case ContactActionTypes.CREATE: {
-                draft.contacts = draft.contacts.concat(action.payload);
-                break;
-            }
-            case ContactActionTypes.UPDATE: {
-                const { index, ...rest } = action.payload;
-
-                for (let i = 0; i < draft.contacts.length; i++) {
-                    if (draft.contacts[i].index === index) {
-                        draft.contacts[i] = {
-                            ...draft.contacts[i],
-                            ...rest,
-                        };
-
-                        break;
-                    }
-                }
-
-                break;
-            }
-            case ContactActionTypes.DELETE: {
-                const findIndex = draft.contacts.findIndex(
-                    (v) => v.index === action.payload.index,
-                );
-
-                if (findIndex !== -1) {
-                    const [deleted] = draft.contacts.splice(findIndex, 1);
-
-                    if (deleted.idx) {
-                        draft.removedContacts =
-                            draft.removedContacts.concat(deleted);
-                    }
-                }
 
                 break;
             }

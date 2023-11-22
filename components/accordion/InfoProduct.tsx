@@ -22,7 +22,7 @@ import {
     deleteInfoProduct,
     selectInfoProduct,
     updateInfoProduct,
-} from '@actions/contract/common/set-info-product.action';
+} from '@actions/contract/set-info-product.action';
 import { showSetInfoProductModal } from '@actions/modal/set-info-product.action';
 
 interface Props extends CoreEditableComponent {}

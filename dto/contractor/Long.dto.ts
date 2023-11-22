@@ -1,5 +1,5 @@
-import type { CreateLongRequestPayload } from '@actions/contract/long/create.action';
-import type { UpdateLongRequestPayload } from '@actions/contract/long/update.action';
+import type { CreateLongRequestPayload } from '@actions/long/create.action';
+import type { UpdateLongRequestPayload } from '@actions/long/update.action';
 import { isEmpty } from '@utils/validator/common';
 
 class LongDTO {

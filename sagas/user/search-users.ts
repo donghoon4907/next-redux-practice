@@ -1,10 +1,10 @@
-import type { SearchUsersRequestAction } from '@actions/hr/user/search-users.action';
+import type { SearchUsersRequestAction } from '@actions/user/search-users.action';
 import { call, takeEvery, put } from 'redux-saga/effects';
 import usersService from '@services/usersService';
 import {
     SearchUsersActionTypes,
     searchUsersSuccess,
-} from '@actions/hr/user/search-users.action';
+} from '@actions/user/search-users.action';
 import { commonMiddleware } from '@utils/generators/common';
 import { generateListSuccessPayload } from '@utils/generate';
 

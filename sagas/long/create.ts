@@ -1,11 +1,11 @@
-import type { CreateLongRequestAction } from '@actions/contract/long/create.action';
+import type { CreateLongRequestAction } from '@actions/long/create.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import longsService from '@services/longsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     CreateLongActionTypes,
     createLongSuccess,
-} from '@actions/contract/long/create.action';
+} from '@actions/long/create.action';
 
 function* createLongSaga({ payload }: CreateLongRequestAction) {
     const { callback, ...rest } = payload;

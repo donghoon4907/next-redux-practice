@@ -4,10 +4,10 @@ import type { Guarantee } from '@models/guarantee';
 import type { Code } from '@models/code';
 import type { Product } from '@models/product';
 import produce from 'immer';
-import { GetCompaniesActionTypes } from '@actions/hr/common/get-companies.action';
-import { GuaranteeActionTypes } from '@actions/hr/common/set-guarantee.action';
-import { CodeActionTypes } from '@actions/hr/common/set-code.action';
-import { GetProductsActionTypes } from '@actions/hr/common/get-products.action';
+import { GetCompaniesActionTypes } from '@actions/hr/get-companies.action';
+import { GuaranteeActionTypes } from '@actions/hr/set-guarantee.action';
+import { CodeActionTypes } from '@actions/hr/set-code.action';
+import { GetProductsActionTypes } from '@actions/hr/get-products.action';
 
 export interface HrState {
     /**

@@ -1,10 +1,10 @@
-import type { GetCarcodeRequestAction } from '@actions/contract/car/get-carcode.action';
+import type { GetCarcodeRequestAction } from '@actions/car/get-carcode.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import carsService from '@services/carsService';
 import {
     GetCarcodeActionTypes,
     getCarcodeSuccess,
-} from '@actions/contract/car/get-carcode.action';
+} from '@actions/car/get-carcode.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* getCarcodeSaga({ payload }: GetCarcodeRequestAction) {

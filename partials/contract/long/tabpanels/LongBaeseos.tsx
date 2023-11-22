@@ -13,7 +13,7 @@ import {
     createBaeseo,
     deleteBaeseo,
     updateBaeseo,
-} from '@actions/contract/common/set-baeseo.action';
+} from '@actions/contract/set-baeseo.action';
 
 import { BaeseoTemplate } from '../template/Baeseo';
 
