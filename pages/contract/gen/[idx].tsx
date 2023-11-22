@@ -20,7 +20,7 @@ import { updateProduct } from '@actions/contract/common/set-product.action';
 import { GeneralForm } from '@partials/contract/general/GeneralForm';
 import { MyLayout } from '@components/Layout';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
-
+// 현재 사용되지 않음
 const General: NextPage<GeneralState> = ({ general }) => {
     const { genUseCompanies } = useSelector<AppState, HrState>(
         (state) => state.hr,

@@ -12,7 +12,6 @@ import { LongForm } from '@partials/contract/long/LongForm';
 import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
-import { useInitTab } from '@hooks/use-initialize';
 // 장기계약 등록 페이지 컴포넌트
 // 주석추가 - 등록 페이지 구조 이해
 const CreateLong: NextPage = () => {
@@ -22,9 +21,6 @@ const CreateLong: NextPage = () => {
     const { loggedInUser } = useSelector<AppState, UserState>(
         (state) => state.user,
     );
-
-    // 탭 추가 - ASIDE_MENU에 없는 경우 수동으로 추가 필요
-    useInitTab('장기계약 등록');
     // default~ - 셀렉트 박스 기본 값 설정
     const defaultOrga = findSelectOption(
         loggedInUser.user_info.orga_idx,

@@ -741,11 +741,9 @@ export const LongForm: FC<Props> = ({
                                 <div className="row wr-mt">
                                     <div className="flex-fill">
                                         <SearchContractorInput
-                                            type="계약자"
                                             editable={
                                                 editable && mode === 'create'
                                             }
-                                            userid={defaultUserid}
                                         />
                                     </div>
                                 </div>
@@ -1170,13 +1168,8 @@ export const LongForm: FC<Props> = ({
                     </div>
                 </div>
             </MyFooter>
-            <ProductSearchModal spe="long" />
-            {isShowContractorSearchModal && (
-                <CustomerSearchModal type="contractor" />
-            )}
-            {isShowInsuredSearchModal && (
-                <CustomerSearchModal type="insured-person" />
-            )}
+            <ProductSearchModal />
+            <CustomerSearchModal userid={defaultUserid} />
             <SetInfoCustModal />
             <SetInfoProductModal />
             {mode === 'update' && <UserHistoryModal type="contract" />}

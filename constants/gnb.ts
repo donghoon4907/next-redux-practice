@@ -57,6 +57,13 @@ export const ASIDE_MENU: any = {
                 label: '부활명세',
                 to: '/contract/long/buhwal',
             },
+            create: {
+                id: 'contract-long_create',
+                label: '장기계약 등록',
+                to: '/contract/long/create',
+                // 메뉴숨김 처리
+                disabled: true,
+            },
         },
         car: {
             id: 'contract-car',
@@ -66,6 +73,12 @@ export const ASIDE_MENU: any = {
                 id: 'contract-car_bo',
                 label: '자동차보유계약',
                 to: '/contract/car/bo',
+            },
+            create: {
+                id: 'contract-car_create',
+                label: '자동차계약 등록',
+                to: '/contract/car/create',
+                disabled: true,
             },
             // compare: {
             //     id: 'contract-car-compare',

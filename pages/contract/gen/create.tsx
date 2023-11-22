@@ -12,7 +12,7 @@ import { getOrgasRequest } from '@actions/hr/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { GeneralForm } from '@partials/contract/general/GeneralForm';
 import { MyLayout } from '@components/Layout';
-
+// 현재 사용되지 않음
 const CreateGeneral: NextPage = () => {
     const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
 

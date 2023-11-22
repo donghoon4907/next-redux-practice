@@ -5,52 +5,26 @@ import type { ContractState } from '@reducers/contract';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useApi } from '@hooks/use-api';
 import { FloatInput } from '@components/input/Float';
 import { InputSearchButton } from '@components/button/InputSearch';
-import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
 import { useInput } from '@hooks/use-input';
-import { isEmpty } from '@utils/validator/common';
-import {
-    showContractorSearchModal,
-    showInsuredSearchModal,
-} from '@actions/modal/customer-search.action';
+import { showContractorSearchModal } from '@actions/modal/customer-search.action';
 
-interface Props extends CoreEditableComponent {
-    userid: string;
-    type: '계약자' | '피보험자';
-}
+interface Props extends CoreEditableComponent {}
 
-export const SearchContractorInput: FC<Props> = ({
-    type,
-    editable,
-    userid,
-}) => {
+export const SearchContractorInput: FC<Props> = ({ editable }) => {
     const dispatch = useDispatch();
 
     const router = useRouter();
 
-    const { loadedContract, loadedInsured } = useSelector<
-        AppState,
-        ContractState
-    >((state) => state.contract);
+    const { loadedContract } = useSelector<AppState, ContractState>(
+        (state) => state.contract,
+    );
 
     const [name, setName] = useInput('', { noSpace: true });
 
-    const getUserCustomers = useApi(getUserCustomersRequest);
-
     const handleSearch = () => {
-        if (isEmpty(name.value)) {
-            return alert(`${type}를 입력해주세요.`);
-        }
-
-        getUserCustomers({ userid, username: name.value }, () => {
-            if (type === '계약자') {
-                dispatch(showContractorSearchModal());
-            } else if (type === '피보험자') {
-                dispatch(showInsuredSearchModal());
-            }
-        });
+        dispatch(showContractorSearchModal());
     };
 
     const handleMove = () => {
@@ -60,21 +34,15 @@ export const SearchContractorInput: FC<Props> = ({
     };
 
     useEffect(() => {
-        if (type === '계약자' && loadedContract) {
+        if (loadedContract) {
             setName(loadedContract.name);
         }
-    }, [type, loadedContract]);
-
-    useEffect(() => {
-        if (type === '피보험자' && loadedInsured) {
-            setName(loadedInsured.name);
-        }
-    }, [type, loadedInsured]);
+    }, [loadedContract]);
 
     return (
         <FloatInput
-            label={type}
-            readOnly={!editable}
+            label="계약자"
+            readOnly
             isRequired
             after={
                 editable ? (

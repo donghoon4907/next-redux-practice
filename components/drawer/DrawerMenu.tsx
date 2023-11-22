@@ -1,18 +1,13 @@
 import type { FC, MouseEvent } from 'react';
 import type { CoreMenuOption } from '@interfaces/core';
 import { useRouter } from 'next/router';
-import { setCookie } from 'cookies-next';
-import { useDispatch } from 'react-redux';
 import {
     UncontrolledAccordion,
     AccordionBody,
     AccordionHeader,
     AccordionItem,
 } from 'reactstrap';
-import { TabModule } from '@utils/storage';
 import { useRoute } from '@hooks/use-route';
-import { CollapseButton } from '@components/Collapse';
-import { hideDrawer, showDrawer } from '@actions/drawer/drawer.action';
 
 interface Props {
     defaultOpen: boolean;
@@ -29,8 +24,6 @@ interface Props {
 export const DrawerMenu: FC<Props> = ({ defaultOpen, menu, depth = 1 }) => {
     const router = useRouter();
 
-    const dispatch = useDispatch();
-
     const route = useRoute();
 
     const handleClick = (
@@ -39,45 +32,19 @@ export const DrawerMenu: FC<Props> = ({ defaultOpen, menu, depth = 1 }) => {
     ) => {
         evt.preventDefault();
 
-        const tab = new TabModule();
-        // 기존에 사용하던 탭 제거
-        if (tab.read(item.to)) {
-            tab.remove(item.to);
-        }
-
         route.push(item.to);
-    };
-
-    const handleCollapse = (next: boolean) => {
-        const key = process.env.COOKIE_NAV_COLLAPSE_KEY || '';
-
-        setCookie(key, next ? 'Y' : 'N', {
-            maxAge: 60 * 60 * 24 * 365,
-        });
-
-        if (next) {
-            dispatch(showDrawer());
-        } else {
-            dispatch(hideDrawer());
-        }
     };
 
     return (
         <>
-            <CollapseButton
-                type="vertical"
-                expand={defaultOpen}
-                setExpand={handleCollapse}
-            />
             {Object.entries(menu).map(([k, v]) => {
                 const { id, label, to, disabled, ...rest } = v;
-
-                const [gnb, lnb] = id.split('-');
-
-                const [_, gnb2, lnb2] = router.pathname.split('/');
-
-                const isActive = gnb === gnb2 && lnb === lnb2;
-
+                // menu의 id와 URL은 정해진 규칙을 준수하여 작성
+                const [root, child] = id.split('-');
+                const [_, depth1, depth2] = router.pathname.split('/');
+                // 활성화 메뉴 여부
+                const isActive = root === depth1 && child === depth2;
+                // 메뉴의 자식 메뉴
                 const children = Object.keys(rest);
 
                 return children.length > 0 ? (
@@ -110,16 +77,15 @@ export const DrawerMenu: FC<Props> = ({ defaultOpen, menu, depth = 1 }) => {
                         </AccordionItem>
                     </UncontrolledAccordion>
                 ) : (
-                    !disabled && (
-                        <a
-                            key={id}
-                            className="wr-drawer__subtitle"
-                            href={to}
-                            onClick={(evt) => handleClick(evt, v)}
-                        >
-                            {label}
-                        </a>
-                    )
+                    <a
+                        key={id}
+                        className="wr-drawer__subtitle"
+                        href={to}
+                        onClick={(evt) => handleClick(evt, v)}
+                        hidden={disabled}
+                    >
+                        {label}
+                    </a>
                 );
             })}
         </>

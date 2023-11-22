@@ -600,13 +600,13 @@ export const GeneralForm: FC<Props> = ({
                 </div>
             </MyFooter>
 
-            <ProductSearchModal spe="gen" />
+            {/* <ProductSearchModal spe="gen" />
             {isShowContractorSearchModal && (
                 <CustomerSearchModal type="contractor" />
             )}
             {isShowInsuredSearchModal && (
                 <CustomerSearchModal type="insured-person" />
-            )}
+            )} */}
             <CreateGeneralPayModal payment={payment.value} />
             {mode === 'update' && <UserHistoryModal type="contract" />}
         </>

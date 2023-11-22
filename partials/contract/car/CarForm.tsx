@@ -595,11 +595,11 @@ export const CarForm: FC<Props> = ({
                                 <div className="row">
                                     <div className="flex-fill">
                                         <SearchContractorInput
-                                            type="계약자"
+                                            // type="계약자"
                                             editable={
                                                 editable && mode === 'create'
                                             }
-                                            userid={defaultUserid}
+                                            // userid={defaultUserid}
                                         />
                                     </div>
                                 </div>
@@ -790,10 +790,8 @@ export const CarForm: FC<Props> = ({
                     </div>
                 </div>
             </MyFooter>
-            <ProductSearchModal spe="car" />
-            {isShowContractorSearchModal && (
-                <CustomerSearchModal type="contractor" />
-            )}
+            <ProductSearchModal />
+            <CustomerSearchModal userid={defaultUserid} />
             <SetInfoCustModal />
             <SetInfoProductModal />
             <EstimateSearchModal />

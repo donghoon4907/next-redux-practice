@@ -6,52 +6,59 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { MyRadio } from '@components/radio';
-import {
-    hideContractorSearchModal,
-    hideInsuredSearchModal,
-} from '@actions/modal/customer-search.action';
+import { hideContractorSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
-import {
-    updateLoadedContractor,
-    updateLoadedInsured,
-} from '@actions/contract/common/set-contractor.action';
+import { updateLoadedContractor } from '@actions/contract/common/set-contractor.action';
 import customersService from '@services/customersService';
+import { ModalState } from '@reducers/modal';
+import { useApi } from '@hooks/use-api';
+import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
+import { useInput } from '@hooks/use-input';
+import { isEmpty } from '@utils/validator/common';
+import { FloatInput } from '@components/input/Float';
+import { InputSearchButton } from '@components/button/InputSearch';
 
 interface Props {
-    type: 'contractor' | 'insured-person';
+    userid: string;
 }
 
-export const CustomerSearchModal: FC<Props> = ({ type }) => {
+export const CustomerSearchModal: FC<Props> = ({ userid }) => {
     const dispatch = useDispatch();
 
     const { userCustomers } = useSelector<AppState, CustomerState>(
         (state) => state.customer,
     );
 
-    // 선택된 고객
-    const [checkedCustomer, setCheckedCustomer] = useState<UserCustomer | null>(
-        null,
+    const { isShowContractorSearchModal } = useSelector<AppState, ModalState>(
+        (state) => state.modal,
     );
 
-    const handleClose = () => {
-        if (type === 'contractor') {
-            dispatch(hideContractorSearchModal());
-        } else if (type === 'insured-person') {
-            dispatch(hideInsuredSearchModal());
+    const getUserCustomers = useApi(getUserCustomersRequest);
+
+    // 계약자명
+    const [name] = useInput('');
+    // 선택된 고객
+    const [checked, setChecked] = useState<UserCustomer | null>(null);
+
+    const handleSearch = () => {
+        if (isEmpty(name.value)) {
+            return alert(`계약자명을 입력해주세요.`);
         }
+
+        getUserCustomers({ userid, username: name.value });
+    };
+
+    const handleClose = () => {
+        dispatch(hideContractorSearchModal());
     };
 
     const handleSubmit = async () => {
-        if (checkedCustomer) {
+        if (checked) {
             const { data } = await customersService.beforeGetCustomer({
-                idx: checkedCustomer.idx.toString(),
+                idx: checked.idx.toString(),
             });
 
-            if (type === 'contractor') {
-                dispatch(updateLoadedContractor(data));
-            } else if (type === 'insured-person') {
-                dispatch(updateLoadedInsured(data));
-            }
+            dispatch(updateLoadedContractor(data));
 
             handleClose();
         } else {
@@ -60,17 +67,32 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
     };
 
     const handleClickRow = (v: UserCustomer) => {
-        setCheckedCustomer(v);
+        setChecked(v);
     };
-
+    // 검색 시 선택 초기화
     useEffect(() => {
-        setCheckedCustomer(null);
+        setChecked(null);
     }, [userCustomers]);
 
     return (
-        <Modal isOpen toggle={handleClose} size="xl">
-            <ModalHeader toggle={handleClose}>고객 선택</ModalHeader>
+        <Modal
+            isOpen={isShowContractorSearchModal}
+            toggle={handleClose}
+            size="xl"
+        >
+            <ModalHeader toggle={handleClose}>계약자 검색</ModalHeader>
             <ModalBody>
+                <div className="row">
+                    <div className="flex-fill"></div>
+                    <div className="flex-fill"></div>
+                    <div className="flex-fill">
+                        <FloatInput
+                            label="계약자명"
+                            after={<InputSearchButton onClick={handleSearch} />}
+                            {...name}
+                        />
+                    </div>
+                </div>
                 <div
                     className="wr-table--scrollable wr-table--hover wr-mt wr-border wr-table__wrap"
                     style={{ maxHeight: 500 }}
@@ -78,19 +100,13 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
                     <table className="wr-table table">
                         <thead>
                             <tr>
-                                {userCustomers.length !== 0 && (
-                                    <th style={{ width: '30px' }}>선택</th>
-                                )}
-                                <th style={{ width: '100px' }}>고객구분</th>
-                                <th style={{ width: '100px' }}>이름(회사명)</th>
-                                <th style={{ width: '100px' }}>
-                                    주민번호(사업자등록번호)
-                                </th>
-                                <th style={{ width: '100px' }}>
-                                    핸드폰(대표전화)
-                                </th>
-                                <th style={{ width: '100px' }}>생일</th>
-                                <th style={{ width: '100px' }}>최근 수정일</th>
+                                <th style={{ width: '30px' }}>선택</th>
+                                <th>고객구분</th>
+                                <th>이름(회사명)</th>
+                                <th>주민번호(사업자등록번호)</th>
+                                <th>핸드폰(대표전화)</th>
+                                <th>생일</th>
+                                <th>최근 수정일</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,7 +117,7 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
                             )}
                             {userCustomers.map((v, i) => (
                                 <tr
-                                    key={`myCustomer${i}`}
+                                    key={`customer${i}`}
                                     onClick={() => handleClickRow(v)}
                                 >
                                     <td>
@@ -109,9 +125,7 @@ export const CustomerSearchModal: FC<Props> = ({ type }) => {
                                             label=""
                                             name="mProduct"
                                             readOnly
-                                            checked={
-                                                checkedCustomer?.idx === v.idx
-                                            }
+                                            checked={checked?.idx === v.idx}
                                         />
                                     </td>
                                     <td>

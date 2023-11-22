@@ -3,24 +3,21 @@ import type { AppState } from '@reducers/index';
 import type { ModalState } from '@reducers/modal';
 import type { HrState } from '@reducers/hr';
 import type { Product } from '@models/product';
-import type { Spe } from '@models/spe';
 import { useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { useSelect } from '@hooks/use-select';
 import { useInput } from '@hooks/use-input';
 import { hideProductSearchModal } from '@actions/modal/product-search.action';
-import longConstants from '@constants/options/long';
 import { MyRadio } from '@components/radio';
 import { updateProduct } from '@actions/contract/common/set-product.action';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';
+import { generateAllOption } from '@utils/generate';
 
-interface Props {
-    spe: Spe;
-}
+interface Props {}
 
-export const ProductSearchModal: FC<Props> = ({ spe }) => {
+export const ProductSearchModal: FC<Props> = () => {
     const dispatch = useDispatch();
 
     const { isShowProductSearchModal } = useSelector<AppState, ModalState>(
@@ -29,22 +26,31 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
 
     const { products } = useSelector<AppState, HrState>((state) => state.hr);
 
+    const productTypes = useMemo(
+        () =>
+            Array.from(new Set(products.data.map((v) => v.spec))).map((v) => ({
+                label: v,
+                value: v,
+            })),
+        [products.data],
+    );
+
     // 보종
-    const [pType] = useSelect(longConstants.productType, null);
+    const [type] = useSelect(generateAllOption(productTypes));
     // 검색어
     const [search] = useInput('');
     // 선택된 상품
-    const [checkedProduct, setCheckedProduct] = useState<Product | null>(null);
+    const [checked, setChecked] = useState<Product | null>(null);
 
-    // 검색어 필터링된 상품목록
+    // 필터링된 상품목록
     const filteredProducts = useMemo(
         () =>
             products.data.filter(
                 (v) =>
                     v.title.includes(search.value) &&
-                    (pType.value ? v.spec === pType.value.value : true),
+                    (type.value?.value ? v.spec === type.value.value : true),
             ),
-        [products.data, pType.value, search.value],
+        [products.data, type.value, search.value],
     );
 
     const handleClose = () => {
@@ -52,25 +58,8 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
     };
 
     const handleSubmit = () => {
-        if (checkedProduct) {
-            if (spe === 'long') {
-                dispatch(updateProduct(checkedProduct));
-            } else if (spe === 'gen') {
-                dispatch(
-                    updateProduct({
-                        ...checkedProduct,
-                        subcategory: null,
-                        cal_spec: null,
-                    }),
-                );
-            } else if (spe === 'car') {
-                dispatch(
-                    updateProduct({
-                        ...checkedProduct,
-                        subcategory: null,
-                    }),
-                );
-            }
+        if (checked) {
+            dispatch(updateProduct(checked));
 
             handleClose();
         } else {
@@ -79,11 +68,11 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
     };
 
     const handleClickRow = (v: Product) => {
-        setCheckedProduct(v);
+        setChecked(v);
     };
 
     useEffect(() => {
-        setCheckedProduct(null);
+        setChecked(null);
     }, [filteredProducts]);
 
     return (
@@ -92,12 +81,12 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
             <ModalBody>
                 <div className="row">
                     <div className="flex-fill">
-                        <FloatSelect label="보종" {...pType} />
+                        <FloatSelect label="보종" {...type} />
                     </div>
+                    <div className="flex-fill"></div>
                     <div className="flex-fill">
                         <FloatInput label="상품명" {...search} />
                     </div>
-                    <div className="flex-fill"></div>
                 </div>
                 <div
                     className="wr-table--scrollable wr-table--hover wr-mt wr-border wr-table__wrap"
@@ -131,8 +120,7 @@ export const ProductSearchModal: FC<Props> = ({ spe }) => {
                                             name="mProduct"
                                             readOnly
                                             checked={
-                                                checkedProduct?.p_code ===
-                                                v.p_code
+                                                checked?.p_code === v.p_code
                                             }
                                         />
                                     </td>

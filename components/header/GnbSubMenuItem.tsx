@@ -4,10 +4,8 @@ import { useRoute } from '@hooks/use-route';
 
 interface Props extends CoreProps, Pick<CoreMenuOption, 'to' | 'label'> {}
 
-export const GnbSubMenuItem: FC<Props> = ({ to, children, label }) => {
+export const GnbSubMenuItem: FC<Props> = ({ to, label }) => {
     const route = useRoute();
-
-    // const { onToggle } = useDrawer();
 
     const handleClick = (evt: MouseEvent<HTMLAnchorElement>) => {
         evt.preventDefault();
