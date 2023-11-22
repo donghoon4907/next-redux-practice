@@ -47,8 +47,8 @@ import { InfoCustAccordion } from '@components/accordion/InfoCust';
 import { SetInfoCustModal } from '@components/modal/SetInfoCust';
 import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
 import { InfoProductAccordion } from '@components/accordion/InfoProduct';
+import { SearchContractorInput } from '@partials/contract/input/SearchContractorInput';
 
-import { SearchContractorInput } from '../contract/input/SearchContractorInput';
 import { LongBaeseossTabpanel } from './tabpanels/LongBaeseos';
 
 interface Props {

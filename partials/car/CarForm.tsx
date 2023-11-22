@@ -46,8 +46,8 @@ import { EstimateSearchModal } from '@components/modal/EstimateSearch';
 import { isEmpty } from '@utils/validator/common';
 import { SetInfoCustModal } from '@components/modal/SetInfoCust';
 import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
+import { SearchContractorInput } from '@partials/contract/input/SearchContractorInput';
 
-import { SearchContractorInput } from '../contract/input/SearchContractorInput';
 import { CompareTabpanel } from './tabpanels/Compare';
 
 interface Props {
