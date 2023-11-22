@@ -16,7 +16,7 @@ import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
 import commonConstants from '@constants/options/common';
 import orgaConstants from '@constants/options/orga';
-import { OrgaForm } from '@partials/hr/orga/OrgaForm';
+import { OrgaForm } from '@partials/orga/OrgaForm';
 import { getUsersRequest } from '@actions/user/get-users.action';
 import { convertPhoneNumber } from '@utils/converter';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';

@@ -12,7 +12,7 @@ import commonConstants from '@constants/options/common';
 import longsService from '@services/longsService';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { findSelectOption, findSelectOptionByLabel } from '@utils/getter';
-import { LongForm } from '@partials/contract/long/LongForm';
+import { LongForm } from '@partials/long/LongForm';
 import { createUserHistory } from '@actions/common/set-user-history.action';
 import { createPay } from '@actions/contract/set-pay.action';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';

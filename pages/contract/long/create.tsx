@@ -8,7 +8,7 @@ import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import { LongForm } from '@partials/contract/long/LongForm';
+import { LongForm } from '@partials/long/LongForm';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';

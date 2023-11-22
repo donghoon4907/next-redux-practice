@@ -18,7 +18,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongSilhyosRequest } from '@actions/long/get-silhyos.action';
-import { LongSilhyoSearchFilter } from '@partials/contract/long/template/SilhyoSearchFilter';
+import { LongSilhyoSearchFilter } from '@partials/long/template/SilhyoSearchFilter';
 import { getUsersRequest } from '@actions/user/get-users.action';
 
 const LongSilhyo: NextPage = () => {

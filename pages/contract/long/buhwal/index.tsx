@@ -18,7 +18,7 @@ import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongBuhwalsRequest } from '@actions/long/get-buhwals.action';
-import { LongBuhwalSearchFilter } from '@partials/contract/long/template/BuhwalSearchFilter';
+import { LongBuhwalSearchFilter } from '@partials/long/template/BuhwalSearchFilter';
 import { getUsersRequest } from '@actions/user/get-users.action';
 
 const LongBuhwal: NextPage = () => {

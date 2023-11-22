@@ -6,7 +6,7 @@ import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import { CarCompareForm } from '@partials/contract/car/CompareForm';
+import { CarCompareForm } from '@partials/car/CompareForm';
 
 const ComparisonCar: NextPage = () => {
     return (

@@ -14,7 +14,7 @@ import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { getLongsRequest } from '@actions/long/get-longs.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import { LongSearchFilter } from '@partials/contract/long/template/SearchFilter';
+import { LongSearchFilter } from '@partials/long/template/SearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getUsersRequest } from '@actions/user/get-users.action';

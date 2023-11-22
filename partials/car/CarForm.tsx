@@ -26,8 +26,8 @@ import { useApi } from '@hooks/use-api';
 import { CustomerSearchModal } from '@components/modal/CustomerSearch';
 import { findSelectOption } from '@utils/getter';
 import { getUsersRequest } from '@actions/user/get-users.action';
-import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
-import { CarPaysTabpanel } from '@partials/contract/car/tabpanels/CarPays';
+import { SearchProductInput } from '@partials/contract/input/SearchProductInput';
+import { CarPaysTabpanel } from '@partials/car/tabpanels/CarPays';
 import { createCarRequest } from '@actions/car/create.action';
 import { CreateCarDTO, UpdateCarDTO } from '@dto/contractor/Car.dto';
 import { MyFooter } from '@components/footer';
@@ -47,7 +47,7 @@ import { isEmpty } from '@utils/validator/common';
 import { SetInfoCustModal } from '@components/modal/SetInfoCust';
 import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
 
-import { SearchContractorInput } from '../common/input/SearchContractorInput';
+import { SearchContractorInput } from '../contract/input/SearchContractorInput';
 import { CompareTabpanel } from './tabpanels/Compare';
 
 interface Props {

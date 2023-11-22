@@ -17,7 +17,7 @@ import { createPay } from '@actions/contract/set-pay.action';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { updateProduct } from '@actions/contract/set-product.action';
 import { MyLayout } from '@components/Layout';
-import { CarForm } from '@partials/contract/car/CarForm';
+import { CarForm } from '@partials/car/CarForm';
 import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 import { createInfoCust } from '@actions/contract/set-info-cust.action';
 import { createInfoProduct } from '@actions/contract/set-info-product.action';

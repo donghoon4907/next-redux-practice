@@ -16,10 +16,10 @@ import { SelectDepartModal } from '@components/modal/SelectDepart';
 import { ImageUploadModal } from '@components/modal/ImageUpload';
 import { useSelect } from '@hooks/use-select';
 import { showImageUploadModal } from '@actions/modal/image-upload.action';
-import { IncomeTabpanel } from '@partials/hr/user/tabpanels/Income';
-import { GuaranteeTabpanel } from '@partials/hr/user/tabpanels/Guarantee';
+import { IncomeTabpanel } from '@partials/user/tabpanels/Income';
+import { GuaranteeTabpanel } from '@partials/user/tabpanels/Guarantee';
 import { GuaranteeSettingModal } from '@components/modal/GuaranteeSetting';
-import { AuthorityTabpanel } from '@partials/hr/user/tabpanels/Authority';
+import { AuthorityTabpanel } from '@partials/user/tabpanels/Authority';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
 import { CoreSelectOption } from '@interfaces/core';
@@ -35,19 +35,19 @@ import { updateUserRequest } from '@actions/user/update-user.action';
 import { usePostcode } from '@hooks/use-postcode';
 import { convertPhoneNumber } from '@utils/converter';
 import { uploadPortraitRequest } from '@actions/upload/portrait.action';
-import {
-    useInput,
-    useNumbericInput,
-    usePhoneInput,
-    useResidentNumberInput,
-} from '@hooks/use-input';
 import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { MyUnit } from '@components/Unit';
 import { SetPostcodeInput } from '@partials/common/input/SetPostcode';
 import { FloatSelect } from '@components/select/Float';
 import { UserEstimateAccordion } from '@components/accordion/UserEstimate';
-import { OrgaQualManageTabpanel } from '../orga/tabpanels/QualManage';
+import { OrgaQualManageTabpanel } from '@partials/orga/tabpanels/QualManage';
+import {
+    useInput,
+    useNumbericInput,
+    usePhoneInput,
+    useResidentNumberInput,
+} from '@hooks/use-input';
 
 interface Props {
     /**
@@ -365,7 +365,7 @@ export const UserForm: FC<Props> = ({
 
     const {
         banks,
-        allCompanies,
+        wrCompanies,
         guarantees,
         codes,
         removedGuarantees,
@@ -609,7 +609,7 @@ export const UserForm: FC<Props> = ({
     const [giaNo] = useInput(defaultGiaNo, { noSpace: true });
     // 협회자격관리 - 손보협 등록보험사
     const [giaComp] = useSelect(
-        allCompanies.filter((v) => v.origin.dist === '손해'),
+        wrCompanies.filter((v) => v.origin.dist === '손보'),
         defaultGiaComp,
     );
     // 협회자격관리 - 손보협 등록일
@@ -630,7 +630,7 @@ export const UserForm: FC<Props> = ({
     const [liaNo] = useInput(defaultLiaNo, { noSpace: true });
     // 협회자격관리 - 생보협 등록보험사
     const [liaComp] = useSelect(
-        allCompanies.filter((v) => v.origin.dist === '생명'),
+        wrCompanies.filter((v) => v.origin.dist === '생보'),
         defaultLiaComp,
     );
     // 협회자격관리 - 생보협 등록일

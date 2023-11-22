@@ -7,7 +7,7 @@ import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { UserForm } from '@partials/hr/user/UserForm';
+import { UserForm } from '@partials/user/UserForm';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import usersService from '@services/usersService';
 import userConstants from '@constants/options/user';

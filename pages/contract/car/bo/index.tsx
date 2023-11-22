@@ -17,7 +17,7 @@ import { getCarsRequest } from '@actions/car/get-cars.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
-import { CarSearchFilter } from '@partials/contract/car/SearchFilter';
+import { CarSearchFilter } from '@partials/car/SearchFilter';
 import dayjs from 'dayjs';
 import { getUsersRequest } from '@actions/user/get-users.action';
 

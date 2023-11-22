@@ -20,7 +20,7 @@ import { MyTab } from '@components/tab';
 import { useInput, useNumbericInput } from '@hooks/use-input';
 import { MyFooter } from '@components/footer';
 import { useSelect } from '@hooks/use-select';
-import { LongPaysTabpanel } from '@partials/contract/long/tabpanels/LongPays';
+import { LongPaysTabpanel } from '@partials/long/tabpanels/LongPays';
 import { MyButton } from '@components/button';
 import { useTab } from '@hooks/use-tab';
 import { useDatepicker } from '@hooks/use-datepicker';
@@ -37,7 +37,7 @@ import { CreateLongDTO, UpdateLongDTO } from '@dto/contractor/Long.dto';
 import { createLongRequest } from '@actions/long/create.action';
 import { UserHistoryModal } from '@components/modal/UserHistory';
 import { updateLongRequest } from '@actions/long/update.action';
-import { SearchProductInput } from '@partials/contract/common/input/SearchProductInput';
+import { SearchProductInput } from '@partials/contract/input/SearchProductInput';
 import { FloatSelect } from '@components/select/Float';
 import { FloatInput } from '@components/input/Float';
 import { FloatDatepicker } from '@components/datepicker/Float';
@@ -48,7 +48,7 @@ import { SetInfoCustModal } from '@components/modal/SetInfoCust';
 import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
 import { InfoProductAccordion } from '@components/accordion/InfoProduct';
 
-import { SearchContractorInput } from '../common/input/SearchContractorInput';
+import { SearchContractorInput } from '../contract/input/SearchContractorInput';
 import { LongBaeseossTabpanel } from './tabpanels/LongBaeseos';
 
 interface Props {

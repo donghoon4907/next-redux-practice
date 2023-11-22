@@ -6,7 +6,7 @@ import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { wrapper } from '@store/redux';
 import { permissionMiddleware } from '@utils/middleware/permission';
-import { UserForm } from '@partials/hr/user/UserForm';
+import { UserForm } from '@partials/user/UserForm';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { MyLayout } from '@components/Layout';
@@ -38,7 +38,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     permissionMiddleware(async ({ dispatch, sagaTask }) => {
         dispatch(getOrgasRequest({}));
 
-        dispatch(getCompaniesRequest('insu'));
+        dispatch(getCompaniesRequest('woori'));
 
         dispatch(getCompaniesRequest('bank'));
 

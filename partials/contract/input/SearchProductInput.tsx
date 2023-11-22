@@ -9,8 +9,7 @@ import { useApi } from '@hooks/use-api';
 import { getProductsRequest } from '@actions/hr/get-products.action';
 import { FloatInput } from '@components/input/Float';
 import { InputSearchButton } from '@components/button/InputSearch';
-
-import { ProductBadgeTemplate } from '../../long/template/ProductBadge';
+import { ProductBadgeTemplate } from '@partials/long/template/ProductBadge';
 
 interface Props extends CoreEditableComponent {
     // 보험사 코드

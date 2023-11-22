@@ -15,7 +15,7 @@ import { useColumn } from '@hooks/use-column';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { permissionMiddleware } from '@utils/middleware/permission';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
-import { LongSilSearchFilter } from '@partials/contract/long/template/SilSearchFilter';
+import { LongSilSearchFilter } from '@partials/long/template/SilSearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getLongSilsRequest } from '@actions/long/get-sils.action';
