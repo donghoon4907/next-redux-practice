@@ -96,11 +96,6 @@ npm run start
 
 ## 확장 프로그램
 
-**redux-devtools**
+## 참조
 
--   전역 상태 변경 로그를 추적할 수 있습니다. 프로젝트 내에서 개발환경 한정으로 해당 미들웨어를 추가해 놓았습니다.
--   (redux-devtools)[https://github.com/reduxjs/redux-devtools]
-
-**eslint+prettier**
-
--   소스 코드를 일관된 스타일로 작성할 수 있도록 사용하였습니다. Vscode를 사용하는 경우 확장 프로그램을 설치하세요.
+-   [가이드 문서](https://docs.google.com/spreadsheets/d/1gjfNiE-p-m4lWFO5tvC9xn4mHJ-yHSfxO6MmF46QDuc/edit#gid=0)
