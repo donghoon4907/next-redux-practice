@@ -942,7 +942,7 @@ export const CustomerForm: FC<Props> = ({
                                         address1Hooks={cAddress1}
                                         address2Hooks={cAddress2}
                                         address3Hooks={cAddress3}
-                                        onClickPostcode={onClickPostcode}
+                                        onClickPostcode={onClickCPostcode}
                                     />
                                 </div>
                             </div>

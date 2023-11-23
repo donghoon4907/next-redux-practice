@@ -393,7 +393,14 @@ export const UserForm: FC<Props> = ({
     // 별칭
     const [nick] = useInput(defaultNick, { noSpace: true });
     // 이름
-    const [name] = useInput(defaultName, { noSpace: true });
+    const [name] = useInput(defaultName, {
+        noSpace: true,
+        callbackOnBlur: (next) => {
+            if (estSalesNmInputType.value?.value === '본인이름') {
+                setEstSalesNm(next);
+            }
+        },
+    });
     // 직함
     const [title] = useInput(defaultTitle, { noSpace: true });
     // 주민번호
@@ -653,12 +660,6 @@ export const UserForm: FC<Props> = ({
     // 소득 설정 - 일반 규정 라디오 변경 핸들러
     const handleChangeGenType = (evt: ChangeEvent<HTMLInputElement>) => {
         setGenType(evt.target.value);
-    };
-    // 이름 입력창 blur 핸들러
-    const handleBlurName = () => {
-        if (estSalesNmInputType.value?.value === '본인이름') {
-            setEstSalesNm(name.value);
-        }
     };
     // 부서변경 클릭 핸들러
     const handleClickDepart = () => {
@@ -1154,7 +1155,7 @@ export const UserForm: FC<Props> = ({
                                                 label="이메일"
                                                 readOnly={!editable}
                                                 isConnectAfter
-                                                {...mobile}
+                                                {...email}
                                             />
                                         </div>
                                         <div style={{ width: 130 }}>

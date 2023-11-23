@@ -1,5 +1,4 @@
 import type { Action } from 'redux';
-import type { CorePayload } from '@interfaces/core';
 import { UploadRequestPayload } from './upload.action';
 
 export const UPLOAD_PORTRAIT_KEY = 'UPLOAD-PORTRAIT';

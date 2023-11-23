@@ -137,7 +137,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
+                                                {/* <tr>
                                                     {editable && (
                                                         <td>
                                                             <MyCheckbox label="" />
@@ -154,7 +154,7 @@ export const IncomeTabpanel: FC<Props> = ({
                                                         <span>구간</span>
                                                     </td>
                                                     <td>-</td>
-                                                </tr>
+                                                </tr> */}
                                             </tbody>
                                         </table>
                                     </div>
