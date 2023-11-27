@@ -14,7 +14,6 @@ import carConstants from '@constants/options/car';
 import commonConstants from '@constants/options/common';
 import { MyDatepicker } from '@components/datepicker';
 import { MyCheckbox } from '@components/checkbox';
-import { isEmpty } from '@utils/validator/common';
 import { isNumberic } from '@utils/validation';
 
 interface Props extends Pay, CoreEditableComponent {}

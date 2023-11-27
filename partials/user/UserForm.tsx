@@ -28,7 +28,6 @@ import coreConstants from '@constants/core';
 import userConstants from '@constants/options/user';
 import { CreateUserDTO, UpdateUserDTO } from '@dto/hr/User.dto';
 import { useCheckbox } from '@hooks/use-checkbox';
-import { CodeSettingModal } from '@components/modal/CodeSetting';
 import { createUserRequest } from '@actions/user/create-user.action';
 import { getOrgaRequest } from '@actions/orga/get-orga.action';
 import { updateUserRequest } from '@actions/user/update-user.action';
@@ -1327,7 +1326,6 @@ export const UserForm: FC<Props> = ({
             <SelectDepartModal />
             <ImageUploadModal />
             <GuaranteeSettingModal />
-            <CodeSettingModal />
         </>
     );
 };

@@ -28,7 +28,9 @@ export const ProductSearchModal: FC<Props> = () => {
 
     const productTypes = useMemo(
         () =>
-            Array.from(new Set(products.data.map((v) => v.spec))).map((v) => ({
+            Array.from(
+                new Set(products.data.map((v) => v.spec).filter((v) => v)),
+            ).map((v) => ({
                 label: v,
                 value: v,
             })),

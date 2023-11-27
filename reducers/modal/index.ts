@@ -2,28 +2,14 @@ import type { Reducer } from 'redux';
 import produce from 'immer';
 import { DepartSearchModalActionTypes } from '@actions/modal/depart-search.action';
 import { UserHistoryModalActionTypes } from '@actions/modal/user-history.action';
-import { CreateEtcModalActionTypes } from '@actions/modal/create-etc.action';
-import { SetViewerModalActionTypes } from '@actions/modal/set-viewer.action';
 import { ImageUploadModalActionTypes } from '@actions/modal/image-upload.action';
 import { GuaranteeSettingModalActionTypes } from '@actions/modal/guarantee-setting.action';
-import { CodeSettingModalActionTypes } from '@actions/modal/code-setting.action';
-import { LifeLongModalActionTypes } from '@actions/modal/life-long.action';
 import { CreateExcontractModalActionTypes } from '@actions/modal/create-excontract.action';
 import { CreateCustcarModalActionTypes } from '@actions/modal/create-custcar.action';
 import { CreateFamilyModalActionTypes } from '@actions/modal/create-family.action';
 import { CreateEventModalActionTypes } from '@actions/modal/create-event.action';
 import { ProductSearchModalActionTypes } from '@actions/modal/product-search.action';
-import {
-    ContractorSearchModalActionTypes,
-    InsuredSearchModalActionTypes,
-} from '@actions/modal/customer-search.action';
-import { CreateEndorsementModalActionTypes } from '@actions/modal/create-endorsement.action';
-import {
-    CreateCarPayModalActionTypes,
-    CreateGeneralPayModalActionTypes,
-    CreateLongPayModalActionTypes,
-} from '@actions/modal/create-pay.action';
-import { SetPeriodModalActionTypes } from '@actions/modal/set-period.action';
+import { ContractorSearchModalActionTypes } from '@actions/modal/customer-search.action';
 import { CreateBupumModalActionTypes } from '@actions/modal/create-bupum.action';
 import { GetCarcodeModalActionTypes } from '@actions/modal/get-carcode.action';
 import { SetCaraccModalActionTypes } from '@actions/modal/set-caracc.action';
@@ -34,12 +20,8 @@ import { EstimateSearchModalActionTypes } from '@actions/modal/estimate-search.a
 export interface ModalState {
     isShowdepartSearchModal: boolean;
     isShowUserHistoryModal: boolean;
-    isShowCreateEtcModal: boolean;
-    isShowSetViewerModal: boolean;
     isShowImageUploadModal: boolean;
     isShowGuaranteeSettingModal: boolean;
-    isShowCodeSettingModal: boolean;
-    isShowLifeLongModal: boolean;
     isShowCreateExcontractLongModal: boolean;
     isShowCreateExcontractCarModal: boolean;
     isShowCreateExcontractGenModal: boolean;
@@ -49,12 +31,6 @@ export interface ModalState {
     isShowCreateEventModal: boolean;
     isShowProductSearchModal: boolean;
     isShowContractorSearchModal: boolean;
-    isShowInsuredSearchModal: boolean;
-    isShowCreateLongPayModal: boolean;
-    isShowCreateGeneralPayModal: boolean;
-    isShowCreateCarPayModal: boolean;
-    isShowCreateEndorsementModal: boolean;
-    isShowSetPeriodModal: boolean;
     isShowCreateBupumModal: boolean;
     isShowCarSearchModal: boolean;
     isShowSetCaraccModal: boolean;
@@ -66,12 +42,8 @@ export interface ModalState {
 const initialState: ModalState = {
     isShowdepartSearchModal: false,
     isShowUserHistoryModal: false,
-    isShowCreateEtcModal: false,
-    isShowSetViewerModal: false,
     isShowImageUploadModal: false,
     isShowGuaranteeSettingModal: false,
-    isShowCodeSettingModal: false,
-    isShowLifeLongModal: false,
     isShowCreateExcontractLongModal: false,
     isShowCreateExcontractCarModal: false,
     isShowCreateExcontractGenModal: false,
@@ -81,12 +53,6 @@ const initialState: ModalState = {
     isShowCreateEventModal: false,
     isShowProductSearchModal: false,
     isShowContractorSearchModal: false,
-    isShowInsuredSearchModal: false,
-    isShowCreateLongPayModal: false,
-    isShowCreateGeneralPayModal: false,
-    isShowCreateCarPayModal: false,
-    isShowCreateEndorsementModal: false,
-    isShowSetPeriodModal: false,
     isShowCreateBupumModal: false,
     isShowCarSearchModal: false,
     isShowSetCaraccModal: false,
@@ -117,22 +83,6 @@ export const modalReducer: Reducer<ModalState, any> = (
                 draft.isShowUserHistoryModal = false;
                 break;
             }
-            case CreateEtcModalActionTypes.SHOW: {
-                draft.isShowCreateEtcModal = true;
-                break;
-            }
-            case CreateEtcModalActionTypes.HIDE: {
-                draft.isShowCreateEtcModal = false;
-                break;
-            }
-            case SetViewerModalActionTypes.SHOW: {
-                draft.isShowSetViewerModal = true;
-                break;
-            }
-            case SetViewerModalActionTypes.HIDE: {
-                draft.isShowSetViewerModal = false;
-                break;
-            }
             case ImageUploadModalActionTypes.SHOW: {
                 draft.isShowImageUploadModal = true;
                 break;
@@ -147,22 +97,6 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case GuaranteeSettingModalActionTypes.HIDE: {
                 draft.isShowGuaranteeSettingModal = false;
-                break;
-            }
-            case CodeSettingModalActionTypes.SHOW: {
-                draft.isShowCodeSettingModal = true;
-                break;
-            }
-            case CodeSettingModalActionTypes.HIDE: {
-                draft.isShowCodeSettingModal = false;
-                break;
-            }
-            case LifeLongModalActionTypes.SHOW: {
-                draft.isShowLifeLongModal = true;
-                break;
-            }
-            case LifeLongModalActionTypes.HIDE: {
-                draft.isShowLifeLongModal = false;
                 break;
             }
             case CreateExcontractModalActionTypes.SHOW: {
@@ -231,54 +165,6 @@ export const modalReducer: Reducer<ModalState, any> = (
             }
             case ContractorSearchModalActionTypes.HIDE: {
                 draft.isShowContractorSearchModal = false;
-                break;
-            }
-            case InsuredSearchModalActionTypes.SHOW: {
-                draft.isShowInsuredSearchModal = true;
-                break;
-            }
-            case InsuredSearchModalActionTypes.HIDE: {
-                draft.isShowInsuredSearchModal = false;
-                break;
-            }
-            case CreateLongPayModalActionTypes.SHOW: {
-                draft.isShowCreateLongPayModal = true;
-                break;
-            }
-            case CreateLongPayModalActionTypes.HIDE: {
-                draft.isShowCreateLongPayModal = false;
-                break;
-            }
-            case CreateGeneralPayModalActionTypes.SHOW: {
-                draft.isShowCreateGeneralPayModal = true;
-                break;
-            }
-            case CreateGeneralPayModalActionTypes.HIDE: {
-                draft.isShowCreateGeneralPayModal = false;
-                break;
-            }
-            case CreateCarPayModalActionTypes.SHOW: {
-                draft.isShowCreateCarPayModal = true;
-                break;
-            }
-            case CreateCarPayModalActionTypes.HIDE: {
-                draft.isShowCreateCarPayModal = false;
-                break;
-            }
-            case CreateEndorsementModalActionTypes.SHOW: {
-                draft.isShowCreateEndorsementModal = true;
-                break;
-            }
-            case CreateEndorsementModalActionTypes.HIDE: {
-                draft.isShowCreateEndorsementModal = false;
-                break;
-            }
-            case SetPeriodModalActionTypes.SHOW: {
-                draft.isShowSetPeriodModal = true;
-                break;
-            }
-            case SetPeriodModalActionTypes.HIDE: {
-                draft.isShowSetPeriodModal = false;
                 break;
             }
             case CreateBupumModalActionTypes.SHOW: {
