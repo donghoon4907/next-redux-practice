@@ -7,7 +7,7 @@ export const InputSearchButton: FC<Props> = (props) => {
     const displayName = 'wr-detail-input';
 
     return (
-        <button type="button" className={`${displayName}__button`} {...props}>
+        <button className={`${displayName}__button`} {...props}>
             <LuSearch size={18} />
             <span className="visually-hidden">검색</span>
         </button>

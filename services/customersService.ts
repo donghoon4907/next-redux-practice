@@ -1,20 +1,11 @@
 import type { CreateCustomerRequestPayload } from '@actions/customer/create-customer.action';
 import type { GetCustomerRequestPayload } from '@actions/customer/get-customer';
-import { GetUserCustomersRequestPayload } from '@actions/customer/get-user-customers';
+import type { GetUserCustomersRequestPayload } from '@actions/customer/get-user-customers';
 import type { UpdateCustomerRequestPayload } from '@actions/customer/update-customer.action';
-import axios from 'axios';
 import { getBackendAxios } from '@utils/axios/backend';
-
-export function beforeCreateCustomer(payload: CreateCustomerRequestPayload) {
-    return axios.post('/api/create-customer', payload);
-}
 
 export function createCustomer(payload: CreateCustomerRequestPayload) {
     return getBackendAxios().post('/customer/new', payload);
-}
-
-export function beforeUpdateCustomer(payload: UpdateCustomerRequestPayload) {
-    return axios.post('/api/update-customer', payload);
 }
 
 export function updateCustomer(payload: UpdateCustomerRequestPayload) {
@@ -25,25 +16,6 @@ export function getCustomer(payload: GetCustomerRequestPayload) {
     return getBackendAxios().get(`/customer/detail/${payload.idx}`);
 }
 
-export function beforeGetCustomer(payload: GetCustomerRequestPayload) {
-    return axios.get('/api/get-customer', {
-        params: {
-            idx: payload.idx,
-        },
-    });
-}
-
-export function beforeGetUserCustomers(
-    payload: GetUserCustomersRequestPayload,
-) {
-    return axios.get('/api/get-user-customers', {
-        params: {
-            username: encodeURIComponent(payload.username),
-            userid: payload.userid,
-        },
-    });
-}
-
 export function getUserCustomers(payload: GetUserCustomersRequestPayload) {
     return getBackendAxios().get(
         `/commonapi/cust/getCustList/${payload.username}/${payload.userid}`,
@@ -51,13 +23,9 @@ export function getUserCustomers(payload: GetUserCustomersRequestPayload) {
 }
 
 const rootServices = {
-    beforeCreateCustomer,
-    createCustomer,
-    beforeUpdateCustomer,
-    updateCustomer,
-    beforeGetCustomer,
     getCustomer,
-    beforeGetUserCustomers,
+    createCustomer,
+    updateCustomer,
     getUserCustomers,
 };
 

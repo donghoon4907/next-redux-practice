@@ -40,7 +40,6 @@ import { InfoCustAccordion } from '@components/accordion/InfoCust';
 import { InfoProductAccordion } from '@components/accordion/InfoProduct';
 import { FloatDatepicker } from '@components/datepicker/Float';
 import { SingleContactTabpanel } from '@partials/customer/tabpanels/SingleContact';
-import { getLazyEstimatesRequest } from '@actions/car/get-lazy-estimates.action';
 import { showEstimateSearchModal } from '@actions/modal/estimate-search.action';
 import { EstimateSearchModal } from '@components/modal/EstimateSearch';
 import { isEmpty } from '@utils/validator/common';
@@ -49,6 +48,7 @@ import { SetInfoProductModal } from '@components/modal/SetInfoProduct';
 import { SearchContractorInput } from '@partials/contract/input/SearchContractorInput';
 
 import { CompareTabpanel } from './tabpanels/Compare';
+import { getEstimatesRequest } from '@actions/car/get-estimates.action';
 
 interface Props {
     /**
@@ -218,7 +218,7 @@ export const CarForm: FC<Props> = ({
 
     const getUsers = useApi(getUsersRequest);
 
-    const getLazyEstimates = useApi(getLazyEstimatesRequest);
+    const getEstimates = useApi(getEstimatesRequest);
     // 탭 관리
     const [tab, setTab] = useTab(CAR_DETAIL_TABS[0]);
     // 수정 모드 여부
@@ -289,7 +289,7 @@ export const CarForm: FC<Props> = ({
     };
 
     const handleClickLoadEstimate = () => {
-        getLazyEstimates(
+        getEstimates(
             // { userid: 'W0383', bo_datefrom: '2023-11-12' },
             {
                 userid: defaultUserid,
@@ -595,11 +595,7 @@ export const CarForm: FC<Props> = ({
                                 <div className="row">
                                     <div className="flex-fill">
                                         <SearchContractorInput
-                                            // type="계약자"
-                                            editable={
-                                                editable && mode === 'create'
-                                            }
-                                            // userid={defaultUserid}
+                                            editable={editable}
                                         />
                                     </div>
                                 </div>

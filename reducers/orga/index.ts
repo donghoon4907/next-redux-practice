@@ -4,7 +4,6 @@ import type { SimpleOrga } from '@models/orga';
 import type { SearchOrgasSuccessPayload } from '@actions/orga/search-orgas.action';
 import produce from 'immer';
 import { GetOrgasActionTypes } from '@actions/orga/get-orgas.action';
-import { GetLazyOrgasActionTypes } from '@actions/orga/get-lazy-orgas.action';
 import { GetOrgaActionTypes } from '@actions/orga/get-orga.action';
 import { SearchOrgasActionTypes } from '@actions/orga/search-orgas.action';
 import { DepartActionTypes } from '@actions/hr/set-depart.action';
@@ -46,7 +45,6 @@ export const orgaReducer: Reducer<OrgaState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
-            case GetLazyOrgasActionTypes.SUCCESS:
             case GetOrgasActionTypes.SUCCESS: {
                 draft.orgas = action.payload;
                 break;

@@ -16,26 +16,18 @@ export const HR_DETAIL_TABS: CoreTabOption[] = [
  * 장기 계약 상세 페이지 탭 목록
  */
 export const LONG_DETAIL_TABS: CoreTabOption[] = [
-    // {
-    //     id: 'tabCustomer',
-    //     label: '고객상세및동의현황',
-    //     panelId: 'tabpanelCustomer',
-    // },
     { id: 'tabPays', label: '납입실적', panelId: 'tabpanelPays' },
     {
         id: 'tabBuhwal',
         label: '미유지/부활',
         panelId: 'tabpanelBuhwal',
     },
-    // { id: 'tabEndorsement', label: '배서구분', panelId: 'tabpanelEndorsement' },
-    // { id: 'tabCalcPerform', label: '정산실적', panelId: 'tabpanelCalcPerform' },
     {
         id: 'tabContact',
         label: '고객상담',
         panelId: 'tabpanelContact',
         isHideMode: 'create',
     },
-    // { id: 'tabChangeHis', label: '변경내역', panelId: 'tabpanelChangeHis' },
 ];
 /**
  * 일반 계약 상세 페이지 탭 목록
@@ -55,12 +47,6 @@ export const GEN_DETAIL_TABS: CoreTabOption[] = [
  * 자동차 계약 상세 페이지 탭 목록
  */
 export const CAR_DETAIL_TABS: CoreTabOption[] = [
-    // {
-    //     id: 'tabCustomer',
-    //     label: '고객상세및동의현황',
-    //     panelId: 'tabpanelCustomer',
-    // },
-    // { id: 'tabCompare', label: '비교견적정보', panelId: 'tabpanelCompare' },
     { id: 'tabPays', label: '납입실적', panelId: 'tabpanelPays' },
     {
         id: 'tabCompare',
@@ -78,11 +64,6 @@ export const CAR_DETAIL_TABS: CoreTabOption[] = [
  * 고객 상세 페이지 탭 목록
  */
 export const CUSTOMER_DETAIL_TABS: CoreTabOption[] = [
-    // {
-    //     id: 'tabHoldingContract',
-    //     label: '보유계약',
-    //     panelId: 'tabpanelHoldingContract',
-    // },
     {
         id: 'tabExcontract',
         label: '타사계약',

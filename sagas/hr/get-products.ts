@@ -10,7 +10,7 @@ import {
 function* getProductsSaga({ payload }: GetProductsRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(hrsService.beforeGetProducts, rest);
+    const { data } = yield call(hrsService.getProducts, rest);
 
     yield put(
         getProductsSuccess({

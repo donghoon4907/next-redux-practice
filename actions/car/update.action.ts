@@ -1,5 +1,4 @@
 import type { Action } from 'redux';
-// import type { Contact } from '@models/contact';
 import type { Pay } from '@models/pay';
 import type { CreateCarRequestPayload } from './create.action';
 
@@ -14,9 +13,7 @@ export const UpdateCarActionTypes = {
 export interface UpdateCarRequestPayload
     extends Partial<CreateCarRequestPayload> {
     remove: {
-        // p_persons?: Contact[];
         pays?: Pay[];
-        // contacts?: Contact[];
     };
 }
 

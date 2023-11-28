@@ -6,7 +6,6 @@ import { GetUsersActionTypes } from '@actions/user/get-users.action';
 import { PermissionActionTypes } from '@actions/user/set-permission.action';
 import { GetUserActionTypes } from '@actions/user/get-user.action';
 import { SearchUsersActionTypes } from '@actions/user/search-users.action';
-import { GetLazyUsersActionTypes } from '@actions/user/get-lazy-users.action';
 
 export interface UserState {
     /**
@@ -45,7 +44,6 @@ export const userReducer: Reducer<UserState, any> = (
 ) =>
     produce(state, (draft) => {
         switch (action.type) {
-            case GetLazyUsersActionTypes.SUCCESS:
             case GetUsersActionTypes.SUCCESS: {
                 draft.users = action.payload;
                 break;

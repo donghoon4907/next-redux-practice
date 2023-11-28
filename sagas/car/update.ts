@@ -10,7 +10,7 @@ import {
 function* updateCarSaga({ payload }: UpdateCarRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(carsService.beforeUpdateCar, rest);
+    const { data } = yield call(carsService.updateCar, rest);
 
     const { message } = data;
 

@@ -10,7 +10,7 @@ import { commonMiddleware } from '@utils/generators/common';
 function* getCarcodeSaga({ payload }: GetCarcodeRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(carsService.beforeGetCarcode, rest);
+    const { data } = yield call(carsService.getCarcode, rest);
 
     yield put(
         getCarcodeSuccess({

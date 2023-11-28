@@ -7,9 +7,7 @@ import { BupumActionTypes } from '@actions/car/set-bupum.action';
 import { GetCarActionTypes } from '@actions/car/get-car.action';
 import { GetCarcodeActionTypes } from '@actions/car/get-carcode.action';
 import { GetCarsActionTypes } from '@actions/car/get-cars.action';
-import { GetLazyEstimateActionTypes } from '@actions/car/get-lazy-estimate.action';
 import { GetEstimateActionTypes } from '@actions/car/get-estimate.action';
-import { GetLazyEstimatesActionTypes } from '@actions/car/get-lazy-estimates.action';
 import { GetEstimatesActionTypes } from '@actions/car/get-estimates.action';
 
 export interface CarState {
@@ -181,14 +179,12 @@ export const carReducer: Reducer<CarState, any> = (
 
                 break;
             }
-            case GetEstimatesActionTypes.SUCCESS:
-            case GetLazyEstimatesActionTypes.SUCCESS: {
+            case GetEstimatesActionTypes.SUCCESS: {
                 draft.estimates = action.payload;
 
                 break;
             }
-            case GetEstimateActionTypes.SUCCESS:
-            case GetLazyEstimateActionTypes.SUCCESS: {
+            case GetEstimateActionTypes.SUCCESS: {
                 draft.estimate = action.payload;
 
                 break;

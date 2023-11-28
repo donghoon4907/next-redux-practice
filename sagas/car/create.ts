@@ -10,7 +10,7 @@ import {
 function* createCarSaga({ payload }: CreateCarRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(carsService.beforeCreateCar, rest);
+    const { data } = yield call(carsService.createCar, rest);
 
     const { Message } = data;
 

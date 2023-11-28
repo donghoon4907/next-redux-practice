@@ -82,6 +82,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
     // 실패 시 로그인 페이지로 이동
     permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
         const condition = {};
+
         // URL에 포함된 qs정보를 서버요청에 필요한 params로 변환
         const params = generateListParams(condition, ctx.query);
         // 장기계약 목록 API 요청

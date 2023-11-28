@@ -8,7 +8,7 @@ import {
 } from '@actions/contract/set-contractor.action';
 
 function* getContractorSaga({ payload }: GetContractorRequestAction) {
-    const { data } = yield call(customersService.beforeGetCustomer, payload);
+    const { data } = yield call(customersService.getCustomer, payload);
 
     yield put(getContractorSuccess(data));
 

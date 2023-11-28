@@ -10,7 +10,7 @@ import { commonMiddleware } from '@utils/generators/common';
 function* createUserSaga({ payload }: CreateUserRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(usersService.beforeCreateUser, rest);
+    const { data } = yield call(usersService.createUser, rest);
 
     const { userid, Message } = data;
 

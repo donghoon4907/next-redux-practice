@@ -10,7 +10,7 @@ import { commonMiddleware } from '@utils/generators/common';
 function* updateUserSaga({ payload }: UpdateUserRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(usersService.beforeUpdateUser, rest);
+    const { data } = yield call(usersService.updateUser, rest);
 
     const { Message } = data;
 

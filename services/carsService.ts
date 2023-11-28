@@ -4,12 +4,10 @@ import type { GetCarRequestPayload } from '@actions/car/get-car.action';
 import type { UpdateCarRequestPayload } from '@actions/car/update.action';
 import type { GetCarsRequestPayload } from '@actions/car/get-cars.action';
 import { getQuarter } from 'date-fns';
-import { getBackendAxios } from '@utils/axios/backend';
 import { getExternalAxios } from '@utils/axios/external';
-import { getInternalAxios } from '@utils/axios/internal';
+import { getBackendAxios } from '@utils/axios/backend';
 import { GetEstimatesRequestPayload } from '@actions/car/get-estimates.action';
 import { GetEstimateRequestPayload } from '@actions/car/get-estimate.action';
-import { GetLazyEstimateRequestPayload } from '@actions/car/get-lazy-estimate.action';
 
 export function getCars({ page, nums, ...rest }: GetCarsRequestPayload) {
     return getBackendAxios().post(
@@ -22,16 +20,8 @@ export function getCar({ idx }: GetCarRequestPayload) {
     return getBackendAxios().get(`/car/detail/${idx}`);
 }
 
-export function beforeCreateCar(payload: CreateCarRequestPayload) {
-    return getInternalAxios().post('/api/create-car', payload);
-}
-
 export function createCar(payload: CreateCarRequestPayload) {
     return getBackendAxios().post('/car/new', payload);
-}
-
-export function beforeUpdateCar(payload: UpdateCarRequestPayload) {
-    return getInternalAxios().post('/api/update-car', payload);
 }
 
 export function updateCar(payload: UpdateCarRequestPayload) {
@@ -51,12 +41,6 @@ export function calculateCar(payload: FormData) {
     );
 }
 
-export function beforeGetCarcode(payload: GetCarcodeRequestPayload) {
-    return getInternalAxios().get('/api/get-carcode', {
-        params: payload,
-    });
-}
-
 export function getCarcode({ idate, params = {} }: GetCarcodeRequestPayload) {
     const _idate = new Date(idate);
     // 보험개시년도
@@ -70,20 +54,8 @@ export function getCarcode({ idate, params = {} }: GetCarcodeRequestPayload) {
     );
 }
 
-export function beforeGetEstimates(payload: GetEstimatesRequestPayload) {
-    return getInternalAxios().get('/api/get-estimates', {
-        params: payload,
-    });
-}
-
 export function getEstimates(payload: GetEstimatesRequestPayload) {
     return getBackendAxios().post('/estimate/slist', payload);
-}
-
-export function beforeGetEstimate(payload: GetLazyEstimateRequestPayload) {
-    return getInternalAxios().get('/api/get-estimate', {
-        params: payload,
-    });
 }
 
 export function getEstimate({ idx }: GetEstimateRequestPayload) {
@@ -93,16 +65,11 @@ export function getEstimate({ idx }: GetEstimateRequestPayload) {
 const rootServices = {
     getCars,
     getCar,
-    beforeCreateCar,
     createCar,
-    beforeUpdateCar,
     updateCar,
     calculateCar,
-    beforeGetCarcode,
     getCarcode,
-    beforeGetEstimates,
     getEstimates,
-    beforeGetEstimate,
     getEstimate,
 };
 

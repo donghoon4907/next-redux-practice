@@ -8,7 +8,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import { MyRadio } from '@components/radio';
 import { hideEstimateSearchModal } from '@actions/modal/estimate-search.action';
 import { useApi } from '@hooks/use-api';
-import { getLazyEstimateRequest } from '@actions/car/get-lazy-estimate.action';
+import { getEstimateRequest } from '@actions/car/get-estimate.action';
 
 interface Props {}
 
@@ -21,7 +21,7 @@ export const EstimateSearchModal: FC<Props> = () => {
 
     const { estimates } = useSelector<AppState, CarState>((state) => state.car);
     // 비교견적 상세
-    const getEstimate = useApi(getLazyEstimateRequest);
+    const getEstimate = useApi(getEstimateRequest);
     // 선택된 상품
     const [checkedIndex, setCheckedIndex] = useState<number>(-1);
 

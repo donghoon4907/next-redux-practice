@@ -10,7 +10,7 @@ import {
 function* updateLongSaga({ payload }: UpdateLongRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(longsService.beforeUpdateLong, rest);
+    const { data } = yield call(longsService.updateLong, rest);
 
     const { message } = data;
 

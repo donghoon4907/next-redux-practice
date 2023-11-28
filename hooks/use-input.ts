@@ -104,7 +104,7 @@ export const useNumbericInput: UseInputFunction = (
     defaultValue,
     where = {},
 ) => {
-    const [value, setValue] = useState(defaultValue || '');
+    const [value, setValue] = useState(String(defaultValue) || '');
 
     const onChange = (
         evt: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,

@@ -10,7 +10,7 @@ import {
 function* createCustomerSaga({ payload }: CreateCustomerRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(customersService.beforeCreateCustomer, rest);
+    const { data } = yield call(customersService.createCustomer, rest);
 
     alert('등록되었습니다.');
 

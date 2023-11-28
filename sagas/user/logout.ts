@@ -6,7 +6,7 @@ import { LogoutActionTypes, logoutSuccess } from '@actions/user/logout.action';
 import { commonMiddleware } from '@utils/generators/common';
 
 function* logoutSaga(action: LogoutRequestAction) {
-    const { data } = yield call(usersService.beforeLogout);
+    const { data } = yield call(usersService.logout);
 
     const cookieKey = process.env.COOKIE_TOKEN_KEY || '';
 

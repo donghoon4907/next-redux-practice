@@ -5,9 +5,8 @@ import type { UpdateLongRequestPayload } from '@actions/long/update.action';
 import type { UploadLongRequestPayload } from '@actions/long/upload.action';
 import type { GetLongSilsRequestPayload } from '@actions/long/get-sils.action';
 import type { GetLongSilhyosRequestPayload } from '@actions/long/get-silhyos.action';
-import axios from 'axios';
-import { getBackendAxios } from '@utils/axios/backend';
 import { getNodeAxios } from '@utils/axios/node';
+import { getBackendAxios } from '@utils/axios/backend';
 
 export function getLongs({ page, nums, ...rest }: GetLongsRequestPayload) {
     return getBackendAxios().post(
@@ -53,16 +52,8 @@ export function getLong({ idx }: GetLongRequestPayload) {
     return getBackendAxios().get(`/long/detail/${idx}`);
 }
 
-export function beforeCreateLong(payload: CreateLongRequestPayload) {
-    return axios.post('/api/create-long', payload);
-}
-
 export function createLong(payload: CreateLongRequestPayload) {
     return getBackendAxios().post('/long/new', payload);
-}
-
-export function beforeUpdateLong(payload: UpdateLongRequestPayload) {
-    return axios.post('/api/update-long', payload);
 }
 
 export function updateLong(payload: UpdateLongRequestPayload) {
@@ -83,9 +74,7 @@ const rootServices = {
     getLongSilhyos,
     getLongBuhwals,
     getLong,
-    beforeCreateLong,
     createLong,
-    beforeUpdateLong,
     updateLong,
     uploadLong,
     getLongFields,

@@ -10,7 +10,7 @@ import {
 function* createLongRuleSaga({ payload }: CreateLongRuleRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(rulesService.beforeCreateLongRule, rest);
+    const { data } = yield call(rulesService.createLongRule, rest);
 
     const { Message } = data;
 

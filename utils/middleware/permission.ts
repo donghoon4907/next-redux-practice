@@ -3,9 +3,9 @@ import type { GetServerSidePropsContext, PreviewData } from 'next';
 import type { ParsedUrlQuery } from 'querystring';
 import type { SagaStore } from '@store/redux';
 import { getCookie } from 'cookies-next';
-import { initialzeBackendAxios } from '@utils/axios/backend';
 import usersService from '@services/usersService';
 import { updatePermission } from '@actions/user/set-permission.action';
+import { initialzeAxios } from '@utils/axios/backend';
 // 권한 조회 미들웨어
 export function permissionMiddleware(
     callback?: (
@@ -29,7 +29,7 @@ export function permissionMiddleware(
                 res,
             });
             // 토큰 값으로 Axios를 초기화
-            initialzeBackendAxios(token);
+            initialzeAxios(token);
 
             try {
                 // 권한 조회 API 요청

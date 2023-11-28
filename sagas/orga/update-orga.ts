@@ -10,7 +10,7 @@ import { commonMiddleware } from '@utils/generators/common';
 function* updateOrgaSaga({ payload }: UpdateOrgaRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(orgasService.beforeUpdateOrga, rest);
+    const { data } = yield call(orgasService.updateOrga, rest);
 
     const { Message } = data;
 

@@ -27,9 +27,9 @@ import { createOrgaRequest } from '@actions/orga/create-orga.action';
 import { updateOrgaRequest } from '@actions/orga/update-orga.action';
 import { CreateOrgaDTO, UpdateOrgaDTO } from '@dto/hr/Orga.dto';
 import { isEmpty } from '@utils/validator/common';
-import { getLazyOrgasRequest } from '@actions/orga/get-lazy-orgas.action';
 
 import { OrgaQualManageTabpanel } from './tabpanels/QualManage';
+import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 
 interface Props {
     /**
@@ -167,7 +167,7 @@ export const OrgaForm: FC<Props> = ({
 
     const { users } = useSelector<AppState, UserState>((state) => state.user);
 
-    const getLazyOrgas = useApi(getLazyOrgasRequest);
+    const getOrgas = useApi(getOrgasRequest);
 
     // const getLazyUsers = useApi(getLazyUsersRequest);
 
@@ -399,7 +399,7 @@ export const OrgaForm: FC<Props> = ({
 
     useEffect(() => {
         if (orga_rank.value) {
-            getLazyOrgas({ rate: orga_rank.value.value });
+            getOrgas({ rate: orga_rank.value.value });
         }
     }, [orga_rank.value]);
 

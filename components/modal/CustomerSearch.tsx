@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, FormEvent } from 'react';
 import type { AppState } from '@reducers/index';
 import type { CustomerState } from '@reducers/customer';
 import type { UserCustomer } from '@models/customer';
@@ -9,7 +9,6 @@ import { MyRadio } from '@components/radio';
 import { hideContractorSearchModal } from '@actions/modal/customer-search.action';
 import { convertPhoneNumber, convertResidentNumber } from '@utils/converter';
 import { updateLoadedContractor } from '@actions/contract/set-contractor.action';
-import customersService from '@services/customersService';
 import { ModalState } from '@reducers/modal';
 import { useApi } from '@hooks/use-api';
 import { getUserCustomersRequest } from '@actions/customer/get-user-customers';
@@ -17,6 +16,7 @@ import { useInput } from '@hooks/use-input';
 import { isEmpty } from '@utils/validator/common';
 import { FloatInput } from '@components/input/Float';
 import { InputSearchButton } from '@components/button/InputSearch';
+import { getCustomerRequest } from '@actions/customer/get-customer';
 
 interface Props {
     userid: string;
@@ -35,12 +35,16 @@ export const CustomerSearchModal: FC<Props> = ({ userid }) => {
 
     const getUserCustomers = useApi(getUserCustomersRequest);
 
+    const getCustomer = useApi(getCustomerRequest);
+
     // 계약자명
     const [name] = useInput('');
     // 선택된 고객
     const [checked, setChecked] = useState<UserCustomer | null>(null);
 
-    const handleSearch = () => {
+    const handleSearch = (evt: FormEvent<HTMLFormElement>) => {
+        evt.preventDefault();
+
         if (isEmpty(name.value)) {
             return alert(`계약자명을 입력해주세요.`);
         }
@@ -52,15 +56,13 @@ export const CustomerSearchModal: FC<Props> = ({ userid }) => {
         dispatch(hideContractorSearchModal());
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = () => {
         if (checked) {
-            const { data } = await customersService.beforeGetCustomer({
-                idx: checked.idx.toString(),
+            getCustomer({ idx: checked.idx.toString() }, ({ data }) => {
+                dispatch(updateLoadedContractor(data));
+
+                handleClose();
             });
-
-            dispatch(updateLoadedContractor(data));
-
-            handleClose();
         } else {
             alert('고객을 선택하세요');
         }
@@ -85,13 +87,14 @@ export const CustomerSearchModal: FC<Props> = ({ userid }) => {
                 <div className="row">
                     <div className="flex-fill"></div>
                     <div className="flex-fill"></div>
-                    <div className="flex-fill">
+                    <form className="flex-fill" onSubmit={handleSearch}>
                         <FloatInput
+                            type="search"
                             label="계약자명"
-                            after={<InputSearchButton onClick={handleSearch} />}
+                            after={<InputSearchButton type="submit" />}
                             {...name}
                         />
-                    </div>
+                    </form>
                 </div>
                 <div
                     className="wr-table--scrollable wr-table--hover wr-mt wr-border wr-table__wrap"

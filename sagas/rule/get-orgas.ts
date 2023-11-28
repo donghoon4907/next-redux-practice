@@ -8,7 +8,7 @@ import {
 } from '@actions/rule/get-orgas';
 
 function* getRuleOrgasSaga({ payload }: GetRuleOrgasRequestAction) {
-    const { data } = yield call(rulesService.beforeGetRuleOrgas, payload);
+    const { data } = yield call(rulesService.getRuleOrgas, payload);
 
     const orgas = data.map((v: any) => ({
         label: v.orga,

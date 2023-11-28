@@ -4,7 +4,13 @@ import { createAxiosInstance } from '.';
 
 let instance: AxiosInstance | null = null;
 
-const baseURL = process.env.BACKEND_DOMAIN || '';
+let baseURL = '';
+// 서버사이드에서는 rewrites가 작동하지 않으므로 직접 호출
+if (typeof window === 'undefined') {
+    baseURL += process.env.BACKEND_DOMAIN;
+} else {
+    baseURL += '/api';
+}
 
 // 싱글톤 객체를 가져오는 함수
 export const getBackendAxios = () => {
@@ -19,7 +25,7 @@ export const getBackendAxios = () => {
     return instance;
 };
 
-export const initialzeBackendAxios = (token: CookieValueTypes) => {
+export const initialzeAxios = (token: CookieValueTypes) => {
     instance = createAxiosInstance({ token, baseURL });
 
     return instance;

@@ -10,7 +10,7 @@ import {
 function* createContactSaga({ payload }: CreateContactRequestAction) {
     const { callback, ...rest } = payload;
 
-    const { data } = yield call(commonsService.beforeCreateContact, rest);
+    const { data } = yield call(commonsService.createContact, rest);
 
     yield put(createContactSuccess());
 
