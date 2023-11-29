@@ -1,6 +1,6 @@
 import type { CalculateCarRequestAction } from '@actions/car/calculate-car.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
-import carsService from '@services/carsService';
+import externalsService from '@services/externalsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     CalculateCarActionTypes,
@@ -14,7 +14,7 @@ function* calculateCarSaga({ payload }: CalculateCarRequestAction) {
         formData.append(key, value);
     }
 
-    const { data } = yield call(carsService.calculateCar, formData);
+    const { data } = yield call(externalsService.calculate, formData);
 
     yield put(calculateCarSuccess());
 

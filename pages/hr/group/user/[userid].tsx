@@ -1,12 +1,10 @@
 import type { NextPage } from 'next';
 import type { HrState } from '@reducers/hr';
 import type { UserState } from '@reducers/user';
-import Head from 'next/head';
 import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { wrapper } from '@store/redux';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import { UserForm } from '@partials/user/UserForm';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import usersService from '@services/usersService';
@@ -18,6 +16,7 @@ import { createGuarantee } from '@actions/hr/set-guarantee.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
+import { MyHelmet } from '@components/Helmet';
 
 const User: NextPage<UserState> = ({ user }) => {
     const { banks, allCompanies } = useSelector<AppState, HrState>(
@@ -189,9 +188,7 @@ const User: NextPage<UserState> = ({ user }) => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <UserForm
                     mode="update"
@@ -262,7 +259,7 @@ const User: NextPage<UserState> = ({ user }) => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask, getState }, ctx) => {
+    pageMiddleware(async ({ dispatch }, ctx) => {
         const { query } = ctx;
 
         const userid = query.userid as string;
@@ -278,10 +275,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         };
 
         try {
-            dispatch(END);
-
-            await sagaTask?.toPromise();
-
             const { data } = await usersService.getUser({ idx: userid });
 
             const user = data.data[0];

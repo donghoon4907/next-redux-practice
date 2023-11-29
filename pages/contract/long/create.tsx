@@ -2,16 +2,15 @@ import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
 import type { OrgaState } from '@reducers/orga';
 import type { UserState } from '@reducers/user';
-import Head from 'next/head';
 import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { LongForm } from '@partials/long/LongForm';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { MyLayout } from '@components/Layout';
+import { MyHelmet } from '@components/Helmet';
 // 장기계약 등록 페이지 컴포넌트
 // 주석추가 - 등록 페이지 구조 이해
 const CreateLong: NextPage = () => {
@@ -29,9 +28,7 @@ const CreateLong: NextPage = () => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <LongForm
                     mode="create"
@@ -46,15 +43,11 @@ const CreateLong: NextPage = () => {
 export const getServerSideProps = wrapper.getServerSideProps(
     // 권한 조회 미들웨어
     // 실패 시 로그인 페이지로 이동
-    permissionMiddleware(async ({ dispatch, sagaTask }) => {
+    pageMiddleware(async ({ dispatch }) => {
         // 조직 목록 API 요청
         dispatch(getOrgasRequest({}));
         // Finance Company(long-use) API 요청
         dispatch(getCompaniesRequest('long-use'));
-        // 요청 종료 설정
-        dispatch(END);
-        // 요청이 끝날 때 까지 대기
-        await sagaTask?.toPromise();
 
         return null;
     }),

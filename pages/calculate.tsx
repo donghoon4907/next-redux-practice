@@ -1,5 +1,4 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import { useState, useEffect } from 'react';
 import { wrapper } from '@store/redux';
 import { findSelectOption } from '@utils/getter';
@@ -376,9 +375,6 @@ const Calculate: NextPage<any> = (props) => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
             <div
                 style={{
                     width: '100vw',

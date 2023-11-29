@@ -7,7 +7,6 @@ import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { getCookie } from 'cookies-next';
 import { wrapper } from '@store/redux';
 import { MyProvider } from '@components/Provider';
 import { MyLoading } from '@components/loading';
@@ -15,7 +14,6 @@ import { updateGnb } from '@actions/gnb/gnb.action';
 import { ASIDE_MENU } from '@constants/gnb';
 import { TabModule } from '@utils/storage';
 import { initTab } from '@actions/tab/tab.action';
-import { hideDrawer } from '@actions/drawer/drawer.action';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const router = useRouter();
@@ -68,31 +66,5 @@ function MyApp({ Component, pageProps }: AppProps) {
         </MyProvider>
     );
 }
-
-MyApp.getInitialProps = wrapper.getInitialAppProps(
-    ({ dispatch }) =>
-        async ({ Component, ctx }) => {
-            const { req, res } = ctx;
-            // 서버에서만 실행
-            if (req && res) {
-                const navKey = process.env.COOKIE_NAV_COLLAPSE_KEY || '';
-                // 네비게이션 바 업데이트
-                const isOpen = getCookie(navKey, {
-                    req,
-                    res,
-                });
-                if (isOpen === 'N') {
-                    dispatch(hideDrawer());
-                }
-            }
-
-            let pageProps = {};
-            if (Component.getInitialProps) {
-                pageProps = await Component.getInitialProps(ctx);
-            }
-
-            return { pageProps };
-        },
-);
 
 export default wrapper.withRedux(MyApp);

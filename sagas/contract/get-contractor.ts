@@ -10,7 +10,7 @@ import {
 function* getContractorSaga({ payload }: GetContractorRequestAction) {
     const { data } = yield call(customersService.getCustomer, payload);
 
-    yield put(getContractorSuccess(data));
+    yield put(getContractorSuccess(data.data));
 
     return data;
 }

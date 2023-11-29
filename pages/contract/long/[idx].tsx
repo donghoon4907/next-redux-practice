@@ -2,11 +2,9 @@ import type { NextPage } from 'next';
 import type { LongState } from '@reducers/long';
 import type { AppState } from '@reducers/index';
 import type { HrState } from '@reducers/hr';
-import Head from 'next/head';
 import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import longConstants from '@constants/options/long';
 import commonConstants from '@constants/options/common';
 import longsService from '@services/longsService';
@@ -22,6 +20,7 @@ import { useInitCustomer, useInitTab } from '@hooks/use-initialize';
 import { createInfoCust } from '@actions/contract/set-info-cust.action';
 import { createInfoProduct } from '@actions/contract/set-info-product.action';
 import { createBaeseo } from '@actions/contract/set-baeseo.action';
+import { MyHelmet } from '@components/Helmet';
 // 장기계약 상세 페이지 컴포넌트
 // 주석추가 - 상세 페이지 구조 이해
 const Long: NextPage<LongState> = ({ long }) => {
@@ -76,9 +75,7 @@ const Long: NextPage<LongState> = ({ long }) => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <LongForm
                     mode="update"
@@ -118,9 +115,9 @@ const Long: NextPage<LongState> = ({ long }) => {
 };
 // 서버사이드에서 필요한 정보 요청 및 처리
 export const getServerSideProps = wrapper.getServerSideProps(
-    // 권한 조회 미들웨어
+    // 공통 페이지 미들웨어
     // 실패 시 로그인 페이지로 이동
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+    pageMiddleware(async ({ dispatch }, ctx) => {
         const { query } = ctx;
 
         const idx = query.idx as string;
@@ -248,10 +245,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     );
                 }
             }
-            // 요청 종료 설정
-            dispatch(END);
-            // 요청이 끝날 때 까지 대기
-            await sagaTask?.toPromise();
         } catch {
             // 오류 시 404 페이지로 리다이렉션
             output.redirect = {

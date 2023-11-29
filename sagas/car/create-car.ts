@@ -1,11 +1,11 @@
-import type { CreateCarRequestAction } from '@actions/car/create.action';
+import type { CreateCarRequestAction } from '@actions/car/create-car.action';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import carsService from '@services/carsService';
 import { commonMiddleware } from '@utils/generators/common';
 import {
     CreateCarActionTypes,
     createCarSuccess,
-} from '@actions/car/create.action';
+} from '@actions/car/create-car.action';
 
 function* createCarSaga({ payload }: CreateCarRequestAction) {
     const { callback, ...rest } = payload;

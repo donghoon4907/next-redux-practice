@@ -1,16 +1,15 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { END } from 'redux-saga';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { wrapper } from '@store/redux';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import { UserForm } from '@partials/user/UserForm';
 import { showDepartSearchModal } from '@actions/modal/depart-search.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { MyLayout } from '@components/Layout';
 import { useInitTab } from '@hooks/use-initialize';
+import { MyHelmet } from '@components/Helmet';
 
 const CreateUser: NextPage = () => {
     const dispatch = useDispatch();
@@ -24,9 +23,7 @@ const CreateUser: NextPage = () => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <UserForm mode="create" />
             </MyLayout>
@@ -35,16 +32,12 @@ const CreateUser: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }) => {
+    pageMiddleware(async ({ dispatch }) => {
         dispatch(getOrgasRequest({}));
 
         dispatch(getCompaniesRequest('woori'));
 
         dispatch(getCompaniesRequest('bank'));
-
-        dispatch(END);
-
-        await sagaTask?.toPromise();
 
         return null;
     }),

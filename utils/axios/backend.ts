@@ -25,7 +25,7 @@ export const getBackendAxios = () => {
     return instance;
 };
 
-export const initialzeAxios = (token: CookieValueTypes) => {
+export const initializeAxios = (token: CookieValueTypes) => {
     instance = createAxiosInstance({ token, baseURL });
 
     return instance;

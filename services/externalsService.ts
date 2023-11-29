@@ -11,8 +11,22 @@ export function getIp({ isIPv6 }: any) {
     return getExternalAxios().get(url);
 }
 
+export function calculate(payload: FormData) {
+    return getExternalAxios().post(
+        'http://cal.insnara.co.kr/estimate/outer_test_woori.asp',
+        payload,
+        {
+            headers: {
+                Accept: 'text/html',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+        },
+    );
+}
+
 const rootServices = {
     getIp,
+    calculate,
 };
 
 export default rootServices;

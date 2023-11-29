@@ -1,21 +1,20 @@
 import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
 import type { OrgaState } from '@reducers/orga';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
 import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import { searchOrgasRequest } from '@actions/orga/search-orgas.action';
 import { OrgaSearchFilter } from '@partials/orga/template/SearchFilter';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
+import { MyHelmet } from '@components/Helmet';
 
 const Orgas: NextPage = () => {
     const displayName = 'wr-pages-list2';
@@ -34,9 +33,7 @@ const Orgas: NextPage = () => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <div className={displayName}>
                     <OrgaSearchFilter />
@@ -67,7 +64,7 @@ const Orgas: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+    pageMiddleware(async ({ dispatch }, ctx) => {
         const { orga_idx, ...rest } = ctx.query;
 
         const condition = {};
@@ -83,10 +80,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         dispatch(getOrgasRequest({}));
         // 조직 목록
         dispatch(searchOrgasRequest(params));
-
-        dispatch(END);
-
-        await sagaTask?.toPromise();
 
         return null;
     }),

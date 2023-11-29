@@ -1,5 +1,5 @@
-import type { CreateCarRequestPayload } from '@actions/car/create.action';
-import type { UpdateCarRequestPayload } from '@actions/car/update.action';
+import type { CreateCarRequestPayload } from '@actions/car/create-car.action';
+import type { UpdateCarRequestPayload } from '@actions/car/update-car.action';
 import { checkCarnum } from '@utils/validation';
 import { isEmpty } from '@utils/validator/common';
 

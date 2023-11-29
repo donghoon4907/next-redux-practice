@@ -3,11 +3,9 @@ import type { HrState } from '@reducers/hr';
 import type { AppState } from '@reducers/index';
 import type { OrgaState } from '@reducers/orga';
 import type { UserState } from '@reducers/user';
-import Head from 'next/head';
 import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import orgasService from '@services/orgasService';
 import { createCode } from '@actions/hr/set-code.action';
@@ -20,6 +18,7 @@ import { OrgaForm } from '@partials/orga/OrgaForm';
 import { getUsersRequest } from '@actions/user/get-users.action';
 import { convertPhoneNumber } from '@utils/converter';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
+import { MyHelmet } from '@components/Helmet';
 
 const Orga: NextPage<any> = ({ orga }) => {
     const { banks, wrCompanies } = useSelector<AppState, HrState>(
@@ -92,9 +91,7 @@ const Orga: NextPage<any> = ({ orga }) => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <OrgaForm
                     mode="update"
@@ -133,7 +130,7 @@ const Orga: NextPage<any> = ({ orga }) => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+    pageMiddleware(async ({ dispatch, sagaTask }, ctx) => {
         const { query } = ctx;
 
         const idx = query.idx as string;
@@ -155,11 +152,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
             dispatch(getOrgasRequest({ rate: data.orga_rank }));
 
-            // if (data.upper_idx) {
-            //     dispatch(getUsersRequest({ idx: data.upper_idx }));
-            // } else {
-            //     dispatch(getUsersRequest({ idx: '1' }));
-            // }
             if (data.insucode) {
                 for (let i = 0; i < data.insucode.length; i++) {
                     dispatch(
@@ -171,10 +163,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
                     );
                 }
             }
-
-            dispatch(END);
-
-            await sagaTask?.toPromise();
         } catch {
             output.redirect = {
                 destination: '/404',

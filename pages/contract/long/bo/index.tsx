@@ -1,23 +1,22 @@
 import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
 import type { LongState } from '@reducers/long';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
 import { MyTable } from '@components/table';
 import { wrapper } from '@store/redux';
 import { MyPagination } from '@components/pagination';
 import { MyLayout } from '@components/Layout';
 import { useColumn } from '@hooks/use-column';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import { getLongsRequest } from '@actions/long/get-longs.action';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { LongSearchFilter } from '@partials/long/template/SearchFilter';
 import { SearchResultTemplate } from '@partials/common/template/SearchResult';
 import { generateListParams } from '@utils/generate';
 import { getUsersRequest } from '@actions/user/get-users.action';
+import { MyHelmet } from '@components/Helmet';
 // 장기계약 조회 페이지 컴포넌트
 // 주석추가 - 목록 페이지 구조 이해
 const LongBo: NextPage = () => {
@@ -37,9 +36,7 @@ const LongBo: NextPage = () => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <div className={displayName}>
                     {/* 검색어 필터 컴포넌트 */}
@@ -78,9 +75,9 @@ const LongBo: NextPage = () => {
 };
 // 서버사이드에서 필요한 정보 요청 및 처리
 export const getServerSideProps = wrapper.getServerSideProps(
-    // 권한 조회 미들웨어
+    // 페이지 공통 미들웨어
     // 실패 시 로그인 페이지로 이동
-    permissionMiddleware(async ({ dispatch, sagaTask }, ctx) => {
+    pageMiddleware(async ({ dispatch }, ctx) => {
         const condition = {};
 
         // URL에 포함된 qs정보를 서버요청에 필요한 params로 변환
@@ -97,10 +94,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
                 idx: '1',
             }),
         );
-        // 요청 종료 설정
-        dispatch(END);
-        // 요청이 끝날 때 까지 대기
-        await sagaTask?.toPromise();
 
         return null;
     }),

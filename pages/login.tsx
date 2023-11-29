@@ -1,6 +1,5 @@
 import type { NextPage } from 'next';
 import type { FormEvent, MouseEvent } from 'react';
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { FaUser, FaKey, FaPowerOff, FaHeadset } from 'react-icons/fa';
@@ -13,6 +12,7 @@ import { useCheckbox } from '@hooks/use-checkbox';
 import { isEmpty } from '@utils/validator/common';
 import { useApi } from '@hooks/use-api';
 import { loginRequest } from '@actions/user/login.action';
+import { MyHelmet } from '@components/Helmet';
 
 interface LoginPageProps {
     ip: string;
@@ -80,9 +80,7 @@ const Login: NextPage<LoginPageProps> = ({ ip }) => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <div className={`${displayName}__wrap`}>
                 <div className={`${displayName}`}>
                     <div className={`${displayName}__left`}>

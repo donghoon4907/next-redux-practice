@@ -1,8 +1,8 @@
-import type { CreateLongRequestPayload } from '@actions/long/create.action';
+import type { CreateLongRequestPayload } from '@actions/long/create-long.action';
 import type { GetLongRequestPayload } from '@actions/long/get-long.action';
 import type { GetLongsRequestPayload } from '@actions/long/get-longs.action';
-import type { UpdateLongRequestPayload } from '@actions/long/update.action';
-import type { UploadLongRequestPayload } from '@actions/long/upload.action';
+import type { UpdateLongRequestPayload } from '@actions/long/update-long.action';
+import type { UploadLongRequestPayload } from '@actions/long/upload-long.action';
 import type { GetLongSilsRequestPayload } from '@actions/long/get-sils.action';
 import type { GetLongSilhyosRequestPayload } from '@actions/long/get-silhyos.action';
 import { getNodeAxios } from '@utils/axios/node';

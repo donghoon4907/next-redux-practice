@@ -1,7 +1,7 @@
-import type { CreateCarRequestPayload } from '@actions/car/create.action';
+import type { CreateCarRequestPayload } from '@actions/car/create-car.action';
 import type { GetCarcodeRequestPayload } from '@actions/car/get-carcode.action';
 import type { GetCarRequestPayload } from '@actions/car/get-car.action';
-import type { UpdateCarRequestPayload } from '@actions/car/update.action';
+import type { UpdateCarRequestPayload } from '@actions/car/update-car.action';
 import type { GetCarsRequestPayload } from '@actions/car/get-cars.action';
 import { getQuarter } from 'date-fns';
 import { getExternalAxios } from '@utils/axios/external';
@@ -26,19 +26,6 @@ export function createCar(payload: CreateCarRequestPayload) {
 
 export function updateCar(payload: UpdateCarRequestPayload) {
     return getBackendAxios().post('/car/update', payload);
-}
-
-export function calculateCar(payload: FormData) {
-    return getExternalAxios().post(
-        'http://cal.insnara.co.kr/estimate/outer_test_woori.asp',
-        payload,
-        {
-            headers: {
-                Accept: 'text/html',
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-        },
-    );
 }
 
 export function getCarcode({ idate, params = {} }: GetCarcodeRequestPayload) {
@@ -67,7 +54,6 @@ const rootServices = {
     getCar,
     createCar,
     updateCar,
-    calculateCar,
     getCarcode,
     getEstimates,
     getEstimate,

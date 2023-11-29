@@ -2,16 +2,15 @@ import type { NextPage } from 'next';
 import type { AppState } from '@reducers/index';
 import type { OrgaState } from '@reducers/orga';
 import type { UserState } from '@reducers/user';
-import Head from 'next/head';
 import { useSelector } from 'react-redux';
-import { END } from 'redux-saga';
 import { wrapper } from '@store/redux';
-import { permissionMiddleware } from '@utils/middleware/permission';
+import { pageMiddleware } from '@utils/middleware/page';
 import { getCompaniesRequest } from '@actions/hr/get-companies.action';
 import { getOrgasRequest } from '@actions/orga/get-orgas.action';
 import { findSelectOption } from '@utils/getter';
 import { CarForm } from '@partials/car/CarForm';
 import { MyLayout } from '@components/Layout';
+import { MyHelmet } from '@components/Helmet';
 
 const CreateCar: NextPage = () => {
     const { orgas } = useSelector<AppState, OrgaState>((state) => state.orga);
@@ -27,9 +26,7 @@ const CreateCar: NextPage = () => {
 
     return (
         <>
-            <Head>
-                <title>우리인슈맨라이프</title>
-            </Head>
+            <MyHelmet />
             <MyLayout>
                 <CarForm
                     mode="create"
@@ -42,14 +39,10 @@ const CreateCar: NextPage = () => {
 };
 
 export const getServerSideProps = wrapper.getServerSideProps(
-    permissionMiddleware(async ({ dispatch, sagaTask }) => {
+    pageMiddleware(async ({ dispatch }) => {
         dispatch(getOrgasRequest({}));
 
         dispatch(getCompaniesRequest('long-use'));
-
-        dispatch(END);
-
-        await sagaTask?.toPromise();
 
         return null;
     }),

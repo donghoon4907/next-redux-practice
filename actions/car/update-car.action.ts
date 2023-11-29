@@ -1,6 +1,6 @@
 import type { Action } from 'redux';
 import type { Pay } from '@models/pay';
-import type { CreateCarRequestPayload } from './create.action';
+import type { CreateCarRequestPayload } from './create-car.action';
 
 export const UPDATE_CAR_KEY = 'UPDATE_CAR';
 
